@@ -99,7 +99,7 @@ def main(args):
                                              args.source / "vllm_fl/patches/biv150_gqa_decode.py",
                                              args.source / "vllm_fl/worker/model_runner.py"]},
                     library_sha256=hashlib.sha256(args.library.read_bytes()).hexdigest(),
-                    mode=args.mode, min_rows=args.min_rows,
+                    mode=args.mode, cases=args.cases, min_rows=args.min_rows,
                     started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
                     env={k: env[k] for k in env if k.startswith(("VLLM_", "BIV150_", "TORCHINDUCTOR_"))})
     (args.out / "manifest.json").write_text(json.dumps(manifest, indent=2))
@@ -124,6 +124,8 @@ def main(args):
             accuracy(args.out)
         scores = {}
         for input_len, prompts in [(4096, 256), (16384, 128)]:
+            if str(input_len) not in args.cases:
+                continue
             prior = None
             stabilized = False
             for index in range(4):
@@ -168,4 +170,5 @@ if __name__ == "__main__":
     parser.add_argument("--accuracy-first", action="store_true")
     parser.add_argument("--skip-edge-layers", type=int, default=0)
     parser.add_argument("--fuse-silu", action="store_true")
+    parser.add_argument("--cases", nargs="+", choices=("4096", "16384"), default=["4096", "16384"])
     main(parser.parse_args())
