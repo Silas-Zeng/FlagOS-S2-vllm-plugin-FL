@@ -20,6 +20,7 @@ from typing import TYPE_CHECKING, Any, NamedTuple, TypeAlias, cast
 import numpy as np
 import torch
 from vllm_fl.patches.biv150_cpu_metadata import try_cpu_metadata as _biv150_try_cpu_metadata
+from vllm_fl.patches.biv150_async_token_update import fused_sampled_token_update as _biv150_fused_sampled_token_update
 import torch.distributed
 import torch.nn as nn
 from tqdm import tqdm
@@ -1874,13 +1875,19 @@ class ModelRunnerFL(
         prev_common_req_indices_tensor = torch.tensor(
             prev_indices, dtype=torch.int64, pin_memory=self.pin_memory
         ).to(self.device, non_blocking=True)
-        self.input_ids.gpu.scatter_(
-            dim=0,
-            index=sampled_tokens_index_tensor,
-            src=self.input_batch.prev_sampled_token_ids[
-                prev_common_req_indices_tensor, 0
-            ],
-        )
+        # _biv150_async_token_update_v1
+        if not _biv150_fused_sampled_token_update(
+            self, self.input_batch.prev_sampled_token_ids, self.input_ids.gpu,
+            prev_common_req_indices_tensor, sampled_tokens_index_tensor,
+            prev_indices, sample_flattened_indices, total_num_scheduled_tokens,
+        ):
+            self.input_ids.gpu.scatter_(
+                dim=0,
+                index=sampled_tokens_index_tensor,
+                src=self.input_batch.prev_sampled_token_ids[
+                    prev_common_req_indices_tensor, 0
+                ],
+            )
 
         # Scatter the draft tokens after the sampled tokens are scattered.
         if self._draft_token_ids is None or not spec_flattened_indices:
