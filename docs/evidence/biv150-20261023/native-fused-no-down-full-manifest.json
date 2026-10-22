@@ -1,0 +1,42 @@
+{
+  "command": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/native-validation-20261023",
+  "native": true,
+  "git_commit": "beb3518922b75a8dbbd4db5ef6ae71fcc85fef51",
+  "git_status": "",
+  "source_hashes": {
+    "vllm_fl/patches/biv150_native_w8a8.py": "cb9fb0bc85ad3b36834010ec8e7fff31f8a5758170a28edd18f28c4c29f77251",
+    "vllm_fl/patches/biv150_gqa_decode.py": "83718dfcc8c1ed3dcb142033ab48cfa7c33701e7a903943b5fea1c11f7279ca1",
+    "vllm_fl/worker/model_runner.py": "7e23d6b0a2f7919707ca195bb2d0f76d7852d647d2143f9f291d9186f15087c7"
+  },
+  "library_sha256": "e1507761e15be6ba63db8974608c9d15ac286442798c68fd1b71b4c72543092c",
+  "mode": "full",
+  "min_rows": 17,
+  "started_utc": "2026-10-22T20:11:10.960343+00:00",
+  "env": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "VLLM_FL_BIV150_NATIVE_W8A8": "1",
+    "BIV150_NATIVE_W8A8_LIBRARY": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/native-fused-build/biv150_native_w8a8.so",
+    "BIV150_NATIVE_W8A8_MIN_ROWS": "17",
+    "BIV150_NATIVE_W8A8_LAYERS": "qkv_proj,o_proj,gate_up_proj",
+    "BIV150_NATIVE_W8A8_COMPRESSED_ONLY": "1",
+    "BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS": "4",
+    "BIV150_NATIVE_W8A8_FUSE_SILU": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/native-fused-no-down-full/inductor-cache"
+  }
+}

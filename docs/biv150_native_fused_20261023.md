@@ -10,6 +10,7 @@ BF16 MiniCPM5-2B, TP=1, with audited model dimensions and attention sources.
 Use the competition Python/COREX environment. Build the native operator once:
 
 ```bash
+VLLM_VENDOR= python -m pip install --no-deps --no-build-isolation -e .
 MAX_JOBS=2 python tools/build_biv150_native_w8a8.py
 ```
 
@@ -66,9 +67,22 @@ Thus the preceding 4K result is **+10.6% versus the original reference**, not th
 requested +20%. Its 16K score was not completed before moving the GPU to further
 operator experiments. No incomplete case is treated as a valid score.
 
-The final default configuration, including low-shared GQA, is undergoing a new
-complete Level-3 evaluation and one warmed full-size run per scenario. This
-document must be updated with the final results before merging the candidate.
+The final default configuration, including low-shared GQA, **failed** its new
+complete Level-3 evaluation at **0.9429 (99/105)**, with 105 unique questions and
+no failed requests. Its throughput stage was not run. This candidate remains a
+draft and must not be merged or treated as competition-ready.
+
+The official sampling settings are temperature 1.0 and top_p 0.95. The preceding
+native configuration passed once by only one question; this second observation
+shows that accuracy stability requires further investigation. It does not prove
+the GQA change caused the difference: the new GQA policy keeps the old kernel
+for batches below 16, while the accuracy evaluation has concurrency 8.
+
+The preceding exact `beb3518` configuration is now completing its missing warmed
+16K single-run measurement. Its earlier complete accuracy and 4K result remain
+separate from the failed final-default candidate. No result is transferred to
+the failed candidate. Saved manifests, verdicts and score summaries are under
+`docs/evidence/biv150-20261023/`.
 
 Kernel checks cover batch boundaries 1/8/16/24/31/32/40/48/56/64, shuffled physical
 pages, unequal lengths, empty graph rows and partial pages. Short rows also use
@@ -96,6 +110,20 @@ prompt seeds from scoring; at least two runs must reach TPOT stability within 3%
 Each scored case retains the official input/output lengths, concurrency and
 request count. The single-round protocol follows the user's explicit instruction
 and is not the original four-run/last-three average.
+
+To reproduce the default candidate acceptance on an idle GPU and free port 9031:
+
+```bash
+python tools/run_biv150_operator_arm.py \
+  --source "$PWD" --out /workspace/experiments/minicpm-s2/operator-acceptance-new \
+  --library "$PWD/build-native-w8a8/biv150_native_w8a8.so" \
+  --shipping-default --mode full --accuracy-first
+```
+
+Use a new output directory. The dataset must already be available at
+`/workspace/evalscope-datasets/math_500`. The runner refuses an occupied service
+port and does not terminate a pre-existing service. Check the saved manifest,
+`accuracy-verdict.json`, warmup JSON and `scores.json` together.
 
 Raw evidence and rejected experiments remain on the separate
 `codex/20261023-operator-fastpaths` branch and the owner's instance under

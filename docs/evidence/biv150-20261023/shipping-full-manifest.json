@@ -1,0 +1,40 @@
+{
+  "command": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/shipping-validation-20261023",
+  "native": false,
+  "git_commit": "c2b421509b6446825cd02c3b7e8dca5e76e4c113",
+  "git_status": "?? build-native-w8a8/\n",
+  "source_hashes": {
+    "vllm_fl/patches/biv150_native_w8a8.py": "08e51d1364469b0eef2ffc6137df740cb6339e687b3c74fb4b92607008afbe76",
+    "vllm_fl/patches/biv150_gqa_decode.py": "258a677cb34ea06d8beabb97bc324e1ee4c8ef117a402304a985d7899f6a5dff",
+    "vllm_fl/worker/model_runner.py": "b6310d408b4cfee5e5f5f40b10c7faba4eafa30bb80cb76b0c35e196f3370e02"
+  },
+  "library_sha256": "e1507761e15be6ba63db8974608c9d15ac286442798c68fd1b71b4c72543092c",
+  "mode": "full",
+  "cases": [
+    "4096",
+    "16384"
+  ],
+  "shipping_default": true,
+  "min_rows": null,
+  "started_utc": "2026-10-22T21:06:18.179339+00:00",
+  "env": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/shipping-full/inductor-cache"
+  }
+}
