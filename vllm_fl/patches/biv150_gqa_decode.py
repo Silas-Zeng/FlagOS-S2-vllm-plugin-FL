@@ -547,8 +547,6 @@ def install():
                     "reason": "unaudited attention source " + name}
         audited[name] = actual[:12]
 
-    import inspect
-
     backend = importlib.import_module("vllm.v1.attention.backends.triton_attn")
     wrapper, original = _make_wrapper(attention)
     _state["signature"] = inspect.signature(original)
