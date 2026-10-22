@@ -180,6 +180,48 @@ class PlatformFL(Platform):
         parallel_config.worker_cls = "vllm_fl.worker.worker.WorkerFL"
 
         cache_config = vllm_config.cache_config
+        iluvatar_max_batched_tokens = os.environ.get(
+            "VLLM_FL_ILUVATAR_MAX_NUM_BATCHED_TOKENS"
+        )
+        scheduler_config = vllm_config.scheduler_config
+        if (
+            scheduler_config
+            and cls.vendor_name == "iluvatar"
+            and iluvatar_max_batched_tokens is not None
+        ):
+            max_batched_tokens = int(iluvatar_max_batched_tokens)
+            if max_batched_tokens < (scheduler_config.max_num_seqs or 1):
+                raise ValueError(
+                    "VLLM_FL_ILUVATAR_MAX_NUM_BATCHED_TOKENS must be at least "
+                    "max_num_seqs"
+                )
+            scheduler_config.max_num_batched_tokens = max_batched_tokens
+            logger.info(
+                "Overriding max_num_batched_tokens to %d for Iluvatar.",
+                max_batched_tokens,
+            )
+        disable_prefix_cache = os.environ.get(
+            "VLLM_FL_ILUVATAR_DISABLE_PREFIX_CACHE", "0"
+        ).lower() in ("1", "true", "yes")
+        if cache_config and cls.vendor_name == "iluvatar" and disable_prefix_cache:
+            cache_config.enable_prefix_caching = False
+            logger.info("Disabled prefix caching for Iluvatar.")
+        iluvatar_block_size = os.environ.get("VLLM_FL_ILUVATAR_BLOCK_SIZE")
+        if (
+            cache_config
+            and cls.vendor_name == "iluvatar"
+            and iluvatar_block_size is not None
+        ):
+            block_size = int(iluvatar_block_size)
+            if block_size not in (16, 32, 64, 128):
+                raise ValueError(
+                    "VLLM_FL_ILUVATAR_BLOCK_SIZE must be one of 16, 32, 64, 128"
+                )
+            cache_config.block_size = block_size
+            logger.info(
+                "Overriding kv cache block size to %d for Iluvatar.",
+                block_size,
+            )
         if cache_config and cache_config.block_size is None:
             # Ascend NPU requires block_size to be a multiple of 128
             # CUDA can use smaller block sizes like 16
@@ -189,6 +231,11 @@ class PlatformFL(Platform):
             elif cls.device_type == "musa":
                 cache_config.block_size = 64
                 logger.info("Setting kv cache block size to 64 for MUSA.")
+            elif cls.vendor_name == "iluvatar":
+                cache_config.block_size = 16
+                logger.info(
+                    "Setting kv cache block size to 16 for Iluvatar.",
+                )
             else:
                 cache_config.block_size = 16
         if cls.device_type == "npu":
