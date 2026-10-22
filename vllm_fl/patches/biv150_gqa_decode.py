@@ -55,8 +55,9 @@ _AUDITED_SOURCES = {
         "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }
 
-# Every name the gate inspects. A missing key means the call site changed, so the
-# gate must fall back rather than trust a permissive default.
+# Every name the gate inspects, asserted against the audited signature once at
+# install so an upstream rename turns the optimization off instead of letting a
+# permissive default pass.
 _GATE_KEYS = (
     "causal", "max_seqlen_q", "seqused_k", "seq_threshold_3D",
     "num_par_softmax_segments", "softmax_segm_output", "softmax_segm_max",
@@ -65,6 +66,11 @@ _GATE_KEYS = (
     "softcap", "use_alibi_sqrt", "window_size", "chunk_lookback",
     "use_td", "kv_quant_mode",
 )
+
+# The audited triton_attn call passes 31 of the 32 parameters and omits qq_bias,
+# which the callee default supplies; requiring it per call would reject every real
+# decode step (measured: the whole probe fell back to the generic kernel).
+_RUNTIME_KEYS = tuple(name for name in _GATE_KEYS if name != "qq_bias")
 
 _ENABLE_ENV = "VLLM_FL_BIV150_GQA_DECODE"
 _TARGET_ENV = "VLLM_FL_BIV150_GQA_TARGET_PROGRAMS"
@@ -333,7 +339,7 @@ def _pick_segments(num_seqs, kv_heads, builder_segments):
 def _eligible(q, k, v, out, kwargs):
     """True only for calls the generic path would have run as 3D decode."""
     causal = kwargs.get("causal")
-    if any(key not in kwargs for key in _GATE_KEYS) or (
+    if any(key not in kwargs for key in _RUNTIME_KEYS) or (
         q.dtype is not torch.bfloat16
         or q.ndim != 3
         or tuple(q.shape[1:]) != (_QUERY_HEADS, _HEAD_SIZE)
@@ -525,6 +531,12 @@ def install():
     if vllm_envs.VLLM_BATCH_INVARIANT:
         return {"installed": False,
                 "reason": "batch-invariant mode forces the non-3D path"}
+
+    missing = [name for name in _GATE_KEYS
+               if name not in inspect.signature(attention.unified_attention).parameters]
+    if missing:
+        return {"installed": False,
+                "reason": "gate keys absent from signature: " + ",".join(missing)}
 
     audited = {}
     for name, expected in _AUDITED_SOURCES.items():
