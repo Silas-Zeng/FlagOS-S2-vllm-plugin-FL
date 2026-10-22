@@ -22,3 +22,31 @@ The best primary-shape change is below 1%, while some short shapes regress.
 in production: the measured result does not justify another specialized path.
 
 Remote raw logs: `/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/`.
+
+## Follow-up attention probes
+
+`softmax-results.json` covers unchanged-maximum branch elision, bounded delayed
+renormalization with integral log2 anchors, internal FP16 dot products, and `.cg`
+KV loads. All shapes include shuffled pages and mixed/empty lengths. Two long
+rows per uniform case are also compared with an independent dense FP32 reference.
+The first three algorithms regress, so they are not enabled. `.cg` loads on full
+pages are bit-identical and improve primary shapes by approximately 1%; the tail
+load remains unchanged. Its end-to-end benefit has not yet been measured.
+
+`compiler-results.json` records register limits and SME masks. Lower limits spill
+registers and regress; other choices stay within measurement noise. No compiler
+option override is enabled.
+
+## Native W8A8: opt-in experiment, model acceptance pending
+
+The native operator uses a CUDA row quantizer, vendor integer GEMM and a CUDA
+BF16 epilogue. A 2D epilogue avoids per-element integer division; the quantizer uses
+64-lane warp shuffles. Small compressed-only batches are zero-padded to 32 rows.
+The compressed-only path preserves the public BF16 weight shape using a scalar
+broadcast marker and retains INT8 weight data instead of duplicating both copies.
+
+`native-compressed.log` contains seeded QDQ comparisons, warmed CUDA-graph timing,
+and dynamic fullgraph checks. Gate/up speeds up approximately 1.6–1.9x at small M
+and 1.4x at prefill M. This is not an end-to-end throughput or accuracy result.
+The runtime hook is off by default; do not ship it as accepted without complete
+MATH-500 Level 3 and serving benchmark evidence.

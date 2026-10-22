@@ -168,8 +168,8 @@ def _gqa_decode_attention(
             + kv_head_idx * v_stride_head
             + offs_dim[None, :]
         )
-        K = tl.load(key_cache_ptr + k_offsets)
-        V = tl.load(value_cache_ptr + v_offsets)
+        K = tl.load(key_cache_ptr + k_offsets, cache_modifier=".cg")
+        V = tl.load(value_cache_ptr + v_offsets, cache_modifier=".cg")
 
         scores = tl.dot(Q, K) * softmax_scale_log2e
         new_max = tl.maximum(running_max, tl.max(scores, 1))
