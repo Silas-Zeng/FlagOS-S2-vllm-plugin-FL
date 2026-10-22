@@ -50,6 +50,10 @@ def main(args):
             if snapshot!=prior:
                 print(json.dumps(snapshot),flush=True)
                 prior=snapshot
+            if len(by_index)==105:
+                # Let the evaluator finish its report; the service driver owns
+                # the final metric/coverage gate and cleanup.
+                return
             if len(wrong)>=6:
                 snapshot["reason"]="At least six wrong answers makes 0.95 impossible on 105 examples"
                 (args.out/"early-rejection.json").write_text(json.dumps(snapshot,indent=2))
@@ -67,8 +71,6 @@ def main(args):
                     raise RuntimeError(f"Expected one owned evalscope, got {targets}; no signal sent")
                 os.kill(targets[0],signal.SIGTERM)
                 print(json.dumps(dict(early_rejected=True,evalscope_pid=targets[0])),flush=True)
-                return
-            if len(by_index)==105:
                 return
         time.sleep(10)
     print(json.dumps(dict(driver_finished=True)),flush=True)
