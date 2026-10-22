@@ -81,10 +81,14 @@ four layers in BF16 is insufficient. No throughput score is accepted for it.
 The fused epilogue reads integer GEMM accumulators, reproduces BF16 gate/up
 rounding, and applies the existing FP32 SiLU/multiply formula before BF16 output.
 It avoids materializing the full gate/up activation and the following read pass.
-`native-fused-service-ref.log` uses the actual `gems_silu_and_mul` service reference,
-with bit-identical tested outputs and dynamic fullgraph checks. Versus the BF16
-linear+activation chain, measured speedup is approximately 2.0x for small batches
-and 2.36–2.39x at prefill sizes. These are operator measurements, not serving scores.
+`native-fused-service-ref.log` uses the `gems_silu_and_mul` dispatch API reference,
+with bit-identical tested outputs and dynamic fullgraph checks. Versus that BF16
+linear+API activation chain, measured speedup is approximately 2.0x for small batches
+and 2.36–2.39x at prefill sizes. **Correction:** inspection of the actual baseline
+Inductor artifact found a generated `triton_poi_fused_mul_silu_slice_1` using FP32
+sigmoid and two multiplies, rather than this FlagGems API call. Therefore these
+numbers do not measure speedup against the compiled service path. A separate
+compiled-kernel reference is required, and end-to-end scores remain authoritative.
 Integration stays opt-in, TP=1, matching MiniCPM geometry and the selected native
 weights; other MLPs retain their original forward and down projection dispatch.
 The next complete-model arm retains down projection in BF16 to reduce quantization
