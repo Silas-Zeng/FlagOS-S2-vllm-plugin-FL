@@ -245,6 +245,19 @@ def patch_sampler_compile_for_iluvatar() -> None:
 patch_sampler_compile_for_iluvatar()
 
 
+def patch_biv150_minicpm_runtime() -> None:
+    """Install the submitted MiniCPM5-2B BI-V150 kernel launch policies."""
+    try:
+        from vllm_fl.patches.biv150_runtime import apply_biv150_runtime_patches
+
+        apply_biv150_runtime_patches()
+    except Exception as e:
+        logger.warning("Failed to patch BI-V150 MiniCPM runtime: %s", e)
+
+
+patch_biv150_minicpm_runtime()
+
+
 def patch_torch_inductor_for_iluvatar() -> None:
     """Patch torch._inductor GPUTarget to use the correct triton backend name.
 
