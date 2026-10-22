@@ -69,3 +69,23 @@ PyTorch's scaled-MM accepts FP8 but runs much slower: 1.62 vs 0.117 ms at
 M64/N12288/K2048 and 8.58 vs 1.16 ms at M2048. INT8 scaled-MM is rejected by the
 PyTorch API. Transposed INT8 weight packing offers no consistent improvement.
 See `scaled-gemm-probe.log`; the current native INT8 operator remains unchanged.
+
+## Edge-layer preservation: rejected on complete accuracy
+
+`native-edge4-accuracy.json` records the full 105-example evaluation, 105 unique
+questions, no failed requests, and accuracy **0.9429**. Keeping the first/last
+four layers in BF16 is insufficient. No throughput score is accepted for it.
+
+## Native gate/up + SwiGLU fusion
+
+The fused epilogue reads integer GEMM accumulators, reproduces BF16 gate/up
+rounding, and applies the existing FP32 SiLU/multiply formula before BF16 output.
+It avoids materializing the full gate/up activation and the following read pass.
+`native-fused-service-ref.log` uses the actual `gems_silu_and_mul` service reference,
+with bit-identical tested outputs and dynamic fullgraph checks. Versus the BF16
+linear+activation chain, measured speedup is approximately 2.0x for small batches
+and 2.36–2.39x at prefill sizes. These are operator measurements, not serving scores.
+Integration stays opt-in, TP=1, matching MiniCPM geometry and the selected native
+weights; other MLPs retain their original forward and down projection dispatch.
+The next complete-model arm retains down projection in BF16 to reduce quantization
+error and tests QKV/O/gate-up on middle layers with this fused epilogue.

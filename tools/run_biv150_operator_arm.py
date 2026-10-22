@@ -85,6 +85,7 @@ def main(args):
     env["BIV150_NATIVE_W8A8_LAYERS"] = args.layers
     env["BIV150_NATIVE_W8A8_COMPRESSED_ONLY"] = "1" if args.compressed_only else "0"
     env["BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS"] = str(args.skip_edge_layers)
+    env["BIV150_NATIVE_W8A8_FUSE_SILU"] = "1" if args.fuse_silu else "0"
     env["TORCHINDUCTOR_CACHE_DIR"] = str(args.out / "inductor-cache")
     command = ["vllm", "serve", "/workspace/MiniCPM5-2B", "--port", "9031",
                "--compilation-config", '{"cudagraph_mode":"FULL_DECODE_ONLY"}',
@@ -166,4 +167,5 @@ if __name__ == "__main__":
     parser.add_argument("--accuracy", action="store_true")
     parser.add_argument("--accuracy-first", action="store_true")
     parser.add_argument("--skip-edge-layers", type=int, default=0)
+    parser.add_argument("--fuse-silu", action="store_true")
     main(parser.parse_args())

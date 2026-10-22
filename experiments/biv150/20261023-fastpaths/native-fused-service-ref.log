@@ -1,0 +1,13 @@
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:728: DeprecationWarning: use_cuda_graph is deprecated; use benchmark_mode='replay' or benchmark_mode='event'
+  super().__init__(*args, **kwargs)
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411: RuntimeWarning: active Triton backend does not provide a replay benchmarker; falling back to event timing
+  resolved_benchmark = resolve_benchmarker(
+/usr/local/lib/python3.12/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+{"m": 1, "old_ms": 0.05919903889298439, "bf16_ms": 0.10982115566730499, "fused_ms": 0.05681249871850014, "speedup": 1.0420073087492474, "speedup_vs_bf16": 1.9330456879120401, "max_abs_diff": 0.0, "fullgraph": "passed"}
+{"m": 8, "old_ms": 0.06348846107721329, "bf16_ms": 0.11413750052452087, "fused_ms": 0.05732692405581474, "speedup": 1.1074806842139227, "speedup_vs_bf16": 1.9909929305363412, "max_abs_diff": 0.0, "fullgraph": "passed"}
+{"m": 16, "old_ms": 0.06766249984502792, "bf16_ms": 0.11802499741315842, "fused_ms": 0.058054808527231216, "speedup": 1.1654934631864322, "speedup_vs_bf16": 2.032992622097747, "max_abs_diff": 0.0, "fullgraph": "passed"}
+{"m": 32, "old_ms": 0.07420673221349716, "bf16_ms": 0.11989615112543106, "fused_ms": 0.059655770659446716, "speedup": 1.243915406560023, "speedup_vs_bf16": 2.009799719290778, "max_abs_diff": 0.0, "fullgraph": "passed"}
+{"m": 64, "old_ms": 0.09404230862855911, "bf16_ms": 0.13999904692173004, "fused_ms": 0.06667499989271164, "speedup": 1.4104583244077222, "speedup_vs_bf16": 2.0997232417998637, "max_abs_diff": 0.0, "fullgraph": "passed"}
+{"m": 2048, "old_ms": 1.3657770156860352, "bf16_ms": 1.7020999193191528, "fused_ms": 0.7208432555198669, "speedup": 1.894693479099068, "speedup_vs_bf16": 2.3612621832628657, "max_abs_diff": 0.0, "fullgraph": "passed"}
+{"m": 8192, "old_ms": 5.391332149505615, "bf16_ms": 6.703728675842285, "fused_ms": 2.8024797439575195, "speedup": 1.9237720312269768, "speedup_vs_bf16": 2.392070340667519, "max_abs_diff": 0.0, "fullgraph": "passed"}

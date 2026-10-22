@@ -33,6 +33,11 @@ def load_library():
     def fake(x, wq, scales, original, bias, min_rows):
         return torch.empty((*x.shape[:-1], wq.shape[1]), dtype=x.dtype, device=x.device)
 
+    if hasattr(torch.ops.biv150_native, "gate_silu"):
+        @torch.library.register_fake("biv150_native::gate_silu")
+        def fake_gate_silu(x, wq, scales, original, min_rows):
+            return torch.empty((*x.shape[:-1], wq.shape[1]//2), dtype=x.dtype, device=x.device)
+
     _LOADED = True
 
 
@@ -56,6 +61,7 @@ def install():
     min_rows = int(os.environ.get("BIV150_NATIVE_W8A8_MIN_ROWS", "1024"))
     compressed = os.environ.get("BIV150_NATIVE_W8A8_COMPRESSED_ONLY", "0") == "1"
     skip_edges = int(os.environ.get("BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS", "0"))
+    fused_silu = os.environ.get("BIV150_NATIVE_W8A8_FUSE_SILU", "0") == "1"
 
     def after(self, layer):
         after_loading(self, layer)
@@ -94,5 +100,29 @@ def install():
     UnquantizedLinearMethod.process_weights_after_loading = after
     UnquantizedLinearMethod.apply = apply
     UnquantizedLinearMethod._biv150_native_w8a8 = True
+    if fused_silu:
+        from vllm.model_executor.models.llama import LlamaMLP
+        from vllm.model_executor.layers.activation import SiluAndMul
+        from vllm.distributed import get_tensor_model_parallel_world_size
+        if get_tensor_model_parallel_world_size() != 1:
+            raise RuntimeError("Native fused gate/SwiGLU currently requires TP=1")
+        forward_original = LlamaMLP.forward
+
+        def forward(self, x):
+            layer = self.gate_up_proj
+            if (not hasattr(layer, "_biv150_native_wq") or layer.bias is not None
+                    or not isinstance(self.act_fn, SiluAndMul)
+                    or tuple(layer.weight.shape) != (12288, 2048)):
+                return forward_original(self, x)
+            # Operator fusion only: replace gate/up linear + activation; leave
+            # down projection and all framework scheduling/dispatch intact.
+            y = torch.ops.biv150_native.gate_silu(x.reshape(-1,x.shape[-1]),
+                    layer._biv150_native_wq,layer._biv150_native_sw,layer.weight,min_rows)
+            y = y.reshape(*x.shape[:-1],6144)
+            y, _ = self.down_proj(y)
+            return y
+
+        LlamaMLP.forward = forward
     return {"installed": True, "layers": selected, "min_rows": min_rows,
-            "compressed_only": compressed, "skip_edge_layers": skip_edges}
+            "compressed_only": compressed, "skip_edge_layers": skip_edges,
+            "fused_silu": fused_silu}

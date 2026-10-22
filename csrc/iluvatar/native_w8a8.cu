@@ -47,6 +47,20 @@ __global__ void epilogue(const int32_t* acc, const float* rows,
   }
 }
 
+__global__ void silu_epilogue(const int32_t* acc, const float* rows,
+                              const float* cols, BF16* output, int n) {
+  const int row = blockIdx.y;
+  const int col = blockIdx.x * blockDim.x + threadIdx.x;
+  const int half = n / 2;
+  if (col < half) {
+    const int64_t index = int64_t(row) * n + col;
+    // Reproduce the BF16 linear output rounding before the FP32 activation.
+    const float gate = __bfloat162float(__float2bfloat16_rn(float(acc[index]) * (rows[row] * cols[col])));
+    const float up = __bfloat162float(__float2bfloat16_rn(float(acc[index+half]) * (rows[row] * cols[col+half])));
+    output[int64_t(row)*half+col] = __float2bfloat16_rn((gate / (1.f + expf(-gate))) * up);
+  }
+}
+
 }  // namespace
 
 extern "C" void biv150_quantize(const void* x, int8_t* q, float* scales,
@@ -60,4 +74,11 @@ extern "C" void biv150_epilogue(const int32_t* acc, const float* rows,
   epilogue<<<dim3((n + 255) / 256, m), 256, 0, stream>>>(
       acc, rows, cols, static_cast<const BF16*>(bias), static_cast<BF16*>(output),
       n);
+}
+
+extern "C" void biv150_silu_epilogue(const int32_t* acc, const float* rows,
+                                      const float* cols, void* output,
+                                      int m, int n, cudaStream_t stream) {
+  silu_epilogue<<<dim3((n/2+255)/256,m),256,0,stream>>>(
+      acc, rows, cols, static_cast<BF16*>(output), n);
 }
