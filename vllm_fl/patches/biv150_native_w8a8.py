@@ -1,5 +1,6 @@
 """Optional native operator experiment; only enabled explicitly for evaluation."""
 import os
+import re
 from pathlib import Path
 
 import torch
@@ -54,9 +55,15 @@ def install():
     selected = tuple(os.environ.get("BIV150_NATIVE_W8A8_LAYERS", "gate_up_proj").split(","))
     min_rows = int(os.environ.get("BIV150_NATIVE_W8A8_MIN_ROWS", "1024"))
     compressed = os.environ.get("BIV150_NATIVE_W8A8_COMPRESSED_ONLY", "0") == "1"
+    skip_edges = int(os.environ.get("BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS", "0"))
 
     def after(self, layer):
         after_loading(self, layer)
+        index = re.search(r"(?:^|\.)layers\.(\d+)\.", layer.prefix)
+        if index is not None and skip_edges and (
+            int(index.group(1)) < skip_edges or int(index.group(1)) >= 42-skip_edges
+        ):
+            return
         weight = getattr(layer, "weight", None)
         if _eligible_model() and weight is not None and weight.dtype == torch.bfloat16 and tuple(weight.shape) in (
             (2560, 2048), (2048, 2048), (12288, 2048), (2048, 6144)
@@ -88,4 +95,4 @@ def install():
     UnquantizedLinearMethod.apply = apply
     UnquantizedLinearMethod._biv150_native_w8a8 = True
     return {"installed": True, "layers": selected, "min_rows": min_rows,
-            "compressed_only": compressed}
+            "compressed_only": compressed, "skip_edge_layers": skip_edges}
