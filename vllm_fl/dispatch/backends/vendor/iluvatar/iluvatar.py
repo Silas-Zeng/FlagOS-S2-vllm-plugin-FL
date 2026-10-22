@@ -10,7 +10,6 @@ Iluvatar uses a CUDA-compatible architecture.
 from __future__ import annotations
 
 import logging
-import os
 from typing import Optional, Union
 
 import torch
@@ -209,15 +208,6 @@ patch_triton_perf_model_for_iluvatar()
 
 
 def patch_sampler_compile_for_iluvatar() -> None:
-    keep_compile = os.environ.get(
-        "VLLM_FL_ILUVATAR_KEEP_SAMPLER_COMPILE", "0"
-    ).lower() in ("1", "true", "yes")
-    if keep_compile:
-        logger.info(
-            "Keeping torch.compile on Iluvatar sampler ops for diagnostics"
-        )
-        return
-
     # Disable torch.compile on vllm sampler ops for Iluvatar.
     # flagtree triton only supports Iluvatar backend, not cuda target.
     # TODO: Remove once flagtree triton supports cuda inductor target.
@@ -243,19 +233,6 @@ def patch_sampler_compile_for_iluvatar() -> None:
         logger.warning('patch_sampler_compile_for_iluvatar (logprobs): %s', e)
 
 patch_sampler_compile_for_iluvatar()
-
-
-def patch_biv150_minicpm_runtime() -> None:
-    """Install the submitted MiniCPM5-2B BI-V150 kernel launch policies."""
-    try:
-        from vllm_fl.patches.biv150_runtime import apply_biv150_runtime_patches
-
-        apply_biv150_runtime_patches()
-    except Exception as e:
-        logger.warning("Failed to patch BI-V150 MiniCPM runtime: %s", e)
-
-
-patch_biv150_minicpm_runtime()
 
 
 def patch_torch_inductor_for_iluvatar() -> None:

@@ -7671,15 +7671,3 @@ class EncoderTimingStats:
             "encoder_forward_secs": self.encoder_forward_secs,
             "num_encoder_calls": self.num_encoder_calls,
         }
-
-# Enable the submitted implementation without changing serving arguments.
-from vllm_fl.patches.biv150_sql_reflection import install as _biv150_sql_install
-_biv150_sql_install()
-# Isolated MiniCPM decode launch candidate; install before graph capture.
-if getattr(current_platform, "vendor_name", None) == "iluvatar":
-    from vllm_fl.patches.biv150_decode_launch_runtime import install as _install_decode_launch
-    print("BIV150_DECODE_LAUNCH_INSTALLED", _install_decode_launch(), flush=True)
-
-if getattr(current_platform, "vendor_name", None) == "iluvatar":
-    from vllm_fl.patches.biv150_mixed_decode import install as _install_mixed_decode
-    print("BIV150_MIXED_DECODE_INSTALLED", _install_mixed_decode(), flush=True)

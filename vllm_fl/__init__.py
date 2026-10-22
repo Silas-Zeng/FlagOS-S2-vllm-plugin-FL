@@ -26,27 +26,6 @@ from . import version as version  # PyTorch-style: vllm_fl.version.git_version
 logger = logging.getLogger(__name__)
 
 
-def _configure_experimental_cpu_threads():
-    """Apply an explicit CPU thread cap for reproducible experiments."""
-    requested = os.environ.get("VLLM_FL_CPU_THREADS")
-    if not requested:
-        return
-    try:
-        threads = int(requested)
-    except ValueError as exc:
-        raise ValueError("VLLM_FL_CPU_THREADS must be an integer") from exc
-    if threads <= 0:
-        raise ValueError("VLLM_FL_CPU_THREADS must be greater than zero")
-    import torch
-
-    torch.set_num_threads(threads)
-    try:
-        torch.set_num_interop_threads(threads)
-    except RuntimeError:
-        logger.debug("PyTorch inter-op thread count was already initialized")
-    logger.info("Set PyTorch CPU thread counts to %d", threads)
-
-
 def __getattr__(name):
     if name == "distributed":
         import importlib
@@ -118,7 +97,6 @@ def _patch_custom_ops():
 
 def register():
     """Register the FL platform."""
-    _configure_experimental_cpu_threads()
     _patch_custom_ops()
     _patch_flash_attn_import()
     _patch_transformers_compat()
