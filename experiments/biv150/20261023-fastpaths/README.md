@@ -93,3 +93,9 @@ Integration stays opt-in, TP=1, matching MiniCPM geometry and the selected nativ
 weights; other MLPs retain their original forward and down projection dispatch.
 The next complete-model arm retains down projection in BF16 to reduce quantization
 error and tests QKV/O/gate-up on middle layers with this fused epilogue.
+
+That arm (`beb3518`, QKV/O/gate-up, skip first/last four layers, fused SwiGLU,
+compressed-only weights, BF16 down) completed all 105 Level-3 questions with
+accuracy **0.9524 (100/105)**, 105 unique questions and no failed requests.
+See `native-fused-no-down-accuracy.json`. This passes 0.95 narrowly. It still
+requires measured serving throughput and TTFT before any default enablement.
