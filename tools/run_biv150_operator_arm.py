@@ -86,6 +86,10 @@ def main(args):
     env["BIV150_NATIVE_W8A8_COMPRESSED_ONLY"] = "1" if args.compressed_only else "0"
     env["BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS"] = str(args.skip_edge_layers)
     env["BIV150_NATIVE_W8A8_FUSE_SILU"] = "1" if args.fuse_silu else "0"
+    if args.shipping_default:
+        for key in list(env):
+            if key.startswith("BIV150_NATIVE_") or key == "VLLM_FL_BIV150_NATIVE_W8A8":
+                env.pop(key)
     env["TORCHINDUCTOR_CACHE_DIR"] = str(args.out / "inductor-cache")
     command = ["vllm", "serve", "/workspace/MiniCPM5-2B", "--port", "9031",
                "--compilation-config", '{"cudagraph_mode":"FULL_DECODE_ONLY"}',
@@ -99,7 +103,8 @@ def main(args):
                                              args.source / "vllm_fl/patches/biv150_gqa_decode.py",
                                              args.source / "vllm_fl/worker/model_runner.py"]},
                     library_sha256=hashlib.sha256(args.library.read_bytes()).hexdigest(),
-                    mode=args.mode, cases=args.cases, min_rows=args.min_rows,
+                    mode=args.mode, cases=args.cases, shipping_default=args.shipping_default,
+                    min_rows=None if args.shipping_default else args.min_rows,
                     started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
                     env={k: env[k] for k in env if k.startswith(("VLLM_", "BIV150_", "TORCHINDUCTOR_"))})
     (args.out / "manifest.json").write_text(json.dumps(manifest, indent=2))
@@ -171,4 +176,5 @@ if __name__ == "__main__":
     parser.add_argument("--skip-edge-layers", type=int, default=0)
     parser.add_argument("--fuse-silu", action="store_true")
     parser.add_argument("--cases", nargs="+", choices=("4096", "16384"), default=["4096", "16384"])
+    parser.add_argument("--shipping-default", action="store_true")
     main(parser.parse_args())

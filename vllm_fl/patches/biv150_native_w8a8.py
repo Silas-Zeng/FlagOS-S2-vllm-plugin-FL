@@ -1,4 +1,4 @@
-"""Optional native operator experiment; only enabled explicitly for evaluation."""
+"""Native BI-V150 linear/SwiGLU path for the audited MiniCPM model geometry."""
 import os
 import re
 from pathlib import Path
@@ -24,9 +24,10 @@ def load_library():
     global _LOADED
     if _LOADED:
         return
-    library = os.environ.get("BIV150_NATIVE_W8A8_LIBRARY")
-    if not library:
-        raise RuntimeError("Build native_w8a8.cu and set BIV150_NATIVE_W8A8_LIBRARY")
+    library = os.environ.get("BIV150_NATIVE_W8A8_LIBRARY", str(
+        Path(__file__).resolve().parents[2] / "build-native-w8a8/biv150_native_w8a8.so"))
+    if not Path(library).is_file():
+        raise RuntimeError("Build the BI-V150 operator with python tools/build_biv150_native_w8a8.py")
     torch.ops.load_library(library)
 
     @torch.library.register_fake("biv150_native::linear")
@@ -49,19 +50,21 @@ def quantize_weight(weight):
 
 
 def install():
-    if os.environ.get("VLLM_FL_BIV150_NATIVE_W8A8", "0") != "1":
+    if os.environ.get("VLLM_FL_BIV150_NATIVE_W8A8", "1") != "1":
         return {"installed": False}
+    if not _eligible_model():
+        return {"installed": False, "reason": "unsupported or unavailable model geometry"}
     load_library()
     from vllm.model_executor.layers.linear import UnquantizedLinearMethod
     if getattr(UnquantizedLinearMethod, "_biv150_native_w8a8", False):
         return {"installed": True, "already": True}
     after_loading = UnquantizedLinearMethod.process_weights_after_loading
     apply_original = UnquantizedLinearMethod.apply
-    selected = tuple(os.environ.get("BIV150_NATIVE_W8A8_LAYERS", "gate_up_proj").split(","))
-    min_rows = int(os.environ.get("BIV150_NATIVE_W8A8_MIN_ROWS", "1024"))
-    compressed = os.environ.get("BIV150_NATIVE_W8A8_COMPRESSED_ONLY", "0") == "1"
-    skip_edges = int(os.environ.get("BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS", "0"))
-    fused_silu = os.environ.get("BIV150_NATIVE_W8A8_FUSE_SILU", "0") == "1"
+    selected = tuple(os.environ.get("BIV150_NATIVE_W8A8_LAYERS", "qkv_proj,o_proj,gate_up_proj").split(","))
+    min_rows = int(os.environ.get("BIV150_NATIVE_W8A8_MIN_ROWS", "17"))
+    compressed = os.environ.get("BIV150_NATIVE_W8A8_COMPRESSED_ONLY", "1") == "1"
+    skip_edges = int(os.environ.get("BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS", "4"))
+    fused_silu = os.environ.get("BIV150_NATIVE_W8A8_FUSE_SILU", "1") == "1"
 
     def after(self, layer):
         after_loading(self, layer)

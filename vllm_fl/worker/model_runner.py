@@ -7701,7 +7701,7 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_gqa_decode import install as _install_gqa_decode
 
     print("BIV150_GQA_DECODE_INSTALL", _install_gqa_decode(), flush=True)
-# Optional operator experiment. The shipping/default path is unchanged.
+# Native BI-V150 operator path; numerical/model guards remain in its installer.
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_w8a8
     print("BIV150_NATIVE_W8A8_INSTALL", _install_native_w8a8(), flush=True)

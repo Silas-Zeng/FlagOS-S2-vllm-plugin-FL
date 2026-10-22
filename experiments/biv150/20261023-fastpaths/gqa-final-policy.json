@@ -1,0 +1,102 @@
+[
+  {
+    "batch": 64,
+    "kv": 4096,
+    "baseline_segments": 2,
+    "candidate_segments": 4,
+    "baseline_ms": 0.5134124755859375,
+    "candidate_ms": 0.48715195059776306,
+    "speedup": 1.0539062297830304,
+    "max_abs_diff": 0.00390625
+  },
+  {
+    "batch": 56,
+    "kv": 5120,
+    "baseline_segments": 4,
+    "candidate_segments": 4,
+    "baseline_ms": 0.6298769116401672,
+    "candidate_ms": 0.5619596242904663,
+    "speedup": 1.120857948532252,
+    "max_abs_diff": 0.0
+  },
+  {
+    "batch": 48,
+    "kv": 5120,
+    "baseline_segments": 4,
+    "candidate_segments": 4,
+    "baseline_ms": 0.6034711599349976,
+    "candidate_ms": 0.5367375016212463,
+    "speedup": 1.1243320209826562,
+    "max_abs_diff": 0.0
+  },
+  {
+    "batch": 40,
+    "kv": 5120,
+    "baseline_segments": 4,
+    "candidate_segments": 8,
+    "baseline_ms": 0.5539066791534424,
+    "candidate_ms": 0.4852769374847412,
+    "speedup": 1.141423868244015,
+    "max_abs_diff": 0.001953125
+  },
+  {
+    "batch": 32,
+    "kv": 16384,
+    "baseline_segments": 4,
+    "candidate_segments": 8,
+    "baseline_ms": 0.9844865202903748,
+    "candidate_ms": 0.9211500287055969,
+    "speedup": 1.0687580628681936,
+    "max_abs_diff": 0.001953125
+  },
+  {
+    "batch": 31,
+    "kv": 17408,
+    "baseline_segments": 8,
+    "candidate_segments": 8,
+    "baseline_ms": 1.124824047088623,
+    "candidate_ms": 0.8228740096092224,
+    "speedup": 1.3669456489734009,
+    "max_abs_diff": 0.0
+  },
+  {
+    "batch": 24,
+    "kv": 17408,
+    "baseline_segments": 8,
+    "candidate_segments": 8,
+    "baseline_ms": 0.9333586692810059,
+    "candidate_ms": 0.8825519680976868,
+    "speedup": 1.0575679427612987,
+    "max_abs_diff": 0.0
+  },
+  {
+    "batch": 16,
+    "kv": 17408,
+    "baseline_segments": 8,
+    "candidate_segments": 16,
+    "baseline_ms": 0.5292211771011353,
+    "candidate_ms": 0.49329614639282227,
+    "speedup": 1.072826497776257,
+    "max_abs_diff": 0.000244140625
+  },
+  {
+    "batch": 8,
+    "kv": 32768,
+    "baseline_segments": 16,
+    "candidate_segments": 16,
+    "baseline_ms": 0.47149327397346497,
+    "candidate_ms": 0.47382402420043945,
+    "speedup": 0.995080979207613,
+    "max_abs_diff": 0.0
+  },
+  {
+    "batch": 1,
+    "kv": 100,
+    "baseline_segments": 16,
+    "candidate_segments": 16,
+    "baseline_ms": 0.005995192099362612,
+    "candidate_ms": 0.006004807539284229,
+    "speedup": 0.9983987097240483,
+    "max_abs_diff": 0.0
+  }
+]
