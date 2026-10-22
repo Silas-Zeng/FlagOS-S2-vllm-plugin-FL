@@ -55,6 +55,47 @@ _DECODE_TILE_TUNED = """    TILE_SIZE_DECODE = _get_tile_size(
 """
 
 
+def _patch_top_p_sampler() -> None:
+    """Use the bounded histogram top-p kernel for top-p-only sampling."""
+    try:
+        from vllm.v1.sample.ops import topk_topp_sampler
+        from vllm.v1.sample.ops import topk_topp_triton
+
+        from .biv150_top_p_triton import apply_top_p_hist_triton
+
+        current = topk_topp_triton.apply_top_k_top_p_triton
+        if getattr(current, "_biv150_top_p_dispatch", False):
+            return
+        original = current
+
+        def apply_top_k_top_p_triton(
+            logits,
+            k,
+            p,
+            mask_value: float = float("-inf"),
+        ):
+            if (
+                k is None
+                and p is not None
+                and logits.ndim == 2
+                and logits.shape[1] == 130560
+                and logits.dtype == torch.float32
+            ):
+                if logits.stride(1) != 1:
+                    logits = logits.contiguous()
+                return apply_top_p_hist_triton(
+                    logits, p.to(torch.float32), mask_value
+                )
+            return original(logits, k, p, mask_value)
+
+        apply_top_k_top_p_triton._biv150_top_p_dispatch = True
+        topk_topp_triton.apply_top_k_top_p_triton = apply_top_k_top_p_triton
+        topk_topp_sampler.apply_top_k_top_p_triton = apply_top_k_top_p_triton
+        logger.info("Installed BI-V150 histogram top-p sampler")
+    except Exception as exc:
+        logger.warning("Failed to install BI-V150 top-p sampler: %s", exc)
+
+
 def _patch_generic_attention() -> None:
     """Patch the fixed vLLM 0.24 generic Triton attention launch policy.
 
@@ -95,4 +136,5 @@ def _patch_generic_attention() -> None:
 
 def apply_biv150_runtime_patches() -> None:
     """Install all idempotent runtime patches for the target device/model."""
+    _patch_top_p_sampler()
     _patch_generic_attention()
