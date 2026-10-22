@@ -1,7 +1,7 @@
 """Reflect one FlagGems SQLite configuration table per requested model.
 
 No database/config writes, persistent or negative cache, tuning changes, or
-device work. Install on the isolated Iluvatar plugin source before inference.
+device work. Install on a supported isolated plugin source before inference.
 Foreign-key dependency reflection keeps SQLAlchemy's original default.
 """
 
@@ -15,6 +15,15 @@ import sqlalchemy.ext.automap
 
 EXPECTED_SQL_SHA256 = "6dc19cb581d70154f14b95ed9112d682c6b5919b6cf3f8dea01a78a75ec0efd7"
 _MARKER = "_biv150_sql_targeted_reflection"
+_SUPPORTED_VENDORS = frozenset(("iluvatar", "metax"))
+
+
+def _platform_supported(vendor_name=None):
+    if vendor_name is None:
+        vendor_name = importlib.import_module(
+            "vllm.platforms"
+        ).current_platform.vendor_name
+    return vendor_name in _SUPPORTED_VENDORS
 
 
 def _targeted_builder(original):
@@ -44,10 +53,11 @@ def install(*, module=None, vendor_name=None):
     independent of importing FlagGems/vLLM and initializing their platforms.
     Runtime callers use install() without overrides.
     """
-    if vendor_name is None:
-        vendor_name = importlib.import_module("vllm.platforms").current_platform.vendor_name
-    if vendor_name != "iluvatar":
-        return {"installed": False, "reason": "non-iluvatar platform uses original reflection"}
+    if not _platform_supported(vendor_name):
+        return {
+            "installed": False,
+            "reason": "unsupported platform uses original reflection",
+        }
     if module is None:
         module = importlib.import_module("flag_gems.utils.models.sql")
     source = Path(module.__file__)
