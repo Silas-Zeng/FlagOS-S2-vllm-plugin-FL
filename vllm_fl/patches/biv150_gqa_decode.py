@@ -471,9 +471,14 @@ def _make_wrapper(attention):
 
 
 def install():
-    """Wrap the generic attention entry point. Idempotent, env-gated."""
-    if os.environ.get(_ENABLE_ENV, "0") != "1":
-        return {"installed": False, "reason": f"{_ENABLE_ENV} not set"}
+    """Wrap the generic attention entry point.
+
+    On by default, because the official serve command may not carry a switch that
+    enables an optimization; the environment variable only ever turns it back off
+    for an A/B arm.
+    """
+    if os.environ.get(_ENABLE_ENV, "1") != "1":
+        return {"installed": False, "reason": _ENABLE_ENV + " disabled"}
 
     attention = importlib.import_module(
         "vllm.v1.attention.ops.triton_unified_attention"
