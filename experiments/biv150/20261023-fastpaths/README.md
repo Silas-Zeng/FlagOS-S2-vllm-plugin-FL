@@ -50,3 +50,22 @@ and dynamic fullgraph checks. Gate/up speeds up approximately 1.6–1.9x at smal
 and 1.4x at prefill M. This is not an end-to-end throughput or accuracy result.
 The runtime hook is off by default; do not ship it as accepted without complete
 MATH-500 Level 3 and serving benchmark evidence.
+
+## Full-layer quantization: rejected on accuracy
+
+`native-all-rejection.json` records six wrong answers after 77/105 scored
+Level-3 examples. Even if every remaining answer were correct, final accuracy
+would be only 99/105 = 0.942857, below 0.95. The evaluation was stopped for that
+mathematically conclusive reason; it is not a complete 105-example score and no
+throughput result was accepted for this arm. The next arm preserves the first
+and last four transformer layers in BF16 while retaining compressed-only middle
+layers. It requires its own complete acceptance.
+
+## Fused scale GEMM capability probe: rejected
+
+The COREX Lt API exposes outer-vector scaling attributes, but no valid INT8/BF16
+heuristic is supported for the tested row/column layouts and compute types.
+PyTorch's scaled-MM accepts FP8 but runs much slower: 1.62 vs 0.117 ms at
+M64/N12288/K2048 and 8.58 vs 1.16 ms at M2048. INT8 scaled-MM is rejected by the
+PyTorch API. Transposed INT8 weight packing offers no consistent improvement.
+See `scaled-gemm-probe.log`; the current native INT8 operator remains unchanged.
