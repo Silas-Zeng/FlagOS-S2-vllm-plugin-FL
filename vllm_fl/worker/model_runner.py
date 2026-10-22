@@ -19,6 +19,7 @@ from typing import TYPE_CHECKING, Any, NamedTuple, TypeAlias, cast
 
 import numpy as np
 import torch
+from vllm_fl.patches.biv150_cpu_metadata import try_cpu_metadata as _biv150_try_cpu_metadata
 import torch.distributed
 import torch.nn as nn
 from tqdm import tqdm
@@ -2169,22 +2170,24 @@ class ModelRunnerFL(
                 non_blocking=True,
             )
 
-        self.req_indices.np[:total_num_scheduled_tokens] = req_indices
-        self.req_indices.copy_to_gpu(total_num_scheduled_tokens)
-        req_indices_gpu = self.req_indices.gpu[:total_num_scheduled_tokens]
+        # _biv150_cpu_metadata_v1
+        if not _biv150_try_cpu_metadata(self, positions_np, req_indices, num_scheduled_tokens):
+            self.req_indices.np[:total_num_scheduled_tokens] = req_indices
+            self.req_indices.copy_to_gpu(total_num_scheduled_tokens)
+            req_indices_gpu = self.req_indices.gpu[:total_num_scheduled_tokens]
 
-        self.query_pos.copy_to_gpu(total_num_scheduled_tokens)
-        self.num_scheduled_tokens.np[:num_reqs] = num_scheduled_tokens
-        self.num_scheduled_tokens.copy_to_gpu(num_reqs)
-        num_scheduled_tokens_gpu = self.num_scheduled_tokens.gpu[:num_reqs]
-        self.positions[:total_num_scheduled_tokens] = (
-            self.num_computed_tokens[req_indices_gpu].to(torch.int64)
-            + self.query_pos.gpu[:total_num_scheduled_tokens]
-        )
-        self.seq_lens[:num_reqs] = (
-            self.num_computed_tokens[:num_reqs] + num_scheduled_tokens_gpu
-        )
-        self.seq_lens[num_reqs:].fill_(0)
+            self.query_pos.copy_to_gpu(total_num_scheduled_tokens)
+            self.num_scheduled_tokens.np[:num_reqs] = num_scheduled_tokens
+            self.num_scheduled_tokens.copy_to_gpu(num_reqs)
+            num_scheduled_tokens_gpu = self.num_scheduled_tokens.gpu[:num_reqs]
+            self.positions[:total_num_scheduled_tokens] = (
+                self.num_computed_tokens[req_indices_gpu].to(torch.int64)
+                + self.query_pos.gpu[:total_num_scheduled_tokens]
+            )
+            self.seq_lens[:num_reqs] = (
+                self.num_computed_tokens[:num_reqs] + num_scheduled_tokens_gpu
+            )
+            self.seq_lens[num_reqs:].fill_(0)
 
         self.input_batch.block_table.compute_slot_mapping(
             num_reqs,
