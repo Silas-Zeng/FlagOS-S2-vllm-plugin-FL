@@ -32,8 +32,10 @@ generic path would have run as 3D decode; anything else falls straight through.
 from __future__ import annotations
 
 import functools
+import hashlib
 import importlib
 import os
+from pathlib import Path
 
 import torch
 import triton
@@ -41,6 +43,27 @@ import triton.language as tl
 
 LOG2E = 1.4426950408889634
 LN2 = tl.constexpr(0.6931471805599453)
+
+# Fail-closed identity check: the gate below reads call-site kwargs by name, and
+# the reduction assumes the audited scratch layout. Both hold only for these
+# sources; the hashes are the same ones the merged launch-policy patches pin.
+_AUDITED_SOURCES = {
+    "vllm.v1.attention.ops.triton_unified_attention":
+        "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "vllm.v1.attention.ops.triton_attention_helpers":
+        "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+}
+
+# Every name the gate inspects. A missing key means the call site changed, so the
+# gate must fall back rather than trust a permissive default.
+_GATE_KEYS = (
+    "causal", "max_seqlen_q", "seqused_k", "seq_threshold_3D",
+    "num_par_softmax_segments", "softmax_segm_output", "softmax_segm_max",
+    "softmax_segm_expsum", "alibi_slopes", "sinks", "qq_bias",
+    "mm_prefix_range", "output_scale", "k_scale_cache", "v_scale_cache",
+    "softcap", "use_alibi_sqrt", "window_size", "chunk_lookback",
+    "use_td", "kv_quant_mode",
+)
 
 _ENABLE_ENV = "VLLM_FL_BIV150_GQA_DECODE"
 _TARGET_ENV = "VLLM_FL_BIV150_GQA_TARGET_PROGRAMS"
@@ -238,7 +261,7 @@ def _reduce_partials(
     # sequences: with 16 segments and a 100-token sequence the span is one page, so
     # 7 segments are live, while the naive formula would read 1 and silently drop
     # seven eighths of the keys and values.
-    tiles_per_segment = tl.cdiv(seq_len, num_segments * page_size)
+    tiles_per_segment = tl.maximum(tl.cdiv(seq_len, num_segments * page_size), 1)
     active = tl.cdiv(seq_len, tiles_per_segment * page_size)
 
     offs_seg = tl.arange(0, num_segments)
@@ -248,14 +271,16 @@ def _reduce_partials(
     max_base = segm_max_ptr + token_idx * max_stride_token + head_idx * max_stride_head
     segm_max = tl.load(max_base + offs_seg * max_stride_segment,
                        mask=seg_valid, other=float("-inf"))
-    overall_max = tl.max(segm_max, 0)
+    # A CUDA-graph padded row can carry seq_len == 0, where no segment is live:
+    # folding -inf through exp would give NaN, so the empty case reduces to 0.
+    overall_max = tl.where(active > 0, tl.max(segm_max, 0), 0.0)
 
     expsum_base = (
         segm_expsum_ptr + token_idx * max_stride_token + head_idx * max_stride_head
     )
     segm_expsum = tl.load(expsum_base + offs_seg * max_stride_segment,
                           mask=seg_valid, other=0.0)
-    weights = tl.exp(segm_max - overall_max)
+    weights = tl.exp(tl.where(seg_valid, segm_max, 0.0) - overall_max)
     overall_expsum = tl.sum(segm_expsum * weights, 0)
 
     out_base = (
@@ -307,7 +332,7 @@ def _pick_segments(num_seqs, kv_heads, builder_segments):
 def _eligible(q, k, v, out, kwargs):
     """True only for calls the generic path would have run as 3D decode."""
     causal = kwargs.get("causal")
-    if (
+    if any(key not in kwargs for key in _GATE_KEYS) or (
         q.dtype is not torch.bfloat16
         or q.ndim != 3
         or tuple(q.shape[1:]) != (_QUERY_HEADS, _HEAD_SIZE)
@@ -368,15 +393,21 @@ def _make_wrapper(attention):
             bound = dict(zip(names, args))
             bound.update(kwargs)
         q = bound.get("q")
-        if q is None or not _eligible(
-            q, bound["k"], bound["v"], bound["out"], bound
-        ):
+        try:
+            eligible = q is not None and _eligible(
+                q, bound["k"], bound["v"], bound["out"], bound
+            )
+        except Exception as error:  # a changed call site falls back, never raises
+            eligible = False
+            if _state["fallbacks"] == 0:
+                print("BIV150_GQA_DECODE_GATE_ERROR", repr(error)[:200], flush=True)
+        if not eligible:
             if _state["fallbacks"] == 0:
                 print(
                     "BIV150_GQA_DECODE_FIRST_FALLBACK "
                     f"max_seqlen_q={bound.get('max_seqlen_q')} "
                     f"tokens={None if q is None else q.shape[0]} "
-                    f"seqs={None if q is None else bound['seqused_k'].shape[0]}",
+                    f"seqs={None if bound.get('seqused_k') is None else bound['seqused_k'].shape[0]}",
                     flush=True,
                 )
             _state["fallbacks"] += 1
@@ -395,7 +426,8 @@ def _make_wrapper(attention):
             # The builder allocated the partials for its own segment count, so a
             # narrower step is a prefix view of the same memory. Views are cached
             # per buffer and width because this runs for every layer of every step.
-            key = (bound["softmax_segm_output"].data_ptr(), segments)
+            key = (bound["softmax_segm_output"].data_ptr(),
+                   bound["softmax_segm_output"].stride(0), segments)
             views = _state["views"].get(key)
             if views is None:
                 views = (
@@ -487,6 +519,20 @@ def install():
         return {"installed": True, "scope": "already installed"}
     if attention.current_platform.vendor_name != "iluvatar":
         return {"installed": False, "reason": "non-iluvatar platform"}
+    from vllm import envs as vllm_envs
+
+    if vllm_envs.VLLM_BATCH_INVARIANT:
+        return {"installed": False,
+                "reason": "batch-invariant mode forces the non-3D path"}
+
+    audited = {}
+    for name, expected in _AUDITED_SOURCES.items():
+        module = importlib.import_module(name)
+        actual = hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()
+        if actual != expected:
+            return {"installed": False,
+                    "reason": "unaudited attention source " + name}
+        audited[name] = actual[:12]
 
     import inspect
 
