@@ -15,6 +15,12 @@ from vllm.platforms import current_platform
 
 
 selected_launches = 0
+_SUPPORTED_VENDORS = frozenset(("iluvatar", "metax"))
+
+
+def _platform_supported(vendor_name=None):
+    vendor_name = vendor_name or current_platform.vendor_name
+    return vendor_name in _SUPPORTED_VENDORS
 
 
 @triton.jit(do_not_specialize=["n", "src_rows", "dst_rows", "src_stride", "dst_stride"])
@@ -53,7 +59,7 @@ def _runner_eligible(runner):
     model, parallel = config.model_config, config.parallel_config
     text = model.hf_text_config
     return (
-        current_platform.vendor_name == "iluvatar"
+        _platform_supported()
         and Path(str(model.model).rstrip("/\\")).name == "MiniCPM5-2B"
         and model.dtype == torch.bfloat16
         and (text.hidden_size, text.num_hidden_layers,
