@@ -49,3 +49,13 @@ The full105-question run completed with103 correct:0.981 reported precision,
 to throughput warmup. This is a precision pass, not performance acceptance;
 throughput and TTFT are pending. Sampling remains temperature1/top_p0.95, so this
 single result does not establish a precision improvement over the parent.
+
+## First formal throughput result: 4K
+
+After warmup TPOT134.03837/123.25893/123.31717 ms (last adjacent rounds
+stable), the single full scored4K round completed256/256 requests:
+4864.788503 total tokens/s, TTFT4790.994376 ms, TPOT60.769716 ms.
+Throughput is effectively flat against parent4873.331261. Against the original
+working reference4809.36 and TTFT4723.09, throughput is+1.16%, but TTFT
+is+1.44%, above the+1% working-reference bound. Keep the PR a draft;16K
+is still running and no overall performance acceptance is claimed.
