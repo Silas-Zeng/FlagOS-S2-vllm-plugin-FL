@@ -1,0 +1,677 @@
+{
+  "source_sha256": "54263b17ea5f84c4f7f499e9cef7ddf695ad0e6343678c5569bb653b7eda9b96",
+  "records": [
+    {
+      "batch": 1,
+      "length": 100,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 100,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.009949038736522198,
+      "candidate_ms": 0.016334615647792816,
+      "speedup": 0.6090770025474425,
+      "passed": true
+    },
+    {
+      "batch": 1,
+      "length": 4096,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 4096,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.039835575968027115,
+      "candidate_ms": 0.029436537995934486,
+      "speedup": 1.3532697348284928,
+      "passed": true
+    },
+    {
+      "batch": 1,
+      "length": 16384,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 16384,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.14295479655265808,
+      "candidate_ms": 0.051557693630456924,
+      "speedup": 2.7727151175011,
+      "passed": true
+    },
+    {
+      "batch": 2,
+      "length": 100,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 100,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.01009711530059576,
+      "candidate_ms": 0.012584615498781204,
+      "speedup": 0.8023380056048313,
+      "passed": true
+    },
+    {
+      "batch": 2,
+      "length": 4096,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 4096,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.05074230954051018,
+      "candidate_ms": 0.027508653700351715,
+      "speedup": 1.8445944353816708,
+      "passed": true
+    },
+    {
+      "batch": 2,
+      "length": 16384,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 16384,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.21761249005794525,
+      "candidate_ms": 0.07998750358819962,
+      "speedup": 2.72058109449548,
+      "passed": true
+    },
+    {
+      "batch": 3,
+      "length": 100,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 100,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.010366345755755901,
+      "candidate_ms": 0.011388461105525494,
+      "speedup": 0.9102499152169314,
+      "passed": true
+    },
+    {
+      "batch": 3,
+      "length": 4096,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 4096,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.052563462406396866,
+      "candidate_ms": 0.03648173063993454,
+      "speedup": 1.440816032692773,
+      "passed": true
+    },
+    {
+      "batch": 3,
+      "length": 16384,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 16384,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.22524616122245789,
+      "candidate_ms": 0.13056346774101257,
+      "speedup": 1.7251851924556658,
+      "passed": true
+    },
+    {
+      "batch": 4,
+      "length": 100,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 100,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.010687500238418579,
+      "candidate_ms": 0.011688461527228355,
+      "speedup": 0.9143632986703999,
+      "passed": true
+    },
+    {
+      "batch": 4,
+      "length": 4096,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 4096,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.05972115322947502,
+      "candidate_ms": 0.042256731539964676,
+      "speedup": 1.4132932447222808,
+      "passed": true
+    },
+    {
+      "batch": 4,
+      "length": 16384,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 16384,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.23249520361423492,
+      "candidate_ms": 0.14164230227470398,
+      "speedup": 1.6414249124765634,
+      "passed": true
+    },
+    {
+      "batch": 8,
+      "length": 100,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 100,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.011340384371578693,
+      "candidate_ms": 0.011329807341098785,
+      "speedup": 1.0009335578409653,
+      "passed": true
+    },
+    {
+      "batch": 8,
+      "length": 4096,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 4096,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.07591057568788528,
+      "candidate_ms": 0.07616154104471207,
+      "speedup": 0.9967048282717986,
+      "passed": true
+    },
+    {
+      "batch": 8,
+      "length": 16384,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 16384,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.26765385270118713,
+      "candidate_ms": 0.2677018940448761,
+      "speedup": 0.9998205416369564,
+      "passed": true
+    },
+    {
+      "batch": 64,
+      "length": 100,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 100,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.026051923632621765,
+      "candidate_ms": 0.026105768978595734,
+      "speedup": 0.9979374158249038,
+      "passed": true
+    },
+    {
+      "batch": 64,
+      "length": 4096,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 4096,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 0.5263605713844299,
+      "candidate_ms": 0.526580810546875,
+      "speedup": 0.9995817561938568,
+      "passed": true
+    },
+    {
+      "batch": 64,
+      "length": 16384,
+      "k_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "checks": [
+        {
+          "length": 0,
+          "passed": true
+        },
+        {
+          "length": 1,
+          "passed": true
+        },
+        {
+          "length": 17,
+          "passed": true
+        },
+        {
+          "length": 513,
+          "passed": true
+        },
+        {
+          "length": 2049,
+          "passed": true
+        },
+        {
+          "length": 16384,
+          "passed": true
+        }
+      ],
+      "baseline_ms": 2.0479750633239746,
+      "candidate_ms": 2.04905366897583,
+      "speedup": 0.9994736079058414,
+      "passed": true
+    }
+  ]
+}
