@@ -66,6 +66,10 @@ def main(args):
                          '        K = (K.to(tl.float32) * ks[None, :]).to(tl.bfloat16)\n'
                          '        V = (V.to(tl.float32) * vs[:, None]).to(tl.bfloat16)')
         text = text.replace(before, after)
+    if args.inline_cache:
+        assert text.count('scale_offsets = page * PAGE_SIZE * 2 + column_slot * 2 + kv_head_idx') == 2
+        text = text.replace('scale_offsets = page * PAGE_SIZE * 2 + column_slot * 2 + kv_head_idx',
+                            'scale_offsets = page * (k_stride_block // 4) + column_slot * (k_stride_slot // 4) + kv_head_idx * (k_stride_head // 4)')
     if args.scale_placement == 'scores':
         text = text.replace('K = (K.to(tl.float32) * ks[None, :]).to(tl.bfloat16)',
                             'K = K.to(tl.bfloat16)')
@@ -78,7 +82,7 @@ def main(args):
         text = text.replace('probability.to(V.dtype), V',
                             '(probability * vs[None, :]).to(V.dtype), V')
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + '.py')
+    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + ('-inline' if args.inline_cache else '-compact') + '.py')
     generated.write_text(text)
     baseline = load_module(args.source, 'biv150_int8_kv_reference')
     candidate = load_module(generated, 'biv150_int8_kv_candidate')
@@ -92,12 +96,25 @@ def main(args):
         bf16_ms = graph_time(lambda: full_call(baseline,c,segments),repeats=11,unroll=4)[0]
         dtype = torch.int8 if args.cache_dtype == 'int8' else torch.float8_e4m3fn
         k8, ks = quantize(c['k'],dtype); v8, vs = quantize(c['v'],dtype)
+        if args.inline_cache:
+            # Reuse the original BF16 allocation geometry. Bytes0:128 hold payload,
+            # bytes128:132 hold FP32 scale. No capacity/memory saving is claimed.
+            raw = torch.empty((k8.shape[0],2,16,2,256),device='cuda',dtype=torch.uint8)
+            kk = raw[:,0,:,:,:128].view(dtype)
+            vv = raw[:,1,:,:,:128].view(dtype)
+            sk = raw[:,0,:,:,128:132].view(torch.float32).squeeze(-1)
+            sv = raw[:,1,:,:,128:132].view(torch.float32).squeeze(-1)
+            kk.copy_(k8); vv.copy_(v8); sk.copy_(ks); sv.copy_(vs)
+            k8,v8,ks,vs = kk,vv,sk,sv
         launch = ScaledLaunch(candidate._gqa_decode_attention_int8_kv, ks, vs)
         candidate._gqa_decode_attention = launch
         qc = dict(c, k=k8, v=v8)
         row = dict(batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
                    bf16_cache_bytes=c['k'].nbytes+c['v'].nbytes,
-                   quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes)
+                   quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes,
+                   inline_cache=args.inline_cache,
+                   allocated_cache_bytes=(raw.untyped_storage().nbytes() if args.inline_cache else
+                       k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes))
         try:
             full_call(candidate, qc, segments)
             int8_result = qc['out'].clone()
@@ -124,7 +141,7 @@ def main(args):
         print(json.dumps(row),flush=True)
         args.out.write_text(json.dumps(dict(source_sha256=hashlib.sha256(original.encode()).hexdigest(),
             generated_sha256=hashlib.sha256(text.encode()).hexdigest(),offline_quantization_timed=False,
-            service_installed=False,scale_placement=args.scale_placement,cache_dtype=args.cache_dtype,records=records),indent=2))
+            service_installed=False,scale_placement=args.scale_placement,cache_dtype=args.cache_dtype,inline_cache=args.inline_cache,records=records),indent=2))
         del c,qc,k8,v8,ks,vs,bf16_result
         torch.cuda.empty_cache()
 
@@ -133,6 +150,7 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--inline-cache',action='store_true')
     p.add_argument('--cache-dtype',choices=['int8','fp8'],default='int8')
     p.add_argument('--scale-placement',choices=['vectors','scores'],default='vectors')
     main(p.parse_args())
