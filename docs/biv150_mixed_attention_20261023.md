@@ -53,3 +53,21 @@ tokens/s at 4K (+10.6%), TTFT 3978.19 ms. Its 16K was 3094.24 (-8.02%), TTFT1602
 Its precision result remains valid for that configuration. Later combinations and the
 gate-only variant failed precision; those failures do not retroactively invalidate beb3518.
 PR14 is still an unmerged draft. This mixed-attention branch contains no native INT8 path.
+
+## Read-only recovery audit
+
+`python tools/audit_biv150_acceptance.py SAVED_FULL_DIR --require-mixed` reads saved
+summary evidence only and never launches workloads. It checks exact successful
+request/token totals and concurrency, finite consistent token/duration throughput,
+105-question precision/error accounting, stable final warmup pair, working TTFT
+references and both 20% targets. Mixed selection log evidence is required with
+the flag. Missing data remains incomplete. This is not a replacement for review
+of raw predictions, commands, source/SO identity and actual process termination.
+CPU checks reproduced the historical adaptive candidate's 4K TTFT rejection and
+rejected missing data, changed token accounting, inconsistent timing, and missing
+mixed dispatch logs. Synthetic passing values were explicitly fixtures only.
+
+The user confirmed the instance is unavailable until 2026-10-24 06:00 Asia/Shanghai.
+An authenticated SSH observation failure does not prove the old jobs terminated.
+The one-shot in-chat automation `06-00` is scheduled for 06:00; inspect the old
+processes and outputs first. No new GPU workload was started during this outage.
