@@ -78,11 +78,18 @@ shows that accuracy stability requires further investigation. It does not prove
 the GQA change caused the difference: the new GQA policy keeps the old kernel
 for batches below 16, while the accuracy evaluation has concurrency 8.
 
-The preceding exact `beb3518` configuration is now completing its missing warmed
-16K single-run measurement. Its earlier complete accuracy and 4K result remain
-separate from the failed final-default candidate. No result is transferred to
-the failed candidate. Saved manifests, verdicts and score summaries are under
-`docs/evidence/biv150-20261023/`.
+The exact `beb3518` configuration completed its missing warmed 16K run at
+05:56 CST: **3094.24 total tok/s**, TTFT **160217.19 ms**, 128/128 successful
+requests. This is **−8.02% throughput** and **+3.11% TTFT** versus the original
+16K reference (3364.03 tok/s, 155385.04 ms), failing the performance and TTFT
+gates. Its two warmups took 226.73/198.53 s; adjacent TPOT changed 2.56%, within
+the declared 3% threshold. No extra scored rounds were run.
+
+Thus neither candidate is ready for integration, and the requested +20% in
+both cases was not reached. The earlier 4K gain does not establish an overall
+improvement. The failed default-candidate accuracy and the preceding candidate's
+16K regression are preserved separately. Saved manifests, verdicts and score
+summaries are under `docs/evidence/biv150-20261023/`.
 
 Kernel checks cover batch boundaries 1/8/16/24/31/32/40/48/56/64, shuffled physical
 pages, unequal lengths, empty graph rows and partial pages. Short rows also use
