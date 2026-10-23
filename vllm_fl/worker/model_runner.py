@@ -7707,3 +7707,8 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_prefill_normalized import install as _install_prefill_normalization
 
     print("BIV150_PREFILL_NORMALIZATION_INSTALL", _install_prefill_normalization(), flush=True)
+
+# Audited BI-V150 gate/up GEMM + activation fusion; other projections stay BF16.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_gate
+    print("BIV150_NATIVE_W8A8_INSTALL", _install_native_gate(), flush=True)
