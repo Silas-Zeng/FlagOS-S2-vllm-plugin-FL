@@ -100,3 +100,16 @@ are on codex/biv150-prefill-normalization-20261023, not installed by this
 experimental branch. Initial instrumentation with extra kernel parameters
 failed compiler option conversion; the private diagnostic reuses unused
 pointers with the associated features disabled and succeeds.
+
+
+## Prefix mask experiment (27 records)
+
+Conditional skip and split-loop variants skip causal masking only for complete
+KV tiles strictly before every valid query. Of27 records,24 passed sampled
+independent FP32 windows; the normalized reference and both candidate variants
+all failed the same single BF16 element at q2048/kv2048 (absolute difference
+0.015625, relative about0.00775, against0.005 tolerances). This is not silently
+counted as a pass or attributed only to the candidates. Long conditional-mask
+variants showed roughly1.7–2% operator improvements; small shapes regressed.
+No serving candidate was installed. Full raw errors and timings are retained
+in prefix-mask-raw.json.

@@ -1,0 +1,540 @@
+{
+  "source_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+  "records": [
+    {
+      "qlens": [
+        16
+      ],
+      "klens": [
+        128
+      ],
+      "variant": "normalized",
+      "baseline_ms": 0.018521794428428013,
+      "block_table_stride": 32,
+      "candidate_ms": 0.018492307513952255,
+      "speedup": 1.00159455029901,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 1,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        16
+      ],
+      "klens": [
+        128
+      ],
+      "variant": "conditional",
+      "baseline_ms": 0.018521794428428013,
+      "block_table_stride": 32,
+      "candidate_ms": 0.018892308076222736,
+      "speedup": 0.9803881216471882,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 1,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        16
+      ],
+      "klens": [
+        128
+      ],
+      "variant": "split",
+      "baseline_ms": 0.018521794428428013,
+      "block_table_stride": 32,
+      "candidate_ms": 0.01904999961455663,
+      "speedup": 0.972272693080529,
+      "bit_exact": false,
+      "max_abs_diff": 0.000244140625,
+      "independent_fp32_windows": 1,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        127
+      ],
+      "klens": [
+        257
+      ],
+      "variant": "normalized",
+      "baseline_ms": 0.03251282125711441,
+      "block_table_stride": 32,
+      "candidate_ms": 0.032892306645711265,
+      "speedup": 0.9884627918411331,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        127
+      ],
+      "klens": [
+        257
+      ],
+      "variant": "conditional",
+      "baseline_ms": 0.03251282125711441,
+      "block_table_stride": 32,
+      "candidate_ms": 0.03279358893632889,
+      "speedup": 0.9914383363236147,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        127
+      ],
+      "klens": [
+        257
+      ],
+      "variant": "split",
+      "baseline_ms": 0.03251282125711441,
+      "block_table_stride": 32,
+      "candidate_ms": 0.03344999998807907,
+      "speedup": 0.9719826986158848,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        2048
+      ],
+      "variant": "normalized",
+      "baseline_ms": 0.8417422771453857,
+      "block_table_stride": 128,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 1 / 32768 (0.0%)\nGreatest absolute difference: 0.015625 at index (5, 10, 87) (up to 0.005 allowed)\nGreatest relative difference: 0.00775146484375 at index (5, 10, 87) (up to 0.005 allowed)"
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        2048
+      ],
+      "variant": "conditional",
+      "baseline_ms": 0.8417422771453857,
+      "block_table_stride": 128,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 1 / 32768 (0.0%)\nGreatest absolute difference: 0.015625 at index (5, 10, 87) (up to 0.005 allowed)\nGreatest relative difference: 0.00775146484375 at index (5, 10, 87) (up to 0.005 allowed)"
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        2048
+      ],
+      "variant": "split",
+      "baseline_ms": 0.8417422771453857,
+      "block_table_stride": 128,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 1 / 32768 (0.0%)\nGreatest absolute difference: 0.015625 at index (5, 10, 87) (up to 0.005 allowed)\nGreatest relative difference: 0.00775146484375 at index (5, 10, 87) (up to 0.005 allowed)"
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        4096
+      ],
+      "variant": "normalized",
+      "baseline_ms": 2.265451272328695,
+      "block_table_stride": 256,
+      "candidate_ms": 2.2422820727030435,
+      "speedup": 1.0103328657476716,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        4096
+      ],
+      "variant": "conditional",
+      "baseline_ms": 2.265451272328695,
+      "block_table_stride": 256,
+      "candidate_ms": 2.2288870811462402,
+      "speedup": 1.0164046853210935,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        4096
+      ],
+      "variant": "split",
+      "baseline_ms": 2.265451272328695,
+      "block_table_stride": 256,
+      "candidate_ms": 2.236900011698405,
+      "speedup": 1.0127637625646986,
+      "bit_exact": false,
+      "max_abs_diff": 0.000244140625,
+      "independent_fp32_windows": 3,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        8192
+      ],
+      "variant": "normalized",
+      "baseline_ms": 5.05812931060791,
+      "block_table_stride": 512,
+      "candidate_ms": 5.049887021382649,
+      "speedup": 1.0016321729952296,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        8192
+      ],
+      "variant": "conditional",
+      "baseline_ms": 5.05812931060791,
+      "block_table_stride": 512,
+      "candidate_ms": 4.960399945576985,
+      "speedup": 1.0197019123665758,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        8192
+      ],
+      "variant": "split",
+      "baseline_ms": 5.05812931060791,
+      "block_table_stride": 512,
+      "candidate_ms": 4.997709274291992,
+      "speedup": 1.0120895460299615,
+      "bit_exact": false,
+      "max_abs_diff": 0.000244140625,
+      "independent_fp32_windows": 3,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        16384
+      ],
+      "variant": "normalized",
+      "baseline_ms": 10.693656921386719,
+      "block_table_stride": 1024,
+      "candidate_ms": 10.667308807373047,
+      "speedup": 1.0024699869938574,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        16384
+      ],
+      "variant": "conditional",
+      "baseline_ms": 10.693656921386719,
+      "block_table_stride": 1024,
+      "candidate_ms": 10.48665682474772,
+      "speedup": 1.0197393792987002,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 3,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        16384
+      ],
+      "variant": "split",
+      "baseline_ms": 10.693656921386719,
+      "block_table_stride": 1024,
+      "candidate_ms": 10.645099004109701,
+      "speedup": 1.0045615280100515,
+      "bit_exact": false,
+      "max_abs_diff": 0.0001220703125,
+      "independent_fp32_windows": 3,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        1,
+        16,
+        40,
+        0
+      ],
+      "klens": [
+        65,
+        127,
+        257,
+        0
+      ],
+      "variant": "normalized",
+      "baseline_ms": 0.032799998919169106,
+      "block_table_stride": 32,
+      "candidate_ms": 0.032828204333782196,
+      "speedup": 0.9991408176235803,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 5,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        1,
+        16,
+        40,
+        0
+      ],
+      "klens": [
+        65,
+        127,
+        257,
+        0
+      ],
+      "variant": "conditional",
+      "baseline_ms": 0.032799998919169106,
+      "block_table_stride": 32,
+      "candidate_ms": 0.03304230670134226,
+      "speedup": 0.992666741327617,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 5,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        1,
+        16,
+        40,
+        0
+      ],
+      "klens": [
+        65,
+        127,
+        257,
+        0
+      ],
+      "variant": "split",
+      "baseline_ms": 0.032799998919169106,
+      "block_table_stride": 32,
+      "candidate_ms": 0.033315385381380715,
+      "speedup": 0.9845300765303574,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 5,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        8,
+        33,
+        1
+      ],
+      "klens": [
+        16384,
+        4097,
+        100
+      ],
+      "variant": "normalized",
+      "baseline_ms": 1.51557191212972,
+      "block_table_stride": 1024,
+      "candidate_ms": 1.516057809193929,
+      "speedup": 0.9996794996462125,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 5,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        8,
+        33,
+        1
+      ],
+      "klens": [
+        16384,
+        4097,
+        100
+      ],
+      "variant": "conditional",
+      "baseline_ms": 1.51557191212972,
+      "block_table_stride": 1024,
+      "candidate_ms": 1.4879576365152996,
+      "speedup": 1.0185585092859843,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 5,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        8,
+        33,
+        1
+      ],
+      "klens": [
+        16384,
+        4097,
+        100
+      ],
+      "variant": "split",
+      "baseline_ms": 1.51557191212972,
+      "block_table_stride": 1024,
+      "candidate_ms": 1.505406379699707,
+      "speedup": 1.0067526832402827,
+      "bit_exact": false,
+      "max_abs_diff": 6.103515625e-05,
+      "independent_fp32_windows": 5,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        16,
+        1016,
+        1016
+      ],
+      "klens": [
+        200,
+        4097,
+        16384
+      ],
+      "variant": "normalized",
+      "baseline_ms": 6.816964467366536,
+      "block_table_stride": 1024,
+      "candidate_ms": 6.819783528645833,
+      "speedup": 0.9995866347857735,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 7,
+      "n_regs": 102,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        16,
+        1016,
+        1016
+      ],
+      "klens": [
+        200,
+        4097,
+        16384
+      ],
+      "variant": "conditional",
+      "baseline_ms": 6.816964467366536,
+      "block_table_stride": 1024,
+      "candidate_ms": 6.681708653767903,
+      "speedup": 1.0202426984783841,
+      "bit_exact": true,
+      "max_abs_diff": 0.0,
+      "independent_fp32_windows": 7,
+      "n_regs": 101,
+      "n_spills": 0,
+      "shared": 65536
+    },
+    {
+      "qlens": [
+        16,
+        1016,
+        1016
+      ],
+      "klens": [
+        200,
+        4097,
+        16384
+      ],
+      "variant": "split",
+      "baseline_ms": 6.816964467366536,
+      "block_table_stride": 1024,
+      "candidate_ms": 6.802578608194987,
+      "speedup": 1.0021147655911273,
+      "bit_exact": false,
+      "max_abs_diff": 0.000244140625,
+      "independent_fp32_windows": 7,
+      "n_regs": 104,
+      "n_spills": 0,
+      "shared": 65536
+    }
+  ],
+  "service_installed": false
+}
