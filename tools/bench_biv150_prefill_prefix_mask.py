@@ -77,35 +77,49 @@ def main(args):
         modules[name]=(module,capture)
     torch.manual_seed(20261023);torch.backends.cuda.matmul.allow_tf32=False
     records=[]
-    for qlen,klen in [(16,128),(127,257),(2048,2048),(2048,4096),(2048,8192),(2048,16384)]:
-        pages=(klen+15)//16
-        q=torch.randn(qlen,16,128,device='cuda',dtype=torch.bfloat16)
+    cases=[([16],[128]),([127],[257]),([2048],[2048]),([2048],[4096]),([2048],[8192]),([2048],[16384]),
+           ([1,16,40,0],[65,127,257,0]),([8,33,1],[16384,4097,100]),([16,1016,1016],[200,4097,16384])]
+    for qlens,klens in cases:
+        counts=[(n+15)//16 for n in klens];pages=sum(counts)
+        q=torch.randn(sum(qlens),16,128,device='cuda',dtype=torch.bfloat16)
         k=torch.randn(pages,16,2,128,device='cuda',dtype=torch.bfloat16);v=torch.randn_like(k)
-        table=torch.randperm(pages,device='cuda',dtype=torch.int32)[None,:]
-        cu=torch.tensor([0,qlen],device='cuda',dtype=torch.int32);lengths=torch.tensor([klen],device='cuda',dtype=torch.int32)
-        kwargs=dict(q=q,k=k,v=v,cu_seqlens_q=cu,max_seqlen_q=qlen,seqused_k=lengths,
-            max_seqlen_k=klen,softmax_scale=128**-.5,causal=True,window_size=(-1,-1),
+        # The audited kernel reads page-table entries before masking KV loads.
+        # Pad the table as real serving does, so tail-tile lookups stay in bounds.
+        table=torch.zeros((len(qlens),((max(counts)+31)//32)*32),device='cuda',dtype=torch.int32)
+        shuffled=torch.randperm(pages,device='cuda',dtype=torch.int32);offset=0
+        for i,count in enumerate(counts):table[i,:count]=shuffled[offset:offset+count];offset+=count
+        starts=[0]
+        for n in qlens:starts.append(starts[-1]+n)
+        cu=torch.tensor(starts,device='cuda',dtype=torch.int32);lengths=torch.tensor(klens,device='cuda',dtype=torch.int32)
+        kwargs=dict(q=q,k=k,v=v,cu_seqlens_q=cu,max_seqlen_q=max(qlens),seqused_k=lengths,
+            max_seqlen_k=max(klens),softmax_scale=128**-.5,causal=True,window_size=(-1,-1),
             block_table=table,softcap=0.,q_descale=1.,k_descale=1.,v_descale=1.)
         reference=torch.empty_like(q);modules['normalized'][0].unified_attention(out=reference,**kwargs)
         baseline=measure(lambda:modules['normalized'][0].unified_attention(out=reference,**kwargs))
-        gold=None
-        if klen<=512:
-            kd=k[table[0].long()].reshape(-1,2,128)[:klen].float().repeat_interleave(8,1)
-            vd=v[table[0].long()].reshape(-1,2,128)[:klen].float().repeat_interleave(8,1)
-            scores=torch.einsum('qhd,khd->hqk',q.float(),kd)*128**-.5
-            valid=torch.arange(klen,device='cuda')[None,:]<=klen-qlen+torch.arange(qlen,device='cuda')[:,None]
-            p=scores.masked_fill(~valid[None],-float('inf')).softmax(-1)
-            gold=torch.einsum('hqk,khd->qhd',p,vd).to(q.dtype)
+        gold=[]
+        for seq,(qlen,klen,count) in enumerate(zip(qlens,klens,counts)):
+            if not qlen:continue
+            ids=table[seq,:count].long()
+            kd=k[ids].reshape(-1,2,128)[:klen].float()
+            vd=v[ids].reshape(-1,2,128)[:klen].float()
+            for start in sorted({0,max(0,qlen//2-8),max(0,qlen-16)}):
+                stop=min(start+16,qlen)
+                queries=q[starts[seq]+start:starts[seq]+stop].float().reshape(stop-start,2,8,128)
+                scores=torch.einsum('qhgd,khd->hgqk',queries,kd)*128**-.5
+                valid=torch.arange(klen,device='cuda')[None,:]<=klen-qlen+torch.arange(start,stop,device='cuda')[:,None]
+                prob=scores.masked_fill(~valid[None,None],-float('inf')).softmax(-1)
+                output=torch.einsum('hgqk,khd->qhgd',prob,vd).reshape(stop-start,16,128).to(q.dtype)
+                gold.append((starts[seq]+start,starts[seq]+stop,output))
         for name,(module,capture) in modules.items():
-            row=dict(qlen=qlen,klen=klen,variant=name,baseline_ms=baseline)
+            row=dict(qlens=qlens,klens=klens,variant=name,baseline_ms=baseline,block_table_stride=table.stride(0))
             try:
                 out=torch.empty_like(q);module.unified_attention(out=out,**kwargs)
                 torch.testing.assert_close(out,reference,atol=.005,rtol=.005)
-                if gold is not None:torch.testing.assert_close(out,gold,atol=.005,rtol=.005)
+                for lo,hi,expected in gold:torch.testing.assert_close(out[lo:hi],expected,atol=.005,rtol=.005)
                 ms=measure(lambda:module.unified_attention(out=out,**kwargs))
                 row.update(candidate_ms=ms,speedup=baseline/ms,bit_exact=torch.equal(out,reference),
                     max_abs_diff=(out.float()-reference.float()).abs().max().item(),
-                    independent_fp32_short=gold is not None,n_regs=capture.last.n_regs,
+                    independent_fp32_windows=len(gold),n_regs=capture.last.n_regs,
                     n_spills=capture.last.n_spills,shared=capture.last.metadata.shared)
             except Exception as error:row['error']=str(error)[:1200]
             records.append(row);print(json.dumps(row),flush=True)
