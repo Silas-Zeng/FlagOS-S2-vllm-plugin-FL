@@ -1,0 +1,154 @@
+{
+  "metadata": {
+    "installed": true,
+    "scope": "audited BF16 causal MiniCPM prefill without sinks",
+    "backend_rebound": true,
+    "audited": {
+      "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+    },
+    "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+    "initial_mass": 0,
+    "existing_stack": {
+      "decode_launch": {
+        "installed": true,
+        "num_warps": 2,
+        "num_stages": 1,
+        "scope": "audited BF16 MiniCPM 3D decode only"
+      },
+      "gqa": {
+        "installed": true,
+        "scope": "BF16 MiniCPM pure-decode 3D only",
+        "rows": 8,
+        "page_size": 16,
+        "backend_rebound": true
+      }
+    },
+    "reference_tf32_allowed": false,
+    "sink_fallback": "bit-exact original; normalization not selected"
+  },
+  "records": [
+    {
+      "qlens": [
+        16
+      ],
+      "klens": [
+        128
+      ],
+      "max_abs_diff": 0.00390625,
+      "old_max_abs_diff": 0.30078125,
+      "fp32_reference": "passed",
+      "old_ms": 0.018529487152894337,
+      "new_ms": 0.018456410616636276,
+      "speedup": 1.0039594121400934
+    },
+    {
+      "qlens": [
+        32
+      ],
+      "klens": [
+        32
+      ],
+      "max_abs_diff": 0.015625,
+      "old_max_abs_diff": 1.4609375,
+      "fp32_reference": "passed",
+      "old_ms": 0.013120513409376144,
+      "new_ms": 0.01321410263578097,
+      "speedup": 0.9929174739303595
+    },
+    {
+      "qlens": [
+        127
+      ],
+      "klens": [
+        257
+      ],
+      "max_abs_diff": 0.00390625,
+      "old_max_abs_diff": 0.15234375,
+      "fp32_reference": "passed",
+      "old_ms": 0.032435896495978035,
+      "new_ms": 0.032806411385536194,
+      "speedup": 0.9887060219661358
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        2048
+      ],
+      "max_abs_diff": 0.015625,
+      "old_max_abs_diff": 1.34375,
+      "fp32_reference": "passed",
+      "old_ms": 0.8378641605377197,
+      "new_ms": 0.8371858596801758,
+      "speedup": 1.0008102153777454
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        4096
+      ],
+      "max_abs_diff": 0.0009765625,
+      "old_max_abs_diff": 0.009765625,
+      "fp32_reference": "passed",
+      "old_ms": 2.2555487950642905,
+      "new_ms": 2.251856486002604,
+      "speedup": 1.0016396733471415
+    },
+    {
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        16384
+      ],
+      "max_abs_diff": 0.00048828125,
+      "old_max_abs_diff": 0.001953125,
+      "fp32_reference": "passed",
+      "old_ms": 10.699605305989584,
+      "new_ms": 10.710960388183594,
+      "speedup": 0.9989398633005369
+    },
+    {
+      "qlens": [
+        1,
+        16,
+        40,
+        0
+      ],
+      "klens": [
+        65,
+        127,
+        257,
+        0
+      ],
+      "max_abs_diff": 0.00390625,
+      "old_max_abs_diff": 0.1484375,
+      "fp32_reference": "passed",
+      "old_ms": 0.03262179593245188,
+      "new_ms": 0.032643588880697884,
+      "speedup": 0.9993323972947445
+    },
+    {
+      "qlens": [
+        8,
+        33,
+        1
+      ],
+      "klens": [
+        16384,
+        4097,
+        100
+      ],
+      "max_abs_diff": 0.001953125,
+      "old_max_abs_diff": 0.08203125,
+      "fp32_reference": "passed",
+      "old_ms": 1.5137782096862793,
+      "new_ms": 1.5156140327453613,
+      "speedup": 0.9987887265362959
+    }
+  ]
+}

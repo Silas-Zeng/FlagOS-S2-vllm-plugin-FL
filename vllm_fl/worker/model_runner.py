@@ -7701,3 +7701,9 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_gqa_decode import install as _install_gqa_decode
 
     print("BIV150_GQA_DECODE_INSTALL", _install_gqa_decode(), flush=True)
+
+# Correct cumulative probability mass in the audited BF16 prefill operator.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_prefill_normalized import install as _install_prefill_normalization
+
+    print("BIV150_PREFILL_NORMALIZATION_INSTALL", _install_prefill_normalization(), flush=True)
