@@ -1,4 +1,4 @@
-"""Diagnostic only: INT8 KV storage with dequantization fused into GQA decode.
+"""Diagnostic only: INT8/FP8 KV storage with dequantization fused into GQA decode.
 
 No serving installation. Offline quantization excluded from attention timing;
 this is an upper-bound feasibility probe, not an end-to-end throughput result.
@@ -12,9 +12,11 @@ import torch
 from biv150_benchmark_utils import load_module, inputs, full_call, graph_time
 
 
-def quantize(tensor):
-    scale = tensor.float().abs().amax(-1).clamp_min(1e-8) / 127
-    quantized = (tensor.float() / scale[..., None]).round().clamp(-127, 127).to(torch.int8)
+def quantize(tensor, dtype):
+    limit = 127 if dtype == torch.int8 else torch.finfo(dtype).max
+    scale = tensor.float().abs().amax(-1).clamp_min(1e-8) / limit
+    normalized = (tensor.float() / scale[..., None]).clamp(-limit, limit)
+    quantized = (normalized.round() if dtype == torch.int8 else normalized).to(dtype)
     return quantized, scale.contiguous()
 
 
@@ -76,7 +78,7 @@ def main(args):
         text = text.replace('probability.to(V.dtype), V',
                             '(probability * vs[None, :]).to(V.dtype), V')
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    generated = args.out.parent / ('int8-kv-generated-' + args.scale_placement + '.py')
+    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + '.py')
     generated.write_text(text)
     baseline = load_module(args.source, 'biv150_int8_kv_reference')
     candidate = load_module(generated, 'biv150_int8_kv_candidate')
@@ -88,20 +90,21 @@ def main(args):
         full_call(baseline, c, segments)
         bf16_result = c['out'].clone()
         bf16_ms = graph_time(lambda: full_call(baseline,c,segments),repeats=11,unroll=4)[0]
-        k8, ks = quantize(c['k']); v8, vs = quantize(c['v'])
+        dtype = torch.int8 if args.cache_dtype == 'int8' else torch.float8_e4m3fn
+        k8, ks = quantize(c['k'],dtype); v8, vs = quantize(c['v'],dtype)
         launch = ScaledLaunch(candidate._gqa_decode_attention_int8_kv, ks, vs)
         candidate._gqa_decode_attention = launch
         qc = dict(c, k=k8, v=v8)
-        row = dict(batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,
+        row = dict(batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
                    bf16_cache_bytes=c['k'].nbytes+c['v'].nbytes,
-                   int8_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes)
+                   quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes)
         try:
             full_call(candidate, qc, segments)
             int8_result = qc['out'].clone()
-            row['int8_ms'] = graph_time(lambda:full_call(candidate,qc,segments),repeats=11,unroll=4)[0]
+            row['quantized_ms'] = graph_time(lambda:full_call(candidate,qc,segments),repeats=11,unroll=4)[0]
             # Recheck BF16 timing after candidate for drift visibility.
             row['bf16_after_ms'] = graph_time(lambda:full_call(baseline,c,segments),repeats=11,unroll=4)[0]
-            row['speedup'] = bf16_ms / row['int8_ms']
+            row['speedup'] = bf16_ms / row['quantized_ms']
             row['max_output_diff_from_bf16'] = (int8_result.float()-bf16_result.float()).abs().max().item()
             row['rmse_from_bf16'] = (int8_result.float()-bf16_result.float()).square().mean().sqrt().item()
             kd = (k8.float()*ks[...,None]).to(torch.bfloat16)
@@ -121,7 +124,7 @@ def main(args):
         print(json.dumps(row),flush=True)
         args.out.write_text(json.dumps(dict(source_sha256=hashlib.sha256(original.encode()).hexdigest(),
             generated_sha256=hashlib.sha256(text.encode()).hexdigest(),offline_quantization_timed=False,
-            service_installed=False,scale_placement=args.scale_placement,records=records),indent=2))
+            service_installed=False,scale_placement=args.scale_placement,cache_dtype=args.cache_dtype,records=records),indent=2))
         del c,qc,k8,v8,ks,vs,bf16_result
         torch.cuda.empty_cache()
 
@@ -130,5 +133,6 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--cache-dtype',choices=['int8','fp8'],default='int8')
     p.add_argument('--scale-placement',choices=['vectors','scores'],default='vectors')
     main(p.parse_args())
