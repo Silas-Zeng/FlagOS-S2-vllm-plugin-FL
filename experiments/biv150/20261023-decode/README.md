@@ -30,3 +30,10 @@ short rows additionally use independent FP32 attention. Replacing while with a
 for loop allows different pipelining, but increases shared memory from8192 to
 10240 bytes (stages2/3 add registers). No large scored-shape benefit; only
 batch8/length1024 shows about6.6% improvement. No production patch is adopted.
+
+Reference audit confirms the dispatch difference with real CUDA profiler names:
+F.linear uses vendor Gemm_tcu_mr_kernel, flag_gems.mm uses mm_kernel, matching
+serving. At M64 gate/up: vendor0.11772ms versus Gems0.09369ms; M32 down:
+0.06756 versus0.04662ms. Conversely M2048 gate/up is1.15884 versus1.40833ms.
+All 12 cases pass numerical comparison. Earlier isolated BF16 reference ratios
+are dispatch-specific and must not be presented as actual serving speedups.

@@ -1,0 +1,92 @@
+[
+  {
+    "m": 32,
+    "n": 2560,
+    "k": 2048,
+    "vendor_ms": 0.02261826954782009,
+    "gems_ms": 0.021440384909510612
+  },
+  {
+    "m": 32,
+    "n": 2048,
+    "k": 2048,
+    "vendor_ms": 0.019279807806015015,
+    "gems_ms": 0.02085000090301037
+  },
+  {
+    "m": 32,
+    "n": 12288,
+    "k": 2048,
+    "vendor_ms": 0.1080932691693306,
+    "gems_ms": 0.08948557823896408,
+    "vendor_kernels": [
+      "void Gemm_tcu_mr_kernel::gemm_tcu_h<32u, 64u, 32u, 16u, 32u, 2u, (ixblasTrans_t)1, (ixblasTrans_t)0, (ixblasTCUGEMMCategory_t)0, (ixmma::MMEdgeCheckMode)0, (ixblasGEMMBoundary_t)0, (ixblasLtEpilogue_t)1, false, float, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, false, false, 4u, 4u, true, float, __ix_bfloat16, __ix_bfloat16, __ix_bfloat16, __ix_bfloat16>(__ix_bfloat16*, __ix_bfloat16*, __ix_bfloat16 const*, __ix_bfloat16 const*, int, int, int, int, int, int, int, int, float, float, long, long, long, long, long, long, ixblasGEMMBatchMode_t, int, void*, void*, void*, unsigned int)"
+    ],
+    "gems_kernels": [
+      "mm_kernel"
+    ]
+  },
+  {
+    "m": 32,
+    "n": 2048,
+    "k": 6144,
+    "vendor_ms": 0.06756442040205002,
+    "gems_ms": 0.04662307724356651
+  },
+  {
+    "m": 64,
+    "n": 2560,
+    "k": 2048,
+    "vendor_ms": 0.03397500142455101,
+    "gems_ms": 0.02919134683907032
+  },
+  {
+    "m": 64,
+    "n": 2048,
+    "k": 2048,
+    "vendor_ms": 0.02450384572148323,
+    "gems_ms": 0.02025480754673481
+  },
+  {
+    "m": 64,
+    "n": 12288,
+    "k": 2048,
+    "vendor_ms": 0.11771634966135025,
+    "gems_ms": 0.09369134902954102
+  },
+  {
+    "m": 64,
+    "n": 2048,
+    "k": 6144,
+    "vendor_ms": 0.07264038175344467,
+    "gems_ms": 0.056683652102947235
+  },
+  {
+    "m": 2048,
+    "n": 2560,
+    "k": 2048,
+    "vendor_ms": 0.2817855775356293,
+    "gems_ms": 0.2994442582130432
+  },
+  {
+    "m": 2048,
+    "n": 2048,
+    "k": 2048,
+    "vendor_ms": 0.19052596390247345,
+    "gems_ms": 0.23848941922187805
+  },
+  {
+    "m": 2048,
+    "n": 12288,
+    "k": 2048,
+    "vendor_ms": 1.1588413715362549,
+    "gems_ms": 1.4083307981491089
+  },
+  {
+    "m": 2048,
+    "n": 2048,
+    "k": 6144,
+    "vendor_ms": 0.5400798320770264,
+    "gems_ms": 0.7252538204193115
+  }
+]
