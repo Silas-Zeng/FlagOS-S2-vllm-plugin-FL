@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 import socket
 import torch
+from biv150_kv_append_probe import append_quantized
 from biv150_benchmark_utils import load_module, inputs, full_call, graph_time
 
 
@@ -91,9 +92,23 @@ def main(args):
                              (8,1024,True), (1,100,False)]:
         c = inputs(batch, kv, mixed=mixed)
         segments = baseline._pick_segments(batch, 2, 16)
-        full_call(baseline, c, segments)
+        update_baseline = lambda: None
+        if args.append_updates:
+            from vllm.v1.attention.ops.triton_reshape_and_cache_flash import triton_reshape_and_cache_flash
+            torch.manual_seed(943002+batch+kv)
+            new_key=torch.randn(batch,2,128,device='cuda',dtype=torch.bfloat16)
+            new_value=torch.randn_like(new_key)
+            last=(c['lengths'].long()-1).clamp_min(0)
+            slots=c['table'].gather(1,(last//16)[:,None]).squeeze(1).long()*16+last%16
+            slots=torch.where(c['lengths']>0,slots,-1)
+            one=torch.ones((),device='cuda',dtype=torch.float32)
+            update_baseline=lambda:triton_reshape_and_cache_flash(new_key,new_value,c['k'],c['v'],slots,'auto',one,one)
+        def baseline_chain():
+            update_baseline()
+            full_call(baseline,c,segments)
+        baseline_chain()
         bf16_result = c['out'].clone()
-        bf16_ms = graph_time(lambda: full_call(baseline,c,segments),repeats=11,unroll=4)[0]
+        bf16_ms = graph_time(baseline_chain,repeats=11,unroll=4)[0]
         dtype = torch.int8 if args.cache_dtype == 'int8' else torch.float8_e4m3fn
         k8, ks = quantize(c['k'],dtype); v8, vs = quantize(c['v'],dtype)
         if args.inline_cache:
@@ -109,18 +124,22 @@ def main(args):
         launch = ScaledLaunch(candidate._gqa_decode_attention_int8_kv, ks, vs)
         candidate._gqa_decode_attention = launch
         qc = dict(c, k=k8, v=v8)
-        row = dict(batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
+        def candidate_chain():
+            if args.append_updates:
+                append_quantized(new_key,new_value,slots,k8,v8,ks,vs)
+            full_call(candidate,qc,segments)
+        row = dict(append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
                    bf16_cache_bytes=c['k'].nbytes+c['v'].nbytes,
                    quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes,
                    inline_cache=args.inline_cache,
                    allocated_cache_bytes=(raw.untyped_storage().nbytes() if args.inline_cache else
                        k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes))
         try:
-            full_call(candidate, qc, segments)
+            candidate_chain()
             int8_result = qc['out'].clone()
-            row['quantized_ms'] = graph_time(lambda:full_call(candidate,qc,segments),repeats=11,unroll=4)[0]
+            row['quantized_ms'] = graph_time(candidate_chain,repeats=11,unroll=4)[0]
             # Recheck BF16 timing after candidate for drift visibility.
-            row['bf16_after_ms'] = graph_time(lambda:full_call(baseline,c,segments),repeats=11,unroll=4)[0]
+            row['bf16_after_ms'] = graph_time(baseline_chain,repeats=11,unroll=4)[0]
             row['speedup'] = bf16_ms / row['quantized_ms']
             row['max_output_diff_from_bf16'] = (int8_result.float()-bf16_result.float()).abs().max().item()
             row['rmse_from_bf16'] = (int8_result.float()-bf16_result.float()).square().mean().sqrt().item()
@@ -139,7 +158,8 @@ def main(args):
             row['error'] = str(error)[:1500]
         records.append(row)
         print(json.dumps(row),flush=True)
-        args.out.write_text(json.dumps(dict(source_sha256=hashlib.sha256(original.encode()).hexdigest(),
+        args.out.write_text(json.dumps(dict(probe_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            append_source_sha256=hashlib.sha256((Path(__file__).parent/'biv150_kv_append_probe.py').read_bytes()).hexdigest(),source_sha256=hashlib.sha256(original.encode()).hexdigest(),
             generated_sha256=hashlib.sha256(text.encode()).hexdigest(),offline_quantization_timed=False,
             service_installed=False,scale_placement=args.scale_placement,cache_dtype=args.cache_dtype,inline_cache=args.inline_cache,records=records),indent=2))
         del c,qc,k8,v8,ks,vs,bf16_result
@@ -150,6 +170,7 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--append-updates',action='store_true')
     p.add_argument('--inline-cache',action='store_true')
     p.add_argument('--cache-dtype',choices=['int8','fp8'],default='int8')
     p.add_argument('--scale-placement',choices=['vectors','scores'],default='vectors')
