@@ -158,8 +158,24 @@ def main(args):
         assert body.count(before)==2
         body=body.replace(before,after)
         text=text[:start]+body+text[stop:]
+    if args.packed_fp8:
+        assert args.cache_dtype=='fp8' and args.scale_placement=='scores'
+        assert not args.integer_qk and not args.integer_pv and not args.append_updates
+        assert text.count('K = K.to(tl.bfloat16)')==2 and text.count('V = V.to(tl.bfloat16)')==2
+        text=text.replace('K = K.to(tl.bfloat16)','K = _decode_packed_e4m3(K)')
+        text=text.replace('V = V.to(tl.bfloat16)','V = _decode_packed_e4m3(V)')
+        text+="""
+@triton.jit
+def _decode_packed_e4m3(value):
+    raw=value.to(tl.uint16)
+    magnitude=raw & 127
+    bits=(magnitude << 4) + (120 << 7)
+    bits=tl.where(magnitude==0,0,bits)
+    bits=bits | ((raw & 128) << 8)
+    return bits.to(tl.bfloat16,bitcast=True)
+"""
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + ('-integer-qk' if args.integer_qk else '') + ('-integer-pv' if args.integer_pv else '') + ('-inline' if args.inline_cache else '-pagepacked' if args.page_packed_cache else '-compact') + '.py')
+    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + ('-packed-fp8' if args.packed_fp8 else '') + ('-integer-qk' if args.integer_qk else '') + ('-integer-pv' if args.integer_pv else '') + ('-inline' if args.inline_cache else '-pagepacked' if args.page_packed_cache else '-compact') + '.py')
     generated.write_text(text)
     baseline = load_module(args.source, 'biv150_int8_kv_reference')
     candidate = load_module(generated, 'biv150_int8_kv_candidate')
@@ -191,6 +207,13 @@ def main(args):
         bf16_ms = graph_time(baseline_chain,repeats=11,unroll=4)[0]
         dtype = torch.int8 if args.cache_dtype == 'int8' else torch.float8_e4m3fn
         k8, ks = quantize(c['k'],dtype); v8, vs = quantize(c['v'],dtype)
+        if args.packed_fp8:
+            # Custom normal-only E4M3 payload: flush subnormals to zero. Load as
+            # bytes and reconstruct BF16 fields directly, avoiding FP8 lowering.
+            kb=k8.view(torch.uint8);vb=v8.view(torch.uint8)
+            k8=torch.where((kb & 120)==0,torch.zeros_like(kb),kb)
+            v8=torch.where((vb & 120)==0,torch.zeros_like(vb),vb)
+            dtype=torch.uint8
         if args.inline_cache:
             # Reuse the original BF16 allocation geometry. Bytes0:128 hold payload,
             # bytes128:132 hold FP32 scale. No capacity/memory saving is claimed.
@@ -218,7 +241,7 @@ def main(args):
             if args.append_updates:
                 append_quantized(new_key,new_value,slots,k8,v8,ks,vs)
             full_call(candidate,qc,segments)
-        row = dict(integer_pv=args.integer_pv,integer_qk=args.integer_qk,num_warps=args.num_warps,baseline_segments=baseline_segments,append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
+        row = dict(packed_fp8=args.packed_fp8,integer_pv=args.integer_pv,integer_qk=args.integer_qk,num_warps=args.num_warps,baseline_segments=baseline_segments,append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
                    bf16_cache_bytes=c['k'].nbytes+c['v'].nbytes,
                    quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes,
                    inline_cache=args.inline_cache,page_packed_cache=args.page_packed_cache,
@@ -233,13 +256,13 @@ def main(args):
             row['speedup'] = bf16_ms / row['quantized_ms']
             row['max_output_diff_from_bf16'] = (int8_result.float()-bf16_result.float()).abs().max().item()
             row['rmse_from_bf16'] = (int8_result.float()-bf16_result.float()).square().mean().sqrt().item()
-            kd = k8.float()*ks[...,None]
+            kd = (k8.view(torch.float8_e4m3fn) if args.packed_fp8 else k8).float()*ks[...,None]
             if not args.integer_qk:kd=kd.to(torch.bfloat16)
             q_reference=None
             if args.integer_qk:
                 qs=c['q'].float().abs().amax(-1).clamp_min(1e-8)/127
                 q_reference=(c['q'].float()/qs[...,None]).round().clamp(-127,127)*qs[...,None]
-            vd = (v8.float()*vs[...,None]).to(torch.bfloat16)
+            vd = ((v8.view(torch.float8_e4m3fn) if args.packed_fp8 else v8).float()*vs[...,None]).to(torch.bfloat16)
             row['dense_checks'] = []
             for i in sorted({0,min(1,batch-1),batch-1}):
                 dense = dense_reference(c,kd,v8 if args.integer_pv else vd,i,q_reference,vs if args.integer_pv else None).to(torch.bfloat16).float()
@@ -265,6 +288,7 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--packed-fp8',action='store_true')
     p.add_argument('--integer-pv',action='store_true')
     p.add_argument('--integer-qk',action='store_true')
     p.add_argument('--formal-only',action='store_true')
