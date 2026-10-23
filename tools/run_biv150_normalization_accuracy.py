@@ -1,4 +1,4 @@
-"""Owned service + exact official Level3 protocol, without throughput scoring."""
+"""Owned service + exact official Level3 protocol, with separate accuracy or warmed throughput modes."""
 import argparse
 import ast
 import datetime
@@ -17,6 +17,52 @@ import urllib.request
 def get_json(url):
     with urllib.request.urlopen(url, timeout=3) as response:
         return json.load(response)
+
+def benchmark(run_dir, name, input_len, output_len, count, seed):
+    folder = run_dir / name
+    folder.mkdir()
+    command = ["vllm", "bench", "serve", "--backend", "vllm", "--model", "minicpm",
+               "--tokenizer", "/workspace/MiniCPM5-2B", "--endpoint", "/v1/completions",
+               "--host", "127.0.0.1", "--port", "9031", "--dataset-name", "random",
+               "--ignore-eos", "--random-input-len", str(input_len),
+               "--random-output-len", str(output_len), "--max-concurrency", "64",
+               "--num-prompts", str(count), "--seed", str(seed), "--disable-tqdm",
+               "--save-result", "--result-dir", str(folder), "--label", name]
+    (folder / "command.json").write_text(json.dumps(command, indent=2))
+    with (folder / "benchmark.log").open("w") as log:
+        subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=True, timeout=2400)
+    result_files = [p for p in folder.glob("*.json") if p.name != "command.json"]
+    if len(result_files) != 1:
+        raise RuntimeError(f"Expected one result JSON, got {result_files}")
+    result = json.loads(result_files[0].read_text())
+    if result.get("completed") != count:
+        raise RuntimeError(f"Incomplete requests: {result.get('completed')} / {count}")
+    keys = ["completed", "duration", "total_input_tokens", "total_output_tokens",
+            "total_token_throughput", "output_throughput", "mean_ttft_ms", "mean_tpot_ms"]
+    print(json.dumps(dict(name=name, **{k: result.get(k) for k in keys})), flush=True)
+    return result
+
+
+
+def throughput(run_dir):
+    scores = {}
+    warmups = {}
+    for input_len, count in [(4096, 256), (16384, 128)]:
+        history = []
+        for index in range(4):
+            result = benchmark(run_dir, f"warm-{input_len}-{index}", input_len, 128, 64, 920000 + index)
+            now = result["mean_tpot_ms"]
+            history.append(now)
+            warmups[str(input_len)] = history
+            (run_dir / "warmups.json").write_text(json.dumps(warmups, indent=2))
+            if index >= 1 and history[-2] > 0 and abs(now / history[-2] - 1) < .03:
+                break
+        else:
+            raise RuntimeError(f"Warmup did not stabilize for {input_len}; no score")
+        scores[str(input_len)] = benchmark(run_dir, f"score-{input_len}", input_len, 1024, count, 0)
+        (run_dir / "scores.json").write_text(json.dumps(scores, indent=2))
+    return scores
+
 
 def accuracy(run_dir):
     folder = run_dir / "math500-level3"
@@ -70,7 +116,7 @@ def main(args):
     manifest=dict(command=command,source=str(source),git_commit=subprocess.check_output(
         ['git','-C',str(source),'rev-parse','HEAD'],text=True).strip(),git_status=subprocess.check_output(
         ['git','-C',str(source),'status','--porcelain'],text=True),source_hashes={p:hashlib.sha256((source/p).read_bytes()).hexdigest() for p in paths},
-        started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),python=sys.version,
+        mode=args.mode,started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),python=sys.version,
         packages={name:importlib.metadata.version(name) for name in ['torch','vllm','flag_gems','evalscope']},
         env={key:value for key,value in env.items() if key.startswith(('VLLM_','BIV150_','TORCHINDUCTOR_'))})
     (args.out/'manifest.json').write_text(json.dumps(manifest,indent=2))
@@ -96,6 +142,10 @@ def main(args):
         (args.out/'manifest.json').write_text(json.dumps(manifest,indent=2))
         print(json.dumps(dict(server_ready=True,pid=server.pid,installation=states[-1])),flush=True)
         evaluation_offset=log_path.stat().st_size
+        if args.mode == "throughput":
+            scores=throughput(args.out)
+            print(json.dumps(dict(completed=True,mode=args.mode,scores=scores)),flush=True)
+            return
         accuracy(args.out)
         with log_path.open('rb') as events:
             events.seek(evaluation_offset);evaluation_log=events.read().decode(errors='replace')
@@ -118,4 +168,5 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--source',type=Path,required=True)
     parser.add_argument('--out',type=Path,required=True)
+    parser.add_argument('--mode', choices=['accuracy','throughput'], default='accuracy')
     main(parser.parse_args())
