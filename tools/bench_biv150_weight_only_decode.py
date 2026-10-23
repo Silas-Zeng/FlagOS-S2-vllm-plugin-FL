@@ -79,9 +79,10 @@ def invoke(x, wq, scales, gate, config):
     n = wq.shape[1]
     bm, bn, bk, warps = config
     out = torch.empty((m, n // 2 if gate else n), device=x.device, dtype=x.dtype)
-    kernel[(triton.cdiv(m, bm), triton.cdiv(n // 2 if gate else n, bn))](
+    compiled = kernel[(triton.cdiv(m, bm), triton.cdiv(n // 2 if gate else n, bn))](
         x, wq, scales, out, m, n, k, bm, bn, bk, gate, num_warps=warps, num_stages=1
     )
+    invoke.last = compiled
     return out
 
 
@@ -140,7 +141,14 @@ def main(args):
             bf16_ms = graph_time(
                 partial(bf16_call, x, weight, gate), repeats=11, unroll=4
             )[0]
-            for config in [(16, 64, 64, 4), (32, 128, 64, 4), (32, 128, 128, 4)]:
+            for config in [
+                (16, 64, 64, 1),
+                (32, 64, 64, 1),
+                (32, 128, 64, 2),
+                (16, 64, 64, 4),
+                (32, 128, 64, 4),
+                (32, 128, 128, 4),
+            ]:
                 row = dict(
                     m=m,
                     n=n,
@@ -157,6 +165,9 @@ def main(args):
                     ms = graph_time(fn, repeats=11, unroll=4)[0]
                     row.update(
                         passed=True,
+                        n_regs=invoke.last.n_regs,
+                        n_spills=invoke.last.n_spills,
+                        shared=invoke.last.metadata.shared,
                         candidate_ms=ms,
                         speedup=native_ms / ms,
                         speedup_vs_bf16=bf16_ms / ms,
