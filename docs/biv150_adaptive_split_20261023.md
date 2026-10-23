@@ -41,3 +41,11 @@ Runner performs all105 Level-3 questions and requires precision>=0.95 before
 stable warmup (two to four rounds, adjacent TPOT within3%) and one official scored
 round per 4K/16K case. Driver and source manifest record exact revisions/import
 path. No performance/20% success is claimed while this is pending.
+
+## Complete precision gate
+
+The full105-question run completed with103 correct:0.981 reported precision,
+105 unique questions and no failed predictions. The acceptance runner has moved
+to throughput warmup. This is a precision pass, not performance acceptance;
+throughput and TTFT are pending. Sampling remains temperature1/top_p0.95, so this
+single result does not establish a precision improvement over the parent.
