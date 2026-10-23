@@ -51,3 +51,15 @@ to three resident blocks (before other resource constraints), yet is about
 6% slower at16K. All other tested combinations are slower too. These results
 do not support shared-memory occupancy alone as the cause of the prefill cost.
 No variant is promoted and no full benchmark or model accuracy is inferred.
+
+Matrix-lowering probe: use_sme=1, one/two pipeline stages and late V (16
+checks across four lengths). No stable benefit; SME output is bit-exact and
+resource counts match the default one-stage lowering. Evidence is matrix-results.json.
+
+Profiler scope clarification: vLLM bench sends an initial test request. With
+first-eight-step prefill capture, the recorded 336 attention launches are the
+first single 16K prompt's 8×2048-token prefill chunks, not concurrent full-load
+prefill attribution. A forthcoming decode-only diagnostic uses direct parallel
+HTTP requests without an initial test prompt and graph mode NONE, solely to
+make individual kernels visible. Its results must never be reported as official
+FULL_DECODE_ONLY benchmark throughput. Actual captured batch shapes must be checked.
