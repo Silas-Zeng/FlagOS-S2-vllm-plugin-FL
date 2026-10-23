@@ -33,3 +33,14 @@ Queue117144 waits for historical diagnostic103728 and verifies service/GPU idle,
 then builds and runs the operator probe. State: native-gate-residual-probe-state.json;
 logs:native-gate-residual-{queue,build,probe}.log under the experiment root.
 No whole-model pass or retained4K gain is claimed.
+
+## Operator probe completed
+
+Extension build and probe both exited0.24/24 numerical cases pass independent
+CPU INT64 sampled references. Changed-input graph replay, fullgraph/fake Tensor
+and rejection of M17 pass. Nonzero-case RMSE against FP32 activations with the
+same INT8 weight improves about17–62x; zero cases remain exactly zero. Three
+alternating timing rounds show median0.982–0.989x baseline speed (about1–2%
+slower), so matching GEMM dimensions does not eliminate all extra work.
+Raw evidence:docs/evidence/native-gate-residual-20261023/probe.json.
+No model hook has been changed yet, and model precision remains unproven.
