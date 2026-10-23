@@ -113,3 +113,9 @@ counted as a pass or attributed only to the candidates. Long conditional-mask
 variants showed roughly1.7–2% operator improvements; small shapes regressed.
 No serving candidate was installed. Full raw errors and timings are retained
 in prefix-mask-raw.json.
+
+Query-head grouping completed36 records.32 pass independent FP32 windows; all
+four normalized/candidate variants fail the same single BF16 element for
+q2048/kv2048 at the existing strict tolerance. Long grouped candidates run
+about0.33–0.50x as fast as baseline; they are rejected. Raw headgroups-raw.json
+retains both performance and tolerance failures. No service hook was added.

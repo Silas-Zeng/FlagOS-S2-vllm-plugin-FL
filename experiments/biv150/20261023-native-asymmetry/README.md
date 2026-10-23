@@ -72,3 +72,23 @@ quantization caused the old throughput regression. Native versus W8A16 routing
 must still be chosen from measured shape costs. Each reduced layer selection
 changes weight memory and therefore requires recording actual KV capacity again.
 Do not silently count a partial-layer result as retaining the old full10.6% gain.
+
+## Completed probes: reject the current W8A16 kernel
+
+W8A16 completed126/126 numerical checks against independent FP32 with the same
+quantized weights. Every tested configuration is slower than native W8A8.
+Best per-shape speedups range about0.074–0.398x; no W8A16 serving hook is added.
+No spills were observed in the best rows. The gate/up BF16 timing uses explicit
+PyTorch activation operations, which can cost more than the service's compiled
+single activation kernel: it is not an exact full-graph service reference.
+The native W8A8 comparison and the negative conclusion remain valid.
+
+The same-weight BF16 layout probe passed all20 cases bit exactly versus the
+baseline. M32 O/gate-up improved about4.3%/6.2%, but M64 regressed about5.9%/3.9%
+and prefill showed no consistent benefit. It is not a universal layout change
+and storing duplicate full weights would alter memory usage. Do not install it.
+Raw outcomes are retained in evidence/, including all negative configurations.
+
+The observed native M32 QKV/O GEMMs are modestly slower than BF16, while native
+gate/up remains faster. This motivates a gate-only service experiment; it does
+not prove that these small differences explain the full prior16K regression.
