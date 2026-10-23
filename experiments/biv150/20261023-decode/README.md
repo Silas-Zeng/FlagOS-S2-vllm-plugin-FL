@@ -37,3 +37,21 @@ serving. At M64 gate/up: vendor0.11772ms versus Gems0.09369ms; M32 down:
 0.06756 versus0.04662ms. Conversely M2048 gate/up is1.15884 versus1.40833ms.
 All 12 cases pass numerical comparison. Earlier isolated BF16 reference ratios
 are dispatch-specific and must not be presented as actual serving speedups.
+
+
+Further lowering/cache investigation
+------------------------------------
+Actual compiled GQA uses llvm.bi.matrix.mad.f32x4.bf16x4. The PV dot already
+receives the rescaled accumulator in TTGIR, so an extra fusion rewrite would be
+redundant. Conditional/lazy rescaling24 cases passed independent checks, including
+4x-query stress, but common long shapes are roughly0.5% slower; not integrated.
+
+40 cache-policy cases were bit-exact. Five alternating rounds per eight shapes
+confirmed.cv gains on long contexts, but a regression for B8/KV1024. Load flag
+evidence changes64 K/V sites from0 to3, while8 query sites remain0.
+The production candidate chooses.cg for captured batches<=8 and.cv otherwise.
+Its actual wrapper eight-shape test is bit-exact and retains93 registers/8192
+shared/no spills. Full model acceptance is running in draftPR17, not accepted yet:
+https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/17 .
+The prefill causal-interior conditional/split mask probe is CPU-prepared only and
+queued after the owned model test finishes, so no simultaneous GPU measurement.
