@@ -22,11 +22,13 @@ def quantize(tensor, dtype):
 
 
 class ScaledLaunch:
-    def __init__(self, kernel, ks, vs):
+    def __init__(self, kernel, ks, vs, warps):
         self.kernel, self.ks, self.vs = kernel, ks, vs
         self.last = None
+        self.warps = warps
     def __getitem__(self, grid):
         def launch(*args, **kwargs):
+            kwargs['num_warps'] = self.warps
             self.last = self.kernel[grid](*args, k_scale_ptr=self.ks, v_scale_ptr=self.vs, **kwargs)
             return self.last
         return launch
@@ -92,10 +94,12 @@ def main(args):
     baseline = load_module(args.source, 'biv150_int8_kv_reference')
     candidate = load_module(generated, 'biv150_int8_kv_candidate')
     records = []
-    for batch, kv, mixed in [(64,4096,False), (32,16384,False), (31,16896,False),
-                             (8,1024,True), (1,100,False)]:
+    cases=[(64,4096,False),(32,16384,False)]
+    if not args.formal_only:cases += [(31,16896,False),(8,1024,True),(1,100,False)]
+    for batch,kv,mixed in cases:
         c = inputs(batch, kv, mixed=mixed)
-        segments = baseline._pick_segments(batch, 2, 16)
+        baseline_segments = baseline._pick_segments(batch, 2, 16)
+        segments = args.segments or baseline_segments
         update_baseline = lambda: None
         if args.append_updates:
             from vllm.v1.attention.ops.triton_reshape_and_cache_flash import triton_reshape_and_cache_flash
@@ -109,7 +113,7 @@ def main(args):
             update_baseline=lambda:triton_reshape_and_cache_flash(new_key,new_value,c['k'],c['v'],slots,'auto',one,one)
         def baseline_chain():
             update_baseline()
-            full_call(baseline,c,segments)
+            full_call(baseline,c,baseline_segments)
         baseline_chain()
         bf16_result = c['out'].clone()
         bf16_ms = graph_time(baseline_chain,repeats=11,unroll=4)[0]
@@ -135,14 +139,14 @@ def main(args):
             sv=raw[:,1,4096:4224].view(torch.float32).reshape(-1,16,2)
             kk.copy_(k8);vv.copy_(v8);sk.copy_(ks);sv.copy_(vs)
             k8,v8,ks,vs=kk,vv,sk,sv
-        launch = ScaledLaunch(candidate._gqa_decode_attention_int8_kv, ks, vs)
+        launch = ScaledLaunch(candidate._gqa_decode_attention_int8_kv, ks, vs, args.num_warps)
         candidate._gqa_decode_attention = launch
         qc = dict(c, k=k8, v=v8)
         def candidate_chain():
             if args.append_updates:
                 append_quantized(new_key,new_value,slots,k8,v8,ks,vs)
             full_call(candidate,qc,segments)
-        row = dict(append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
+        row = dict(num_warps=args.num_warps,baseline_segments=baseline_segments,append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
                    bf16_cache_bytes=c['k'].nbytes+c['v'].nbytes,
                    quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes,
                    inline_cache=args.inline_cache,page_packed_cache=args.page_packed_cache,
@@ -184,6 +188,9 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--formal-only',action='store_true')
+    p.add_argument('--num-warps',type=int,choices=[1,2,4,8],default=1)
+    p.add_argument('--segments',type=int,choices=[0,1,2,4,8,16],default=0)
     p.add_argument('--page-packed-cache',action='store_true')
     p.add_argument('--append-updates',action='store_true')
     p.add_argument('--inline-cache',action='store_true')
