@@ -317,7 +317,7 @@ def eligible(bound):
         8 <= n <= 64
         # Favor mixed calls dominated by one prefill; balanced all-prefill calls
         # have no useful decode work and would only pay for two extra launches.
-        and bound["max_seqlen_q"] > q.shape[0] // 2
+        and (bound["max_seqlen_q"] > q.shape[0] // 2 or q.shape[0] <= 2 * n)
         and q.device.type == "cuda"
         and all(value.device == q.device for value in (k, v, out, cu, lengths, table))
         and q.stride(-1) == k.stride(-1) == v.stride(-1) == out.stride(-1) == 1

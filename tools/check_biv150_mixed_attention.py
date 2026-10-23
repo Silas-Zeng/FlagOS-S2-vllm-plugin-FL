@@ -153,6 +153,17 @@ def main(args):
             softmax_segm_expsum=c["sums"],
         )
         selected = mixed.eligible(kwargs)
+        assert selected == (index in (0, 1, 2, 3, 7, 8))
+        if selected:
+            for name, value in [
+                ("causal", False),
+                ("max_seqlen_q", 1),
+                ("softcap", 1.0),
+                ("window_size", (4096, 0)),
+                ("use_td", True),
+                ("sinks", torch.zeros(16, device="cuda")),
+            ]:
+                assert not mixed.eligible(dict(kwargs, **{name: value}))
         old = partial(baseline, **kwargs)
         candidate = partial(candidate_fn, **kwargs)
         before_calls = mixed._state["selected_calls"]
