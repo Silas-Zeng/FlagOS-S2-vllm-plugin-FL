@@ -3,7 +3,8 @@
 Integration base: team main9a43eb1, checked through GitHub API after a direct
 Git fetch timed out. No newer official framework or FlagGems version is merged.
 This branch changes only an audited BF16 attention operator and its registration.
-It is not a +20% performance result and is not yet accepted for integration.
+It is a correctness fix with full precision and warmed throughput acceptance.
+It is not a +20% performance result; measured throughput differences are small.
 
 ## Observed correctness discrepancy
 
@@ -80,3 +81,29 @@ Formal4K/16K acceptance still requires sufficient warmup followed by one complet
 scored round per case, as explicitly authorized by the user. Throughput and TTFT
 must satisfy the competition gates; the overall optimization goal remains+20%
 in both scenarios. Current evidence does not establish that goal.
+
+
+## Formal serving acceptance
+
+Production source is unchanged from the precision-evaluated4f00fcb. The
+throughput runner used541850b with the exact official service and benchmark
+parameters. Both full cases ran once after independent seeds in warmup; all
+requests succeeded. The service owned by the runner was cleaned after completion.
+
+| Case | Total tok/s | TTFT ms | TPOT ms | Requests | Recent baseline tok/s | Difference |
+|---|---:|---:|---:|---:|---:|---:|
+|4K|4873.33126|4655.34015|60.78266|256/256|4835.56124|+0.78%|
+|16K|3368.31020|155275.46155|133.15901|128/128|3366.81795|+0.044%|
+
+Warmup TPOT sequences:4K146.37362/123.10459/123.10483ms;
+16K364.15547/364.23437ms. Final adjacent changes are below3%.
+Recent baseline TTFT was4730.537ms /155342.488ms, so neither case violates
+the +1% TTFT gate. Precision is102/105 (0.9714), with105 unique predictions
+and no errors. All individual acceptance gates pass against the recorded baseline;
+the overall +20% target remains unachieved. One score per case does not establish
+a statistically significant throughput gain. This patch is retained for the
+controlled-reference correctness repair, not advertised as a performance win.
+
+Raw scores, warmup records and service/source manifest are in docs/evidence/
+throughput-{scores,warmups,manifest}.json. Full logs remain on the owned instance
+at /workspace/experiments/minicpm-s2/prefill-normalization-20261023/.

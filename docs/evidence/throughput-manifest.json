@@ -1,0 +1,49 @@
+{
+  "command": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/prefill-normalization-20261023",
+  "git_commit": "541850b54d7838cbb3d6331f06a3c6d2e989f965",
+  "git_status": "",
+  "source_hashes": {
+    "vllm_fl/patches/biv150_prefill_normalized.py": "789a0f38ba3fa1ed265bbfd14d41362fb0c7d4ca2cba998a4f2e151583fb6208",
+    "vllm_fl/worker/model_runner.py": "97c78bde864cb019fe38831804f08d201a950dd2cfafd15ac5ad77b90a93879f"
+  },
+  "mode": "throughput",
+  "started_utc": "2026-10-23T07:16:31.058268+00:00",
+  "python": "3.12.11 (main, Jul 31 2025, 06:45:11) [GCC 13.3.0]",
+  "packages": {
+    "torch": "2.10.0+corex.4.5.0",
+    "vllm": "0.24.0+empty",
+    "flag_gems": "5.3.5",
+    "evalscope": "1.11.1"
+  },
+  "env": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/prefill-normalization-20261023/throughput-full/inductor-cache"
+  },
+  "installation": {
+    "installed": true,
+    "scope": "audited BF16 causal MiniCPM prefill without sinks",
+    "backend_rebound": true,
+    "audited": {
+      "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+    },
+    "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+    "initial_mass": 0
+  }
+}
