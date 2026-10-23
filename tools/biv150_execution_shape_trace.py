@@ -33,6 +33,8 @@ class Recorder:
         self.source_sha256 = hashlib.sha256(
             inspect.getsource(self.determine).encode()
         ).hexdigest()
+        self.disabled = False
+        self.errors = []
         self.config = None
 
     def flush(self):
@@ -57,6 +59,8 @@ class Recorder:
             diagnostic_only=True,
             helper_source_sha256=self.source_sha256,
             config=self.config,
+            trace_disabled=self.disabled,
+            trace_errors=self.errors,
             calls_observed=self.total,
             counts=rows,
             note="Periodic snapshots may omit the final unflushed calls after forced process termination.",
@@ -64,6 +68,13 @@ class Recorder:
         temp = self.output.with_suffix(self.output.suffix + ".tmp")
         temp.write_text(json.dumps(payload, indent=2))
         temp.replace(self.output)
+
+    def safe_flush(self):
+        try:
+            self.flush()
+        except (OSError, TypeError, ValueError) as error:
+            self.errors.append(repr(error))
+            self.disabled = True
 
     def install(self):
         recorder = self
@@ -79,7 +90,7 @@ class Recorder:
         @wraps(self.determine)
         def determine(runner, *args, **kwargs):
             result = recorder.determine(runner, *args, **kwargs)
-            if recorder.active.get() == id(runner):
+            if not recorder.disabled and recorder.active.get() == id(runner):
                 bound = recorder.signature.bind(runner, *args, **kwargs).arguments
                 mode, descriptor = result[:2]
                 key = (
@@ -103,19 +114,19 @@ class Recorder:
                         max_num_seqs=getattr(config, "max_num_seqs", None),
                     )
                 if recorder.total == 1 or recorder.total % recorder.flush_every == 0:
-                    recorder.flush()
+                    recorder.safe_flush()
             return result
 
         self.runner_class.execute_model = execute
         self.runner_class._determine_batch_execution_and_padding = determine
-        atexit.register(self.flush)
+        atexit.register(self.safe_flush)
         return self
 
     def uninstall(self):
         self.runner_class.execute_model = self.execute
         self.runner_class._determine_batch_execution_and_padding = self.determine
-        atexit.unregister(self.flush)
-        self.flush()
+        atexit.unregister(self.safe_flush)
+        self.safe_flush()
 
 
 def self_test():
@@ -158,6 +169,15 @@ def self_test():
         else:
             raise AssertionError("Original exception must propagate")
         assert recorder.active.get() is None
+        flush = recorder.flush
+
+        def fail_flush():
+            raise OSError("synthetic disk failure")
+
+        recorder.flush = fail_flush
+        assert runner.execute_model() is result
+        assert recorder.disabled and len(recorder.errors) == 1
+        recorder.flush = flush
         recorder.uninstall()
         assert Runner.execute_model is original
         data = json.loads(path.read_text())
