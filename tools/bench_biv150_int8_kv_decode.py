@@ -34,14 +34,14 @@ class ScaledLaunch:
         return launch
 
 
-def dense_reference(c, keys, values, row):
+def dense_reference(c, keys, values, row, query_override=None):
     n = int(c['lengths'][row].item())
     if not n:
         return torch.zeros_like(c['out'][row]).float()
     pages = c['table'][row, : (n + 15) // 16].long()
     k = keys[pages].reshape(-1, 2, 128)[:n].float()
     v = values[pages].reshape(-1, 2, 128)[:n].float()
-    q = c['q'][row].float().reshape(2, 8, 128)
+    q = (c['q'] if query_override is None else query_override)[row].float().reshape(2, 8, 128)
     p = torch.einsum('hgd,thd->hgt', q, k).mul(128 ** -.5).softmax(-1)
     return torch.einsum('hgt,thd->hgd', p, v).reshape(16, 128)
 
@@ -88,8 +88,25 @@ def main(args):
         assert text.count('probability.to(V.dtype), V') == 2
         text = text.replace('probability.to(V.dtype), V',
                             '(probability * vs[None, :]).to(V.dtype), V')
+    if args.integer_qk:
+        assert args.cache_dtype == 'int8' and args.scale_placement == 'scores'
+        needle='    Q = tl.load(query_ptr + query_offsets, mask=row_valid[:, None], other=0.0)'
+        assert text.count(needle)==1
+        text=text.replace(needle,needle+"""
+    q_scale = tl.maximum(tl.max(tl.abs(Q.to(tl.float32)),1),1e-8)/127.0
+    qn = Q.to(tl.float32)/q_scale[:,None]
+    qa = tl.abs(qn)
+    qf = tl.floor(qa)
+    qr = qa-qf
+    qi = qf+((qr>0.5)|((qr==0.5)&((qf.to(tl.int32)&1)==1))).to(tl.float32)
+    Q = tl.minimum(tl.maximum(tl.where(qn<0,-qi,qi),-127.0),127.0).to(tl.int8)
+""")
+        assert text.count('K = K.to(tl.bfloat16)')==2
+        text=text.replace('K = K.to(tl.bfloat16)','K = K')
+        text=text.replace('softmax_scale_log2e * ks[None, :]',
+                          'softmax_scale_log2e * ks[None, :] * q_scale[:, None]')
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + ('-inline' if args.inline_cache else '-pagepacked' if args.page_packed_cache else '-compact') + '.py')
+    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + ('-integer-qk' if args.integer_qk else '') + ('-inline' if args.inline_cache else '-pagepacked' if args.page_packed_cache else '-compact') + '.py')
     generated.write_text(text)
     baseline = load_module(args.source, 'biv150_int8_kv_reference')
     candidate = load_module(generated, 'biv150_int8_kv_candidate')
@@ -146,7 +163,7 @@ def main(args):
             if args.append_updates:
                 append_quantized(new_key,new_value,slots,k8,v8,ks,vs)
             full_call(candidate,qc,segments)
-        row = dict(num_warps=args.num_warps,baseline_segments=baseline_segments,append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
+        row = dict(integer_qk=args.integer_qk,num_warps=args.num_warps,baseline_segments=baseline_segments,append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
                    bf16_cache_bytes=c['k'].nbytes+c['v'].nbytes,
                    quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes,
                    inline_cache=args.inline_cache,page_packed_cache=args.page_packed_cache,
@@ -161,11 +178,16 @@ def main(args):
             row['speedup'] = bf16_ms / row['quantized_ms']
             row['max_output_diff_from_bf16'] = (int8_result.float()-bf16_result.float()).abs().max().item()
             row['rmse_from_bf16'] = (int8_result.float()-bf16_result.float()).square().mean().sqrt().item()
-            kd = (k8.float()*ks[...,None]).to(torch.bfloat16)
+            kd = k8.float()*ks[...,None]
+            if not args.integer_qk:kd=kd.to(torch.bfloat16)
+            q_reference=None
+            if args.integer_qk:
+                qs=c['q'].float().abs().amax(-1).clamp_min(1e-8)/127
+                q_reference=(c['q'].float()/qs[...,None]).round().clamp(-127,127)*qs[...,None]
             vd = (v8.float()*vs[...,None]).to(torch.bfloat16)
             row['dense_checks'] = []
             for i in sorted({0,min(1,batch-1),batch-1}):
-                dense = dense_reference(c,kd,vd,i).to(torch.bfloat16).float()
+                dense = dense_reference(c,kd,vd,i,q_reference).to(torch.bfloat16).float()
                 torch.testing.assert_close(int8_result[i].float(),dense,atol=.005,rtol=.005)
                 original_dense = dense_reference(c,c['k'],c['v'],i)
                 row['dense_checks'].append(dict(row=i,dequantized_dense_pass=True,
@@ -188,6 +210,7 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--integer-qk',action='store_true')
     p.add_argument('--formal-only',action='store_true')
     p.add_argument('--num-warps',type=int,choices=[1,2,4,8],default=1)
     p.add_argument('--segments',type=int,choices=[0,1,2,4,8,16],default=0)
