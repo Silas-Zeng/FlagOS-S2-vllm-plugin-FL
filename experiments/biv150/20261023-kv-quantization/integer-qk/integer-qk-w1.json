@@ -1,0 +1,209 @@
+{
+  "probe_sha256": "c01875c9d56010fcb8e396b82f740833d30e532858aa6136b599200034515d32",
+  "append_source_sha256": "4b7ce56644ab9fd565af1d8152e65b64971abcfed43b82630d6e88d5dc29d176",
+  "source_sha256": "1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a",
+  "generated_sha256": "96a09a8ee50d9f2c376edbd5249b56bb2278615b584e1ad7561bd2ff56311f45",
+  "offline_quantization_timed": false,
+  "service_installed": false,
+  "scale_placement": "scores",
+  "cache_dtype": "int8",
+  "inline_cache": false,
+  "page_packed_cache": false,
+  "records": [
+    {
+      "integer_qk": true,
+      "num_warps": 1,
+      "baseline_segments": 2,
+      "append_updates": false,
+      "batch": 64,
+      "kv": 4096,
+      "mixed": false,
+      "segments": 2,
+      "bf16_ms": 0.5270788073539734,
+      "cache_dtype": "int8",
+      "bf16_cache_bytes": 268435456,
+      "quantized_cache_bytes": 138412032,
+      "inline_cache": false,
+      "page_packed_cache": false,
+      "allocated_cache_bytes": 138412032,
+      "quantized_ms": 0.6754173040390015,
+      "bf16_after_ms": 0.5263980627059937,
+      "speedup": 0.7803750425137725,
+      "max_output_diff_from_bf16": 0.00152587890625,
+      "rmse_from_bf16": 0.0003036792913917452,
+      "dense_checks": [
+        {
+          "row": 0,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0011484958231449127
+        },
+        {
+          "row": 1,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0012436546385288239
+        },
+        {
+          "row": 63,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0009915083646774292
+        }
+      ],
+      "n_regs": 169,
+      "shared": 6144
+    },
+    {
+      "integer_qk": true,
+      "num_warps": 1,
+      "baseline_segments": 4,
+      "append_updates": false,
+      "batch": 32,
+      "kv": 16384,
+      "mixed": false,
+      "segments": 4,
+      "bf16_ms": 1.0317970514297485,
+      "cache_dtype": "int8",
+      "bf16_cache_bytes": 536870912,
+      "quantized_cache_bytes": 276824064,
+      "inline_cache": false,
+      "page_packed_cache": false,
+      "allocated_cache_bytes": 276824064,
+      "quantized_ms": 1.325014352798462,
+      "bf16_after_ms": 1.0317163467407227,
+      "speedup": 0.7787063206149946,
+      "max_output_diff_from_bf16": 0.00079345703125,
+      "rmse_from_bf16": 0.000153888831846416,
+      "dense_checks": [
+        {
+          "row": 0,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0005438196239992976
+        },
+        {
+          "row": 1,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.000677749514579773
+        },
+        {
+          "row": 31,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0006860718131065369
+        }
+      ],
+      "n_regs": 169,
+      "shared": 6144
+    },
+    {
+      "integer_qk": true,
+      "num_warps": 1,
+      "baseline_segments": 8,
+      "append_updates": false,
+      "batch": 31,
+      "kv": 16896,
+      "mixed": false,
+      "segments": 8,
+      "bf16_ms": 1.070838451385498,
+      "cache_dtype": "int8",
+      "bf16_cache_bytes": 536346624,
+      "quantized_cache_bytes": 276553728,
+      "inline_cache": false,
+      "page_packed_cache": false,
+      "allocated_cache_bytes": 276553728,
+      "quantized_ms": 1.2401471138000488,
+      "bf16_after_ms": 1.0703144073486328,
+      "speedup": 0.8634769532335913,
+      "max_output_diff_from_bf16": 0.000732421875,
+      "rmse_from_bf16": 0.0001492643350502476,
+      "dense_checks": [
+        {
+          "row": 0,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0005761720240116119
+        },
+        {
+          "row": 1,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0005420483648777008
+        },
+        {
+          "row": 30,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0005523664876818657
+        }
+      ],
+      "n_regs": 169,
+      "shared": 6144
+    },
+    {
+      "integer_qk": true,
+      "num_warps": 1,
+      "baseline_segments": 16,
+      "append_updates": false,
+      "batch": 8,
+      "kv": 1024,
+      "mixed": true,
+      "segments": 16,
+      "bf16_ms": 0.02355000004172325,
+      "cache_dtype": "int8",
+      "bf16_cache_bytes": 8388608,
+      "quantized_cache_bytes": 4325376,
+      "inline_cache": false,
+      "page_packed_cache": false,
+      "allocated_cache_bytes": 4325376,
+      "quantized_ms": 0.036375001072883606,
+      "bf16_after_ms": 0.023518269881606102,
+      "speedup": 0.6474226624636176,
+      "max_output_diff_from_bf16": 0.02099609375,
+      "rmse_from_bf16": 0.0037160508800297976,
+      "dense_checks": [
+        {
+          "row": 0,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0
+        },
+        {
+          "row": 1,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.015625
+        },
+        {
+          "row": 7,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0019958503544330597
+        }
+      ],
+      "n_regs": 169,
+      "shared": 6144
+    },
+    {
+      "integer_qk": true,
+      "num_warps": 1,
+      "baseline_segments": 16,
+      "append_updates": false,
+      "batch": 1,
+      "kv": 100,
+      "mixed": false,
+      "segments": 16,
+      "bf16_ms": 0.009953846223652363,
+      "cache_dtype": "int8",
+      "bf16_cache_bytes": 114688,
+      "quantized_cache_bytes": 59136,
+      "inline_cache": false,
+      "page_packed_cache": false,
+      "allocated_cache_bytes": 59136,
+      "quantized_ms": 0.014179808087646961,
+      "bf16_after_ms": 0.009975000284612179,
+      "speedup": 0.7019732680531738,
+      "max_output_diff_from_bf16": 0.0078125,
+      "rmse_from_bf16": 0.0018576328875496984,
+      "dense_checks": [
+        {
+          "row": 0,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.007759064435958862
+        }
+      ],
+      "n_regs": 169,
+      "shared": 6144
+    }
+  ]
+}

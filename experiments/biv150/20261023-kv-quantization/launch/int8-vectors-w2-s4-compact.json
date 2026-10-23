@@ -1,0 +1,94 @@
+{
+  "probe_sha256": "a6586de251f52a7bb818614ff584a9dc7916fd8d6706afff47879f80118bb561",
+  "append_source_sha256": "4b7ce56644ab9fd565af1d8152e65b64971abcfed43b82630d6e88d5dc29d176",
+  "source_sha256": "1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a",
+  "generated_sha256": "4efc8e8f0edde66a73a2f9e10d7b51b2b35cd813278a79d5da4eb3c483b47836",
+  "offline_quantization_timed": false,
+  "service_installed": false,
+  "scale_placement": "vectors",
+  "cache_dtype": "int8",
+  "inline_cache": false,
+  "page_packed_cache": false,
+  "records": [
+    {
+      "num_warps": 2,
+      "baseline_segments": 2,
+      "append_updates": false,
+      "batch": 64,
+      "kv": 4096,
+      "mixed": false,
+      "segments": 4,
+      "bf16_ms": 0.526687502861023,
+      "cache_dtype": "int8",
+      "bf16_cache_bytes": 268435456,
+      "quantized_cache_bytes": 138412032,
+      "inline_cache": false,
+      "page_packed_cache": false,
+      "allocated_cache_bytes": 138412032,
+      "quantized_ms": 0.9905567169189453,
+      "bf16_after_ms": 0.5275500416755676,
+      "speedup": 0.5317085774747419,
+      "max_output_diff_from_bf16": 0.001220703125,
+      "rmse_from_bf16": 0.00025760746211744845,
+      "dense_checks": [
+        {
+          "row": 0,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0008948426693677902
+        },
+        {
+          "row": 1,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.000939010817091912
+        },
+        {
+          "row": 63,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0009619370102882385
+        }
+      ],
+      "n_regs": 138,
+      "shared": 8192
+    },
+    {
+      "num_warps": 2,
+      "baseline_segments": 4,
+      "append_updates": false,
+      "batch": 32,
+      "kv": 16384,
+      "mixed": false,
+      "segments": 4,
+      "bf16_ms": 1.0323759317398071,
+      "cache_dtype": "int8",
+      "bf16_cache_bytes": 536870912,
+      "quantized_cache_bytes": 276824064,
+      "inline_cache": false,
+      "page_packed_cache": false,
+      "allocated_cache_bytes": 276824064,
+      "quantized_ms": 2.004723072052002,
+      "bf16_after_ms": 1.031893253326416,
+      "speedup": 0.5149718413142639,
+      "max_output_diff_from_bf16": 0.000732421875,
+      "rmse_from_bf16": 0.0001299973373534158,
+      "dense_checks": [
+        {
+          "row": 0,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0004988943692296743
+        },
+        {
+          "row": 1,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0005085160955786705
+        },
+        {
+          "row": 31,
+          "dequantized_dense_pass": true,
+          "max_quantization_error": 0.0005102525465190411
+        }
+      ],
+      "n_regs": 138,
+      "shared": 8192
+    }
+  ]
+}

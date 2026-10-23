@@ -1,0 +1,112 @@
+[
+  {
+    "name": "int8-vectors-compact",
+    "returncode": 0,
+    "elapsed": 12.834892749786377,
+    "command": [
+      "/usr/local/bin/python",
+      "-u",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/tools/bench_biv150_int8_kv_decode.py",
+      "--source",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/vllm_fl/patches/biv150_gqa_decode.py",
+      "--out",
+      "/workspace/experiments/minicpm-s2/kv-quant-probes-20261023/int8-vectors-compact.json",
+      "--cache-dtype",
+      "int8",
+      "--scale-placement",
+      "vectors"
+    ]
+  },
+  {
+    "name": "int8-scores-compact",
+    "returncode": 0,
+    "elapsed": 10.983906030654907,
+    "command": [
+      "/usr/local/bin/python",
+      "-u",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/tools/bench_biv150_int8_kv_decode.py",
+      "--source",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/vllm_fl/patches/biv150_gqa_decode.py",
+      "--out",
+      "/workspace/experiments/minicpm-s2/kv-quant-probes-20261023/int8-scores-compact.json",
+      "--cache-dtype",
+      "int8",
+      "--scale-placement",
+      "scores"
+    ]
+  },
+  {
+    "name": "fp8-vectors-compact",
+    "returncode": 0,
+    "elapsed": 16.945334434509277,
+    "command": [
+      "/usr/local/bin/python",
+      "-u",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/tools/bench_biv150_int8_kv_decode.py",
+      "--source",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/vllm_fl/patches/biv150_gqa_decode.py",
+      "--out",
+      "/workspace/experiments/minicpm-s2/kv-quant-probes-20261023/fp8-vectors-compact.json",
+      "--cache-dtype",
+      "fp8",
+      "--scale-placement",
+      "vectors"
+    ]
+  },
+  {
+    "name": "fp8-scores-compact",
+    "returncode": 0,
+    "elapsed": 11.986565828323364,
+    "command": [
+      "/usr/local/bin/python",
+      "-u",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/tools/bench_biv150_int8_kv_decode.py",
+      "--source",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/vllm_fl/patches/biv150_gqa_decode.py",
+      "--out",
+      "/workspace/experiments/minicpm-s2/kv-quant-probes-20261023/fp8-scores-compact.json",
+      "--cache-dtype",
+      "fp8",
+      "--scale-placement",
+      "scores"
+    ]
+  },
+  {
+    "name": "int8-scores-inline",
+    "returncode": 0,
+    "elapsed": 11.283522367477417,
+    "command": [
+      "/usr/local/bin/python",
+      "-u",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/tools/bench_biv150_int8_kv_decode.py",
+      "--source",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/vllm_fl/patches/biv150_gqa_decode.py",
+      "--out",
+      "/workspace/experiments/minicpm-s2/kv-quant-probes-20261023/int8-scores-inline.json",
+      "--cache-dtype",
+      "int8",
+      "--scale-placement",
+      "scores",
+      "--inline-cache"
+    ]
+  },
+  {
+    "name": "fp8-scores-inline",
+    "returncode": 0,
+    "elapsed": 11.734841346740723,
+    "command": [
+      "/usr/local/bin/python",
+      "-u",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/tools/bench_biv150_int8_kv_decode.py",
+      "--source",
+      "/workspace/experiments/minicpm-s2/code/prefill-diagnostics-20261023/vllm_fl/patches/biv150_gqa_decode.py",
+      "--out",
+      "/workspace/experiments/minicpm-s2/kv-quant-probes-20261023/fp8-scores-inline.json",
+      "--cache-dtype",
+      "fp8",
+      "--scale-placement",
+      "scores",
+      "--inline-cache"
+    ]
+  }
+]
