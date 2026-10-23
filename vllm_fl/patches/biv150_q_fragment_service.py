@@ -196,7 +196,19 @@ def _eligible(values):
     )
 
 
-def lowered_proof(ttgir, llir):
+def _q_debug_lines(fn):
+    lines, start = inspect.getsourcelines(fn)
+    result = set()
+    for offset, line in enumerate(lines):
+        if "query_ptr + query_offset" in line:
+            source_line = start + offset
+            result.update((source_line - 1, source_line, source_line + 1))
+    if not result:
+        raise RuntimeError("cannot locate Q load source line")
+    return result
+
+
+def lowered_proof(ttgir, llir, q_source_lines):
     alloc = re.findall(
         r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16", ttgir
     )
@@ -209,8 +221,13 @@ def lowered_proof(ttgir, llir):
     if len(loads) != 1 or len(loops) != 1:
         raise RuntimeError("actual Q load/loop changed")
     # Native LLVM may rematerialize reads. Inspect its real cyclic CFG as well.
+    line_pattern = "|".join(str(line) for line in sorted(q_source_lines))
     q_debug = set(
-        re.findall(r"^!(\d+) = !DILocation\(line: 352, column: 12,", llir, re.M)
+        re.findall(
+            rf"^!(\d+) = !DILocation\(line: (?:{line_pattern}), column:",
+            llir,
+            re.M,
+        )
     )
     if len(q_debug) != 1:
         raise RuntimeError("actual Q source location missing")
@@ -486,7 +503,11 @@ class Manager:
                 raise RuntimeError(
                     "Q-hoist ABI/constants/attrs/cache identity mismatch"
                 )
-            proof = lowered_proof(compiled.asm["ttgir"], compiled.asm["llir"])
+            proof = lowered_proof(
+                compiled.asm["ttgir"],
+                compiled.asm["llir"],
+                _q_debug_lines(self.candidate.fn),
+            )
             if not proof["mechanism_pass"]:
                 record.update(
                     reason="compiler did not retain Q-read removal", mechanism=proof
