@@ -42,3 +42,12 @@ Original kernel: 102 registers, zero spills, 65536 bytes shared. Delayed V:
 16K. `.cg` and 32-bit physical-page index variants are within timing noise.
 No variant is promoted. Generated modules copy only the hash-verified pinned
 source into this experiment's directory; installed source files remain untouched.
+
+Occupancy-combination probe: 19 variants × 4 lengths (76 checks), all within
+.005 tolerance. BI-V150 reports 16 multiprocessors, 128 KiB shared memory and
+262144 registers per multiprocessor, warp size64. Late-V + TILE32 reduces shared
+to40960 bytes and registers to91, crossing the shared-memory limit from two
+to three resident blocks (before other resource constraints), yet is about
+6% slower at16K. All other tested combinations are slower too. These results
+do not support shared-memory occupancy alone as the cause of the prefill cost.
+No variant is promoted and no full benchmark or model accuracy is inferred.
