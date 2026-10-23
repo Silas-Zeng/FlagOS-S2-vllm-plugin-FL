@@ -9,8 +9,19 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import torch
-from bench_biv150_int8_kv_decode import dense_reference
 from biv150_benchmark_utils import full_call, graph_time, inputs, load_module
+
+
+def dense_reference(c, keys, values, row):
+    length = int(c["lengths"][row].item())
+    if not length:
+        return torch.zeros_like(c["out"][row]).float()
+    pages = c["table"][row, : (length + 15) // 16].long()
+    k = keys[pages].reshape(-1, 2, 128)[:length].float()
+    v = values[pages].reshape(-1, 2, 128)[:length].float()
+    q = c["q"][row].float().reshape(2, 8, 128)
+    probability = torch.einsum("hgd,thd->hgt", q, k).mul(128**-0.5).softmax(-1)
+    return torch.einsum("hgt,thd->hgd", probability, v).reshape(16, 128)
 
 
 def main(args):
