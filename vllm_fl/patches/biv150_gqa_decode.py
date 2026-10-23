@@ -115,6 +115,7 @@ def _gqa_decode_attention(
     PAGE_SIZE: tl.constexpr,
     ROWS: tl.constexpr,
     SEGMENTS: tl.constexpr,
+    KV_CACHE_POLICY: tl.constexpr = ".cv",
 ):
     seq_idx = tl.program_id(0)
     kv_head_idx = tl.program_id(1)
@@ -168,8 +169,8 @@ def _gqa_decode_attention(
             + kv_head_idx * v_stride_head
             + offs_dim[None, :]
         )
-        K = tl.load(key_cache_ptr + k_offsets)
-        V = tl.load(value_cache_ptr + v_offsets)
+        K = tl.load(key_cache_ptr + k_offsets, cache_modifier=KV_CACHE_POLICY)
+        V = tl.load(value_cache_ptr + v_offsets, cache_modifier=KV_CACHE_POLICY)
 
         scores = tl.dot(Q, K) * softmax_scale_log2e
         new_max = tl.maximum(running_max, tl.max(scores, 1))
@@ -199,8 +200,8 @@ def _gqa_decode_attention(
             + kv_head_idx * v_stride_head
             + offs_dim[None, :]
         )
-        K = tl.load(key_cache_ptr + k_offsets, mask=column_valid[None, :], other=0.0)
-        V = tl.load(value_cache_ptr + v_offsets, mask=column_valid[:, None], other=0.0)
+        K = tl.load(key_cache_ptr + k_offsets, mask=column_valid[None, :], other=0.0, cache_modifier=KV_CACHE_POLICY)
+        V = tl.load(value_cache_ptr + v_offsets, mask=column_valid[:, None], other=0.0, cache_modifier=KV_CACHE_POLICY)
 
         scores = tl.dot(Q, K) * softmax_scale_log2e
         scores = tl.where(column_valid[None, :], scores, float("-inf"))
@@ -310,6 +311,11 @@ def _reduce_partials(
 
 
 _state = {"calls": 0, "fallbacks": 0, "reduce": None, "signature": None, "views": {}}
+
+
+def _pick_kv_cache_policy(num_seqs):
+    """Small captured batches retain L2 reuse; larger batches stream KV."""
+    return ".cg" if num_seqs <= 8 else ".cv"
 
 
 def _pick_segments(num_seqs, kv_heads, builder_segments):
@@ -480,6 +486,7 @@ def _make_wrapper(attention):
             PAGE_SIZE=_PAGE_SIZE,
             ROWS=_QUERY_HEADS // _KV_HEADS,
             SEGMENTS=segments,
+            KV_CACHE_POLICY=_pick_kv_cache_policy(num_seqs),
             num_warps=1,
             num_stages=1,
         )
@@ -562,6 +569,7 @@ def install():
         "rows": _QUERY_HEADS // _KV_HEADS,
         "page_size": _PAGE_SIZE,
         "backend_rebound": backend.unified_attention is wrapper,
+        "kv_load_policies": {"batch_le_8": ".cg", "batch_gt_8": ".cv"},
     }
 
 
