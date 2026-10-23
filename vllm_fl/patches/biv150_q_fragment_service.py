@@ -655,9 +655,10 @@ def install():
     ):
         return {"installed": False, "reason": "unaudited KVQuantMode"}
     outer = holder[kernel_key]
-    code = getattr(type(outer).__getitem__, "__code__", None)
-    if code is None or _sha(Path(code.co_filename).read_bytes()) != EXPECTED_C2:
-        return {"installed": False, "reason": "original C2 required"}
+    if mode == "gqa":
+        code = getattr(type(outer).__getitem__, "__code__", None)
+        if code is None or _sha(Path(code.co_filename).read_bytes()) != EXPECTED_C2:
+            return {"installed": False, "reason": "original C2 required"}
     raw = outer
     for _ in range(4):
         if "original" not in getattr(raw, "__dict__", {}):

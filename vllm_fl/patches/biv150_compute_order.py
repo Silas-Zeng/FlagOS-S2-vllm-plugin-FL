@@ -23,6 +23,7 @@ SOURCES = {
     "vllm_fl.patches.biv150_mixed_decode": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
     "vllm_fl.patches.biv150_gqa_decode": "1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a",
     "vllm_fl.patches.biv150_prefill_normalized": "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42",
+    "vllm_fl.patches.biv150_q_fragment_service": "c9bfe3a5e4fa6cd8f8c687219a167cbec4a023ac227014360d058569d11d01f3",
     "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
     "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }
