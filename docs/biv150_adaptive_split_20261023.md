@@ -59,3 +59,16 @@ Throughput is effectively flat against parent4873.331261. Against the original
 working reference4809.36 and TTFT4723.09, throughput is+1.16%, but TTFT
 is+1.44%, above the+1% working-reference bound. Keep the PR a draft;16K
 is still running and no overall performance acceptance is claimed.
+
+## Final full-model verdict: do not integrate
+
+16K warmup TPOT363.942081/363.755983 ms stabilized. One scored round completed
+128/128 requests:3372.257705 total tokens/s, TTFT155068.042271 ms,
+TPOT133.047161 ms. Against parent3368.310204 throughput is+0.117%, within
+small single-round variation; against initial3364.03 it is+0.245%.
+
+Full precision passes103/105, but4K throughput is flat and its working-reference
+TTFT gate fails. Neither case reaches20%. The large isolated low-batch speedup
+does not establish an end-to-end gain. Keep code/evidence in the draft branch,
+do not merge this default configuration. Both single scored rounds and all
+warmups are retained; service process84302 terminated and cleaned its engine.

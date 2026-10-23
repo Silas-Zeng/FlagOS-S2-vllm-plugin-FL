@@ -1,0 +1,63 @@
+{
+  "command": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/adaptive-split-20261023",
+  "git_commit": "474b3376aae829abc8d114788e344898aa1196be",
+  "git_status": "",
+  "source_hashes": {
+    "vllm_fl/patches/biv150_prefill_normalized.py": "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42",
+    "vllm_fl/worker/model_runner.py": "97c78bde864cb019fe38831804f08d201a950dd2cfafd15ac5ad77b90a93879f",
+    "vllm_fl/patches/biv150_gqa_decode.py": "54263b17ea5f84c4f7f499e9cef7ddf695ad0e6343678c5569bb653b7eda9b96"
+  },
+  "mode": "all",
+  "started_utc": "2026-10-23T11:21:53.126185+00:00",
+  "python": "3.12.11 (main, Jul 31 2025, 06:45:11) [GCC 13.3.0]",
+  "packages": {
+    "torch": "2.10.0+corex.4.5.0",
+    "vllm": "0.24.0+empty",
+    "flag_gems": "5.3.5",
+    "evalscope": "1.11.1"
+  },
+  "env": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/adaptive-split-20261023/full/inductor-cache"
+  },
+  "gqa_installation": {
+    "installed": true,
+    "scope": "BF16 MiniCPM pure-decode 3D only",
+    "rows": 8,
+    "page_size": 16,
+    "backend_rebound": true,
+    "adaptive_split_capacity": {
+      "1": 128,
+      "2": 64,
+      "3": 32,
+      "4": 32
+    }
+  },
+  "installation": {
+    "installed": true,
+    "scope": "audited BF16 causal MiniCPM prefill without sinks",
+    "backend_rebound": true,
+    "audited": {
+      "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+    },
+    "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+    "initial_mass": 0
+  }
+}
