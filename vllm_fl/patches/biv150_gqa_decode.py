@@ -121,7 +121,11 @@ def _gqa_decode_attention(
     segment_idx = tl.program_id(2)
 
     seq_len = tl.load(seq_lens_ptr + seq_idx)
-    steps_per_segment = tl.cdiv(seq_len, SEGMENTS * PAGE_SIZE)
+    if SEGMENTS > 16:
+        effective = tl.minimum(SEGMENTS, tl.where(seq_len <= 512, 16, tl.where(seq_len <= 2048, 32, tl.where(seq_len <= 8192, 64, 128))))
+    else:
+        effective = SEGMENTS
+    steps_per_segment = tl.cdiv(seq_len, effective * PAGE_SIZE)
     lower = segment_idx * steps_per_segment * PAGE_SIZE
     if lower >= seq_len:
         return
@@ -268,7 +272,11 @@ def _reduce_partials(
     # sequences: with 16 segments and a 100-token sequence the span is one page, so
     # 7 segments are live, while the naive formula would read 1 and silently drop
     # seven eighths of the keys and values.
-    tiles_per_segment = tl.maximum(tl.cdiv(seq_len, num_segments * page_size), 1)
+    if num_segments > 16:
+        effective = tl.minimum(num_segments, tl.where(seq_len <= 512, 16, tl.where(seq_len <= 2048, 32, tl.where(seq_len <= 8192, 64, 128))))
+    else:
+        effective = num_segments
+    tiles_per_segment = tl.maximum(tl.cdiv(seq_len, effective * page_size), 1)
     active = tl.cdiv(seq_len, tiles_per_segment * page_size)
 
     offs_seg = tl.arange(0, num_segments)
@@ -287,7 +295,7 @@ def _reduce_partials(
     )
     segm_expsum = tl.load(expsum_base + offs_seg * max_stride_segment,
                           mask=seg_valid, other=0.0)
-    weights = tl.exp(tl.where(seg_valid, segm_max, 0.0) - overall_max)
+    weights = tl.exp(tl.where(seg_valid, segm_max - overall_max, float("-inf")))
     overall_expsum = tl.sum(segm_expsum * weights, 0)
 
     out_base = (
@@ -309,25 +317,20 @@ def _reduce_partials(
     )
 
 
-_state = {"calls": 0, "fallbacks": 0, "reduce": None, "signature": None, "views": {}}
+_state = {"calls": 0, "fallbacks": 0, "reduce": None, "signature": None, "views": {}, "scratch": {}}
 
 
 def _pick_segments(num_seqs, kv_heads, builder_segments):
-    """Choose the split-K width for this step instead of inheriting the constant.
+    """Use additional operator-owned splits for low captured batch sizes.
 
-    The generic kernel always uses the builder's segment count, but measurement on
-    this device shows the optimum is set by parallelism, not by sequence length:
-    with one warp per program the kernel is fastest when the grid holds roughly
-    ``target_programs`` programs and slows down on either side of it. At batch 64
-    that is 2 segments (0.537 ms) against 0.648 at 16, while at batch 16 it is 8
-    segments (0.531 ms) and 4 segments collapse to 0.90 ms because the grid is only
-    128 programs. Fewer segments also mean less scratch traffic and a shorter
-    reduction, so the target is deliberately modest.
-
-    The result never exceeds the builder's count, because the partial buffers are
-    allocated for it; taking a prefix view is safe since the reduction only reads
-    as many segments as it is given.
+    For batches 1/2/3-4 the launch capacities are 128/64/32. Both GPU passes
+    select the live width from sequence lengths, so graph replay can cross length
+    thresholds safely. Wider batches keep the existing target-program policy and
+    use prefix views of the builder's buffers. Small low-batch sequences pay for
+    the larger launch/reduction capacity; full-model validation is required.
     """
+    if builder_segments >= 16 and 1 <= num_seqs <= 4:
+        return 128 if num_seqs == 1 else (64 if num_seqs == 2 else 32)
     programs_per_segment = max(1, num_seqs * kv_heads)
     need = -(-TARGET_PROGRAMS // programs_per_segment)
     segments = 1
@@ -425,7 +428,24 @@ def _make_wrapper(attention):
         num_seqs = seq_lens.shape[0]
         builder_segments = bound["num_par_softmax_segments"]
         segments = _pick_segments(num_seqs, _KV_HEADS, builder_segments)
-        if segments >= builder_segments:
+        if segments > builder_segments:
+            # Persistent operator-owned scratch, shared across serial attention
+            # calls. Live references keep graph captures' addresses stable. No
+            # host read of sequence lengths enters the captured launch policy.
+            key = (q.device, num_seqs, segments)
+            buffers = _state["scratch"].get(key)
+            if buffers is None:
+                buffers = (
+                    torch.empty((num_seqs, _QUERY_HEADS, segments, _HEAD_SIZE),
+                                device=q.device, dtype=torch.float32),
+                    torch.empty((num_seqs, _QUERY_HEADS, segments),
+                                device=q.device, dtype=torch.float32),
+                    torch.empty((num_seqs, _QUERY_HEADS, segments),
+                                device=q.device, dtype=torch.float32),
+                )
+                _state["scratch"][key] = buffers
+            segm_output, segm_max, segm_expsum = buffers
+        elif segments == builder_segments:
             segm_output = bound["softmax_segm_output"]
             segm_max = bound["softmax_segm_max"]
             segm_expsum = bound["softmax_segm_expsum"]
@@ -562,6 +582,7 @@ def install():
         "rows": _QUERY_HEADS // _KV_HEADS,
         "page_size": _PAGE_SIZE,
         "backend_rebound": backend.unified_attention is wrapper,
+        "adaptive_split_capacity": {1: 128, 2: 64, 3: 32, 4: 32},
     }
 
 
