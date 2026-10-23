@@ -1,0 +1,1179 @@
+{
+  "trace": "/private/tmp/flagos-decode-evidence/native.trace.json.gz",
+  "note": "Cumulative event durations, not model wall-clock attribution",
+  "kernel": [
+    {
+      "name": "_gqa_decode_attention",
+      "count": 336,
+      "cumulative_ms": 322.8625780000003,
+      "example_shapes": null
+    },
+    {
+      "name": "mm_kernel",
+      "count": 528,
+      "cumulative_ms": 28.853309000000003,
+      "example_shapes": null
+    },
+    {
+      "name": "void Gemm_tcu_mr_kernel::gemm_tcu_h<64u, 256u, 64u, 16u, 64u, 2u, (ixblasTrans_t)1, (ixblasTrans_t)1, (ixblasTCUGEMMCategory_t)0, (ixmma::MMEdgeCheckMode)0, (ixblasGEMMBoundary_t)2, (ixblasLtEpilogue_t)1, false, int, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, false, false, 4u, 4u, false, int, int, int, signed char, signed char>(int*, int*, signed char const*, signed char const*, int, int, int, int, int, int, int, int, int, int, long, long, long, long, long, long, ixblasGEMMBatchMode_t, int, void*, void*, void*, unsigned int)",
+      "count": 816,
+      "cumulative_ms": 27.23696500000002,
+      "example_shapes": null
+    },
+    {
+      "name": "linear_kernel",
+      "count": 8,
+      "cumulative_ms": 7.669189,
+      "example_shapes": null
+    },
+    {
+      "name": "(anonymous namespace)::quantize_rows(__ix_bfloat16 const*, signed char*, float*, int, int)",
+      "count": 816,
+      "cumulative_ms": 5.628303999999982,
+      "example_shapes": null
+    },
+    {
+      "name": "_reduce_partials",
+      "count": 336,
+      "cumulative_ms": 2.4560999999999997,
+      "example_shapes": null
+    },
+    {
+      "name": "(anonymous namespace)::epilogue(int const*, float const*, float const*, __ix_bfloat16 const*, __ix_bfloat16*, int)",
+      "count": 544,
+      "cumulative_ms": 2.385034999999999,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_linear_1",
+      "count": 264,
+      "cumulative_ms": 1.8991740000000006,
+      "example_shapes": null
+    },
+    {
+      "name": "reshape_and_cache_kernel_flash",
+      "count": 336,
+      "cumulative_ms": 1.8960200000000003,
+      "example_shapes": null
+    },
+    {
+      "name": "_weighted_hist",
+      "count": 16,
+      "cumulative_ms": 1.876935,
+      "example_shapes": null
+    },
+    {
+      "name": "(anonymous namespace)::silu_epilogue(int const*, float const*, float const*, __ix_bfloat16*, int)",
+      "count": 272,
+      "cumulative_ms": 1.8200789999999987,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_poi_fused_2",
+      "count": 272,
+      "cumulative_ms": 1.6237020000000022,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_gate_silu_0",
+      "count": 272,
+      "cumulative_ms": 1.5495490000000003,
+      "example_shapes": null
+    },
+    {
+      "name": "true_div_func_kernel_rank_2",
+      "count": 8,
+      "cumulative_ms": 1.4185090000000002,
+      "example_shapes": null
+    },
+    {
+      "name": "true_div_func_kernel_rank_1",
+      "count": 8,
+      "cumulative_ms": 0.832966,
+      "example_shapes": null
+    },
+    {
+      "name": "softmax_kernel_inner",
+      "count": 8,
+      "cumulative_ms": 0.6493040000000001,
+      "example_shapes": null
+    },
+    {
+      "name": "argmax_kernel_inner",
+      "count": 8,
+      "cumulative_ms": 0.561577,
+      "example_shapes": null
+    },
+    {
+      "name": "_row_stats_partial",
+      "count": 8,
+      "cumulative_ms": 0.543254,
+      "example_shapes": null
+    },
+    {
+      "name": "fused_exponential_kernel_f32_unroll8",
+      "count": 8,
+      "cumulative_ms": 0.41223899999999997,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_2",
+      "count": 56,
+      "cumulative_ms": 0.39502599999999993,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_0",
+      "count": 64,
+      "cumulative_ms": 0.37046400000000007,
+      "example_shapes": null
+    },
+    {
+      "name": "_to_copy_func_kernel_rank_1",
+      "count": 16,
+      "cumulative_ms": 0.359304,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_poi_fused_mul_silu_slice_1",
+      "count": 64,
+      "cumulative_ms": 0.34916500000000006,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_poi_fused_3",
+      "count": 56,
+      "cumulative_ms": 0.3380479999999999,
+      "example_shapes": null
+    },
+    {
+      "name": "_apply_mask",
+      "count": 8,
+      "cumulative_ms": 0.25955,
+      "example_shapes": null
+    },
+    {
+      "name": "_hist_walk",
+      "count": 16,
+      "cumulative_ms": 0.096589,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_red_fused__to_copy_embedding_rms_norm_0",
+      "count": 8,
+      "cumulative_ms": 0.08534199999999999,
+      "example_shapes": null
+    },
+    {
+      "name": "zeros_kernel",
+      "count": 16,
+      "cumulative_ms": 0.059402,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_linear_2",
+      "count": 8,
+      "cumulative_ms": 0.058703000000000005,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_1",
+      "count": 8,
+      "cumulative_ms": 0.058685,
+      "example_shapes": null
+    },
+    {
+      "name": "_compute_slot_mapping_kernel",
+      "count": 8,
+      "cumulative_ms": 0.053699000000000004,
+      "example_shapes": null
+    },
+    {
+      "name": "triton_poi_fused_1",
+      "count": 8,
+      "cumulative_ms": 0.048593,
+      "example_shapes": null
+    },
+    {
+      "name": "_index_linearized_jit_function",
+      "count": 8,
+      "cumulative_ms": 0.032778,
+      "example_shapes": null
+    },
+    {
+      "name": "fill_scalar_func_kernel_rank_1",
+      "count": 8,
+      "cumulative_ms": 0.029779,
+      "example_shapes": null
+    },
+    {
+      "name": "sub_func_tensor_scalar_kernel_rank_1",
+      "count": 8,
+      "cumulative_ms": 0.029525999999999997,
+      "example_shapes": null
+    },
+    {
+      "name": "_row_max_reduce",
+      "count": 8,
+      "cumulative_ms": 0.029258000000000003,
+      "example_shapes": null
+    },
+    {
+      "name": "_copy_kernel_kernel_rank_1",
+      "count": 8,
+      "cumulative_ms": 0.028897999999999997,
+      "example_shapes": null
+    }
+  ],
+  "cpu_op": [
+    {
+      "name": "vllm::unified_attention_with_output",
+      "count": 336,
+      "cumulative_ms": 151.46434500000004,
+      "example_shapes": [
+        [
+          32,
+          16,
+          128
+        ],
+        [
+          32,
+          2,
+          128
+        ],
+        [
+          32,
+          2,
+          128
+        ],
+        [
+          32,
+          16,
+          128
+        ],
+        [],
+        [],
+        [],
+        [
+          0
+        ]
+      ]
+    },
+    {
+      "name": "vllm::unified_kv_cache_update",
+      "count": 336,
+      "cumulative_ms": 90.14301600000005,
+      "example_shapes": [
+        [
+          32,
+          2,
+          128
+        ],
+        [
+          32,
+          2,
+          128
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::mm",
+      "count": 528,
+      "cumulative_ms": 82.750438,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          2048,
+          2560
+        ],
+        [
+          32,
+          2560
+        ]
+      ]
+    },
+    {
+      "name": "biv150_native::linear",
+      "count": 544,
+      "cumulative_ms": 81.48333199999999,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          2048,
+          2560
+        ],
+        [
+          2560
+        ],
+        [
+          2560,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::unbind",
+      "count": 680,
+      "cumulative_ms": 46.85909999999999,
+      "example_shapes": [
+        [
+          34101,
+          2,
+          16,
+          2,
+          128
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::empty",
+      "count": 3632,
+      "cumulative_ms": 44.62411899999999,
+      "example_shapes": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::_int_mm",
+      "count": 816,
+      "cumulative_ms": 43.216634000000035,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          2048,
+          2560
+        ]
+      ]
+    },
+    {
+      "name": "biv150_native::gate_silu",
+      "count": 272,
+      "cumulative_ms": 36.51213199999998,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          2048,
+          12288
+        ],
+        [
+          12288
+        ],
+        [
+          12288,
+          2048
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::expand",
+      "count": 672,
+      "cumulative_ms": 31.682292999999998,
+      "example_shapes": [
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_gate_silu_0",
+      "count": 272,
+      "cumulative_ms": 9.026590999999998,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_linear_1",
+      "count": 264,
+      "cumulative_ms": 8.92999,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_poi_fused_2",
+      "count": 272,
+      "cumulative_ms": 8.329219000000004,
+      "example_shapes": [
+        [
+          32,
+          2560
+        ],
+        [
+          32
+        ],
+        [
+          131072,
+          128
+        ],
+        [
+          32,
+          2,
+          128
+        ],
+        [
+          32,
+          16,
+          128
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::to",
+      "count": 64,
+      "cumulative_ms": 4.460409000000001,
+      "example_shapes": [
+        [
+          32
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::_to_copy",
+      "count": 24,
+      "cumulative_ms": 4.336485,
+      "example_shapes": [
+        [
+          32,
+          130560
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::copy_",
+      "count": 72,
+      "cumulative_ms": 4.276864999999999,
+      "example_shapes": [
+        [
+          32,
+          8192
+        ],
+        [
+          32,
+          8192
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::slice",
+      "count": 936,
+      "cumulative_ms": 3.9091969999999976,
+      "example_shapes": [
+        [
+          256,
+          8192
+        ],
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::index",
+      "count": 8,
+      "cumulative_ms": 3.6820190000000004,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::fill_",
+      "count": 40,
+      "cumulative_ms": 3.25173,
+      "example_shapes": [
+        [
+          224
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::as_strided",
+      "count": 2992,
+      "cumulative_ms": 3.2309090000000014,
+      "example_shapes": [
+        [
+          256,
+          8192
+        ],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::div_",
+      "count": 16,
+      "cumulative_ms": 2.9823250000000003,
+      "example_shapes": [
+        [
+          32,
+          130560
+        ],
+        [
+          32,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "AOTDispatcher Runtime Wrapper Prologue",
+      "count": 344,
+      "cumulative_ms": 2.142614999999999,
+      "example_shapes": null
+    },
+    {
+      "name": "aten::sub",
+      "count": 8,
+      "cumulative_ms": 1.906269,
+      "example_shapes": [
+        [
+          32
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_0",
+      "count": 64,
+      "cumulative_ms": 1.8769880000000003,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::exponential_",
+      "count": 8,
+      "cumulative_ms": 1.775785,
+      "example_shapes": [
+        [
+          32,
+          130560
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_poi_fused_3",
+      "count": 56,
+      "cumulative_ms": 1.6754529999999999,
+      "example_shapes": [
+        [
+          32,
+          2560
+        ],
+        [
+          32
+        ],
+        [
+          131072,
+          128
+        ],
+        [
+          32,
+          2,
+          128
+        ],
+        [
+          32,
+          16,
+          128
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_2",
+      "count": 56,
+      "cumulative_ms": 1.674552,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::zero_",
+      "count": 16,
+      "cumulative_ms": 1.5166250000000001,
+      "example_shapes": [
+        [
+          32,
+          256
+        ]
+      ]
+    },
+    {
+      "name": "aten::linear",
+      "count": 8,
+      "cumulative_ms": 1.464199,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          130560,
+          2048
+        ],
+        []
+      ]
+    },
+    {
+      "name": "triton_poi_fused_mul_silu_slice_1",
+      "count": 64,
+      "cumulative_ms": 1.4608299999999999,
+      "example_shapes": [
+        [
+          32,
+          12288
+        ],
+        [
+          32,
+          6144
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::softmax",
+      "count": 8,
+      "cumulative_ms": 1.398218,
+      "example_shapes": [
+        [
+          32,
+          130560
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::_softmax",
+      "count": 8,
+      "cumulative_ms": 1.328574,
+      "example_shapes": [
+        [
+          32,
+          130560
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::argmax",
+      "count": 8,
+      "cumulative_ms": 1.2300160000000002,
+      "example_shapes": [
+        [
+          32,
+          130560
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::view",
+      "count": 728,
+      "cumulative_ms": 0.9975379999999998,
+      "example_shapes": [
+        [
+          256,
+          131072
+        ],
+        []
+      ]
+    },
+    {
+      "name": "Pregraph bytecode",
+      "count": 8,
+      "cumulative_ms": 0.9308829999999999,
+      "example_shapes": null
+    },
+    {
+      "name": "aten::unsqueeze",
+      "count": 16,
+      "cumulative_ms": 0.779915,
+      "example_shapes": [
+        [
+          32
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::empty_strided",
+      "count": 40,
+      "cumulative_ms": 0.5640890000000001,
+      "example_shapes": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::alias",
+      "count": 8,
+      "cumulative_ms": 0.411068,
+      "example_shapes": [
+        [
+          32,
+          130560
+        ]
+      ]
+    },
+    {
+      "name": "triton_red_fused__to_copy_embedding_rms_norm_0",
+      "count": 8,
+      "cumulative_ms": 0.342526,
+      "example_shapes": [
+        [
+          32
+        ],
+        [
+          130560,
+          2048
+        ],
+        [
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::empty_like",
+      "count": 16,
+      "cumulative_ms": 0.340123,
+      "example_shapes": [
+        [
+          32
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_1",
+      "count": 8,
+      "cumulative_ms": 0.258541,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_poi_fused_1",
+      "count": 8,
+      "cumulative_ms": 0.24593800000000002,
+      "example_shapes": [
+        [
+          32,
+          2560
+        ],
+        [
+          32
+        ],
+        [
+          131072,
+          128
+        ],
+        [
+          32,
+          2,
+          128
+        ],
+        [
+          32,
+          16,
+          128
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "triton_red_fused_fused_add_rms_norm_linear_2",
+      "count": 8,
+      "cumulative_ms": 0.22794099999999998,
+      "example_shapes": [
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [
+          32,
+          2048
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::select",
+      "count": 24,
+      "cumulative_ms": 0.12311700000000002,
+      "example_shapes": [
+        [
+          32,
+          1
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::is_pinned",
+      "count": 8,
+      "cumulative_ms": 0.10509600000000001,
+      "example_shapes": [
+        [
+          256
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::reshape",
+      "count": 16,
+      "cumulative_ms": 0.07235,
+      "example_shapes": [
+        [
+          32
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::lt",
+      "count": 8,
+      "cumulative_ms": 0.07073400000000002,
+      "example_shapes": [
+        [
+          32
+        ],
+        [
+          32
+        ]
+      ]
+    },
+    {
+      "name": "aten::flatten",
+      "count": 8,
+      "cumulative_ms": 0.066653,
+      "example_shapes": [
+        [
+          256,
+          131072
+        ],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::add_",
+      "count": 8,
+      "cumulative_ms": 0.061502,
+      "example_shapes": [
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "name": "aten::squeeze",
+      "count": 8,
+      "cumulative_ms": 0.04483999999999999,
+      "example_shapes": [
+        [
+          32,
+          1
+        ],
+        []
+      ]
+    },
+    {
+      "name": "aten::add",
+      "count": 8,
+      "cumulative_ms": 0.038924,
+      "example_shapes": [
+        [
+          32
+        ],
+        [
+          32
+        ],
+        [],
+        [
+          32
+        ]
+      ]
+    },
+    {
+      "name": "aten::detach",
+      "count": 16,
+      "cumulative_ms": 0.037641999999999995,
+      "example_shapes": [
+        [
+          32
+        ]
+      ]
+    },
+    {
+      "name": "aten::item",
+      "count": 16,
+      "cumulative_ms": 0.035312,
+      "example_shapes": [
+        []
+      ]
+    },
+    {
+      "name": "aten::index_select",
+      "count": 8,
+      "cumulative_ms": 0.027493,
+      "example_shapes": [
+        [
+          33554432
+        ],
+        [],
+        [
+          32
+        ],
+        [
+          32
+        ]
+      ]
+    },
+    {
+      "name": "aten::resolve_conj",
+      "count": 24,
+      "cumulative_ms": 0.01032,
+      "example_shapes": [
+        [
+          32
+        ]
+      ]
+    },
+    {
+      "name": "aten::lift_fresh",
+      "count": 24,
+      "cumulative_ms": 0.009456999999999998,
+      "example_shapes": [
+        [
+          32
+        ]
+      ]
+    },
+    {
+      "name": "aten::_local_scalar_dense",
+      "count": 16,
+      "cumulative_ms": 0.00837,
+      "example_shapes": [
+        []
+      ]
+    },
+    {
+      "name": "aten::resolve_neg",
+      "count": 24,
+      "cumulative_ms": 0.0047940000000000005,
+      "example_shapes": [
+        [
+          32
+        ]
+      ]
+    }
+  ],
+  "gpu_memcpy": [
+    {
+      "name": "Memcpy HtoD (Pinned -> Device)",
+      "count": 48,
+      "cumulative_ms": 0.45194599999999985,
+      "example_shapes": null
+    },
+    {
+      "name": "Memcpy DtoH (Device -> Pinned)",
+      "count": 8,
+      "cumulative_ms": 0.018446999999999998,
+      "example_shapes": null
+    }
+  ],
+  "gpu_memset": []
+}
