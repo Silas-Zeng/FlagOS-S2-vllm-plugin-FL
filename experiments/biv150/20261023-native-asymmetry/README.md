@@ -92,3 +92,27 @@ Raw outcomes are retained in evidence/, including all negative configurations.
 The observed native M32 QKV/O GEMMs are modestly slower than BF16, while native
 gate/up remains faster. This motivates a gate-only service experiment; it does
 not prove that these small differences explain the full prior16K regression.
+
+## Prepared execution-shape diagnostics (not installed in formal acceptance)
+
+`tools/biv150_execution_shape_trace.py` records host scheduled tokens/requests,
+maximum tokens per request, actual graph mode and padded token/request counts.
+It wraps the original model-runner helper and returns the exact original result;
+no dispatch result, scheduler limit or GPU tensor is changed/read. It ignores
+helper calls outside execute_model (dummy/profile/capture), fingerprints the
+helper source, and records effective scheduler limits from the runner object.
+Periodic snapshots can omit final calls after forced termination, so counts must
+not be treated as complete per-step tracing without a clean final flush.
+
+CPU self-test covers33->40 padding, ignored dummy calls, result-object identity,
+original exception propagation, uninstall restoration, and simulated disk failure
+without interrupting inference. The self-test's2048/256 limits are synthetic;
+they do not measure the current service. No GPU/model trace has been collected.
+
+A useful subsequent separate diagnostic compares the old BF16/native pair around
+input16000 versus16384 at32 requests, with the official serve configuration kept
+unchanged. At16000,32 inputs fit the recorded baseline token capacity; at16384,
+32*16384=524288 exceeds baseline522960 but fits the old native capacity. This can
+expose the cache boundary and actual graph padding rather than inferring them
+from logger running counts. These are diagnostic workloads, not replacement
+formal benchmark scores, and require isolated sources plus verified GPU idleness.
