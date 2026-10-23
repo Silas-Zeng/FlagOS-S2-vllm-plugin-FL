@@ -7,7 +7,10 @@ validated team-main normalization fix3283672; prototype conflicts use exactly
 main's already checked implementation. Old prototypes remain in Git history.
 
 Existing W8A8 linear and FP8_scaled_mm experiments were separate from KV storage.
-These are the first recorded FP8/INT8 KV + fused decode probes in this work.
+Correction: the local2026-10-22 progress report already records an INT8 KV
+operator probe:BF160.5227ms versus INT80.8246ms, a negative result. This turn
+adds FP8, storage layouts, launch searches and direct/dual INT8 dots; it is not
+the first historical INT8-KV test. No full-model quantized-KV acceptance is known.
 
 ## Scope and accounting
 
