@@ -47,8 +47,10 @@ large short-context discrepancies; the zero-mass clone removes them.
 The standalone operator time remains essentially unchanged (approximately±1%).
 These checks do not prove model accuracy or end-to-end performance. Full105-item
 Level3 evaluation and real-serving selection evidence are required before any
-model-accuracy claim. The checker additionally exercises the existing decode
-launch/GQA registration and requires sink fallback to stay bit-exact.
+model-accuracy claim. The registered-stack checker passed all eight cases with the existing decode
+launch/GQA hooks active. Sink fallback remained bit-exact and did not select
+the normalized kernel. Full-model Level3 evaluation is now running on code
+commit4f00fcb; no model accuracy or throughput result is available yet.
 
 ## Reproduce
 
