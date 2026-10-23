@@ -133,3 +133,26 @@ these frequencies do not establish exact historical scored-run distributions or
 performance. Output256 also interleaves prefill/decode differently from official
 output1024. Use the trace to establish executed shapes and the capacity-boundary
 hypothesis, not as replacement official scores or a completed causal explanation.
+
+## Both historical shape arms completed
+
+Both arms completed all four diagnostic cases and exited0. In32x16384, baseline
+maximum actual requests31 and native32; both pure-decode maximum padded count32.
+In33x16384, baseline maximum actual31 and native33, yet pure-decode padded count
+still never exceeds32 in either arm. The native33-request state occurs outside
+those uniform-decode observations. The control33x15360 reaches FULL40 in both
+arms, demonstrating the recorder can observe the40 graph when used.
+These short-output diagnostics do not prove the exact old scored-run behavior,
+but do not support attributing the full regression merely to a32->40 pure-decode
+Graph change. Full before/after snapshots are in evidence/cache-boundary-full/.
+
+Mixed execution is substantial: base32x16384 has251 multi-request prefill/mixed
+calls, including2048 scheduled tokens,31 requests,max query2018. Since the other
+30 scheduled queries each contribute at least1, they must all be single-token
+decode queries. The dedicated GQA gate only handles max_seqlen_q==1, so the
+current mixed call uses the generic prefill kernel for these decode rows too.
+A targeted operator experiment should split mixed attention computation on GPU:
+keep normalized prefill for multi-token queries, use a split GQA kernel for the
+single-token queries, preserving query offsets and all framework scheduling.
+This is a prepared optimization direction, not measured speedup or a causal
+proof that it accounts for the full historical8% regression.
