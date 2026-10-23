@@ -35,3 +35,10 @@ changes rounding (max observed difference .00024414) and is slower; BM256 is
 also slower. No candidate is installed or merged and no model accuracy score
 is inferred from these operator checks. Short/edge/mixed-shape independent
 reference checks remain necessary for any future actual candidate.
+
+Liveness/cache/address probe: 5 variants × 4 lengths (20 checks), all bit-exact.
+Original kernel: 102 registers, zero spills, 65536 bytes shared. Delayed V:
+100 registers, zero spills, 49152 bytes shared, but approximately 2% slower at
+16K. `.cg` and 32-bit physical-page index variants are within timing noise.
+No variant is promoted. Generated modules copy only the hash-verified pinned
+source into this experiment's directory; installed source files remain untouched.
