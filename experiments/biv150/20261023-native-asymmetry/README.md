@@ -116,3 +116,20 @@ unchanged. At16000,32 inputs fit the recorded baseline token capacity; at16384,
 expose the cache boundary and actual graph padding rather than inferring them
 from logger running counts. These are diagnostic workloads, not replacement
 formal benchmark scores, and require isolated sources plus verified GPU idleness.
+
+## First actual model trace (partial base arm)
+
+The queued historical diagnostic has begun after the failed gate-only acceptance
+cleaned its service. Base32x16000 completed and the runner's effective scheduler
+configuration reports max_num_batched_tokens2048 and max_num_seqs256, unchanged.
+Observed decode dispatches include32 actual/padded32 and10–14 actual/padded16,
+all FULL. This is model-level evidence, unlike the earlier synthetic self-test.
+Partial raw snapshots are retained in evidence/cache-boundary-base-partial.json.
+The run now covers32x16000,32x16384,33x15360,33x16384, with distinct prompt seeds
+per case. Remaining cases/native arm are still pending at this snapshot.
+
+Diagnostic CPU logging has overhead and can affect asynchronous batch formation;
+these frequencies do not establish exact historical scored-run distributions or
+performance. Output256 also interleaves prefill/decode differently from official
+output1024. Use the trace to establish executed shapes and the capacity-boundary
+hypothesis, not as replacement official scores or a completed causal explanation.
