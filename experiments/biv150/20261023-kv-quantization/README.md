@@ -51,3 +51,17 @@ merged into main. Raw JSON records include source hashes and actual launch args.
 
 Separately,64 BF16 head-subgroup cases passed numeric checks but long-shape best
 speedups were0.576x /0.540x. Their raw results are in the decode evidence folder.
+
+A normal-only E4M3 byte payload was also tested: subnormal payloads are flushed
+to zero, and normal values are decoded by integer bit-field reconstruction into
+BF16. All five sampled independent references pass, but the operator remains
+slower; this custom representation is not installed in serving.
+
+FP16 KV plus FP16 dots (BF16 queries converted at load, BF16 outputs) passed five
+independent-reference cases but long-shape speedups were1.0003x /0.9995x, within
+noise, before cache-write conversion costs. No serving integration is justified.
+
+The deferred BF16 softmax experiment tested70 cases:66 passed numeric checks,
+4 failed compiler PassManager (recorded verbatim). Best long-shape speedups were
+0.582x /0.671x; no version was installed. Compiler failures were not counted as
+correctness passes. Raw data is in the decode evidence folder.
