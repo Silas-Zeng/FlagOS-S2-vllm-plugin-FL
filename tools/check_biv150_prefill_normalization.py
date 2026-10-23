@@ -5,6 +5,7 @@ import importlib.util
 import json
 from pathlib import Path
 import socket
+import statistics
 import sys
 import torch
 def measure(fn):
