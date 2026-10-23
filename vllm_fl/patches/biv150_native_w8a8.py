@@ -57,6 +57,12 @@ def load_library():
                 (*x.shape[:-1], wq.shape[1] // 2), dtype=x.dtype, device=x.device
             )
 
+    @torch.library.register_fake("biv150_native::gate_silu_auto")
+    def fake_gate_auto(x, wq, scales, original, min_rows):
+        return torch.empty(
+            (*x.shape[:-1], wq.shape[1] // 2), dtype=x.dtype, device=x.device
+        )
+
     _LOADED = True
 
 
@@ -168,7 +174,7 @@ def install():
                 return forward_original(self, x)
             # Operator fusion only: replace gate/up linear + activation; leave
             # down projection and all framework scheduling/dispatch intact.
-            y = torch.ops.biv150_native.gate_silu(
+            y = torch.ops.biv150_native.gate_silu_auto(
                 x.reshape(-1, x.shape[-1]),
                 layer._biv150_native_wq,
                 layer._biv150_native_sw,
@@ -187,4 +193,6 @@ def install():
         "compressed_only": compressed,
         "skip_edge_layers": skip_edges,
         "fused_silu": fused_silu,
+        "activation_residual_rows": [1, 16],
+        "gate_operator": "gate_silu_auto",
     }

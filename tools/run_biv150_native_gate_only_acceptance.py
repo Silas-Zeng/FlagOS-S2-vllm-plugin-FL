@@ -290,6 +290,8 @@ def main(args):
             not native_states
             or native_states[-1].get("installed") is not True
             or tuple(native_states[-1].get("layers", ())) != ("gate_up_proj",)
+            or native_states[-1].get("gate_operator") != "gate_silu_auto"
+            or native_states[-1].get("activation_residual_rows") != [1, 16]
         ):
             raise RuntimeError(f"Gate-only native operator missing: {native_states}")
         manifest["native_installation"] = native_states[-1]

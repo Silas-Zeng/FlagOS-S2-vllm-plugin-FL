@@ -108,14 +108,27 @@ at::Tensor gate_silu_residual(const at::Tensor& x, const at::Tensor& wq,
   return output;
 }
 
+at::Tensor gate_silu_auto(const at::Tensor& x, const at::Tensor& wq,
+                          const at::Tensor& scales, const at::Tensor& original,
+                          int64_t min_rows) {
+  // Only the compressed MiniCPM path has no original BF16 fallback. Reuse its
+  // padded GEMM rows for the already-tested activation residual at small M.
+  const bool compressed = original.dim()==2 && original.stride(0)==0 && original.stride(1)==0;
+  if (compressed && x.dim()==2 && x.size(0)>=1 && x.size(0)<=16)
+    return gate_silu_residual(x,wq,scales);
+  return gate_silu(x,wq,scales,original,min_rows);
+}
+
 }
 
 TORCH_LIBRARY(biv150_native, m) {
+  m.def("gate_silu_auto(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, int min_rows) -> Tensor");
   m.def("gate_silu_residual(Tensor x, Tensor weight_int8, Tensor scales) -> Tensor");
   m.def("linear(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, Tensor? bias, int min_rows) -> Tensor");
   m.def("gate_silu(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, int min_rows) -> Tensor");
 }
 TORCH_LIBRARY_IMPL(biv150_native, CUDA, m) {
+  m.impl("gate_silu_auto", &gate_silu_auto);
   m.impl("gate_silu_residual", &gate_silu_residual);
   m.impl("linear", &linear);
   m.impl("gate_silu", &gate_silu);
