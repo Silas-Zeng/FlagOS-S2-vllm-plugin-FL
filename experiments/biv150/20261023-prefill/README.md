@@ -73,3 +73,15 @@ workload and avoids preemption in the diagnostic; it is NOT the official 16K
 benchmark and does not count toward acceptance. Profiles are delayed to step300,
 8 steps recorded, actual sequence shapes must still be verified from the trace.
 Output root: /workspace/experiments/minicpm-s2/decode-visible-15k-20261023.
+
+Materialized-score algorithm probe: BF16 Q/K/V, vendor batched GEMM producing
+FP32 scores (verified supported by this COREX torch build), custom causal
+FP32 softmax to BF16 P, then vendor PV GEMM. It packs shuffled paged caches
+and query head groups, materializes score chunks of64/128/256/512 query tokens,
+and includes all packing/copy costs in the event timing. It is standalone and
+not registered into serving; only a single-sequence prototype is implemented.
+At16K fastest12.943ms versus pinned kernel10.705ms (0.827x), all compared at
+qlen2048. Some8K comparisons fail .005 tolerance (max observed .0087891),
+so this algorithm is rejected for both numerical and performance reasons.
+The short16-query/128-KV case also checks independent dense FP32 attention.
+No tolerance is weakened and no full model score is inferred.

@@ -1,0 +1,153 @@
+{
+  "baseline_source_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+  "records": [
+    {
+      "qlen": 16,
+      "kv": 128,
+      "chunk": 64,
+      "baseline_ms": 0.018514102945725124,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 17390 / 32768 (53.1%)\nGreatest absolute difference: 0.30078125 at index (0, 6, 89) (up to 0.005 allowed)\nGreatest relative difference: 0.46484375 at index (0, 6, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 16,
+      "kv": 128,
+      "chunk": 128,
+      "baseline_ms": 0.018514102945725124,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 17390 / 32768 (53.1%)\nGreatest absolute difference: 0.30078125 at index (0, 6, 89) (up to 0.005 allowed)\nGreatest relative difference: 0.46484375 at index (0, 6, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 16,
+      "kv": 128,
+      "chunk": 256,
+      "baseline_ms": 0.018514102945725124,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 17390 / 32768 (53.1%)\nGreatest absolute difference: 0.30078125 at index (0, 6, 89) (up to 0.005 allowed)\nGreatest relative difference: 0.46484375 at index (0, 6, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 16,
+      "kv": 128,
+      "chunk": 512,
+      "baseline_ms": 0.018514102945725124,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 17390 / 32768 (53.1%)\nGreatest absolute difference: 0.30078125 at index (0, 6, 89) (up to 0.005 allowed)\nGreatest relative difference: 0.46484375 at index (0, 6, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 2048,
+      "chunk": 64,
+      "baseline_ms": 0.8379499912261963,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 323548 / 4194304 (7.7%)\nGreatest absolute difference: 1.6640625 at index (0, 8, 4) (up to 0.005 allowed)\nGreatest relative difference: 1.0 at index (0, 0, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 2048,
+      "chunk": 128,
+      "baseline_ms": 0.8379499912261963,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 323548 / 4194304 (7.7%)\nGreatest absolute difference: 1.6640625 at index (0, 8, 4) (up to 0.005 allowed)\nGreatest relative difference: 1.0 at index (0, 0, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 2048,
+      "chunk": 256,
+      "baseline_ms": 0.8379499912261963,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 323548 / 4194304 (7.7%)\nGreatest absolute difference: 1.6640625 at index (0, 8, 4) (up to 0.005 allowed)\nGreatest relative difference: 1.0 at index (0, 0, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 2048,
+      "chunk": 512,
+      "baseline_ms": 0.8379499912261963,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 323548 / 4194304 (7.7%)\nGreatest absolute difference: 1.6640625 at index (0, 8, 4) (up to 0.005 allowed)\nGreatest relative difference: 1.0 at index (0, 0, 0) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 4096,
+      "chunk": 64,
+      "baseline_ms": 2.268840948740641,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 59 / 4194304 (0.0%)\nGreatest absolute difference: 0.0126953125 at index (1159, 2, 103) (up to 0.005 allowed)\nGreatest relative difference: 0.0791015625 at index (1159, 2, 7) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 4096,
+      "chunk": 128,
+      "baseline_ms": 2.268840948740641,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 59 / 4194304 (0.0%)\nGreatest absolute difference: 0.0126953125 at index (1159, 2, 103) (up to 0.005 allowed)\nGreatest relative difference: 0.0791015625 at index (1159, 2, 7) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 4096,
+      "chunk": 256,
+      "baseline_ms": 2.268840948740641,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 59 / 4194304 (0.0%)\nGreatest absolute difference: 0.0126953125 at index (1159, 2, 103) (up to 0.005 allowed)\nGreatest relative difference: 0.0791015625 at index (1159, 2, 7) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 4096,
+      "chunk": 512,
+      "baseline_ms": 2.268840948740641,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 59 / 4194304 (0.0%)\nGreatest absolute difference: 0.0126953125 at index (1159, 2, 103) (up to 0.005 allowed)\nGreatest relative difference: 0.0791015625 at index (1159, 2, 7) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 8192,
+      "chunk": 64,
+      "baseline_ms": 5.049191157023112,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 3 / 4194304 (0.0%)\nGreatest absolute difference: 0.0087890625 at index (889, 11, 47) (up to 0.005 allowed)\nGreatest relative difference: 0.053466796875 at index (889, 11, 47) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 8192,
+      "chunk": 128,
+      "baseline_ms": 5.049191157023112,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 3 / 4194304 (0.0%)\nGreatest absolute difference: 0.0087890625 at index (889, 11, 47) (up to 0.005 allowed)\nGreatest relative difference: 0.053466796875 at index (889, 11, 47) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 8192,
+      "chunk": 256,
+      "baseline_ms": 5.049191157023112,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 3 / 4194304 (0.0%)\nGreatest absolute difference: 0.0087890625 at index (889, 11, 47) (up to 0.005 allowed)\nGreatest relative difference: 0.053466796875 at index (889, 11, 47) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 8192,
+      "chunk": 512,
+      "baseline_ms": 5.049191157023112,
+      "error": "Tensor-likes are not close!\n\nMismatched elements: 3 / 4194304 (0.0%)\nGreatest absolute difference: 0.0087890625 at index (889, 11, 47) (up to 0.005 allowed)\nGreatest relative difference: 0.053466796875 at index (889, 11, 47) (up to 0.005 allowed)"
+    },
+    {
+      "qlen": 2048,
+      "kv": 16384,
+      "chunk": 64,
+      "baseline_ms": 10.704971313476562,
+      "max_abs_diff": 0.001220703125,
+      "candidate_ms": 20.334368387858074,
+      "speedup": 0.5264472005862078
+    },
+    {
+      "qlen": 2048,
+      "kv": 16384,
+      "chunk": 128,
+      "baseline_ms": 10.704971313476562,
+      "max_abs_diff": 0.001220703125,
+      "candidate_ms": 16.322078704833984,
+      "speedup": 0.655858331960264
+    },
+    {
+      "qlen": 2048,
+      "kv": 16384,
+      "chunk": 256,
+      "baseline_ms": 10.704971313476562,
+      "max_abs_diff": 0.001220703125,
+      "candidate_ms": 13.112454732259115,
+      "speedup": 0.8163971988509757
+    },
+    {
+      "qlen": 2048,
+      "kv": 16384,
+      "chunk": 512,
+      "baseline_ms": 10.704971313476562,
+      "max_abs_diff": 0.001220703125,
+      "candidate_ms": 12.942759195963541,
+      "speedup": 0.8271011730493388
+    }
+  ]
+}
