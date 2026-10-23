@@ -64,8 +64,19 @@ def main(args):
                          '        K = (K.to(tl.float32) * ks[None, :]).to(tl.bfloat16)\n'
                          '        V = (V.to(tl.float32) * vs[:, None]).to(tl.bfloat16)')
         text = text.replace(before, after)
+    if args.scale_placement == 'scores':
+        text = text.replace('K = (K.to(tl.float32) * ks[None, :]).to(tl.bfloat16)',
+                            'K = K.to(tl.bfloat16)')
+        text = text.replace('V = (V.to(tl.float32) * vs[:, None]).to(tl.bfloat16)',
+                            'V = V.to(tl.bfloat16)')
+        assert text.count('scores = tl.dot(Q, K) * softmax_scale_log2e') == 2
+        text = text.replace('scores = tl.dot(Q, K) * softmax_scale_log2e',
+                            'scores = tl.dot(Q, K) * softmax_scale_log2e * ks[None, :]')
+        assert text.count('probability.to(V.dtype), V') == 2
+        text = text.replace('probability.to(V.dtype), V',
+                            '(probability * vs[None, :]).to(V.dtype), V')
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    generated = args.out.parent / 'int8-kv-generated.py'
+    generated = args.out.parent / ('int8-kv-generated-' + args.scale_placement + '.py')
     generated.write_text(text)
     baseline = load_module(args.source, 'biv150_int8_kv_reference')
     candidate = load_module(generated, 'biv150_int8_kv_candidate')
@@ -110,7 +121,7 @@ def main(args):
         print(json.dumps(row),flush=True)
         args.out.write_text(json.dumps(dict(source_sha256=hashlib.sha256(original.encode()).hexdigest(),
             generated_sha256=hashlib.sha256(text.encode()).hexdigest(),offline_quantization_timed=False,
-            service_installed=False,records=records),indent=2))
+            service_installed=False,scale_placement=args.scale_placement,records=records),indent=2))
         del c,qc,k8,v8,ks,vs,bf16_result
         torch.cuda.empty_cache()
 
@@ -119,4 +130,5 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--scale-placement',choices=['vectors','scores'],default='vectors')
     main(p.parse_args())
