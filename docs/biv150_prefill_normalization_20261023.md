@@ -107,3 +107,11 @@ controlled-reference correctness repair, not advertised as a performance win.
 Raw scores, warmup records and service/source manifest are in docs/evidence/
 throughput-{scores,warmups,manifest}.json. Full logs remain on the owned instance
 at /workspace/experiments/minicpm-s2/prefill-normalization-20261023/.
+
+Final review60de355: Ruff0.14 check/format passes on the three new Python files.
+Production AST is identical to the scored version apart from standard-library
+import ordering; arithmetic, gates and generated kernel source are unchanged.
+The checker binds its input tensors explicitly. All eight independent FP32 cases
+and bit-exact sink fallback passed again on the final source.
+Fork CI jobs are all skipped by repository conditions; these are not counted as
+passed CI. Actual hardware/model acceptance is documented above.
