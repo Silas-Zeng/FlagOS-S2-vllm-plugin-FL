@@ -21,6 +21,7 @@ import numpy as np
 import torch
 from vllm_fl.patches.biv150_cpu_metadata import try_cpu_metadata as _biv150_try_cpu_metadata
 from vllm_fl.patches.biv150_async_token_update import fused_sampled_token_update as _biv150_fused_sampled_token_update
+from vllm_fl.patches.biv150_compute_order import make_plan as _biv150_compute_order_plan
 import torch.distributed
 import torch.nn as nn
 from tqdm import tqdm
@@ -1960,6 +1961,7 @@ class ModelRunnerFL(
         self,
         scheduler_output: "SchedulerOutput",
         num_scheduled_tokens: np.ndarray,
+        compute_order=None,
     ) -> tuple[
         torch.Tensor,
         SpecDecodeMetadata | None,
@@ -1976,16 +1978,22 @@ class ModelRunnerFL(
 
         # OPTIMIZATION: Start copying the block table first.
         # This way, we can overlap the copy with the following CPU operations.
-        self.input_batch.block_table.commit_block_table(num_reqs)
+        if compute_order is None:
+            self.input_batch.block_table.commit_block_table(num_reqs)
+        else:
+            compute_order.copy_block_table(self)
 
         # Get request indices.
         # E.g., [2, 5, 3] -> [0, 0, 1, 1, 1, 1, 1, 2, 2, 2]
-        req_indices = np.repeat(self.arange_np[:num_reqs], num_scheduled_tokens)
+        req_indices = np.repeat(
+            self.arange_np[:num_reqs] if compute_order is None else compute_order.permutation,
+            num_scheduled_tokens if compute_order is None else compute_order.scheduled,
+        )
 
         # cu_num_tokens: [2, 5, 3] -> [2, 7, 10]
         # self.query_pos.np[:10]: [0, 1, 0, 1, 2, 3, 4, 0, 1, 2]
         cu_num_tokens = self._get_cumsum_and_arange(
-            num_scheduled_tokens, self.query_pos.np
+            num_scheduled_tokens if compute_order is None else compute_order.scheduled, self.query_pos.np
         )
 
         # Get positions.
@@ -2176,7 +2184,9 @@ class ModelRunnerFL(
             _biv150_computed_h2d_pending = True
 
         # _biv150_cpu_metadata_v1
-        if not _biv150_try_cpu_metadata(self, positions_np, req_indices, num_scheduled_tokens):
+        if compute_order is not None:
+            compute_order.copy_metadata(self, positions_np, req_indices)
+        elif not _biv150_try_cpu_metadata(self, positions_np, req_indices, num_scheduled_tokens):
             if _biv150_computed_h2d_pending:
                 self.num_computed_tokens[:num_reqs].copy_(
                     self.input_batch.num_computed_tokens_cpu_tensor[:num_reqs],
@@ -2210,7 +2220,7 @@ class ModelRunnerFL(
             scheduler_output,
             num_reqs,
             total_num_scheduled_tokens,
-            cu_num_tokens,
+            cu_num_tokens if compute_order is None else compute_order.ends_by_original,
         )
 
         if self.uses_mrope:
@@ -2241,7 +2251,8 @@ class ModelRunnerFL(
             # from these partial requests, we do so for simplicity.
             # We will ignore the sampled tokens from the partial requests.
             # TODO: Support prompt logprobs.
-            logits_indices = query_start_loc[1:] - 1
+            logits_indices = (query_start_loc[1:] - 1 if compute_order is None
+                              else compute_order.logits_indices(self))
             spec_decode_metadata = None
             num_sampled_tokens = np.ones(num_reqs, dtype=np.int32)
         else:
@@ -2303,6 +2314,7 @@ class ModelRunnerFL(
         num_scheduled_tokens: dict[str, int] | None = None,
         cascade_attn_prefix_lens: list[list[int]] | None = None,
         slot_mappings: dict[int, torch.Tensor] | None = None,
+        compute_order=None,
     ) -> tuple[PerLayerAttnMetadata, CommonAttentionMetadata | None]:
         """
         :return: tuple[attn_metadata, spec_decode_common_attn_metadata]
@@ -2364,13 +2376,16 @@ class ModelRunnerFL(
                 slot_mapping_attn[:num_tokens]
             )
 
-        num_computed_tokens_cpu = self.input_batch.num_computed_tokens_cpu_tensor[
-            :num_reqs_padded
-        ]
-        num_prompt_tokens_cpu = self.input_batch.num_prompt_tokens_cpu_tensor[
-            :num_reqs_padded
-        ]
-        seq_lens_cpu = self.optimistic_seq_lens_cpu[:num_reqs_padded]
+        if compute_order is not None:
+            num_computed_tokens_cpu, num_prompt_tokens_cpu, seq_lens_cpu = compute_order.cpu_metadata(num_reqs_padded)
+        else:
+            num_computed_tokens_cpu = self.input_batch.num_computed_tokens_cpu_tensor[
+                :num_reqs_padded
+            ]
+            num_prompt_tokens_cpu = self.input_batch.num_prompt_tokens_cpu_tensor[
+                :num_reqs_padded
+            ]
+            seq_lens_cpu = self.optimistic_seq_lens_cpu[:num_reqs_padded]
         seq_lens_cpu_upper_bound = seq_lens_cpu
 
         # is_prefilling: True if request is still in prefill phase.
@@ -4219,9 +4234,13 @@ class ModelRunnerFL(
             max_num_scheduled_tokens = int(num_scheduled_tokens_np.max())
             num_tokens_unpadded = scheduler_output.total_num_scheduled_tokens
 
+            compute_order = _biv150_compute_order_plan(
+                self, scheduler_output, num_scheduled_tokens_np, max_num_scheduled_tokens
+            )
             logits_indices, spec_decode_metadata = self._prepare_inputs(
                 scheduler_output,
                 num_scheduled_tokens_np,
+                compute_order=compute_order,
             )
 
             cascade_attn_prefix_lens = None
@@ -4248,6 +4267,9 @@ class ModelRunnerFL(
                 use_cascade_attn=cascade_attn_prefix_lens is not None,
                 num_encoder_reqs=len(scheduler_output.scheduled_encoder_inputs),
             )
+
+            if compute_order is not None:
+                compute_order.check_dispatch(cudagraph_mode, batch_desc, should_ubatch, num_tokens_across_dp)
 
             logger.debug(
                 "Running batch with cudagraph_mode: %s, batch_descriptor: %s, "
@@ -4359,6 +4381,7 @@ class ModelRunnerFL(
                     num_scheduled_tokens=scheduler_output.num_scheduled_tokens,
                     cascade_attn_prefix_lens=cascade_attn_prefix_lens,
                     slot_mappings=slot_mappings_by_group,
+                    compute_order=compute_order,
                 )
             )
 
@@ -4418,6 +4441,9 @@ class ModelRunnerFL(
                 inputs_embeds=inputs_embeds,
                 **model_kwargs,
             )
+
+        if compute_order is not None:
+            compute_order.forward_returned()
 
         with record_function_or_nullcontext("gpu_model_runner: postprocess"):
             if self.use_aux_hidden_state_outputs:
