@@ -24,17 +24,17 @@ def post(path):
 
 def diagnostic(folder):
     params=dict(model="minicpm",max_tokens=512,ignore_eos=True,temperature=1.0,top_p=0.95,stream=False)
-    metadata=dict(params=params,input_tokens=16384,requests=32,initial_test_request=False,cudagraph_mode="NONE",purpose="diagnostic only; not a scored benchmark")
+    metadata=dict(params=params,input_tokens=15360,requests=32,initial_test_request=False,cudagraph_mode="NONE",purpose="diagnostic only; not a scored benchmark")
     (folder/"request-protocol.json").write_text(json.dumps(metadata,indent=2))
     rng=random.Random(20261023)
-    prompts=[[rng.randrange(100,10000) for _ in range(16384)] for _ in range(32)]
+    prompts=[[rng.randrange(100,10000) for _ in range(15360)] for _ in range(32)]
     def request(index):
         payload=dict(params,prompt=prompts[index])
         req=urllib.request.Request("http://127.0.0.1:9031/v1/completions",data=json.dumps(payload).encode(),headers={"Content-Type":"application/json"},method="POST")
         start=time.monotonic()
         with urllib.request.urlopen(req,timeout=900) as response:result=json.load(response)
         usage=result["usage"]
-        assert usage["prompt_tokens"]==16384 and usage["completion_tokens"]==512,usage
+        assert usage["prompt_tokens"]==15360 and usage["completion_tokens"]==512,usage
         return dict(index=index,duration=time.monotonic()-start,usage=usage)
     with concurrent.futures.ThreadPoolExecutor(max_workers=32) as pool:
         rows=list(pool.map(request,range(32)))
@@ -82,7 +82,7 @@ def main(args):
         capacity=re.search(r"GPU KV cache size: ([0-9,]+) tokens",(args.out/"server.log").read_text())
         assert capacity is not None,"KV capacity missing"
         tokens=int(capacity.group(1).replace(",",""))
-        assert tokens>=530432,f"Insufficient KV capacity for the intended 32-sequence profile: {tokens}"
+        assert tokens>=507904,f"Insufficient KV capacity for the intended 32-sequence profile: {tokens}"
         print(json.dumps(dict(kv_capacity=tokens,diagnostic_only=True)),flush=True)
         post("/start_profile")
         diagnostic(args.out)

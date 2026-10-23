@@ -63,3 +63,13 @@ prefill attribution. A forthcoming decode-only diagnostic uses direct parallel
 HTTP requests without an initial test prompt and graph mode NONE, solely to
 make individual kernels visible. Its results must never be reported as official
 FULL_DECODE_ONLY benchmark throughput. Actual captured batch shapes must be checked.
+
+Decode diagnostic capacity correction: the initial graph-NONE service still
+reported 522960 KV tokens. The 16K/32-request diagnostic was stopped by the
+530432-token guard before profiling and requests, with owned service cleanup.
+The revised diagnostic uses 15360 input tokens, 512 output tokens, 32 direct
+parallel requests and requires 507904 KV slots. This fits the entire intended
+workload and avoids preemption in the diagnostic; it is NOT the official 16K
+benchmark and does not count toward acceptance. Profiles are delayed to step300,
+8 steps recorded, actual sequence shapes must still be verified from the trace.
+Output root: /workspace/experiments/minicpm-s2/decode-visible-15k-20261023.
