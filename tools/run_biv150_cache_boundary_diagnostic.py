@@ -2,7 +2,7 @@
 
 Requires an isolated historical source worktree with the opt-in Recorder hook.
 Official serve command and scheduler defaults are preserved. Request workloads
-are diagnostic-only: 32 requests of 16000/16384 input tokens, 256 output tokens.
+are diagnostic-only: 32 requests at 16000/16384 and 33 at 15360/16384; 256 output tokens.
 """
 
 import argparse
@@ -201,22 +201,26 @@ def main(args):
             raise TimeoutError("Service not ready")
         requests(args.out / "warm-requests.json", 4096, 32, 8, 202610230)
         summary = {}
-        for length in [16000, 16384]:
+        for count, length in [(32, 16000), (32, 16384), (33, 15360), (33, 16384)]:
             before = snapshot(trace)
             requests(
-                args.out / f"requests-{length}.json", length, 256, 32, 20261023 + length
+                args.out / f"requests-{count}x{length}.json",
+                length,
+                256,
+                count,
+                20261023 + length + count * 100000,
             )
             after = snapshot(trace)
             rows = difference(before, after)
             assert rows, "No actual execution shapes captured"
-            summary[str(length)] = dict(before=before, after=after, delta=rows)
+            summary[f"{count}x{length}"] = dict(before=before, after=after, delta=rows)
             (args.out / "diagnostic-shapes.json").write_text(
                 json.dumps(summary, indent=2)
             )
             print(
                 json.dumps(
                     dict(
-                        diagnostic_completed=length,
+                        diagnostic_completed=f"{count}x{length}",
                         trace_calls=sum(r["calls"] for r in rows),
                     )
                 ),
