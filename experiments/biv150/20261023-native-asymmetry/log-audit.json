@@ -1,0 +1,1600 @@
+{
+  "baseline-full": {
+    "log_sha256": "18919a81e5f2ab1daa96a752074040b864c2d301aada340d49a3762625a7ffd0",
+    "score": {
+      "date": "20261023-031641",
+      "endpoint_type": "vllm",
+      "backend": "vllm",
+      "label": "score-16384",
+      "model_id": "minicpm",
+      "tokenizer_id": "/workspace/MiniCPM5-2B",
+      "num_prompts": 128,
+      "request_rate": "inf",
+      "burstiness": 1.0,
+      "max_concurrency": 64,
+      "duration": 661.8189729521982,
+      "completed": 128,
+      "failed": 0,
+      "total_input_tokens": 2097152,
+      "total_output_tokens": 131072,
+      "request_throughput": 0.19340636220963275,
+      "request_goodput": null,
+      "output_throughput": 198.04811490266394,
+      "total_token_throughput": 3366.817953345287,
+      "max_output_tokens_per_s": 589.0,
+      "max_concurrent_requests": 65,
+      "rtfx": 0.0,
+      "mean_ttft_ms": 155342.48841718,
+      "median_ttft_ms": 171793.06510998867,
+      "std_ttft_ms": 66574.74209885769,
+      "p99_ttft_ms": 307516.48582509725,
+      "mean_tpot_ms": 133.21071885265468,
+      "median_tpot_ms": 144.07869490006448,
+      "std_tpot_ms": 27.167604723013042,
+      "p99_tpot_ms": 166.6629621902261,
+      "mean_itl_ms": 133.21071958223123,
+      "median_itl_ms": 55.62185309827328,
+      "std_itl_ms": 200.87696336939626,
+      "p99_itl_ms": 655.5165337165816
+    },
+    "window_assumption": "result date is benchmark completion; subtract duration; logger intervals may straddle boundaries",
+    "start": "2026-10-23T03:05:39.181027",
+    "end": "2026-10-23T03:16:41",
+    "metrics": [
+      {
+        "time": "2026-10-23T03:05:50",
+        "prompt": 4914.7,
+        "generation": 3.7,
+        "running": 4,
+        "waiting": 60,
+        "kv_percent": 11.4
+      },
+      {
+        "time": "2026-10-23T03:06:00",
+        "prompt": 4914.9,
+        "generation": 11.4,
+        "running": 7,
+        "waiting": 57,
+        "kv_percent": 21.2
+      },
+      {
+        "time": "2026-10-23T03:06:10",
+        "prompt": 4914.8,
+        "generation": 19.2,
+        "running": 10,
+        "waiting": 54,
+        "kv_percent": 31.0
+      },
+      {
+        "time": "2026-10-23T03:06:20",
+        "prompt": 4914.9,
+        "generation": 27.0,
+        "running": 13,
+        "waiting": 51,
+        "kv_percent": 40.7
+      },
+      {
+        "time": "2026-10-23T03:06:30",
+        "prompt": 4915.2,
+        "generation": 34.8,
+        "running": 17,
+        "waiting": 47,
+        "kv_percent": 50.5
+      },
+      {
+        "time": "2026-10-23T03:06:40",
+        "prompt": 6552.6,
+        "generation": 42.7,
+        "running": 20,
+        "waiting": 44,
+        "kv_percent": 60.4
+      },
+      {
+        "time": "2026-10-23T03:06:50",
+        "prompt": 4914.9,
+        "generation": 48.3,
+        "running": 23,
+        "waiting": 41,
+        "kv_percent": 69.8
+      },
+      {
+        "time": "2026-10-23T03:07:00",
+        "prompt": 3276.8,
+        "generation": 55.3,
+        "running": 26,
+        "waiting": 38,
+        "kv_percent": 79.2
+      },
+      {
+        "time": "2026-10-23T03:07:10",
+        "prompt": 4915.0,
+        "generation": 59.7,
+        "running": 28,
+        "waiting": 36,
+        "kv_percent": 88.1
+      },
+      {
+        "time": "2026-10-23T03:07:20",
+        "prompt": 4914.9,
+        "generation": 69.3,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 97.5
+      },
+      {
+        "time": "2026-10-23T03:07:30",
+        "prompt": 1638.3,
+        "generation": 545.5,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 98.9
+      },
+      {
+        "time": "2026-10-23T03:07:40",
+        "prompt": 0.0,
+        "generation": 563.9,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 100.0
+      },
+      {
+        "time": "2026-10-23T03:07:50",
+        "prompt": 0.0,
+        "generation": 540.3,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 97.8
+      },
+      {
+        "time": "2026-10-23T03:08:00",
+        "prompt": 0.0,
+        "generation": 536.7,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 98.9
+      },
+      {
+        "time": "2026-10-23T03:08:10",
+        "prompt": 0.0,
+        "generation": 244.6,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 98.6
+      },
+      {
+        "time": "2026-10-23T03:08:20",
+        "prompt": 4915.1,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 97.6
+      },
+      {
+        "time": "2026-10-23T03:08:30",
+        "prompt": 4913.5,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 96.6
+      },
+      {
+        "time": "2026-10-23T03:08:40",
+        "prompt": 3276.6,
+        "generation": 60.5,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 94.9
+      },
+      {
+        "time": "2026-10-23T03:08:50",
+        "prompt": 4913.2,
+        "generation": 66.2,
+        "running": 29,
+        "waiting": 34,
+        "kv_percent": 93.9
+      },
+      {
+        "time": "2026-10-23T03:09:00",
+        "prompt": 4912.8,
+        "generation": 66.2,
+        "running": 29,
+        "waiting": 34,
+        "kv_percent": 92.9
+      },
+      {
+        "time": "2026-10-23T03:09:10",
+        "prompt": 4915.1,
+        "generation": 63.2,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 94.9
+      },
+      {
+        "time": "2026-10-23T03:09:20",
+        "prompt": 4914.6,
+        "generation": 62.9,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 93.5
+      },
+      {
+        "time": "2026-10-23T03:09:30",
+        "prompt": 3276.5,
+        "generation": 63.2,
+        "running": 29,
+        "waiting": 34,
+        "kv_percent": 92.1
+      },
+      {
+        "time": "2026-10-23T03:09:40",
+        "prompt": 4915.0,
+        "generation": 66.2,
+        "running": 29,
+        "waiting": 34,
+        "kv_percent": 91.1
+      },
+      {
+        "time": "2026-10-23T03:09:50",
+        "prompt": 4915.1,
+        "generation": 68.8,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 93.9
+      },
+      {
+        "time": "2026-10-23T03:10:00",
+        "prompt": 3276.6,
+        "generation": 311.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 98.5
+      },
+      {
+        "time": "2026-10-23T03:10:10",
+        "prompt": 0.0,
+        "generation": 564.0,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 99.6
+      },
+      {
+        "time": "2026-10-23T03:10:20",
+        "prompt": 0.0,
+        "generation": 471.9,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 97.1
+      },
+      {
+        "time": "2026-10-23T03:10:30",
+        "prompt": 0.0,
+        "generation": 539.8,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 98.2
+      },
+      {
+        "time": "2026-10-23T03:10:40",
+        "prompt": 0.0,
+        "generation": 533.8,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 99.2
+      },
+      {
+        "time": "2026-10-23T03:10:50",
+        "prompt": 3276.8,
+        "generation": 78.5,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 98.2
+      },
+      {
+        "time": "2026-10-23T03:11:00",
+        "prompt": 4914.9,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 97.3
+      },
+      {
+        "time": "2026-10-23T03:11:10",
+        "prompt": 4914.7,
+        "generation": 66.5,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 96.3
+      },
+      {
+        "time": "2026-10-23T03:11:20",
+        "prompt": 4914.6,
+        "generation": 63.5,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 94.9
+      },
+      {
+        "time": "2026-10-23T03:11:30",
+        "prompt": 3275.4,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 33,
+        "kv_percent": 93.9
+      },
+      {
+        "time": "2026-10-23T03:11:40",
+        "prompt": 4915.0,
+        "generation": 66.5,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 96.2
+      },
+      {
+        "time": "2026-10-23T03:11:50",
+        "prompt": 4914.8,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 95.3
+      },
+      {
+        "time": "2026-10-23T03:12:00",
+        "prompt": 4914.6,
+        "generation": 69.3,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 94.7
+      },
+      {
+        "time": "2026-10-23T03:12:10",
+        "prompt": 4914.9,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 93.7
+      },
+      {
+        "time": "2026-10-23T03:12:20",
+        "prompt": 4914.8,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 92.7
+      },
+      {
+        "time": "2026-10-23T03:12:30",
+        "prompt": 3276.5,
+        "generation": 246.0,
+        "running": 30,
+        "waiting": 33,
+        "kv_percent": 95.1
+      },
+      {
+        "time": "2026-10-23T03:12:40",
+        "prompt": 1638.1,
+        "generation": 343.1,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 98.9
+      },
+      {
+        "time": "2026-10-23T03:12:50",
+        "prompt": 0.0,
+        "generation": 563.9,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 100.0
+      },
+      {
+        "time": "2026-10-23T03:13:00",
+        "prompt": 0.0,
+        "generation": 540.5,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 97.8
+      },
+      {
+        "time": "2026-10-23T03:13:10",
+        "prompt": 0.0,
+        "generation": 536.8,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 98.8
+      },
+      {
+        "time": "2026-10-23T03:13:20",
+        "prompt": 0.0,
+        "generation": 256.6,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 98.5
+      },
+      {
+        "time": "2026-10-23T03:13:30",
+        "prompt": 4914.8,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 32,
+        "kv_percent": 97.6
+      },
+      {
+        "time": "2026-10-23T03:13:40",
+        "prompt": 4915.0,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 29,
+        "kv_percent": 96.6
+      },
+      {
+        "time": "2026-10-23T03:13:50",
+        "prompt": 4915.0,
+        "generation": 66.5,
+        "running": 30,
+        "waiting": 26,
+        "kv_percent": 95.6
+      },
+      {
+        "time": "2026-10-23T03:14:00",
+        "prompt": 3276.6,
+        "generation": 63.5,
+        "running": 30,
+        "waiting": 23,
+        "kv_percent": 94.2
+      },
+      {
+        "time": "2026-10-23T03:14:10",
+        "prompt": 4915.3,
+        "generation": 66.5,
+        "running": 30,
+        "waiting": 21,
+        "kv_percent": 96.5
+      },
+      {
+        "time": "2026-10-23T03:14:20",
+        "prompt": 4915.1,
+        "generation": 66.5,
+        "running": 30,
+        "waiting": 18,
+        "kv_percent": 95.5
+      },
+      {
+        "time": "2026-10-23T03:14:30",
+        "prompt": 4915.1,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 15,
+        "kv_percent": 94.6
+      },
+      {
+        "time": "2026-10-23T03:14:40",
+        "prompt": 4914.7,
+        "generation": 66.4,
+        "running": 30,
+        "waiting": 12,
+        "kv_percent": 93.6
+      },
+      {
+        "time": "2026-10-23T03:14:50",
+        "prompt": 3276.4,
+        "generation": 63.6,
+        "running": 30,
+        "waiting": 9,
+        "kv_percent": 92.2
+      },
+      {
+        "time": "2026-10-23T03:15:00",
+        "prompt": 4914.6,
+        "generation": 66.5,
+        "running": 30,
+        "waiting": 7,
+        "kv_percent": 94.6
+      },
+      {
+        "time": "2026-10-23T03:15:10",
+        "prompt": 3275.3,
+        "generation": 373.9,
+        "running": 31,
+        "waiting": 6,
+        "kv_percent": 98.6
+      },
+      {
+        "time": "2026-10-23T03:15:20",
+        "prompt": 0.0,
+        "generation": 564.0,
+        "running": 31,
+        "waiting": 6,
+        "kv_percent": 99.7
+      },
+      {
+        "time": "2026-10-23T03:15:30",
+        "prompt": 0.0,
+        "generation": 545.1,
+        "running": 30,
+        "waiting": 7,
+        "kv_percent": 97.5
+      },
+      {
+        "time": "2026-10-23T03:15:40",
+        "prompt": 0.0,
+        "generation": 470.7,
+        "running": 30,
+        "waiting": 6,
+        "kv_percent": 98.3
+      },
+      {
+        "time": "2026-10-23T03:15:50",
+        "prompt": 0.0,
+        "generation": 485.6,
+        "running": 30,
+        "waiting": 5,
+        "kv_percent": 97.5
+      },
+      {
+        "time": "2026-10-23T03:16:00",
+        "prompt": 4914.7,
+        "generation": 63.5,
+        "running": 30,
+        "waiting": 2,
+        "kv_percent": 96.1
+      },
+      {
+        "time": "2026-10-23T03:16:10",
+        "prompt": 3276.9,
+        "generation": 63.6,
+        "running": 29,
+        "waiting": 0,
+        "kv_percent": 94.7
+      },
+      {
+        "time": "2026-10-23T03:16:20",
+        "prompt": 1638.2,
+        "generation": 367.3,
+        "running": 7,
+        "waiting": 0,
+        "kv_percent": 22.4
+      },
+      {
+        "time": "2026-10-23T03:16:30",
+        "prompt": 0.0,
+        "generation": 235.6,
+        "running": 6,
+        "waiting": 0,
+        "kv_percent": 19.5
+      },
+      {
+        "time": "2026-10-23T03:16:40",
+        "prompt": 0.0,
+        "generation": 225.6,
+        "running": 6,
+        "waiting": 0,
+        "kv_percent": 20.0
+      }
+    ],
+    "running_histogram": {
+      "4": 1,
+      "7": 2,
+      "10": 1,
+      "13": 1,
+      "17": 1,
+      "20": 1,
+      "23": 1,
+      "26": 1,
+      "28": 1,
+      "31": 9,
+      "30": 40,
+      "29": 5,
+      "6": 2
+    },
+    "preemption_warnings": 0,
+    "cache_lines": [
+      "(EngineCore pid=100028) INFO 10-23 02:43:29 [kv_cache_utils.py:2146] GPU KV cache size: 522,960 tokens"
+    ],
+    "manifest": {
+      "command": [
+        "vllm",
+        "serve",
+        "/workspace/MiniCPM5-2B",
+        "--port",
+        "9031",
+        "--compilation-config",
+        "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+        "--served-model-name",
+        "minicpm",
+        "--gpu-memory-utilization",
+        "0.85",
+        "--max-model-len",
+        "131072"
+      ],
+      "source": "/workspace/experiments/minicpm-s2/code/operator-fastpaths-20261023",
+      "native": false,
+      "git_commit": "9a43eb1e883a1ba986a4ae8052f1d00d8fd7aa5f",
+      "git_status": " M vllm_fl/worker/model_runner.py\n?? build-native-w8a8/\n?? csrc/iluvatar/\n?? tools/._build_biv150_native_w8a8.py\n?? tools/bench_biv150_fastpaths.py\n?? tools/bench_biv150_native_w8a8.py\n?? tools/build_biv150_native_w8a8.py\n?? tools/run_biv150_operator_arm.py\n?? vllm_fl/patches/._biv150_native_w8a8.py\n?? vllm_fl/patches/biv150_native_w8a8.py\n",
+      "mode": "full",
+      "min_rows": 1024,
+      "started_utc": "2026-10-22T18:42:10.981793+00:00",
+      "env": {
+        "VLLM_PLUGINS": "fl",
+        "VLLM_DISABLE_COMPILE_CACHE": "1",
+        "VLLM_FL_BIV150_NATIVE_W8A8": "0",
+        "BIV150_NATIVE_W8A8_LIBRARY": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/native-build/biv150_native_w8a8.so",
+        "BIV150_NATIVE_W8A8_MIN_ROWS": "1024",
+        "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/baseline-full/inductor-cache"
+      }
+    }
+  },
+  "native-fused-no-down-16k-full": {
+    "log_sha256": "90a4efc32c4ad54c57d4e90ad3da1b37b16f065efe1084c0aa11901f1d69b9c2",
+    "score": {
+      "date": "20261023-055640",
+      "endpoint_type": "vllm",
+      "backend": "vllm",
+      "label": "score-16384",
+      "model_id": "minicpm",
+      "tokenizer_id": "/workspace/MiniCPM5-2B",
+      "num_prompts": 128,
+      "request_rate": "inf",
+      "burstiness": 1.0,
+      "max_concurrency": 64,
+      "duration": 720.1192404651083,
+      "completed": 128,
+      "failed": 0,
+      "total_input_tokens": 2097152,
+      "total_output_tokens": 131072,
+      "request_throughput": 0.17774834056277647,
+      "request_goodput": null,
+      "output_throughput": 182.0143007362831,
+      "total_token_throughput": 3094.2431125168127,
+      "max_output_tokens_per_s": 630.0,
+      "max_concurrent_requests": 65,
+      "rtfx": 0.0,
+      "mean_ttft_ms": 160217.1915034014,
+      "median_ttft_ms": 184315.81234396435,
+      "std_ttft_ms": 69738.25761975726,
+      "p99_ttft_ms": 267419.7439519689,
+      "mean_tpot_ms": 154.59057440505478,
+      "median_tpot_ms": 163.0971948452338,
+      "std_tpot_ms": 24.819668293409848,
+      "p99_tpot_ms": 202.57313388376116,
+      "mean_itl_ms": 154.59057514392012,
+      "median_itl_ms": 54.11928496323526,
+      "std_itl_ms": 671.0188218713533,
+      "p99_itl_ms": 613.3902634819962
+    },
+    "window_assumption": "result date is benchmark completion; subtract duration; logger intervals may straddle boundaries",
+    "start": "2026-10-23T05:44:39.880760",
+    "end": "2026-10-23T05:56:40",
+    "metrics": [
+      {
+        "time": "2026-10-23T05:44:51",
+        "prompt": 4915.2,
+        "generation": 4.9,
+        "running": 5,
+        "waiting": 59,
+        "kv_percent": 12.4
+      },
+      {
+        "time": "2026-10-23T05:45:01",
+        "prompt": 6552.9,
+        "generation": 15.5,
+        "running": 8,
+        "waiting": 56,
+        "kv_percent": 23.3
+      },
+      {
+        "time": "2026-10-23T05:45:11",
+        "prompt": 4915.3,
+        "generation": 23.7,
+        "running": 12,
+        "waiting": 52,
+        "kv_percent": 33.4
+      },
+      {
+        "time": "2026-10-23T05:45:21",
+        "prompt": 6553.3,
+        "generation": 34.4,
+        "running": 15,
+        "waiting": 49,
+        "kv_percent": 43.9
+      },
+      {
+        "time": "2026-10-23T05:45:31",
+        "prompt": 4914.6,
+        "generation": 40.6,
+        "running": 18,
+        "waiting": 46,
+        "kv_percent": 53.7
+      },
+      {
+        "time": "2026-10-23T05:45:41",
+        "prompt": 4914.9,
+        "generation": 49.0,
+        "running": 22,
+        "waiting": 42,
+        "kv_percent": 63.5
+      },
+      {
+        "time": "2026-10-23T05:45:51",
+        "prompt": 6551.0,
+        "generation": 59.9,
+        "running": 25,
+        "waiting": 39,
+        "kv_percent": 73.6
+      },
+      {
+        "time": "2026-10-23T05:46:01",
+        "prompt": 4915.3,
+        "generation": 66.0,
+        "running": 28,
+        "waiting": 36,
+        "kv_percent": 83.4
+      },
+      {
+        "time": "2026-10-23T05:46:11",
+        "prompt": 4913.4,
+        "generation": 74.4,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 93.1
+      },
+      {
+        "time": "2026-10-23T05:46:21",
+        "prompt": 4913.1,
+        "generation": 141.0,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 97.1
+      },
+      {
+        "time": "2026-10-23T05:46:31",
+        "prompt": 0.0,
+        "generation": 601.4,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 98.2
+      },
+      {
+        "time": "2026-10-23T05:46:41",
+        "prompt": 0.0,
+        "generation": 595.0,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 99.3
+      },
+      {
+        "time": "2026-10-23T05:46:51",
+        "prompt": 0.0,
+        "generation": 583.0,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 97.2
+      },
+      {
+        "time": "2026-10-23T05:47:01",
+        "prompt": 0.0,
+        "generation": 563.9,
+        "running": 30,
+        "waiting": 33,
+        "kv_percent": 95.1
+      },
+      {
+        "time": "2026-10-23T05:47:11",
+        "prompt": 0.0,
+        "generation": 9.0,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 98.0
+      },
+      {
+        "time": "2026-10-23T05:47:21",
+        "prompt": 0.0,
+        "generation": 0.0,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 98.0
+      },
+      {
+        "time": "2026-10-23T05:47:31",
+        "prompt": 0.0,
+        "generation": 69.3,
+        "running": 31,
+        "waiting": 32,
+        "kv_percent": 95.0
+      },
+      {
+        "time": "2026-10-23T05:47:41",
+        "prompt": 4915.0,
+        "generation": 71.7,
+        "running": 31,
+        "waiting": 32,
+        "kv_percent": 94.5
+      },
+      {
+        "time": "2026-10-23T05:47:51",
+        "prompt": 4914.7,
+        "generation": 71.7,
+        "running": 31,
+        "waiting": 32,
+        "kv_percent": 93.9
+      },
+      {
+        "time": "2026-10-23T05:48:01",
+        "prompt": 4915.0,
+        "generation": 71.5,
+        "running": 30,
+        "waiting": 33,
+        "kv_percent": 93.3
+      },
+      {
+        "time": "2026-10-23T05:48:11",
+        "prompt": 4915.2,
+        "generation": 71.4,
+        "running": 30,
+        "waiting": 33,
+        "kv_percent": 92.8
+      },
+      {
+        "time": "2026-10-23T05:48:21",
+        "prompt": 4913.5,
+        "generation": 74.3,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 92.6
+      },
+      {
+        "time": "2026-10-23T05:48:31",
+        "prompt": 4914.8,
+        "generation": 71.1,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 92.0
+      },
+      {
+        "time": "2026-10-23T05:48:41",
+        "prompt": 4915.0,
+        "generation": 71.3,
+        "running": 30,
+        "waiting": 33,
+        "kv_percent": 91.5
+      },
+      {
+        "time": "2026-10-23T05:48:51",
+        "prompt": 4915.0,
+        "generation": 74.3,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 91.3
+      },
+      {
+        "time": "2026-10-23T05:49:01",
+        "prompt": 4915.2,
+        "generation": 71.1,
+        "running": 30,
+        "waiting": 34,
+        "kv_percent": 90.7
+      },
+      {
+        "time": "2026-10-23T05:49:11",
+        "prompt": 4915.3,
+        "generation": 131.7,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 97.1
+      },
+      {
+        "time": "2026-10-23T05:49:21",
+        "prompt": 0.0,
+        "generation": 598.2,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 98.2
+      },
+      {
+        "time": "2026-10-23T05:49:31",
+        "prompt": 732.6,
+        "generation": 482.7,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 98.9
+      },
+      {
+        "time": "2026-10-23T05:49:41",
+        "prompt": 0.0,
+        "generation": 591.9,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 100.0
+      },
+      {
+        "time": "2026-10-23T05:49:51",
+        "prompt": 0.0,
+        "generation": 573.5,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 98.0
+      },
+      {
+        "time": "2026-10-23T05:50:01",
+        "prompt": 0.0,
+        "generation": 111.3,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 97.9
+      },
+      {
+        "time": "2026-10-23T05:50:11",
+        "prompt": 0.0,
+        "generation": 0.0,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 97.9
+      },
+      {
+        "time": "2026-10-23T05:50:21",
+        "prompt": 0.0,
+        "generation": 82.9,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 97.6
+      },
+      {
+        "time": "2026-10-23T05:50:31",
+        "prompt": 4914.8,
+        "generation": 71.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 97.0
+      },
+      {
+        "time": "2026-10-23T05:50:41",
+        "prompt": 4913.0,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 96.9
+      },
+      {
+        "time": "2026-10-23T05:50:51",
+        "prompt": 1638.3,
+        "generation": 12.0,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 95.1
+      },
+      {
+        "time": "2026-10-23T05:51:01",
+        "prompt": 4913.6,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 94.9
+      },
+      {
+        "time": "2026-10-23T05:51:11",
+        "prompt": 4914.9,
+        "generation": 71.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 94.4
+      },
+      {
+        "time": "2026-10-23T05:51:21",
+        "prompt": 4913.1,
+        "generation": 71.8,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 93.8
+      },
+      {
+        "time": "2026-10-23T05:51:31",
+        "prompt": 4915.1,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 93.6
+      },
+      {
+        "time": "2026-10-23T05:51:41",
+        "prompt": 4914.5,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 93.4
+      },
+      {
+        "time": "2026-10-23T05:51:51",
+        "prompt": 4914.7,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 93.2
+      },
+      {
+        "time": "2026-10-23T05:52:01",
+        "prompt": 4915.1,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 93.0
+      },
+      {
+        "time": "2026-10-23T05:52:11",
+        "prompt": 4915.0,
+        "generation": 76.9,
+        "running": 33,
+        "waiting": 31,
+        "kv_percent": 99.2
+      },
+      {
+        "time": "2026-10-23T05:52:21",
+        "prompt": 1637.7,
+        "generation": 176.0,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 97.3
+      },
+      {
+        "time": "2026-10-23T05:52:31",
+        "prompt": 0.0,
+        "generation": 598.2,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 98.4
+      },
+      {
+        "time": "2026-10-23T05:52:41",
+        "prompt": 0.0,
+        "generation": 591.7,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 99.5
+      },
+      {
+        "time": "2026-10-23T05:52:51",
+        "prompt": 0.0,
+        "generation": 60.1,
+        "running": 32,
+        "waiting": 32,
+        "kv_percent": 99.4
+      },
+      {
+        "time": "2026-10-23T05:53:01",
+        "prompt": 0.0,
+        "generation": 583.8,
+        "running": 31,
+        "waiting": 33,
+        "kv_percent": 97.4
+      },
+      {
+        "time": "2026-10-23T05:53:11",
+        "prompt": 0.0,
+        "generation": 455.4,
+        "running": 31,
+        "waiting": 32,
+        "kv_percent": 97.9
+      },
+      {
+        "time": "2026-10-23T05:53:21",
+        "prompt": 1638.3,
+        "generation": 48.3,
+        "running": 31,
+        "waiting": 30,
+        "kv_percent": 95.9
+      },
+      {
+        "time": "2026-10-23T05:53:31",
+        "prompt": 4915.0,
+        "generation": 71.7,
+        "running": 31,
+        "waiting": 27,
+        "kv_percent": 95.3
+      },
+      {
+        "time": "2026-10-23T05:53:41",
+        "prompt": 1638.2,
+        "generation": 38.9,
+        "running": 31,
+        "waiting": 26,
+        "kv_percent": 97.0
+      },
+      {
+        "time": "2026-10-23T05:53:51",
+        "prompt": 4912.9,
+        "generation": 62.8,
+        "running": 31,
+        "waiting": 23,
+        "kv_percent": 95.2
+      },
+      {
+        "time": "2026-10-23T05:54:01",
+        "prompt": 4912.8,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 20,
+        "kv_percent": 95.0
+      },
+      {
+        "time": "2026-10-23T05:54:11",
+        "prompt": 4912.9,
+        "generation": 71.8,
+        "running": 31,
+        "waiting": 17,
+        "kv_percent": 94.5
+      },
+      {
+        "time": "2026-10-23T05:54:21",
+        "prompt": 4915.3,
+        "generation": 71.7,
+        "running": 31,
+        "waiting": 14,
+        "kv_percent": 93.9
+      },
+      {
+        "time": "2026-10-23T05:54:31",
+        "prompt": 4914.8,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 11,
+        "kv_percent": 93.7
+      },
+      {
+        "time": "2026-10-23T05:54:41",
+        "prompt": 4912.7,
+        "generation": 74.8,
+        "running": 31,
+        "waiting": 8,
+        "kv_percent": 93.5
+      },
+      {
+        "time": "2026-10-23T05:54:51",
+        "prompt": 4915.0,
+        "generation": 71.7,
+        "running": 31,
+        "waiting": 5,
+        "kv_percent": 93.0
+      },
+      {
+        "time": "2026-10-23T05:55:01",
+        "prompt": 4914.6,
+        "generation": 74.7,
+        "running": 31,
+        "waiting": 2,
+        "kv_percent": 92.8
+      },
+      {
+        "time": "2026-10-23T05:55:11",
+        "prompt": 3276.6,
+        "generation": 59.4,
+        "running": 33,
+        "waiting": 0,
+        "kv_percent": 99.9
+      },
+      {
+        "time": "2026-10-23T05:55:21",
+        "prompt": 1637.9,
+        "generation": 528.6,
+        "running": 32,
+        "waiting": 1,
+        "kv_percent": 97.9
+      },
+      {
+        "time": "2026-10-23T05:55:31",
+        "prompt": 0.0,
+        "generation": 598.1,
+        "running": 32,
+        "waiting": 1,
+        "kv_percent": 99.0
+      },
+      {
+        "time": "2026-10-23T05:55:41",
+        "prompt": 0.0,
+        "generation": 460.6,
+        "running": 32,
+        "waiting": 1,
+        "kv_percent": 99.9
+      },
+      {
+        "time": "2026-10-23T05:55:51",
+        "prompt": 0.0,
+        "generation": 473.6,
+        "running": 31,
+        "waiting": 1,
+        "kv_percent": 97.2
+      },
+      {
+        "time": "2026-10-23T05:56:01",
+        "prompt": 0.0,
+        "generation": 247.8,
+        "running": 31,
+        "waiting": 1,
+        "kv_percent": 98.0
+      },
+      {
+        "time": "2026-10-23T05:56:11",
+        "prompt": 0.0,
+        "generation": 163.5,
+        "running": 30,
+        "waiting": 0,
+        "kv_percent": 94.9
+      },
+      {
+        "time": "2026-10-23T05:56:21",
+        "prompt": 0.0,
+        "generation": 246.6,
+        "running": 18,
+        "waiting": 0,
+        "kv_percent": 57.1
+      },
+      {
+        "time": "2026-10-23T05:56:31",
+        "prompt": 0.0,
+        "generation": 174.6,
+        "running": 1,
+        "waiting": 0,
+        "kv_percent": 3.1
+      }
+    ],
+    "running_histogram": {
+      "5": 1,
+      "8": 1,
+      "12": 1,
+      "15": 1,
+      "18": 2,
+      "22": 1,
+      "25": 1,
+      "28": 1,
+      "31": 36,
+      "32": 14,
+      "30": 9,
+      "33": 2,
+      "1": 1
+    },
+    "preemption_warnings": 0,
+    "cache_lines": [
+      "(EngineCore pid=153718) INFO 10-23 05:35:31 [kv_cache_utils.py:2146] GPU KV cache size: 545,616 tokens"
+    ],
+    "manifest": {
+      "command": [
+        "vllm",
+        "serve",
+        "/workspace/MiniCPM5-2B",
+        "--port",
+        "9031",
+        "--compilation-config",
+        "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+        "--served-model-name",
+        "minicpm",
+        "--gpu-memory-utilization",
+        "0.85",
+        "--max-model-len",
+        "131072"
+      ],
+      "source": "/workspace/experiments/minicpm-s2/code/native-validation-20261023",
+      "native": true,
+      "git_commit": "beb3518922b75a8dbbd4db5ef6ae71fcc85fef51",
+      "git_status": "",
+      "source_hashes": {
+        "vllm_fl/patches/biv150_native_w8a8.py": "cb9fb0bc85ad3b36834010ec8e7fff31f8a5758170a28edd18f28c4c29f77251",
+        "vllm_fl/patches/biv150_gqa_decode.py": "83718dfcc8c1ed3dcb142033ab48cfa7c33701e7a903943b5fea1c11f7279ca1",
+        "vllm_fl/worker/model_runner.py": "7e23d6b0a2f7919707ca195bb2d0f76d7852d647d2143f9f291d9186f15087c7"
+      },
+      "library_sha256": "e1507761e15be6ba63db8974608c9d15ac286442798c68fd1b71b4c72543092c",
+      "mode": "full",
+      "cases": [
+        "16384"
+      ],
+      "shipping_default": false,
+      "min_rows": 17,
+      "started_utc": "2026-10-22T21:34:05.457275+00:00",
+      "env": {
+        "VLLM_PLUGINS": "fl",
+        "VLLM_DISABLE_COMPILE_CACHE": "1",
+        "VLLM_FL_BIV150_NATIVE_W8A8": "1",
+        "BIV150_NATIVE_W8A8_LIBRARY": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/native-fused-build/biv150_native_w8a8.so",
+        "BIV150_NATIVE_W8A8_MIN_ROWS": "17",
+        "BIV150_NATIVE_W8A8_LAYERS": "qkv_proj,o_proj,gate_up_proj",
+        "BIV150_NATIVE_W8A8_COMPRESSED_ONLY": "1",
+        "BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS": "4",
+        "BIV150_NATIVE_W8A8_FUSE_SILU": "1",
+        "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/native-fused-no-down-16k-full/inductor-cache"
+      }
+    }
+  },
+  "native-fused-no-down-full": {
+    "log_sha256": "c1d1106af5ed607ef6da5c0a73ab3e7bfdaedffe1f1c0e71ce57994e205d66dc",
+    "score": {
+      "date": "20261023-044431",
+      "endpoint_type": "vllm",
+      "backend": "vllm",
+      "label": "score-4096",
+      "model_id": "minicpm",
+      "tokenizer_id": "/workspace/MiniCPM5-2B",
+      "num_prompts": 256,
+      "request_rate": "inf",
+      "burstiness": 1.0,
+      "max_concurrency": 64,
+      "duration": 246.46254554577172,
+      "completed": 256,
+      "failed": 0,
+      "total_input_tokens": 1048576,
+      "total_output_tokens": 262144,
+      "request_throughput": 1.0386973786751588,
+      "request_goodput": null,
+      "output_throughput": 1063.6261157633626,
+      "total_token_throughput": 5318.130578816813,
+      "max_output_tokens_per_s": 1920.0,
+      "max_concurrent_requests": 67,
+      "rtfx": 0.0,
+      "mean_ttft_ms": 3978.1930228309648,
+      "median_ttft_ms": 1413.3729934692383,
+      "std_ttft_ms": 5613.743507939504,
+      "p99_ttft_ms": 22440.860261372287,
+      "mean_tpot_ms": 55.96906333901773,
+      "median_tpot_ms": 59.03567853570349,
+      "std_tpot_ms": 6.358912250703403,
+      "p99_tpot_ms": 60.826516708196166,
+      "mean_itl_ms": 55.9690640177337,
+      "median_itl_ms": 36.26031382009387,
+      "std_itl_ms": 62.72231044928579,
+      "p99_itl_ms": 254.02300787623972
+    },
+    "window_assumption": "result date is benchmark completion; subtract duration; logger intervals may straddle boundaries",
+    "start": "2026-10-23T04:40:24.537454",
+    "end": "2026-10-23T04:44:31",
+    "metrics": [
+      {
+        "time": "2026-10-23T04:40:28",
+        "prompt": 3686.0,
+        "generation": 9.1,
+        "running": 11,
+        "waiting": 53,
+        "kv_percent": 7.9
+      },
+      {
+        "time": "2026-10-23T04:40:38",
+        "prompt": 11872.0,
+        "generation": 135.3,
+        "running": 39,
+        "waiting": 25,
+        "kv_percent": 29.3
+      },
+      {
+        "time": "2026-10-23T04:40:48",
+        "prompt": 10641.1,
+        "generation": 307.9,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 49.0
+      },
+      {
+        "time": "2026-10-23T04:40:58",
+        "prompt": 0.0,
+        "generation": 1854.6,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 52.4
+      },
+      {
+        "time": "2026-10-23T04:41:08",
+        "prompt": 0.0,
+        "generation": 1784.4,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 55.6
+      },
+      {
+        "time": "2026-10-23T04:41:18",
+        "prompt": 0.0,
+        "generation": 1713.8,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 58.8
+      },
+      {
+        "time": "2026-10-23T04:41:28",
+        "prompt": 4914.8,
+        "generation": 506.7,
+        "running": 63,
+        "waiting": 0,
+        "kv_percent": 56.0
+      },
+      {
+        "time": "2026-10-23T04:41:38",
+        "prompt": 8190.2,
+        "generation": 264.7,
+        "running": 62,
+        "waiting": 1,
+        "kv_percent": 51.5
+      },
+      {
+        "time": "2026-10-23T04:41:48",
+        "prompt": 9420.2,
+        "generation": 281.2,
+        "running": 62,
+        "waiting": 1,
+        "kv_percent": 48.2
+      },
+      {
+        "time": "2026-10-23T04:41:58",
+        "prompt": 3683.5,
+        "generation": 1325.7,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 51.1
+      },
+      {
+        "time": "2026-10-23T04:42:08",
+        "prompt": 0.0,
+        "generation": 1809.7,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 54.4
+      },
+      {
+        "time": "2026-10-23T04:42:18",
+        "prompt": 0.0,
+        "generation": 1739.6,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 57.6
+      },
+      {
+        "time": "2026-10-23T04:42:28",
+        "prompt": 3274.5,
+        "generation": 1076.2,
+        "running": 62,
+        "waiting": 1,
+        "kv_percent": 55.8
+      },
+      {
+        "time": "2026-10-23T04:42:38",
+        "prompt": 8191.1,
+        "generation": 258.5,
+        "running": 63,
+        "waiting": 0,
+        "kv_percent": 52.8
+      },
+      {
+        "time": "2026-10-23T04:42:48",
+        "prompt": 9420.5,
+        "generation": 289.6,
+        "running": 62,
+        "waiting": 1,
+        "kv_percent": 48.9
+      },
+      {
+        "time": "2026-10-23T04:42:58",
+        "prompt": 5320.8,
+        "generation": 1049.3,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 50.5
+      },
+      {
+        "time": "2026-10-23T04:43:08",
+        "prompt": 0.0,
+        "generation": 1822.6,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 53.9
+      },
+      {
+        "time": "2026-10-23T04:43:18",
+        "prompt": 0.0,
+        "generation": 1746.6,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 57.1
+      },
+      {
+        "time": "2026-10-23T04:43:28",
+        "prompt": 1638.3,
+        "generation": 1334.9,
+        "running": 62,
+        "waiting": 1,
+        "kv_percent": 56.6
+      },
+      {
+        "time": "2026-10-23T04:43:38",
+        "prompt": 8600.9,
+        "generation": 264.7,
+        "running": 62,
+        "waiting": 1,
+        "kv_percent": 53.0
+      },
+      {
+        "time": "2026-10-23T04:43:48",
+        "prompt": 9009.2,
+        "generation": 283.2,
+        "running": 63,
+        "waiting": 0,
+        "kv_percent": 49.6
+      },
+      {
+        "time": "2026-10-23T04:43:58",
+        "prompt": 6957.8,
+        "generation": 778.8,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 49.9
+      },
+      {
+        "time": "2026-10-23T04:44:08",
+        "prompt": 0.0,
+        "generation": 1835.2,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 53.3
+      },
+      {
+        "time": "2026-10-23T04:44:18",
+        "prompt": 0.0,
+        "generation": 1758.7,
+        "running": 64,
+        "waiting": 0,
+        "kv_percent": 56.5
+      },
+      {
+        "time": "2026-10-23T04:44:28",
+        "prompt": 0.0,
+        "generation": 1686.9,
+        "running": 52,
+        "waiting": 0,
+        "kv_percent": 48.3
+      }
+    ],
+    "running_histogram": {
+      "11": 1,
+      "39": 1,
+      "64": 13,
+      "63": 3,
+      "62": 6,
+      "52": 1
+    },
+    "preemption_warnings": 0,
+    "cache_lines": [
+      "(EngineCore pid=125316) INFO 10-23 04:12:37 [kv_cache_utils.py:2146] GPU KV cache size: 545,712 tokens"
+    ],
+    "manifest": {
+      "command": [
+        "vllm",
+        "serve",
+        "/workspace/MiniCPM5-2B",
+        "--port",
+        "9031",
+        "--compilation-config",
+        "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+        "--served-model-name",
+        "minicpm",
+        "--gpu-memory-utilization",
+        "0.85",
+        "--max-model-len",
+        "131072"
+      ],
+      "source": "/workspace/experiments/minicpm-s2/code/native-validation-20261023",
+      "native": true,
+      "git_commit": "beb3518922b75a8dbbd4db5ef6ae71fcc85fef51",
+      "git_status": "",
+      "source_hashes": {
+        "vllm_fl/patches/biv150_native_w8a8.py": "cb9fb0bc85ad3b36834010ec8e7fff31f8a5758170a28edd18f28c4c29f77251",
+        "vllm_fl/patches/biv150_gqa_decode.py": "83718dfcc8c1ed3dcb142033ab48cfa7c33701e7a903943b5fea1c11f7279ca1",
+        "vllm_fl/worker/model_runner.py": "7e23d6b0a2f7919707ca195bb2d0f76d7852d647d2143f9f291d9186f15087c7"
+      },
+      "library_sha256": "e1507761e15be6ba63db8974608c9d15ac286442798c68fd1b71b4c72543092c",
+      "mode": "full",
+      "min_rows": 17,
+      "started_utc": "2026-10-22T20:11:10.960343+00:00",
+      "env": {
+        "VLLM_PLUGINS": "fl",
+        "VLLM_DISABLE_COMPILE_CACHE": "1",
+        "VLLM_FL_BIV150_NATIVE_W8A8": "1",
+        "BIV150_NATIVE_W8A8_LIBRARY": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/native-fused-build/biv150_native_w8a8.so",
+        "BIV150_NATIVE_W8A8_MIN_ROWS": "17",
+        "BIV150_NATIVE_W8A8_LAYERS": "qkv_proj,o_proj,gate_up_proj",
+        "BIV150_NATIVE_W8A8_COMPRESSED_ONLY": "1",
+        "BIV150_NATIVE_W8A8_SKIP_EDGE_LAYERS": "4",
+        "BIV150_NATIVE_W8A8_FUSE_SILU": "1",
+        "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/operator-fastpaths-20261023/native-fused-no-down-full/inductor-cache"
+      }
+    }
+  }
+}
