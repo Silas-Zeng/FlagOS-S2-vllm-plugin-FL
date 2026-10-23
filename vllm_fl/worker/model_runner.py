@@ -7707,3 +7707,9 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_prefill_normalized import install as _install_prefill_normalization
 
     print("BIV150_PREFILL_NORMALIZATION_INSTALL", _install_prefill_normalization(), flush=True)
+
+# GPU query-offset dispatch for residual mixed calls after natural-prefix splitting.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_mixed_attention import install as _install_mixed_attention
+
+    print("BIV150_MIXED_ATTENTION_INSTALL", _install_mixed_attention(), flush=True)
