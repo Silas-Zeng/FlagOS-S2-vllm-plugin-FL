@@ -59,3 +59,16 @@ KV capacity, actual captured shapes, full precision and both official scores.
 
 Queue93278 waits for the existing probe queue90478, which in turn waits for
 full acceptance84302. Probe codecaefaf3 is shared; no W8A16 GPU result exists yet.
+
+### Candidate selection after the probe
+
+A second axis is layer selection: the prior configuration quantized QKV, O and
+gate/up across the interior layers. QKV perturbations feed attention and stored
+K/V, while gate/up has the largest selected projection and the measured fused
+GEMM/activation benefit. If all-projection routing remains slow or precision is
+marginal, evaluate a gate/up-first candidate while keeping QKV/O BF16. This is a
+hypothesis about the benefit/precision tradeoff; it does not establish that QKV
+quantization caused the old throughput regression. Native versus W8A16 routing
+must still be chosen from measured shape costs. Each reduced layer selection
+changes weight memory and therefore requires recording actual KV capacity again.
+Do not silently count a partial-layer result as retaining the old full10.6% gain.
