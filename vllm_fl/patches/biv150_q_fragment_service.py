@@ -391,6 +391,7 @@ class Manager:
         self.record_errors = []
         self.omitted_records = 0
         self.reported_selection = False
+        self.reported_fallback = False
 
     def _ensure(self, device):
         if self.device is None:
@@ -422,6 +423,13 @@ class Manager:
                 self.reported_selection = True
                 print(
                     "BIV150_Q_FRAGMENT_SELECTED "
+                    + json.dumps(record, ensure_ascii=False),
+                    flush=True,
+                )
+            elif record.get("mode") == "fallback" and not self.reported_fallback:
+                self.reported_fallback = True
+                print(
+                    "BIV150_Q_FRAGMENT_FALLBACK "
                     + json.dumps(record, ensure_ascii=False),
                     flush=True,
                 )
