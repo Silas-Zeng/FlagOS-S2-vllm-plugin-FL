@@ -34,7 +34,7 @@ class ScaledLaunch:
         return launch
 
 
-def dense_reference(c, keys, values, row, query_override=None):
+def dense_reference(c, keys, values, row, query_override=None, pv_quant_scales=None):
     n = int(c['lengths'][row].item())
     if not n:
         return torch.zeros_like(c['out'][row]).float()
@@ -43,7 +43,22 @@ def dense_reference(c, keys, values, row, query_override=None):
     v = values[pages].reshape(-1, 2, 128)[:n].float()
     q = (c['q'] if query_override is None else query_override)[row].float().reshape(2, 8, 128)
     p = torch.einsum('hgd,thd->hgt', q, k).mul(128 ** -.5).softmax(-1)
+    if pv_quant_scales is not None:
+        scale=pv_quant_scales[pages].reshape(-1,2)[:n].float().T[:,None,:]
+        p=p*scale
+        padded=torch.nn.functional.pad(p,(0,(-n)%32)).reshape(2,8,-1,32)
+        ps=padded.amax(-1,keepdim=True).clamp_min(1e-30)/127
+        p=((padded/ps).round().clamp(0,127)*ps).reshape(2,8,-1)[...,:n]
     return torch.einsum('hgt,thd->hgd', p, v).reshape(16, 128)
+
+
+class DoublePageReduce:
+    def __init__(self,kernel):self.kernel=kernel
+    def __getitem__(self,grid):
+        def invoke(*args,**kwargs):
+            kwargs['page_size']*=2
+            return self.kernel[grid](*args,**kwargs)
+        return invoke
 
 
 def main(args):
@@ -105,11 +120,51 @@ def main(args):
         text=text.replace('K = K.to(tl.bfloat16)','K = K')
         text=text.replace('softmax_scale_log2e * ks[None, :]',
                           'softmax_scale_log2e * ks[None, :] * q_scale[:, None]')
+    if args.integer_pv:
+        assert args.integer_qk
+        start=text.index('@triton.jit\ndef _gqa_decode_attention_int8_kv')
+        stop=text.index('@triton.jit\ndef _reduce_partials',start)
+        body=text[start:stop]
+        body=body.replace('    seq_idx = tl.program_id(0)',
+            '    STEP: tl.constexpr = PAGE_SIZE * 2\n    offs_page = tl.arange(0,2)\n    seq_idx = tl.program_id(0)',1)
+        changes={
+            'SEGMENTS * PAGE_SIZE)':'SEGMENTS * STEP)',
+            'steps_per_segment * PAGE_SIZE':'steps_per_segment * STEP',
+            'tl.arange(0, PAGE_SIZE)':'tl.arange(0, STEP)',
+            '((upper - lower) // PAGE_SIZE) * PAGE_SIZE':'((upper - lower) // STEP) * STEP',
+            'position += PAGE_SIZE':'position += STEP',
+            'page = tl.load(block_table_row + position // PAGE_SIZE).to(tl.int64)':
+                'pages = tl.load(block_table_row + position // PAGE_SIZE + offs_page).to(tl.int64)\n        page = tl.reshape(tl.broadcast_to(pages[:,None],(2,PAGE_SIZE)),(STEP,))',
+            'page = tl.load(block_table_row + full_upper // PAGE_SIZE).to(tl.int64)\n        column_valid = full_upper + offs_step < upper':
+                'column_valid = full_upper + offs_step < upper\n        pages = tl.load(block_table_row + full_upper // PAGE_SIZE + offs_page,mask=full_upper + offs_page * PAGE_SIZE < upper,other=0).to(tl.int64)\n        page = tl.reshape(tl.broadcast_to(pages[:,None],(2,PAGE_SIZE)),(STEP,))',
+            'page * k_stride_block':'page[None,:] * k_stride_block',
+            'page * v_stride_block':'page[:,None] * v_stride_block',
+            'V = V.to(tl.bfloat16)':'V = V',
+        }
+        for old,new in changes.items():
+            assert old in body,old
+            body=body.replace(old,new)
+        before="""        accumulator = accumulator * rescale[:, None] + tl.dot(
+            (probability * vs[None, :]).to(V.dtype), V
+        )"""
+        after="""        weighted_p = probability * vs[None,:]
+        p_scale = tl.maximum(tl.max(weighted_p,1),1e-30)/127.0
+        pn = weighted_p/p_scale[:,None]
+        pf = tl.floor(pn)
+        pr = pn-pf
+        pi = pf+((pr>0.5)|((pr==0.5)&((pf.to(tl.int32)&1)==1))).to(tl.float32)
+        pi = tl.minimum(tl.maximum(pi,0.0),127.0).to(tl.int8)
+        accumulator = accumulator * rescale[:,None] + tl.dot(pi,V).to(tl.float32) * p_scale[:,None]"""
+        assert body.count(before)==2
+        body=body.replace(before,after)
+        text=text[:start]+body+text[stop:]
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + ('-integer-qk' if args.integer_qk else '') + ('-inline' if args.inline_cache else '-pagepacked' if args.page_packed_cache else '-compact') + '.py')
+    generated = args.out.parent / ('quant-kv-generated-' + args.cache_dtype + '-' + args.scale_placement + ('-integer-qk' if args.integer_qk else '') + ('-integer-pv' if args.integer_pv else '') + ('-inline' if args.inline_cache else '-pagepacked' if args.page_packed_cache else '-compact') + '.py')
     generated.write_text(text)
     baseline = load_module(args.source, 'biv150_int8_kv_reference')
     candidate = load_module(generated, 'biv150_int8_kv_candidate')
+    if args.integer_pv:
+        candidate._reduce_partials = DoublePageReduce(candidate._reduce_partials)
     records = []
     cases=[(64,4096,False),(32,16384,False)]
     if not args.formal_only:cases += [(31,16896,False),(8,1024,True),(1,100,False)]
@@ -163,7 +218,7 @@ def main(args):
             if args.append_updates:
                 append_quantized(new_key,new_value,slots,k8,v8,ks,vs)
             full_call(candidate,qc,segments)
-        row = dict(integer_qk=args.integer_qk,num_warps=args.num_warps,baseline_segments=baseline_segments,append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
+        row = dict(integer_pv=args.integer_pv,integer_qk=args.integer_qk,num_warps=args.num_warps,baseline_segments=baseline_segments,append_updates=args.append_updates,batch=batch,kv=kv,mixed=mixed,segments=segments,bf16_ms=bf16_ms,cache_dtype=args.cache_dtype,
                    bf16_cache_bytes=c['k'].nbytes+c['v'].nbytes,
                    quantized_cache_bytes=k8.nbytes+v8.nbytes+ks.nbytes+vs.nbytes,
                    inline_cache=args.inline_cache,page_packed_cache=args.page_packed_cache,
@@ -187,7 +242,7 @@ def main(args):
             vd = (v8.float()*vs[...,None]).to(torch.bfloat16)
             row['dense_checks'] = []
             for i in sorted({0,min(1,batch-1),batch-1}):
-                dense = dense_reference(c,kd,vd,i,q_reference).to(torch.bfloat16).float()
+                dense = dense_reference(c,kd,v8 if args.integer_pv else vd,i,q_reference,vs if args.integer_pv else None).to(torch.bfloat16).float()
                 torch.testing.assert_close(int8_result[i].float(),dense,atol=.005,rtol=.005)
                 original_dense = dense_reference(c,c['k'],c['v'],i)
                 row['dense_checks'].append(dict(row=i,dequantized_dense_pass=True,
@@ -210,6 +265,7 @@ if __name__ == '__main__':
     p=argparse.ArgumentParser()
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--integer-pv',action='store_true')
     p.add_argument('--integer-qk',action='store_true')
     p.add_argument('--formal-only',action='store_true')
     p.add_argument('--num-warps',type=int,choices=[1,2,4,8],default=1)
