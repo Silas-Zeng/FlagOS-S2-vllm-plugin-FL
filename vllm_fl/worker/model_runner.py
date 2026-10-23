@@ -2153,6 +2153,7 @@ class ModelRunnerFL(
         # CPU values are optimistic (all drafts accepted). The kernel
         # corrects on GPU using the previous step's
         # valid_sampled_token_count_gpu. Otherwise, just copy from CPU.
+        _biv150_computed_h2d_pending = False
         if (
             self.use_async_spec_decode
             and self.valid_sampled_token_count_gpu is not None
@@ -2172,13 +2173,15 @@ class ModelRunnerFL(
                 cpu_values,
             )
         else:
-            self.num_computed_tokens[:num_reqs].copy_(
-                self.input_batch.num_computed_tokens_cpu_tensor[:num_reqs],
-                non_blocking=True,
-            )
+            _biv150_computed_h2d_pending = True
 
         # _biv150_cpu_metadata_v1
         if not _biv150_try_cpu_metadata(self, positions_np, req_indices, num_scheduled_tokens):
+            if _biv150_computed_h2d_pending:
+                self.num_computed_tokens[:num_reqs].copy_(
+                    self.input_batch.num_computed_tokens_cpu_tensor[:num_reqs],
+                    non_blocking=True,
+                )
             self.req_indices.np[:total_num_scheduled_tokens] = req_indices
             self.req_indices.copy_to_gpu(total_num_scheduled_tokens)
             req_indices_gpu = self.req_indices.gpu[:total_num_scheduled_tokens]
