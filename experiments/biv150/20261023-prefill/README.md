@@ -82,6 +82,21 @@ and includes all packing/copy costs in the event timing. It is standalone and
 not registered into serving; only a single-sequence prototype is implemented.
 At16K fastest12.943ms versus pinned kernel10.705ms (0.827x), all compared at
 qlen2048. Some8K comparisons fail .005 tolerance (max observed .0087891),
-so this algorithm is rejected for both numerical and performance reasons.
-The short16-query/128-KV case also checks independent dense FP32 attention.
-No tolerance is weakened and no full model score is inferred.
+so these initial comparisons required an independent audit before attributing
+the discrepancy. The short-case dense reference was not reached in this initial
+sweep because baseline comparison failed first. No tolerance was weakened.
+Subsequent component checks showed that the materialized short-case path agrees
+with dense FP32 while the pinned prefill denominator has extra initial mass.
+The algorithm still loses on16K performance and is not adopted. No model score
+is inferred; initial mismatches alone are not proof the new algorithm is wrong.
+
+Normalization investigation: private instrumentation reproduces original output
+exactly, matches reference masks/scores/maxima, but finds denominator excess
+up to1.0000114 in q16/KV128. Starting cumulative mass at0 reduces denominator
+error to1.14e-5. Eight dense FP32 reference checks pass for a normalized in-memory
+clone. The standalone first softmax update behaves normally; exact compiler
+cause remains unresolved. The production candidate and registered-stack checks
+are on codex/biv150-prefill-normalization-20261023, not installed by this
+experimental branch. Initial instrumentation with extra kernel parameters
+failed compiler option conversion; the private diagnostic reuses unused
+pointers with the associated features disabled and succeeds.
