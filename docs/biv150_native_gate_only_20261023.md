@@ -30,3 +30,12 @@ driver log:/workspace/experiments/minicpm-s2/native-gate-only-acceptance-driver.
 The runner requires full105-question Level3 accuracy>=0.95, then stable warmup
 and one official scored round per4K/16K case. No model throughput gain or recovery
 of the prior10.6% is claimed before the complete scores and TTFT gates pass.
+
+## Full precision failed: do not integrate
+
+All105 unique questions completed with zero failed requests, but only99 correct:
+reported score0.9429, below0.95. The runner raised the accuracy gate, skipped
+throughput, and cleaned its service. There are no valid4K/16K throughput scores
+for this gate-only version. Do not reuse the old all-projection candidate's4K
+score as evidence for this configuration. Keep the PR a draft, not merged.
+Raw verdict:docs/evidence/native-gate-only-20261023/full-model-accuracy.json.
