@@ -7705,3 +7705,16 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_w8a8
     print("BIV150_NATIVE_W8A8_INSTALL", _install_native_w8a8(), flush=True)
+
+# Diagnostic-only host shape observer; this historical branch is never integrated.
+import os as _biv150_shape_os
+if _biv150_shape_os.environ.get("BIV150_SHAPE_TRACE_DIR"):
+    from biv150_execution_shape_trace import Recorder as _BIV150ShapeRecorder
+    _biv150_shape_recorder = _BIV150ShapeRecorder(
+        ModelRunnerFL,
+        _biv150_shape_os.path.join(
+            _biv150_shape_os.environ["BIV150_SHAPE_TRACE_DIR"],
+            f"shape-{_biv150_shape_os.getpid()}.json"),
+        flush_every=1,
+    ).install()
+    print("BIV150_EXEC_SHAPE_TRACE_INSTALL", __file__, flush=True)
