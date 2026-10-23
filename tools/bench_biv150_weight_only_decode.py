@@ -85,6 +85,14 @@ def invoke(x, wq, scales, gate, config):
     return out
 
 
+def bf16_call(x, weight, gate):
+    result = flag_gems.mm(x, weight.t())
+    if gate:
+        a, b = result.float().chunk(2, -1)
+        result = (torch.nn.functional.silu(a) * b).to(torch.bfloat16)
+    return result
+
+
 def main(args):
     with socket.socket() as guard:
         assert guard.connect_ex(("127.0.0.1", 9031)) != 0, "Service active"
@@ -129,8 +137,19 @@ def main(args):
                 a, b = original.float().chunk(2, -1)
                 original = (torch.nn.functional.silu(a) * b).to(torch.bfloat16)
             native_ms = graph_time(native, repeats=11, unroll=4)[0]
+            bf16_ms = graph_time(
+                partial(bf16_call, x, weight, gate), repeats=11, unroll=4
+            )[0]
             for config in [(16, 64, 64, 4), (32, 128, 64, 4), (32, 128, 128, 4)]:
-                row = dict(m=m, n=n, k=k, gate=gate, config=config, native_ms=native_ms)
+                row = dict(
+                    m=m,
+                    n=n,
+                    k=k,
+                    gate=gate,
+                    config=config,
+                    native_ms=native_ms,
+                    bf16_ms=bf16_ms,
+                )
                 try:
                     fn = partial(invoke, x, wq, scale, gate, config)
                     out = fn()
@@ -140,6 +159,7 @@ def main(args):
                         passed=True,
                         candidate_ms=ms,
                         speedup=native_ms / ms,
+                        speedup_vs_bf16=bf16_ms / ms,
                         max_abs_diff_fp32=(out.float() - gold.float())
                         .abs()
                         .max()
