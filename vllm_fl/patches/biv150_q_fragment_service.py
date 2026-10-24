@@ -196,14 +196,17 @@ def _eligible(values):
     )
 
 
-def _q_debug_lines(fn):
-    lines, start = inspect.getsourcelines(fn)
+def _q_debug_lines(source):
+    if inspect.isfunction(source):
+        lines, start = inspect.getsourcelines(source)
+    else:
+        lines = Path(source).read_text(encoding="utf-8").splitlines()
+        start = 1
     result = set()
-    for offset, line in enumerate(lines):
+    for offset, line in enumerate(lines, start=start):
         if "query_ptr + query_offset" in line:
-            source_line = start + offset
-            result.update((source_line - 1, source_line, source_line + 1))
-    if not result:
+            result.update((offset - 1, offset, offset + 1))
+    if len(result) != 3:
         raise RuntimeError("cannot locate Q load source line")
     return result
 
@@ -229,8 +232,11 @@ def lowered_proof(ttgir, llir, q_source_lines):
             re.M,
         )
     )
-    if len(q_debug) != 1:
-        raise RuntimeError("actual Q source location missing")
+    if not q_debug:
+        raise RuntimeError(
+            "actual Q source location missing for lines "
+            + ",".join(str(line) for line in sorted(q_source_lines))
+        )
     blocks = {"entry": []}
     current = "entry"
     for line in llir.splitlines():
@@ -276,6 +282,7 @@ def lowered_proof(ttgir, llir, q_source_lines):
         "llvm_q_memory_reads_in_loop": in_loop,
         "llvm_q_memory_reads_total": len(accesses),
         "q_read_blocks": sorted({x["block"] for x in accesses}),
+        "q_debug_nodes": len(q_debug),
         "barrier_calls": llir.count(
             "call void @llvm.nvvm.barrier.cta.sync.aligned.all"
         ),
@@ -503,10 +510,12 @@ class Manager:
                 raise RuntimeError(
                     "Q-hoist ABI/constants/attrs/cache identity mismatch"
                 )
+            q_source_lines = _q_debug_lines(self.candidate.fn)
+            q_source_lines.update(_q_debug_lines(self.attention.__file__))
             proof = lowered_proof(
                 compiled.asm["ttgir"],
                 compiled.asm["llir"],
-                _q_debug_lines(self.candidate.fn),
+                q_source_lines,
             )
             if not proof["mechanism_pass"]:
                 record.update(
