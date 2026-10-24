@@ -1,4 +1,4 @@
-"""固定main3283672b加PR15的局部计算序；持久请求/采样序不动，未知描述在首次写前回原路。"""
+"""固定main3283672b加PR15、PR21的局部计算序；持久请求/采样序不动，未知描述在首次写前回原路。"""
 
 # ruff: noqa: E501
 
@@ -10,7 +10,7 @@ import sys
 import types
 from pathlib import Path
 
-EXPECTED_RUNNER = "4bac7efa6973c6c3ee7c35cfc502ddda5fd120222369fa6fccfcb3fe2351870f"
+EXPECTED_RUNNER = "fa6f2387d258804021e53130ef8ae362ea91a9a23d9b1dcaf1c3d37cb4e0ee9f"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
@@ -23,6 +23,7 @@ SOURCES = {
     "vllm_fl.patches.biv150_mixed_decode": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
     "vllm_fl.patches.biv150_gqa_decode": "1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a",
     "vllm_fl.patches.biv150_prefill_normalized": "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42",
+    "vllm_fl.patches.biv150_q_fragment_service": "ea361e6b604fbd3c7e3a6b95776892a7bc9d22e9988927db3f7876412c6e310f",
     "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
     "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }

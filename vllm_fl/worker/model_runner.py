@@ -7736,3 +7736,9 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_prefill_normalized import install as _install_prefill_normalization
 
     print("BIV150_PREFILL_NORMALIZATION_INSTALL", _install_prefill_normalization(), flush=True)
+
+# Keep the per-K-tile Q fragment live across the audited prefill attention loop.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_q_fragment_service import install as _install_q_fragment
+
+    print("BIV150_Q_FRAGMENT_INSTALL", _install_q_fragment(), flush=True)
