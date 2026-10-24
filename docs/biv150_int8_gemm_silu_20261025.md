@@ -110,3 +110,22 @@ scope/Qfragment/新route选择等工作验收门全通过。原始manifest/accep
 对PR28独立单轮5765.810177399745/4048.1358315864945分别约−.0201%/+0.0449%，
 不能据此确认新增端到端收益，因此继续Draft而不合并；保留34层M32完整组件正收益，不把整个F09方向判失败。
 这些是研发单轮，不替代官方四轮报告。
+
+
+## P30/下一轮M64：从真实Corex资源出发，而不是假定spill
+
+只读24个已编译fused_gate缓存：warp_size均64，旧配置汇编vgpr_spill_count均0；不能把旧M64慢直接归因为spill。
+TTGIR当前MMA主要warpsPerCTA=[1,4]/[1,8]沿N分配，编译元数据保留8/16KiB shared与VGPR计数。
+新增纯CPU审计器不导入Torch或访问GPU，逐case核对M/BM/BN/BK并保存原始IR/asm/cubin哈希。
+
+新component复用完全相同的生产fused_gate kernel AST，仅改变launch tile：
+保留旧冠军(32,64,128,4)，比较(64,32,128,4)、(64,64,128,4)、(64,64,128,8)。
+BM64减少M64的M向CTA分块，BN32方案保持每CTA双acc元素数与旧方案相同，8warp方案探索不同M/N warp映射；
+可能改善权重/CTA复用，也可能增加寄存器成本，均须实测，不能从CTA数推出DRAM/occupancy收益。
+不改量化、BF16舍入/SiLU、权重布局或服务guard，不把M64新配置直接接入生产。
+
+先用真实layer20 gate/up权重，M32/64/40/63/256/2048×4配置=24case，原五模式、完整native对照、
+独立CPU INT64抽样、变输入Graph与三轮交替完整quant+GEMM+epilogue成本全部保留。
+按正常worker默认FlagGems enable和inference_mode记录真实_int_mm dispatch前后表；资源采集错误单列，不冒充数值失败。
+同时记录实际kernel API/汇编VGPR/spill/shared与IR，用于决定后继34层验证；当前没有新设备结果或收益结论。
+新队列只接在BF16后继之后，GPU/9031空闲且私有native SO SHA一致才开始。
