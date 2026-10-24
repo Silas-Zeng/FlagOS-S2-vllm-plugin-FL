@@ -1,0 +1,1429 @@
+{
+  "cache": "/root/.triton/cache",
+  "gpu_not_accessed": true,
+  "rows": [
+    {
+      "cache_key": "3XOVFLQA6AEUG2OD7C4Q7E2RRP2I3QAAZGB4ODYQN7CWNAFX3RVA",
+      "rows": 40,
+      "tile": [
+        32,
+        64,
+        128
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 75,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33623,
+          "sha256": "6b013e996efd7c862926c767c8c4286f81b61bc280891b5f260d244cd26398be"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19968,
+          "sha256": "ca3cf0873ed3c53bee7b9453e6bde27f6bb05f51c1e16b824c65612e00a27dc5"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27168,
+          "sha256": "0a92cb6dfea964b9b641de53b70f28449caa2aa980a2bdaaaf72d055a6652252"
+        },
+        "fused_gate.llir": {
+          "bytes": 95025,
+          "sha256": "f2ebb84dc127d084ea9e0abb1ad4f1a5c0363a185297011a96a25f2905ab85f4"
+        },
+        "fused_gate.asm": {
+          "bytes": 64153,
+          "sha256": "64af6825bc93d8203b42558b0acc622daf717e0675b4c8005b17bbe896a22d36"
+        },
+        "fused_gate.cubin": {
+          "bytes": 11856,
+          "sha256": "940803dadac92e53874ec1bcdce63eea9d25c5e104b2b23db5a5a3677c5f1c9c"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "c4a72c1346f8ae12b1441acc05b210690114e2c73a6cddaaec6fb4d8e699aab7"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "1df021eb7718097f3f2a79cce49abeb646ffe9ac9082c5cefe5b93f25230e74c"
+        }
+      }
+    },
+    {
+      "cache_key": "4LXM4UIAE7AVGR6TWCS73ESN4OGWDW2L3SA6WE2HUPARUTLCLNGA",
+      "rows": 40,
+      "tile": [
+        32,
+        128,
+        64
+      ],
+      "warps": 8,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 8], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33671,
+          "sha256": "56f35ddeeb3b12116339672ef4e0b2e681f9d02e7b84430cab0379d5b1d6d5d8"
+        },
+        "fused_gate.ttir": {
+          "bytes": 20016,
+          "sha256": "a898d2714e5c8ad83b773be651977180b2c38e48cdf28f197f9f81bca2b14c1e"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27236,
+          "sha256": "df415c0affa41566bdd870d1c0c1138c632743e2857e7287efc2f59c0b1112a9"
+        },
+        "fused_gate.llir": {
+          "bytes": 74157,
+          "sha256": "5bc921136c7671fcc8e5c3761d59fcc14bffab1a389ae56ca26d0903f170a2fa"
+        },
+        "fused_gate.asm": {
+          "bytes": 51259,
+          "sha256": "a599df2acfcc563df97e943e8efd165d14ae56547d62ec0c7a87723d225cf27a"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10032,
+          "sha256": "abe3e29ec30fbf89647448b138d2b1b3dae026d70ba7ca114b044f44216890e9"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "7f606cb10cc49fc68f9e460800b050c18b565f96f887aaf406697589b2c89939"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "a96f05f1b8a02c2917b0ba2c2616fd99d3c8af95ed37efbdfcb6488c6c695f6e"
+        }
+      }
+    },
+    {
+      "cache_key": "4YB56DUCFMF3UAGBVUFYR7QC2EBKRTDL2CMXGT2JYFREQYPJVC6Q",
+      "rows": 2048,
+      "tile": [
+        32,
+        128,
+        64
+      ],
+      "warps": 8,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 8], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33689,
+          "sha256": "fb9aa12ba3dce084620562fe7965cb3a4e944fe5f3fae5949923621352b6d5d0"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19949,
+          "sha256": "bd12cd2fb8ec6f9ff618598080efa9a56cb26b4693031d85dcfd8c5f949d4681"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 28058,
+          "sha256": "52520f9db234869e40c787da6975c41bc4244b070049aa509564a86781deb10c"
+        },
+        "fused_gate.llir": {
+          "bytes": 68748,
+          "sha256": "34ace28a6107cfc3d25041783045d9dfd6746b719cab1514d3110764cf73f6b8"
+        },
+        "fused_gate.asm": {
+          "bytes": 43835,
+          "sha256": "a19aae7ab498a990992f0963781049d246ff53aff92e1ca65d927f626ba22f35"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9184,
+          "sha256": "d2c37fc859e827620b049a3f5448d13c068779b9769bebaa277636ac1e471621"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "53498f31196d6e6caeb40883bed8ebc53b21ed01b29b477c012e1db1d340d051"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "19d65d114c79bf6f100e557507beae61cb7fc3a26b7cbe66da80273fc257071e"
+        }
+      }
+    },
+    {
+      "cache_key": "A2TEL6J5ZT74VE3U7JBRLAIURO3LH4KSBBZDGE5WKC3AKN67NYVA",
+      "rows": 64,
+      "tile": [
+        32,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33537,
+          "sha256": "a9f7b8a58ef2579b0dbca56debdfd1a40c82b0731202a72b3b2c87b786951c00"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "1c1cf2136a95eafd1c5c2d70a9fb1a7ac879a629d30224fd661aa7a38316d8b8"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27567,
+          "sha256": "8486d76bfc27df0bfb67c68072112c581cfedb9e3b0cff077073835ff6c229c7"
+        },
+        "fused_gate.llir": {
+          "bytes": 67906,
+          "sha256": "1fc1422ab0b2244eb72233a13bb0dda631ca37eb0baec79b8e907c08f2874947"
+        },
+        "fused_gate.asm": {
+          "bytes": 43336,
+          "sha256": "80ba9d13b847f43bf3c431373c2689bdf191e7b447d181c4fcecbc38a06eb23f"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9104,
+          "sha256": "bfd2bb6082f885ef20858dc8601406e88447cb13ecdf10b2e1e95e3c5e3131bc"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "c4dfdad16ea5a3c5db4681f81425e3c5c9551a0d4bf80ab06152d9e38094344f"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "3a35c9ad4c039ed89928ed3f98bceb6029683584dd2c9ea5bf2863cf5f0760e1"
+        }
+      }
+    },
+    {
+      "cache_key": "A6RTTSRF2XCPGP6ALPXWFVYQTNN7ZFQC5A64UFWGYXU7WTXX66VA",
+      "rows": 40,
+      "tile": [
+        16,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 30,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33533,
+          "sha256": "e89f7746fff2bccb66dd81c224bda88ad0df065ef39ce057c29a22a6339901aa"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "350b0d9ac5f6108893d29afda7d69db1c692e09aa1fa11cdb5d3bc69c9c83807"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 26913,
+          "sha256": "baf7a4181f523997e1c43d1ab0feb078bc798cad2fdd83c07ab43e5a52e46214"
+        },
+        "fused_gate.llir": {
+          "bytes": 48955,
+          "sha256": "970c4bbda8091cf70472c8270f0eecc611a988ce62af6d137f570c232d1351da"
+        },
+        "fused_gate.asm": {
+          "bytes": 34066,
+          "sha256": "1c9b0752c5f4a80bb844ca66190263062d9fb9bf764223eac0ba34238daa2430"
+        },
+        "fused_gate.cubin": {
+          "bytes": 7560,
+          "sha256": "73c1911f220f5eb96a80909bacd708b2dd4b5a81028a335fc4b852ffd2782288"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "9b67769e91011c03f4b1301e219331935f63f0833f4765785e0dc50752743a40"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "2baf05fb045509821939fee456d9fb78a6e92fbe56f597e8f6f63070a89a34bc"
+        }
+      }
+    },
+    {
+      "cache_key": "CGISBJW5IIFSUL6E5FTFX47SG4ZAYK36OSTRLVQCMYEETAC4R5LA",
+      "rows": 17,
+      "tile": [
+        32,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 50,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33533,
+          "sha256": "c91d75e512688d81c2cac6370128f94599d487761defdd0fc14f9bc0fceb2061"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "9b1c4cf5b9ed4d994b831d174972430f640d9945051fd15b08d830e796ecf5b7"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 26922,
+          "sha256": "fce9d0b479f5a4d6f3baa549871dda77ac9f70f3afb5c2b21608d145bf37f279"
+        },
+        "fused_gate.llir": {
+          "bytes": 75356,
+          "sha256": "1b94f9ce0a93865d6b8dbfdc23dacf26e1f90ab099e06d8ce9f03bdd1d4d365a"
+        },
+        "fused_gate.asm": {
+          "bytes": 52947,
+          "sha256": "e211205f3b35d8145e3e5021b7a29788472a5f327faf5206f37e5a38f1da8920"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10224,
+          "sha256": "ca561e782a7e709dc9259cd00913b1c6b1aa9f8497723a00f8e36d5765fcea7c"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "59a3c488bdb967c5be11b85d72d08d84bee7f4dbfb4ed72057509e98ce64972e"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "962d95ae6bf357f857f067d6b6535c4f1a2f57067d1ecacb8d06c248708f9ebb"
+        }
+      }
+    },
+    {
+      "cache_key": "FFU5HQ6LUIO5QQI6U7HP5MMTHOXSP7F3SOR4W4TAIRPG6G4DZMPA",
+      "rows": 17,
+      "tile": [
+        16,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 30,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33533,
+          "sha256": "1ac76a888f1b2f9dd66c10472b96a2cefb8a591790b26fb3d3a2a02a49c8c245"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "ddb2d31d465776dea587b883e7b1a7ffad0c772694c55f18986645d87813f8d2"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 26913,
+          "sha256": "5274e809071d884a5916805cb71c23f0f47d8edf01c596bcacdd0b55b4f78828"
+        },
+        "fused_gate.llir": {
+          "bytes": 49652,
+          "sha256": "5826386780764bbd508e79b8e755e5af7b6ccce9c5d79fd9d288513f2d91f300"
+        },
+        "fused_gate.asm": {
+          "bytes": 34987,
+          "sha256": "06f74ee55c477fd0a6895237879cbb82376b740591bd3d2976c262e9aa5bd4e4"
+        },
+        "fused_gate.cubin": {
+          "bytes": 7664,
+          "sha256": "68e4ac0ce189b0b3832724f7175d68c0de444e4406c1bc6574e838902a8bf6bc"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "36c12c3f1717f064a14cfe6cd51c1dd6240404d1ca9d0763f5745458a7fd68fa"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "d67d9e398ce081d29b942452d0cb9bcd965d5461faeb26b2060ace0ba9c889f4"
+        }
+      }
+    },
+    {
+      "cache_key": "GZ7V4PGNNRJJK74VLQHUOUUFARF64PEVGAETJPFDMNZ6T2NQVANA",
+      "rows": 2048,
+      "tile": [
+        32,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33551,
+          "sha256": "fa6fda914e9cffefc1ccb03687a9c99f2c5acdea03b4c8c9c4bda7c7c52b9d2c"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19575,
+          "sha256": "c0e00c2c9c055b2bb59a3fd4b54666f76bbb61ce4fab5d92098b11f7de8c86f1"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27573,
+          "sha256": "1b7b94bcec98d1343ad99a317009d90539e01d0d2bc604a46945a0c6dbaec899"
+        },
+        "fused_gate.llir": {
+          "bytes": 67912,
+          "sha256": "6571f3604ea90567adac28863c97bd603c3937fada7163a8c6abbafc89ad92db"
+        },
+        "fused_gate.asm": {
+          "bytes": 43339,
+          "sha256": "edf7003eae1fb0423153c23c01b04bdabedf4bdeb7919080cedffb2be5fb179e"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9104,
+          "sha256": "3e03d834b2fe134eab2c1a5ccddd9201ad4250e4b665e152c1f02bab49120c07"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "442f4874e1246d346ad8aca85ffb61fc1d871564efeae68768667a04e7ad1d4b"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "80308b933082480ca544d2a32991691e294d426bb75570e916e6c30759b754ca"
+        }
+      }
+    },
+    {
+      "cache_key": "IN3P3G36XO2GMF34TD4KBTKIIZJYZCF75IKKTB6UFM3VMPU6J5VA",
+      "rows": 17,
+      "tile": [
+        32,
+        64,
+        128
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 73,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33623,
+          "sha256": "b4e714f10711ab135504561c2ed9c9e659e9b4c2808eec695600e46e829ddd88"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19968,
+          "sha256": "2592f5754ae3573ad277654dcd3af113345ba07cd6c6c8fd16daf49ccd086a2c"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27168,
+          "sha256": "fa47a77863e58cc97657c98bfb1c738180ca282406c31494faaf5d22a25a12df"
+        },
+        "fused_gate.llir": {
+          "bytes": 95848,
+          "sha256": "6b8acdf60b2090bf1e94fbd036838c677f41d94b9bb46a717ac22784048852d8"
+        },
+        "fused_gate.asm": {
+          "bytes": 64013,
+          "sha256": "9affbfc25b4472c58af13cedaf96bc8c53f8aa2632aa544eaac01ecc3e364f1a"
+        },
+        "fused_gate.cubin": {
+          "bytes": 11848,
+          "sha256": "6aca52268dd4aedf5a3782f2beaa578e6231ce9f8fb8c59525c1e71defab416c"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "6e5ae8c461da1af08b1a12de55eb96e0943aae8e548d1b2a5f452fa486fd8db3"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "2160caf956f5911e4c2116d847600df3a7851163a559c6370bd27908844e7563"
+        }
+      }
+    },
+    {
+      "cache_key": "K4GZCIPYSPGYUCGJS7EXRACRTJD4IUT43YNFQIVMCCEZ2Q4RLNQA",
+      "rows": 64,
+      "tile": [
+        32,
+        64,
+        128
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33623,
+          "sha256": "8be19df676efeff34bfbaefe0c5d06e46cb2d116ff911cad6b3c2a62374c845c"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19968,
+          "sha256": "4922062d0b755a27567aff72b65e3cd04db8b7c9be993480db25fc5d1b44c9c9"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27984,
+          "sha256": "f43731a6e6030782355bc218d2e260cdd6c91edb00a172b4c328da544cfa8841"
+        },
+        "fused_gate.llir": {
+          "bytes": 82226,
+          "sha256": "7d723b9a4e444140cbcde229a7081cb12f1f90aa5ad78fff0afc4116c14ceb07"
+        },
+        "fused_gate.asm": {
+          "bytes": 48822,
+          "sha256": "abb2544cf8f1363bef745ae0b68eaebd75a559485428fa34f348d1f418b07d18"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10008,
+          "sha256": "7f6adac97205abbd035c326ea6f2d9459bdc11be94656fe7c0f08507a90631eb"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "209d3fcd07eb2d00716ac502e56b40a9bfea76182186a0de4d334dc83ddabdc1"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "c18f8974ec59a2bd2b12c6194868f4410818ea120a18c8b8883f0f50e91cb3cf"
+        }
+      }
+    },
+    {
+      "cache_key": "KBQGAZUG6HRBTCWKJS5KANFSQTBJNFAJA6SROPF2V6SAXMUTRF7Q",
+      "rows": 32,
+      "tile": [
+        32,
+        64,
+        128
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33623,
+          "sha256": "bf1830e0e746300f0ad150da4586dc02bada2e68b5421e76d60cadc3c02a67dc"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19968,
+          "sha256": "195307e7d95577bd576b6afd59e7aa3fda8d7f94daf79d55c316bf4bf45c5954"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27984,
+          "sha256": "41bc7e70d52f737ef073c0fa7255b88e098bad4787ae812303d841da310894b3"
+        },
+        "fused_gate.llir": {
+          "bytes": 82226,
+          "sha256": "bcf0b332c8cef7e457a139c34ff17114ccf981cb446e4d256fa40c378bece7bd"
+        },
+        "fused_gate.asm": {
+          "bytes": 48822,
+          "sha256": "b0a70917d94b17daf1563658909076e9619818efc9d9b3d2b43f970e1aea62bb"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10008,
+          "sha256": "e8902831edfc8073fcc8a15b745bf4aa9ed2a4ae1b5c7292fc689183bf888d0f"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "c954861399e41c0934417db939382b264337b125b40be2dffd88960098c0f18b"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "12f442a8c9109a9216a9fda6ff934282a002da366f31b27f8a18976a91046a9c"
+        }
+      }
+    },
+    {
+      "cache_key": "LMX7UHTAK6AVZPYLGLP4PDY5K23UCAXVMRB5J2KU3C4N7NPIWTKA",
+      "rows": 256,
+      "tile": [
+        32,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33540,
+          "sha256": "5d7f453ef0493a49bc89a33b9b59f44303cdb1abe28aef16d2a31e182fabcda9"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19644,
+          "sha256": "d90bf6a53c5a638cd3d780fd5402d00a94f1ecc45a60edb10a108e8d645f558d"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27570,
+          "sha256": "67236e1a621f53c001fa6e0a2433cc83cb45ebbe5d5930879ac09b820844590a"
+        },
+        "fused_gate.llir": {
+          "bytes": 67909,
+          "sha256": "3d2382aaa16332f22be3e8c3c815b091f38b29f93cbe1c46e96f9c450dc22e4d"
+        },
+        "fused_gate.asm": {
+          "bytes": 43338,
+          "sha256": "8cfcd9b3abbcc83505c014b1f9e14ff1c4b200476e0cb1b194997b0a454e3743"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9104,
+          "sha256": "6059bff0865c61b9d4b4441dc03004c7231e014e19e13e85e195cab1795672a6"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "335ee2dcf8a53af76fc026d42db07cbf1cb0dcd7b20597ff7bec4119ab280497"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "52bf0d301e099588a783828a906c5752b0e6b3f7c8389997532da75a88b48041"
+        }
+      }
+    },
+    {
+      "cache_key": "LNBRTSJ7Z2PCOIGM7QPPYAFLQ2DGDHJOGWUDSBFI25C3XBM4Q4EA",
+      "rows": 40,
+      "tile": [
+        32,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 50,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33533,
+          "sha256": "3f14b1311b05d7c88e4381b746a1e1ec791d9b46f1415189142f1bb5b37d8e5d"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "761f14a80c1ae52cb00d2c4cf36dd62179189ef2344c42e7499128c6b5242e21"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 26922,
+          "sha256": "1402025f0f919dca3916c1e43cb7d5a8bc2be6ffd70b059f008c6c28adf42587"
+        },
+        "fused_gate.llir": {
+          "bytes": 74502,
+          "sha256": "e9b84ca67813586178cfa463dbe10f6d6536508bfb76b32492d670bf744e9600"
+        },
+        "fused_gate.asm": {
+          "bytes": 52466,
+          "sha256": "842b552f94d4b325560dba5b53e6a1f1633a793c886df3610e5de1e0e5aa73b4"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10184,
+          "sha256": "ce4eb12f4900296d829bdcdaea1691437f9c100f9c224f9df3ba9ad2ef8ea568"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "afa7d86bea95e579343c48b15b30cf2ba83cbf4c4601370c5add8ca390710355"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "6291aeede10c96c5cc1faec7413f8e40095d1f4f092ef99761c73c680df2aa12"
+        }
+      }
+    },
+    {
+      "cache_key": "N6YUBDT4H3MWJKOMHKHR7VNDBO4N6A76AWTTA3ADS3B532XD4RRQ",
+      "rows": 2048,
+      "tile": [
+        16,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 31,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33551,
+          "sha256": "07e8017ce32fc35d44db161d2204fd4d86524c2ebe2f80d163906fd9489c47a9"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19575,
+          "sha256": "f01681e087cf0ce96a3a625345898467eacd95db99fd95e881776b63970ca742"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27564,
+          "sha256": "2c75adb599cc0f423820bae58a38728e27b5b2d94dce99127794b814ec57111c"
+        },
+        "fused_gate.llir": {
+          "bytes": 46430,
+          "sha256": "b789c3aa7069f7e78e9794a2be3121a330ac49c3c402ada05e1886c0e1feeb68"
+        },
+        "fused_gate.asm": {
+          "bytes": 31128,
+          "sha256": "ae328054336495d9c759c4126e242de2bb616c082301e63db820cbda6b7a0c02"
+        },
+        "fused_gate.cubin": {
+          "bytes": 7200,
+          "sha256": "1fd42d20f9265c5df29932c22e672d7fbbd7de7d240ba5eb1cc9fdb51ae68875"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "5724884cd67011f9b8eda97517970a51bc67d3e58259b50ead3e2455ecd079a1"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "2d365645321e02d7f8e997d29a8e2e23f2e4eeca5e746744e8e6ed922c39b603"
+        }
+      }
+    },
+    {
+      "cache_key": "NUZBEQYIGYD7ZSXPCLIMCE3QWM5CSTXKVTYSV4YXXSJWLKYDMJDA",
+      "rows": 17,
+      "tile": [
+        32,
+        128,
+        64
+      ],
+      "warps": 8,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 8], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 2,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33671,
+          "sha256": "d736eb64f063f4728c28d75c060ac9269b9ff8b2b1efa9456c1f28204535430c"
+        },
+        "fused_gate.ttir": {
+          "bytes": 20016,
+          "sha256": "40fe95e8279ff6eebecfb9df106e3b53a54ad368b118fb04513e325e266ebc2e"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27236,
+          "sha256": "7b80cc27e9d1a903ed5f30f168c25a12eb9f5cbea7264a7ab0a04059236c1f59"
+        },
+        "fused_gate.llir": {
+          "bytes": 75011,
+          "sha256": "44a29eff5be2e7e90bb1230aebc4e094e47b92d1cf3dcec1c66d83bbd9250598"
+        },
+        "fused_gate.asm": {
+          "bytes": 51739,
+          "sha256": "94aaccd7baf3b9d2c4d129bee7b03a9ec6d32e62f69523256b23c428f9a7a0d9"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10072,
+          "sha256": "224db50a42e3d9d8fc204d13acf5fa3ab481cbf0505cd53510cba7b345273db7"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "65d4e946ad64298433564e0729939ab44c02f6ca0bee6372cc63324ca312947f"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "fecdaa8fac7dd3ff59fdd7bf5169f7fea9825403e27a05c24c6d08b87a8450bb"
+        }
+      }
+    },
+    {
+      "cache_key": "OII7JTEBGBNAKVJCCDXXYGJSROHPGWAMPXZB7SZU2SVO3C4SWK5A",
+      "rows": 32,
+      "tile": [
+        32,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33533,
+          "sha256": "78e4099acb456d6f612106d5c29696e68b4f5680c1f01116d9b20523b6dc47d6"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "524bca2d405fe2a0f457964c481c6143c3938004fb03ca414773428e84266209"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27567,
+          "sha256": "a2a15349f38f1b88235a58fff67eb617ca1f91cdb3151ae2061c5570f5c831ff"
+        },
+        "fused_gate.llir": {
+          "bytes": 67906,
+          "sha256": "c34abe3f134ef6537024d4016a26a7dfca11cee07a7fbf8531c11c3fc6afdd9a"
+        },
+        "fused_gate.asm": {
+          "bytes": 43336,
+          "sha256": "eb2fdf4bd3ca20a98e93917eefa91aa9c0d69ac65e1b87d5a2753079ec5f8425"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9104,
+          "sha256": "629cafed28af661e5e5099e77ad015377d042a03af86fb9172c163723142e44c"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "276af96fbb85aa9c0bcc58233ab884707ba9a8979a91a5fea665f8ef94fd2ddb"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "27e5c2216c1f8a67c5afef29e8cc8ceafbe9dba53d094b1306fed5831d82fa8e"
+        }
+      }
+    },
+    {
+      "cache_key": "PBE5DBYA2QOYWVGU4T6CY3YQCRETAR3QMHYJBYDFEX6EQZ2QWBLA",
+      "rows": 64,
+      "tile": [
+        32,
+        128,
+        64
+      ],
+      "warps": 8,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 8], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33675,
+          "sha256": "fcc0c3bcfb8566eaa6dbe190be2ee9dff75484768a8ce720a9f19255c2f23bbb"
+        },
+        "fused_gate.ttir": {
+          "bytes": 20016,
+          "sha256": "f575e12add1a7b21c85ca2f873cfcb91bf093d8d9195bec0fc8b202163edb0bc"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 28052,
+          "sha256": "d3a71b2869b5383217b6f8408306b9aaec34e358f3cd578a12d057aa44ee6f4e"
+        },
+        "fused_gate.llir": {
+          "bytes": 68742,
+          "sha256": "16d93b49df64947467b77a675d902c62b407e4ba1380d8580efbf944c1e08982"
+        },
+        "fused_gate.asm": {
+          "bytes": 43832,
+          "sha256": "c6ab56e77743589fbb79e6dd57a32da231dd53b7f9332bf6846b6dfe0639150c"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9184,
+          "sha256": "60fa0eefaf28919d163b3ea4d2f90c37fe29d3a18c50dfdd5c6bdae8e8dbd488"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "2a2c1e37cb58c8cfe419ddc0845d224cf371811258bb7bb4fa9d6641c6f410c4"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "ee64bd436e7e2c2f63c5df6e521c35399c2a4120f4e9e3d496284a4b8da99238"
+        }
+      }
+    },
+    {
+      "cache_key": "POMCX5FX6JDTEGFN67RPJODF7ENNTDXKCT7ONI2K5FFBSSFID2AA",
+      "rows": 2048,
+      "tile": [
+        32,
+        64,
+        128
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33641,
+          "sha256": "91cb0c7b1dd0e31a9f0d847a700a78bcf680a3abe747cd5cbf4825bcfde685fc"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19901,
+          "sha256": "fc803f7d920209b4dca649b9ebffc665e4bc7cc04593636ea3a07c40e1e1ee17"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27990,
+          "sha256": "1d9c44890c9ba10ae8272edae8505e620d083ffc4aa17855da2e49bed6748043"
+        },
+        "fused_gate.llir": {
+          "bytes": 82232,
+          "sha256": "c2ce6035f53ec084274133a45ca4c78728b66eb1e355d7eec74f4f49ae31e297"
+        },
+        "fused_gate.asm": {
+          "bytes": 48825,
+          "sha256": "a8976f362d9f6829935edb6d4bbe34c71871eae3d8871cf43670d60c4e746ffb"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10008,
+          "sha256": "002eeb1930809e6f0c21d8abf0052c79eda40075d23ac38ff651211d5c4e837b"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "defd8089e0b7e610c0f6db15d3364845d0aebbd44d1909def9eff98196ea984b"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "9fe2c35b9be7590373aed1c42bd6840c4d52b7888e16cafa81bd765f7989422a"
+        }
+      }
+    },
+    {
+      "cache_key": "QYJMPHCQMDKVTPCPQMTEFJJ732QWIMTEBXOHF6F7LDFG6P34QX6A",
+      "rows": 256,
+      "tile": [
+        32,
+        128,
+        64
+      ],
+      "warps": 8,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 8], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33678,
+          "sha256": "815971b3f09e827fd8138ae6b36f6cf42ef341bcc0e4e37748f25793f44d6ad3"
+        },
+        "fused_gate.ttir": {
+          "bytes": 20018,
+          "sha256": "aca24b1ca4743541febe588cb8c2ed2b55fbf38f67a0cc5f3d3f79ee6a7e7a1d"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 28055,
+          "sha256": "160229f15b36decc240b67d66cfbee5de7979a4c9ec214015e363a619620c74d"
+        },
+        "fused_gate.llir": {
+          "bytes": 68745,
+          "sha256": "2ade4e2e0fa6feb83c98c32e515eba76f72d5f108c5985bd30142196dbef5d9f"
+        },
+        "fused_gate.asm": {
+          "bytes": 43834,
+          "sha256": "bb4ae00eea542f63b561c6eb70f73139fbd6d8d92c1df73634d47e04120e4a6f"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9184,
+          "sha256": "c9046cffa90b2ad89c86e822c6ed9b3fcdb321a7c6387f27d2aca304933da14b"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "005784a486865a4a3f3243cabee812f7e3a81c09b2d1428eab41569c92e90d5c"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "866fbb7c8c0f15c8010d343a8643776582550b41477e768680c31220a2a7cd5d"
+        }
+      }
+    },
+    {
+      "cache_key": "SZFOOQBBVNTVXV27X7DWQJSNZHZXQXGWKOZTQYSQKBIHSFMP4Z2Q",
+      "rows": 32,
+      "tile": [
+        32,
+        128,
+        64
+      ],
+      "warps": 8,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 47,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 8], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33671,
+          "sha256": "aa2826342fc05841c629ac3bda79432a26202782df3478f922ab086786ce5cc2"
+        },
+        "fused_gate.ttir": {
+          "bytes": 20016,
+          "sha256": "d2481c630ffd542d3feebf43751d9f8c2f5a21d5e4f9e2da65b6e434f19ae984"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 28052,
+          "sha256": "b32f2d1aee9c9560b760f24dc80beb640fb535eace8642e8d75941f48ad8728d"
+        },
+        "fused_gate.llir": {
+          "bytes": 68742,
+          "sha256": "5f770f041837996d7d02df70642763c157c2a5a62664fd0cf465c7359257be5b"
+        },
+        "fused_gate.asm": {
+          "bytes": 43832,
+          "sha256": "ae4b0e35c750ddde71a4fee08482a1913b0dffe7c606fc9ca1d7a1b7ed139839"
+        },
+        "fused_gate.cubin": {
+          "bytes": 9184,
+          "sha256": "34457c348055912e86bbf8c9fec8d5ef2128a112d748442cb9697024b9ca693a"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "110f7bb714973bc291f0e93c88c3cfb37cd952907a079c160037b0b53d6d3449"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "a7565cd5ce813fbaac545143dc5f7a6242b0c887b99d2a1d251686bf207b5bba"
+        }
+      }
+    },
+    {
+      "cache_key": "UHRIWTDIEV2X2QIYZBRIXY46HGPSP7NSU5EKZH5LLY6VOKACX72A",
+      "rows": 64,
+      "tile": [
+        16,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 31,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33537,
+          "sha256": "cf72b608d7d99fed910f6ea35ad2a707c32e87f8dc167b89cee9b90b6f9d620e"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "dceb15ff6fb17dc427672127e77190883bffa36da2a775215cb15853a177992c"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27558,
+          "sha256": "33bb966e7753ca9daabef03300e6c23b2d065059c72958fb6d5142ffe3b6ac0c"
+        },
+        "fused_gate.llir": {
+          "bytes": 46424,
+          "sha256": "10d37e8d917eb8193fea2f518ddab785eb13c7ffac2d68d3468bfcd6a503463b"
+        },
+        "fused_gate.asm": {
+          "bytes": 31125,
+          "sha256": "6dfc13ae03289731ccbd39f442a583a32ffe99e91dbd17607daab5f3d6d62b1a"
+        },
+        "fused_gate.cubin": {
+          "bytes": 7200,
+          "sha256": "e345d560ed09064179a5924dd593b6fa502efa7169a6001bb2c53cb31792db28"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "20a90b3ee416b69467601ff0fce86c6475f739153b2b89d6acb5816831f464b2"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "1fa98abed4a46b88e226f883479156ba20bc8b29027f8ef600aac17e83cb237d"
+        }
+      }
+    },
+    {
+      "cache_key": "W3VRJEZERZ5OW2PQ6T2ZDZRLP35VSDK2JQEGDW2CE74PZKIIQTIA",
+      "rows": 256,
+      "tile": [
+        32,
+        64,
+        128
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 16384,
+      "resources": {
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33630,
+          "sha256": "9c0edb5fe16d560fa8ca67a39e991792dd2709bd623a1abd3f83948aad883e65"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19970,
+          "sha256": "1453ef49d45b23ff8c90fa2b43b7e3cfb703e6a3a102bc9cb7eec3441a0f4e74"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27987,
+          "sha256": "713a6fe3d676c790f4cd765ebdccf5ba166684e8d1fa87dbcb33876702a420e7"
+        },
+        "fused_gate.llir": {
+          "bytes": 82229,
+          "sha256": "328737e2bcc4a52f401c211f7700a58222afad5cc4e9b5bab16642c1446ebd1c"
+        },
+        "fused_gate.asm": {
+          "bytes": 48824,
+          "sha256": "55274cc5aedc543959d776c565879f90ac84dc67ade31b92746bb69f116a4517"
+        },
+        "fused_gate.cubin": {
+          "bytes": 10008,
+          "sha256": "dc362bf1573c16acd9d214b7168226235b55626480303a7e898e54bb8dc1cd22"
+        },
+        "fused_gate.json": {
+          "bytes": 1076,
+          "sha256": "0a5bca7c96d138ae2fc30de99788089f38ff25c2dd184d40eb315a69533d7d1b"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "52b597a56ad6a446c92070d8baf4b21436bd6d9b82d9e722a115c53010ba803f"
+        }
+      }
+    },
+    {
+      "cache_key": "WB4HOGTI6OJ3B2N5XZCHDU6X2CB4NBIGVRSKZVAFMQCJ4RJ7QORQ",
+      "rows": 256,
+      "tile": [
+        16,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 31,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33540,
+          "sha256": "1845eef4942884e27aeac23616db5728c2027842e1991b46a79ed494c859d79d"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19644,
+          "sha256": "0194df95383c4f03d18079559c2add070f1f261304dc6339cf5ddad0288b69d2"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27561,
+          "sha256": "10965fe75b4181148dfb0c342d9858993ef3fd360e630cad8d9c557a7676eeeb"
+        },
+        "fused_gate.llir": {
+          "bytes": 46427,
+          "sha256": "08fd319a2662cafde7332456ced59fb44957871cef6928df381e4d18ee7b3422"
+        },
+        "fused_gate.asm": {
+          "bytes": 31127,
+          "sha256": "202e1f589743a0ad6a27ed13a276079cac2e8e3037aff3dc7b0681f9e5054aa2"
+        },
+        "fused_gate.cubin": {
+          "bytes": 7200,
+          "sha256": "cb4d829e5c33eaac10272b72e389d118de3dd709bc06bd660de3badaa3fe71af"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "17b3af05e37fc453c53d25834232d1644e6221b7da7b66cca75fe1627372154f"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "d5017227364fa6ccdb80f5689ef0edf4b12574c851c37274fbb7b22f1d83ea8a"
+        }
+      }
+    },
+    {
+      "cache_key": "ZNXCYPGW7C3UMAP262WXNIZ3MAUNE4P5PO5HB6VBGMKZR7KIUZTA",
+      "rows": 32,
+      "tile": [
+        16,
+        64,
+        64
+      ],
+      "warps": 4,
+      "warp_size": 64,
+      "shared_bytes": 8192,
+      "resources": {
+        "vgpr_count": 31,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "mma_layouts": [
+        "#mma = #ttg.iluvatar_mma<{versionMajor = 1, versionMinor = 0, warpsPerCTA = [1, 4], instrShape = [16, 16, 32]}>",
+        "#mma> loc(#loc1)"
+      ],
+      "layout_conversion_statements": 3,
+      "static_only": true,
+      "runtime_occupancy_or_bandwidth_proven": false,
+      "files": {
+        "fused_gate.source": {
+          "bytes": 33533,
+          "sha256": "9ee0ef2b20954ba818ef1a523e7ae7e87afe730d9ccb7a6d239a0d5ebebb3532"
+        },
+        "fused_gate.ttir": {
+          "bytes": 19642,
+          "sha256": "42eb59cf4528591104613cd7bcdd9fd32a8359dfb916dcfb2696b29ffb1c65c9"
+        },
+        "fused_gate.ttgir": {
+          "bytes": 27558,
+          "sha256": "000cbdd38811bb64d837056492fb9f486094feb83f5514960d19ad49251020a5"
+        },
+        "fused_gate.llir": {
+          "bytes": 46424,
+          "sha256": "b1432dd274a503c2427a14ef9987ff4ada91aeb21b305cc5e1239f16936552dd"
+        },
+        "fused_gate.asm": {
+          "bytes": 31125,
+          "sha256": "1e3064e1c57aed27020fc7816859e3042fc7159f9b35bbf391b6a5687a7899d5"
+        },
+        "fused_gate.cubin": {
+          "bytes": 7200,
+          "sha256": "74a506bf20cde38aade42bc489dc7b2582389f75c34040f42a7a3586546020a4"
+        },
+        "fused_gate.json": {
+          "bytes": 1075,
+          "sha256": "279b3f9827998f8e69b82c0c4cc33473d626b3641185591740844aa87db65999"
+        },
+        "__grp__fused_gate.json": {
+          "bytes": 800,
+          "sha256": "fabcd0490f3861f81441b3556b1cdea42f10a5cb5e42029fe6797cc987b48073"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "records": 24,
+    "warp_sizes": [
+      64
+    ],
+    "nonzero_vgpr_spills": 0
+  }
+}

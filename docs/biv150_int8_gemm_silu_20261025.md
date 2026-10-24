@@ -129,3 +129,15 @@ BM64减少M64的M向CTA分块，BN32方案保持每CTA双acc元素数与旧方�
 按正常worker默认FlagGems enable和inference_mode记录真实_int_mm dispatch前后表；资源采集错误单列，不冒充数值失败。
 同时记录实际kernel API/汇编VGPR/spill/shared与IR，用于决定后继34层验证；当前没有新设备结果或收益结论。
 新队列只接在BF16后继之后，GPU/9031空闲且私有native SO SHA一致才开始。
+
+
+## 6e5dc2f的P30真实设备结果
+
+24/24组合五模式/CPU INT64抽样/完整native/变输入Graph均通过。实际M64旧(32,64,128,4)仅约.7449x；
+新(64,64,128,8)三轮最小1.1091x、中位1.1105x，VGPR61、spill0、shared16KiB。
+(64,64,128,4)约1.0436x但VGPR92；(64,32,128,4)约.2534x，不能凭每CTA acc元素数相同推断性能。
+M32仍旧冠军1.0308x；M40/M63/256/2048新tiles全部负收益，保留旧fallback，不全局扩展。
+这只是layer20真实weights+合成激活的完整组件收益，非服务成绩。
+
+下一冻结版本用相同(64,64,128,8)与worker默认策略/inference_mode验证全部34个gate/up weight；
+旧M32工具默认与所有既有结果保留。通过前不把M64加入服务guard，也不依赖PR40的新allocation顺序。
