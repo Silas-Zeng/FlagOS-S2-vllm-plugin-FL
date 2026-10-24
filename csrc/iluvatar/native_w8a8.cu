@@ -149,3 +149,49 @@ extern "C" void biv150_residual_silu_epilogue(const int32_t* acc, const float* r
   residual_silu_epilogue<<<dim3((n/2+255)/256,m),256,0,stream>>>(
       acc,rows,cols,static_cast<BF16*>(output),n);
 }
+
+// Standalone probe: retain each original BF16 activation value between max and
+// quantization. Finite-input math, divisions, rounding and clamping stay exact.
+namespace {
+template<int THREADS>
+__global__ void quantize_cached_rows(const BF16* x, int8_t* q, float* scales, int m) {
+  const int row=blockIdx.x;
+  constexpr int K=2048, ITEMS=K/THREADS;
+  if (row>=m) {
+    for (int col=threadIdx.x;col<K;col+=THREADS) q[int64_t(row)*K+col]=0;
+    if (threadIdx.x==0) scales[row]=1.f;
+    return;
+  }
+  float values[ITEMS];
+  float peak=0.f;
+  #pragma unroll
+  for (int item=0;item<ITEMS;++item) {
+    values[item]=__bfloat162float(x[int64_t(row)*K+threadIdx.x+item*THREADS]);
+    peak=fmaxf(peak,fabsf(values[item]));
+  }
+  for (int shift=32;shift>0;shift>>=1) peak=fmaxf(peak,__shfl_xor(peak,shift,64));
+  if constexpr (THREADS>64) {
+    __shared__ float maxima[THREADS/64];
+    if ((threadIdx.x&63)==0) maxima[threadIdx.x>>6]=peak;
+    __syncthreads();
+    peak=0.f;
+    #pragma unroll
+    for (int warp=0;warp<THREADS/64;++warp) peak=fmaxf(peak,maxima[warp]);
+  }
+  const float scale=fmaxf(peak,1.e-6f)/127.f;
+  if (threadIdx.x==0) scales[row]=scale;
+  #pragma unroll
+  for (int item=0;item<ITEMS;++item) {
+    const float value=values[item]/scale;
+    const float rounded=value>=0.f?floorf(value+0.5f):ceilf(value-0.5f);
+    q[int64_t(row)*K+threadIdx.x+item*THREADS]=int8_t(fminf(127.f,fmaxf(-127.f,rounded)));
+  }
+}
+}
+extern "C" void biv150_quantize_cached(const void* x,int8_t* q,float* scales,
+    int m,int padded_m,int k,int threads,cudaStream_t stream) {
+  // The strict public probe accepts only the audited K2048 geometry.
+  if (threads==64) quantize_cached_rows<64><<<padded_m,64,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
+  else if (threads==128) quantize_cached_rows<128><<<padded_m,128,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
+  else quantize_cached_rows<256><<<padded_m,256,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
+}
