@@ -76,6 +76,7 @@ def main(args):
     args.out.mkdir(parents=True,exist_ok=False)
     result=dict(component_only=True,service_installed=False,full_cpu_fp64_output_oracle=True,
         synthetic_activations=True,layers=layers,rows=[1,8,16],baseline=args.baseline,pitches='contiguous',
+        inference_mode=torch.is_inference_mode_enabled(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         native_mm_file=str(path) if args.baseline=='returning' else None,
         flaggems_mm_candidate_file=str(path),flaggems_mm_candidate_source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
@@ -165,4 +166,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--model',type=Path,default=Path('/workspace/MiniCPM5-2B'))
     p.add_argument('--all-layers',action='store_true')
     p.add_argument('--baseline',choices=('returning','out'),default='returning')
-    p.add_argument('--out',type=Path,required=True);main(p.parse_args())
+    p.add_argument('--out',type=Path,required=True);args=p.parse_args()
+    if args.baseline=='out':
+        with torch.inference_mode():main(args)
+    else:main(args)

@@ -120,3 +120,5 @@ worker调用FlagGems enable默认策略，FlagGems候选表含mm与mm.out，iluv
 再运行42层×QKV/O/down×M1/8/16×split1/2/4=1134记录。不是只测旧成功层或裁掉失败配置。
 继续原五模式、每输出CPU FP64→BF16、native单独误差、NaN scratch、变输入Graph与三轮完整成本计时，门槛不变。
 尚无新设备结果或服务hook；此队列只允许接在当前PR40完整服务后，防止并发干扰。
+
+新out参考还启用与正常服务相同的inference_mode，避免Autograd dispatch key差异；returning旧模式默认行为保留。
