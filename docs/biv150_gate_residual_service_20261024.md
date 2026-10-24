@@ -61,3 +61,16 @@ and this candidate's 102/105 are distinct one-run observations, not proof of
 statistical stability or of a general accuracy gain.
 
 Raw evidence is stored under docs/evidence/biv150-gate-residual-service-20261024.
+
+## 4K scored result recovered at 09:07 CST
+
+The stable-warmed single 4K run completed 256/256 requests with zero failures,
+1048576 input and 262144 output tokens, duration 249.264267 seconds:
+5258.354991 total tokens/s, TTFT 4244.359266 ms, TPOT 56.390478 ms.
+This is +9.3359% against the original 4809.36 throughput reference, below +20%.
+The working TTFT limit is 4770.3209 ms. The previously accepted integration
+measurement was 4873.331261; the current single observation is +7.9006% versus
+that earlier measurement, not a same-session paired comparison.
+
+The service is now warming 16K. Full two-workload acceptance and merge remain
+pending. These scores belong to 20c991a, not the historical beb3518 combination.
