@@ -167,3 +167,29 @@ project dispatch AST with only device operations stubbed; it also checks an
 incompatible runtime mode goes eager. These checks passed locally. Production
 files and competition parameters remain untouched. A successful real preflight
 and replay trace are still required; this draft is not ready to merge.
+
+
+## Actual v3 coverage completed; new-main formal acceptance queued separately
+
+Frozen84c1be5 completed the diagnostic with the actual project GraphWrapper:
+1 observed FULL instance,35 capture entries,11 small-batch entries linked to GQA,
+no trace errors and no unmapped score-phase replay entries. Score4K has3716 actual
+FULL replays,16 atB40 (672 layer-kernel launches), plus84 eager B40 launches.
+Score16K has3749 actual FULL replays,241 atB40 (10122 layer-kernel launches),
+with no eager B40 launches. This proves the branch is used in both real request
+loads, more often in16K; it does not isolate the previous gain causally.
+Compute-order/Q-fragment selections are present with no scope errors/fallback.
+Raw trace/verdict are archived under `gqa-wave-coverage-20261024/final-v3/`.
+Diagnostic request counts were complete,4K5752.327891 and16K4049.036519 total
+ tok/s, TTFT3636.350693/124248.806534ms. These remain diagnostic, not official
+new scores, because observation adds CPU bookkeeping.
+
+The exact84 runtime is now queued for fresh105-question accuracy and both
+warmed single-round fixed workloads with the observer disabled. Private output
+is gqa-wave-main-cache-formal-v2-20261024, queue111372/start319260179;
+all49 operator/boundary prechecks precede it. The earlier waiting-only queue
+110476/start319239552 was replaced before any child/server existed to put the
+new bulk-shape probe ahead of this formal run; ownership/cancellation evidence
+is preserved remotely. No benchmark was interrupted. Keep this draft until
+new-main formal acceptance finishes. PR31 will stack independently observed
+ragged-shape improvements on this branch; it is not validated by these scores.
