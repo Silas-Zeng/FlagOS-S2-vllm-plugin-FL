@@ -35,3 +35,35 @@ acceptance. No claim is made that transient dequantization is faster.
 Local syntax, Ruff and diff checks pass; GPU execution is pending. The serial
 queue waits on the current owned acceptance process identity and verifies GPU
 idle, port free and the existing audited native SO hash before testing.
+
+
+## Completed diagnosis, source 25b8f8f
+
+All 11 cases pass exact reconstruction, complete cached/dynamic output
+comparison and sampled CPU checks. M8/M31 changed-input and poisoned-weight
+graph replay also pass. Native INT8 wins every measured M.
+
+| M | Original BF16 us | Native INT8 us | Dynamic dequant us | BF16/native |
+|---|---:|---:|---:|---:|
+| 1 | 83.085 | 57.652 | 271.527 | 1.441x |
+| 8 | 91.171 | 58.157 | 279.075 | 1.568x |
+| 16 | 84.868 | 58.856 | 278.085 | 1.442x |
+| 31 | 92.346 | 59.392 | 274.568 | 1.555x |
+| 32 | 92.974 | 59.576 | 274.356 | 1.561x |
+| 40 | 96.407 | 61.337 | 283.064 | 1.572x |
+| 63 | 99.025 | 66.426 | 283.698 | 1.491x |
+| 64 | 98.982 | 66.681 | 283.880 | 1.484x |
+| 256 | 266.888 | 119.857 | 436.457 | 2.227x |
+| 1024 | 765.738 | 431.230 | 923.039 | 1.776x |
+| 2048 | 1543.380 | 721.127 | 1719.127 | 2.140x |
+
+Reject dynamic dequantization as a speed route for these cases. These timings
+do not support native large-M gate compute being intrinsically slower than
+BF16. The 16K end-to-end regression needs another explanation or stronger
+service evidence; batching, actual attention path and KV capacity remain
+hypotheses rather than diagnosed causes.
+
+Inputs here are contiguous. At M64, packed BF16 is 101.744us versus original
+98.982us (0.973x), consistent with the earlier contiguous layout rejection.
+The newer dual-gate probe used pitched input stride2080 and cannot establish
+production layout gains. Do not merge a layout change from those data.
