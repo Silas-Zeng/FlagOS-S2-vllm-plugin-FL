@@ -1,0 +1,1357 @@
+{
+  "cpu_only": true,
+  "imports_or_executes_cached_code": false,
+  "snapshot_utc": "2026-10-24T22:12:02.468490+00:00",
+  "cache": "/private/tmp/flagos-bf16-generated-python-audit-20261025",
+  "files": [
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/3u/c3uercup6hqkmfppggqzfk56i5cwanz5n3ggz5xvq4keukluj2t6.py",
+      "sha256": "a80edc5a687ebceb25c78d2c1b2cf45093f6501955c5b485a38565e90a121026",
+      "bytes": 4149,
+      "wrappers": [],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/3v/c3vrzn6xrxvrbdlxy4b76oouttva27w4ogfvqizhtfludy7dk2sf.py",
+      "sha256": "7ca69c00d51f85fa2c1e26de4f75025fbdda6b47a33e2ff18c93569f9b1f3939",
+      "bytes": 4889,
+      "wrappers": [],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/5i/c5iu52txqj4juwyc5pes6yjz42dc5fweqyig3ra3jmohswmdmqgb.py",
+      "sha256": "dbdc6f4eea81b6ebc59d8399cb21bfacb9a889ed4b3c2ac1cfd624c2e422ca8c",
+      "bytes": 61264,
+      "wrappers": [
+        {
+          "kind": "model_runner_method",
+          "line": 815,
+          "operations": [
+            {
+              "line": 817,
+              "target": "args.clear",
+              "expression": "args.clear()"
+            },
+            {
+              "line": 819,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 820,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 821,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 823,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0), reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0), out=buf0)"
+            },
+            {
+              "line": 823,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0)"
+            },
+            {
+              "line": 823,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0)"
+            },
+            {
+              "line": 826,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 828,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 829,
+              "target": "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0.run",
+              "expression": "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0.run(buf0, arg4_1, arg3_1, buf2, s72, 2048, stream=stream0)"
+            },
+            {
+              "line": 832,
+              "target": "torch.ops.biv150_native.gate_silu_auto.default",
+              "expression": "torch.ops.biv150_native.gate_silu_auto.default(buf2, arg5_1, arg6_1, arg7_1, 17)"
+            },
+            {
+              "line": 839,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 841,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf4, reinterpret_tensor(arg8_1, (6144, 2048), (1, 6144), 0), out=buf5)"
+            },
+            {
+              "line": 841,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg8_1, (6144, 2048), (1, 6144), 0)"
+            },
+            {
+              "line": 844,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 845,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 847,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 848,
+              "target": "triton_red_fused_fused_add_rms_norm_1.run",
+              "expression": "triton_red_fused_fused_add_rms_norm_1.run(buf5, buf0, arg4_1, arg9_1, buf6, buf8, s72, 2048, stream=stream0)"
+            },
+            {
+              "line": 853,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2560), (2560, 1), torch.bfloat16)"
+            },
+            {
+              "line": 855,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf8, reinterpret_tensor(arg10_1, (2048, 2560), (1, 2048), 0), out=buf9)"
+            },
+            {
+              "line": 855,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg10_1, (2048, 2560), (1, 2048), 0)"
+            },
+            {
+              "line": 857,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2, 128), (256, 128, 1), torch.bfloat16)"
+            },
+            {
+              "line": 858,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf8, (s72, 16, 128), (2048, 128, 1), 0)"
+            },
+            {
+              "line": 862,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 863,
+              "target": "triton_poi_fused_2.run",
+              "expression": "triton_poi_fused_2.run(buf9, arg11_1, arg12_1, buf10, buf11, triton_poi_fused_2_xnumel_0, triton_poi_fused_2_xnumel_1, stream=stream0)"
+            },
+            {
+              "line": 866,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 867,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf9, (s72, 2, 128), (2560, 128, 1), 2304)"
+            },
+            {
+              "line": 867,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf12, (s72, 16, 128), (2048, 128, 1), 0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 8,
+            "extern_kernels.mm": 3,
+            "reinterpret_tensor": 7,
+            "get_raw_stream": 3,
+            "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0.run": 1,
+            "torch.ops.biv150_native.gate_silu_auto.default": 1,
+            "triton_red_fused_fused_add_rms_norm_1.run": 1,
+            "triton_poi_fused_2.run": 1
+          },
+          "source": "def call(self, args):\n        arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1, arg8_1, arg9_1, arg10_1, arg11_1, arg12_1 = args\n        args.clear()\n        s72 = arg1_1\n        with torch.cuda._DeviceGuard(0):\n            torch.cuda.set_device(0)\n            buf0 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [view, linear], Original ATen: [aten.view, aten.linear]\n            extern_kernels.mm(reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0), reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0), out=buf0)\n            del arg0_1\n            del arg2_1\n            buf2 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, gate_silu_auto], Original ATen: [vllm_ir.fused_add_rms_norm, biv150_native.gate_silu_auto]\n            stream0 = get_raw_stream(0)\n            triton_red_fused_fused_add_rms_norm_gate_silu_auto_0.run(buf0, arg4_1, arg3_1, buf2, s72, 2048, stream=stream0)\n            del arg3_1\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, gate_silu_auto], Original ATen: [vllm_ir.fused_add_rms_norm, biv150_native.gate_silu_auto]\n            buf3 = torch.ops.biv150_native.gate_silu_auto.default(buf2, arg5_1, arg6_1, arg7_1, 17)\n            del arg5_1\n            del arg6_1\n            del arg7_1\n            del buf2\n            buf4 = buf3\n            del buf3\n            buf5 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [linear_1], Original ATen: [aten.linear]\n            extern_kernels.mm(buf4, reinterpret_tensor(arg8_1, (6144, 2048), (1, 6144), 0), out=buf5)\n            del arg8_1\n            del buf4\n            buf6 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            buf8 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, fused_add_rms_norm_maybe_inplace_1], Original ATen: [vllm_ir.fused_add_rms_norm]\n            stream0 = get_raw_stream(0)\n            triton_red_fused_fused_add_rms_norm_1.run(buf5, buf0, arg4_1, arg9_1, buf6, buf8, s72, 2048, stream=stream0)\n            del arg4_1\n            del arg9_1\n            del buf0\n            del buf5\n            buf9 = empty_strided_cuda((s72, 2560), (2560, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, fused_add_rms_norm_maybe_inplace_1, linear_2], Original ATen: [vllm_ir.fused_add_rms_norm, aten.linear]\n            extern_kernels.mm(buf8, reinterpret_tensor(arg10_1, (2048, 2560), (1, 2048), 0), out=buf9)\n            del arg10_1\n            buf10 = empty_strided_cuda((s72, 2, 128), (256, 128, 1), torch.bfloat16)\n            buf11 = reinterpret_tensor(buf8, (s72, 16, 128), (2048, 128, 1), 0); del buf8  # reuse\n            # Topologically Sorted Source Nodes: [split, index_select, chunk, view_1, chunk_1, view_2, chunk_2, unsqueeze_2, mul_4, unsqueeze_3, mul_5, sub_1, mul_6, mul_7, add_1, cat_2, unsqueeze, mul, unsqueeze_1, mul_1, sub, mul_2, mul_3, add, cat], Original ATen: [aten.split_with_sizes, aten.index_select, aten.split, aten.view, aten.unsqueeze, aten.mul, aten.sub, aten.add, aten.cat]\n            triton_poi_fused_2_xnumel_0 = 256*s72\n            triton_poi_fused_2_xnumel_1 = 2048*s72\n            stream0 = get_raw_stream(0)\n            triton_poi_fused_2.run(buf9, arg11_1, arg12_1, buf10, buf11, triton_poi_fused_2_xnumel_0, triton_poi_fused_2_xnumel_1, stream=stream0)\n            del arg11_1\n            del arg12_1\n            buf12 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n        return (buf10, reinterpret_tensor(buf9, (s72, 2, 128), (2560, 128, 1), 2304), buf11, reinterpret_tensor(buf12, (s72, 16, 128), (2048, 128, 1), 0), buf6, )"
+        }
+      ],
+      "fused_kernels": [
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0",
+          "line": 468,
+          "source_sha256": "a80edc5a687ebceb25c78d2c1b2cf45093f6501955c5b485a38565e90a121026",
+          "functions": [
+            {
+              "name": "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0",
+              "calls": {
+                "triton_heuristics.reduction": 1,
+                "tl.full": 1,
+                "range": 2,
+                "tl.program_id": 1,
+                "tl.arange": 2,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp0.to": 1,
+                "tmp2.to": 1,
+                "tl.broadcast_to": 1,
+                "tl.where": 1,
+                "tl.sum": 1,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr2 + r0_1, r0_mask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp9.to": 1,
+                "tmp11.to": 1,
+                "libdevice.rsqrt": 1,
+                "tmp19.to": 1,
+                "tl.store": 1,
+                "DeviceProperties": 1,
+                "set": 1,
+                "tl.load": 5
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_1",
+          "line": 563,
+          "source_sha256": "451929b977b8dd12b0008be7f00abae723c68637bdd8a2a85475313e3b8c64f2",
+          "functions": [
+            {
+              "name": "triton_red_fused_fused_add_rms_norm_1",
+              "calls": {
+                "triton_heuristics.reduction": 1,
+                "tl.full": 1,
+                "range": 2,
+                "tl.program_id": 1,
+                "tl.arange": 2,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp0.to": 1,
+                "tmp2.to": 1,
+                "tmp4.to": 1,
+                "tmp6.to": 1,
+                "tmp7.to": 1,
+                "tl.broadcast_to": 1,
+                "tl.where": 1,
+                "tmp9.to": 1,
+                "tl.store": 2,
+                "tl.sum": 1,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr3 + r0_1, r0_mask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp15.to": 1,
+                "tmp17.to": 1,
+                "tmp19.to": 1,
+                "tmp21.to": 1,
+                "tmp22.to": 1,
+                "libdevice.rsqrt": 1,
+                "tmp30.to": 1,
+                "DeviceProperties": 1,
+                "set": 1,
+                "tl.load": 7
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_poi_fused_2",
+          "line": 646,
+          "source_sha256": "5685f35b3e4f8ef289b5c2eeffe817e259494629d4944838c1ba6ac730a8ab4e",
+          "functions": [
+            {
+              "name": "triton_poi_fused_2",
+              "calls": {
+                "triton_heuristics.pointwise": 1,
+                "tl.program_id": 1,
+                "tl.cdiv": 2,
+                "tl.full": 14,
+                "tl.load(in_ptr0 + (2048 + 128 * x1 + 2560 * x2 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load": 20,
+                "tl.where": 10,
+                "tl.load(in_ptr2 + (128 * tmp10 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2112 + 128 * x1 + 2560 * x2 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp10 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2112 + 128 * x1 + 2560 * x2 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp27 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2048 + 128 * x1 + 2560 * x2 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp27 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.store": 2,
+                "tl.load(in_ptr0 + (128 * x6 + 2560 * x7 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp47 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (64 + 128 * x6 + 2560 * x7 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp47 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (64 + 128 * x6 + 2560 * x7 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp64 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (128 * x6 + 2560 * x7 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp64 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "DeviceProperties": 1,
+                "tl.arange": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/6m/c6m5ge226h3uxtte2wlnotxt4dk5uuvbuyj7nidj5corng5jfeny.py",
+      "sha256": "80cce56f6ce260e8a7080c6215a5cba31acaa97555c42dbedfa56aac39c36b0b",
+      "bytes": 69617,
+      "wrappers": [
+        {
+          "kind": "model_runner_method",
+          "line": 922,
+          "operations": [
+            {
+              "line": 924,
+              "target": "args.clear",
+              "expression": "args.clear()"
+            },
+            {
+              "line": 926,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 927,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 928,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 930,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0), reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0), out=buf0)"
+            },
+            {
+              "line": 930,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0)"
+            },
+            {
+              "line": 930,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0)"
+            },
+            {
+              "line": 933,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 935,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 936,
+              "target": "triton_red_fused_fused_add_rms_norm_0.run",
+              "expression": "triton_red_fused_fused_add_rms_norm_0.run(buf0, arg4_1, arg3_1, buf2, s72, 2048, stream=stream0)"
+            },
+            {
+              "line": 938,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 12288), (12288, 1), torch.bfloat16)"
+            },
+            {
+              "line": 940,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf2, reinterpret_tensor(arg5_1, (2048, 12288), (1, 2048), 0), out=buf3)"
+            },
+            {
+              "line": 940,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg5_1, (2048, 12288), (1, 2048), 0)"
+            },
+            {
+              "line": 943,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 6144), (6144, 1), torch.bfloat16)"
+            },
+            {
+              "line": 946,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 947,
+              "target": "triton_poi_fused_mul_silu_slice_1.run",
+              "expression": "triton_poi_fused_mul_silu_slice_1.run(buf3, buf4, triton_poi_fused_mul_silu_slice_1_xnumel, stream=stream0)"
+            },
+            {
+              "line": 949,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 951,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf4, reinterpret_tensor(arg6_1, (6144, 2048), (1, 6144), 0), out=buf5)"
+            },
+            {
+              "line": 951,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg6_1, (6144, 2048), (1, 6144), 0)"
+            },
+            {
+              "line": 954,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 955,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 957,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 958,
+              "target": "triton_red_fused_fused_add_rms_norm_2.run",
+              "expression": "triton_red_fused_fused_add_rms_norm_2.run(buf5, buf0, arg4_1, arg7_1, buf6, buf8, s72, 2048, stream=stream0)"
+            },
+            {
+              "line": 962,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2560), (2560, 1), torch.bfloat16)"
+            },
+            {
+              "line": 964,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf8, reinterpret_tensor(arg8_1, (2048, 2560), (1, 2048), 0), out=buf9)"
+            },
+            {
+              "line": 964,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg8_1, (2048, 2560), (1, 2048), 0)"
+            },
+            {
+              "line": 966,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2, 128), (256, 128, 1), torch.bfloat16)"
+            },
+            {
+              "line": 967,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf8, (s72, 16, 128), (2048, 128, 1), 0)"
+            },
+            {
+              "line": 971,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 972,
+              "target": "triton_poi_fused_3.run",
+              "expression": "triton_poi_fused_3.run(buf9, arg9_1, arg10_1, buf10, buf11, triton_poi_fused_3_xnumel_0, triton_poi_fused_3_xnumel_1, stream=stream0)"
+            },
+            {
+              "line": 976,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf9, (s72, 2, 128), (2560, 128, 1), 2304)"
+            },
+            {
+              "line": 976,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf12, (s72, 16, 128), (2048, 128, 1), 0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 9,
+            "extern_kernels.mm": 4,
+            "reinterpret_tensor": 8,
+            "get_raw_stream": 4,
+            "triton_red_fused_fused_add_rms_norm_0.run": 1,
+            "triton_poi_fused_mul_silu_slice_1.run": 1,
+            "triton_red_fused_fused_add_rms_norm_2.run": 1,
+            "triton_poi_fused_3.run": 1
+          },
+          "source": "def call(self, args):\n        arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1, arg8_1, arg9_1, arg10_1 = args\n        args.clear()\n        s72 = arg1_1\n        with torch.cuda._DeviceGuard(0):\n            torch.cuda.set_device(0)\n            buf0 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [view, linear], Original ATen: [aten.view, aten.linear]\n            extern_kernels.mm(reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0), reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0), out=buf0)\n            del arg0_1\n            del arg2_1\n            buf2 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace], Original ATen: [vllm_ir.fused_add_rms_norm]\n            stream0 = get_raw_stream(0)\n            triton_red_fused_fused_add_rms_norm_0.run(buf0, arg4_1, arg3_1, buf2, s72, 2048, stream=stream0)\n            del arg3_1\n            buf3 = empty_strided_cuda((s72, 12288), (12288, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, linear_1], Original ATen: [vllm_ir.fused_add_rms_norm, aten.linear]\n            extern_kernels.mm(buf2, reinterpret_tensor(arg5_1, (2048, 12288), (1, 2048), 0), out=buf3)\n            del arg5_1\n            del buf2\n            buf4 = empty_strided_cuda((s72, 6144), (6144, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [getitem_2, silu, getitem_3, mul], Original ATen: [aten.slice, aten.silu, aten.mul]\n            triton_poi_fused_mul_silu_slice_1_xnumel = 6144*s72\n            stream0 = get_raw_stream(0)\n            triton_poi_fused_mul_silu_slice_1.run(buf3, buf4, triton_poi_fused_mul_silu_slice_1_xnumel, stream=stream0)\n            del buf3\n            buf5 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [getitem_2, silu, getitem_3, mul, linear_2], Original ATen: [aten.slice, aten.silu, aten.mul, aten.linear]\n            extern_kernels.mm(buf4, reinterpret_tensor(arg6_1, (6144, 2048), (1, 6144), 0), out=buf5)\n            del arg6_1\n            del buf4\n            buf6 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            buf8 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, fused_add_rms_norm_maybe_inplace_1], Original ATen: [vllm_ir.fused_add_rms_norm]\n            stream0 = get_raw_stream(0)\n            triton_red_fused_fused_add_rms_norm_2.run(buf5, buf0, arg4_1, arg7_1, buf6, buf8, s72, 2048, stream=stream0)\n            del arg4_1\n            del arg7_1\n            del buf0\n            buf9 = empty_strided_cuda((s72, 2560), (2560, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, fused_add_rms_norm_maybe_inplace_1, linear_3], Original ATen: [vllm_ir.fused_add_rms_norm, aten.linear]\n            extern_kernels.mm(buf8, reinterpret_tensor(arg8_1, (2048, 2560), (1, 2048), 0), out=buf9)\n            del arg8_1\n            buf10 = empty_strided_cuda((s72, 2, 128), (256, 128, 1), torch.bfloat16)\n            buf11 = reinterpret_tensor(buf8, (s72, 16, 128), (2048, 128, 1), 0); del buf8  # reuse\n            # Topologically Sorted Source Nodes: [split, index_select, chunk, view_1, chunk_1, view_2, chunk_2, unsqueeze_2, mul_5, unsqueeze_3, mul_6, sub_1, mul_7, mul_8, add_1, cat_2, unsqueeze, mul_1, unsqueeze_1, mul_2, sub, mul_3, mul_4, add, cat], Original ATen: [aten.split_with_sizes, aten.index_select, aten.split, aten.view, aten.unsqueeze, aten.mul, aten.sub, aten.add, aten.cat]\n            triton_poi_fused_3_xnumel_0 = 256*s72\n            triton_poi_fused_3_xnumel_1 = 2048*s72\n            stream0 = get_raw_stream(0)\n            triton_poi_fused_3.run(buf9, arg9_1, arg10_1, buf10, buf11, triton_poi_fused_3_xnumel_0, triton_poi_fused_3_xnumel_1, stream=stream0)\n            del arg10_1\n            del arg9_1\n            buf12 = buf5; del buf5  # reuse\n        return (buf10, reinterpret_tensor(buf9, (s72, 2, 128), (2560, 128, 1), 2304), buf11, reinterpret_tensor(buf12, (s72, 16, 128), (2048, 128, 1), 0), buf6, )"
+        }
+      ],
+      "fused_kernels": [
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_0",
+          "line": 523,
+          "source_sha256": "d49f3e2f07e0f3848271192aef263dac15251cff12bf8d55567c72c50f0e5b9c",
+          "functions": [
+            {
+              "name": "triton_red_fused_fused_add_rms_norm_0",
+              "calls": {
+                "triton_heuristics.reduction": 1,
+                "tl.full": 1,
+                "range": 2,
+                "tl.program_id": 1,
+                "tl.arange": 2,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp0.to": 1,
+                "tmp2.to": 1,
+                "tl.broadcast_to": 1,
+                "tl.where": 1,
+                "tl.sum": 1,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr2 + r0_1, r0_mask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp9.to": 1,
+                "tmp11.to": 1,
+                "libdevice.rsqrt": 1,
+                "tmp19.to": 1,
+                "tl.store": 1,
+                "DeviceProperties": 1,
+                "set": 1,
+                "tl.load": 5
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_poi_fused_mul_silu_slice_1",
+          "line": 608,
+          "source_sha256": "2077eeed3cb635af436273a4ca3c69e6fb2d32e303bbf50b739950086df2cb6a",
+          "functions": [
+            {
+              "name": "triton_poi_fused_mul_silu_slice_1",
+              "calls": {
+                "triton_heuristics.pointwise": 1,
+                "tl.load(in_ptr0 + (x0 + 12288 * x1), xmask).to": 1,
+                "tl.load(in_ptr0 + (6144 + x0 + 12288 * x1), xmask).to": 1,
+                "tmp0.to": 1,
+                "tl.sigmoid": 1,
+                "tmp3.to": 1,
+                "tl.store": 1,
+                "tl.program_id": 1,
+                "tl.arange": 1,
+                "tl.load": 2,
+                "DeviceProperties": 1,
+                "set": 1
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_2",
+          "line": 670,
+          "source_sha256": "7ca69c00d51f85fa2c1e26de4f75025fbdda6b47a33e2ff18c93569f9b1f3939",
+          "functions": [
+            {
+              "name": "triton_red_fused_fused_add_rms_norm_2",
+              "calls": {
+                "triton_heuristics.reduction": 1,
+                "tl.full": 1,
+                "range": 2,
+                "tl.program_id": 1,
+                "tl.arange": 2,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp0.to": 1,
+                "tmp2.to": 1,
+                "tmp4.to": 1,
+                "tmp6.to": 1,
+                "tmp7.to": 1,
+                "tl.broadcast_to": 1,
+                "tl.where": 1,
+                "tmp9.to": 1,
+                "tl.store": 2,
+                "tl.sum": 1,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr3 + r0_1, r0_mask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp15.to": 1,
+                "tmp17.to": 1,
+                "tmp19.to": 1,
+                "tmp21.to": 1,
+                "tmp22.to": 1,
+                "libdevice.rsqrt": 1,
+                "tmp30.to": 1,
+                "DeviceProperties": 1,
+                "set": 1,
+                "tl.load": 7
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_poi_fused_3",
+          "line": 753,
+          "source_sha256": "c27bda99180c90044f24ce6cd309a6891df021b990dbe6b70f792764c3a91c86",
+          "functions": [
+            {
+              "name": "triton_poi_fused_3",
+              "calls": {
+                "triton_heuristics.pointwise": 1,
+                "tl.program_id": 1,
+                "tl.cdiv": 2,
+                "tl.full": 14,
+                "tl.load(in_ptr0 + (2048 + 128 * x1 + 2560 * x2 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load": 20,
+                "tl.where": 10,
+                "tl.load(in_ptr2 + (128 * tmp10 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2112 + 128 * x1 + 2560 * x2 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp10 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2112 + 128 * x1 + 2560 * x2 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp27 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2048 + 128 * x1 + 2560 * x2 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp27 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.store": 2,
+                "tl.load(in_ptr0 + (128 * x6 + 2560 * x7 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp47 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (64 + 128 * x6 + 2560 * x7 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp47 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (64 + 128 * x6 + 2560 * x7 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp64 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (128 * x6 + 2560 * x7 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp64 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "DeviceProperties": 1,
+                "tl.arange": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/aa/caaddrohrdyltzmhvikj5wp6nrrm3fetoxdvhtvxc4kf7ep6sa5m.py",
+      "sha256": "2077eeed3cb635af436273a4ca3c69e6fb2d32e303bbf50b739950086df2cb6a",
+      "bytes": 2319,
+      "wrappers": [],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/af/caf76jwbkniouupj5soi444c6fjeyh6yh5rpn5elaai36da3itp5.py",
+      "sha256": "451929b977b8dd12b0008be7f00abae723c68637bdd8a2a85475313e3b8c64f2",
+      "bytes": 4889,
+      "wrappers": [],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/ey/cey3rxw3jrlzk3mwqgix5vj7yykpxiyxhlyazbuzglxeghgxoj6m.py",
+      "sha256": "4d9a6ad82b6acf5fd3e6b2502fbdd35e87ca5b2c026631bf28f7753256db1966",
+      "bytes": 8703,
+      "wrappers": [
+        {
+          "kind": "kernel_benchmark_harness",
+          "line": 133,
+          "operations": [
+            {
+              "line": 134,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 135,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 136,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 137,
+              "target": "triton_.run",
+              "expression": "triton_.run(*args, stream=stream0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_.run": 1
+          },
+          "source": "def call(args):\n    with torch.cuda._DeviceGuard(0):\n        torch.cuda.set_device(0)\n        stream0 = get_raw_stream(0)\n        triton_.run(*args, stream=stream0)"
+        }
+      ],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/fs/cfspqdan4bwnacqab2sh5taqamx65llideiuotyitcs3jqyvhva2.py",
+      "sha256": "35a43ec14f6c2ff49d7c2150c30273f10535fb4584237af946ab2592531c20dc",
+      "bytes": 4152,
+      "wrappers": [],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/gd/cgdjvbjgwuserduayy34iadsfzwaqaq6cq6khb7iwtepyqs2viff.py",
+      "sha256": "d49f3e2f07e0f3848271192aef263dac15251cff12bf8d55567c72c50f0e5b9c",
+      "bytes": 4119,
+      "wrappers": [],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/hz/chzvgkd23ju6gm4rf4lnqdesdjnddc4x7wlbxepjmovyqcnhxsos.py",
+      "sha256": "06cbabfa1da5533380f64a692e09b7f4cf615f5d0a0f9cd9d531a09ed6ade124",
+      "bytes": 8726,
+      "wrappers": [
+        {
+          "kind": "kernel_benchmark_harness",
+          "line": 133,
+          "operations": [
+            {
+              "line": 134,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 135,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 136,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 137,
+              "target": "triton_poi_fused_1.run",
+              "expression": "triton_poi_fused_1.run(*args, stream=stream0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_poi_fused_1.run": 1
+          },
+          "source": "def call(args):\n    with torch.cuda._DeviceGuard(0):\n        torch.cuda.set_device(0)\n        stream0 = get_raw_stream(0)\n        triton_poi_fused_1.run(*args, stream=stream0)"
+        }
+      ],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/ik/cikr6ohyslyhfp3qyh5eo3sunu3hnjxytawoiejbsnp7ygqwn6km.py",
+      "sha256": "5685f35b3e4f8ef289b5c2eeffe817e259494629d4944838c1ba6ac730a8ab4e",
+      "bytes": 8726,
+      "wrappers": [
+        {
+          "kind": "kernel_benchmark_harness",
+          "line": 133,
+          "operations": [
+            {
+              "line": 134,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 135,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 136,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 137,
+              "target": "triton_poi_fused_2.run",
+              "expression": "triton_poi_fused_2.run(*args, stream=stream0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_poi_fused_2.run": 1
+          },
+          "source": "def call(args):\n    with torch.cuda._DeviceGuard(0):\n        torch.cuda.set_device(0)\n        stream0 = get_raw_stream(0)\n        triton_poi_fused_2.run(*args, stream=stream0)"
+        }
+      ],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/jw/cjw6sjlqzwwwniyfhe4eoo3yecdwlwfhymj7g3bptoynwpqoryni.py",
+      "sha256": "0ceeaea567b1d4ce8aaef9d6d27155ccc8bb41f2ccb6ce2c632f9219a21e9c90",
+      "bytes": 39742,
+      "wrappers": [
+        {
+          "kind": "model_runner_method",
+          "line": 597,
+          "operations": [
+            {
+              "line": 599,
+              "target": "args.clear",
+              "expression": "args.clear()"
+            },
+            {
+              "line": 601,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 602,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 603,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 604,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 606,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 607,
+              "target": "triton_red_fused__to_copy_embedding_rms_norm_0.run",
+              "expression": "triton_red_fused__to_copy_embedding_rms_norm_0.run(arg0_1, arg2_1, arg3_1, buf0, buf2, s72, 2048, stream=stream0)"
+            },
+            {
+              "line": 611,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2560), (2560, 1), torch.bfloat16)"
+            },
+            {
+              "line": 613,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf2, reinterpret_tensor(arg4_1, (2048, 2560), (1, 2048), 0), out=buf3)"
+            },
+            {
+              "line": 613,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg4_1, (2048, 2560), (1, 2048), 0)"
+            },
+            {
+              "line": 615,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2, 128), (256, 128, 1), torch.bfloat16)"
+            },
+            {
+              "line": 616,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf2, (s72, 16, 128), (2048, 128, 1), 0)"
+            },
+            {
+              "line": 620,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 621,
+              "target": "triton_poi_fused_1.run",
+              "expression": "triton_poi_fused_1.run(buf3, arg5_1, arg6_1, buf4, buf5, triton_poi_fused_1_xnumel_0, triton_poi_fused_1_xnumel_1, stream=stream0)"
+            },
+            {
+              "line": 624,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 625,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf3, (s72, 2, 128), (2560, 128, 1), 2304)"
+            },
+            {
+              "line": 625,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(buf6, (s72, 16, 128), (2048, 128, 1), 0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [
+            {
+              "line": 607,
+              "target": "triton_red_fused__to_copy_embedding_rms_norm_0.run",
+              "expression": "triton_red_fused__to_copy_embedding_rms_norm_0.run(arg0_1, arg2_1, arg3_1, buf0, buf2, s72, 2048, stream=stream0)"
+            }
+          ],
+          "counts": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 5,
+            "get_raw_stream": 2,
+            "triton_red_fused__to_copy_embedding_rms_norm_0.run": 1,
+            "extern_kernels.mm": 1,
+            "reinterpret_tensor": 4,
+            "triton_poi_fused_1.run": 1
+          },
+          "source": "def call(self, args):\n        arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1 = args\n        args.clear()\n        s72 = arg1_1\n        with torch.cuda._DeviceGuard(0):\n            torch.cuda.set_device(0)\n            buf0 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            buf2 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [long, embedding, rms_norm_default], Original ATen: [aten._to_copy, aten.embedding, vllm_ir.rms_norm]\n            stream0 = get_raw_stream(0)\n            triton_red_fused__to_copy_embedding_rms_norm_0.run(arg0_1, arg2_1, arg3_1, buf0, buf2, s72, 2048, stream=stream0)\n            del arg0_1\n            del arg2_1\n            del arg3_1\n            buf3 = empty_strided_cuda((s72, 2560), (2560, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [rms_norm_default, linear], Original ATen: [vllm_ir.rms_norm, aten.linear]\n            extern_kernels.mm(buf2, reinterpret_tensor(arg4_1, (2048, 2560), (1, 2048), 0), out=buf3)\n            del arg4_1\n            buf4 = empty_strided_cuda((s72, 2, 128), (256, 128, 1), torch.bfloat16)\n            buf5 = reinterpret_tensor(buf2, (s72, 16, 128), (2048, 128, 1), 0); del buf2  # reuse\n            # Topologically Sorted Source Nodes: [split, index_select, chunk, view, chunk_1, view_1, chunk_2, unsqueeze_2, mul_4, unsqueeze_3, mul_5, sub_1, mul_6, mul_7, add_1, cat_2, unsqueeze, mul, unsqueeze_1, mul_1, sub, mul_2, mul_3, add, cat], Original ATen: [aten.split_with_sizes, aten.index_select, aten.split, aten.view, aten.unsqueeze, aten.mul, aten.sub, aten.add, aten.cat]\n            triton_poi_fused_1_xnumel_0 = 256*s72\n            triton_poi_fused_1_xnumel_1 = 2048*s72\n            stream0 = get_raw_stream(0)\n            triton_poi_fused_1.run(buf3, arg5_1, arg6_1, buf4, buf5, triton_poi_fused_1_xnumel_0, triton_poi_fused_1_xnumel_1, stream=stream0)\n            del arg5_1\n            del arg6_1\n            buf6 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n        return (buf4, reinterpret_tensor(buf3, (s72, 2, 128), (2560, 128, 1), 2304), buf5, reinterpret_tensor(buf6, (s72, 16, 128), (2048, 128, 1), 0), buf0, )"
+        }
+      ],
+      "fused_kernels": [
+        {
+          "name": "triton_red_fused__to_copy_embedding_rms_norm_0",
+          "line": 356,
+          "source_sha256": "35a43ec14f6c2ff49d7c2150c30273f10535fb4584237af946ab2592531c20dc",
+          "functions": [
+            {
+              "name": "triton_red_fused__to_copy_embedding_rms_norm_0",
+              "calls": {
+                "triton_heuristics.reduction": 1,
+                "tl.load": 4,
+                "tl.full": 2,
+                "range": 2,
+                "tl.program_id": 1,
+                "tl.arange": 2,
+                "tmp0.to": 1,
+                "tl.where": 2,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * tmp5), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tmp6.to": 1,
+                "tl.broadcast_to": 1,
+                "tl.store": 2,
+                "tl.sum": 1,
+                "tl.load(out_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr2 + r0_1, r0_mask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp12.to": 1,
+                "libdevice.rsqrt": 1,
+                "tmp19.to": 1,
+                "DeviceProperties": 1,
+                "set": 1
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_poi_fused_1",
+          "line": 428,
+          "source_sha256": "06cbabfa1da5533380f64a692e09b7f4cf615f5d0a0f9cd9d531a09ed6ade124",
+          "functions": [
+            {
+              "name": "triton_poi_fused_1",
+              "calls": {
+                "triton_heuristics.pointwise": 1,
+                "tl.program_id": 1,
+                "tl.cdiv": 2,
+                "tl.full": 14,
+                "tl.load(in_ptr0 + (2048 + 128 * x1 + 2560 * x2 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load": 20,
+                "tl.where": 10,
+                "tl.load(in_ptr2 + (128 * tmp10 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2112 + 128 * x1 + 2560 * x2 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp10 + x0), tmp4 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2112 + 128 * x1 + 2560 * x2 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp27 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (2048 + 128 * x1 + 2560 * x2 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp27 + (-64 + x0)), tmp19 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.store": 2,
+                "tl.load(in_ptr0 + (128 * x6 + 2560 * x7 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp47 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (64 + 128 * x6 + 2560 * x7 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp47 + x5), tmp41 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (64 + 128 * x6 + 2560 * x7 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (128 * tmp64 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (128 * x6 + 2560 * x7 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr2 + (64 + 128 * tmp64 + (-64 + x5)), tmp56 & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "DeviceProperties": 1,
+                "tl.arange": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/kj/ckjp53lb77ibrtoqd7rpok4zs6pjarhx5jfudz3ygvvcwrrgehjk.py",
+      "sha256": "493b7c17c43805d313e7db9deb4ec703ac25dddeffd11fd7ccd99d3505c05538",
+      "bytes": 5491,
+      "wrappers": [
+        {
+          "kind": "kernel_benchmark_harness",
+          "line": 78,
+          "operations": [
+            {
+              "line": 79,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 80,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 81,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 82,
+              "target": "triton_.run",
+              "expression": "triton_.run(*args, stream=stream0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_.run": 1
+          },
+          "source": "def call(args):\n    with torch.cuda._DeviceGuard(0):\n        torch.cuda.set_device(0)\n        stream0 = get_raw_stream(0)\n        triton_.run(*args, stream=stream0)"
+        }
+      ],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/o6/co6toxyj423q2aqjygypdsa6cf65zgzrcpcxrwigobjzsk33v5ib.py",
+      "sha256": "c27bda99180c90044f24ce6cd309a6891df021b990dbe6b70f792764c3a91c86",
+      "bytes": 8726,
+      "wrappers": [
+        {
+          "kind": "kernel_benchmark_harness",
+          "line": 133,
+          "operations": [
+            {
+              "line": 134,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 135,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 136,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 137,
+              "target": "triton_poi_fused_3.run",
+              "expression": "triton_poi_fused_3.run(*args, stream=stream0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_poi_fused_3.run": 1
+          },
+          "source": "def call(args):\n    with torch.cuda._DeviceGuard(0):\n        torch.cuda.set_device(0)\n        stream0 = get_raw_stream(0)\n        triton_poi_fused_3.run(*args, stream=stream0)"
+        }
+      ],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/q6/cq6sqq7lgynvqoykprof4qlncnnwem3v4q5sbpnoagncanrhxa3m.py",
+      "sha256": "c272dac438ba7a3dd65485e869f11119bcef34afb245b532317b1babfb127715",
+      "bytes": 47711,
+      "wrappers": [
+        {
+          "kind": "model_runner_method",
+          "line": 586,
+          "operations": [
+            {
+              "line": 588,
+              "target": "args.clear",
+              "expression": "args.clear()"
+            },
+            {
+              "line": 590,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 591,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 592,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 594,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0), reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0), out=buf0)"
+            },
+            {
+              "line": 594,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0)"
+            },
+            {
+              "line": 594,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0)"
+            },
+            {
+              "line": 597,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 599,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 600,
+              "target": "triton_red_fused_fused_add_rms_norm_0.run",
+              "expression": "triton_red_fused_fused_add_rms_norm_0.run(buf0, arg4_1, arg3_1, buf2, s72, 2048, stream=stream0)"
+            },
+            {
+              "line": 602,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 12288), (12288, 1), torch.bfloat16)"
+            },
+            {
+              "line": 604,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf2, reinterpret_tensor(arg5_1, (2048, 12288), (1, 2048), 0), out=buf3)"
+            },
+            {
+              "line": 604,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg5_1, (2048, 12288), (1, 2048), 0)"
+            },
+            {
+              "line": 607,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 6144), (6144, 1), torch.bfloat16)"
+            },
+            {
+              "line": 610,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 611,
+              "target": "triton_poi_fused_mul_silu_slice_1.run",
+              "expression": "triton_poi_fused_mul_silu_slice_1.run(buf3, buf4, triton_poi_fused_mul_silu_slice_1_xnumel, stream=stream0)"
+            },
+            {
+              "line": 613,
+              "target": "empty_strided_cuda",
+              "expression": "empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)"
+            },
+            {
+              "line": 615,
+              "target": "extern_kernels.mm",
+              "expression": "extern_kernels.mm(buf4, reinterpret_tensor(arg6_1, (6144, 2048), (1, 6144), 0), out=buf5)"
+            },
+            {
+              "line": 615,
+              "target": "reinterpret_tensor",
+              "expression": "reinterpret_tensor(arg6_1, (6144, 2048), (1, 6144), 0)"
+            },
+            {
+              "line": 620,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 621,
+              "target": "triton_red_fused_fused_add_rms_norm_2.run",
+              "expression": "triton_red_fused_fused_add_rms_norm_2.run(buf7, buf0, arg4_1, arg7_1, s72, 2048, stream=stream0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 5,
+            "extern_kernels.mm": 3,
+            "reinterpret_tensor": 4,
+            "get_raw_stream": 3,
+            "triton_red_fused_fused_add_rms_norm_0.run": 1,
+            "triton_poi_fused_mul_silu_slice_1.run": 1,
+            "triton_red_fused_fused_add_rms_norm_2.run": 1
+          },
+          "source": "def call(self, args):\n        arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1 = args\n        args.clear()\n        s72 = arg1_1\n        with torch.cuda._DeviceGuard(0):\n            torch.cuda.set_device(0)\n            buf0 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [view, linear], Original ATen: [aten.view, aten.linear]\n            extern_kernels.mm(reinterpret_tensor(arg0_1, (s72, 2048), (2048, 1), 0), reinterpret_tensor(arg2_1, (2048, 2048), (1, 2048), 0), out=buf0)\n            del arg0_1\n            del arg2_1\n            buf2 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace], Original ATen: [vllm_ir.fused_add_rms_norm]\n            stream0 = get_raw_stream(0)\n            triton_red_fused_fused_add_rms_norm_0.run(buf0, arg4_1, arg3_1, buf2, s72, 2048, stream=stream0)\n            del arg3_1\n            buf3 = empty_strided_cuda((s72, 12288), (12288, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, linear_1], Original ATen: [vllm_ir.fused_add_rms_norm, aten.linear]\n            extern_kernels.mm(buf2, reinterpret_tensor(arg5_1, (2048, 12288), (1, 2048), 0), out=buf3)\n            del arg5_1\n            del buf2\n            buf4 = empty_strided_cuda((s72, 6144), (6144, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [getitem_2, silu, getitem_3, mul], Original ATen: [aten.slice, aten.silu, aten.mul]\n            triton_poi_fused_mul_silu_slice_1_xnumel = 6144*s72\n            stream0 = get_raw_stream(0)\n            triton_poi_fused_mul_silu_slice_1.run(buf3, buf4, triton_poi_fused_mul_silu_slice_1_xnumel, stream=stream0)\n            del buf3\n            buf5 = empty_strided_cuda((s72, 2048), (2048, 1), torch.bfloat16)\n            # Topologically Sorted Source Nodes: [getitem_2, silu, getitem_3, mul, linear_2], Original ATen: [aten.slice, aten.silu, aten.mul, aten.linear]\n            extern_kernels.mm(buf4, reinterpret_tensor(arg6_1, (6144, 2048), (1, 6144), 0), out=buf5)\n            del arg6_1\n            del buf4\n            buf7 = buf5; del buf5  # reuse\n            # Topologically Sorted Source Nodes: [fused_add_rms_norm_maybe_inplace, fused_add_rms_norm_maybe_inplace_1], Original ATen: [vllm_ir.fused_add_rms_norm]\n            stream0 = get_raw_stream(0)\n            triton_red_fused_fused_add_rms_norm_2.run(buf7, buf0, arg4_1, arg7_1, s72, 2048, stream=stream0)\n            del arg4_1\n            del arg7_1\n            del buf0\n        return (buf7, )"
+        }
+      ],
+      "fused_kernels": [
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_0",
+          "line": 349,
+          "source_sha256": "d49f3e2f07e0f3848271192aef263dac15251cff12bf8d55567c72c50f0e5b9c",
+          "functions": [
+            {
+              "name": "triton_red_fused_fused_add_rms_norm_0",
+              "calls": {
+                "triton_heuristics.reduction": 1,
+                "tl.full": 1,
+                "range": 2,
+                "tl.program_id": 1,
+                "tl.arange": 2,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp0.to": 1,
+                "tmp2.to": 1,
+                "tl.broadcast_to": 1,
+                "tl.where": 1,
+                "tl.sum": 1,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr2 + r0_1, r0_mask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp9.to": 1,
+                "tmp11.to": 1,
+                "libdevice.rsqrt": 1,
+                "tmp19.to": 1,
+                "tl.store": 1,
+                "DeviceProperties": 1,
+                "set": 1,
+                "tl.load": 5
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_poi_fused_mul_silu_slice_1",
+          "line": 434,
+          "source_sha256": "2077eeed3cb635af436273a4ca3c69e6fb2d32e303bbf50b739950086df2cb6a",
+          "functions": [
+            {
+              "name": "triton_poi_fused_mul_silu_slice_1",
+              "calls": {
+                "triton_heuristics.pointwise": 1,
+                "tl.load(in_ptr0 + (x0 + 12288 * x1), xmask).to": 1,
+                "tl.load(in_ptr0 + (6144 + x0 + 12288 * x1), xmask).to": 1,
+                "tmp0.to": 1,
+                "tl.sigmoid": 1,
+                "tmp3.to": 1,
+                "tl.store": 1,
+                "tl.program_id": 1,
+                "tl.arange": 1,
+                "tl.load": 2,
+                "DeviceProperties": 1,
+                "set": 1
+              }
+            }
+          ]
+        },
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_2",
+          "line": 495,
+          "source_sha256": "5a0f603982785e368ddeaaef2bff2c940f835d293cc6516a6af8366ae15e6e05",
+          "functions": [
+            {
+              "name": "triton_red_fused_fused_add_rms_norm_2",
+              "calls": {
+                "triton_heuristics.reduction": 1,
+                "tl.full": 1,
+                "range": 2,
+                "tl.program_id": 1,
+                "tl.arange": 2,
+                "tl.load(in_out_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp0.to": 1,
+                "tmp2.to": 1,
+                "tmp4.to": 1,
+                "tmp6.to": 1,
+                "tmp7.to": 1,
+                "tl.broadcast_to": 1,
+                "tl.where": 1,
+                "tl.sum": 1,
+                "tl.load(in_out_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr0 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr1 + (r0_1 + 2048 * x0), r0_mask & xmask, eviction_policy='evict_first', other=0.0).to": 1,
+                "tl.load(in_ptr2 + r0_1, r0_mask, eviction_policy='evict_last', other=0.0).to": 1,
+                "tmp14.to": 1,
+                "tmp16.to": 1,
+                "tmp18.to": 1,
+                "tmp20.to": 1,
+                "tmp21.to": 1,
+                "libdevice.rsqrt": 1,
+                "tmp29.to": 1,
+                "tl.store": 1,
+                "DeviceProperties": 1,
+                "set": 1,
+                "tl.load": 7
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/sh/csh4ed653otnxi3zqwy6ovmowczch6bykeilugtyvowplbmmmh6g.py",
+      "sha256": "5a0f603982785e368ddeaaef2bff2c940f835d293cc6516a6af8366ae15e6e05",
+      "bytes": 4687,
+      "wrappers": [],
+      "fused_kernels": []
+    },
+    {
+      "path": "/private/tmp/flagos-bf16-generated-python-audit-20261025/u5/cu54otbftftkrymidlndq57nx56ffwjh5pdhqu6owdblsgqzfdba.py",
+      "sha256": "a0a5beb4dad3c8ee136a84d26fa4130d506612194908e31bcfeeba75c718e53a",
+      "bytes": 5503,
+      "wrappers": [
+        {
+          "kind": "kernel_benchmark_harness",
+          "line": 78,
+          "operations": [
+            {
+              "line": 79,
+              "target": "torch.cuda._DeviceGuard",
+              "expression": "torch.cuda._DeviceGuard(0)"
+            },
+            {
+              "line": 80,
+              "target": "torch.cuda.set_device",
+              "expression": "torch.cuda.set_device(0)"
+            },
+            {
+              "line": 81,
+              "target": "get_raw_stream",
+              "expression": "get_raw_stream(0)"
+            },
+            {
+              "line": 82,
+              "target": "triton_.run",
+              "expression": "triton_.run(*args, stream=stream0)"
+            }
+          ],
+          "explicit_copy_or_conversion_calls": [],
+          "counts": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_.run": 1
+          },
+          "source": "def call(args):\n    with torch.cuda._DeviceGuard(0):\n        torch.cuda.set_device(0)\n        stream0 = get_raw_stream(0)\n        triton_.run(*args, stream=stream0)"
+        }
+      ],
+      "fused_kernels": []
+    }
+  ],
+  "total_wrappers": 10,
+  "wrapper_kinds": {
+    "model_runner_method": 4,
+    "kernel_benchmark_harness": 6
+  },
+  "explicit_copy_or_conversion_call_sites": 1,
+  "runtime_frequency_or_cost_measured": false,
+  "example_shapes_are_not_runtime_coverage": true
+}

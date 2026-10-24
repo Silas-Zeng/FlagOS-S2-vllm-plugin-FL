@@ -1,0 +1,31 @@
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:728: DeprecationWarning: use_cuda_graph is deprecated; use benchmark_mode='replay' or benchmark_mode='event'
+  super().__init__(*args, **kwargs)
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411: RuntimeWarning: active Triton backend does not provide a replay benchmarker; falling back to event timing
+  resolved_benchmark = resolve_benchmarker(
+{"layer": 4, "geometry": "qkv", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 4, "geometry": "qkv", "m": 8, "candidate_cpu_passed": 2, "native_cpu_passed": true, "graph_cpu_passed": 1}
+{"layer": 4, "geometry": "qkv", "m": 16, "candidate_cpu_passed": 1, "native_cpu_passed": true, "graph_cpu_passed": 1}
+{"layer": 4, "geometry": "o", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 4, "geometry": "o", "m": 8, "candidate_cpu_passed": 1, "native_cpu_passed": false, "graph_cpu_passed": 1}
+{"layer": 4, "geometry": "o", "m": 16, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}
+{"layer": 4, "geometry": "down", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 4, "geometry": "down", "m": 8, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}
+{"layer": 4, "geometry": "down", "m": 16, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}
+{"layer": 20, "geometry": "qkv", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 20, "geometry": "qkv", "m": 8, "candidate_cpu_passed": 1, "native_cpu_passed": true, "graph_cpu_passed": 1}
+{"layer": 20, "geometry": "qkv", "m": 16, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}
+{"layer": 20, "geometry": "o", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 20, "geometry": "o", "m": 8, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}
+{"layer": 20, "geometry": "o", "m": 16, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}
+{"layer": 20, "geometry": "down", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 2}
+{"layer": 20, "geometry": "down", "m": 8, "candidate_cpu_passed": 1, "native_cpu_passed": false, "graph_cpu_passed": 1}
+{"layer": 20, "geometry": "down", "m": 16, "candidate_cpu_passed": 1, "native_cpu_passed": false, "graph_cpu_passed": 1}
+{"layer": 37, "geometry": "qkv", "m": 1, "candidate_cpu_passed": 2, "native_cpu_passed": true, "graph_cpu_passed": 2}
+{"layer": 37, "geometry": "qkv", "m": 8, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 37, "geometry": "qkv", "m": 16, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}
+{"layer": 37, "geometry": "o", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 37, "geometry": "o", "m": 8, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 3}
+{"layer": 37, "geometry": "o", "m": 16, "candidate_cpu_passed": 1, "native_cpu_passed": false, "graph_cpu_passed": 1}
+{"layer": 37, "geometry": "down", "m": 1, "candidate_cpu_passed": 3, "native_cpu_passed": true, "graph_cpu_passed": 2}
+{"layer": 37, "geometry": "down", "m": 8, "candidate_cpu_passed": 1, "native_cpu_passed": false, "graph_cpu_passed": 1}
+{"layer": 37, "geometry": "down", "m": 16, "candidate_cpu_passed": 0, "native_cpu_passed": false, "graph_cpu_passed": 0}

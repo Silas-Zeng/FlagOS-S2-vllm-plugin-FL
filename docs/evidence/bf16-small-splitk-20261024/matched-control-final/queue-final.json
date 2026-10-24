@@ -1,0 +1,28 @@
+{
+  "pid": 226391,
+  "runtime": "/workspace/experiments/minicpm-s2/code/bf16-small-service-20261025",
+  "driver": "/workspace/experiments/minicpm-s2/drivers/bf16-control-20261025/run_biv150_gate_team_acceptance.py",
+  "after_pid": 216341,
+  "after_start_ticks": "322453492",
+  "throughput_only": true,
+  "stage": "finished",
+  "started_utc": "2026-10-24T22:04:35.443398+00:00",
+  "runtime_commit": "8694e87f4f0c9ab8f039364e43ee730499356059",
+  "native_library": "/workspace/experiments/minicpm-s2/code/bf16-small-service-20261025/build-native-w8a8/biv150_native_w8a8.so",
+  "native_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "child_pid": 226738,
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "/workspace/experiments/minicpm-s2/drivers/bf16-control-20261025/run_biv150_gate_team_acceptance.py",
+    "--source",
+    "/workspace/experiments/minicpm-s2/code/bf16-small-service-20261025",
+    "--out",
+    "/workspace/experiments/minicpm-s2/bf16-small-matched-control-20261025",
+    "--mode",
+    "throughput",
+    "--bf16-small-control"
+  ],
+  "matched_runtime_library_cli_and_other_flags": true,
+  "exit_code": 0
+}

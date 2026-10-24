@@ -1,0 +1,9 @@
+# CPU-only generated graph and native cache evidence
+
+The17 generated Python files from frozen8694e87's private service cache are preserved in the24121-byte tarball, SHA a75a7e44931794f67926c7255ac388a2c6e88d04e8f8d53e4219357687133bff. No code from the cache was imported or executed. The initiald3e256c remote AST snapshot and its metadata/log remain intact. The follow-up classification parses the same17 source hashes on CPU:4 model Runner.call methods and6 standalone kernel benchmark harnesses. Ten discovered call definitions are not ten model subgraphs or a runtime call count.
+
+The four model wrappers contain no explicit clone/contiguous calls. The sole name containing_to_copy is triton_red_fused__to_copy_embedding_rms_norm_0.run: conversion is already inside the embedding/norm kernel; its name does not prove an extra conversion launch. Native gate input buf2 is allocated contiguous BF16(s72,2048), directly consumed by gate_silu_auto. No evidence here supports adding a strided-input kernel or a copy-removal pass. This is a static snapshot, not exhaustive runtime coverage or measured GPU cost.
+
+The native-gate wrapper again preserves the pre-gate O output and old residual separately; the following norm consumes down+(O+residual) with FP32 additions. A future norm/quant fusion must preserve that live expression rather than insert an extra BF16 residual store. This corroborates the prior PR33/PR37 graph evidence on the current independent BF16 service; it does not solve the existing remaining norm reduction differences.
+
+The SQLite snapshot opens the vendor3.6 tuner DB read-only. All24 cached BF16 configurations for QKV/O/down and M1/2/4/8/16/32/64/2048 have SPLIT_K=1. Thus the general source's BF16 cast-before-atomic branch cannot be asserted as the cause of these geometries' discrepancies. The cache snapshot is neither actual call-frequency proof nor GPU-time attribution; no cached entry or shared package was changed.

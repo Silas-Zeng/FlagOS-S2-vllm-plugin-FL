@@ -1,0 +1,30 @@
+{
+  "completed": true,
+  "bf16_small_control": true,
+  "accuracy_evaluated": false,
+  "precision_gate": null,
+  "working_performance_gates": {
+    "4096": {
+      "requests_ok": true,
+      "throughput_ok": true,
+      "ttft_ok": true,
+      "passed": true,
+      "baseline_total_tokens_per_s": 4809.36,
+      "throughput_floor": 4761.2663999999995,
+      "working_mean_ttft_limit_ms": 4770.3209,
+      "goal_20_percent": false
+    },
+    "16384": {
+      "requests_ok": true,
+      "throughput_ok": true,
+      "ttft_ok": true,
+      "passed": true,
+      "baseline_total_tokens_per_s": 3364.03,
+      "throughput_floor": 3330.3897,
+      "working_mean_ttft_limit_ms": 156938.85,
+      "goal_20_percent": true
+    }
+  },
+  "bf16_selection": [],
+  "performance_passed": true
+}

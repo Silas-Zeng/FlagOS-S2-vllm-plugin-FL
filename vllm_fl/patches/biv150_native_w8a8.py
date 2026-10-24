@@ -172,6 +172,10 @@ def install():
             return y
 
         LlamaMLP.forward = forward
+    bf16_small={"installed":False}
+    if os.environ.get("VLLM_FL_BIV150_BF16_SMALL_SPLITK","1")=="1":
+        from vllm_fl.patches.biv150_bf16_small_splitk import install_worker_launcher
+        bf16_small=install_worker_launcher()
     return {
         "installed": True,
         "layers": selected,
@@ -183,4 +187,5 @@ def install():
         "cached_quantization_rows": [17, 2048],
         "cached_quantization_threads": 256,
         "gate_operator": "gate_silu_auto",
+        "bf16_small_splitk": bf16_small,
     }

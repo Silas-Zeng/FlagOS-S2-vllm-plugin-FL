@@ -1,0 +1,7 @@
+# First complete model score and matched-control preparation
+
+Frozen runtime8694e87 first Level3 score:100/105=.9524;105 unique predictions, zero failed requests. No evaluation rerun or candidate fitting. The complete initial4K score is5768.370829764784 total tok/s, TTFT3639.249344501877ms,256/256 and full1048576/262144 input/output tokens. Three warmups stabilize TPOT112.09368→100.74327→100.74511ms. Compared with the accepted PR28 separate single run5765.810177399745 this is only+.0444%, not an established incremental gain.16K remains running at this checkpoint; no service-gain or merge claim.
+
+Prepare a throughput-only disabled-hook control using this same frozen runtime directory and same already-built private native library. The driver records its own file hash independently of runtime commit, and rejects unexpected hook installation or selection. The queue waits for the exact owned predecessor PID/start ticks, then refuses an occupied GPU/port. It verifies the runtime commit/library against the candidate manifest, and verifies identical CLI/source hashes/other flags afterward. Only the owned BF16 flag and private Inductor cache destination differ. No accuracy gate is invented for the throughput-only control.
+
+CPU check still passes240 scope cases, tested math AST and native-source invariance, plus enabled/disabled compile-cache identity. Both driver scripts compile. The current running runtime is immutable and is not changed by these driver additions.
