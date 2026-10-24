@@ -1,0 +1,1463 @@
+{
+  "component_only": true,
+  "service_installed": false,
+  "rows": [
+    17,
+    32,
+    40,
+    64,
+    256,
+    2048
+  ],
+  "no_int32_output_tensor": true,
+  "weight_repacked": false,
+  "commit": "78f3f00e5a0f661f945466d6710e20c22f714a30",
+  "library_sha256": "ce9afebe8f12cafb9bdea7c81d743dbc5b959befcc0f83583493ad0b6d3e34cd",
+  "records": [
+    {
+      "m": 17,
+      "config": [
+        16,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.054676443338394165,
+          "candidate_ms": 0.1008562445640564,
+          "speedup": 0.5421225386165133
+        },
+        {
+          "candidate_ms": 0.10077067464590073,
+          "baseline_ms": 0.0548480786383152,
+          "speedup": 0.5442861113220341
+        },
+        {
+          "baseline_ms": 0.05482740327715874,
+          "candidate_ms": 0.10102260112762451,
+          "speedup": 0.5427241297013708
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.5427241297013708,
+      "min_round_speedup": 0.5421225386165133,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 17,
+      "config": [
+        32,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.054647114127874374,
+          "candidate_ms": 0.11353365331888199,
+          "speedup": 0.4813296545156265
+        },
+        {
+          "candidate_ms": 0.11367884278297424,
+          "baseline_ms": 0.05471250042319298,
+          "speedup": 0.48129008955206665
+        },
+        {
+          "baseline_ms": 0.054676443338394165,
+          "candidate_ms": 0.1133783683180809,
+          "speedup": 0.4822475764071716
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.4813296545156265,
+      "min_round_speedup": 0.48129008955206665,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 17,
+      "config": [
+        32,
+        128,
+        64,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.054734133183956146,
+          "candidate_ms": 0.10755288600921631,
+          "speedup": 0.508904365237265
+        },
+        {
+          "candidate_ms": 0.10794615745544434,
+          "baseline_ms": 0.05480817332863808,
+          "speedup": 0.5077362142442227
+        },
+        {
+          "baseline_ms": 0.05475528910756111,
+          "candidate_ms": 0.10795961320400238,
+          "speedup": 0.5071830796956873
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.5077362142442227,
+      "min_round_speedup": 0.5071830796956873,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 17,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.054765865206718445,
+          "candidate_ms": 0.12044375389814377,
+          "speedup": 0.4547007498041995
+        },
+        {
+          "candidate_ms": 0.12018173187971115,
+          "baseline_ms": 0.054689422249794006,
+          "speedup": 0.4550560338449122
+        },
+        {
+          "baseline_ms": 0.054637499153614044,
+          "candidate_ms": 0.12017932534217834,
+          "speedup": 0.4546330993126184
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.4547007498041995,
+      "min_round_speedup": 0.4546330993126184,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 32,
+      "config": [
+        16,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056008171290159225,
+          "candidate_ms": 0.07063893973827362,
+          "speedup": 0.7928795576161919
+        },
+        {
+          "candidate_ms": 0.07060576975345612,
+          "baseline_ms": 0.055998075753450394,
+          "speedup": 0.793109061043971
+        },
+        {
+          "baseline_ms": 0.0560639426112175,
+          "candidate_ms": 0.07056683301925659,
+          "speedup": 0.7944800724714189
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.793109061043971,
+      "min_round_speedup": 0.7928795576161919,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 32,
+      "config": [
+        32,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056069713085889816,
+          "candidate_ms": 0.07104615122079849,
+          "speedup": 0.7892012744171794
+        },
+        {
+          "candidate_ms": 0.07058846205472946,
+          "baseline_ms": 0.055937979370355606,
+          "speedup": 0.7924521620400955
+        },
+        {
+          "baseline_ms": 0.05595865473151207,
+          "candidate_ms": 0.07092644274234772,
+          "speedup": 0.7889674508954486
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.7892012744171794,
+      "min_round_speedup": 0.7889674508954486,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 32,
+      "config": [
+        32,
+        128,
+        64,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05610673129558563,
+          "candidate_ms": 0.07056442648172379,
+          "speedup": 0.7951135450681697
+        },
+        {
+          "candidate_ms": 0.07084134966135025,
+          "baseline_ms": 0.0560312494635582,
+          "speedup": 0.7909398921873989
+        },
+        {
+          "baseline_ms": 0.05605047941207886,
+          "candidate_ms": 0.07088316977024078,
+          "speedup": 0.7907445391305116
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.7909398921873989,
+      "min_round_speedup": 0.7907445391305116,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 32,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056039903312921524,
+          "candidate_ms": 0.054455287754535675,
+          "speedup": 1.0290993882087027
+        },
+        {
+          "candidate_ms": 0.05441249907016754,
+          "baseline_ms": 0.05601923167705536,
+          "speedup": 1.0295287412698295
+        },
+        {
+          "baseline_ms": 0.05598653852939606,
+          "candidate_ms": 0.05452499911189079,
+          "speedup": 1.0268049416104719
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 1.0290993882087027,
+      "min_round_speedup": 1.0268049416104719,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        16,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.058038461953401566,
+          "candidate_ms": 0.18131490051746368,
+          "speedup": 0.3200975859554989
+        },
+        {
+          "candidate_ms": 0.1812254786491394,
+          "baseline_ms": 0.05796538293361664,
+          "speedup": 0.31985228217186945
+        },
+        {
+          "baseline_ms": 0.05794086679816246,
+          "candidate_ms": 0.18144375085830688,
+          "speedup": 0.3193323910251925
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.31985228217186945,
+      "min_round_speedup": 0.3193323910251925,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        32,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05797163397073746,
+          "candidate_ms": 0.1526355743408203,
+          "speedup": 0.37980421157450794
+        },
+        {
+          "candidate_ms": 0.15296538174152374,
+          "baseline_ms": 0.05792788416147232,
+          "speedup": 0.37869930766006327
+        },
+        {
+          "baseline_ms": 0.05799567326903343,
+          "candidate_ms": 0.15354375541210175,
+          "speedup": 0.37771430764720265
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.37869930766006327,
+      "min_round_speedup": 0.37771430764720265,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        32,
+        128,
+        64,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05791826918721199,
+          "candidate_ms": 0.1428375095129013,
+          "speedup": 0.40548361130575944
+        },
+        {
+          "candidate_ms": 0.14297932386398315,
+          "baseline_ms": 0.05800432711839676,
+          "speedup": 0.4056833222513804
+        },
+        {
+          "baseline_ms": 0.058009617030620575,
+          "candidate_ms": 0.1430572122335434,
+          "speedup": 0.4054994230973749
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.4054994230973749,
+      "min_round_speedup": 0.40548361130575944,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05799759551882744,
+          "candidate_ms": 0.2525254786014557,
+          "speedup": 0.22967027263954312
+        },
+        {
+          "candidate_ms": 0.2549033761024475,
+          "baseline_ms": 0.05795624852180481,
+          "speedup": 0.2273655586990412
+        },
+        {
+          "baseline_ms": 0.05807259678840637,
+          "candidate_ms": 0.25026682019233704,
+          "speedup": 0.2320427324076598
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.22967027263954312,
+      "min_round_speedup": 0.2273655586990412,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        16,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06332596391439438,
+          "candidate_ms": 0.12211249768733978,
+          "speedup": 0.5185870825157957
+        },
+        {
+          "candidate_ms": 0.12205192446708679,
+          "baseline_ms": 0.06332211196422577,
+          "speedup": 0.5188128924693979
+        },
+        {
+          "baseline_ms": 0.06322547793388367,
+          "candidate_ms": 0.12226538360118866,
+          "speedup": 0.5171167510512681
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.5185870825157957,
+      "min_round_speedup": 0.5171167510512681,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        32,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06328269094228745,
+          "candidate_ms": 0.07520096004009247,
+          "speedup": 0.8415144023234418
+        },
+        {
+          "candidate_ms": 0.0752115398645401,
+          "baseline_ms": 0.06334999948740005,
+          "speedup": 0.8422909516478017
+        },
+        {
+          "baseline_ms": 0.06327211856842041,
+          "candidate_ms": 0.07513653486967087,
+          "speedup": 0.8420952427227307
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.8420952427227307,
+      "min_round_speedup": 0.8415144023234418,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        32,
+        128,
+        64,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06326346099376678,
+          "candidate_ms": 0.07546201348304749,
+          "speedup": 0.8383484361701917
+        },
+        {
+          "candidate_ms": 0.07555961608886719,
+          "baseline_ms": 0.06330865621566772,
+          "speedup": 0.8378636564432664
+        },
+        {
+          "baseline_ms": 0.06335432827472687,
+          "candidate_ms": 0.07550384849309921,
+          "speedup": 0.8390874046707332
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.8383484361701917,
+      "min_round_speedup": 0.8378636564432664,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06340529024600983,
+          "candidate_ms": 0.08463221788406372,
+          "speedup": 0.749186206284558
+        },
+        {
+          "candidate_ms": 0.0845596119761467,
+          "baseline_ms": 0.06327355653047562,
+          "speedup": 0.7482716045140364
+        },
+        {
+          "baseline_ms": 0.0632692277431488,
+          "candidate_ms": 0.08471393585205078,
+          "speedup": 0.746857374843801
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.7482716045140364,
+      "min_round_speedup": 0.746857374843801,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        16,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.11619085818529129,
+          "candidate_ms": 0.38516393303871155,
+          "speedup": 0.30166598743712936
+        },
+        {
+          "candidate_ms": 0.38564425706863403,
+          "baseline_ms": 0.11649903655052185,
+          "speedup": 0.3020893852693578
+        },
+        {
+          "baseline_ms": 0.11647403985261917,
+          "candidate_ms": 0.3855298161506653,
+          "speedup": 0.30211422041376185
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.3020893852693578,
+      "min_round_speedup": 0.30166598743712936,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        32,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.11649855226278305,
+          "candidate_ms": 0.21949808299541473,
+          "speedup": 0.5307497481206552
+        },
+        {
+          "candidate_ms": 0.21950337290763855,
+          "baseline_ms": 0.11656586080789566,
+          "speedup": 0.5310435974801335
+        },
+        {
+          "baseline_ms": 0.11630672961473465,
+          "candidate_ms": 0.22008654475212097,
+          "speedup": 0.5284590647998431
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.5307497481206552,
+      "min_round_speedup": 0.5284590647998431,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        32,
+        128,
+        64,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.11638317257165909,
+          "candidate_ms": 0.21720431745052338,
+          "speedup": 0.5358234768890808
+        },
+        {
+          "candidate_ms": 0.21723029017448425,
+          "baseline_ms": 0.11634470522403717,
+          "speedup": 0.535582331223636
+        },
+        {
+          "baseline_ms": 0.11624085903167725,
+          "candidate_ms": 0.21684086322784424,
+          "speedup": 0.5360652844733322
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.5358234768890808,
+      "min_round_speedup": 0.535582331223636,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.11624519526958466,
+          "candidate_ms": 0.24203316867351532,
+          "speedup": 0.4802862182347856
+        },
+        {
+          "candidate_ms": 0.24230095744132996,
+          "baseline_ms": 0.1163216307759285,
+          "speedup": 0.4800708672564543
+        },
+        {
+          "baseline_ms": 0.1162591353058815,
+          "candidate_ms": 0.24219807982444763,
+          "speedup": 0.48001675071144073
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.4800708672564543,
+      "min_round_speedup": 0.48001675071144073,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        16,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.7075086832046509,
+          "candidate_ms": 3.454861640930176,
+          "speedup": 0.20478640152262756
+        },
+        {
+          "candidate_ms": 3.4617297649383545,
+          "baseline_ms": 0.7079721093177795,
+          "speedup": 0.20451397347313935
+        },
+        {
+          "baseline_ms": 0.7082172632217407,
+          "candidate_ms": 3.4142541885375977,
+          "speedup": 0.20742956561329906
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.20478640152262756,
+      "min_round_speedup": 0.20451397347313935,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        32,
+        64,
+        64,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.7078370451927185,
+          "candidate_ms": 1.7276033163070679,
+          "speedup": 0.4097219764001113
+        },
+        {
+          "candidate_ms": 1.7215899229049683,
+          "baseline_ms": 0.7093350887298584,
+          "speedup": 0.41202325785744837
+        },
+        {
+          "baseline_ms": 0.7092740535736084,
+          "candidate_ms": 1.7309043407440186,
+          "speedup": 0.4097707983496831
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.4097707983496831,
+      "min_round_speedup": 0.4097219764001113,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        32,
+        128,
+        64,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.7082244753837585,
+          "candidate_ms": 1.6539558172225952,
+          "speedup": 0.4282003594104734
+        },
+        {
+          "candidate_ms": 1.648356318473816,
+          "baseline_ms": 0.7102485299110413,
+          "speedup": 0.43088288736542585
+        },
+        {
+          "baseline_ms": 0.7094970941543579,
+          "candidate_ms": 1.6492505073547363,
+          "speedup": 0.43019364916996966
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.43019364916996966,
+      "min_round_speedup": 0.4282003594104734,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.7076865434646606,
+          "candidate_ms": 1.7982312440872192,
+          "speedup": 0.39354590561787384
+        },
+        {
+          "candidate_ms": 1.7989903688430786,
+          "baseline_ms": 0.7081644535064697,
+          "speedup": 0.3936454945903277
+        },
+        {
+          "baseline_ms": 0.7080990076065063,
+          "candidate_ms": 1.7979105710983276,
+          "speedup": 0.39384551099999093
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.3936454945903277,
+      "min_round_speedup": 0.39354590561787384,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    }
+  ],
+  "summary": {
+    "records": 24,
+    "passed": 24
+  },
+  "diagnostic_completed": true
+}
