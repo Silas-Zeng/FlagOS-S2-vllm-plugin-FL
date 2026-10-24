@@ -109,3 +109,36 @@ mapping and eager separation; warmup compile ignored; import-hook install result
 preserved; phase acknowledgment enforced. Evidence is in
 `evidence/gqa-wave-coverage-20261024/cpu-check.json`. This is not GPU coverage
 proof. A real-load trace is pending and will be archived before deciding PR28.
+
+
+## Coverage v1 invalid; actual Breakable wrapper correction
+
+615bfd8 observed the legacy CUDAGraphWrapper, but the pinned actual model runner
+imports and constructs BreakableCUDAGraphWrapper. The real trace had0 entries
+and0 replay mappings despite many GQA Python calls. Therefore its emptiness is
+invalid instrumentation, not evidence that B40 never runs. CPU fake checks did
+not prove attachment to the actual runtime class. No v1 diagnostic throughput
+is credited.
+
+After verifying exact command, parent91612, benchmark PID98442/start_ticks318984136,
+only that owned benchmark was terminated at11:44:51UTC. The original finally
+cleaned its service; the waiting queue exited and GPU returned idle68MiB.
+Early-stop and empty mapping evidence is in `evidence/gqa-wave-coverage-20261024/invalid-v1/`.
+
+The branch now merges validated team main5eda0b0 (PR25 cached quantization),
+without rewriting shared history. Its new observer pins actual
+vllm.compilation.breakable_cudagraph SHA722683b44b4461ffd9a6498741da18945cbaac231c3bb01f0b0443dafe9e053e
+and the actual model_runner import binding; it handles entries/capture rather
+than legacy concrete_cudagraph_entries/cudagraph/runtime_mode fields. Before
+any benchmark, it requires observed real wrapper captures linked to GQA; after
+every benchmark it requires actual replay counts. Otherwise it stops promptly.
+
+The revised CPU check executes the pinned installed Breakable __call__ AST with
+CPU stubs rather than a handwritten approximation. Original call/return/error,
+replay attribution, eager separation, phase ack and bootstrap checks pass.
+The private queue repeats CPU observer check, private build,9 gate and40 cached
+quantization dispatch checks before any diagnostic requests. New production
+changes relative to the former da1 runtime are exclusively the merged PR25;
+observer changes remain tools-only. The old full da1 model results do not
+substitute for formal acceptance of the new combined runtime. Current draft
+still needs valid coverage and any required integrated service validation.

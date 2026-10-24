@@ -10,7 +10,8 @@ import time
 from pathlib import Path
 
 PINS = {
-    "vllm.compilation.cuda_graph": "cbc474f9098386d2eef2e3ff61364c611fbc1338d9c259ad5a24439aa7f06412",
+    "vllm.compilation.breakable_cudagraph": "722683b44b4461ffd9a6498741da18945cbaac231c3bb01f0b0443dafe9e053e",
+    "vllm_fl.worker.model_runner": "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61",
     "vllm_fl.patches.biv150_gqa_decode": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
 }
 
@@ -69,14 +70,14 @@ class Coverage:
                 self.error(repr(error))
             self.stop.wait(0.1)
 
-    def wire(self, wrapper_type, kernel, context):
+    def wire(self, wrapper_type, kernel, context, none_mode):
         original_call, original_run = wrapper_type.__call__, kernel.run
 
         @functools.wraps(original_call)
         def observed_call(wrapper, *args, **kwargs):
             ctx = context()
             key, capture = None, False
-            if ctx is not None and ctx.cudagraph_runtime_mode == wrapper.runtime_mode:
+            if ctx is not None and ctx.cudagraph_runtime_mode != none_mode:
                 desc = ctx.batch_descriptor
                 if desc is not None:
                     descriptor = {
@@ -84,8 +85,8 @@ class Coverage:
                         for name in ("num_tokens", "num_reqs", "uniform", "has_lora")
                     }
                     key = f"{id(wrapper):x}:" + json.dumps(descriptor, sort_keys=True)
-                    entry = wrapper.concrete_cudagraph_entries.get(desc)
-                    capture = entry is None or entry.cudagraph is None
+                    entry = wrapper.entries.get(desc)
+                    capture = entry is None or entry.capture is None
                     with self.lock:
                         self.data["entries"].setdefault(
                             key, dict(descriptor=descriptor, gqa_grids={})
@@ -149,7 +150,7 @@ def install(root):
         if digest != expected:
             raise RuntimeError(f"Unpinned diagnostic source: {name}:{digest}")
         modules[name], sources[name] = module, dict(path=str(path), sha256=digest)
-    graph = modules["vllm.compilation.cuda_graph"]
+    graph = modules["vllm.compilation.breakable_cudagraph"]
     gqa = modules["vllm_fl.patches.biv150_gqa_decode"]
     trace = Coverage(root, sources)
 
@@ -160,7 +161,15 @@ def install(root):
             else None
         )
 
-    trace.wire(graph.CUDAGraphWrapper, gqa._gqa_decode_attention, context)
+    runner = modules["vllm_fl.worker.model_runner"]
+    if runner.BreakableCUDAGraphWrapper is not graph.BreakableCUDAGraphWrapper:
+        raise RuntimeError("Runner does not bind the observed Breakable wrapper")
+    trace.wire(
+        graph.BreakableCUDAGraphWrapper,
+        gqa._gqa_decode_attention,
+        context,
+        graph.CUDAGraphMode.NONE,
+    )
     trace.flush()
     threading.Thread(
         target=trace.control, daemon=True, name="gqa-coverage-control"

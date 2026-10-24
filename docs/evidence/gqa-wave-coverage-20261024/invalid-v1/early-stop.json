@@ -1,0 +1,13 @@
+{
+  "reason": "Invalid coverage observer: actual runner uses BreakableCUDAGraphWrapper, not observed CUDAGraphWrapper",
+  "targets": [
+    {
+      "pid": 98442,
+      "start_ticks": "318984136",
+      "command": "/usr/local/bin/python3.12 /usr/local/bin/vllm bench serve --backend vllm --model minicpm --tokenizer /workspace/MiniCPM5-2B --endpoint /v1/completions --host 127.0.0.1 --port 9031 --dataset-name random --ignore-eos --random-input-len 16384 --random-output-len 128 --max-concurrency 64 --num-prompts 64 --seed 920001 --disable-tqdm --save-result --result-dir /workspace/experiments/minicpm-s2/gqa-wave-coverage-20261024/full/warm-16384-1 --label warm-16384-1 "
+    }
+  ],
+  "driver": 91612,
+  "source": "615bfd8ac46a856ac272361e6a861d24c3f878eb",
+  "early_stopped_utc": "2026-10-24T11:44:51Z"
+}

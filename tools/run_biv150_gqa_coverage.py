@@ -104,6 +104,12 @@ def main(args):
                 ):
                     if trace["errors"]:
                         raise RuntimeError(trace["errors"])
+                    if not trace["entries"] or not any(
+                        e["gqa_grids"] for e in trace["entries"].values()
+                    ):
+                        raise RuntimeError(
+                            "No actual wrapper capture/GQA linkage; refuse benchmark"
+                        )
                     return
             time.sleep(0.1)
         raise TimeoutError("Coverage phase not acknowledged; no requests issued")
@@ -112,6 +118,12 @@ def main(args):
         phase(name)
         result = original_benchmark(run_dir, name, *values)
         phase(name + "-complete")
+        traces = list(trace_root.glob("trace-*.json"))
+        trace = json.loads(traces[0].read_text())
+        if not trace["replays"].get(name):
+            raise RuntimeError(
+                "No actual wrapper replay observed; refuse further diagnostic load"
+            )
         return result
 
     acceptance.subprocess, acceptance.benchmark = Proxy(), benchmark

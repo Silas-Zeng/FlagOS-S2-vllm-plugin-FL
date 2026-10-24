@@ -31,6 +31,15 @@ def main(args):
     build = source / "build-native-w8a8"
     steps = [
         (
+            "observer-cpu-check",
+            [
+                sys.executable,
+                str(source / "tools/check_biv150_gqa_coverage_cpu.py"),
+                "--out",
+                str(args.out / "observer-cpu-check.json"),
+            ],
+        ),
+        (
             "build",
             [
                 sys.executable,
@@ -48,6 +57,17 @@ def main(args):
                 str(build / "biv150_native_w8a8.so"),
                 "--out",
                 str(args.out / "operator-check.json"),
+            ],
+        ),
+        (
+            "cached-dispatch-check",
+            [
+                sys.executable,
+                str(source / "tools/check_biv150_quant_cached_dispatch.py"),
+                "--library",
+                str(build / "biv150_native_w8a8.so"),
+                "--out",
+                str(args.out / "cached-dispatch-check.json"),
             ],
         ),
         (

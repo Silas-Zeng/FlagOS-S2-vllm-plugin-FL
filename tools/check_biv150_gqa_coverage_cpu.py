@@ -1,6 +1,8 @@
 """Check observer call preservation and capture/replay attribution without GPU."""
 
 import argparse
+import ast
+import hashlib
 import json
 import os
 import subprocess
@@ -54,31 +56,66 @@ def main(args):
 
         class Graph:
             def __init__(self):
-                self.runtime_mode = "FULL"
-                self.concrete_cudagraph_entries = {}
+                self.entries = {}
                 self.calls = 0
                 self.fail = False
 
-            def __call__(self):
+            def runnable(self, *args, **kwargs):
                 self.calls += 1
                 if self.fail:
                     raise ValueError("expected original error")
-                desc = ctx.batch_descriptor
-                if ctx.cudagraph_runtime_mode != self.runtime_mode:
-                    kernel[(desc.num_tokens, 2, 16)]()
-                elif desc not in self.concrete_cudagraph_entries:
-                    self.concrete_cudagraph_entries[desc] = SimpleNamespace(
-                        cudagraph=None
-                    )
-                    for _ in range(3):
-                        kernel[
-                            (desc.num_tokens, 2, 16 if desc.num_tokens == 40 else 4)
-                        ]()
-                    self.concrete_cudagraph_entries[desc].cudagraph = object()
+                kernel[(ctx.batch_descriptor.num_tokens, 2, 16)]()
                 return output
 
+            def _capture(self, entry, args, kwargs):
+                self.calls += 1
+                if self.fail:
+                    raise ValueError("expected original error")
+                desc = entry.batch_descriptor
+                for _ in range(3):
+                    kernel[(desc.num_tokens, 2, 16 if desc.num_tokens == 40 else 4)]()
+                entry.capture = object()
+                return output
+
+            def _replay(self, entry, args, kwargs):
+                self.calls += 1
+                if self.fail:
+                    raise ValueError("expected original error")
+                return output
+
+        # Execute the pinned installed dispatch method itself with CPU stubs,
+        # rather than testing a hand-written classic-wrapper approximation.
+        actual = (
+            Path(__file__).resolve().parent
+            / "reference/breakable_cudagraph_20261024.py"
+        )
+        raw = actual.read_bytes()
+        assert (
+            hashlib.sha256(raw).hexdigest()
+            == "722683b44b4461ffd9a6498741da18945cbaac231c3bb01f0b0443dafe9e053e"
+        )
+        tree = ast.parse(raw)
+        cls = next(
+            n
+            for n in tree.body
+            if isinstance(n, ast.ClassDef) and n.name == "BreakableCUDAGraphWrapper"
+        )
+        method = next(
+            n
+            for n in cls.body
+            if isinstance(n, ast.FunctionDef) and n.name == "__call__"
+        )
+        namespace = dict(
+            is_forward_context_available=lambda: True,
+            get_forward_context=lambda: ctx,
+            CUDAGraphMode=SimpleNamespace(NONE="NONE"),
+            _BreakableEntry=lambda **kw: SimpleNamespace(capture=None, **kw),
+        )
+        exec("from __future__ import annotations\n" + ast.unparse(method), namespace)
+        Graph.__call__ = namespace["__call__"]
+
         trace = Coverage(root, {})
-        trace.wire(Graph, kernel, lambda: ctx)
+        trace.wire(Graph, kernel, lambda: ctx, "NONE")
         graph = Graph()
         assert graph() is output
         assert kernel.calls == 3 and graph.calls == 1
@@ -156,6 +193,7 @@ def main(args):
         assert (root / "observed").read_text() == "yes"
     result = dict(
         cpu_only=True,
+        pinned_installed_dispatch_executed=True,
         original_calls_preserved=True,
         capture_excluded_from_replay=True,
         replay_to_gqa_mapping=True,
