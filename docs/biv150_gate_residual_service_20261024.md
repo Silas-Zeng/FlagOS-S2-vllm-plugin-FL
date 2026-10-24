@@ -1,11 +1,11 @@
-# Small-M residual activation service — accuracy passed, performance pending
+# Small-M residual activation service — 16K performance rejected
 
 Base: team main `3283672`, gate-only candidate `5b88eac`, residual operator `01bdf10`.
 The gate-only parent's Level-3 score was 99/105, below 0.95. This candidate tests
 whether small-M activation error contributes to that failure. The exact 20c991a
 candidate now passes one complete Level-3 run: 102/105 (reported 0.9714), 105
-unique questions and zero failed predictions. Warmed throughput and TTFT are
-still pending, so it must not be merged on the accuracy result alone.
+unique questions and zero failed predictions. The completed warmed runs improve 4K but regress 16K throughput and exceed
+the 16K working TTFT limit. Do not merge this candidate.
 
 `gate_silu_auto` selects the already micro-tested residual operator for compressed
 weights and M=1..16. Other M uses the unchanged native gate/SwiGLU implementation;
@@ -72,5 +72,24 @@ The working TTFT limit is 4770.3209 ms. The previously accepted integration
 measurement was 4873.331261; the current single observation is +7.9006% versus
 that earlier measurement, not a same-session paired comparison.
 
-The service is now warming 16K. Full two-workload acceptance and merge remain
-pending. These scores belong to 20c991a, not the historical beb3518 combination.
+These scores belong to 20c991a, not the historical beb3518 combination.
+
+
+## Completed 16K rejection, 09:26 CST
+
+The stable-warmed single 16K run completed 128/128 with zero failures,
+2097152 input and 131072 output tokens, duration 715.636150 seconds.
+Throughput 3113.626945 total tokens/s is -7.4435% versus original 3364.03,
+below its 99% floor 3330.3897. Mean TTFT 161138.989054 ms exceeds the
+working 156938.85 ms ceiling. Mean TPOT is 154.943382 ms. Two preceding
+warmup TPOTs were 340.076810 and 339.921964 ms (difference about 0.046%).
+
+The runner's acceptance.json records completed measurements and a precision
+gate; it does not enforce throughput/TTFT limits. Its completed=true is not
+full acceptance. Both workload outputs and the manifest are archived here.
+The owned server was cleaned by its own runner; the next independent probe
+started serially. This branch remains experimental, excluded from main.
+
+Small-M residual compensation passes precision but has not solved the
+long-context performance regression. Do not assume its cause from these
+whole-run measurements alone, or copy this accuracy to a changed operator.
