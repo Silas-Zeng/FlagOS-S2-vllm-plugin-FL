@@ -1,4 +1,4 @@
-# Residual gate plus remaining mixed attention — unvalidated combination
+# Residual gate plus remaining mixed attention — 16K rejected
 
 Base: f1cf5d7, framework ancestor team main 3283672 (reverified with GitHub API
 after normal fetch timed out). No new upstream framework code is merged.
@@ -36,3 +36,22 @@ Raw measurement completion is distinct from acceptance. The gate function
 rejects the actual completed residual run, accepts a passing fixture, and
 rejects NaN/Inf, missing requests, failed requests, missing output and changed
 concurrency fixtures. This is runner validation, not GPU candidate validation.
+
+
+## Complete model result, source 8d9f56d
+
+Private build, all 9 residual dispatch and all 10 mixed checks passed.
+Full Level-3 passed 101/105 (0.9619), 105 unique questions, zero failures.
+The warmed single-round results are:
+
+| Workload | Total tokens/s | Gain vs original | Mean TTFT ms | Requests |
+|---|---:|---:|---:|---|
+| 4K | 5404.542700 | +12.3755% | 4096.593504 | 256/256, zero failed |
+| 16K | 3145.573683 | -6.4939% | 159183.320265 | 128/128, zero failed |
+
+Both token totals match the official workloads. Warmups stabilized. There are
+384 post-ready mixed-selection log records, proving actual service integration.
+Working 4K gates pass, but 16K throughput and TTFT both fail. The owned runner
+exits 1 after saving evidence and cleans its own server. Do not merge. This
+combination improves 4K beyond the historical 10.6%, but does not preserve 16K.
+The 20% objective remains unmet. Earlier paragraphs describe pre-test state.

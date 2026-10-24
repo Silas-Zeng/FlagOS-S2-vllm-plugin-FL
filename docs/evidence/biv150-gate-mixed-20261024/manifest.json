@@ -1,0 +1,81 @@
+{
+  "command": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/gate-mixed-20261024",
+  "git_commit": "8d9f56dfa429fe0b775aa120221905855558000e",
+  "git_status": "",
+  "source_hashes": {
+    "vllm_fl/patches/biv150_prefill_normalized.py": "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42",
+    "vllm_fl/worker/model_runner.py": "0e40cf668d05a6e805669f25347b03725a8201598b7364b2ba204fa373ff548b",
+    "vllm_fl/patches/biv150_gqa_decode.py": "1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a",
+    "vllm_fl/patches/biv150_native_w8a8.py": "98ad16de1c25e914959c54d8f3352e6530b170d710d4abb7b41c334b4696f8a9",
+    "vllm_fl/patches/biv150_mixed_attention.py": "c4532656244569b75edd937b93554e39779978f34b11251ee36594c99f47443e",
+    "csrc/iluvatar/native_w8a8.cpp": "2a319a68b70a4794e39dee2a9423239d7f865bf9b55d918e56914ada49647807",
+    "csrc/iluvatar/native_w8a8.cu": "b327887027a56f6bd8ea1cba4f7cbf6193432f34e75f2d18596271f935d679c5"
+  },
+  "mode": "all",
+  "started_utc": "2026-10-24T01:35:47.384631+00:00",
+  "python": "3.12.11 (main, Jul 31 2025, 06:45:11) [GCC 13.3.0]",
+  "packages": {
+    "torch": "2.10.0+corex.4.5.0",
+    "vllm": "0.24.0+empty",
+    "flag_gems": "5.3.5",
+    "evalscope": "1.11.1"
+  },
+  "env": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/gate-mixed-20261024/full/inductor-cache"
+  },
+  "native_library_sha256": "f248f724f487eff8b949a9abab91b8e63a26dc6692a2fd5d3e2428475a2dafe4",
+  "mixed_installation": {
+    "installed": true,
+    "scope": "BF16 dominant-prefill mixed attention, 8..64 sequences",
+    "audited": {
+      "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+    },
+    "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+    "initial_mass": 0,
+    "mixed_kernel_sha256": "7765dcdb153fbf66c6c63278d9f0b1f02fb18f60a1eb734b32f654f6435cac9b"
+  },
+  "native_installation": {
+    "installed": true,
+    "layers": [
+      "gate_up_proj"
+    ],
+    "min_rows": 17,
+    "compressed_only": true,
+    "skip_edge_layers": 4,
+    "fused_silu": true,
+    "activation_residual_rows": [
+      1,
+      16
+    ],
+    "gate_operator": "gate_silu_auto"
+  },
+  "installation": {
+    "installed": true,
+    "scope": "audited BF16 causal MiniCPM prefill without sinks",
+    "backend_rebound": true,
+    "audited": {
+      "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+    },
+    "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+    "initial_mass": 0
+  }
+}
