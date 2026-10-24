@@ -73,19 +73,23 @@ def main(args):
         dispatch_policy=dict(use_flaggems=True,whitelist=whitelist,blacklist=blacklist,
                              diagnostic_record=False,worker_record=True)
     layers=list(range(42)) if args.all_layers else [4,20,37]
+    diagnostic=args.dominant_rows or args.diagnostic_small
     rows=(32,64) if args.dominant_rows else (1,8,16)
     choices=DOMINANT_CHOICES if args.dominant_rows else CHOICES
+    if args.diagnostic_small:
+        assert not args.dominant_rows and args.baseline=="out"
+        choices=(CHOICES[-1],)
     if args.dominant_config is not None:
         assert args.dominant_rows
         choices=(DOMINANT_CHOICES[args.dominant_config],)
-    if args.dominant_rows:
+    if diagnostic:
         assert args.baseline=='out'
         from audit_biv150_bf16_saved_ulp_cpu import describe
     torch.set_num_threads(2);torch.manual_seed(20261025)
     args.out.mkdir(parents=True,exist_ok=False)
     result=dict(component_only=True,service_installed=False,full_cpu_fp64_output_oracle=True,
-        synthetic_activations=True,layers=layers,rows=list(rows),choices=[list(c) for c in choices],dominant_rows=args.dominant_rows,
-        numerical_failures_preserved=True,continue_failed_numerics_for_diagnostic_timing=args.dominant_rows,baseline=args.baseline,pitches='contiguous',
+        synthetic_activations=True,layers=layers,rows=list(rows),choices=[list(c) for c in choices],dominant_rows=args.dominant_rows,diagnostic_small=args.diagnostic_small,
+        numerical_failures_preserved=True,continue_failed_numerics_for_diagnostic_timing=diagnostic,baseline=args.baseline,pitches='contiguous',
         inference_mode=torch.is_inference_mode_enabled(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         native_mm_file=str(path) if args.baseline=='returning' else None,
@@ -120,7 +124,7 @@ def main(args):
                         output,scratch=allocate(x,w,config)
                         if config[3]>1:scratch.fill_(float('nan'))
                         compiled=run_into(x,w,output,scratch,config)
-                        if args.dominant_rows and 'compiled_resources' not in row:
+                        if diagnostic and 'compiled_resources' not in row:
                             try:
                                 meta=compiled.metadata
                                 md=meta._asdict() if hasattr(meta,'_asdict') else vars(meta)
@@ -129,7 +133,7 @@ def main(args):
                             except Exception as e:row['resource_error']=repr(e)
                         cpu=check(output,gold);direct=check(output,native)
                         entry=dict(name=pattern,candidate_cpu=cpu,native_cpu=native_check,direct_native=direct)
-                        if args.dominant_rows:
+                        if diagnostic:
                             entry['candidate_ulp']=describe(output.cpu(),gold)
                             entry['native_ulp']=describe(native.cpu(),gold)
                         row['patterns'].append(entry)
@@ -144,33 +148,33 @@ def main(args):
                     except Exception as error:
                         row.update(candidate_cpu_all_passed=False,error=repr(error),traceback=traceback.format_exc())
             for config,row in zip(choices,records):
-                if row.get('error') or (not row['candidate_cpu_all_passed'] and not args.dominant_rows):continue
+                if row.get('error') or (not row['candidate_cpu_all_passed'] and not diagnostic):continue
                 try:
                     graph=torch.cuda.CUDAGraph()
                     with torch.cuda.graph(graph):output=matmul(x,w,config)
                     row['graph_cpu_passed']=True
-                    if args.dominant_rows:row['graph_eager_bit_exact']=True
+                    if diagnostic:row['graph_eager_bit_exact']=True
                     for factor in (0.,.5,4.):
                         x.normal_().mul_(factor);graph.replay();torch.cuda.synchronize()
                         gold=(x.cpu().double()@host64.t()).to(torch.bfloat16)
                         checked=check(output,gold);row['graph_cpu_passed'] &= checked['passed']
-                        if args.dominant_rows:
+                        if diagnostic:
                             row['graph_eager_bit_exact'] &= torch.equal(output.cpu(),matmul(x,w,config).cpu())
                             row.setdefault('graph_ulp',[]).append(describe(output.cpu(),gold))
                     del graph,output
-                    if args.dominant_rows and not row['graph_eager_bit_exact']:continue
-                    if not row['graph_cpu_passed'] and not args.dominant_rows:continue
+                    if diagnostic and not row['graph_eager_bit_exact']:continue
+                    if not row['graph_cpu_passed'] and not diagnostic:continue
                     x.normal_()
                     timing_gold=(x.cpu().double()@host64.t()).to(torch.bfloat16)
                     row['timing_candidate_cpu']=check(matmul(x,w,config),timing_gold)
                     row['timing_native_cpu']=check(native_mm(),timing_gold)
-                    if args.dominant_rows:
+                    if diagnostic:
                         row['timing_candidate_ulp']=describe(matmul(x,w,config).cpu(),timing_gold)
                         row['diagnostic_timing_despite_numerical_failure']=not (
                             row['candidate_cpu_all_passed'] and row['graph_cpu_passed']
                             and row['timing_candidate_cpu']['passed'])
                         if any(p['candidate_ulp']['nonfinite'] for p in row['patterns']):continue
-                    if not row['timing_candidate_cpu']['passed'] and not args.dominant_rows:continue
+                    if not row['timing_candidate_cpu']['passed'] and not diagnostic:continue
                     def baseline():return native_mm()
                     def candidate():return matmul(x,w,config)
                     rounds=[]
@@ -198,6 +202,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--model',type=Path,default=Path('/workspace/MiniCPM5-2B'))
     p.add_argument('--all-layers',action='store_true')
     p.add_argument('--dominant-rows',action='store_true')
+    p.add_argument('--diagnostic-small',action='store_true')
     p.add_argument('--dominant-config',type=int,choices=(0,1,2))
     p.add_argument('--baseline',choices=('returning','out'),default='returning')
     p.add_argument('--out',type=Path,required=True);args=p.parse_args()
