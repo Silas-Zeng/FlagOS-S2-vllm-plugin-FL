@@ -11,7 +11,28 @@ SO SHA df090263f0c4f13a44d5c41c7a9290f4c0910cab8c85256b30a88cb62ae53076.
 Formal105-question accuracy plus fixed4K/16K is now running privately in
 residual-cache-service-v2-20261024; no new model score/gain is claimed yet.
 
-## Current: complete component pass, production-route service candidate
+## Current: rejected by real-model accuracy; close without merging
+
+Runtime `8a1fc9bb05689b4b781ba8b065416bdfb459bcb5` finished the real
+105-question Level3 run with **99/105 = 0.9429**, below the required0.95.
+All105 questions are unique and completed, with no failed predictions. The
+owned acceptance exited1 and cleaned its own service; **4K/16K scores were not
+run or obtained**. Raw verdict, source/SO manifest, acceptance log and final
+state are in `evidence/residual-cache-20261024/service-rejected/`.
+
+The previous36/36 component results, bit-exact sampled checks, 160-pattern
+actual-route checks and local speedups remain valid within their test scope.
+They do not prove real-model numerical identity and do not override the failed
+accuracy gate. Cause is unresolved; do not attribute the miss to randomness
+or discard it as noise without controlled evidence. No tolerance was relaxed
+and no repeated run was used to select a passing result. This proposal is not
+merged. Further routes need a new Draft PR with controlled model-level evidence.
+
+The dependent PR33 component queue correctly refused to start because this
+runtime did not complete formal acceptance. Norm fusion will be isolated from
+this rejected production route and validated again against fresh team main.
+
+## Historical: complete component pass, production-route service candidate
 
 Frozen `2dad25e` completed **36/36 records and all 180 input patterns**, including
 the previously skipped outlier. Original/new raw INT8/scales and whole gate are
