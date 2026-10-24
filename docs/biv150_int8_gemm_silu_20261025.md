@@ -1,6 +1,24 @@
 # F09：不物化INT32输出的INT8 GEMM＋BF16边界SiLU
 
-状态：Draft PR37，首轮24/24数值/Graph通过，多数形状变慢；只保留M32局部正结果，真实权重验证中，未安装服务hook。
+状态：Draft PR37，首轮24/24及M32真实权重34/34通过；已准备严格M32服务入口，模型联合验收待运行。
+
+## 真实权重通过与服务候选
+
+1f06b7e在34个压缩层的真实gate/up权重上，五模式、native全输出与独立CPU INT64、
+changedGraph全部通过。34层完整三轮中位1.02869–1.03509×，102轮最低1.02350×。
+激活仍为合成，不是完整模型精度。原始结果及权重SHA见`evidence/int8-gemm-silu-20261025/real-weights-final/`。
+
+新服务候选将同一Triton核移到包内，工具直接复用，注册opaque custom op及fake。
+只在压缩权重标记、M32/K2048、原native dtype/layout/device与min_rows17均匹配时运行，
+其他行数、BF16真权重、非连续输入及不支持参数均调用原gate_silu_auto，M<=16原残差路由保持。
+LlamaMLP现有入口只切换到有界分发，不更改attention、模型权重策略、调度或正式参数。
+新元数据如实记录gate_m32_or_auto及范围/配置，验收要求这些字段和新增选择标记，
+source manifest包含新kernel；PR35官方缓存身份已涵盖全部biv150补丁源。
+
+新route设备检查覆盖26个行数/权重组合、非连续/参数回退、原路径逐位一致，
+opaque fake/fullgraph及改变输入Graph。随后保持原完整105题、充分预热单轮4K/16K、
+请求tokens/TTFT/compute-order/Qfragment门槛；只有模型联合验收后才能决定是否保留。
+当前代码已接入候选，不能称服务验证通过或模型提速。
 
 ## 首轮完整结果
 
@@ -17,7 +35,7 @@ M17/40/64/256/2048当前配置均慢，不能为了“融合”覆盖这些形�
 
 ## 初始实现和验收范围
 基线为已核实团队main `0bf9d2efeaa10144dd7f0ff4597298df029f9328`（PR35编译缓存语义身份），
-不合入官方上游框架最新分支，不修改团队生产csrc/vllm_fl。
+不合入官方上游框架最新分支；原native CPP/CUDA不改，候选仅增加上述包内有界路由。
 
 此前PR30只调native GEMM后的SiLU尾处理，仍写INT32矩阵；本实验重新写两个INT8累加器的
 Triton GEMM，沿用native单份 `[2048,12288]` INT8权重、原quantizer、原scale布局。

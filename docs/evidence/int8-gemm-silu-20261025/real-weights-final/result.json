@@ -1,0 +1,2270 @@
+{
+  "component_only": true,
+  "service_installed": false,
+  "real_projection_weights": true,
+  "synthetic_activations": true,
+  "model_accuracy_verified": false,
+  "rows": 32,
+  "config": [
+    32,
+    64,
+    128,
+    4
+  ],
+  "commit": "1f06b7e9c357c7b7b0d9e6fffcadc653633cc776",
+  "library_sha256": "ce9afebe8f12cafb9bdea7c81d743dbc5b959befcc0f83583493ad0b6d3e34cd",
+  "records": [
+    {
+      "layer": 4,
+      "weights": [
+        {
+          "key": "model.layers.4.mlp.gate_proj.weight",
+          "sha256": "e5e8090504b4f3e75c6edcfb57aa37a367b660f47b3daea549550540644adee9"
+        },
+        {
+          "key": "model.layers.4.mlp.up_proj.weight",
+          "sha256": "899f24e90a24c9556ddac0e4fd83cb9f9207b99754120f92dd2304d08c0fea67"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05621249973773956,
+          "candidate_ms": 0.05450528860092163,
+          "speedup": 1.0313219355523064
+        },
+        {
+          "candidate_ms": 0.05454951897263527,
+          "baseline_ms": 0.0562557689845562,
+          "speedup": 1.0312789194855572
+        },
+        {
+          "baseline_ms": 0.05615432560443878,
+          "candidate_ms": 0.05458701774477959,
+          "speedup": 1.0287120990376706
+        }
+      ],
+      "median_speedup": 1.0312789194855572,
+      "min_round_speedup": 1.0287120990376706
+    },
+    {
+      "layer": 5,
+      "weights": [
+        {
+          "key": "model.layers.5.mlp.gate_proj.weight",
+          "sha256": "cf7621659282271070124186ce1b93844aa9cdd9e25ac38f70548cd196aa36de"
+        },
+        {
+          "key": "model.layers.5.mlp.up_proj.weight",
+          "sha256": "54da2498490c16b6e56303ae44b98d62c26f740c0b72c40aa11123a9bc82e9cb"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056344710290431976,
+          "candidate_ms": 0.05467500165104866,
+          "speedup": 1.0305387944940518
+        },
+        {
+          "candidate_ms": 0.05475721135735512,
+          "baseline_ms": 0.05633365362882614,
+          "speedup": 1.0287896741341134
+        },
+        {
+          "baseline_ms": 0.056309133768081665,
+          "candidate_ms": 0.05433173105120659,
+          "speedup": 1.0363949883174421
+        }
+      ],
+      "median_speedup": 1.0305387944940518,
+      "min_round_speedup": 1.0287896741341134
+    },
+    {
+      "layer": 6,
+      "weights": [
+        {
+          "key": "model.layers.6.mlp.gate_proj.weight",
+          "sha256": "81545c495acd5610e173388825a50d060306bab9d95de6dc66065b8b4e4ac5fa"
+        },
+        {
+          "key": "model.layers.6.mlp.up_proj.weight",
+          "sha256": "d3c36fb3f09d2175ad14b637236cfe646b3a3cf44e1201f28a074a674baec553"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0563524030148983,
+          "candidate_ms": 0.0546562485396862,
+          "speedup": 1.0310331301640747
+        },
+        {
+          "candidate_ms": 0.054618749767541885,
+          "baseline_ms": 0.05636778846383095,
+          "speedup": 1.0320226790934064
+        },
+        {
+          "baseline_ms": 0.05627596005797386,
+          "candidate_ms": 0.05477115511894226,
+          "speedup": 1.0274744057481302
+        }
+      ],
+      "median_speedup": 1.0310331301640747,
+      "min_round_speedup": 1.0274744057481302
+    },
+    {
+      "layer": 7,
+      "weights": [
+        {
+          "key": "model.layers.7.mlp.gate_proj.weight",
+          "sha256": "f44ec4384b0ff12bd17e0cfa1f18524ef7ad061fbef45e9ec1d157284afab19b"
+        },
+        {
+          "key": "model.layers.7.mlp.up_proj.weight",
+          "sha256": "d8beaa802f866dd547be3341ef32449375950d1d18883feac18f9ea3484a66b1"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056331731379032135,
+          "candidate_ms": 0.05470432713627815,
+          "speedup": 1.0297490953265878
+        },
+        {
+          "candidate_ms": 0.054554328322410583,
+          "baseline_ms": 0.05627499893307686,
+          "speedup": 1.0315404966677857
+        },
+        {
+          "baseline_ms": 0.05620576813817024,
+          "candidate_ms": 0.054851923137903214,
+          "speedup": 1.0246818146533045
+        }
+      ],
+      "median_speedup": 1.0297490953265878,
+      "min_round_speedup": 1.0246818146533045
+    },
+    {
+      "layer": 8,
+      "weights": [
+        {
+          "key": "model.layers.8.mlp.gate_proj.weight",
+          "sha256": "4946d75d8f07003a403032aa2319b60ba1ce224f079cfd50753e5ab71f1ce605"
+        },
+        {
+          "key": "model.layers.8.mlp.up_proj.weight",
+          "sha256": "c2047ffcc0fa5d5678d052b582d6f61a02907ace7e33626ca85c6cfa49395006"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05617644265294075,
+          "candidate_ms": 0.0543995201587677,
+          "speedup": 1.032664304556125
+        },
+        {
+          "candidate_ms": 0.05428365245461464,
+          "baseline_ms": 0.05625096336007118,
+          "speedup": 1.0362413142170448
+        },
+        {
+          "baseline_ms": 0.05624423176050186,
+          "candidate_ms": 0.05453317239880562,
+          "speedup": 1.031376486758979
+        }
+      ],
+      "median_speedup": 1.032664304556125,
+      "min_round_speedup": 1.031376486758979
+    },
+    {
+      "layer": 9,
+      "weights": [
+        {
+          "key": "model.layers.9.mlp.gate_proj.weight",
+          "sha256": "d688fad2eda7f0f29c422bf9a2cffda7636a1248f4124aa25411cd86a2507d4d"
+        },
+        {
+          "key": "model.layers.9.mlp.up_proj.weight",
+          "sha256": "c3aecb50b74b1e6734eef015326d76a87fe712018abfb520c458ae6e8d73ce1c"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05626057833433151,
+          "candidate_ms": 0.05445000156760216,
+          "speedup": 1.0332520976052029
+        },
+        {
+          "candidate_ms": 0.05488942191004753,
+          "baseline_ms": 0.056235577911138535,
+          "speedup": 1.0245248711727566
+        },
+        {
+          "baseline_ms": 0.056232210248708725,
+          "candidate_ms": 0.054567787796258926,
+          "speedup": 1.0305019228315484
+        }
+      ],
+      "median_speedup": 1.0305019228315484,
+      "min_round_speedup": 1.0245248711727566
+    },
+    {
+      "layer": 10,
+      "weights": [
+        {
+          "key": "model.layers.10.mlp.gate_proj.weight",
+          "sha256": "dff97c641930af6713b9fa48939564e564e4f66d47fd1a14599917d33c1207ff"
+        },
+        {
+          "key": "model.layers.10.mlp.up_proj.weight",
+          "sha256": "3648e15a66c6a7571154dd24e66c1e6b93cede9877378f815157f16748dfebbe"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056322116404771805,
+          "candidate_ms": 0.05457307770848274,
+          "speedup": 1.0320494787857126
+        },
+        {
+          "candidate_ms": 0.05443365499377251,
+          "baseline_ms": 0.056267786771059036,
+          "speedup": 1.0336948121065241
+        },
+        {
+          "baseline_ms": 0.0563524030148983,
+          "candidate_ms": 0.054509133100509644,
+          "speedup": 1.0338157994732706
+        }
+      ],
+      "median_speedup": 1.0336948121065241,
+      "min_round_speedup": 1.0320494787857126
+    },
+    {
+      "layer": 11,
+      "weights": [
+        {
+          "key": "model.layers.11.mlp.gate_proj.weight",
+          "sha256": "4cd2aa16f61c94c713ca8643770d1e29ecfc17020c2c9c7284cae543393cf231"
+        },
+        {
+          "key": "model.layers.11.mlp.up_proj.weight",
+          "sha256": "1a83dd1e1a68fc2b8bd55e79686c525bd148582c96e3ff64c444717f1c167680"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056277405470609665,
+          "candidate_ms": 0.0543346144258976,
+          "speedup": 1.035756047323418
+        },
+        {
+          "candidate_ms": 0.054439421743154526,
+          "baseline_ms": 0.05621778964996338,
+          "speedup": 1.0326669139727311
+        },
+        {
+          "baseline_ms": 0.056184615939855576,
+          "candidate_ms": 0.054532211273908615,
+          "speedup": 1.0303014425299413
+        }
+      ],
+      "median_speedup": 1.0326669139727311,
+      "min_round_speedup": 1.0303014425299413
+    },
+    {
+      "layer": 12,
+      "weights": [
+        {
+          "key": "model.layers.12.mlp.gate_proj.weight",
+          "sha256": "ce1f21eda5c9dea23f347653bc63b141c33d6c1264251bb304c0632c51d842a5"
+        },
+        {
+          "key": "model.layers.12.mlp.up_proj.weight",
+          "sha256": "7d35834da1ab02d39504f9f5305ce536e9cd34c48d6a6a06be588f2d333bb816"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05629807710647583,
+          "candidate_ms": 0.0545923076570034,
+          "speedup": 1.0312456007573367
+        },
+        {
+          "candidate_ms": 0.054612498730421066,
+          "baseline_ms": 0.05631394311785698,
+          "speedup": 1.0311548533209332
+        },
+        {
+          "baseline_ms": 0.05625096336007118,
+          "candidate_ms": 0.054849039763212204,
+          "speedup": 1.0255596743883064
+        }
+      ],
+      "median_speedup": 1.0311548533209332,
+      "min_round_speedup": 1.0255596743883064
+    },
+    {
+      "layer": 13,
+      "weights": [
+        {
+          "key": "model.layers.13.mlp.gate_proj.weight",
+          "sha256": "1cb928afb01ff2a252a64855bb9332157dee666aee6e8081343341e561bcfc3b"
+        },
+        {
+          "key": "model.layers.13.mlp.up_proj.weight",
+          "sha256": "3e718c1a0449feba47812f81a642699e2a12e75fc8811a6c2dc52aa4e242d96d"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05626682564616203,
+          "candidate_ms": 0.054535575211048126,
+          "speedup": 1.031745341062492
+        },
+        {
+          "candidate_ms": 0.05488365516066551,
+          "baseline_ms": 0.05635480955243111,
+          "speedup": 1.0268049638359356
+        },
+        {
+          "baseline_ms": 0.056263942271471024,
+          "candidate_ms": 0.05449855700135231,
+          "speedup": 1.0323932479547102
+        }
+      ],
+      "median_speedup": 1.031745341062492,
+      "min_round_speedup": 1.0268049638359356
+    },
+    {
+      "layer": 14,
+      "weights": [
+        {
+          "key": "model.layers.14.mlp.gate_proj.weight",
+          "sha256": "c324963f482978a2643f45804d873d29759acf75ea509cbb046901965d5f54e7"
+        },
+        {
+          "key": "model.layers.14.mlp.up_proj.weight",
+          "sha256": "dc03b95086a64d4a725216faab63e9263e57f08a0ef95e67e29af3efcb714be8"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05630480870604515,
+          "candidate_ms": 0.05442067235708237,
+          "speedup": 1.0346217028815812
+        },
+        {
+          "candidate_ms": 0.05448990315198898,
+          "baseline_ms": 0.05622740462422371,
+          "speedup": 1.0318866683867707
+        },
+        {
+          "baseline_ms": 0.056414902210235596,
+          "candidate_ms": 0.05446057766675949,
+          "speedup": 1.0358851232800812
+        }
+      ],
+      "median_speedup": 1.0346217028815812,
+      "min_round_speedup": 1.0318866683867707
+    },
+    {
+      "layer": 15,
+      "weights": [
+        {
+          "key": "model.layers.15.mlp.gate_proj.weight",
+          "sha256": "cd3305c2649b53ea552058eb1b1338b08ae34aa4d756ce455d82faba44d375e8"
+        },
+        {
+          "key": "model.layers.15.mlp.up_proj.weight",
+          "sha256": "d1d0a783b72695c5298339c54d231d1e2ae1794d04b810ffc0d338317642ff27"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056322116404771805,
+          "candidate_ms": 0.0547206737101078,
+          "speedup": 1.02926577079712
+        },
+        {
+          "candidate_ms": 0.05469663441181183,
+          "baseline_ms": 0.05633413419127464,
+          "speedup": 1.0299378526132714
+        },
+        {
+          "baseline_ms": 0.05627836659550667,
+          "candidate_ms": 0.05451442301273346,
+          "speedup": 1.0323573741642866
+        }
+      ],
+      "median_speedup": 1.0299378526132714,
+      "min_round_speedup": 1.02926577079712
+    },
+    {
+      "layer": 16,
+      "weights": [
+        {
+          "key": "model.layers.16.mlp.gate_proj.weight",
+          "sha256": "524df8763ae7e8e39d44d88cefcfe2dcf0b24ae1185a2ea939064ad324e8589b"
+        },
+        {
+          "key": "model.layers.16.mlp.up_proj.weight",
+          "sha256": "6f93284d20d30353cd3899f9e22241a27cbcb3bf4f862fe2db3b930546af24f1"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056366827338933945,
+          "candidate_ms": 0.05430576950311661,
+          "speedup": 1.0379528336431925
+        },
+        {
+          "candidate_ms": 0.054625000804662704,
+          "baseline_ms": 0.0562240369617939,
+          "speedup": 1.0292729726970495
+        },
+        {
+          "baseline_ms": 0.05625961720943451,
+          "candidate_ms": 0.05467211455106735,
+          "speedup": 1.0290367890725047
+        }
+      ],
+      "median_speedup": 1.0292729726970495,
+      "min_round_speedup": 1.0290367890725047
+    },
+    {
+      "layer": 17,
+      "weights": [
+        {
+          "key": "model.layers.17.mlp.gate_proj.weight",
+          "sha256": "f8c892ddb69bb2995b2246e3b2da8ef6bea1febfe25322e2e799b421d5b978da"
+        },
+        {
+          "key": "model.layers.17.mlp.up_proj.weight",
+          "sha256": "9cfbef7ec77aae5fe9869d522a20195baf0192a6f8a84692414d524bee09dfbd"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056366827338933945,
+          "candidate_ms": 0.054910577833652496,
+          "speedup": 1.0265203820963795
+        },
+        {
+          "candidate_ms": 0.054615385830402374,
+          "baseline_ms": 0.0562250018119812,
+          "speedup": 1.0294718412605777
+        },
+        {
+          "baseline_ms": 0.05635480955243111,
+          "candidate_ms": 0.05465913563966751,
+          "speedup": 1.0310226990039155
+        }
+      ],
+      "median_speedup": 1.0294718412605777,
+      "min_round_speedup": 1.0265203820963795
+    },
+    {
+      "layer": 18,
+      "weights": [
+        {
+          "key": "model.layers.18.mlp.gate_proj.weight",
+          "sha256": "30f884eaa4da8edba225aeb11fd5515c72d9455f30d0b700dcb917ba59c156b2"
+        },
+        {
+          "key": "model.layers.18.mlp.up_proj.weight",
+          "sha256": "32f2a02800b3f90e791ccdb4058c9610d57a902f76ad942037c856e3ee712df9"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05645721033215523,
+          "candidate_ms": 0.054637499153614044,
+          "speedup": 1.0333051696496034
+        },
+        {
+          "candidate_ms": 0.054449521005153656,
+          "baseline_ms": 0.05633028969168663,
+          "speedup": 1.0345415102247633
+        },
+        {
+          "baseline_ms": 0.05640384554862976,
+          "candidate_ms": 0.054516345262527466,
+          "speedup": 1.0346226489874348
+        }
+      ],
+      "median_speedup": 1.0345415102247633,
+      "min_round_speedup": 1.0333051696496034
+    },
+    {
+      "layer": 19,
+      "weights": [
+        {
+          "key": "model.layers.19.mlp.gate_proj.weight",
+          "sha256": "5c8ac1edbac55c07e76203cda9078225761921667520ea727eecf0c8f48dc019"
+        },
+        {
+          "key": "model.layers.19.mlp.up_proj.weight",
+          "sha256": "488ce3ad6fc65b07cb88b634a40032ac246121bcc0035f8d5924224237dc1d51"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056315865367650986,
+          "candidate_ms": 0.054567787796258926,
+          "speedup": 1.0320349723158817
+        },
+        {
+          "candidate_ms": 0.05475432798266411,
+          "baseline_ms": 0.056309133768081665,
+          "speedup": 1.0283960344816911
+        },
+        {
+          "baseline_ms": 0.056299518793821335,
+          "candidate_ms": 0.05466923117637634,
+          "speedup": 1.0298209355127985
+        }
+      ],
+      "median_speedup": 1.0298209355127985,
+      "min_round_speedup": 1.0283960344816911
+    },
+    {
+      "layer": 20,
+      "weights": [
+        {
+          "key": "model.layers.20.mlp.gate_proj.weight",
+          "sha256": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265"
+        },
+        {
+          "key": "model.layers.20.mlp.up_proj.weight",
+          "sha256": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0564168281853199,
+          "candidate_ms": 0.054462980479002,
+          "speedup": 1.0358747848379544
+        },
+        {
+          "candidate_ms": 0.05452499911189079,
+          "baseline_ms": 0.05633028969168663,
+          "speedup": 1.0331094105309604
+        },
+        {
+          "baseline_ms": 0.05630480870604515,
+          "candidate_ms": 0.054682690650224686,
+          "speedup": 1.029664196046904
+        }
+      ],
+      "median_speedup": 1.0331094105309604,
+      "min_round_speedup": 1.029664196046904
+    },
+    {
+      "layer": 21,
+      "weights": [
+        {
+          "key": "model.layers.21.mlp.gate_proj.weight",
+          "sha256": "d483a52a8ea9b0a11f232568d6d5e72ae16000d155e1dd43b38a6946324476e6"
+        },
+        {
+          "key": "model.layers.21.mlp.up_proj.weight",
+          "sha256": "6229f54f85fe3322b659e71c23583c8a2a209e736260129e14da4148e72bade7"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05630047991871834,
+          "candidate_ms": 0.05475528910756111,
+          "speedup": 1.0282199370388103
+        },
+        {
+          "candidate_ms": 0.054557692259550095,
+          "baseline_ms": 0.05634663626551628,
+          "speedup": 1.032789950085417
+        },
+        {
+          "baseline_ms": 0.05627451837062836,
+          "candidate_ms": 0.054602403193712234,
+          "speedup": 1.0306234722120926
+        }
+      ],
+      "median_speedup": 1.0306234722120926,
+      "min_round_speedup": 1.0282199370388103
+    },
+    {
+      "layer": 22,
+      "weights": [
+        {
+          "key": "model.layers.22.mlp.gate_proj.weight",
+          "sha256": "a23ba38b57130929c09ce36e55a12d7b27f51165146df960f41d2709058e20a5"
+        },
+        {
+          "key": "model.layers.22.mlp.up_proj.weight",
+          "sha256": "cea59396edba1ef31ccd57754b8951603dcebb7fb4baaafbb4a5a5744de13684"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056399520486593246,
+          "candidate_ms": 0.0546240396797657,
+          "speedup": 1.0325036525536435
+        },
+        {
+          "candidate_ms": 0.05461057648062706,
+          "baseline_ms": 0.05636826902627945,
+          "speedup": 1.0321859364783657
+        },
+        {
+          "baseline_ms": 0.056241344660520554,
+          "candidate_ms": 0.05446634441614151,
+          "speedup": 1.03258893658839
+        }
+      ],
+      "median_speedup": 1.0325036525536435,
+      "min_round_speedup": 1.0321859364783657
+    },
+    {
+      "layer": 23,
+      "weights": [
+        {
+          "key": "model.layers.23.mlp.gate_proj.weight",
+          "sha256": "97c8d2b915998e8d41a6520fc7c3f0b46ac45940898ea8ec7446d432de7a3d71"
+        },
+        {
+          "key": "model.layers.23.mlp.up_proj.weight",
+          "sha256": "e407226dea1e1d259d8b04485b9f6e11a3d6ae055828fa2fe9843e8ab8449e33"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0562884621322155,
+          "candidate_ms": 0.05470144376158714,
+          "speedup": 1.0290123671606417
+        },
+        {
+          "candidate_ms": 0.05459759756922722,
+          "baseline_ms": 0.05635961517691612,
+          "speedup": 1.0322728047778063
+        },
+        {
+          "baseline_ms": 0.056190866976976395,
+          "candidate_ms": 0.05460000038146973,
+          "speedup": 1.0291367506298879
+        }
+      ],
+      "median_speedup": 1.0291367506298879,
+      "min_round_speedup": 1.0290123671606417
+    },
+    {
+      "layer": 24,
+      "weights": [
+        {
+          "key": "model.layers.24.mlp.gate_proj.weight",
+          "sha256": "917f51705fa4c1fefbbc03593f0fc145a0aee147482feb08622aa332b7fa23b9"
+        },
+        {
+          "key": "model.layers.24.mlp.up_proj.weight",
+          "sha256": "f6c6be79167bb72583d5303d1b67a4b72000d49d949723bbd7e5d6e9d999c548"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05634663626551628,
+          "candidate_ms": 0.054436538368463516,
+          "speedup": 1.0350885260948064
+        },
+        {
+          "candidate_ms": 0.05446057766675949,
+          "baseline_ms": 0.0563846156001091,
+          "speedup": 1.0353290033962304
+        },
+        {
+          "baseline_ms": 0.0562572106719017,
+          "candidate_ms": 0.05444182828068733,
+          "speedup": 1.0333453605168208
+        }
+      ],
+      "median_speedup": 1.0350885260948064,
+      "min_round_speedup": 1.0333453605168208
+    },
+    {
+      "layer": 25,
+      "weights": [
+        {
+          "key": "model.layers.25.mlp.gate_proj.weight",
+          "sha256": "1e308e45a5a30fdfdfbc44a3f25c7f1b3a14cededcf5949c5e95c8f5776e58f8"
+        },
+        {
+          "key": "model.layers.25.mlp.up_proj.weight",
+          "sha256": "b4bdac0d192769062d1805151cdb1eb4948ad44f4624f8459de292938d3ecc43"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05631730705499649,
+          "candidate_ms": 0.054602403193712234,
+          "speedup": 1.0314071132583729
+        },
+        {
+          "candidate_ms": 0.05466394126415253,
+          "baseline_ms": 0.05624375119805336,
+          "speedup": 1.028900403032901
+        },
+        {
+          "baseline_ms": 0.05621778964996338,
+          "candidate_ms": 0.05475480854511261,
+          "speedup": 1.0267187694327415
+        }
+      ],
+      "median_speedup": 1.028900403032901,
+      "min_round_speedup": 1.0267187694327415
+    },
+    {
+      "layer": 26,
+      "weights": [
+        {
+          "key": "model.layers.26.mlp.gate_proj.weight",
+          "sha256": "978c435c270bc006cd3b14a65a955af9fa167d114710fa77a82709a2d476edf2"
+        },
+        {
+          "key": "model.layers.26.mlp.up_proj.weight",
+          "sha256": "38a49aab4beb7a727d3148878466e97cb32cbf0a96528ef2b8ad990fac0e1b79"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05626490339636803,
+          "candidate_ms": 0.05470432713627815,
+          "speedup": 1.0285274738176051
+        },
+        {
+          "candidate_ms": 0.05460817366838455,
+          "baseline_ms": 0.05627307668328285,
+          "speedup": 1.0304881651052578
+        },
+        {
+          "baseline_ms": 0.056315384805202484,
+          "candidate_ms": 0.05451682582497597,
+          "speedup": 1.0329908969021915
+        }
+      ],
+      "median_speedup": 1.0304881651052578,
+      "min_round_speedup": 1.0285274738176051
+    },
+    {
+      "layer": 27,
+      "weights": [
+        {
+          "key": "model.layers.27.mlp.gate_proj.weight",
+          "sha256": "7ec68908e51afc020ecbc601840ac27930873e756f516e46e250f0dfa9b6722c"
+        },
+        {
+          "key": "model.layers.27.mlp.up_proj.weight",
+          "sha256": "2e1dc092a82fa3a54a734ff42276407177a3a089a69a4e67244ab15d901f2d57"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05626586452126503,
+          "candidate_ms": 0.054381731897592545,
+          "speedup": 1.0346464255169463
+        },
+        {
+          "candidate_ms": 0.05457836389541626,
+          "baseline_ms": 0.05621778964996338,
+          "speedup": 1.0300380157545324
+        },
+        {
+          "baseline_ms": 0.05626490339636803,
+          "candidate_ms": 0.0545918270945549,
+          "speedup": 1.0306470105665322
+        }
+      ],
+      "median_speedup": 1.0306470105665322,
+      "min_round_speedup": 1.0300380157545324
+    },
+    {
+      "layer": 28,
+      "weights": [
+        {
+          "key": "model.layers.28.mlp.gate_proj.weight",
+          "sha256": "db64343bc384af3dc3353c92467f7b77351b1035532754ce5e57ee1ac45105a6"
+        },
+        {
+          "key": "model.layers.28.mlp.up_proj.weight",
+          "sha256": "f11e851577324f091294f859aad5393a201238c189d45d49a474431b9b56ca12"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056277405470609665,
+          "candidate_ms": 0.0544312484562397,
+          "speedup": 1.0339172270842583
+        },
+        {
+          "candidate_ms": 0.054541345685720444,
+          "baseline_ms": 0.05626202002167702,
+          "speedup": 1.0315480726469692
+        },
+        {
+          "baseline_ms": 0.056267786771059036,
+          "candidate_ms": 0.05449327081441879,
+          "speedup": 1.0325639465225624
+        }
+      ],
+      "median_speedup": 1.0325639465225624,
+      "min_round_speedup": 1.0315480726469692
+    },
+    {
+      "layer": 29,
+      "weights": [
+        {
+          "key": "model.layers.29.mlp.gate_proj.weight",
+          "sha256": "1b2cd83527047b3715d6325e158085838f9d9071a2ecf38ce8239b30639243ce"
+        },
+        {
+          "key": "model.layers.29.mlp.up_proj.weight",
+          "sha256": "63f1d732d7ba87f589697516e957e069d582301a235d6194e5ab5e822a15fbbb"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0563211552798748,
+          "candidate_ms": 0.054342787712812424,
+          "speedup": 1.036405338230301
+        },
+        {
+          "candidate_ms": 0.054714903235435486,
+          "baseline_ms": 0.05634903907775879,
+          "speedup": 1.0298663754423854
+        },
+        {
+          "baseline_ms": 0.05619952082633972,
+          "candidate_ms": 0.05490913614630699,
+          "speedup": 1.0235003638846998
+        }
+      ],
+      "median_speedup": 1.0298663754423854,
+      "min_round_speedup": 1.0235003638846998
+    },
+    {
+      "layer": 30,
+      "weights": [
+        {
+          "key": "model.layers.30.mlp.gate_proj.weight",
+          "sha256": "d2ce652eb7d4abf7c9c7c7ce184205b4a35bd03c272abeaabcf40198ccb1978a"
+        },
+        {
+          "key": "model.layers.30.mlp.up_proj.weight",
+          "sha256": "67bf6e5a02d487d9f01cb91c5a8ba093263dff756bb2aabf56514afdf3a56811"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05627692490816116,
+          "candidate_ms": 0.054340384900569916,
+          "speedup": 1.0356372155098765
+        },
+        {
+          "candidate_ms": 0.054468750953674316,
+          "baseline_ms": 0.056216828525066376,
+          "speedup": 1.0320932193374288
+        },
+        {
+          "baseline_ms": 0.05634182691574097,
+          "candidate_ms": 0.05444182828068733,
+          "speedup": 1.0348996111089024
+        }
+      ],
+      "median_speedup": 1.0348996111089024,
+      "min_round_speedup": 1.0320932193374288
+    },
+    {
+      "layer": 31,
+      "weights": [
+        {
+          "key": "model.layers.31.mlp.gate_proj.weight",
+          "sha256": "28de556ca2a5080934918d6c1e591378d76ffecdf19a33b3b502a4bb2f2a96d4"
+        },
+        {
+          "key": "model.layers.31.mlp.up_proj.weight",
+          "sha256": "8eac87e68b6cdca3fbbaf6ba09578e4bdf41d7b6589b03943d8dc3332277150a"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0563519224524498,
+          "candidate_ms": 0.05464855954051018,
+          "speedup": 1.031169401833491
+        },
+        {
+          "candidate_ms": 0.054548557847738266,
+          "baseline_ms": 0.05624038353562355,
+          "speedup": 1.031015039712098
+        },
+        {
+          "baseline_ms": 0.056241825222969055,
+          "candidate_ms": 0.05466105788946152,
+          "speedup": 1.0289194427357087
+        }
+      ],
+      "median_speedup": 1.031015039712098,
+      "min_round_speedup": 1.0289194427357087
+    },
+    {
+      "layer": 32,
+      "weights": [
+        {
+          "key": "model.layers.32.mlp.gate_proj.weight",
+          "sha256": "2e72f2eeb61985301cdec31180a44faa03049ef3c9bca3ac2375fd46674cb892"
+        },
+        {
+          "key": "model.layers.32.mlp.up_proj.weight",
+          "sha256": "46c2518df4738a86b2f992371fc034a58a16d56bce825b391627686d6eb5556e"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056287020444869995,
+          "candidate_ms": 0.05453461408615112,
+          "speedup": 1.0321338362448207
+        },
+        {
+          "candidate_ms": 0.054554328322410583,
+          "baseline_ms": 0.05627980828285217,
+          "speedup": 1.0316286537384198
+        },
+        {
+          "baseline_ms": 0.056312501430511475,
+          "candidate_ms": 0.05425865203142166,
+          "speedup": 1.0378529381434027
+        }
+      ],
+      "median_speedup": 1.0321338362448207,
+      "min_round_speedup": 1.0316286537384198
+    },
+    {
+      "layer": 33,
+      "weights": [
+        {
+          "key": "model.layers.33.mlp.gate_proj.weight",
+          "sha256": "f81aaa9f5cb95fac6ec30bb12a6c88544861df9c4e0850554f00f0419fa25206"
+        },
+        {
+          "key": "model.layers.33.mlp.up_proj.weight",
+          "sha256": "bc1bc1562d09ffa465e917655f317ffe162e406b6a26a625251da2229037c34c"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05633557587862015,
+          "candidate_ms": 0.05442596226930618,
+          "speedup": 1.0350864464254204
+        },
+        {
+          "candidate_ms": 0.05469903722405434,
+          "baseline_ms": 0.05633365362882614,
+          "speedup": 1.0298838240621349
+        },
+        {
+          "baseline_ms": 0.05627692490816116,
+          "candidate_ms": 0.054583653807640076,
+          "speedup": 1.031021578483705
+        }
+      ],
+      "median_speedup": 1.031021578483705,
+      "min_round_speedup": 1.0298838240621349
+    },
+    {
+      "layer": 34,
+      "weights": [
+        {
+          "key": "model.layers.34.mlp.gate_proj.weight",
+          "sha256": "115313fad51de6c08fa5dd0de1d38012dd3d17bfd65fa58cffb75d364dd46d69"
+        },
+        {
+          "key": "model.layers.34.mlp.up_proj.weight",
+          "sha256": "8157f02b917768f2e0d8f6944facc14e9f4b267db6214a78a28b48b28f451ce4"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.056315865367650986,
+          "candidate_ms": 0.05469615384936333,
+          "speedup": 1.0296128960502131
+        },
+        {
+          "candidate_ms": 0.05478990450501442,
+          "baseline_ms": 0.05642548203468323,
+          "speedup": 1.0298518047155771
+        },
+        {
+          "baseline_ms": 0.05630528926849365,
+          "candidate_ms": 0.05442596226930618,
+          "speedup": 1.034529972844363
+        }
+      ],
+      "median_speedup": 1.0298518047155771,
+      "min_round_speedup": 1.0296128960502131
+    },
+    {
+      "layer": 35,
+      "weights": [
+        {
+          "key": "model.layers.35.mlp.gate_proj.weight",
+          "sha256": "084d150824dffb40b26191891bbbefec7d23df117c5b3cbb28be45bf410d4990"
+        },
+        {
+          "key": "model.layers.35.mlp.up_proj.weight",
+          "sha256": "aeb9cc9256323b91b055ff2355bb9ae86c0de9d9a231085cb329c917fc25f087"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05634278804063797,
+          "candidate_ms": 0.05477115511894226,
+          "speedup": 1.0286945367188753
+        },
+        {
+          "candidate_ms": 0.05479038506746292,
+          "baseline_ms": 0.0563533641397953,
+          "speedup": 1.0285265210384613
+        },
+        {
+          "baseline_ms": 0.05631057545542717,
+          "candidate_ms": 0.0546240396797657,
+          "speedup": 1.030875339604116
+        }
+      ],
+      "median_speedup": 1.0286945367188753,
+      "min_round_speedup": 1.0285265210384613
+    },
+    {
+      "layer": 36,
+      "weights": [
+        {
+          "key": "model.layers.36.mlp.gate_proj.weight",
+          "sha256": "6bed6817fd068b5788eae8c8d1c18004544e5353961ce196c7dbb2552f5db90b"
+        },
+        {
+          "key": "model.layers.36.mlp.up_proj.weight",
+          "sha256": "86751e7b204e2772c88472e08bb0b444d42fad178b6b93030a52919926051555"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05633413419127464,
+          "candidate_ms": 0.05460000038146973,
+          "speedup": 1.0317606922653695
+        },
+        {
+          "candidate_ms": 0.05449327081441879,
+          "baseline_ms": 0.05635913461446762,
+          "speedup": 1.0342402607177532
+        },
+        {
+          "baseline_ms": 0.05633557587862015,
+          "candidate_ms": 0.05454615503549576,
+          "speedup": 1.0328056274903323
+        }
+      ],
+      "median_speedup": 1.0328056274903323,
+      "min_round_speedup": 1.0317606922653695
+    },
+    {
+      "layer": 37,
+      "weights": [
+        {
+          "key": "model.layers.37.mlp.gate_proj.weight",
+          "sha256": "c953eb5bee3ced99ca2b54ccbd802220af594b10da468311cf7b51ef4fa4c0ac"
+        },
+        {
+          "key": "model.layers.37.mlp.up_proj.weight",
+          "sha256": "0401512a3bb29014be905730cc7aa1cb0c2f8b2c7c644d775549ff83e79ca9dc"
+        }
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "tiny",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "normal",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "large",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        },
+        {
+          "name": "outlier",
+          "cpu_int64_dot": true,
+          "full_comparison": true,
+          "bit_differences": 0
+        }
+      ],
+      "passed": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.05630432814359665,
+          "candidate_ms": 0.054586537182331085,
+          "speedup": 1.0314691323160463
+        },
+        {
+          "candidate_ms": 0.05475817248225212,
+          "baseline_ms": 0.056305769830942154,
+          "speedup": 1.0282623995384732
+        },
+        {
+          "baseline_ms": 0.0562572106719017,
+          "candidate_ms": 0.05460817366838455,
+          "speedup": 1.0301976223107396
+        }
+      ],
+      "median_speedup": 1.0301976223107396,
+      "min_round_speedup": 1.0282623995384732
+    }
+  ],
+  "summary": {
+    "layers": 34,
+    "passed": 34,
+    "expected": 34,
+    "min_median_speedup": 1.0286945367188753,
+    "max_median_speedup": 1.0350885260948064
+  },
+  "diagnostic_completed": true
+}

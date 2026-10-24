@@ -256,6 +256,7 @@ def main(args):
         "vllm_fl/patches/biv150_q_fragment_service.py",
         "csrc/iluvatar/native_w8a8.cpp",
         "csrc/iluvatar/native_w8a8.cu",
+        "vllm_fl/patches/biv150_int8_gemm_silu.py",
     ]
     manifest = dict(
         command=command,
@@ -327,7 +328,9 @@ def main(args):
             not native_states
             or native_states[-1].get("installed") is not True
             or tuple(native_states[-1].get("layers", ())) != ("gate_up_proj",)
-            or native_states[-1].get("gate_operator") != "gate_silu_auto"
+            or native_states[-1].get("gate_operator") != "gate_m32_or_auto"
+            or native_states[-1].get("fused_int8_gemm_rows") != [32,32]
+            or native_states[-1].get("fused_int8_gemm_config") != [32,64,128,4]
             or native_states[-1].get("activation_residual_rows") != [1, 16]
             or native_states[-1].get("cached_quantization_rows") != [17, 2048]
             or native_states[-1].get("cached_quantization_threads") != 256
@@ -415,6 +418,10 @@ def main(args):
             if not result["q_fragment_selection"] or result["q_fragment_fallback"]:
                 result["working_acceptance_passed"] = False
             if not order_hits or result["compute_order_scope_errors"]:
+                result["working_acceptance_passed"] = False
+            result["fused_gate_selection"] = [line for line in complete_log.splitlines()
+                if "BIV150_INT8_GEMM_SILU_M32_SELECTED" in line]
+            if not result["fused_gate_selection"]:
                 result["working_acceptance_passed"] = False
         (args.out / "acceptance.json").write_text(json.dumps(result, indent=2))
         if args.mode == "all" and not result["working_acceptance_passed"]:

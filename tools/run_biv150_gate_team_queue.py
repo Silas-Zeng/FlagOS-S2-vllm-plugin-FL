@@ -62,6 +62,12 @@ def main(args):
             ],
         ),
         (
+            "fused-dispatch-check",
+            [sys.executable,str(source / "tools/check_biv150_int8_gate_dispatch.py"),
+             "--library",str(build / "biv150_native_w8a8.so"),
+             "--out",str(args.out / "fused-dispatch-check.json")],
+        ),
+        (
             "acceptance",
             [
                 sys.executable,
