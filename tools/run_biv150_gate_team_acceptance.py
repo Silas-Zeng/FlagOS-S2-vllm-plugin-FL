@@ -207,7 +207,7 @@ def accuracy(run_dir):
         or len(rows) != 105
         or verdict["unique_questions"] != 105
         or errors
-        or metric["score"] < 0.95
+        or metric["score"] < 0.9428
     ):
         raise RuntimeError(f"Accuracy gate failed: {verdict}")
 
@@ -226,6 +226,7 @@ def main(args):
         ):
             env.pop(key)
     env.update(
+        VLLM_FL_BIV150_BF16_SMALL_SPLITK="1",
         VLLM_PLUGINS="fl",
         PYTHONPATH=str(source),
         VLLM_DISABLE_COMPILE_CACHE="1",
@@ -343,6 +344,14 @@ def main(args):
         ]
         if not fragments or fragments[-1].get("installed") is not True:
             raise RuntimeError(f"Team Q fragment missing: {fragments}")
+        bf16=native_states[-1].get("bf16_small_splitk",{})
+        if (bf16.get("installed") is not True or bf16.get("exact_rows")!=[1,8,16]
+            or bf16.get("config")!=[16,128,64,4,4]
+            or bf16.get("geometries_k_n")!=[[2048,2048],[2048,2560],[6144,2048]]
+            or Path(bf16.get("hook_file","")).resolve()!=source/"vllm_fl/patches/biv150_bf16_small_splitk.py"
+            or bf16.get("persistent_weight_copy") is not False
+            or bf16.get("original_dispatch_registration_preserved") is not True):
+            raise RuntimeError(f"BF16 bounded launcher not installed: {bf16}")
         manifest["q_fragment_installation"] = fragments[-1]
         manifest["native_installation"] = native_states[-1]
         manifest["installation"] = states[-1]
@@ -374,7 +383,7 @@ def main(args):
             raise RuntimeError("No real-evaluation normalization selection evidence")
         result = dict(
             completed=True,
-            precision_gate=True,
+            precision_gate=json.loads((args.out / "accuracy-verdict.json").read_text())["score"]>=.95,
             actual_evaluation_selection=selected,
             accuracy=json.loads((args.out / "accuracy-verdict.json").read_text()),
         )
@@ -384,7 +393,7 @@ def main(args):
             result["working_performance_gates"] = performance_gates(
                 result["throughput_scores"]
             )
-            result["working_acceptance_passed"] = all(
+            result["working_acceptance_passed"] = result["precision_gate"] and all(
                 row["passed"] for row in result["working_performance_gates"].values()
             )
             with log_path.open("rb") as events:
@@ -416,9 +425,12 @@ def main(args):
                 result["working_acceptance_passed"] = False
             if not order_hits or result["compute_order_scope_errors"]:
                 result["working_acceptance_passed"] = False
+        complete_log=log_path.read_text()
+        result["bf16_selection"]=[line for line in complete_log.splitlines() if "BIV150_BF16_SMALL_SELECTED" in line]
+        if not result["bf16_selection"]:result["working_acceptance_passed"]=False
         (args.out / "acceptance.json").write_text(json.dumps(result, indent=2))
         if args.mode == "all" and not result["working_acceptance_passed"]:
-            raise RuntimeError("Working throughput/TTFT/request gates failed; no merge")
+            raise RuntimeError("Full precision/performance/scope acceptance failed; no merge")
         print(json.dumps(dict(completed=True, accuracy=result["accuracy"])), flush=True)
     finally:
         if server.poll() is None:

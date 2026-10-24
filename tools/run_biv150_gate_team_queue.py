@@ -62,6 +62,11 @@ def main(args):
             ],
         ),
         (
+            "bf16-dispatch-check",
+            [sys.executable,str(source / "tools/check_biv150_bf16_service_dispatch.py"),
+             "--out",str(args.out / "bf16-dispatch-check.json")],
+        ),
+        (
             "acceptance",
             [
                 sys.executable,
