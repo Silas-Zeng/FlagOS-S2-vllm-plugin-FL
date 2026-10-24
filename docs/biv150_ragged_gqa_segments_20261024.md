@@ -25,3 +25,17 @@ actual call-chain/source identities and pass full105-item precision plus both
 fixed warmed benchmark workloads and TTFT. The draft is created before GPU use.
 It waits for owned PR30 epilogue probe and refuses a busy GPU/9031. Source and
 results are private; no shared package changes or teammate machine access.
+
+
+## Actual bulk mixed shapes added before their GPU test
+
+The next live trace inspection identified4K eager B61 as280 steps (11760 layer
+calls) and B60 as73 steps;16K eager B30 already552 steps and B29 as191 steps.
+These are more frequent than the boundary-only B63/B31, so the matrix now also
+covers B29/30/60/61/62. The unchanged original240-case source is already queued;
+it stays frozen. An additional private200-case run at this revision covers the
+five new batches after it. Together these cover11 batches and440 configurations,
+without rerunning the original six merely to enlarge a count. Each result keeps
+its own source commit, operator hash and batch list. Production remains untouched.
+The later formal service queue is explicitly moved after both private probes;
+only an owned waiting CPU queue is replaced, with PID/start-ticks verification.

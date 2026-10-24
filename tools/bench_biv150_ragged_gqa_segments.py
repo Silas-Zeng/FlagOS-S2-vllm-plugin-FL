@@ -43,9 +43,11 @@ def main(args):
         raise RuntimeError("Never overwrite evidence")
     module = load_module(args.source, "gqa_boundary_shipping")
     result = dict(source_sha256=expected, service_installed=False, records=[])
-    expected_cases = 240
+    batches = args.batches
+    assert batches and len(set(batches)) == len(batches) and all(1 <= b <= 64 for b in batches)
+    expected_cases = len(batches) * 4 * 2 * 5
     for batch, ragged in [
-        (b, r) for b in (15, 16, 31, 32, 63, 64) for r in (False, True)
+        (b, r) for b in batches for r in (False, True)
     ]:
         for length in (4096, 5119, 16384, 17407):
             case = inputs(batch, length, mixed=ragged)
@@ -152,6 +154,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--batches", type=int, nargs="+", default=[15,16,29,30,31,32,60,61,62,63,64])
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     main(parser.parse_args())
