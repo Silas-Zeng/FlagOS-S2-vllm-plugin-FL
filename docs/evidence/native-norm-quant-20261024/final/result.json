@@ -1,0 +1,998 @@
+{
+  "library_sha256": "ec0473d52b4ed506fc6a87a69847de400fc107d1bbe2424da6c693a9c183c2f0",
+  "norm_sources": {
+    "vllm.ir.ops.layernorm": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/ir/ops/layernorm.py",
+      "sha256": "d8e4380ca97d2c719836a7e15fb410a73d354b15d79fc54275b573bbb1c06910"
+    },
+    "vllm.ir.op": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/ir/op.py",
+      "sha256": "fd0355b398c0d96235bb6aba0c9c08f73c199429bd8ec2aed227178c297c1eb2"
+    },
+    "vllm.model_executor.custom_op": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/model_executor/custom_op.py",
+      "sha256": "4b4ba01623005d6a93698eaec007a934dd512bf9ec7241090927de819621de2e"
+    },
+    "vllm.model_executor.layers.layernorm": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/model_executor/layers/layernorm.py",
+      "sha256": "696615d858292fea7a2942480803cd4c7d2d1e88d818bfe5cd9d695ac464f37c"
+    }
+  },
+  "reference_provider": "native",
+  "reference_compiler": "inductor/fullgraph",
+  "epsilon": 1e-06,
+  "service_installed": false,
+  "identical_input_reset_copies_per_call": 2,
+  "records": [
+    {
+      "m": 1,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 23,
+          "norm_max_abs": 1.4901161193847656e-08,
+          "gate_mismatches": 1617,
+          "gate_max_abs": 2.842170943040401e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.061435095965862274,
+          "candidate_ms": 0.058522116392850876,
+          "speedup": 1.0497757045124099
+        },
+        {
+          "candidate_ms": 0.05852692201733589,
+          "baseline_ms": 0.061569713056087494,
+          "speedup": 1.0519895961357804
+        },
+        {
+          "baseline_ms": 0.061487019062042236,
+          "candidate_ms": 0.058442309498786926,
+          "speedup": 1.0520976941083842
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.011434615589678288,
+        "candidate": 0.008467307314276695
+      },
+      "median_speedup": 1.0519895961357804,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='73343a484611c21538f0a522c7f2b80dcdbad44cbf374fcc27fc5bcc3b622ee4', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=8, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "0ab7d61980f3c933fa33052b2f36412c8e086257f3e99188711a5ac5fb9e54c5",
+          "ttgir": "c8a8b7acdc2674d6c9b0648bf7d8d9c98de5a736f29046d2d18fa50adca6e470",
+          "llir": "59b62c6f0295c7967dd438a8ace3962df1e2d73409aa9c44240f6b7ad6f9cbf4"
+        }
+      }
+    },
+    {
+      "m": 1,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 505,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 4399,
+          "gate_max_abs": 2.842170943040401e-14,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 544,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 4 / 2048 (0.2%)\\nGreatest absolute difference: 0.015625 at index (0, 68) (up to 0.005 allowed)\\nGreatest relative difference: 0.00762939453125 at index (0, 122) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 8,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 171,
+          "norm_max_abs": 1.4901161193847656e-08,
+          "gate_mismatches": 8536,
+          "gate_max_abs": 2.842170943040401e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06378461420536041,
+          "candidate_ms": 0.06001442298293114,
+          "speedup": 1.062821419169548
+        },
+        {
+          "candidate_ms": 0.06000528857111931,
+          "baseline_ms": 0.06379470974206924,
+          "speedup": 1.0631514531666428
+        },
+        {
+          "baseline_ms": 0.063844233751297,
+          "candidate_ms": 0.060163941234350204,
+          "speedup": 1.0611710676102708
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.012956250458955765,
+        "candidate": 0.009356730617582798
+      },
+      "median_speedup": 1.062821419169548,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='b8275074ce367941cc7d68e3897fd4c650b76d0e3184925bd6153ee378ca6e55', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "df5dba740acb9da91c3c055706e3f17ec3f08629d9139ebb2e3f0f7cb3f7577c",
+          "ttgir": "2c7e4074fd01748c5b6eee6bf9ed63d995c5009547386f975a42f094fbed9755",
+          "llir": "49ace8877962206fc1b257401c4cddba1db984530ff8ea2f7644a292b979cf11"
+        }
+      }
+    },
+    {
+      "m": 8,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 4292,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 35179,
+          "gate_max_abs": 5.684341886080802e-14,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 4181,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 32 / 16384 (0.2%)\\nGreatest absolute difference: 0.03125 at index (1, 414) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (0, 112) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 16,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 371,
+          "norm_max_abs": 1.4901161193847656e-08,
+          "gate_mismatches": 18737,
+          "gate_max_abs": 2.842170943040401e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06633942574262619,
+          "candidate_ms": 0.062500961124897,
+          "speedup": 1.0614144894517494
+        },
+        {
+          "candidate_ms": 0.06255768984556198,
+          "baseline_ms": 0.06642644852399826,
+          "speedup": 1.0618430553939444
+        },
+        {
+          "baseline_ms": 0.06657115370035172,
+          "candidate_ms": 0.06257403641939163,
+          "speedup": 1.0638782074752233
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.014598077163100243,
+        "candidate": 0.011011057533323765
+      },
+      "median_speedup": 1.0618430553939444,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='8c49a33401e7fecbe1691b3818c6acd149d2ecb89b5155b06e94b851529b7b68', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "a46b4279ae0770cdd5fbe40cb002a8be1f119679fb4eb408ddedcf0a018f1559",
+          "ttgir": "2ff7ea2d29cac22d83d08e341cfcc16fe55634a687ea8bac8486b304d883027d",
+          "llir": "c4afa4c7d3cffcaec1e22bbf61b237bf91346a1f1286705379e4eb1e168e9291"
+        }
+      }
+    },
+    {
+      "m": 16,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 8299,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 70775,
+          "gate_max_abs": 8.526512829121202e-14,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 8457,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 49 / 32768 (0.1%)\\nGreatest absolute difference: 0.03125 at index (3, 864) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (4, 210) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 17,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 394,
+          "norm_max_abs": 1.4901161193847656e-08,
+          "gate_mismatches": 31014,
+          "gate_max_abs": 4.263256414560601e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 5,
+          "norm_max_abs": 0.00390625,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 5,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0637807697057724,
+          "candidate_ms": 0.06196779012680054,
+          "speedup": 1.0292568054349216
+        },
+        {
+          "candidate_ms": 0.0620197132229805,
+          "baseline_ms": 0.06382451951503754,
+          "speedup": 1.0291005262402324
+        },
+        {
+          "baseline_ms": 0.0637826919555664,
+          "candidate_ms": 0.062049999833106995,
+          "speedup": 1.027924127753743
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.011780288070440292,
+        "candidate": 0.010114422999322414
+      },
+      "median_speedup": 1.0291005262402324,
+      "resources": {
+        "n_regs": 26,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='8b59ae664447701b69ba9e282373de061183d63769047d70c6b985551d14794e', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "230a263bc5dd07697bd8500485bd302dca24376817510033ad5f1094d90a49c7",
+          "ttgir": "36ce2e30c36933f035e8510d65a91f209f91368c8702e71468271582ad073fe9",
+          "llir": "77fa2d18c0e06a59200d4ec374121472d6c0ed2db0292f19a22f490c652986c9"
+        }
+      }
+    },
+    {
+      "m": 17,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 8812,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 90417,
+          "gate_max_abs": 1.1368683772161603e-13,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 8751,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 61 / 34816 (0.2%)\\nGreatest absolute difference: 0.03125 at index (0, 783) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (1, 1866) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 32,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 750,
+          "norm_max_abs": 1.4901161193847656e-08,
+          "gate_mismatches": 47923,
+          "gate_max_abs": 5.684341886080802e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 1,
+          "norm_max_abs": 0.00390625,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06832452118396759,
+          "candidate_ms": 0.06636106222867966,
+          "speedup": 1.029587515469868
+        },
+        {
+          "candidate_ms": 0.06633269041776657,
+          "baseline_ms": 0.06833990663290024,
+          "speedup": 1.0302598342158613
+        },
+        {
+          "baseline_ms": 0.06832931935787201,
+          "candidate_ms": 0.06629999727010727,
+          "speedup": 1.0306081775463316
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.014504808001220226,
+        "candidate": 0.012814423069357872
+      },
+      "median_speedup": 1.0302598342158613,
+      "resources": {
+        "n_regs": 26,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='e66a499ba6b43fa065e7633e995d2f34fa202caba6b043724282888113f53eae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "8895ace48a2908be9ad3c1d8f4186bff84ce5e3d8678e8364f9bf9d83db9caeb",
+          "ttgir": "151490ca4b7c0fcd397be1289dd046f52cead1a874609ba694e7b20fc6bc08a0",
+          "llir": "7106d0bd4e7e4a29dc997f4df826830ed126bec486b739fe26247173591efbb7"
+        }
+      }
+    },
+    {
+      "m": 32,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 16735,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 169888,
+          "gate_max_abs": 1.1368683772161603e-13,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 16830,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 140 / 65536 (0.2%)\\nGreatest absolute difference: 0.03125 at index (4, 1104) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (2, 1710) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 40,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 972,
+          "norm_max_abs": 1.4901161193847656e-08,
+          "gate_mismatches": 59711,
+          "gate_max_abs": 5.684341886080802e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.07219663262367249,
+          "candidate_ms": 0.06948269158601761,
+          "speedup": 1.0390592387212734
+        },
+        {
+          "candidate_ms": 0.06941249966621399,
+          "baseline_ms": 0.0723624974489212,
+          "speedup": 1.0424995180535632
+        },
+        {
+          "baseline_ms": 0.07219807803630829,
+          "candidate_ms": 0.06947162747383118,
+          "speedup": 1.039245526002743
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.01635817252099514,
+        "candidate": 0.014236538670957088
+      },
+      "median_speedup": 1.039245526002743,
+      "resources": {
+        "n_regs": 26,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='706e7fb1d0f927f0b125c4a069cd02f6e33ea8819bab8c4cf2fd5bce680d7200', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "8bbffce96eefda95c46cbaa523101c997125de6f0f56ab7f71010c5432a72527",
+          "ttgir": "e17e8d36e17a4a7a149f61235d96ecab8c94e502654a92927e73cd633399e018",
+          "llir": "c555962737df3d3a3fd29f18096f595888d1cf8480de2012fc2a9a76db2d4e2b"
+        }
+      }
+    },
+    {
+      "m": 40,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 21117,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 213807,
+          "gate_max_abs": 1.1368683772161603e-13,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 21021,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 146 / 81920 (0.2%)\\nGreatest absolute difference: 0.03125 at index (2, 853) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (3, 1458) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 64,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 1514,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 98917,
+          "gate_max_abs": 5.684341886080802e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 6,
+          "norm_max_abs": 0.0078125,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 6,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.07939567416906357,
+          "candidate_ms": 0.07620816677808762,
+          "speedup": 1.0418263228960452
+        },
+        {
+          "candidate_ms": 0.07640577107667923,
+          "baseline_ms": 0.07955239713191986,
+          "speedup": 1.041183094037265
+        },
+        {
+          "baseline_ms": 0.07944278419017792,
+          "candidate_ms": 0.07637788355350494,
+          "speedup": 1.0401281168589323
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.018040385097265244,
+        "candidate": 0.015953846275806427
+      },
+      "median_speedup": 1.041183094037265,
+      "resources": {
+        "n_regs": 26,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='0fd072a6e69ec8b335379189ba5b7b388a66580db950cb884c2662078721fb64', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "f88b235f71551926b22e277f4ff2a0277abf657a16fa679ad7586459d5418231",
+          "ttgir": "217a511a40ef4ebaeae5f27eb250bf01edca76fbf1f5f54f3bc01532cf93740c",
+          "llir": "2f2bdbd164f735f424fad22b75079316683b81bbd53cdf8cca5d3b6eec8548c9"
+        }
+      }
+    },
+    {
+      "m": 64,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 33561,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 339719,
+          "gate_max_abs": 1.1368683772161603e-13,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 33724,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 244 / 131072 (0.2%)\\nGreatest absolute difference: 0.03125 at index (5, 707) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (2, 1786) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 256,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 5998,
+          "norm_max_abs": 1.4901161193847656e-08,
+          "gate_mismatches": 367617,
+          "gate_max_abs": 5.684341886080802e-14,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "large",
+      "norm_mismatches": 2,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 6 / 1572864 (0.0%)\\nGreatest absolute difference: 0.015625 at index (134, 1922) (up to 0.005 allowed)\\nGreatest relative difference: 0.02001953125 at index (134, 5550) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 256,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 134628,
+          "norm_max_abs": 5.960464477539063e-08,
+          "gate_mismatches": 1367624,
+          "gate_max_abs": 1.7053025658242404e-13,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 134433,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 991 / 524288 (0.2%)\\nGreatest absolute difference: 0.03125 at index (2, 1567) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (2, 733) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 2048,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 48424,
+          "norm_max_abs": 2.9802322387695312e-08,
+          "gate_mismatches": 2941800,
+          "gate_max_abs": 1.1368683772161603e-13,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 16,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 1 / 4194304 (0.0%)\\nGreatest absolute difference: 0.015625 at index (886, 1675) (up to 0.005 allowed)\\nGreatest relative difference: 0.00762939453125 at index (886, 1675) (up to 0.005 allowed)')"
+    },
+    {
+      "m": 2048,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 1074859,
+          "norm_max_abs": 5.960464477539063e-08,
+          "gate_mismatches": 10935285,
+          "gate_max_abs": 1.7053025658242404e-13,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 1078597,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 7957 / 4194304 (0.2%)\\nGreatest absolute difference: 0.03125 at index (19, 2014) (up to 0.005 allowed)\\nGreatest relative difference: 0.0078125 at index (1, 1440) (up to 0.005 allowed)')"
+    }
+  ]
+}

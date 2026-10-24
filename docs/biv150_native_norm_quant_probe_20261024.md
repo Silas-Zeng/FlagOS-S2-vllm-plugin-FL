@@ -59,3 +59,22 @@ queue waits for residual-cache probe84926/start_ticks318602347, then refuses
 busy GPU/9031, builds a private SO and checks existing gate routes before probing.
 Local lint/syntax/diff checks pass; GPU build, numerical and performance results
 are pending.
+
+
+## Final first-variant result: numerical gate failed
+
+Frozen8ab178c built successfully and passed the existing9 gate checks. Only7/18
+fusion cases passed the predeclared numerical/CPU/Graph gates;11 failed. All9
+random-weight cases failed on normal inputs, with BF16 norm differences up to
+0.03125 and roughly0.2% of elements exceeding the existing0.005/0.005 bound.
+Two large ones-weight cases also failed. INT8/scale self-consistency passed up
+to the recorded failure points, but that does not fix normalized-input mismatch.
+Full evidence is in `evidence/native-norm-quant-20261024/final/`.
+
+No tolerance was relaxed, no model service installed, no accuracy/throughput
+credited. Close draft PR27 for this failed variant. The fusion direction is
+preserved for a redesigned experiment: inspect the actual compiled native
+reference and candidate IR first. Source-level BF16 casts alone do not prove
+how the fused compiler materializes intermediate rounding. Current ones/random
+contrast suggests that boundary is worth inspecting; it is not yet a proven
+cause. Any replacement needs a new frozen variant and draft with its own gates.
