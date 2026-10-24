@@ -7712,3 +7712,9 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_gate
     print("BIV150_NATIVE_W8A8_INSTALL", _install_native_gate(), flush=True)
+
+# Combine the audited independent operator fast paths; scheduling is unchanged.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_mixed_attention import install as _install_mixed_attention
+
+    print("BIV150_MIXED_ATTENTION_INSTALL", _install_mixed_attention(), flush=True)
