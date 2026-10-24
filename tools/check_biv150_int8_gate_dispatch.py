@@ -10,6 +10,13 @@ from pathlib import Path
 import torch
 
 
+def compare(actual,expected,**kwargs):
+    # Keep production FlagGems CUDA policy enabled; compare on CPU because its
+    # CUDA isclose/reduction path cannot validate empty M0 outputs.
+    assert actual.device==expected.device
+    torch.testing.assert_close(actual.cpu(),expected.cpu(),**kwargs)
+
+
 def main(args):
     with socket.socket() as port:assert port.connect_ex(('127.0.0.1',9031))!=0
     os.environ['BIV150_NATIVE_W8A8_LIBRARY']=str(args.library.resolve())
@@ -32,25 +39,25 @@ def main(args):
             original=torch.ops.biv150_native.gate_silu_auto(x,q,sw,w,17)
             observed=gate_m32_m64_or_auto(x,q,sw,w,17)
             selected=rows in (32,64) and name=='compressed'
-            torch.testing.assert_close(observed,original,atol=.005 if selected else 0,rtol=.005 if selected else 0)
+            compare(observed,original,atol=.005 if selected else 0,rtol=.005 if selected else 0)
             report['records'].append(dict(m=rows,weight=name,selected=selected,passed=True,fallback_bit_exact=not selected))
     report['shape_checks']={}
     for rows in (32,64):
         x=torch.randn(rows,2080,device='cuda',dtype=torch.bfloat16)[:,:2048]
-        torch.testing.assert_close(gate_m32_m64_or_auto(x,q,sw,marker,17),
+        compare(gate_m32_m64_or_auto(x,q,sw,marker,17),
             torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=0,rtol=0)
         x=torch.randn(rows,2048,device='cuda',dtype=torch.bfloat16)
-        torch.testing.assert_close(gate_m32_m64_or_auto(x,q,sw,marker,33),
+        compare(gate_m32_m64_or_auto(x,q,sw,marker,33),
             torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,33),atol=0,rtol=0)
         def call(t):return gate_m32_m64_or_auto(t,q,sw,marker,17)
         compiled=torch.compile(call,fullgraph=True,backend='inductor')
-        torch.testing.assert_close(compiled(x),torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=.005,rtol=.005)
+        compare(compiled(x),torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=.005,rtol=.005)
         graph=torch.cuda.CUDAGraph()
         with torch.cuda.graph(graph):output=call(x)
         for factor in (0.,.5,4.):
             x.normal_().mul_(factor);graph.replay();torch.cuda.synchronize()
-            torch.testing.assert_close(output,torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=.005,rtol=.005)
-            torch.testing.assert_close(compiled(x),torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=.005,rtol=.005)
+            compare(output,torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=.005,rtol=.005)
+            compare(compiled(x),torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=.005,rtol=.005)
         report['shape_checks'][str(rows)]=dict(noncontiguous_fallback_bit_exact=True,
             unsupported_min_rows_fallback_bit_exact=True,fullgraph_and_fake=True,changed_input_graph=True)
     report.update(completed=True,fullgraph_and_fake=True,changed_input_graph=True)
