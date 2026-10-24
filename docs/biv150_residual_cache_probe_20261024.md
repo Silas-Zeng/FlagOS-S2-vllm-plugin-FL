@@ -43,3 +43,25 @@ failed result. Do not silently relax its tolerance. Next recheck must identify
 the input pattern and preserve failing inputs, compare original and candidate
 against the same CPU reference explicitly, and audit activation-residual and
 FP32 epilogue rounding. PR25 is now merged; sync main before further changes.
+
+
+## Contracted arithmetic reference audit prepared
+
+An offline compile of the original frozen source, using its original build
+flags, emits ml_fma_f32 for value - first * main_scale and for the dequantized
+main + residual sum (residual product rounded first). The old oracle instead
+uses eager split GPU operations for quantization, then FP64 dequantization.
+Assembly excerpts and SHA identities are in
+`evidence/residual-cache-20261024/reference-code/`. This proves a reference
+semantic difference, but does not yet prove which difference caused the
+recorded failure.
+
+The new diagnostic replays the original RNG sequence, including its early exit
+and changed-input draws, and explicitly compares old and new against both
+unchanged legacy and independent CPU FP32/FMA references. It records the failing
+pattern and saves the complete small CPU fixture (input, selected INT8 weights,
+scales, raw quantization and both outputs) with a hash. No tolerance is changed.
+It checks CPU quantization against actual original raw quantization before using
+that oracle. No performance or model acceptance is inferred from this audit.
+Its private queue will wait for the owned PR28 coverage process to exit before
+building or using the GPU; it refuses any other busy GPU/port.

@@ -1,0 +1,150 @@
+856: 	ml_lsa_store_dword v1, s[20:23], noreg, noreg, #64, wb
+857: BB3_9:
+858: 	sl_or_b64 {tmsk, wcr}, tmsk, s[2:3]
+859: 	sl_and_savetmsk_b64 s[10:11], s[0:1], tmsk
+860: 	; mask branch BB3_13
+861: 	sl_cbr_tmskaz BB3_13
+862: BB3_10:
+863: 	sl_mul_u64_u32 s[16:17], s19, s6
+864: 	sl_add_i32 s0, s6, 0x10
+865: 	sl_mul_u64_u32 s[0:1], s19, s0
+866: 	sl_add_i64 s[0:1], s[14:15], s[0:1]
+867: 	sl_mov_b32 s26, 0x0
+868: 	sl_sub_u64 s[24:25], s[8:9], s[8:9]
+869: 	sl_mov_b32 s7, 0xfff00002
+870: 	ml_xor_b32 v3, v0, 0x80000000
+871: 	ml_mov_b32 v4, 0x99
+872: 	ml_xor_b32 v5, v1, 0x80000000
+873: 	sl_mov_b32 s23, 0xffffffff
+874: 	sl_mov_b64 s[2:3], s[22:23]
+875: 	ml_mov_b32 v6, v2
+876: BB3_11:                                 ; =>This Inner Loop Header: Depth=1
+877: 	sl_sra_b32 {s27, wcr}, s26, 0x1f
+878: 	sl_add_i64 s[4:5], s[16:17], s[26:27]
+879: 	sl_shl_b64 {s[4:5], wcr}, s[4:5], 0x1
+880: 	sl_add_i64 s[4:5], s[12:13], s[4:5]
+881: 	ml_lsa_load_ushort v7, s[4:7], unsigned v2, noreg, #0, ca|mie
+882: 	ml_rcp_f32 v8, v0
+883: 	sl_reg_read s4, hwreg(HW_REG_MODE)
+884: 	sl_or_b32 {s5, wcr}, s4, 0x3
+885: 	sl_wait vmcnt(0)
+886: 	ml_cvt_f32_bf16  v7, v7
+887: 	ml_mul_f32 v9, v7, v8
+888: 	ml_fma_f32 v10, v3, v9, v7
+889: 	ml_cmp_class_f32 tcr, v9, v4
+890: 	ml_fma_f32 v8, v10, v8, v9
+891: 	ml_csel_b32 v8, v9, v8, tcr
+892: 	ml_add_f32 v9, v8, 0x3f000000
+893: 	ml_add_f32 v10, v8, 0xbf000000
+894: 	ml_floor_f32 v9, v9
+895: 	ml_cmp_ult_f32 tcr, v8, 0x0
+896: 	ml_ceil_f32 v10, v10
+897: 	ml_csel_b32 v8, v10, v9, tcr
+898: 	ml_max_f32 v8, v8, 0xc2fe0000
+899: 	ml_min_f32 v8, v8, 0x42fe0000
+900: 	sl_reg_write hwreg(HW_REG_MODE), s5
+901: 	ml_cvt_i32_f32  v8, v8
+902: 	sl_reg_write hwreg(HW_REG_MODE), s4
+903: 	ml_rcp_f32 v9, v1
+904: 	ml_cvt_i16_i8  v10, v8
+905: 	ml_cvt_i32_i16  v10, v10
+906: 	ml_cvt_f32_i32  v10, v10
+907: 	ml_fma_f32 v7, v3, v10, v7
+908: 	ml_and_b32 v8, v8, 0xff
+909: 	ml_mul_f32 v10, v7, v9
+910: 	ml_fma_f32 v7, v5, v10, v7
+911: 	ml_cmp_class_f32 tcr, v10, v4
+912: 	ml_fma_f32 v7, v7, v9, v10
+913: 	ml_csel_b32 v7, v10, v7, tcr
+914: 	ml_add_f32 v9, v7, 0x3f000000
+915: 	ml_add_f32 v10, v7, 0xbf000000
+916: 	ml_floor_f32 v9, v9
+917: 	sl_add_i64 s[20:21], s[14:15], s[16:17]
+918: 	sl_reg_read s4, hwreg(HW_REG_MODE)
+919: 	ml_cmp_ult_f32 tcr, v7, 0x0
+920: 	ml_ceil_f32 v10, v10
+1121: 	sl_cbr_tmskaz BB4_2
+1122: BB4_1:
+1123: 	sl_mul_i64_i32 s[0:1], s20, s7
+1124: 	sl_add_i32 s2, s7, 0x10
+1125: 	sl_mul_i64_i32 s[20:21], s20, s2
+1126: 	sl_shl_b64 {s[0:1], wcr}, s[0:1], 0x2
+1127: 	sl_add_i64 s[0:1], s[12:13], s[0:1]
+1128: 	sl_mov_b32 s9, 0x0
+1129: 	sl_shl_b64 {s[24:25], wcr}, s[8:9], 0x2
+1130: 	sl_add_i64 s[0:1], s[0:1], s[24:25]
+1131: 	sl_mov_b32 s3, 0xfff00004
+1132: 	ml_lsa_blkload_x1 v1, s[0:3], noreg, noreg, #0, ca
+1133: 	sl_mull_u32 s26, s7, 0x4
+1134: 	sl_mov_b32 s27, s9
+1135: 	sl_add_i64 s[28:29], s[14:15], s[26:27]
+1136: 	sl_lsa_load_b32x1 s2, s[28:29], noreg, #0, ca
+1137: 	sl_shl_b64 {s[14:15], wcr}, s[20:21], 0x2
+1138: 	sl_add_i64 s[12:13], s[12:13], s[14:15]
+1139: 	sl_add_i64 s[20:21], s[12:13], s[24:25]
+1140: 	sl_mov_b32 s23, s3
+1141: 	ml_lsa_blkload_x1 v2, s[20:23], noreg, noreg, #0, ca
+1142: 	sl_lsa_load_b32x1 s6, s[28:29], noreg, #64, ca
+1143: 	sl_add_i64 s[12:13], s[16:17], s[24:25]
+1144: 	sl_mov_b32 s15, s3
+1145: 	ml_lsa_blkload_x1 v3, s[12:15], noreg, noreg, #0, ca
+1146: 	sl_mov_b32 s23, s9
+1147: 	sl_shl_b64 {s[14:15], wcr}, s[22:23], 0x2
+1148: 	sl_add_i64 s[0:1], s[0:1], s[14:15]
+1149: 	sl_wait smcnt(0)
+1150: 	ml_lsa_blkload_x1 v4, s[0:3], noreg, noreg, #0, ca
+1151: 	sl_add_i64 s[0:1], s[20:21], s[14:15]
+1152: 	ml_mov_b32 v8, 0x3f800000
+1153: 	sl_wait vmcnt(3)
+1154: 	ml_cvt_f32_i32  v1, v1
+1155: 	sl_wait vmcnt(2)
+1156: 	ml_cvt_f32_i32  v2, v2
+1157: 	ml_mul_f32 v2, s6, v2
+1158: 	ml_fma_f32 v1, s2, v1, v2
+1159: 	sl_wait vmcnt(1)
+1160: 	ml_mul_f32 v1, v3, v1
+1161: 	ml_cvt_bf16_f32  v2, v1
+1162: 	ml_cvt_f32_bf16  v2, v2
+1163: 	ml_mul_f32 v3, v2, 0xbfb8aa3b
+1164: 	ml_xor_b32 v6, v2, 0x80000000
+1165: 	ml_trunc_f32 v3, v3
+1166: 	sl_wait vmcnt(0)
+1167: 	ml_cvt_f32_i32  v4, v4
+1168: 	ml_cmp_ule_f32 tcr, v1, 0x42d28000
+1169: 	ml_add_f32 v5, v3, 0x0
+1170: 	ml_mac_f32 v6, v3, 0xbf317200
+1171: 	ml_exp_f32 v5, v5
+1172: 	ml_mac_f32 v6, v3, 0xb5bfbe8e
+1173: 	ml_mul_f32 v3, v6, 0x3fb8aa3b
+1174: 	ml_lsa_blkload_x1 v6, s[0:3], noreg, noreg, #0, ca
+1175: 	ml_exp_f32 v3, v3
+1176: 	sl_add_i64 s[0:1], s[12:13], s[14:15]
+1177: 	ml_lsa_blkload_x1 v7, s[0:3], noreg, noreg, #0, ca
+1178: 	sl_mul_u64_u32 s[0:1], s22, s7
+1179: 	sl_shl_b64 {s[0:1], wcr}, s[0:1], 0x1
+1180: 	ml_fma_f32 v3, v5, v3, 1.0
+1181: 	ml_csel_b32 v3, v3, v8, tcr
+1182: 	ml_cmp_uge_f32 tcr, v1, 0xc2d28000
+1183: 	ml_mov_b32 v1, 0x7f800000
+1184: 	ml_csel_b32 v1, v3, v1, tcr
+1185: 	sl_add_i64 s[0:1], s[18:19], s[0:1]
+1186: 	ml_rcp_f32 v5, v1
+1187: 	ml_xor_b32 v1, v1, 0x80000000
+1188: 	sl_wait vmcnt(1)
+1189: 	ml_cvt_f32_i32  v3, v6
+1190: 	ml_mul_f32 v3, s6, v3
+1191: 	ml_fma_f32 v3, s2, v4, v3
+1192: 	ml_mul_f32 v4, v2, v5
+1193: 	sl_wait vmcnt(0)
+1194: 	ml_mul_f32 v3, v7, v3
+1195: 	ml_cvt_bf16_f32  v3, v3
+1196: 	ml_cvt_f32_bf16  v3, v3
+1197: 	ml_fma_f32 v1, v1, v4, v2
+1198: 	ml_fma_f32 v1, v1, v5, v4
+1199: 	ml_mov_b32 v2, 0x99
+1200: 	ml_cmp_class_f32 tcr, v4, v2
+1201: 	ml_csel_b32 v1, v4, v1, tcr
+1202: 	ml_mul_f32 v1, v1, v3
+1203: 	ml_cvt_bf16_f32  v1, v1
+1204: 	sl_shl_b64 {s[2:3], wcr}, s[8:9], 0x1
+1205: 	sl_add_i64 s[0:1], s[0:1], s[2:3]

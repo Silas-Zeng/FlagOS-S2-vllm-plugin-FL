@@ -72,6 +72,8 @@ def main(args):
         "--out",
         str(args.out),
     ]
+    if args.reference_audit:
+        command.append("--reference-audit")
     with args.out.with_suffix(".log").open("x") as log:
         process = subprocess.Popen(
             command,
@@ -91,6 +93,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--reference-audit", action="store_true")
     parser.add_argument("--after-pid", type=int, required=True)
     parser.add_argument("--after-start-ticks", required=True)
     parser.add_argument("--out", type=Path, required=True)

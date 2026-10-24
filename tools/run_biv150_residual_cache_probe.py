@@ -53,7 +53,7 @@ def main(args):
             "probe",
             [
                 sys.executable,
-                str(source / "tools/bench_biv150_residual_cache.py"),
+                str(source / ("tools/audit_biv150_residual_reference.py" if args.reference_audit else "tools/bench_biv150_residual_cache.py")),
                 "--library",
                 str(build / "biv150_native_w8a8.so"),
                 "--out",
@@ -84,6 +84,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--reference-audit", action="store_true")
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     main(parser.parse_args())
