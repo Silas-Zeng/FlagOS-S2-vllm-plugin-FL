@@ -1,4 +1,4 @@
-"""固定main3283672b加PR15的局部计算序；持久请求/采样序不动，未知描述在首次写前回原路。"""
+"""固定main3283672b加PR15、PR21的局部计算序；持久请求/采样序不动，未知描述在首次写前回原路。"""
 
 # ruff: noqa: E501
 
@@ -10,7 +10,7 @@ import sys
 import types
 from pathlib import Path
 
-EXPECTED_RUNNER = "4bac7efa6973c6c3ee7c35cfc502ddda5fd120222369fa6fccfcb3fe2351870f"
+EXPECTED_RUNNER = "fa6f2387d258804021e53130ef8ae362ea91a9a23d9b1dcaf1c3d37cb4e0ee9f"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
