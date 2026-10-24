@@ -15,16 +15,19 @@ from pathlib import Path
 def audit(path):
     source = path.read_text()
     module = ast.parse(source)
-    functions = [n for n in module.body if isinstance(n, ast.FunctionDef) and n.name == "call"]
+    names = {n.name for n in module.body if isinstance(n, ast.FunctionDef)}
+    module_kind = ("kernel_benchmark_harness" if {"get_args", "benchmark_all_configs"} <= names
+                   else "module_call_unproven_runtime")
+    functions = [(n, module_kind) for n in module.body if isinstance(n, ast.FunctionDef) and n.name == "call"]
     for node in module.body:
         if isinstance(node, ast.ClassDef) and node.name == "Runner":
-            functions.extend(n for n in node.body if isinstance(n, ast.FunctionDef) and n.name == "call")
+            functions.extend((n, "model_runner_method") for n in node.body if isinstance(n, ast.FunctionDef) and n.name == "call")
     wrappers = []
-    for function in functions:
+    for function, kind in functions:
         calls = sorted((n for n in ast.walk(function) if isinstance(n, ast.Call)), key=lambda n: (n.lineno, n.col_offset))
         operations = [dict(line=n.lineno, target=ast.unparse(n.func), expression=ast.unparse(n)) for n in calls]
         copies = [n for n in operations if any(term in n["target"] for term in ("clone", "copy_", "_to_copy", "contiguous", "convert_element_type"))]
-        wrappers.append(dict(line=function.lineno, operations=operations,
+        wrappers.append(dict(kind=kind, line=function.lineno, operations=operations,
                              explicit_copy_or_conversion_calls=copies,
                              counts=dict(Counter(n["target"] for n in operations)),
                              source=ast.get_source_segment(source, function)))
@@ -56,6 +59,7 @@ if __name__ == "__main__":
                   snapshot_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
                   cache=str(args.cache), files=rows,
                   total_wrappers=sum(len(row["wrappers"]) for row in rows),
+                  wrapper_kinds=dict(Counter(w["kind"] for row in rows for w in row["wrappers"])),
                   explicit_copy_or_conversion_call_sites=sum(len(w["explicit_copy_or_conversion_calls"]) for row in rows for w in row["wrappers"]),
                   runtime_frequency_or_cost_measured=False,
                   example_shapes_are_not_runtime_coverage=True)
