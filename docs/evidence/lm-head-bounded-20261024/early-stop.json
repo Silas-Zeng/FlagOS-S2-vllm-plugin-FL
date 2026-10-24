@@ -1,0 +1,42 @@
+{
+  "time": "2026-10-24T08:34:35.234106+00:00",
+  "source_commit": "d5f5f581d7af4a5c0f34331381ac313a20e0ac30",
+  "action": "terminate_owned_accuracy_child_to_exit_via_driver_finally",
+  "driver_pid": 53482,
+  "evaluator_pid": 56467,
+  "evaluator_start_ticks": "317830821",
+  "command": [
+    "/usr/local/bin/python3.12",
+    "/usr/local/bin/evalscope",
+    "eval",
+    "--model",
+    "minicpm",
+    "--api-url",
+    "http://127.0.0.1:9031/v1/chat/completions",
+    "--api-key",
+    "EMPTY",
+    "--eval-type",
+    "openai_api",
+    "--datasets",
+    "math_500",
+    "--dataset-args",
+    "{\"math_500\":{\"dataset_id\":\"/workspace/evalscope-datasets/math_500\",\"subset_list\":[\"Level 3\"]}}",
+    "--eval-batch-size",
+    "8",
+    "--timeout",
+    "3600",
+    "--generation-config",
+    "{\"temperature\":1.0,\"top_p\":0.95,\"max_tokens\":32768}",
+    "--work-dir",
+    "/workspace/experiments/minicpm-s2/lm-head-bounded-20261024/full/math500-level3",
+    "--ignore-errors",
+    ""
+  ],
+  "operator_checks": {
+    "bounded-probe.json": 13,
+    "operator-check.json": 14
+  },
+  "kv_tokens": 504688,
+  "previous_head_kv_tokens": 504784,
+  "reason": "M256 Torch allocation peak reduced about64MiB, but real KV capacity did not recover; official M<=64 compute path unchanged. Prioritize remaining attention/latest-team gate validations. Full accuracy/throughput remain unverified."
+}
