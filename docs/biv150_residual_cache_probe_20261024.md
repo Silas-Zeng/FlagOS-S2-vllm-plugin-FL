@@ -1,5 +1,16 @@
 # Residual small-M input cache component probe
 
+## Actual auto-route device checks passed, service running
+
+Frozen8a1fc9b private build, original9,40 cached-boundary checks and28784 CPU
+policy checks passed. New actual auto-route32/32 cases (all M1..16, pitch2048/2080,
+160 patterns), full-gate/raw bit identity, unchanged CPU tolerance, padded rows,
+changed-input Graphs and10 fallback-row checks passed. Raw result is
+`evidence/residual-cache-20261024/service-prechecks/residual-cached-dispatch-check.json`.
+SO SHA df090263f0c4f13a44d5c41c7a9290f4c0910cab8c85256b30a88cb62ae53076.
+Formal105-question accuracy plus fixed4K/16K is now running privately in
+residual-cache-service-v2-20261024; no new model score/gain is claimed yet.
+
 ## Current: complete component pass, production-route service candidate
 
 Frozen `2dad25e` completed **36/36 records and all 180 input patterns**, including
