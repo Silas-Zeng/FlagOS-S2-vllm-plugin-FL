@@ -1,9 +1,11 @@
-# Small-M residual activation service candidate — unvalidated
+# Small-M residual activation service — accuracy passed, performance pending
 
 Base: team main `3283672`, gate-only candidate `5b88eac`, residual operator `01bdf10`.
-The gate-only parent's Level-3 score was 99/105, below 0.95. This candidate is
-intended to test whether small-M activation error contributes to that failure.
-It has no model precision or throughput result yet and must not be merged.
+The gate-only parent's Level-3 score was 99/105, below 0.95. This candidate tests
+whether small-M activation error contributes to that failure. The exact 20c991a
+candidate now passes one complete Level-3 run: 102/105 (reported 0.9714), 105
+unique questions and zero failed predictions. Warmed throughput and TTFT are
+still pending, so it must not be merged on the accuracy result alone.
 
 `gate_silu_auto` selects the already micro-tested residual operator for compressed
 weights and M=1..16. Other M uses the unchanged native gate/SwiGLU implementation;
@@ -15,9 +17,11 @@ layers retain BF16. This is distinct from the historical `beb3518` configuration
 
 The residual **primitive** previously passed 24 numerical cases, CPU INT64 sampled
 references, graph changed-input replay, and fullgraph/Fake Tensor tests. The new
-`gate_silu_auto` dispatch and model integration have only passed local Python lint,
-syntax and whitespace checks; C++ build and GPU/model checks remain unexecuted.
-Do not transfer primitive results or a different configuration's accuracy to this one.
+`gate_silu_auto` dispatch was originally unvalidated at a0287ef. On 2026-10-24,
+20c991a was independently built and passed all nine M=0/1/8/16/17/32/40/64/2048
+dispatch cases, including sampled CPU references, M8/M32 fullgraph and
+changed-input graph replay, and unchanged original-weight BF16 fallback. Do not
+transfer these results to a changed source/library or another configuration.
 
 ## Resume validation
 
@@ -38,6 +42,22 @@ all 105 unique Level-3 questions with zero failed predictions, and only proceeds
 to stabilized warmup and one scored round of each official workload if precision
 is at least 0.95. Evaluate both throughput and TTFT before any merge.
 
-At the latest local check, both the original SSH hostname and previously resolved
-IP rejected the existing instance key with `Permission denied (publickey)`.
-Remote outcomes are unknown. No new remote test has been started for this candidate.
+## Current evidence
+
+Personal-instance source:
+/workspace/experiments/minicpm-s2/code/gate-residual-service-20261024,
+exact commit 20c991ac06f2228a5e9aae2cfdb0d265c769d075, clean worktree.
+Outputs: /workspace/experiments/minicpm-s2/gate-residual-service-20261024.
+Library SHA256: cf966eda1802da08bfdc07cc0b9be1e2688f80518fbbd519a6ce10a16949c562.
+The manifest verifies actual gate_silu_auto installation, [1,16] residual rows,
+interior 34 gate/up layers only, with unchanged QKV/O/down/edge-layer BF16.
+Reported GPU KV capacity is 547632 tokens. Official serving parameters are
+unchanged. Complete accuracy passed at approximately 08:58 CST.
+
+The final two 4K warmups have TPOT 108.8195 / 108.8643 ms, meeting the existing
+stability gate. The scored workloads are still running as of 09:03 CST. No
+throughput number is accepted from these warmups. The gate-only parent's 99/105
+and this candidate's 102/105 are distinct one-run observations, not proof of
+statistical stability or of a general accuracy gain.
+
+Raw evidence is stored under docs/evidence/biv150-gate-residual-service-20261024.
