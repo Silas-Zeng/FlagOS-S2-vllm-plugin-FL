@@ -1,0 +1,49 @@
+INFO 10-25 00:19:57 [__init__.py:44] Available plugins for group vllm.platform_plugins:
+INFO 10-25 00:19:57 [__init__.py:46] - fl -> vllm_fl:register
+INFO 10-25 00:19:57 [__init__.py:49] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:728: DeprecationWarning: use_cuda_graph is deprecated; use benchmark_mode='replay' or benchmark_mode='event'
+  super().__init__(*args, **kwargs)
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411: RuntimeWarning: active Triton backend does not provide a replay benchmarker; falling back to event timing
+  resolved_benchmark = resolve_benchmarker(
+INFO 10-25 00:20:03 [__init__.py:237] Platform plugin fl is activated
+/usr/local/lib/python3.12/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+{"m": 8, "layer": 27, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 1], [512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 8, "layer": 32, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[512, 1], [512, 4]]}
+{"m": 16, "layer": 34, "current": {"bit_differences": 2, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[128, 1], [128, 4], [256, 4], [512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 17, "layer": 22, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[256, 1], [256, 4]]}
+{"m": 17, "layer": 34, "current": {"bit_differences": 4, "violations": 1, "max_abs": 0.015625}, "exact_trees": []}
+{"m": 32, "layer": 8, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[256, 1], [512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 32, "layer": 20, "current": {"bit_differences": 3, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 4]]}
+{"m": 32, "layer": 25, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 1], [128, 4], [256, 1], [512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 32, "layer": 30, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[128, 1], [256, 1], [256, 4], [512, 1], [512, 4], [2048, 1], [2048, 4]]}
+{"m": 32, "layer": 35, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.001953125}, "exact_trees": [[128, 4], [256, 4]]}
+{"m": 64, "layer": 18, "current": {"bit_differences": 3, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 64, "layer": 20, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[256, 1], [2048, 1], [2048, 4]]}
+{"m": 64, "layer": 23, "current": {"bit_differences": 3, "violations": 0, "max_abs": 0.015625}, "exact_trees": [[128, 4], [256, 1], [256, 4]]}
+{"m": 64, "layer": 34, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 1], [512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 64, "layer": 35, "current": {"bit_differences": 2, "violations": 0, "max_abs": 0.0078125}, "exact_trees": []}
+{"m": 64, "layer": 37, "current": {"bit_differences": 2, "violations": 1, "max_abs": 0.015625}, "exact_trees": []}
+{"m": 256, "layer": 8, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.00390625}, "exact_trees": []}
+{"m": 256, "layer": 9, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 256, "layer": 10, "current": {"bit_differences": 6, "violations": 0, "max_abs": 0.00390625}, "exact_trees": []}
+{"m": 256, "layer": 13, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 4], [256, 1], [256, 4], [512, 1], [512, 4], [1024, 1], [1024, 4], [2048, 1], [2048, 4]]}
+{"m": 256, "layer": 15, "current": {"bit_differences": 2, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[256, 1]]}
+{"m": 256, "layer": 18, "current": {"bit_differences": 5, "violations": 0, "max_abs": 0.0078125}, "exact_trees": []}
+{"m": 256, "layer": 20, "current": {"bit_differences": 3, "violations": 0, "max_abs": 0.00390625}, "exact_trees": []}
+{"m": 256, "layer": 22, "current": {"bit_differences": 2, "violations": 0, "max_abs": 0.00390625}, "exact_trees": [[128, 1], [256, 4], [512, 1], [512, 4]]}
+{"m": 256, "layer": 24, "current": {"bit_differences": 5, "violations": 0, "max_abs": 0.00390625}, "exact_trees": []}
+{"m": 256, "layer": 26, "current": {"bit_differences": 3, "violations": 0, "max_abs": 0.00390625}, "exact_trees": []}
+{"m": 256, "layer": 27, "current": {"bit_differences": 2, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 4], [256, 1], [256, 4]]}
+{"m": 256, "layer": 28, "current": {"bit_differences": 3, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[512, 1], [512, 4]]}
+{"m": 256, "layer": 30, "current": {"bit_differences": 2, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 4], [256, 4]]}
+{"m": 256, "layer": 32, "current": {"bit_differences": 1, "violations": 0, "max_abs": 0.0078125}, "exact_trees": [[128, 1], [128, 4], [256, 1]]}
+{"m": 256, "layer": 34, "current": {"bit_differences": 3, "violations": 0, "max_abs": 0.0078125}, "exact_trees": []}
+{"m": 256, "layer": 35, "current": {"bit_differences": 2, "violations": 0, "max_abs": 0.015625}, "exact_trees": []}
+Traceback (most recent call last):
+  File "/workspace/experiments/minicpm-s2/code/norm-reduction-audit-20261025/tools/audit_biv150_norm_reduction.py", line 110, in <module>
+    main(parser.parse_args())
+  File "/workspace/experiments/minicpm-s2/code/norm-reduction-audit-20261025/tools/audit_biv150_norm_reduction.py", line 91, in main
+    for module in PyCodeCache.cache.values():
+                  ^^^^^^^^^^^^^^^^^
+AttributeError: type object 'PyCodeCache' has no attribute 'cache'

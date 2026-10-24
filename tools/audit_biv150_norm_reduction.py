@@ -87,17 +87,21 @@ def main(args):
         (args.out/"result.json").write_text(json.dumps(result,indent=2))
         print(json.dumps(dict(m=row["m"],layer=row["layer"],current=row["current_norm"],
             exact_trees=[(a["chunk"],a["xblock"]) for a in row["trees"] if a["norm"]["bit_differences"]==0])),flush=True)
+    result["summary"]=[dict(chunk=c,xblock=xb,
+        exact=sum(next(t for t in r["trees"] if (t["chunk"],t["xblock"])==(c,xb))["norm"]["bit_differences"]==0 for r in result["records"]),
+        total=len(result["records"])) for c,xb in configs]
+    # Persist numeric evidence before optional metadata inspection. The deployed
+    # PyCodeCache has `modules`, not the older `cache` dictionary.
+    result["numeric_diagnostic_completed"]=True
+    (args.out/"result.json").write_text(json.dumps(result,indent=2))
     from torch._inductor.codecache import PyCodeCache
-    for module in PyCodeCache.cache.values():
+    for module in PyCodeCache.modules:
         for name,value in vars(module).items():
             if not type(value).__name__.endswith("CachingAutotuner"):continue
             configs=getattr(value,"configs",[])
             result["compiled_native"].append(dict(module_file=getattr(module,"__file__",None),
                 name=name,type=type(value).__name__,configs=[dict(kwargs=c.kwargs,num_warps=c.num_warps,num_stages=c.num_stages) for c in configs],
                 best_config=str(getattr(value,"best_config",None))))
-    result["summary"]=[dict(chunk=c,xblock=xb,
-        exact=sum(next(t for t in r["trees"] if (t["chunk"],t["xblock"])==(c,xb))["norm"]["bit_differences"]==0 for r in result["records"]),
-        total=len(result["records"])) for c,xb in configs]
     result["diagnostic_completed"]=True
     (args.out/"result.json").write_text(json.dumps(result,indent=2))
     print(json.dumps(result["summary"]),flush=True)

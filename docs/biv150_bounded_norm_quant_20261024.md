@@ -1,5 +1,26 @@
 # B06：有界 residual RMSNorm＋量化，真实 norm 权重组件验证
 
+## v3真实权重完整矩阵：保留206个通过组合，定位32个失败
+
+运行a8c02d71526dc8ea7427c288cd07f9c0beceee2d私有构建和既有9/40检查通过，完整238组合收齐。
+M1/8/16/17/32/64/256通过数分别34/32/33/32/29/28/18（各34），合计206/238，退出1。
+原始结果/state/原检查见`evidence/bounded-norm-quant-20261024/v3-final/`。
+这说明只按行数限定仍不足以覆盖所有实际norm权重，不能把全部selected_rows直接装入服务。
+通过组合三轮完整norm+quant+GEMM+SiLU中位约1.0257–1.0644，M1代表层约1.0480–1.0521；
+没有reset拷贝，保留正结果，但不能按单次夹具通过的层名单直接合并或宣称模型精度通过。
+
+新增d7d2c93独立重放32份原失败输入，比较native编译norm与原单行融合、串行分块后归约的
+十种树结构，记录norm bit差与residual是否相同，并收集实际native编译配置。
+该诊断不改现有融合数学/原容差，也不使用模型或gate性能分数。任何选出的结构均须新完整矩阵。
+32份数值重放已完成：各固定树逐位匹配数7..12/32，最佳512分块也仅12/32，
+不存在一条已证实通用准确的树，不能将其直接安装。原单行norm相对native仅少量BF16 bit差，
+在norm层原容差内仍可能放大成gate输出超差，原gate失败保持。
+末尾元数据采集因本机PyCodeCache无cache属性退出；原result含全部32份数值结果，
+raw log/result保存在`evidence/bounded-norm-quant-20261024/reduction-audit/`。
+现已只读核实安装版用modules列表，工具改为该接口，并在元数据采集前持久化数值summary；
+没有为修复末尾汇总重复GPU实验，也没有声称已取得实际native最优配置。
+分支已af4ec05非重写同步团队main0bf9d2e，原CPP函数/CUDA/Python保持最新main。
+
 当前工具修复：cff7704私有build、原9和40检查通过，但probe在启动时因缺少
 `audit_biv150_residual_reference`退出，尚未运行238组合，不是norm核数值失败。
 原日志/state/检查文件保留在`evidence/bounded-norm-quant-20261024/rejected-v2/`。
