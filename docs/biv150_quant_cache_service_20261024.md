@@ -19,3 +19,19 @@ does it run fresh105-item accuracy and fixed warmed4K/16K formal benchmarks.
 The existing service runner adds strict installation checks for the cached-row
 range and256-thread selection. All competition arguments and benchmark loads
 remain byte-identical. No model/service improvement is claimed before results.
+
+
+## Started full model acceptance
+
+Frozen source6762da85b0a64bdb0b60ad2b4f73335aed2ea80b passed private native
+compilation, existing9 operator-route checks and all40 added row-boundary/stride
+cases, including CPU quantization, bit-exact full gate and changed-input Graphs.
+Evidence: `evidence/quant-cache-service-20261024/cached-dispatch-check.json`.
+
+18:36:58 personal-instance GPU was idle with no running compute processes.
+Owned queue79227/start_ticks318577084 started in its private checkout and run
+folder quant-cache-service-20261024. Acceptance driver79671 started18:38:09;
+API79674 and engine79831 became ready. The runner verified the installation
+metadata for cached M17..2048 with256 threads before full105-item evaluation.
+No new full precision/throughput result is available yet. Current main remains
+1ad9a708 and no unvalidated runtime has been merged.
