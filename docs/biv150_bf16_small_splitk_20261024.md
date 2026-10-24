@@ -1,6 +1,16 @@
 # BI-V150 小 batch BF16 GEMM 与 FP32 Split-K 组件实验
 
-状态：Draft，CPU 检查通过，设备正确性与性能待测，未接入真实服务。
+状态：Draft，首轮全部停在JIT编译，尚无设备数值或性能结果；修正后待重验，未接入真实服务。
+
+首轮ff188ca生成640条记录，但0条成功编译、0条数值通过、0条性能结果，16条tail也均为CompilationError。
+旧completed仅表示记录矩阵写完，不能当设备测试通过，也不能判定所有结构都慢。
+完整原始结果按gzip/base64无损归档，附原文SHA，见`evidence/bf16-small-splitk-20261024/initial-compile-failure/`。
+原异常只保存repr，未保留内层原因，现阶段不能断言编译根因。
+
+下一版将chunk和循环界改为纯constexpr整数运算、显式dot精度/输出类型，保持同一数学切分；
+CPU同时执行kernel实际chunk表达式核对42种分区。新增异常链与完整traceback，
+首个tail几何所有配置均失败即停止，不再重复生成640条同类编译错误。
+未通过tail的配置在主矩阵明确跳过，记录不冒充实际测试；兼容修改是否修复编译仍待设备验证。
 
 ## 问题与独立性
 

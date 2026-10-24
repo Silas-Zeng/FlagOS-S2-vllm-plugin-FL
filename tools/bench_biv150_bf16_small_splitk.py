@@ -11,6 +11,7 @@ import json
 import socket
 import statistics
 import subprocess
+import traceback
 from pathlib import Path
 
 import torch
@@ -54,6 +55,17 @@ def preserve_fixture(folder,prefix,x,weight,output,gold):
                     rows=rows,columns=columns,flat_indices=indices,
                     actual=actual[rows][:,columns],baseline=reference[rows][:,columns]),path)
     return dict(path=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+
+
+def failure_details(error):
+    chain=[]
+    current=error
+    visited=set()
+    while current is not None and id(current) not in visited:
+        visited.add(id(current))
+        chain.append(dict(type=type(current).__name__,message=str(current),repr=repr(current)))
+        current=current.__cause__ or current.__context__
+    return dict(error=repr(error),exception_chain=chain,traceback=traceback.format_exc())
 
 
 def main(args):
@@ -105,11 +117,15 @@ def main(args):
                 assert bool(torch.isfinite(out).all())
                 row["passed"]=True
             except Exception as error:
-                row.update(passed=False,error=repr(error))
+                row.update(passed=False,**failure_details(error))
                 if isinstance(error,AssertionError):
                     row["fixture"]=preserve_fixture(args.out,f"tail-{m}-{n}-{CONFIGS.index(config)}",x,weight,out,gold)
             result["tail_cases"].append(row)
             save()
+        if not any(r["passed"] for r in result["tail_cases"] if r["m"]==m):
+            result.update(completed=False,fatal_error="No variant passed tail prerequisite; matrix not started")
+            save()
+            raise RuntimeError(result["fatal_error"])
         del x,weight,gold
 
     for name,n,k in GEOMETRIES:
@@ -122,7 +138,12 @@ def main(args):
                 cases=[]
                 for config in CONFIGS:
                     cases.append(dict(geometry=name,m=m,n=n,k=k,pitch=pitch,
-                                      config=list(config),patterns=[],passed=True,
+                                      config=list(config),patterns=[],passed=all(
+                                          r["passed"] for r in result["tail_cases"]
+                                          if r["config"]==list(config)),
+                                      skipped_after_tail_failure=not all(
+                                          r["passed"] for r in result["tail_cases"]
+                                          if r["config"]==list(config)),
                                       tail_checks_passed=all(
                                           r["passed"] for r in result["tail_cases"]
                                           if r["config"]==list(config))))
@@ -161,7 +182,7 @@ def main(args):
                                                   shared=getattr(getattr(compiled,"metadata",None),"shared",None))
                             del output,scratch
                         except Exception as error:
-                            row.update(passed=False,error=repr(error),failed_pattern=pattern)
+                            row.update(passed=False,failed_pattern=pattern,**failure_details(error))
                             if isinstance(error,AssertionError):
                                 row["fixture"]=preserve_fixture(args.out,
                                     f"{name}-{m}-{pitch}-{CONFIGS.index(config)}-{pattern}",x,weight,output,gold)
@@ -203,7 +224,7 @@ def main(args):
                                                      and min(t["speedup"] for t in rounds)>=1.0
                                                      and row["tail_checks_passed"]))
                         except Exception as error:
-                            row.update(passed=False,error=repr(error),failed_stage="graph_or_timing")
+                            row.update(passed=False,failed_stage="graph_or_timing",**failure_details(error))
                             if isinstance(error,AssertionError) and "replayed" in locals() and replayed is not None:
                                 row["fixture"]=preserve_fixture(args.out,
                                     f"{name}-{m}-{pitch}-{CONFIGS.index(config)}-graph",x,weight,replayed,baseline())
@@ -215,6 +236,7 @@ def main(args):
         del weight
     result["summary"]=dict(records=len(result["records"]),expected=640,
         passed=sum(r["passed"] for r in result["records"]),
+        skipped_after_tail_failure=sum(r["skipped_after_tail_failure"] for r in result["records"]),
         promising_components=sum(r.get("promising_component",False) for r in result["records"]),
         tail_passed=sum(r["passed"] for r in result["tail_cases"]),tail_total=16)
     result["completed"]=(len(result["records"])==640 and not result["baseline_errors"])

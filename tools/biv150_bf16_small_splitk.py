@@ -37,18 +37,19 @@ def partial_mm(
     row = tl.program_id(0) * BM + tl.arange(0, BM)
     column = tl.program_id(1) * BN + tl.arange(0, BN)
     part = tl.program_id(2)
-    chunk: tl.constexpr = tl.cdiv(K, SPLIT)
+    # Keep loop bounds as Python constexpr arithmetic on the Corex frontend.
+    chunk: tl.constexpr = (K + SPLIT - 1) // SPLIT
     start = part * chunk
     finish = tl.minimum(start + chunk, K)
     kk = tl.arange(0, BK)
     accum = tl.zeros((BM, BN), tl.float32)
-    for step in range(tl.cdiv(chunk, BK)):
+    for step in range((chunk + BK - 1) // BK):
         k = start + step * BK + kk
         a = tl.load(X + row[:, None] * XS + k[None, :],
                     (row[:, None] < M) & (k[None, :] < finish), other=0)
         b = tl.load(W + column[None, :] * K + k[:, None],
                     (column[None, :] < N) & (k[:, None] < finish), other=0)
-        accum = tl.dot(a, b, accum)
+        accum = tl.dot(a, b, accum, out_dtype=tl.float32, input_precision=None)
     valid = (row[:, None] < M) & (column[None, :] < N)
     offset = row[:, None] * N + column[None, :]
     if SPLIT == 1:

@@ -17,9 +17,14 @@ def main(args):
     namespace=dict(triton=SimpleNamespace(cdiv=lambda a,b:(a+b-1)//b))
     exec(compile(ast.Module(body=[function],type_ignores=[]),"<actual-split-intervals>","exec"),namespace)
     count=0
+    producer=next(n for n in parsed.body if isinstance(n,ast.FunctionDef) and n.name=="partial_mm")
+    chunk_expression=next(n.value for n in producer.body if isinstance(n,ast.AnnAssign)
+                          and isinstance(n.target,ast.Name) and n.target.id=="chunk")
+    chunk_code=compile(ast.Expression(chunk_expression),"<actual-kernel-chunk>","eval")
     for k in (1,2,3,31,63,64,65,127,128,2017,2048,6144,6175,131071):
         for split in (1,2,4):
             intervals=namespace["chunk_intervals"](k,split)
+            assert eval(chunk_code,{"K":k,"SPLIT":split})==(k+split-1)//split
             assert len(intervals)==split
             assert all(0<=a<=b<=k for a,b in intervals)
             coverage=[i for a,b in intervals for i in range(a,b)]
@@ -54,6 +59,7 @@ def main(args):
                 geometry_config_buffer_checks=buffers,no_gaps_or_overlaps=True,
                 signed32_offsets_safe_for_model_matrix=True,no_atomic_accumulation=True,
                 store_targets_only_output_and_scratch=True,
+                kernel_constexpr_chunk_matches_partition=True,
                 production_sources_unchanged=True,gpu_numeric_and_performance_pending=True)
     if args.out:
         args.out.parent.mkdir(parents=True,exist_ok=True)
