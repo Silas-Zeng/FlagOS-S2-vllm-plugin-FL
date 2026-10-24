@@ -106,3 +106,17 @@ layer37的QKV/O M8 split4约2.14x/2.13x且对应完整门过，但不能泛化�
 下一步优先补完整42层与实际路由，不能按这3层就安装。部分M8/16候选CPU过而native不过，仍需分清误差来源及模型门。
 完整JSON、日志、每个失败fixture的逐文件SHA与可解码原始archive在real-oracle-final/，
 原先347/640随机矩阵记录不改写，不宣称模型吞吐已提升。
+
+
+## 下一轮：对齐真实out基线，随后补42层
+
+已读当前生成图：O/down/QKV使用extern_kernels.mm(...,out=buf)。SDK Inductor的该choice是torch.mm / aten.mm.out；
+worker调用FlagGems enable默认策略，FlagGems候选表含mm与mm.out，iluvatar两者共享同一_launch_mm；实际还可能受vendor默认排除/dispatch key影响，不能仅由候选表推断最终注册。
+不能只据文件名extern或旧default分配版时间认定服务baseline；新探针先按当前worker相同的默认FlagGems enable策略，用torch.mm(...,out=caller_buffer)测完整三代表层81记录，
+记录enable前后真实aten::mm.out dispatch table、mm/mm_out源码身份，保留原returning版81记录不改写。权重N×K与实际out stride不变，使用同storage的as_strided view避免额外转置copy。
+直接FlagGems.mm_out和torch.mm的最终注册选择不能只靠默认配置假定；新结果以实际dispatch table为准。
+
+仅当三代表层81记录中至少一个case通过原全输出CPU/Graph/计时输入门、三轮完整调用均有正收益时，
+再运行42层×QKV/O/down×M1/8/16×split1/2/4=1134记录。不是只测旧成功层或裁掉失败配置。
+继续原五模式、每输出CPU FP64→BF16、native单独误差、NaN scratch、变输入Graph与三轮完整成本计时，门槛不变。
+尚无新设备结果或服务hook；此队列只允许接在当前PR40完整服务后，防止并发干扰。
