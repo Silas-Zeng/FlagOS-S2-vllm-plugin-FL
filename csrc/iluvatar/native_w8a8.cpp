@@ -181,6 +181,11 @@ at::Tensor gate_silu_auto(const at::Tensor& x, const at::Tensor& wq,
   const bool compressed = original.dim()==2 && original.stride(0)==0 && original.stride(1)==0;
   if (compressed && x.dim()==2 && x.size(0)>=1 && x.size(0)<=16)
     return gate_silu_residual(x,wq,scales);
+  // The cached 256-thread quantizer is bit-exact to the original quantizer.
+  // Bound it to the compressed MiniCPM geometry and measured service row range.
+  if (compressed && x.dim()==2 && x.size(0)>=17 && x.size(0)<=2048 &&
+      x.size(1)==2048 && wq.dim()==2 && wq.size(0)==2048 && wq.size(1)==12288)
+    return linear_impl(x,wq,scales,original,std::nullopt,min_rows,true,256);
   return gate_silu(x,wq,scales,original,min_rows);
 }
 

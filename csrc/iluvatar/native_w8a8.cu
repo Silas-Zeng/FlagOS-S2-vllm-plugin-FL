@@ -150,7 +150,7 @@ extern "C" void biv150_residual_silu_epilogue(const int32_t* acc, const float* r
       acc,rows,cols,static_cast<BF16*>(output),n);
 }
 
-// Standalone probe: retain each original BF16 activation value between max and
+// Retain each original BF16 activation value between max and
 // quantization. Finite-input math, divisions, rounding and clamping stay exact.
 namespace {
 template<int THREADS>
@@ -190,7 +190,7 @@ __global__ void quantize_cached_rows(const BF16* x, int8_t* q, float* scales, in
 }
 extern "C" void biv150_quantize_cached(const void* x,int8_t* q,float* scales,
     int m,int padded_m,int k,int threads,cudaStream_t stream) {
-  // The strict public probe accepts only the audited K2048 geometry.
+  // Both public probe and bounded service dispatch require K2048 geometry.
   if (threads==64) quantize_cached_rows<64><<<padded_m,64,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
   else if (threads==128) quantize_cached_rows<128><<<padded_m,128,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
   else quantize_cached_rows<256><<<padded_m,256,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);

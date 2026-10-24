@@ -194,5 +194,7 @@ def install():
         "skip_edge_layers": skip_edges,
         "fused_silu": fused_silu,
         "activation_residual_rows": [1, 16],
+        "cached_quantization_rows": [17, 2048],
+        "cached_quantization_threads": 256,
         "gate_operator": "gate_silu_auto",
     }
