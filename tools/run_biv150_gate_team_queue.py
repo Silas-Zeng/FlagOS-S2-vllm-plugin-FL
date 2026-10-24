@@ -51,6 +51,17 @@ def main(args):
             ],
         ),
         (
+            "cached-dispatch-check",
+            [
+                sys.executable,
+                str(source / "tools/check_biv150_quant_cached_dispatch.py"),
+                "--library",
+                str(build / "biv150_native_w8a8.so"),
+                "--out",
+                str(args.out / "cached-dispatch-check.json"),
+            ],
+        ),
+        (
             "acceptance",
             [
                 sys.executable,
