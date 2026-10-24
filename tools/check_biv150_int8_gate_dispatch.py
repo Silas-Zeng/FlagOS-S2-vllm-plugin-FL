@@ -33,14 +33,44 @@ def main(args):
     q,sw=quantize_weight(weight);marker=torch.zeros((),device='cuda',dtype=weight.dtype).expand_as(weight)
     report=dict(library_sha256=hashlib.sha256(args.library.read_bytes()).hexdigest(),records=[],inference_mode=torch.is_inference_mode_enabled(),
         int_mm_dispatch=torch._C._dispatch_dump_table("aten::_int_mm"))
-    for rows in (0,1,8,16,17,31,32,33,40,63,64,65,128,256,2048,2049):
-        x=torch.randn(rows,2048,device='cuda',dtype=torch.bfloat16)
-        for name,w in (('compressed',marker),('bf16',weight)):
-            original=torch.ops.biv150_native.gate_silu_auto(x,q,sw,w,17)
-            observed=gate_m32_m64_or_auto(x,q,sw,w,17)
-            selected=rows in (32,64) and name=='compressed'
-            compare(observed,original,atol=.005 if selected else 0,rtol=.005 if selected else 0)
-            report['records'].append(dict(m=rows,weight=name,selected=selected,passed=True,fallback_bit_exact=not selected))
+    native=torch.ops.biv150_native.gate_silu_auto
+    calls=[]
+    def forward(*values):
+        calls.append(values)
+        return native(*values)
+    args.out.parent.mkdir(parents=True,exist_ok=True)
+    torch.ops.biv150_native.gate_silu_auto=forward
+    try:
+        for rows in (0,1,8,16,17,31,32,33,40,63,64,65,128,256,2048,2049):
+            x=torch.randn(rows,2048,device='cuda',dtype=torch.bfloat16)
+            for name,w in (('compressed',marker),('bf16',weight)):
+                print(f"dispatch case m={rows} weight={name}",flush=True)
+                original=native(x,q,sw,w,17)
+                calls.clear();observed=gate_m32_m64_or_auto(x,q,sw,w,17)
+                selected=rows in (32,64) and name=='compressed'
+                if selected:assert not calls
+                else:
+                    assert len(calls)==1
+                    assert all(a._cdata==b._cdata for a,b in zip(calls[0][:4],(x,q,sw,w)))
+                    assert calls[0][4]==17
+                item=dict(m=rows,weight=name,selected=selected,route_passed=True,
+                          fallback_forwarded_exact_tensor_impls=not selected)
+                try:
+                    compare(observed,original,atol=.005 if selected else 0,rtol=.005 if selected else 0)
+                    item.update(numeric_comparison_passed=True,fallback_bit_exact=not selected)
+                except AssertionError:
+                    if selected:raise
+                    # Forwarding is verified independently. Do not call an
+                    # original nondeterministic BF16 comparison a numeric pass.
+                    again=native(x,q,sw,w,17)
+                    if torch.equal(again.cpu(),original.cpu()):raise
+                    item.update(numeric_comparison_passed=False,fallback_bit_exact=False,
+                                original_native_repeat_bit_exact=False,
+                                original_nondeterminism_observed=True)
+                report['records'].append(item)
+                args.out.write_text(json.dumps(report,indent=2))
+    finally:
+        torch.ops.biv150_native.gate_silu_auto=native
     report['shape_checks']={}
     for rows in (32,64):
         x=torch.randn(rows,2080,device='cuda',dtype=torch.bfloat16)[:,:2048]
@@ -60,7 +90,10 @@ def main(args):
             compare(compiled(x),torch.ops.biv150_native.gate_silu_auto(x,q,sw,marker,17),atol=.005,rtol=.005)
         report['shape_checks'][str(rows)]=dict(noncontiguous_fallback_bit_exact=True,
             unsupported_min_rows_fallback_bit_exact=True,fullgraph_and_fake=True,changed_input_graph=True)
-    report.update(completed=True,fullgraph_and_fake=True,changed_input_graph=True)
+    report.update(completed=True,fullgraph_and_fake=True,changed_input_graph=True,
+        selected_numeric_passed=all(r["numeric_comparison_passed"] for r in report["records"] if r["selected"]),
+        original_nondeterministic_comparisons=[dict(m=r["m"],weight=r["weight"])
+            for r in report["records"] if r.get("original_nondeterminism_observed")])
     args.out.parent.mkdir(parents=True,exist_ok=True);args.out.write_text(json.dumps(report,indent=2))
     print(json.dumps(dict(completed=True,rows=len(report['records']),fullgraph=True,changed_input_graph=True)),flush=True)
 
