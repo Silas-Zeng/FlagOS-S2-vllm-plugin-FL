@@ -1,0 +1,7 @@
+# Terminal allocation-order candidate: do not merge
+
+Runtime1280ae0 based on team main0bf9d2e passes35/35 standalone quantized-weight bit/scale/stride checks and full Level3 .9714 with105 unique/zero failed predictions. Original working throughput/TTFT/request/scope gates also pass; this is not a precision failure.
+
+Warmed single4K is5767.87864 total tok/s /TTFT3591.97723ms /256 requests,16K3491.82597 /TTFT142107.46581ms /128 requests. Against accepted PR28 separate warmed singles,4K is+.0359% (flat),16K is−13.7424%. No merge: isolated reserved-memory reductions do not establish an end-to-end benefit. Startup KV547440 versus prior PR37 run547632 is192 tokens lower; this alone neither establishes causality nor explains the regression. Zero preempt/recompute log matches are not proof of zero preemptions; no suitable counter was captured. Preserve all original raw results and do not rerun accuracy to seek a pass.
+
+The current allocate-packed-first implementation is rejected; broader memory ownership/profiling work remains possible with a new controlled hypothesis. The raw archive contains original state, manifests, equivalence/memory snapshots, full service logs, accuracy reports/predictions, warmups and benchmark scores, excluding generated compiler caches. comparison.json separates original contest gates from the newer accepted reference. Initial failed AST-preflight run is retained separately.
