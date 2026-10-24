@@ -39,3 +39,17 @@ without rerunning the original six merely to enlarge a count. Each result keeps
 its own source commit, operator hash and batch list. Production remains untouched.
 The later formal service queue is explicitly moved after both private probes;
 only an owned waiting CPU queue is replaced, with PID/start-ticks verification.
+
+
+## Completed440-case result
+
+Both frozen private runs completed,240+200 numerical/CPU/changed-input Graph
+cases passed. Full producer+reducer measurements support only these extra
+choices at builder16/kv_heads2/default target256: B29/30 choose4, B60..63 choose2.
+Across each batch's8 length/ragged configurations, minimum median speedups are
+1.0133/1.0160/1.0175/1.0003/1.0030/1.0056 respectively; geometric means
+1.0271/1.0341/1.0378/1.0530/1.0638/1.0673. Original B15/16/31/32/64 policy stays;
+several alternate widths there regress. Raw cases and precise summary are in
+`evidence/ragged-gqa-segments-20261024/`. These remain component measurements,
+not model scores. Next stack these exact bounded host choices on PR28 and
+preserve all unselected geometry/target behavior, then run full service checks.
