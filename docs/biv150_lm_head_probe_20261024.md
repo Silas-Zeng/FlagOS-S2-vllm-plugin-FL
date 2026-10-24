@@ -33,4 +33,26 @@ the existing validated SO from residual source 20c991a, SHA256
 `cf966eda1802da08bfdc07cc0b9be1e2688f80518fbbd519a6ce10a16949c562`.
 It never builds, installs or replaces a global library.
 
-Local syntax, Ruff and diff checks pass. GPU execution is pending.
+Local syntax, Ruff and diff checks pass. The completed GPU microbenchmark is reported below; model acceptance is pending.
+
+## Completed isolated GPU result
+
+Source 7c1ba7d6058a3f7e68d50b090cc2dbe2fbfdaeed passes all seven sampled
+primitive checks and both changed-input/zero graph replays at every M.
+
+| M | Median speedup | Quantized relative RMSE | BF16 relative RMSE |
+|---|---:|---:|---:|
+| 1 | 1.5908x | 0.012593 | 0.002093 |
+| 8 | 1.6040x | 0.012336 | 0.001668 |
+| 16 | 1.6352x | 0.012775 | 0.001662 |
+| 24 | 1.6312x | 0.011561 | 0.001687 |
+| 32 | 1.6639x | 0.011574 | 0.001658 |
+| 40 | 1.6873x | 0.012041 | 0.001654 |
+| 64 | 1.5951x | 0.012076 | 0.001720 |
+
+The native projection wins this synthetic microbenchmark at all measured M,
+including activation quantization and the output epilogue. Sampled INT64
+quantized references match exactly, but dense error is materially larger than
+BF16 (about 1.2% versus 0.17% relative RMSE). Actual model hidden-state outliers
+and token changes remain untested. This supports preparing an isolated LM-head
+model candidate, not merging a model hook or claiming end-to-end speedup.

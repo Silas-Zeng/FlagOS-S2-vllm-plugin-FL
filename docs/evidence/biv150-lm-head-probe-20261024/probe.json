@@ -1,0 +1,524 @@
+{
+  "git_commit": "7c1ba7d6058a3f7e68d50b090cc2dbe2fbfdaeed",
+  "gpu": "Iluvatar BI-V150",
+  "hypothesis": "native INT8 full-vocabulary projection vs FlagGems BF16 mm",
+  "synthetic_weights": true,
+  "service_installed": false,
+  "model_accuracy_validated": false,
+  "shape": [
+    130560,
+    2048
+  ],
+  "library": "/workspace/experiments/minicpm-s2/code/gate-residual-service-20261024/build-native-w8a8/biv150_native_w8a8.so",
+  "library_sha256": "cf966eda1802da08bfdc07cc0b9be1e2688f80518fbbd519a6ce10a16949c562",
+  "bf16_weight_bytes": 534773760,
+  "int8_weight_bytes": 267909120,
+  "packing_in_timing": false,
+  "duplicate_weights_for_diagnosis_only": true,
+  "records": [
+    {
+      "m": 1,
+      "n": 130560,
+      "k": 2048,
+      "primitive_passed": true,
+      "sampled_columns": [
+        0,
+        4211,
+        8423,
+        12634,
+        16846,
+        21057,
+        25269,
+        29481,
+        33692,
+        37904,
+        42115,
+        46327,
+        50538,
+        54750,
+        58962,
+        63173,
+        67385,
+        71596,
+        75808,
+        80020,
+        84231,
+        88443,
+        92654,
+        96866,
+        101077,
+        105289,
+        109501,
+        113712,
+        117924,
+        122135,
+        126347,
+        130559
+      ],
+      "quant_reference_max_abs": 0.0,
+      "candidate_relative_rmse": 0.012592595656780337,
+      "baseline_relative_rmse": 0.002092711453518762,
+      "rounds": [
+        {
+          "baseline_us": 785.860538482666,
+          "candidate_us": 493.80481243133545,
+          "speedup": 1.5914396107509412
+        },
+        {
+          "candidate_us": 494.88750100135803,
+          "baseline_us": 785.169243812561,
+          "speedup": 1.5865610714027842
+        },
+        {
+          "baseline_us": 785.4528427124023,
+          "candidate_us": 493.7615394592285,
+          "speedup": 1.590753389931173
+        }
+      ],
+      "median_speedup": 1.590753389931173,
+      "graph_mutations": [
+        {
+          "zero": false,
+          "passed": true
+        },
+        {
+          "zero": true,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "m": 8,
+      "n": 130560,
+      "k": 2048,
+      "primitive_passed": true,
+      "sampled_columns": [
+        0,
+        4211,
+        8423,
+        12634,
+        16846,
+        21057,
+        25269,
+        29481,
+        33692,
+        37904,
+        42115,
+        46327,
+        50538,
+        54750,
+        58962,
+        63173,
+        67385,
+        71596,
+        75808,
+        80020,
+        84231,
+        88443,
+        92654,
+        96866,
+        101077,
+        105289,
+        109501,
+        113712,
+        117924,
+        122135,
+        126347,
+        130559
+      ],
+      "quant_reference_max_abs": 0.0,
+      "candidate_relative_rmse": 0.012336392813245351,
+      "baseline_relative_rmse": 0.0016683868093564811,
+      "rounds": [
+        {
+          "baseline_us": 816.5644407272339,
+          "candidate_us": 509.08368825912476,
+          "speedup": 1.6039886163306036
+        },
+        {
+          "candidate_us": 508.0432891845703,
+          "baseline_us": 816.3220882415771,
+          "speedup": 1.606796321533558
+        },
+        {
+          "baseline_us": 816.2403702735901,
+          "candidate_us": 510.64229011535645,
+          "speedup": 1.5984582281447892
+        }
+      ],
+      "median_speedup": 1.6039886163306036,
+      "graph_mutations": [
+        {
+          "zero": false,
+          "passed": true
+        },
+        {
+          "zero": true,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "m": 16,
+      "n": 130560,
+      "k": 2048,
+      "primitive_passed": true,
+      "sampled_columns": [
+        0,
+        4211,
+        8423,
+        12634,
+        16846,
+        21057,
+        25269,
+        29481,
+        33692,
+        37904,
+        42115,
+        46327,
+        50538,
+        54750,
+        58962,
+        63173,
+        67385,
+        71596,
+        75808,
+        80020,
+        84231,
+        88443,
+        92654,
+        96866,
+        101077,
+        105289,
+        109501,
+        113712,
+        117924,
+        122135,
+        126347,
+        130559
+      ],
+      "quant_reference_max_abs": 0.0,
+      "candidate_relative_rmse": 0.012775072014074854,
+      "baseline_relative_rmse": 0.0016622837358055188,
+      "rounds": [
+        {
+          "baseline_us": 859.0769171714783,
+          "candidate_us": 525.0653624534607,
+          "speedup": 1.6361332866393805
+        },
+        {
+          "candidate_us": 526.0182619094849,
+          "baseline_us": 858.5249781608582,
+          "speedup": 1.632120099869441
+        },
+        {
+          "baseline_us": 858.3163619041443,
+          "candidate_us": 524.8885154724121,
+          "speedup": 1.6352355530805227
+        }
+      ],
+      "median_speedup": 1.6352355530805227,
+      "graph_mutations": [
+        {
+          "zero": false,
+          "passed": true
+        },
+        {
+          "zero": true,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "m": 24,
+      "n": 130560,
+      "k": 2048,
+      "primitive_passed": true,
+      "sampled_columns": [
+        0,
+        4211,
+        8423,
+        12634,
+        16846,
+        21057,
+        25269,
+        29481,
+        33692,
+        37904,
+        42115,
+        46327,
+        50538,
+        54750,
+        58962,
+        63173,
+        67385,
+        71596,
+        75808,
+        80020,
+        84231,
+        88443,
+        92654,
+        96866,
+        101077,
+        105289,
+        109501,
+        113712,
+        117924,
+        122135,
+        126347,
+        130559
+      ],
+      "quant_reference_max_abs": 0.0,
+      "candidate_relative_rmse": 0.011560717304375478,
+      "baseline_relative_rmse": 0.0016874437426280015,
+      "rounds": [
+        {
+          "baseline_us": 882.3442459106445,
+          "candidate_us": 543.1942343711853,
+          "speedup": 1.6243623184477785
+        },
+        {
+          "candidate_us": 540.3403639793396,
+          "baseline_us": 881.3952207565308,
+          "speedup": 1.6311852297420293
+        },
+        {
+          "baseline_us": 883.0230832099915,
+          "candidate_us": 539.7201776504517,
+          "speedup": 1.6360757291936545
+        }
+      ],
+      "median_speedup": 1.6311852297420293,
+      "graph_mutations": [
+        {
+          "zero": false,
+          "passed": true
+        },
+        {
+          "zero": true,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "m": 32,
+      "n": 130560,
+      "k": 2048,
+      "primitive_passed": true,
+      "sampled_columns": [
+        0,
+        4211,
+        8423,
+        12634,
+        16846,
+        21057,
+        25269,
+        29481,
+        33692,
+        37904,
+        42115,
+        46327,
+        50538,
+        54750,
+        58962,
+        63173,
+        67385,
+        71596,
+        75808,
+        80020,
+        84231,
+        88443,
+        92654,
+        96866,
+        101077,
+        105289,
+        109501,
+        113712,
+        117924,
+        122135,
+        126347,
+        130559
+      ],
+      "quant_reference_max_abs": 0.0,
+      "candidate_relative_rmse": 0.011573662148212044,
+      "baseline_relative_rmse": 0.0016583375981935986,
+      "rounds": [
+        {
+          "baseline_us": 918.0634617805481,
+          "candidate_us": 555.7981133460999,
+          "speedup": 1.6517930517134785
+        },
+        {
+          "candidate_us": 554.889440536499,
+          "baseline_us": 923.3039021492004,
+          "speedup": 1.663942102153714
+        },
+        {
+          "baseline_us": 923.3009815216064,
+          "candidate_us": 554.8779368400574,
+          "speedup": 1.6639713353528893
+        }
+      ],
+      "median_speedup": 1.663942102153714,
+      "graph_mutations": [
+        {
+          "zero": false,
+          "passed": true
+        },
+        {
+          "zero": true,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "m": 40,
+      "n": 130560,
+      "k": 2048,
+      "primitive_passed": true,
+      "sampled_columns": [
+        0,
+        4211,
+        8423,
+        12634,
+        16846,
+        21057,
+        25269,
+        29481,
+        33692,
+        37904,
+        42115,
+        46327,
+        50538,
+        54750,
+        58962,
+        63173,
+        67385,
+        71596,
+        75808,
+        80020,
+        84231,
+        88443,
+        92654,
+        96866,
+        101077,
+        105289,
+        109501,
+        113712,
+        117924,
+        122135,
+        126347,
+        130559
+      ],
+      "quant_reference_max_abs": 0.0,
+      "candidate_relative_rmse": 0.012041289966830281,
+      "baseline_relative_rmse": 0.0016538412520765496,
+      "rounds": [
+        {
+          "baseline_us": 972.8932976722717,
+          "candidate_us": 577.4538516998291,
+          "speedup": 1.6847983519521126
+        },
+        {
+          "candidate_us": 576.3365626335144,
+          "baseline_us": 973.1403589248657,
+          "speedup": 1.6884931861310248
+        },
+        {
+          "baseline_us": 974.4836091995239,
+          "candidate_us": 577.555775642395,
+          "speedup": 1.687254548040213
+        }
+      ],
+      "median_speedup": 1.687254548040213,
+      "graph_mutations": [
+        {
+          "zero": false,
+          "passed": true
+        },
+        {
+          "zero": true,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "m": 64,
+      "n": 130560,
+      "k": 2048,
+      "primitive_passed": true,
+      "sampled_columns": [
+        0,
+        4211,
+        8423,
+        12634,
+        16846,
+        21057,
+        25269,
+        29481,
+        33692,
+        37904,
+        42115,
+        46327,
+        50538,
+        54750,
+        58962,
+        63173,
+        67385,
+        71596,
+        75808,
+        80020,
+        84231,
+        88443,
+        92654,
+        96866,
+        101077,
+        105289,
+        109501,
+        113712,
+        117924,
+        122135,
+        126347,
+        130559
+      ],
+      "quant_reference_max_abs": 0.0,
+      "candidate_relative_rmse": 0.012075595846152237,
+      "baseline_relative_rmse": 0.0017201400935350042,
+      "rounds": [
+        {
+          "baseline_us": 1037.93466091156,
+          "candidate_us": 645.2182531356812,
+          "speedup": 1.6086566923166317
+        },
+        {
+          "candidate_us": 645.2999711036682,
+          "baseline_us": 1027.372121810913,
+          "speedup": 1.5920845619344752
+        },
+        {
+          "baseline_us": 1027.9912948608398,
+          "candidate_us": 644.4509625434875,
+          "speedup": 1.5951427720793745
+        }
+      ],
+      "median_speedup": 1.5951427720793745,
+      "graph_mutations": [
+        {
+          "zero": false,
+          "passed": true
+        },
+        {
+          "zero": true,
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ]
+}
