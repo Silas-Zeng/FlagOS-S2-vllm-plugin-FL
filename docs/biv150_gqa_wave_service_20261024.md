@@ -77,3 +77,35 @@ No shape-frequency trace proves that the B40 branch executed in16K. Do not
 attribute all observed difference to the dispatch change, or add microbenchmark
 percentages to service throughput. This experimental branch remains separate
 from main pending real-load coverage and justified attribution.
+
+
+## Actual replay coverage diagnostic prepared
+
+Draft PR28 still needs real-load B40 coverage. Existing FIRST_WIDTH output is
+usually a dummy/capture call and does not prove later use. New optional tools
+observe CUDAGraphWrapper.__call__ and GQA JITFunction.run, call each original
+exactly once, link captured GQA grids/compiled identities to their graph entry,
+and count actual successful replays separately from captures. Eager GQA calls
+are counted separately. Unknown/unmapped graph entries are explicit; absence
+of a mapped B40 hit must not be presented as universal absence when mappings
+are missing.
+
+The private service receives an opt-in sitecustomize import hook via a private
+PYTHONPATH prefix. It activates observation after the original native install;
+no production source file, kernel body, grid, metadata, scheduler decision or
+source guard is modified. Actual cuda_graph.py and GQA source hashes are pinned.
+A CPU control thread acknowledges each benchmark phase before requests begin,
+so capture/startup/warmup and score counts remain distinct. The original fixed
+service command, warmup policy and benchmark request commands are reused.
+CPU file I/O/locking observation may affect timing and arrival interleaving:
+all resulting throughput values are explicitly diagnostic, not formal scores
+or proof of the previous single-round16K gain.
+
+Private build and the existing9 gate checks precede the diagnostic. Its queue
+will wait for the native-norm probe86972/start_ticks318717961, then refuse a
+busy GPU/9031. Lint/syntax and CPU fake-runtime checks pass: original calls,
+returns and exceptions preserved; captures excluded from replays; replay-to-GQA
+mapping and eager separation; warmup compile ignored; import-hook install result
+preserved; phase acknowledgment enforced. Evidence is in
+`evidence/gqa-wave-coverage-20261024/cpu-check.json`. This is not GPU coverage
+proof. A real-load trace is pending and will be archived before deciding PR28.
