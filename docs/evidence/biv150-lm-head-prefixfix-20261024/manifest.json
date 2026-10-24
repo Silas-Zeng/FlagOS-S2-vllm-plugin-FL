@@ -1,0 +1,81 @@
+{
+  "command": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/lm-head-prefixfix-20261024",
+  "git_commit": "319dc3024c8fca104c77df1b4bb8dab5b7a644c9",
+  "git_status": "?? build-native-w8a8/\n",
+  "source_hashes": {
+    "vllm_fl/patches/biv150_prefill_normalized.py": "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42",
+    "vllm_fl/worker/model_runner.py": "bf150d6c639485a02e406cfef3ec0f73ace87b93eed6f46028dfd583efb23ea4",
+    "vllm_fl/patches/biv150_gqa_decode.py": "1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a",
+    "vllm_fl/patches/biv150_native_w8a8.py": "98ad16de1c25e914959c54d8f3352e6530b170d710d4abb7b41c334b4696f8a9",
+    "vllm_fl/patches/biv150_lm_head_int8.py": "864737d8b8f22e2877c607013bc9f6952ad232e55241604610840963ca2c399c",
+    "csrc/iluvatar/native_w8a8.cpp": "2a319a68b70a4794e39dee2a9423239d7f865bf9b55d918e56914ada49647807",
+    "csrc/iluvatar/native_w8a8.cu": "b327887027a56f6bd8ea1cba4f7cbf6193432f34e75f2d18596271f935d679c5"
+  },
+  "mode": "all",
+  "started_utc": "2026-10-24T06:42:08.539054+00:00",
+  "python": "3.12.11 (main, Jul 31 2025, 06:45:11) [GCC 13.3.0]",
+  "packages": {
+    "torch": "2.10.0+corex.4.5.0",
+    "vllm": "0.24.0+empty",
+    "flag_gems": "5.3.5",
+    "evalscope": "1.11.1"
+  },
+  "env": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/lm-head-prefixfix-20261024/full/inductor-cache"
+  },
+  "native_library_sha256": "2687bc4fc4ab1cfa4028b16ef6460f56849bdab4fd5e7150f8f5d928102dfbb7",
+  "head_installation": {
+    "installed": true,
+    "scope": "single untied BF16-input MiniCPM LM head, TP1",
+    "weight_shape": [
+      130560,
+      2048
+    ],
+    "compressed_only": true,
+    "hidden_layer_quantization": false,
+    "input_embedding_quantization": false
+  },
+  "head_weights": [
+    {
+      "prefix": "ParallelLMHead",
+      "shape": [
+        130560,
+        2048
+      ],
+      "q_stride": [
+        130560,
+        1
+      ],
+      "bytes_saved": 266864640,
+      "compressed_only": true
+    }
+  ],
+  "installation": {
+    "installed": true,
+    "scope": "audited BF16 causal MiniCPM prefill without sinks",
+    "backend_rebound": true,
+    "audited": {
+      "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+    },
+    "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+    "initial_mass": 0
+  }
+}
