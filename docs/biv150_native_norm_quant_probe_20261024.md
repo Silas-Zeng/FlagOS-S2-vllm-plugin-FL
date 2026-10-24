@@ -78,3 +78,23 @@ reference and candidate IR first. Source-level BF16 casts alone do not prove
 how the fused compiler materializes intermediate rounding. Current ones/random
 contrast suggests that boundary is worth inspecting; it is not yet a proven
 cause. Any replacement needs a new frozen variant and draft with its own gates.
+
+
+## Generated-code finding after failure
+
+Read-only collection found four existing Inductor native-norm wrapper/kernel
+artifacts containing the2048-column rsqrt reduction; originals, paths and SHA256
+are archived in `evidence/native-norm-quant-20261024/compiled-reference/`.
+The generated triton_red_fused__to_copy_add_mean_mul_pow_rsqrt_0 computes
+`tmp19=tmp13*libdevice.rsqrt(...)`, then `tmp20=tmp19.to(tl.float32)` and
+`tmp22=tmp20*tmp21`, finally storing to BF16 output. It does not materialize the
+source-level pre-weight BF16 cast. The failed candidate explicitly did.
+This supplies a concrete compiled-code mismatch consistent with random-weight
+failures. It does not prove every failure's cause: large ones-weight failures
+also require auditing the reduction layout and libdevice rsqrt implementation.
+
+The next variant should derive its arithmetic and launch layout from selected
+compiled kernels, record their actual selection, and add quantization without
+inventing another intermediate rounding boundary. Do not loosen the failed
+variant's gate or install it. Closing PR27 preserves this direction and its
+7 passing cases for a redesigned draft, rather than discarding fusion wholesale.
