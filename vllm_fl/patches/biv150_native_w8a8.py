@@ -172,8 +172,11 @@ def install():
             return y
 
         LlamaMLP.forward = forward
+    from vllm_fl.patches.biv150_live_carry_gate import install as install_live_carry
+    live_carry = install_live_carry()
     return {
         "installed": True,
+        "live_carry_m64": live_carry,
         "layers": selected,
         "min_rows": min_rows,
         "compressed_only": compressed,
