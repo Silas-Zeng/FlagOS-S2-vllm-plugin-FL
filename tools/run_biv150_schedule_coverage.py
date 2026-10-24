@@ -28,6 +28,11 @@ def analyze(trace):
             short_request_row_fraction=phase["short_request_rows"] / phase["request_rows"],
             qlen_histogram=phase["qlen_histogram"],
             short_qlen_kv_histogram=phase["short_qlen_kv_histogram"],
+            eager_gqa_grids=trace["eager_gqa"].get(name, {}),
+            new_split_eager_kernel_launches=sum(
+                trace["eager_gqa"].get(name, {}).get(json.dumps([batch,2,segments]),0)
+                for batch,segments in ((29,4),(30,4),(60,2),(61,2),(62,2),(63,2))
+            ),
         )
     # Frequency is not a device-time profile or an upper bound on speedup.
     result["cost_profile_available"] = False

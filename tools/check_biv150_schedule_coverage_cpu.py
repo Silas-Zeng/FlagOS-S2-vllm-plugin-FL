@@ -105,6 +105,9 @@ def main(args):
                                  head_size=128, rotary_dim=128, is_neox_style=True)
         impl = SimpleNamespace(do_kv_cache_update=fn, kv_cache_dtype="auto")
         entries = [(f"model.layers.{i}.self_attn.rotary_emb", rotary) for i in range(42)]
+        # Actual RotaryEmbeddingBase owns apply_rotary_emb; suffix-only matching
+        # incorrectly counted both it and the parent as layer RoPE (84 paths).
+        entries += [(f"model.layers.{i}.self_attn.rotary_emb.apply_rotary_emb", rotary) for i in range(42)]
         entries += [(f"model.layers.{i}.self_attn.attn", SimpleNamespace(impl=impl)) for i in range(42)]
         def named_modules(*, remove_duplicate=True):
             assert remove_duplicate is False, "Shared RoPE paths must not be deduplicated"
@@ -118,6 +121,29 @@ def main(args):
         assert next(iter(trace.data["models"].values()))["unique_rotary_objects"] == 1
         assert next(iter(trace.data["models"].values()))["configured_architectures"] == ["LlamaForCausalLM"]
         assert rotary._forward_method is fn and impl.do_kv_cache_update is fn
+        ctx = SimpleNamespace(cudagraph_runtime_mode="NONE")
+        class Kernel:
+            calls = 0
+            def run(self, *args, **kwargs):
+                self.calls += 1
+                if kwargs.get("fail"):
+                    raise ValueError("original kernel exception")
+                return sentinel
+        kernel = Kernel()
+        trace.wire_kernel(kernel, lambda: ctx, "NONE")
+        assert kernel.run(grid=(61,2,2), SEGMENTS=2, warmup=False) is sentinel
+        assert trace.data["eager_gqa"]["score-4096"]["[61, 2, 2]"] == 1
+        kernel.run(grid=(61,2,2), SEGMENTS=2, warmup=True)
+        ctx.cudagraph_runtime_mode = "FULL"
+        kernel.run(grid=(64,2,2), SEGMENTS=2, warmup=False)
+        assert trace.data["eager_gqa"]["score-4096"] == {"[61, 2, 2]":1}
+        try:
+            kernel.run(fail=True)
+        except ValueError as error:
+            assert str(error)=="original kernel exception"
+        else:
+            raise AssertionError("Original kernel exception swallowed")
+        assert kernel.calls == 4
         trace.flush()
         assert json.loads((root / f"trace-{os.getpid()}.json").read_text())["phases"]
         fixture = root / "fixture"
@@ -141,6 +167,8 @@ def main(args):
                   original_result_and_exception_preserved=True, cpu_qlen_1_through_8_and_large_checked=True,
                   exact_cpu_length_histogram_checked=True, no_forward_methods_replaced=True,
                   import_hook_opt_in_and_install_preserved=True, shared_rotary_layer_paths_checked=True,
+                  nested_apply_rotary_excluded=True, eager_gqa_original_calls_preserved=True,
+                  full_graph_capture_and_warmup_excluded=True,
                   real_model_bindings_pending=True, gpu_diagnostic_pending=True)
     if args.out:
         args.out.write_text(json.dumps(result, indent=2))

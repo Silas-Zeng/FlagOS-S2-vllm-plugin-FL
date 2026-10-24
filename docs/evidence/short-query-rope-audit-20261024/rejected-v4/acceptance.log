@@ -1,0 +1,17 @@
+{"server_ready": true, "pid": 134149, "installation": {"installed": true, "scope": "audited BF16 causal MiniCPM prefill without sinks", "backend_rebound": true, "audited": {"vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f", "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"}, "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d", "initial_mass": 0}}
+Traceback (most recent call last):
+  File "/workspace/experiments/minicpm-s2/code/short-query-rope-audit-v4-20261024/tools/run_biv150_schedule_coverage.py", line 125, in <module>
+    main(parser.parse_args())
+  File "/workspace/experiments/minicpm-s2/code/short-query-rope-audit-v4-20261024/tools/run_biv150_schedule_coverage.py", line 103, in main
+    acceptance.main(argparse.Namespace(source=source, out=args.out, mode="throughput"))
+  File "/workspace/experiments/minicpm-s2/code/short-query-rope-audit-v4-20261024/tools/run_biv150_gate_team_acceptance.py", line 358, in main
+    scores = throughput(args.out)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/short-query-rope-audit-v4-20261024/tools/run_biv150_gate_team_acceptance.py", line 129, in throughput
+    result = benchmark(
+             ^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/short-query-rope-audit-v4-20261024/tools/run_biv150_schedule_coverage.py", line 94, in benchmark
+    phase(name)
+  File "/workspace/experiments/minicpm-s2/code/short-query-rope-audit-v4-20261024/tools/run_biv150_schedule_coverage.py", line 88, in phase
+    raise RuntimeError(f"Actual model audit invalid: {trace['errors']}")
+RuntimeError: Actual model audit invalid: ["ValueError('Expected 42 actual rotary/attention objects: 84/42')"]

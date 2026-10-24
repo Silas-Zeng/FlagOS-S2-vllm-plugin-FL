@@ -4,6 +4,14 @@
 
 当前同步已合入main6a013bd和PR31的0248416，生产csrc/vllm_fl与PR31冻结e972997完全一致，诊断明确依赖PR31正式通过。compute-order pin同步为精确80b88140…，并重复PR31 CPU chooser检查；不是放宽source guard。实际模型按config/server选择LlamaForCausalLM，不能由目录名称推断使用models.minicpm。
 
+## V4预检拒绝及修正
+
+冻结91084aa启动服务后，在第一轮warmup发请求之前被预检拒绝：42层父RoPE加上42个内部`apply_rotary_emb`被`endswith("rotary_emb")`误计为84，attention为42。源base.py确实在父RoPE构造中设置ApplyRotaryEmb子模块。该诊断没有产生有效qlen覆盖或吞吐成绩，原finally已清理服务；随后PR26正常接续。拒绝state/trace/log保留，不能把它描述成模型/算子失败或实际存在84个attention层。
+
+现在只匹配完整`.self_attn.rotary_emb`路径，仍用remove_duplicate=False保留共享对象的42个层入口。CPU夹具明确含每个父模块下的`apply_rotary_emb`，验证42父路径、排除42子路径；不是简单放宽计数到84。
+
+另新增GQA JIT原run后的CPU计数：仅当前forward context为NONE且非warmup时记录实际grid及与SEGMENTS的一致性；原run的结果与异常不改，FULL capture/回放不计入eager。PR31新增B29/30/60..63不是FULL capture batch，因此这项可验证对应eager调用是否命中新split；它不是通用Graph覆盖图，也不测设备时间。CPU检查含warmup/FULL排除和原返回/异常保持，待新冻结独立诊断。
+
 ## 已核实源码
 
 - 当前实际 runner 是 `vllm_fl.worker.model_runner.ModelRunnerFL`，不是上游 GPUModelRunner。其 `execute_model` 在 `synchronize_input_prep()` 生命周期内，从原请求顺序生成 CPU int32 scheduled 数组，再调用本模块导入的 `_biv150_compute_order_plan`，然后 `_prepare_inputs`。该调用位于 `max_query_len` 判断之前，因此可观测纯 decode 与混合调用；观察 imported alias 才能命中真实入口。

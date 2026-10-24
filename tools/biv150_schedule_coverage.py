@@ -15,6 +15,7 @@ PINS = {
     "vllm_fl.worker.model_runner": "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61",
     "vllm_fl.compilation.graph": "ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2",
     "vllm_fl.patches.biv150_compute_order": "80b88140b052954ad2d82fb4f666fddabfb5754d224c959f9b5e4b58f913c629",
+    "vllm_fl.patches.biv150_gqa_decode": "37d11d08a6a2e563f550909b0011d0ea62f9495049f7983674f52f755f305256",
     "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
     "vllm.model_executor.custom_op": "4b4ba01623005d6a93698eaec007a934dd512bf9ec7241090927de819621de2e",
     "vllm.model_executor.layers.rotary_embedding.base": "c81804498f08f072356a26b41967f211475df2694dabf5da9f488c074d1fdef5",
@@ -53,7 +54,7 @@ class Coverage:
         self.lock, self.stop = threading.RLock(), threading.Event()
         self.data = dict(pid=self.pid, diagnostic_only=True, sources=sources,
                          phase="startup", generation=0, phase_history=[],
-                         phases={}, models={}, backend={}, errors=[])
+                         phases={}, models={}, backend={}, eager_gqa={}, errors=[])
 
     def error(self, error):
         with self.lock:
@@ -138,7 +139,7 @@ class Coverage:
         # get_rope may reuse the same nn.Module for all 42 layer call sites.
         # Count layer paths rather than torch's default deduplicated objects.
         for name, module in named_modules(remove_duplicate=False):
-            if name.endswith("rotary_emb"):
+            if name.endswith(".self_attn.rotary_emb"):
                 entry = dict(name=name, object_id=f"{id(module):x}", class_module=type(module).__module__,
                              class_name=type(module).__qualname__,
                              selected=callable_description(module._forward_method),
@@ -208,6 +209,32 @@ class Coverage:
         graph_type.__init__ = observed_init
 
 
+    def wire_kernel(self, kernel, context, none_mode):
+        original_run = kernel.run
+
+        @functools.wraps(original_run)
+        def observed_run(*args, **kwargs):
+            compiled = original_run(*args, **kwargs)
+            ctx = context()
+            if kwargs.get("warmup", False) or ctx is None or ctx.cudagraph_runtime_mode != none_mode:
+                return compiled
+            grid = kwargs.get("grid")
+            if not isinstance(grid, (tuple, list)) or len(grid) != 3:
+                self.error(f"Unknown eager GQA grid: {grid!r}")
+                return compiled
+            values = tuple(int(v) for v in grid)
+            if values[2] != kwargs.get("SEGMENTS"):
+                self.error("Eager GQA grid/SEGMENTS mismatch")
+                return compiled
+            with self.lock:
+                counts = self.data["eager_gqa"].setdefault(self.data["phase"], {})
+                key = json.dumps(values)
+                counts[key] = counts.get(key, 0) + 1
+            return compiled
+
+        kernel.run = observed_run
+
+
 def install(root):
     modules, sources = {}, {}
     for name, expected in PINS.items():
@@ -235,6 +262,10 @@ def install(root):
         for name in ("triton_reshape_and_cache_flash", "triton_reshape_and_cache_flash_per_token_head_quant")
     }
     trace.wire(runner, graph.GraphWrapper)
+    def context():
+        return graph.get_forward_context() if graph.is_forward_context_available() else None
+    trace.wire_kernel(modules["vllm_fl.patches.biv150_gqa_decode"]._gqa_decode_attention,
+                      context, graph.CUDAGraphMode.NONE)
     trace.flush()
     threading.Thread(target=trace.control, daemon=True, name="schedule-audit-control").start()
     print("BIV150_SCHEDULE_COVERAGE_INSTALL", dict(pid=os.getpid(), root=str(root)), flush=True)
