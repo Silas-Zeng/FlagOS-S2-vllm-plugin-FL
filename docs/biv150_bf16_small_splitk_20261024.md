@@ -1,16 +1,32 @@
 # BI-V150 小 batch BF16 GEMM 与 FP32 Split-K 组件实验
 
-状态：Draft，首轮全部停在JIT编译，尚无设备数值或性能结果；修正后待重验，未接入真实服务。
+状态：Draft，f5ff432完整设备矩阵收齐，347/640通过原检查、27条组件线索；未接入真实服务。
 
-首轮ff188ca生成640条记录，但0条成功编译、0条数值通过、0条性能结果，16条tail也均为CompilationError。
-旧completed仅表示记录矩阵写完，不能当设备测试通过，也不能判定所有结构都慢。
-完整原始结果按gzip/base64无损归档，附原文SHA，见`evidence/bf16-small-splitk-20261024/initial-compile-failure/`。
-原异常只保存repr，未保留内层原因，现阶段不能断言编译根因。
+## 最新完整结果与独立参考问题
 
-下一版将chunk和循环界改为纯constexpr整数运算、显式dot精度/输出类型，保持同一数学切分；
-CPU同时执行kernel实际chunk表达式核对42种分区。新增异常链与完整traceback，
-首个tail几何所有配置均失败即停止，不再重复生成640条同类编译错误。
-未通过tail的配置在主矩阵明确跳过，记录不冒充实际测试；兼容修改是否修复编译仍待设备验证。
+运行f5ff4322e4433fe582fd26f2890bdaf8a8bc5420：两个非整除tail几何共16/16通过；
+640个主配置均实际运行，347通过原全输出/五模式/CPU采样/changedGraph检查，
+27配置满足完整三轮中位>=1.03且每轮不退。QKV/O/down及边界gate有局部线索，
+大词表head没有满足该门槛的配置。逐配置正确性与三轮原始时长见`evidence/bf16-small-splitk-20261024/v2-final/`。
+这是合成组件，不是实际服务提速；失败配置不能安装。
+
+对一份O/M8/pitch2080正常输入失败夹具（原native vs候选58/16384超差）进行CPU FP64仲裁：
+保存的16个原违反位置均候选与CPU结果逐位一致，而native对应16点均超差，maxabs0.109375。
+这只证明该保存切片，不能将所有293失败改标通过，也未证明native错误的根因。
+已增加独立CPU工具逐项核验全部保存夹具SHA，报告候选/native各自偏差和原失败坐标。
+全部293份保存夹具已用CPU FP64仲裁：候选通过/native失败106份、候选失败/native通过33份、两者均通过5份、两者均失败149份。
+详见`evidence/bf16-small-splitk-20261024/cpu-fixture-audit/`，仅覆盖保存的行/列切片，不是全输出证明；原矩阵347/640通过数不改。
+下一步须新全量对照、更完整CPU oracle或真实权重验证，不放宽.005/.005，也不能用只测赢的形状代替验收。
+
+团队main已前进到0bf9d2e（PR35编译缓存语义身份），本分支用906927f非重写同步；
+受测f5ff432冻结目录不改，CPU源码保持检查转为最新main，生产仍无新增hook。
+当前6c19e63只加CPU仲裁，不改变受测BF16 kernel。
+
+## 历史编译拒绝
+
+首轮ff188ca的640条记录均CompilationError，0条数值/性能结果，16条tail也失败。
+完整原始结果按gzip/base64及原SHA无损保留在`evidence/bf16-small-splitk-20261024/initial-compile-failure/`。
+修正constexpr界、显式dot及完整异常链后f5ff432正常编译；没有将首轮错误当性能负结果。
 
 ## 问题与独立性
 
