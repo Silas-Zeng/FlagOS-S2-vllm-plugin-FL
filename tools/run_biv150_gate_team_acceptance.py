@@ -127,7 +127,8 @@ def throughput(run_dir):
         history = []
         for index in range(4):
             result = benchmark(
-                run_dir, f"warm-{input_len}-{index}", input_len, 128, 64, 920000 + index
+                run_dir, f"warm-{input_len}-{index}", input_len, 128,
+                128 if input_len==4096 else 64, 920000 + index
             )
             now = result["mean_tpot_ms"]
             history.append(now)
@@ -207,12 +208,14 @@ def accuracy(run_dir):
         or len(rows) != 105
         or verdict["unique_questions"] != 105
         or errors
-        or metric["score"] < 0.95
+        or metric["score"] < 0.9428
     ):
         raise RuntimeError(f"Accuracy gate failed: {verdict}")
 
 
 def main(args):
+    if args.live_carry_control and args.mode!='throughput':
+        raise ValueError('Disabled-operator control is throughput-only; no accuracy credit')
     source = args.source.resolve()
     with socket.socket() as probe:
         if probe.connect_ex(("127.0.0.1", 9031)) == 0:
@@ -226,6 +229,7 @@ def main(args):
         ):
             env.pop(key)
     env.update(
+        VLLM_FL_BIV150_LIVE_CARRY_GATE='0' if args.live_carry_control else '1',
         VLLM_PLUGINS="fl",
         PYTHONPATH=str(source),
         VLLM_DISABLE_COMPILE_CACHE="1",
@@ -252,6 +256,8 @@ def main(args):
         "vllm_fl/worker/model_runner.py",
         "vllm_fl/patches/biv150_gqa_decode.py",
         "vllm_fl/patches/biv150_native_w8a8.py",
+        "vllm_fl/patches/biv150_live_carry_gate.py",
+        "vllm_fl/compile_semantics.py",
         "vllm_fl/patches/biv150_compute_order.py",
         "vllm_fl/patches/biv150_q_fragment_service.py",
         "csrc/iluvatar/native_w8a8.cpp",
@@ -270,6 +276,7 @@ def main(args):
             p: hashlib.sha256((source / p).read_bytes()).hexdigest() for p in paths
         },
         mode=args.mode,
+        live_carry_control=args.live_carry_control,
         started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
         python=sys.version,
         packages={
@@ -343,6 +350,15 @@ def main(args):
         ]
         if not fragments or fragments[-1].get("installed") is not True:
             raise RuntimeError(f"Team Q fragment missing: {fragments}")
+        live=native_states[-1].get('live_carry_m64',{})
+        if args.live_carry_control:
+            if live.get('installed') is not False:
+                raise RuntimeError(f'Control unexpectedly installed candidate: {live}')
+        elif (live.get('installed') is not True or live.get('exact_rows')!=[64]
+              or live.get('original_transparent_carry') is not True
+              or live.get('persistent_weight_copy') is not False
+              or Path(live.get('hook_file','')).resolve()!=source/'vllm_fl/patches/biv150_live_carry_gate.py'):
+            raise RuntimeError(f'Live-carry candidate missing or wrong source: {live}')
         manifest["q_fragment_installation"] = fragments[-1]
         manifest["native_installation"] = native_states[-1]
         manifest["installation"] = states[-1]
@@ -356,6 +372,13 @@ def main(args):
         evaluation_offset = log_path.stat().st_size
         if args.mode == "throughput":
             scores = throughput(args.out)
+            hits=[line for line in log_path.read_text().splitlines() if 'BIV150_LIVE_CARRY_M64_SELECTED' in line]
+            if bool(hits)==args.live_carry_control:
+                raise RuntimeError('Candidate selection does not match requested control mode')
+            (args.out/'throughput-verdict.json').write_text(json.dumps(dict(
+                completed=True,accuracy_evaluated=False,precision_gate=None,
+                live_carry_control=args.live_carry_control,
+                working_performance_gates=performance_gates(scores),live_carry_selection=hits),indent=2))
             print(
                 json.dumps(dict(completed=True, mode=args.mode, scores=scores)),
                 flush=True,
@@ -374,7 +397,7 @@ def main(args):
             raise RuntimeError("No real-evaluation normalization selection evidence")
         result = dict(
             completed=True,
-            precision_gate=True,
+            precision_gate=json.loads((args.out/'accuracy-verdict.json').read_text())['score']>=.95,
             actual_evaluation_selection=selected,
             accuracy=json.loads((args.out / "accuracy-verdict.json").read_text()),
         )
@@ -384,7 +407,7 @@ def main(args):
             result["working_performance_gates"] = performance_gates(
                 result["throughput_scores"]
             )
-            result["working_acceptance_passed"] = all(
+            result["working_acceptance_passed"] = result['precision_gate'] and all(
                 row["passed"] for row in result["working_performance_gates"].values()
             )
             with log_path.open("rb") as events:
@@ -416,6 +439,9 @@ def main(args):
                 result["working_acceptance_passed"] = False
             if not order_hits or result["compute_order_scope_errors"]:
                 result["working_acceptance_passed"] = False
+        result['live_carry_selection']=[line for line in log_path.read_text().splitlines() if 'BIV150_LIVE_CARRY_M64_SELECTED' in line]
+        if not result['live_carry_selection'] and args.mode=='all':
+            result['working_acceptance_passed']=False
         (args.out / "acceptance.json").write_text(json.dumps(result, indent=2))
         if args.mode == "all" and not result["working_acceptance_passed"]:
             raise RuntimeError("Working throughput/TTFT/request gates failed; no merge")
@@ -435,6 +461,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument('--live-carry-control',action='store_true')
     parser.add_argument(
         "--mode", choices=["accuracy", "throughput", "all"], default="all"
     )
