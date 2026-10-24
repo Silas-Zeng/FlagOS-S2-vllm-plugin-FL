@@ -25,3 +25,26 @@ If numeric or component performance validation fails, archive and close this
 variant; retain the general fusion direction. Draft PR precedes GPU testing.
 Private GPU work must wait for owned PR28 coverage and PR26 reference audit;
 never overlap their measurements or change shared packages/competition settings.
+
+
+## Result:15/18 passed; full-range variant closed
+
+Frozen4a9e7c2 built successfully and passed existing9 gate checks.15/18 fusion
+records passed all their data patterns, CPU/self-quantization/full-gate/Graph
+checks, with complete-gate gains around2.4–6.1% on successful tested rows.
+The pre-weight/rsqrt correction removed the earlier broad random-weight mismatch.
+It did not settle the remaining reduction/layout differences: M40 random has1
+normalized BF16 mismatch and15/245760 full-gate tolerance violations; M2048
+ones/random have4/6 norm mismatches and9/14 out of12582912 gate violations.
+Max full-gate difference0.03125, against unchanged0.005/0.005. Self-quantization
+on the candidate normalized values remains bit-exact. All three failures are
+on the normal pattern, not a corrupted native quantization path.
+
+Raw result and9 checks are retained under `evidence/compiled-norm-quant-20261024/final/`.
+Failure input/weight/actual-native-reference CPU fixtures remain in the private
+compiled-norm-quant-20261024/probe directory with SHA checksums in the report.
+No model installed or score credited. Close this full-range variant with evidence.
+The general direction and successful exact tested M1/8/16/17/32/64/256 pairs
+remain useful for a later bounded fusion or an exact compiled-layout rewrite.
+Do not select M40 based on its ones-only success, extrapolate to untested rows,
+loosen tolerance or describe15/18 as full success.

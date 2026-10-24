@@ -1,0 +1,1542 @@
+{
+  "library_sha256": "58f4a27ab8d33d3ba4ee6e1a68f8a6a47f3e28cdb9914480f613adc343ed3287",
+  "norm_sources": {
+    "vllm.ir.ops.layernorm": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/ir/ops/layernorm.py",
+      "sha256": "d8e4380ca97d2c719836a7e15fb410a73d354b15d79fc54275b573bbb1c06910"
+    },
+    "vllm.ir.op": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/ir/op.py",
+      "sha256": "fd0355b398c0d96235bb6aba0c9c08f73c199429bd8ec2aed227178c297c1eb2"
+    },
+    "vllm.model_executor.custom_op": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/model_executor/custom_op.py",
+      "sha256": "4b4ba01623005d6a93698eaec007a934dd512bf9ec7241090927de819621de2e"
+    },
+    "vllm.model_executor.layers.layernorm": {
+      "path": "/usr/local/lib/python3.12/site-packages/vllm/model_executor/layers/layernorm.py",
+      "sha256": "696615d858292fea7a2942480803cd4c7d2d1e88d818bfe5cd9d695ac464f37c"
+    }
+  },
+  "reference_provider": "native",
+  "reference_semantics": "compiled FP32 weight multiply, final BF16 store",
+  "epsilon_source": "MiniCPM config",
+  "reference_compiler": "inductor/fullgraph",
+  "epsilon": 1e-06,
+  "service_installed": false,
+  "identical_input_reset_copies_per_call": 2,
+  "records": [
+    {
+      "m": 1,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06154182553291321,
+          "candidate_ms": 0.0586269237101078,
+          "speedup": 1.0497195083477124
+        },
+        {
+          "candidate_ms": 0.05861971154808998,
+          "baseline_ms": 0.06155913323163986,
+          "speedup": 1.0501439124472398
+        },
+        {
+          "baseline_ms": 0.06144903972744942,
+          "candidate_ms": 0.05871250107884407,
+          "speedup": 1.0466091309060483
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.01145913451910019,
+        "candidate": 0.008509615436196327
+      },
+      "median_speedup": 1.0497195083477124,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='33c3140cb77a6cd142631fc86c64c893687b8275d24fa4bf33f99afc1cf8ede3', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=8, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "ffc97eea223211803bc22af70ac6614eee2b2826b6622acc2f8f69cd1307d5a9",
+          "ttgir": "dc3885df4578bce5cfee95ef3248b6fe860979e608e4e0ea5949915fe7a39160",
+          "llir": "653b666918c5492904740df1922815c238dab3e58a36cd33ca5ce74c0a34505e"
+        }
+      }
+    },
+    {
+      "m": 1,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.061413463205099106,
+          "candidate_ms": 0.05859134718775749,
+          "speedup": 1.048166088557378
+        },
+        {
+          "candidate_ms": 0.05869375169277191,
+          "baseline_ms": 0.0614432692527771,
+          "speedup": 1.0468451492826243
+        },
+        {
+          "baseline_ms": 0.06146009638905525,
+          "candidate_ms": 0.058569230139255524,
+          "speedup": 1.0493581056627574
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.011429808102548122,
+        "candidate": 0.008627885021269321
+      },
+      "median_speedup": 1.048166088557378,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='33c3140cb77a6cd142631fc86c64c893687b8275d24fa4bf33f99afc1cf8ede3', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=8, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "ffc97eea223211803bc22af70ac6614eee2b2826b6622acc2f8f69cd1307d5a9",
+          "ttgir": "dc3885df4578bce5cfee95ef3248b6fe860979e608e4e0ea5949915fe7a39160",
+          "llir": "653b666918c5492904740df1922815c238dab3e58a36cd33ca5ce74c0a34505e"
+        }
+      }
+    },
+    {
+      "m": 8,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06383557617664337,
+          "candidate_ms": 0.06015721336007118,
+          "speedup": 1.0611458312497843
+        },
+        {
+          "candidate_ms": 0.06018461659550667,
+          "baseline_ms": 0.063847117125988,
+          "speedup": 1.0608544298802558
+        },
+        {
+          "baseline_ms": 0.06380576640367508,
+          "candidate_ms": 0.060231730341911316,
+          "speedup": 1.0593380937501777
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.012940384447574615,
+        "candidate": 0.009583653882145882
+      },
+      "median_speedup": 1.0608544298802558,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='1755da697d8db92045612c7f89094595654f2bd3a4566e6d70fca9820970bf42', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "8d7914f578b9e79375d2d3b89d0d4a7312a331100c4356901677d0478cd9fc9c",
+          "ttgir": "1f25b55a47ac1c9cff0ee761e3a0fee474bfd7969431cfb377d3766032a395e3",
+          "llir": "8a13586eff2ddac7ad97b25e853e271ef37683963fef4ce34adee2fb90feff89"
+        }
+      }
+    },
+    {
+      "m": 8,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06383220851421356,
+          "candidate_ms": 0.06016490235924721,
+          "speedup": 1.0609542442713313
+        },
+        {
+          "candidate_ms": 0.06017884612083435,
+          "baseline_ms": 0.06383028626441956,
+          "speedup": 1.0606764731954714
+        },
+        {
+          "baseline_ms": 0.0637822151184082,
+          "candidate_ms": 0.060250960290431976,
+          "speedup": 1.0586091045014763
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.012977403588593006,
+        "candidate": 0.009591827169060707
+      },
+      "median_speedup": 1.0606764731954714,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='1755da697d8db92045612c7f89094595654f2bd3a4566e6d70fca9820970bf42', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "8d7914f578b9e79375d2d3b89d0d4a7312a331100c4356901677d0478cd9fc9c",
+          "ttgir": "1f25b55a47ac1c9cff0ee761e3a0fee474bfd7969431cfb377d3766032a395e3",
+          "llir": "8a13586eff2ddac7ad97b25e853e271ef37683963fef4ce34adee2fb90feff89"
+        }
+      }
+    },
+    {
+      "m": 16,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06651875376701355,
+          "candidate_ms": 0.06274711340665817,
+          "speedup": 1.0601085875602234
+        },
+        {
+          "candidate_ms": 0.06278029084205627,
+          "baseline_ms": 0.06641634553670883,
+          "speedup": 1.0579171368256355
+        },
+        {
+          "baseline_ms": 0.06654615700244904,
+          "candidate_ms": 0.06272019445896149,
+          "speedup": 1.0610004891804172
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.014458653517067432,
+        "candidate": 0.010917788371443748
+      },
+      "median_speedup": 1.0601085875602234,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='076ab814630766c0564c0af8b7ed3897e82061c5fee65e9ca519b81a21d44f3d', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "693904cc962f74e3799b06a7246a61b22d654e4a2202ad32042e083912e5b861",
+          "ttgir": "0a6d5f701a8bd4fd8a1cac1a896a89d7f8e742f1cf88d5d3fdaa2dec3cd3bb57",
+          "llir": "7f4f84c2fb710e08ff6506c91dd2dd1e1148457326c567f34c0ffc05a8fdec9d"
+        }
+      }
+    },
+    {
+      "m": 16,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06634711474180222,
+          "candidate_ms": 0.06263990700244904,
+          "speedup": 1.0591828423245941
+        },
+        {
+          "candidate_ms": 0.0627221167087555,
+          "baseline_ms": 0.06625192612409592,
+          "speedup": 1.056276949831441
+        },
+        {
+          "baseline_ms": 0.06625337153673172,
+          "candidate_ms": 0.0626586526632309,
+          "speedup": 1.057369871848685
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.014399999752640724,
+        "candidate": 0.010925961658358574
+      },
+      "median_speedup": 1.057369871848685,
+      "resources": {
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='076ab814630766c0564c0af8b7ed3897e82061c5fee65e9ca519b81a21d44f3d', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "693904cc962f74e3799b06a7246a61b22d654e4a2202ad32042e083912e5b861",
+          "ttgir": "0a6d5f701a8bd4fd8a1cac1a896a89d7f8e742f1cf88d5d3fdaa2dec3cd3bb57",
+          "llir": "7f4f84c2fb710e08ff6506c91dd2dd1e1148457326c567f34c0ffc05a8fdec9d"
+        }
+      }
+    },
+    {
+      "m": 17,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06388028711080551,
+          "candidate_ms": 0.06191538646817207,
+          "speedup": 1.031735256044045
+        },
+        {
+          "candidate_ms": 0.06213221326470375,
+          "baseline_ms": 0.06379182636737823,
+          "speedup": 1.02671099282435
+        },
+        {
+          "baseline_ms": 0.06385144591331482,
+          "candidate_ms": 0.062050960958004,
+          "speedup": 1.0290162300069678
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.011815384961664677,
+        "candidate": 0.010350000113248825
+      },
+      "median_speedup": 1.0290162300069678,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='c0a67f1ed23554f2e7870250e946775ef747df19cb8a936bc067635baf5ee456', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "5b2586e1d9dca2fe10e56a50ac60d8130d6befc1998835687d6d53af653609c4",
+          "ttgir": "1d8fa8f238d4d1b955daa0d90b20d6d7c15e14bf270e3a5d823824bdf43df962",
+          "llir": "88a96f3112a2cca5cf6a53906e2524ce215aaf02123504cd7a1a4934514fd224"
+        }
+      }
+    },
+    {
+      "m": 17,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06375432759523392,
+          "candidate_ms": 0.06209134683012962,
+          "speedup": 1.02678281032708
+        },
+        {
+          "candidate_ms": 0.06211153790354729,
+          "baseline_ms": 0.06370961666107178,
+          "speedup": 1.0257291770814971
+        },
+        {
+          "baseline_ms": 0.06372500211000443,
+          "candidate_ms": 0.06202932819724083,
+          "speedup": 1.0273366480348085
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.011852884665131569,
+        "candidate": 0.010315384715795517
+      },
+      "median_speedup": 1.02678281032708,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='c0a67f1ed23554f2e7870250e946775ef747df19cb8a936bc067635baf5ee456', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "5b2586e1d9dca2fe10e56a50ac60d8130d6befc1998835687d6d53af653609c4",
+          "ttgir": "1d8fa8f238d4d1b955daa0d90b20d6d7c15e14bf270e3a5d823824bdf43df962",
+          "llir": "88a96f3112a2cca5cf6a53906e2524ce215aaf02123504cd7a1a4934514fd224"
+        }
+      }
+    },
+    {
+      "m": 32,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 1,
+          "norm_max_abs": 0.001953125,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06835047900676727,
+          "candidate_ms": 0.06643413752317429,
+          "speedup": 1.0288457343624655
+        },
+        {
+          "candidate_ms": 0.0665014460682869,
+          "baseline_ms": 0.06826586276292801,
+          "speedup": 1.026532004925567
+        },
+        {
+          "baseline_ms": 0.06834182888269424,
+          "candidate_ms": 0.06654375046491623,
+          "speedup": 1.027020996039681
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.014538461342453957,
+        "candidate": 0.0130716348066926
+      },
+      "median_speedup": 1.027020996039681,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='ea4d8ff60d2d2dac9da1b42406ab4c1d4f29276190ef31fbc22f99374ebd9060', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "80fd7a6ea053573b953b848ae8f6e300cbebac17b67e743716c500868376fed3",
+          "ttgir": "65b2a5656db2fac792ec6ea9809c7200c9ab20facb4a5cb7183aad7d074bb116",
+          "llir": "4d6e2bd6e29bb4f18784dc075fd24f4153458d8109eba9a8f9804d89fffb259c"
+        }
+      }
+    },
+    {
+      "m": 32,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 1,
+          "norm_max_abs": 0.00390625,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.06826970726251602,
+          "candidate_ms": 0.06665913760662079,
+          "speedup": 1.0241612735136145
+        },
+        {
+          "candidate_ms": 0.06665913760662079,
+          "baseline_ms": 0.06834375113248825,
+          "speedup": 1.0252720570105327
+        },
+        {
+          "baseline_ms": 0.06830432265996933,
+          "candidate_ms": 0.06670337170362473,
+          "speedup": 1.0240010499537853
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.0145442308858037,
+        "candidate": 0.013014904223382473
+      },
+      "median_speedup": 1.0241612735136145,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='ea4d8ff60d2d2dac9da1b42406ab4c1d4f29276190ef31fbc22f99374ebd9060', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "80fd7a6ea053573b953b848ae8f6e300cbebac17b67e743716c500868376fed3",
+          "ttgir": "65b2a5656db2fac792ec6ea9809c7200c9ab20facb4a5cb7183aad7d074bb116",
+          "llir": "4d6e2bd6e29bb4f18784dc075fd24f4153458d8109eba9a8f9804d89fffb259c"
+        }
+      }
+    },
+    {
+      "m": 40,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.07221586257219315,
+          "candidate_ms": 0.06960096210241318,
+          "speedup": 1.0375698897083105
+        },
+        {
+          "candidate_ms": 0.06952596455812454,
+          "baseline_ms": 0.0721706748008728,
+          "speedup": 1.0380391737037644
+        },
+        {
+          "baseline_ms": 0.07217644900083542,
+          "candidate_ms": 0.06953798234462738,
+          "speedup": 1.0379428129382862
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.01643461547791958,
+        "candidate": 0.01446923054754734
+      },
+      "median_speedup": 1.0379428129382862,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='4a00ef51ea7299aee94bcd3e3d437bb22d5c54b011dbfc58a45f9a70b0e4b6ac', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "6cfb67e7cbafe5e3c2eb71f1b8a672737513e861c15ca3005fc07745862819f4",
+          "ttgir": "bdffe7460ee8360f2ebf23ff4483da087157cc4651db640034a392c827cee8a1",
+          "llir": "4bc672ea2080cb523d038a4a455a5bc138750c425cd7762489f3da18abfba75c"
+        }
+      }
+    },
+    {
+      "m": 40,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 1,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 15 / 245760 (0.0%)\\nGreatest absolute difference: 0.03125 at index (32, 676) (up to 0.005 allowed)\\nGreatest relative difference: 0.018310546875 at index (32, 5714) (up to 0.005 allowed)')",
+      "fixture": "failed-m40-random.pt",
+      "fixture_sha256": "086c7719cb5af477eee3976dc37a1e124b29402ebd57d7dddeabd743550d5e68"
+    },
+    {
+      "m": 64,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0794052928686142,
+          "candidate_ms": 0.07642500102519989,
+          "speedup": 1.0389962944512308
+        },
+        {
+          "candidate_ms": 0.07635913789272308,
+          "baseline_ms": 0.07928798347711563,
+          "speedup": 1.0383561897792413
+        },
+        {
+          "baseline_ms": 0.07936586439609528,
+          "candidate_ms": 0.07645095884799957,
+          "speedup": 1.0381277827252782
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.01806442253291607,
+        "candidate": 0.016082212328910828
+      },
+      "median_speedup": 1.0383561897792413,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='84895777089e36f3e2e80474d6251cd8f8f4bb0cc8c0b11c4376700e8d463ae4', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "4b1ec9e9bc54dfc491fbcc34ba24d457f284c1175f2a62985e68363873959e3c",
+          "ttgir": "7b7f5c1e5b99c78d7cf24b9624f0f07245a330d6c32ee47d63e1796439ac0734",
+          "llir": "3ecb180207d79bb4e5423bce17add1f028a035eb677966383118c46e111da4a2"
+        }
+      }
+    },
+    {
+      "m": 64,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 2,
+          "norm_max_abs": 0.0078125,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 2,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.0795312449336052,
+          "candidate_ms": 0.07648749649524689,
+          "speedup": 1.0397940654071147
+        },
+        {
+          "candidate_ms": 0.07638076692819595,
+          "baseline_ms": 0.07940240204334259,
+          "speedup": 1.0395601567864226
+        },
+        {
+          "baseline_ms": 0.07949662953615189,
+          "candidate_ms": 0.07631875574588776,
+          "speedup": 1.041639486377965
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.01807500049471855,
+        "candidate": 0.01611442305147648
+      },
+      "median_speedup": 1.0397940654071147,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='84895777089e36f3e2e80474d6251cd8f8f4bb0cc8c0b11c4376700e8d463ae4', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "4b1ec9e9bc54dfc491fbcc34ba24d457f284c1175f2a62985e68363873959e3c",
+          "ttgir": "7b7f5c1e5b99c78d7cf24b9624f0f07245a330d6c32ee47d63e1796439ac0734",
+          "llir": "3ecb180207d79bb4e5423bce17add1f028a035eb677966383118c46e111da4a2"
+        }
+      }
+    },
+    {
+      "m": 256,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 3,
+          "norm_max_abs": 0.0078125,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 1,
+          "norm_max_abs": 0.00390625,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 0,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.14332932233810425,
+          "candidate_ms": 0.13785000145435333,
+          "speedup": 1.0397484281896456
+        },
+        {
+          "candidate_ms": 0.13820336759090424,
+          "baseline_ms": 0.14374375343322754,
+          "speedup": 1.0400886457320158
+        },
+        {
+          "baseline_ms": 0.14333365857601166,
+          "candidate_ms": 0.13781875371932983,
+          "speedup": 1.0400156343592615
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.02817019261419773,
+        "candidate": 0.024664422497153282
+      },
+      "median_speedup": 1.0400156343592615,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='c2105444a0a0a4e6dfd47f02e18e7be7c239adcad1e3b661032160c7b9119663', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "6771fccf6ffb9c22c422d9a6455298d8f643eaeb274781d64c30fd63638e1ef3",
+          "ttgir": "a9de5e0ba493f208b115f4fa7eb7f032020f78a0917da292a3b4c6f2c5c0ff36",
+          "llir": "9baa852e9214c6db3a4fb7ae0f0de13d1c391eec88fa0e5880d98a4c1ca531d6"
+        }
+      }
+    },
+    {
+      "m": 256,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "normal",
+          "norm_mismatches": 2,
+          "norm_max_abs": 0.0078125,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "large",
+          "norm_mismatches": 1,
+          "norm_max_abs": 0.00390625,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "cancel",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "outlier",
+          "norm_mismatches": 2,
+          "norm_max_abs": 0.001953125,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "outlier",
+      "norm_mismatches": 2,
+      "self_quant_mismatches": 0,
+      "passed": true,
+      "norm_tolerance_passed": true,
+      "quant_bit_exact": true,
+      "full_gate_tolerance_passed": true,
+      "cpu_reference": true,
+      "changed_input_graph": true,
+      "rounds": [
+        {
+          "baseline_ms": 0.14515624940395355,
+          "candidate_ms": 0.13789470493793488,
+          "speedup": 1.0526600674716773
+        },
+        {
+          "candidate_ms": 0.13763894140720367,
+          "baseline_ms": 0.14292307198047638,
+          "speedup": 1.0383912468320986
+        },
+        {
+          "baseline_ms": 0.1428043246269226,
+          "candidate_ms": 0.13786058127880096,
+          "speedup": 1.0358604562831757
+        }
+      ],
+      "norm_quant_ms": {
+        "baseline": 0.02806057780981064,
+        "candidate": 0.024401923641562462
+      },
+      "median_speedup": 1.0383912468320986,
+      "resources": {
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='c2105444a0a0a4e6dfd47f02e18e7be7c239adcad1e3b661032160c7b9119663', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_norm_quant', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=4096, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=11, warp_size=64)",
+        "asm_sha256": {
+          "ttir": "6771fccf6ffb9c22c422d9a6455298d8f643eaeb274781d64c30fd63638e1ef3",
+          "ttgir": "a9de5e0ba493f208b115f4fa7eb7f032020f78a0917da292a3b4c6f2c5c0ff36",
+          "llir": "9baa852e9214c6db3a4fb7ae0f0de13d1c391eec88fa0e5880d98a4c1ca531d6"
+        }
+      }
+    },
+    {
+      "m": 2048,
+      "norm_weight": "ones",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 4,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 9 / 12582912 (0.0%)\\nGreatest absolute difference: 0.03125 at index (832, 1724) (up to 0.005 allowed)\\nGreatest relative difference: 0.0191650390625 at index (832, 912) (up to 0.005 allowed)')",
+      "fixture": "failed-m2048-ones.pt",
+      "fixture_sha256": "1423f4b46240c6d514e20c6822c794063a3e6f3ecb08752485ce62dd1398a550"
+    },
+    {
+      "m": 2048,
+      "norm_weight": "random",
+      "patterns": [
+        {
+          "pattern": "zero",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        },
+        {
+          "pattern": "tiny",
+          "norm_mismatches": 0,
+          "norm_max_abs": 0.0,
+          "gate_mismatches": 0,
+          "gate_max_abs": 0.0,
+          "self_quant_bit_exact": true
+        }
+      ],
+      "last_pattern": "normal",
+      "norm_mismatches": 6,
+      "self_quant_mismatches": 0,
+      "passed": false,
+      "error": "AssertionError('Tensor-likes are not close!\\n\\nMismatched elements: 14 / 12582912 (0.0%)\\nGreatest absolute difference: 0.03125 at index (843, 3130) (up to 0.005 allowed)\\nGreatest relative difference: 0.017822265625 at index (843, 3451) (up to 0.005 allowed)')",
+      "fixture": "failed-m2048-random.pt",
+      "fixture_sha256": "116e061725f72c64138c4aaa5b6982765a8ad265c14261a7a83a65866afcef1f"
+    }
+  ]
+}
