@@ -195,3 +195,60 @@ extern "C" void biv150_quantize_cached(const void* x,int8_t* q,float* scales,
   else if (threads==128) quantize_cached_rows<128><<<padded_m,128,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
   else quantize_cached_rows<256><<<padded_m,256,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
 }
+
+// Probe only: keep the production residual quantizer unchanged.
+namespace {
+template<int THREADS>
+__global__ void quantize_residual_cached_rows(const BF16* x, int8_t* q, float* scales,
+                                      int m) {
+  constexpr int k=2048;
+  const int row = blockIdx.x;
+  if (row >= m) {
+    for (int col=threadIdx.x; col<k; col+=THREADS) {
+      q[int64_t(row)*k+col]=0;
+      q[int64_t(row+16)*k+col]=0;
+    }
+    if (threadIdx.x==0) { scales[row]=1.f; scales[row+16]=1.f; }
+    return;
+  }
+  float values[k/THREADS];
+  float peak=0.f;
+  #pragma unroll
+  for (int item=0;item<k/THREADS;++item) {
+    values[item]=__bfloat162float(x[int64_t(row)*k+threadIdx.x+item*THREADS]);
+    peak=fmaxf(peak,fabsf(values[item]));
+  }
+  for (int shift=32; shift>0; shift>>=1)
+    peak=fmaxf(peak,__shfl_xor(peak,shift,64));
+  if constexpr (THREADS>64) {
+    __shared__ float maximum[THREADS/64];
+    if ((threadIdx.x&63)==0) maximum[threadIdx.x>>6]=peak;
+    __syncthreads();
+    peak=0.f;
+    #pragma unroll
+    for (int warp=0;warp<THREADS/64;++warp) peak=fmaxf(peak,maximum[warp]);
+  }
+  const float main_scale=fmaxf(peak,1.e-6f)/127.f;
+  const float residual_scale=main_scale/254.f;
+  if (threadIdx.x==0) { scales[row]=main_scale; scales[row+16]=residual_scale; }
+  #pragma unroll
+  for (int item=0;item<k/THREADS;++item) {
+    const int col=threadIdx.x+item*THREADS;
+    const float value=values[item];
+    const float f=value/main_scale;
+    const float rounded=f>=0.f?floorf(f+0.5f):ceilf(f-0.5f);
+    const int8_t first=int8_t(fminf(127.f,fmaxf(-127.f,rounded)));
+    const float residual=(value-float(first)*main_scale)/residual_scale;
+    const float second=residual>=0.f?floorf(residual+0.5f):ceilf(residual-0.5f);
+    q[int64_t(row)*k+col]=first;
+    q[int64_t(row+16)*k+col]=int8_t(fminf(127.f,fmaxf(-127.f,second)));
+  }
+}
+
+}
+extern "C" void biv150_quantize_residual_cached(const void* x,int8_t* q,float* scales,
+    int m,int threads,cudaStream_t stream) {
+  if (threads==64) quantize_residual_cached_rows<64><<<16,64,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
+  else if (threads==128) quantize_residual_cached_rows<128><<<16,128,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
+  else quantize_residual_cached_rows<256><<<16,256,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
+}
