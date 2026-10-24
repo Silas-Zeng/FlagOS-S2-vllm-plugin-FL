@@ -14,7 +14,7 @@ from pathlib import Path
 PINS = {
     "vllm_fl.worker.model_runner": "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61",
     "vllm_fl.compilation.graph": "ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2",
-    "vllm_fl.patches.biv150_compute_order": "a467c937dc6b4932944e70671259dcf87b05b51a61dd894dccbb97754fefbf0c",
+    "vllm_fl.patches.biv150_compute_order": "80b88140b052954ad2d82fb4f666fddabfb5754d224c959f9b5e4b58f913c629",
     "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
     "vllm.model_executor.custom_op": "4b4ba01623005d6a93698eaec007a934dd512bf9ec7241090927de819621de2e",
     "vllm.model_executor.layers.rotary_embedding.base": "c81804498f08f072356a26b41967f211475df2694dabf5da9f488c074d1fdef5",

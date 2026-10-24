@@ -2,6 +2,8 @@
 
 基于已核实团队 main `5eda0b0da0ecbe1839105c49f58462329fd9ea22`；仅新增独立工具，不修改框架、调度、生产算子或 source guard。此 Draft PR 尚无新算子、无服务提速成绩。
 
+当前同步已合入main6a013bd和PR31的0248416，生产csrc/vllm_fl与PR31冻结e972997完全一致，诊断明确依赖PR31正式通过。compute-order pin同步为精确80b88140…，并重复PR31 CPU chooser检查；不是放宽source guard。实际模型按config/server选择LlamaForCausalLM，不能由目录名称推断使用models.minicpm。
+
 ## 已核实源码
 
 - 当前实际 runner 是 `vllm_fl.worker.model_runner.ModelRunnerFL`，不是上游 GPUModelRunner。其 `execute_model` 在 `synchronize_input_prep()` 生命周期内，从原请求顺序生成 CPU int32 scheduled 数组，再调用本模块导入的 `_biv150_compute_order_plan`，然后 `_prepare_inputs`。该调用位于 `max_query_len` 判断之前，因此可观测纯 decode 与混合调用；观察 imported alias 才能命中真实入口。
