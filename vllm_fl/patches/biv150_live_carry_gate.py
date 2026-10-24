@@ -3,6 +3,7 @@ import ast
 import hashlib
 import inspect
 import json
+import linecache
 import os
 from pathlib import Path
 import textwrap
@@ -223,8 +224,11 @@ def install():
         or hashlib.sha256(path.read_bytes()).hexdigest()!=EXPECTED_LLAMA_SHA256):
         return {"installed":False,"reason":"unaudited or already wrapped decoder forward"}
     rewritten=_rewrite_forward_ast(inspect.getsource(original))
+    generated=str(Path(__file__).resolve())+".generated_forward.py"
+    source=ast.unparse(rewritten)+"\n"
+    linecache.cache[generated]=(len(source),None,source.splitlines(keepends=True),generated)
     namespace=dict(original.__globals__,_biv150_post_norm_mlp=_post_norm_mlp)
-    exec(compile(rewritten,str(Path(__file__).resolve()),"exec"),namespace)
+    exec(compile(source,generated,"exec"),namespace)
     forward=namespace["forward"]
     forward.__qualname__=original.__qualname__
     LlamaDecoderLayer.forward=forward
@@ -233,5 +237,7 @@ def install():
                 norm_weight_shape=[2048],compressed_gate_shape=[2048,12288],
                 original_transparent_carry=True,persistent_weight_copy=False,
                 original_llama_sha256=EXPECTED_LLAMA_SHA256,
+                generated_forward_sha256=hashlib.sha256(source.encode()).hexdigest(),
+                generated_forward_file=generated,
                 hook_file=str(Path(__file__).resolve()),
                 hook_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())

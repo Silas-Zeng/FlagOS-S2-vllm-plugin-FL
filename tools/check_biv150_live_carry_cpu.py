@@ -2,7 +2,9 @@
 import ast
 import hashlib
 import importlib.util
+import inspect
 import json
+import linecache
 from pathlib import Path
 import subprocess
 import tempfile
@@ -71,6 +73,11 @@ assert ast.dump(original.args,include_attributes=False)==ast.dump(new.args,inclu
 assert [ast.dump(n,include_attributes=False) for n in original.body[:2]]==[ast.dump(n,include_attributes=False) for n in new.body[:2]]
 assert ast.dump(original.body[-1],include_attributes=False)==ast.dump(new.body[-1],include_attributes=False)
 assert len(new.body)==len(original.body)-1
+generated=str(p)+'.cpu-check.generated_forward.py'
+generated_source=ast.unparse(ast.Module(body=[new],type_ignores=[]))+'\n'
+linecache.cache[generated]=(len(generated_source),None,generated_source.splitlines(keepends=True),generated)
+compiled={};exec(compile(generated_source,generated,'exec'),compiled)
+assert inspect.getsource(compiled['forward'])==generated_source
 try:ns['_rewrite_forward_ast'](source.replace('self.mlp(hidden_states)','self.other(hidden_states)'));raise AssertionError('changed structure accepted')
 except AssertionError as error:assert 'changed structure accepted' not in str(error)
 
