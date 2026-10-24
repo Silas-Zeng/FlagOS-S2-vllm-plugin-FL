@@ -90,7 +90,9 @@ def install():
     apply_original = UnquantizedLinearMethod.apply
     selected = ("gate_up_proj",)
     min_rows = 17
-    compressed = True
+    # Keep the original weight for an exact original-operator small-M route.
+    # The extra INT8 cache changes memory use; record real KV capacity in service.
+    compressed = False
     skip_edges = 4
     fused_silu = True
 
@@ -141,6 +143,8 @@ def install():
     def apply(self, layer, x, bias=None):
         if not hasattr(layer, "_biv150_native_wq"):
             return apply_original(self, layer, x, bias)
+        if x.numel() // x.shape[-1] < min_rows:
+            return apply_original(self, layer, x, bias)
         y = torch.ops.biv150_native.linear(
             x.reshape(-1, x.shape[-1]),
             layer._biv150_native_wq,
@@ -170,6 +174,7 @@ def install():
                 or layer.bias is not None
                 or not isinstance(self.act_fn, SiluAndMul)
                 or tuple(layer.weight.shape) != (12288, 2048)
+                or x.numel() // x.shape[-1] < min_rows
             ):
                 return forward_original(self, x)
             # Operator fusion only: replace gate/up linear + activation; leave
@@ -193,6 +198,7 @@ def install():
         "compressed_only": compressed,
         "skip_edge_layers": skip_edges,
         "fused_silu": fused_silu,
-        "activation_residual_rows": [1, 16],
+        "activation_residual_rows": [],
+        "small_m_original_bf16_rows": [0, 16],
         "gate_operator": "gate_silu_auto",
     }
