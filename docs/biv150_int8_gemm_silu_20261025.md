@@ -63,3 +63,29 @@ Graph capture后更改输入，重放对原完整入口；三轮交替充分预�
 
 本轮使用合成冻结投影权重，未证明服务真实命中、Level3、TTFT或吞吐提升。
 任何组件收益之后还须实际模型接入、真实层/形状覆盖、两档完整联合验收，才能合并。
+
+
+## 新清单AD02/AD03/S11：当前生成图区块的便宜证据门
+
+从当前a19ff5c服务的私有cache只读导出10个含实际call入口的生成模块，按导出SHA验证，
+只用AST读取、不执行生成Python。原文件/source manifest与审计结果在`evidence/int8-gemm-silu-20261025/generated-graph-audit/`。
+缓存存在不证明每个生成模块都在该次请求中命中，静态语句数不等于launch次数或耗时；不以此代替runtime profile。
+
+10个wrapper中未发现显式ATen/prims clone/copy/_to_copy/contiguous/convert_element_type调用。
+包含本候选opaque gate的动态区块（pc/cpc7…，SHA12c12152…）显示：
+O GEMM→norm→BF16 buf2→gate custom op→down GEMM→后续norm/QKV/RoPE。
+Gate输入由empty_strided_cuda((M,2048),(2048,1),BF16)分配，当前这条边是连续的，
+因此不能把C++源码x.contiguous()直接计为一次真实复制。buf4=buf3为Python别名，reinterpret_tensor为view；
+编译器还复用buf8作为RoPE Q输出，不能把已有合法复用重报为新内存优化。
+这只排除本批生成wrapper的显式拷贝问题，不覆盖opaque内部、attention外部边界、其他shape/版本或真实峰值。
+
+另有首层模块ik/cikyut…显示embedding gather与RMSNorm已经处在同一生成kernel，并分别输出
+原embedding/residual与norm结果。不能仅据kernel名含_to_copy就认为多了一次copy launch，
+也不能把AD14的“少一个launch”作为新实现收益。其核内仍可研究寄存器驻留/回读成本，但要单独计完整成本。
+
+对PR33尤其重要：pre-gate norm kernel仅写归一化输出，未单独写出该步residual；
+后续norm接收down输出、先前O输出和旧residual，在FP32中做down+(O+residual)，再存输出。
+在此生成路径的两个加法之间没有BF16舍入。原PR33孤立probe要求独立BF16 residual输出，
+其组件通过不能证明插入完整图后仍保持这条跨op数值契约；opaque融合若强制落地BF16 residual可能改变行为。
+下一版norm接入应保留原透明residual表达式/活跃输入或匹配实际子图，不因孤立测试过了就改模型边界。
+这不是已证明的多余cast可删，也不是关闭全部norm融合方向；它改变接入位置与验证范围。

@@ -1,0 +1,704 @@
+{
+  "static_generated_wrapper_audit": true,
+  "cache_presence_not_runtime_hit": true,
+  "native_opaque_bodies_not_inspected": true,
+  "device_time_not_measured": true,
+  "modules": [
+    {
+      "relative": "2e/c2euvb7ogltosrkwwwjjq54rhblz5dotmzqssyj7zhzv4drmvex3.py",
+      "sha256": "112cc2fa9133c2b93447e4ce18c9d96f7656e55e488655f4b404a35e607c93f3",
+      "wrappers": [
+        {
+          "lineno": 586,
+          "calls": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 5,
+            "extern_kernels.mm": 3,
+            "get_raw_stream": 3,
+            "triton_red_fused_fused_add_rms_norm_0.run": 1,
+            "triton_poi_fused_mul_silu_slice_1.run": 1,
+            "triton_red_fused_fused_add_rms_norm_2.run": 1,
+            "reinterpret_tensor": 4
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {
+            "buf0": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf2": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf3": {
+              "shape": "(s72, 12288)",
+              "strides": "(12288, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf4": {
+              "shape": "(s72, 6144)",
+              "strides": "(6144, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf5": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            }
+          },
+          "aliases": [
+            {
+              "target": "(arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1)",
+              "source": "args",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "s72",
+              "source": "arg1_1",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "buf7",
+              "source": "buf5",
+              "kind": "python_assignment"
+            }
+          ],
+          "fused_gate_calls": [],
+          "triton_run_statements": 3,
+          "external_mm_statements": 3
+        }
+      ],
+      "kernels": [
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_0",
+          "source_sha256": "d49f3e2f07e0f3848271192aef263dac15251cff12bf8d55567c72c50f0e5b9c",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2"
+          ],
+          "store_addresses": [
+            "out_ptr1 + (r0_1 + 2048 * x0)"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 10
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_poi_fused_mul_silu_slice_1",
+          "source_sha256": "2077eeed3cb635af436273a4ca3c69e6fb2d32e303bbf50b739950086df2cb6a",
+          "pointer_loads": [
+            "in_ptr0"
+          ],
+          "store_addresses": [
+            "out_ptr0 + x2"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 4
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_2",
+          "source_sha256": "5a0f603982785e368ddeaaef2bff2c940f835d293cc6516a6af8366ae15e6e05",
+          "pointer_loads": [
+            "in_out_ptr0",
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2"
+          ],
+          "store_addresses": [
+            "in_out_ptr0 + (r0_1 + 2048 * x0)"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 18
+          },
+          "casts_not_extra_wrapper_launches": true
+        }
+      ]
+    },
+    {
+      "relative": "ey/cey3rxw3jrlzk3mwqgix5vj7yykpxiyxhlyazbuzglxeghgxoj6m.py",
+      "sha256": "4d9a6ad82b6acf5fd3e6b2502fbdd35e87ca5b2c026631bf28f7753256db1966",
+      "wrappers": [
+        {
+          "lineno": 133,
+          "calls": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {},
+          "aliases": [],
+          "fused_gate_calls": [],
+          "triton_run_statements": 1,
+          "external_mm_statements": 0
+        }
+      ],
+      "kernels": []
+    },
+    {
+      "relative": "hz/chzvgkd23ju6gm4rf4lnqdesdjnddc4x7wlbxepjmovyqcnhxsos.py",
+      "sha256": "06cbabfa1da5533380f64a692e09b7f4cf615f5d0a0f9cd9d531a09ed6ade124",
+      "wrappers": [
+        {
+          "lineno": 133,
+          "calls": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_poi_fused_1.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {},
+          "aliases": [],
+          "fused_gate_calls": [],
+          "triton_run_statements": 1,
+          "external_mm_statements": 0
+        }
+      ],
+      "kernels": []
+    },
+    {
+      "relative": "ik/cikr6ohyslyhfp3qyh5eo3sunu3hnjxytawoiejbsnp7ygqwn6km.py",
+      "sha256": "5685f35b3e4f8ef289b5c2eeffe817e259494629d4944838c1ba6ac730a8ab4e",
+      "wrappers": [
+        {
+          "lineno": 133,
+          "calls": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_poi_fused_2.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {},
+          "aliases": [],
+          "fused_gate_calls": [],
+          "triton_run_statements": 1,
+          "external_mm_statements": 0
+        }
+      ],
+      "kernels": []
+    },
+    {
+      "relative": "ik/cikyut4btf4as3hq2uapinsfm3uv6d5ki3y2ffdjn4ydqibuv2wd.py",
+      "sha256": "6ee5c14052868a9e87dd8ba40c968c67eded82b83a08f363578ef32acc193e83",
+      "wrappers": [
+        {
+          "lineno": 597,
+          "calls": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 5,
+            "get_raw_stream": 2,
+            "triton_red_fused__to_copy_embedding_rms_norm_0.run": 1,
+            "extern_kernels.mm": 1,
+            "reinterpret_tensor": 4,
+            "triton_poi_fused_1.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {
+            "triton_red_fused__to_copy_embedding_rms_norm_0.run": 1
+          },
+          "allocations": {
+            "buf0": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf2": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf3": {
+              "shape": "(s72, 2560)",
+              "strides": "(2560, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf4": {
+              "shape": "(s72, 2, 128)",
+              "strides": "(256, 128, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf6": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            }
+          },
+          "aliases": [
+            {
+              "target": "(arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1)",
+              "source": "args",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "s72",
+              "source": "arg1_1",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "buf5",
+              "source": "buf2",
+              "kind": "view",
+              "shape": "(s72, 16, 128)",
+              "strides": "(2048, 128, 1)"
+            }
+          ],
+          "fused_gate_calls": [],
+          "triton_run_statements": 2,
+          "external_mm_statements": 1
+        }
+      ],
+      "kernels": [
+        {
+          "name": "triton_red_fused__to_copy_embedding_rms_norm_0",
+          "source_sha256": "35a43ec14f6c2ff49d7c2150c30273f10535fb4584237af946ab2592531c20dc",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2",
+            "out_ptr0"
+          ],
+          "store_addresses": [
+            "out_ptr0 + (r0_1 + 2048 * x0)",
+            "out_ptr2 + (r0_1 + 2048 * x0)"
+          ],
+          "casts_in_kernel": {
+            "tl.int64": 1,
+            "tl.float32": 6
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_poi_fused_1",
+          "source_sha256": "06cbabfa1da5533380f64a692e09b7f4cf615f5d0a0f9cd9d531a09ed6ade124",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2"
+          ],
+          "store_addresses": [
+            "out_ptr0 + x4",
+            "out_ptr1 + x9"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 16
+          },
+          "casts_not_extra_wrapper_launches": true
+        }
+      ]
+    },
+    {
+      "relative": "kj/ckjp53lb77ibrtoqd7rpok4zs6pjarhx5jfudz3ygvvcwrrgehjk.py",
+      "sha256": "493b7c17c43805d313e7db9deb4ec703ac25dddeffd11fd7ccd99d3505c05538",
+      "wrappers": [
+        {
+          "lineno": 78,
+          "calls": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {},
+          "aliases": [],
+          "fused_gate_calls": [],
+          "triton_run_statements": 1,
+          "external_mm_statements": 0
+        }
+      ],
+      "kernels": []
+    },
+    {
+      "relative": "o6/co6toxyj423q2aqjygypdsa6cf65zgzrcpcxrwigobjzsk33v5ib.py",
+      "sha256": "c27bda99180c90044f24ce6cd309a6891df021b990dbe6b70f792764c3a91c86",
+      "wrappers": [
+        {
+          "lineno": 133,
+          "calls": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_poi_fused_3.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {},
+          "aliases": [],
+          "fused_gate_calls": [],
+          "triton_run_statements": 1,
+          "external_mm_statements": 0
+        }
+      ],
+      "kernels": []
+    },
+    {
+      "relative": "pc/cpc7mdxwhr7ozrrnng2q4gsieqylmlpure2uymd6w2v3iq6ucjrw.py",
+      "sha256": "12c12152cd1cb8396b4cb0888c55d06f306a8fd37d423de9a83ffe83ce984fb8",
+      "wrappers": [
+        {
+          "lineno": 815,
+          "calls": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 8,
+            "extern_kernels.mm": 3,
+            "get_raw_stream": 3,
+            "triton_red_fused_fused_add_rms_norm_gate_m32_or_auto_0.run": 1,
+            "torch.ops.biv150_fused_gate.gate_m32_or_auto.default": 1,
+            "triton_red_fused_fused_add_rms_norm_1.run": 1,
+            "reinterpret_tensor": 7,
+            "triton_poi_fused_2.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {
+            "buf0": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf2": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf5": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf6": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf8": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf9": {
+              "shape": "(s72, 2560)",
+              "strides": "(2560, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf10": {
+              "shape": "(s72, 2, 128)",
+              "strides": "(256, 128, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf12": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            }
+          },
+          "aliases": [
+            {
+              "target": "(arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1, arg8_1, arg9_1, arg10_1, arg11_1, arg12_1)",
+              "source": "args",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "s72",
+              "source": "arg1_1",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "buf4",
+              "source": "buf3",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "buf11",
+              "source": "buf8",
+              "kind": "view",
+              "shape": "(s72, 16, 128)",
+              "strides": "(2048, 128, 1)"
+            }
+          ],
+          "fused_gate_calls": [
+            {
+              "name": "torch.ops.biv150_fused_gate.gate_m32_or_auto.default",
+              "input": "buf2",
+              "input_allocation": {
+                "shape": "(s72, 2048)",
+                "strides": "(2048, 1)",
+                "dtype": "torch.bfloat16"
+              },
+              "output": "buf3"
+            }
+          ],
+          "triton_run_statements": 3,
+          "external_mm_statements": 3
+        }
+      ],
+      "kernels": [
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_gate_m32_or_auto_0",
+          "source_sha256": "be1ce8485f472f60c105ebc92696c6fd16a3b956f45a3155d69a524e029f0060",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2"
+          ],
+          "store_addresses": [
+            "out_ptr1 + (r0_1 + 2048 * x0)"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 10
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_1",
+          "source_sha256": "451929b977b8dd12b0008be7f00abae723c68637bdd8a2a85475313e3b8c64f2",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2",
+            "in_ptr3"
+          ],
+          "store_addresses": [
+            "out_ptr1 + (r0_1 + 2048 * x0)",
+            "out_ptr2 + (r0_1 + 2048 * x0)"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 19
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_poi_fused_2",
+          "source_sha256": "5685f35b3e4f8ef289b5c2eeffe817e259494629d4944838c1ba6ac730a8ab4e",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2"
+          ],
+          "store_addresses": [
+            "out_ptr0 + x4",
+            "out_ptr1 + x9"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 16
+          },
+          "casts_not_extra_wrapper_launches": true
+        }
+      ]
+    },
+    {
+      "relative": "u5/cu54otbftftkrymidlndq57nx56ffwjh5pdhqu6owdblsgqzfdba.py",
+      "sha256": "a0a5beb4dad3c8ee136a84d26fa4130d506612194908e31bcfeeba75c718e53a",
+      "wrappers": [
+        {
+          "lineno": 78,
+          "calls": {
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "get_raw_stream": 1,
+            "triton_.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {},
+          "aliases": [],
+          "fused_gate_calls": [],
+          "triton_run_statements": 1,
+          "external_mm_statements": 0
+        }
+      ],
+      "kernels": []
+    },
+    {
+      "relative": "xz/cxzibhxvmuoda2evtitp4b4cxri36rgztaxwsxqm7hou2gjxgbwa.py",
+      "sha256": "c87897b536019a49dc8c6b79a87ae24f0020f9c1c9e3eee86ba79b38d00f924d",
+      "wrappers": [
+        {
+          "lineno": 922,
+          "calls": {
+            "args.clear": 1,
+            "torch.cuda._DeviceGuard": 1,
+            "torch.cuda.set_device": 1,
+            "empty_strided_cuda": 9,
+            "extern_kernels.mm": 4,
+            "get_raw_stream": 4,
+            "triton_red_fused_fused_add_rms_norm_0.run": 1,
+            "triton_poi_fused_mul_silu_slice_1.run": 1,
+            "triton_red_fused_fused_add_rms_norm_2.run": 1,
+            "reinterpret_tensor": 8,
+            "triton_poi_fused_3.run": 1
+          },
+          "explicit_copy_or_convert_calls": {},
+          "kernel_names_mention_copy_not_standalone_copy_evidence": {},
+          "allocations": {
+            "buf0": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf2": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf3": {
+              "shape": "(s72, 12288)",
+              "strides": "(12288, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf4": {
+              "shape": "(s72, 6144)",
+              "strides": "(6144, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf5": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf6": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf8": {
+              "shape": "(s72, 2048)",
+              "strides": "(2048, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf9": {
+              "shape": "(s72, 2560)",
+              "strides": "(2560, 1)",
+              "dtype": "torch.bfloat16"
+            },
+            "buf10": {
+              "shape": "(s72, 2, 128)",
+              "strides": "(256, 128, 1)",
+              "dtype": "torch.bfloat16"
+            }
+          },
+          "aliases": [
+            {
+              "target": "(arg0_1, arg1_1, arg2_1, arg3_1, arg4_1, arg5_1, arg6_1, arg7_1, arg8_1, arg9_1, arg10_1)",
+              "source": "args",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "s72",
+              "source": "arg1_1",
+              "kind": "python_assignment"
+            },
+            {
+              "target": "buf11",
+              "source": "buf8",
+              "kind": "view",
+              "shape": "(s72, 16, 128)",
+              "strides": "(2048, 128, 1)"
+            },
+            {
+              "target": "buf12",
+              "source": "buf5",
+              "kind": "python_assignment"
+            }
+          ],
+          "fused_gate_calls": [],
+          "triton_run_statements": 4,
+          "external_mm_statements": 4
+        }
+      ],
+      "kernels": [
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_0",
+          "source_sha256": "d49f3e2f07e0f3848271192aef263dac15251cff12bf8d55567c72c50f0e5b9c",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2"
+          ],
+          "store_addresses": [
+            "out_ptr1 + (r0_1 + 2048 * x0)"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 10
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_poi_fused_mul_silu_slice_1",
+          "source_sha256": "2077eeed3cb635af436273a4ca3c69e6fb2d32e303bbf50b739950086df2cb6a",
+          "pointer_loads": [
+            "in_ptr0"
+          ],
+          "store_addresses": [
+            "out_ptr0 + x2"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 4
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_red_fused_fused_add_rms_norm_2",
+          "source_sha256": "7ca69c00d51f85fa2c1e26de4f75025fbdda6b47a33e2ff18c93569f9b1f3939",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2",
+            "in_ptr3"
+          ],
+          "store_addresses": [
+            "out_ptr1 + (r0_1 + 2048 * x0)",
+            "out_ptr2 + (r0_1 + 2048 * x0)"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 19
+          },
+          "casts_not_extra_wrapper_launches": true
+        },
+        {
+          "name": "triton_poi_fused_3",
+          "source_sha256": "c27bda99180c90044f24ce6cd309a6891df021b990dbe6b70f792764c3a91c86",
+          "pointer_loads": [
+            "in_ptr0",
+            "in_ptr1",
+            "in_ptr2"
+          ],
+          "store_addresses": [
+            "out_ptr0 + x4",
+            "out_ptr1 + x9"
+          ],
+          "casts_in_kernel": {
+            "tl.float32": 16
+          },
+          "casts_not_extra_wrapper_launches": true
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "modules": 10,
+    "wrappers": 10,
+    "fused_gate_wrappers": 1,
+    "explicit_copy_convert_calls": 0
+  }
+}
