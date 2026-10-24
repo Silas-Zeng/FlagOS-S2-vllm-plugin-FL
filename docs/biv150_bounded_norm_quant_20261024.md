@@ -1,5 +1,12 @@
 # B06：有界 residual RMSNorm＋量化，真实 norm 权重组件验证
 
+## 新联合探针：融合算子不物化carry，保留原透明表达式
+
+fresh共享main仍0bf9d2e，且为当前PR33分支祖先。新增benchmark完整比较post-attention norm→native gate→真实down projection→下一层input norm，而不只比较孤立norm/gate。候选opaque算子只返回gate；原norm的residual表达式继续留在外部图中，不能由融合核先转BF16写回再送给下一norm。
+原_norm_quant只增加constexpr WRITE_CARRY，关闭时不分配/写入残差，默认开启保持旧probe；移除该条件后的AST与459432d逐项相同。CPU ABI/生产C++数学/CUDA/Python不变、原CPU参考AST检查通过，脚本编译过。
+先用真实层4/20/37的post-norm、gate/up、down以及下一层input-norm权重，测试M32/M64六组、六模式及输入不变、变输入Graph/eager逐位一致与三轮交替完整链条成本。保持原.005/.005失败标记；有限且Graph一致的近误差案例仍测吞吐，不能将其重命名为数值通过。需要查看新生成代码，确认无新增残差buffer或未消掉的首个norm；源码意图不作为该证明。
+复用a8c02d已验证私有probe库，要求CPP/CUDA源逐字节一致并pin库SHA，不重装依赖或替换活动服务库。GPU只在当前BF16匹配对照精确PID/start退出、GPU/9031空闲后串行运行。此时尚无GPU结果，不装入模型，不认定精度或服务收益；现有206/238正结果、32失败与所有反例保留。
+
 ## 新AD01/AD09/S11证据：接入前还需保持跨op residual表达式
 
 PR37候选a19ff5c的当前私有编译cache新增只读证据（该PR的generated-graph-audit/）：

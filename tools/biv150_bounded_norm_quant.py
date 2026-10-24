@@ -39,6 +39,7 @@ def _norm_quant(
     EPS,
     RESIDUAL: tl.constexpr,
     WRITE_NORM: tl.constexpr,
+    WRITE_CARRY: tl.constexpr,
 ):
     row = tl.program_id(0)
     cols = tl.arange(0, 2048)
@@ -47,7 +48,8 @@ def _norm_quant(
         r = tl.load(R + row * 2048 + cols).to(tl.float32)
         x += r
         # Preserve BF16 residual storage but normalize the unrounded FP32 sum.
-        tl.store(R_OUT + row * 2048 + cols, x)
+        if WRITE_CARRY:
+            tl.store(R_OUT + row * 2048 + cols, x)
         var = tl.sum(x * x, axis=0) / 2048
         rrms = libdevice.rsqrt(var + EPS)
         w = tl.load(W + cols)
@@ -85,7 +87,7 @@ def _norm_quant(
 SELECTED_ROWS = (1, 8, 16, 17, 32, 64, 256)
 
 
-def norm_quant(x, residual, weight, eps, write_norm=False):
+def norm_quant(x, residual, weight, eps, write_norm=False, materialize_residual=True):
     """Non-mutating component; unknown row counts are not an eligible route."""
     assert x.is_cuda and x.dtype == residual.dtype == weight.dtype == torch.bfloat16
     assert x.shape == residual.shape and x.ndim == 2 and x.shape[1] == 2048
@@ -96,11 +98,13 @@ def norm_quant(x, residual, weight, eps, write_norm=False):
     padded = max(32, rows)
     q = torch.empty((padded, 2048), device=x.device, dtype=torch.int8)
     scales = torch.empty((padded,), device=x.device, dtype=torch.float32)
-    residual_out = torch.empty_like(residual)
+    residual_out = torch.empty_like(residual) if materialize_residual else None
     normalized_out = torch.empty_like(x) if write_norm else x
     # WRITE_NORM writes to a separate output too: inputs and aliases stay intact.
     kernel = _norm_quant[(16 if rows <= 16 else padded,)](
-        x, residual, residual_out, weight, q, scales, normalized_out, rows, eps,
-        RESIDUAL=rows <= 16, WRITE_NORM=write_norm, num_warps=4,
+        x, residual, residual_out if materialize_residual else x,
+        weight, q, scales, normalized_out, rows, eps,
+        RESIDUAL=rows <= 16, WRITE_NORM=write_norm,
+        WRITE_CARRY=materialize_residual, num_warps=4,
     )
     return q, scales, residual_out, normalized_out, kernel

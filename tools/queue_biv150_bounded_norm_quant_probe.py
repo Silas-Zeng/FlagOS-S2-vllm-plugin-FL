@@ -29,6 +29,9 @@ def require_completed(path, commit):
 
 
 def main(args):
+    if args.live_carry_chain:
+        if not all((args.library, args.library_source, args.library_sha256)):
+            raise ValueError("Joint probe requires pinned private library/source/SHA")
     if (args.require_completed_state is None) != (args.require_commit is None):
         raise ValueError("Require both completed-state path and commit")
     source = Path(__file__).resolve().parents[1]
@@ -90,11 +93,19 @@ def main(args):
         "--out",
         str(args.out),
     ]
+    env = dict(os.environ, PYTHONPATH=str(source))
+    if args.live_carry_chain:
+        subprocess.run([sys.executable, str(source / "tools/check_biv150_bounded_norm_cpu.py"),
+                        "--out", str(args.out.with_suffix(".cpu.json"))], check=True)
+        command = [sys.executable, "-u", str(source / "tools/bench_biv150_live_carry_chain.py"),
+                   "--library", str(args.library), "--library-source", str(args.library_source),
+                   "--library-sha256", args.library_sha256, "--out", str(args.out)]
+        env["TORCHINDUCTOR_CACHE_DIR"] = str(args.out / "inductor-cache")
     with args.out.with_suffix(".log").open("x") as log:
         process = subprocess.Popen(
             command,
             cwd=source,
-            env=dict(os.environ, PYTHONPATH=str(source)),
+            env=env,
             stdin=subprocess.DEVNULL,
             stdout=log,
             stderr=subprocess.STDOUT,
@@ -114,4 +125,8 @@ if __name__ == "__main__":
     parser.add_argument("--require-completed-state", type=Path)
     parser.add_argument("--require-commit")
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--live-carry-chain", action="store_true")
+    parser.add_argument("--library", type=Path)
+    parser.add_argument("--library-source", type=Path)
+    parser.add_argument("--library-sha256")
     main(parser.parse_args())

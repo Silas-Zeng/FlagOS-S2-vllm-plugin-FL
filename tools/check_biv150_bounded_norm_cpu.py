@@ -2,6 +2,7 @@
 
 import argparse
 import ast
+import copy
 import json
 import subprocess
 from pathlib import Path
@@ -26,7 +27,20 @@ def main(args):
     module=ast.parse((root/"tools/biv150_bounded_norm_quant.py").read_text())
     kernel=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name=="_norm_quant")
     assert [a.arg for a in kernel.args.args] == [
-        "X","R","R_OUT","W","Q","S","NORM_OUT","M","EPS","RESIDUAL","WRITE_NORM"]
+        "X","R","R_OUT","W","Q","S","NORM_OUT","M","EPS","RESIDUAL","WRITE_NORM","WRITE_CARRY"]
+    prior=ast.parse(subprocess.check_output(["git","-C",str(root),"show",
+        "459432d:tools/biv150_bounded_norm_quant.py"],text=True))
+    old_kernel=next(n for n in prior.body if isinstance(n,ast.FunctionDef) and n.name=="_norm_quant")
+    restored=copy.deepcopy(kernel)
+    restored.args.args.pop()
+    class RestoreCarry(ast.NodeTransformer):
+        def visit_If(self,node):
+            if isinstance(node.test,ast.Name) and node.test.id=="WRITE_CARRY":
+                assert not node.orelse and len(node.body)==1
+                return node.body
+            return self.generic_visit(node)
+    restored=RestoreCarry().visit(restored)
+    assert ast.dump(restored,include_attributes=False)==ast.dump(old_kernel,include_attributes=False)
     stores=[ast.unparse(n.args[0]) for n in ast.walk(kernel)
             if isinstance(n,ast.Call) and ast.unparse(n.func)=="tl.store"]
     assert not any(s.startswith("X +") or s.startswith("R +") for s in stores)
@@ -48,6 +62,8 @@ def main(args):
     result=dict(cpu_only=True,base=base,cpp_shipping_functions_unchanged=True,
                 production_cuda_and_python_unchanged=True,
                 triton_inputs_not_store_targets=True,kernel_abi_checked=True,
+                previous_norm_quant_math_ast_unchanged=True,
+                residual_store_guarded_by_compile_time_flag=True,
                 local_probe_imports_present=local_modules,cpu_oracle_math_ast_unchanged=True,
                 real_alias_and_device_checks_pending=True)
     if args.out:
