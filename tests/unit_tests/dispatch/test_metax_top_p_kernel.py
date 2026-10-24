@@ -38,6 +38,29 @@ def test_top_p_kernel_samples_inside_nucleus():
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="requires GPU")
+def test_top_p_kernel_mixes_direct_and_search_rows():
+    torch.manual_seed(5)
+    logits = torch.randn(8, 4096, device="cuda")
+    logits[0].fill_(-5.0)
+    logits[0, 321] = 50.0
+    top_p = torch.full((8,), 0.95, device="cuda")
+
+    sampled = top_p_sample(logits, top_p)
+    assert sampled[0].item() == 321
+
+    masked = logits[1:].clone()
+    sorted_logits, sorted_indices = masked.sort(dim=-1)
+    probs = sorted_logits.softmax(dim=-1, dtype=torch.float32)
+    cumulative = probs.cumsum(dim=-1)
+    remove = cumulative <= 1 - top_p[1]
+    remove[:, -1] = False
+    sorted_logits.masked_fill_(remove, float("-inf"))
+    masked.scatter_(1, sorted_indices, sorted_logits)
+    support = torch.isfinite(masked)
+    assert torch.all(support.gather(1, sampled[1:].unsqueeze(1)))
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="requires GPU")
 def test_top_p_kernel_matches_reference_distribution():
     torch.manual_seed(123)
     rows = 16384
