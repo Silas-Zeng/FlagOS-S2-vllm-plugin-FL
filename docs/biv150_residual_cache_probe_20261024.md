@@ -11,7 +11,28 @@ SO SHA df090263f0c4f13a44d5c41c7a9290f4c0910cab8c85256b30a88cb62ae53076.
 Formal105-question accuracy plus fixed4K/16K is now running privately in
 residual-cache-service-v2-20261024; no new model score/gain is claimed yet.
 
-## Current: rejected by real-model accuracy; close without merging
+## Current: Draft restored for performance/accuracy tradeoff exploration
+
+User explicitly requested on2026-10-24 that near-threshold candidates such as
+99/105 should also be benchmarked: substantial throughput could fund selective
+higher-precision fallbacks. The PR is therefore reopened as Draft. Precision
+still fails0.95; it remains ineligible for merging. No passing accuracy is claimed.
+
+A separate throughput-only follow-up will reproduce exactly runtime8a1fc9b:
+source hashes match the original manifest and the exact checked private SO is
+copied by SHA. Fresh private service/cache, fixed serve/benchmark, sufficient
+TPOT-stable warmup and one full4K/16K round. It reuses existing `--mode throughput`,
+without changing the original `all` accuracy gate or rerunning105 questions to
+select a passing score. Output explicitly records diagnostic_only,
+precision_gate=false and eligible_for_merge=false; original99/105 stays attached.
+
+The queue runs after the current norm-v2 queue and refuses a busy GPU/port.
+The e972997 passing reference is reported as a separate warmed-round comparison;
+only meaningful measured performance would justify layer/shape-specific accuracy
+recovery or a narrower route. Formal merge still requires fresh joint validation.
+PR33 remains independent of this failing production route.
+
+## Historical: rejected by real-model accuracy; closed before user steering
 
 Runtime `8a1fc9bb05689b4b781ba8b065416bdfb459bcb5` finished the real
 105-question Level3 run with **99/105 = 0.9429**, below the required0.95.
