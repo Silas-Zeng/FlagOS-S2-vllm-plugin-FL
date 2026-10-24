@@ -95,3 +95,14 @@ Split workspace 预填 NaN，验证有效输出全部写入。另测非整除 K/
 
 在个人实例的已有串行队列结束后才允许启动；队列核对前驱 PID/start_ticks，
 并在 9031 端口及 GPU 空闲后再次校验，不停止任何已有进程。
+
+
+## 39d63d5：真实权重、每个输出CPU FP64的81记录终态
+
+全部81条完成；五模式candidate CPU通过41/81，changed-input Graph CPU通过38/81，native CPU五模式通过42/81。
+直接native比较通过49/81；这些是各自不同的证据门，不能混同或把native与CPU不一致反向改写为candidate自动通过。
+QKV/O/down的M1 split4在layer4/20/37均有完整CPU/Graph与正完整调用时序，代表层中约1.38–1.80x；
+layer37的QKV/O M8 split4约2.14x/2.13x且对应完整门过，但不能泛化其他层。
+下一步优先补完整42层与实际路由，不能按这3层就安装。部分M8/16候选CPU过而native不过，仍需分清误差来源及模型门。
+完整JSON、日志、每个失败fixture的逐文件SHA与可解码原始archive在real-oracle-final/，
+原先347/640随机矩阵记录不改写，不宣称模型吞吐已提升。
