@@ -26,3 +26,29 @@ port, with no package installation. No candidate is installed in a real model;
 full accuracy, service throughput/TTFT, memory, and a chosen source revision
 would require separate acceptance. Local validation: Ruff, syntax, diff checks;
 C++/CUDA compilation and GPU results pending.
+
+
+## Completed standalone probe
+
+Runtime66705f85636bfb1f06bd1da5063c32693e8bb3c9: private build and9 unchanged
+gate route checks passed; all36 new numeric/Graph cases passed bit-exact against
+the old quantizer, independent CPU full quantization reference and full gate.
+Raw evidence: `evidence/quant-row-cache-20261024/result.json`.
+
+For256 threads, complete gate median speedups for contiguous/pitched inputs:
+
+|M|pitch2048|pitch2080|
+|---|---:|---:|
+|17|1.04834|1.03459|
+|32|1.04768|1.03222|
+|40|1.04910|1.02937|
+|64|1.04260|1.02939|
+|256|1.02812|1.02264|
+|2048|1.01526|1.01525|
+
+64-thread cases regress for M17..64.128 threads improve these cases but less than
+256.256 threads improve every tested full-gate case and are the proposed bounded
+service choice for compressed gate M17..2048. No activation scale, quantized
+value, GEMM or epilogue differs bitwise on the tested cases. This evidence is
+operator-only and does not establish any end-to-end gain. Small-M residual and
+uncompressed BF16 fallback remain independent and unchanged.
