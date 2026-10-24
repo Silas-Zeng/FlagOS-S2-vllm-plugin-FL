@@ -79,7 +79,7 @@ def install():
     compressed = True
     skip_edges = 4
     fused_silu = True
-    from vllm_fl.patches.biv150_int8_gemm_silu import gate_m32_or_auto
+    from vllm_fl.patches.biv150_int8_gemm_silu import gate_m32_m64_or_auto
 
     def after(self, layer):
         after_loading(self, layer)
@@ -161,7 +161,7 @@ def install():
                 return forward_original(self, x)
             # Operator fusion only: replace gate/up linear + activation; leave
             # down projection and all framework scheduling/dispatch intact.
-            y = gate_m32_or_auto(
+            y = gate_m32_m64_or_auto(
                 x.reshape(-1, x.shape[-1]),
                 layer._biv150_native_wq,
                 layer._biv150_native_sw,
@@ -183,7 +183,7 @@ def install():
         "activation_residual_rows": [1, 16],
         "cached_quantization_rows": [17, 2048],
         "cached_quantization_threads": 256,
-        "gate_operator": "gate_m32_or_auto",
-        "fused_int8_gemm_rows": [32, 32],
-        "fused_int8_gemm_config": [32, 64, 128, 4],
+        "gate_operator": "gate_m32_m64_or_auto",
+        "fused_int8_gemm_exact_rows": [32, 64],
+        "fused_int8_gemm_configs": {"32": [32, 64, 128, 4], "64": [64, 64, 128, 8]},
     }

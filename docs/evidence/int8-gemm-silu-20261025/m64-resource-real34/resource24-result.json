@@ -1,0 +1,2299 @@
+{
+  "component_only": true,
+  "service_installed": false,
+  "rows": [
+    32,
+    64,
+    40,
+    63,
+    256,
+    2048
+  ],
+  "weight_identity": [
+    {
+      "key": "model.layers.20.mlp.gate_proj.weight",
+      "sha256": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265"
+    },
+    {
+      "key": "model.layers.20.mlp.up_proj.weight",
+      "sha256": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4"
+    }
+  ],
+  "resource_tiles": true,
+  "worker_policy": {
+    "before_int_mm": "CPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCPU_3.cpp:4281 [kernel]\nCUDA: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCUDA_0.cpp:16227 [kernel]\nMeta: registered at /usr/local/lib/python3.12/site-packages/torch/_meta_registrations.py:51 [kernel]\nBackendSelect: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/BackendSelectFallbackKernel.cpp:3 [backend fallback]\nPython: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:198 [backend fallback]\nFuncTorchDynamicLayerBackMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:477 [backend fallback]\nFunctionalize: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/FunctionalizeFallbackKernel.cpp:384 [backend fallback]\nNamed: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/NamedRegistrations.cpp:5 [backend fallback]\nConjugate: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ConjugateFallback.cpp:17 [backend fallback]\nNegative: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/native/NegateFallback.cpp:18 [backend fallback]\nZeroTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ZeroTensorFallback.cpp:115 [backend fallback]\nADInplaceOrView: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/VariableFallbackKernel.cpp:103 [backend fallback]\nAutogradOther: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCUDA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHIP: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXLA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMPS: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradIPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradVE: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradLazy: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMTIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMAIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse1: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse2: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse3: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMeta: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradNestedTensor: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nTracer: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/TraceType_1.cpp:16771 [kernel]\nAutocastCPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:324 [backend fallback]\nAutocastMTIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:468 [backend fallback]\nAutocastMAIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:506 [backend fallback]\nAutocastXPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:544 [backend fallback]\nAutocastMPS: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:209 [backend fallback]\nAutocastCUDA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:165 [backend fallback]\nFuncTorchBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:727 [backend fallback]\nBatchedNestedTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:754 [backend fallback]\nFuncTorchVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/VmapModeRegistrations.cpp:22 [backend fallback]\nBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/LegacyBatchingRegistrations.cpp:1072 [backend fallback]\nVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/VmapModeRegistrations.cpp:32 [backend fallback]\nFuncTorchGradWrapper: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/TensorWrapper.cpp:210 [backend fallback]\nPythonTLSSnapshot: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:206 [backend fallback]\nFuncTorchDynamicLayerFrontMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:473 [backend fallback]\nPreDispatch: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:210 [backend fallback]\nPythonDispatcher: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:202 [backend fallback]\n",
+    "after_int_mm": "CPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCPU_3.cpp:4281 [kernel]\nCUDA: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCUDA_0.cpp:16227 [kernel]\nMeta: registered at /usr/local/lib/python3.12/site-packages/torch/_meta_registrations.py:51 [kernel]\nBackendSelect: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/BackendSelectFallbackKernel.cpp:3 [backend fallback]\nPython: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:198 [backend fallback]\nFuncTorchDynamicLayerBackMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:477 [backend fallback]\nFunctionalize: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/FunctionalizeFallbackKernel.cpp:384 [backend fallback]\nNamed: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/NamedRegistrations.cpp:5 [backend fallback]\nConjugate: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ConjugateFallback.cpp:17 [backend fallback]\nNegative: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/native/NegateFallback.cpp:18 [backend fallback]\nZeroTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ZeroTensorFallback.cpp:115 [backend fallback]\nADInplaceOrView: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/VariableFallbackKernel.cpp:103 [backend fallback]\nAutogradOther: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCUDA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHIP: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXLA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMPS: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradIPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradVE: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradLazy: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMTIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMAIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse1: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse2: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse3: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMeta: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradNestedTensor: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nTracer: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/TraceType_1.cpp:16771 [kernel]\nAutocastCPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:324 [backend fallback]\nAutocastMTIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:468 [backend fallback]\nAutocastMAIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:506 [backend fallback]\nAutocastXPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:544 [backend fallback]\nAutocastMPS: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:209 [backend fallback]\nAutocastCUDA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:165 [backend fallback]\nFuncTorchBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:727 [backend fallback]\nBatchedNestedTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:754 [backend fallback]\nFuncTorchVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/VmapModeRegistrations.cpp:22 [backend fallback]\nBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/LegacyBatchingRegistrations.cpp:1072 [backend fallback]\nVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/VmapModeRegistrations.cpp:32 [backend fallback]\nFuncTorchGradWrapper: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/TensorWrapper.cpp:210 [backend fallback]\nPythonTLSSnapshot: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:206 [backend fallback]\nFuncTorchDynamicLayerFrontMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:473 [backend fallback]\nPreDispatch: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:210 [backend fallback]\nPythonDispatcher: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:202 [backend fallback]\n",
+    "whitelist": null,
+    "blacklist": null,
+    "diagnostic_record": false,
+    "worker_record": true
+  },
+  "inference_mode": true,
+  "no_int32_output_tensor": true,
+  "weight_repacked": false,
+  "commit": "6e5dc2fe8086f4869a2eeb94fdc3c7572eb5d4a8",
+  "library_sha256": "3e114fc0201dd8e4ef31b5aa7a3c75364469a6d69e54d3ae2d6ac929e254830d",
+  "records": [
+    {
+      "m": 32,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 60,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-32-64-128-4/ttir.txt",
+            "sha256": "195307e7d95577bd576b6afd59e7aa3fda8d7f94daf79d55c316bf4bf45c5954"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-32-64-128-4/ttgir.txt",
+            "sha256": "41bc7e70d52f737ef073c0fa7255b88e098bad4787ae812303d841da310894b3"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-32-64-128-4/llir.txt",
+            "sha256": "bcf0b332c8cef7e457a139c34ff17114ccf981cb446e4d256fa40c378bece7bd"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-32-64-128-4/asm.txt",
+            "sha256": "b0a70917d94b17daf1563658909076e9619818efc9d9b3d2b43f970e1aea62bb"
+          }
+        },
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05629423260688782,
+          "candidate_ms": 0.05468028783798218,
+          "speedup": 1.0295160254768183
+        },
+        {
+          "candidate_ms": 0.05459711700677872,
+          "baseline_ms": 0.05627884715795517,
+          "speedup": 1.0308025449579628
+        },
+        {
+          "baseline_ms": 0.05647788569331169,
+          "candidate_ms": 0.054554328322410583,
+          "speedup": 1.0352594822455348
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 1.0308025449579628,
+      "min_round_speedup": 1.0295160254768183,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 32,
+      "config": [
+        64,
+        32,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          192
+        ],
+        "n_regs_api": 82,
+        "n_spills_api": 0,
+        "shared_bytes": 8192,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-32-128-4/ttir.txt",
+            "sha256": "a495a01d013f1971739c88e1153c51ec3e532bd861f6e312831b9232351a5628"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-32-128-4/ttgir.txt",
+            "sha256": "2d9a91cc7bcd0053449f12258baffa27cd842edf861493d08e2e0e0c9173ed8a"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-32-128-4/llir.txt",
+            "sha256": "91d9b361c641881f294bb04afc3167186c6ea798935d6999890226e1a7e0386a"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-32-128-4/asm.txt",
+            "sha256": "a3027ac99eab805d5a9cde5ddd9d7b5597e121812635cdb5325d519d5570f01b"
+          }
+        },
+        "vgpr_count": 82,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05627692490816116,
+          "candidate_ms": 0.4123557507991791,
+          "speedup": 0.13647663406922758
+        },
+        {
+          "candidate_ms": 0.4122721254825592,
+          "baseline_ms": 0.05627932772040367,
+          "speedup": 0.1365101452215074
+        },
+        {
+          "baseline_ms": 0.05627019330859184,
+          "candidate_ms": 0.4126552939414978,
+          "speedup": 0.13636125389577403
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.13647663406922758,
+      "min_round_speedup": 0.13636125389577403,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 32,
+      "config": [
+        64,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 95,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-4/ttir.txt",
+            "sha256": "6a1af655521949c97a07e1c2b264599b010824f39c5902dd8c964b2212a9a346"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-4/ttgir.txt",
+            "sha256": "debd170a38e1ae3df9268bdcee7bbbd07436031441cbc79fb9ec8fdf99b11f31"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-4/llir.txt",
+            "sha256": "c4c3cdb2cacb46897492fa9135554ea6a87fbddac52cca5b51d196590b627b83"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-4/asm.txt",
+            "sha256": "c2d93c327d8452b881a6d2b78486b3824026ca097b16d027deb639d8cf50ce0b"
+          }
+        },
+        "vgpr_count": 95,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05628173053264618,
+          "candidate_ms": 0.1589754819869995,
+          "speedup": 0.35402773955576816
+        },
+        {
+          "candidate_ms": 0.1588476002216339,
+          "baseline_ms": 0.05627644062042236,
+          "speedup": 0.354279451133678
+        },
+        {
+          "baseline_ms": 0.05629855766892433,
+          "candidate_ms": 0.15860047936439514,
+          "speedup": 0.35497091745589654
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.354279451133678,
+      "min_round_speedup": 0.35402773955576816,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 32,
+      "config": [
+        64,
+        64,
+        128,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 70,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 8,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-8/ttir.txt",
+            "sha256": "6a1af655521949c97a07e1c2b264599b010824f39c5902dd8c964b2212a9a346"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-8/ttgir.txt",
+            "sha256": "cd5b9196913b814e6496bc2c4f1f6feb4c853c1f333a9152ac03ae4d425da3f0"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-8/llir.txt",
+            "sha256": "0b9bea4613b31d759a74ceb0ecd7b24279a13a9d01fa5b62722329df3d7e4615"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m32-64-64-128-8/asm.txt",
+            "sha256": "8371af52ba9d814894f8e15d80f3c23a1dc9a8c7982a5d48ada2e45288fb05cb"
+          }
+        },
+        "vgpr_count": 70,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05632644146680832,
+          "candidate_ms": 0.1723552942276001,
+          "speedup": 0.3268042430563673
+        },
+        {
+          "candidate_ms": 0.17214086651802063,
+          "baseline_ms": 0.056296154856681824,
+          "speedup": 0.327035386746984
+        },
+        {
+          "baseline_ms": 0.05621394142508507,
+          "candidate_ms": 0.17151154577732086,
+          "speedup": 0.3277560188167711
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.327035386746984,
+      "min_round_speedup": 0.3268042430563673,
+      "avoided_int32_global_bytes": 1572864,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          2,
+          96
+        ],
+        "n_regs_api": 60,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-32-64-128-4/ttir.txt",
+            "sha256": "4922062d0b755a27567aff72b65e3cd04db8b7c9be993480db25fc5d1b44c9c9"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-32-64-128-4/ttgir.txt",
+            "sha256": "f43731a6e6030782355bc218d2e260cdd6c91edb00a172b4c328da544cfa8841"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-32-64-128-4/llir.txt",
+            "sha256": "7d723b9a4e444140cbcde229a7081cb12f1f90aa5ad78fff0afc4116c14ceb07"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-32-64-128-4/asm.txt",
+            "sha256": "abb2544cf8f1363bef745ae0b68eaebd75a559485428fa34f348d1f418b07d18"
+          }
+        },
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.06315288692712784,
+          "candidate_ms": 0.08467211574316025,
+          "speedup": 0.7458522368649951
+        },
+        {
+          "candidate_ms": 0.0849437564611435,
+          "baseline_ms": 0.06318846344947815,
+          "speedup": 0.7438859085350547
+        },
+        {
+          "baseline_ms": 0.063202403485775,
+          "candidate_ms": 0.08484615385532379,
+          "speedup": 0.7449059340220083
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.7449059340220083,
+      "min_round_speedup": 0.7438859085350547,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        64,
+        32,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          192
+        ],
+        "n_regs_api": 83,
+        "n_spills_api": 0,
+        "shared_bytes": 8192,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-32-128-4/ttir.txt",
+            "sha256": "708088580e5efe0b85b70ade30d7781ec967ebbeece3131477a0ec2cabd6ffe3"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-32-128-4/ttgir.txt",
+            "sha256": "9d19d511466228e7031eea84a6a36d20a1f2aa6622059d1e57434c57b0560e63"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-32-128-4/llir.txt",
+            "sha256": "9849d95f75303e7648774c825806284d3284927465fbdc3f966c9c31ef0ceb58"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-32-128-4/asm.txt",
+            "sha256": "481852062e192823ca9aea5cb46d5573a69cc602347d0733f93beb007803baf2"
+          }
+        },
+        "vgpr_count": 83,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.06313557922840118,
+          "candidate_ms": 0.24989759922027588,
+          "speedup": 0.25264580142184323
+        },
+        {
+          "candidate_ms": 0.24944183230400085,
+          "baseline_ms": 0.06319807469844818,
+          "speedup": 0.25335796371727715
+        },
+        {
+          "baseline_ms": 0.0631086528301239,
+          "candidate_ms": 0.24713268876075745,
+          "speedup": 0.25536343713403975
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.25335796371727715,
+      "min_round_speedup": 0.25264580142184323,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        64,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 92,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-4/ttir.txt",
+            "sha256": "7ca397159e613d6b391dc165016018afe20c04353106c6b0254378ff1fb33c34"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-4/ttgir.txt",
+            "sha256": "9aa56e6764a867c159aa0d7fa2a800dadda3903b3a2f40c909894134f0790f6e"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-4/llir.txt",
+            "sha256": "d4d320d8b330da7fa28ca46e87e2646d9988b4db010a45a1df772b9b8969b8c4"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-4/asm.txt",
+            "sha256": "35020844b1231e8f4622c7d4855491153fe08c7fcbaf40559280c2ea2fba7c6a"
+          }
+        },
+        "vgpr_count": 92,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.06318365037441254,
+          "candidate_ms": 0.0605466328561306,
+          "speedup": 1.0435534957748676
+        },
+        {
+          "candidate_ms": 0.060570672154426575,
+          "baseline_ms": 0.06325577199459076,
+          "speedup": 1.0443300320874507
+        },
+        {
+          "baseline_ms": 0.06322836875915527,
+          "candidate_ms": 0.0606105774641037,
+          "speedup": 1.0431903374720684
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 1.0435534957748676,
+      "min_round_speedup": 1.0431903374720684,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 64,
+      "config": [
+        64,
+        64,
+        128,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 61,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 8,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-8/ttir.txt",
+            "sha256": "7ca397159e613d6b391dc165016018afe20c04353106c6b0254378ff1fb33c34"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-8/ttgir.txt",
+            "sha256": "d50a689201cf4b084759d3398644ae9cde201a95520733a208e0cf0d378d62c9"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-8/llir.txt",
+            "sha256": "f237b9d243b697482b6684b39b46d95b7e87fa7b5f17e61b56c89dd92657680b"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m64-64-64-128-8/asm.txt",
+            "sha256": "9e9bcce7e783e3098ce2754544c2be17f1de41b4510e299d870e7d64e82643c3"
+          }
+        },
+        "vgpr_count": 61,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.0632990375161171,
+          "candidate_ms": 0.05669086426496506,
+          "speedup": 1.116565046887738
+        },
+        {
+          "candidate_ms": 0.05693846195936203,
+          "baseline_ms": 0.06323221325874329,
+          "speedup": 1.1105360257864572
+        },
+        {
+          "baseline_ms": 0.06316778808832169,
+          "candidate_ms": 0.056952886283397675,
+          "speedup": 1.1091235617804978
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 1.1105360257864572,
+      "min_round_speedup": 1.1091235617804978,
+      "avoided_int32_global_bytes": 3145728,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          2,
+          96
+        ],
+        "n_regs_api": 75,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-32-64-128-4/ttir.txt",
+            "sha256": "ca3cf0873ed3c53bee7b9453e6bde27f6bb05f51c1e16b824c65612e00a27dc5"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-32-64-128-4/ttgir.txt",
+            "sha256": "0a92cb6dfea964b9b641de53b70f28449caa2aa980a2bdaaaf72d055a6652252"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-32-64-128-4/llir.txt",
+            "sha256": "f2ebb84dc127d084ea9e0abb1ad4f1a5c0363a185297011a96a25f2905ab85f4"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-32-64-128-4/asm.txt",
+            "sha256": "64af6825bc93d8203b42558b0acc622daf717e0675b4c8005b17bbe896a22d36"
+          }
+        },
+        "vgpr_count": 75,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05814134702086449,
+          "candidate_ms": 0.25475624203681946,
+          "speedup": 0.22822344432471814
+        },
+        {
+          "candidate_ms": 0.24969422817230225,
+          "baseline_ms": 0.05785096064209938,
+          "speedup": 0.2316872162626809
+        },
+        {
+          "baseline_ms": 0.057948075234889984,
+          "candidate_ms": 0.2502264380455017,
+          "speedup": 0.23158254454452404
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.23158254454452404,
+      "min_round_speedup": 0.22822344432471814,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        64,
+        32,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          192
+        ],
+        "n_regs_api": 90,
+        "n_spills_api": 0,
+        "shared_bytes": 8192,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-32-128-4/ttir.txt",
+            "sha256": "f2d5b3c00e5b7684b7418b6cef111c4b1639ca5dfb8c2bca08c6abce87073883"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-32-128-4/ttgir.txt",
+            "sha256": "091958c24776789e5d9deddf772c1b5a0640c4707fcbdc61801444fc108585dc"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-32-128-4/llir.txt",
+            "sha256": "842c0684ae901ec34bd0f368528196c8aac26edae5ff6aadab882d57730e9df0"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-32-128-4/asm.txt",
+            "sha256": "13e860ee49dd1179a38cea693a404bfcc24a80b5594f906ac4dfa00d5f0c9137"
+          }
+        },
+        "vgpr_count": 90,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05802595987915993,
+          "candidate_ms": 0.5260716080665588,
+          "speedup": 0.11030049709852134
+        },
+        {
+          "candidate_ms": 0.5269817113876343,
+          "baseline_ms": 0.057900480926036835,
+          "speedup": 0.10987189816051647
+        },
+        {
+          "baseline_ms": 0.057970672845840454,
+          "candidate_ms": 0.524389386177063,
+          "speedup": 0.11054890578251775
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.11030049709852134,
+      "min_round_speedup": 0.10987189816051647,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        64,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 103,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-4/ttir.txt",
+            "sha256": "faa5f4494cb265bd8c8c41e895c5647c90c22803c27dad80469a5f5c8aed6592"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-4/ttgir.txt",
+            "sha256": "59f5caad2fe542a407acc3dbc8d2979d289436b7dcafafdcfbce215cdc6adb2b"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-4/llir.txt",
+            "sha256": "4266f67770968a8046ccdc39bd7debccd913094d0641313cc25bf51f5e716550"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-4/asm.txt",
+            "sha256": "bef01940d7cfc4c85d194398f8ca1b72f0dadaa10d3d5b4961efabcb8b9ade6f"
+          }
+        },
+        "vgpr_count": 103,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05827980861067772,
+          "candidate_ms": 0.1612423062324524,
+          "speedup": 0.3614424152843582
+        },
+        {
+          "candidate_ms": 0.16087211668491364,
+          "baseline_ms": 0.057984136044979095,
+          "speedup": 0.3604362100770243
+        },
+        {
+          "baseline_ms": 0.05808365345001221,
+          "candidate_ms": 0.16061778366565704,
+          "speedup": 0.36162654050138987
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.3614424152843582,
+      "min_round_speedup": 0.3604362100770243,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 40,
+      "config": [
+        64,
+        64,
+        128,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 74,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 8,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-8/ttir.txt",
+            "sha256": "faa5f4494cb265bd8c8c41e895c5647c90c22803c27dad80469a5f5c8aed6592"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-8/ttgir.txt",
+            "sha256": "9c44f52dd9338eda0ad087998d0821202d04e01d9fe36ba89726892bf75f1eeb"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-8/llir.txt",
+            "sha256": "93bfec7634c1e73790260dddf960bf8d62a941a8321f93ddc5cdaad2aa00cca5"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m40-64-64-128-8/asm.txt",
+            "sha256": "5c142c2835d4976fc999b81d06ac01c2c451d80b4f5fa771420c1f45efafc41d"
+          }
+        },
+        "vgpr_count": 74,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.05797692388296127,
+          "candidate_ms": 0.17297932505607605,
+          "speedup": 0.33516678287515833
+        },
+        {
+          "candidate_ms": 0.17336393892765045,
+          "baseline_ms": 0.0579216331243515,
+          "speedup": 0.33410427498722095
+        },
+        {
+          "baseline_ms": 0.05802932754158974,
+          "candidate_ms": 0.1729951947927475,
+          "speedup": 0.33543895604216234
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.33516678287515833,
+      "min_round_speedup": 0.33410427498722095,
+      "avoided_int32_global_bytes": 1966080,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 63,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          2,
+          96
+        ],
+        "n_regs_api": 75,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-32-64-128-4/ttir.txt",
+            "sha256": "b658e258771b151cfe40f1e87e020aef30076af9f1849fbbf1ef98b91a72beaf"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-32-64-128-4/ttgir.txt",
+            "sha256": "3d161aea21fe892a72bef99690e203941f8cef9801dd055553052b707632f055"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-32-64-128-4/llir.txt",
+            "sha256": "fdad78b6addb7dcd94d74ad99a4572e4b3d3f7811a938f0b5f2dcaccf11afd7f"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-32-64-128-4/asm.txt",
+            "sha256": "aeca8ffe91d1cf8be8f0e0543e753be6cbc675a85feee39496671d552f8fcd21"
+          }
+        },
+        "vgpr_count": 75,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.06308461725711823,
+          "candidate_ms": 0.250966340303421,
+          "speedup": 0.25136684537395826
+        },
+        {
+          "candidate_ms": 0.25014087557792664,
+          "baseline_ms": 0.06303461641073227,
+          "speedup": 0.2519964650523302
+        },
+        {
+          "baseline_ms": 0.06305625289678574,
+          "candidate_ms": 0.25193846225738525,
+          "speedup": 0.2502843445649289
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.25136684537395826,
+      "min_round_speedup": 0.2502843445649289,
+      "avoided_int32_global_bytes": 3096576,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 63,
+      "config": [
+        64,
+        32,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          192
+        ],
+        "n_regs_api": 96,
+        "n_spills_api": 0,
+        "shared_bytes": 8192,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-32-128-4/ttir.txt",
+            "sha256": "b7d9f963f06a3e7022fc30878688cd386646ce4f081ef022bae18e630b34913f"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-32-128-4/ttgir.txt",
+            "sha256": "c1caa8b0017a92857f88e10895ce83d5a6537bf18def72a985cbf00f6b916e30"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-32-128-4/llir.txt",
+            "sha256": "8d0d7b958a70a59b8ba4671a0bad9c231f95ef092322f26c1d2f27a682b236f2"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-32-128-4/asm.txt",
+            "sha256": "0ae8f9c9e2feb06d32b71bbfd798c6ed2979512b2cf4f063af65655e1c8d154c"
+          }
+        },
+        "vgpr_count": 96,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.06305433064699173,
+          "candidate_ms": 0.5324331521987915,
+          "speedup": 0.11842675533369022
+        },
+        {
+          "candidate_ms": 0.5342567563056946,
+          "baseline_ms": 0.06300000101327896,
+          "speedup": 0.11792083164079109
+        },
+        {
+          "baseline_ms": 0.06305143982172012,
+          "candidate_ms": 0.5326658487319946,
+          "speedup": 0.1183695931920798
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.1183695931920798,
+      "min_round_speedup": 0.11792083164079109,
+      "avoided_int32_global_bytes": 3096576,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 63,
+      "config": [
+        64,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 109,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-4/ttir.txt",
+            "sha256": "66eef82851e5e16964620bf27533bbad090c885aa2a57cfee93c81b2de5551d4"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-4/ttgir.txt",
+            "sha256": "823d8d4cbdc5e39f1fa2efa0fa46ccac0a814085ea6e1189c36ff218a3df4d1c"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-4/llir.txt",
+            "sha256": "f8725dbf74ce1c74cd72b8f274b907b417406edb72dc91703e52e3485a35e05b"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-4/asm.txt",
+            "sha256": "59247800b9e88d131dec4ee7345f56dea2c8c97bb786cc2c4f08dfecbbf518d8"
+          }
+        },
+        "vgpr_count": 109,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.06306057423353195,
+          "candidate_ms": 0.16437307000160217,
+          "speedup": 0.38364297894367544
+        },
+        {
+          "candidate_ms": 0.16461683809757233,
+          "baseline_ms": 0.06306057423353195,
+          "speedup": 0.3830748723053133
+        },
+        {
+          "baseline_ms": 0.06297307461500168,
+          "candidate_ms": 0.16443268954753876,
+          "speedup": 0.3829717484295948
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.3830748723053133,
+      "min_round_speedup": 0.3829717484295948,
+      "avoided_int32_global_bytes": 3096576,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 63,
+      "config": [
+        64,
+        64,
+        128,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          1,
+          96
+        ],
+        "n_regs_api": 76,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 8,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-8/ttir.txt",
+            "sha256": "66eef82851e5e16964620bf27533bbad090c885aa2a57cfee93c81b2de5551d4"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-8/ttgir.txt",
+            "sha256": "038c329a9d6173db731060b4f9308a4de84207c51b94a24c6869a30c79d776ed"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-8/llir.txt",
+            "sha256": "fb57804238360608270ee13d65f32e5b2538bdb34906081037e69a2dee0d7c07"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m63-64-64-128-8/asm.txt",
+            "sha256": "6bc4fc908aec89867ff0c902e89151c079d0ca2262f1abaabdadc5e9c3ef82cb"
+          }
+        },
+        "vgpr_count": 76,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.06308605521917343,
+          "candidate_ms": 0.1742802858352661,
+          "speedup": 0.36198044383978045
+        },
+        {
+          "candidate_ms": 0.1749158650636673,
+          "baseline_ms": 0.06300336867570877,
+          "speedup": 0.3601924196686006
+        },
+        {
+          "baseline_ms": 0.06299807876348495,
+          "candidate_ms": 0.1749822199344635,
+          "speedup": 0.36002560024144037
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.3601924196686006,
+      "min_round_speedup": 0.36002560024144037,
+      "avoided_int32_global_bytes": 3096576,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          8,
+          96
+        ],
+        "n_regs_api": 60,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-32-64-128-4/ttir.txt",
+            "sha256": "1453ef49d45b23ff8c90fa2b43b7e3cfb703e6a3a102bc9cb7eec3441a0f4e74"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-32-64-128-4/ttgir.txt",
+            "sha256": "713a6fe3d676c790f4cd765ebdccf5ba166684e8d1fa87dbcb33876702a420e7"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-32-64-128-4/llir.txt",
+            "sha256": "328737e2bcc4a52f401c211f7700a58222afad5cc4e9b5bab16642c1446ebd1c"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-32-64-128-4/asm.txt",
+            "sha256": "55274cc5aedc543959d776c565879f90ac84dc67ade31b92746bb69f116a4517"
+          }
+        },
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.11640816926956177,
+          "candidate_ms": 0.24255529046058655,
+          "speedup": 0.4799242640657934
+        },
+        {
+          "candidate_ms": 0.2421879917383194,
+          "baseline_ms": 0.11673124879598618,
+          "speedup": 0.4819861131765467
+        },
+        {
+          "baseline_ms": 0.11657355725765228,
+          "candidate_ms": 0.24221105873584747,
+          "speedup": 0.4812891610567874
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.4812891610567874,
+      "min_round_speedup": 0.4799242640657934,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        64,
+        32,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          4,
+          192
+        ],
+        "n_regs_api": 83,
+        "n_spills_api": 0,
+        "shared_bytes": 8192,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-32-128-4/ttir.txt",
+            "sha256": "81b5bf1eda5aaed82b793709aadd3817ff4432e85ffefcef8ee6eb85a31ba14d"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-32-128-4/ttgir.txt",
+            "sha256": "b08adaa5c4ba72fb5c2fb6d076c6f0031714d8c49b01da26e415c9e21a4cb647"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-32-128-4/llir.txt",
+            "sha256": "1affb638f34eec52c78bb03077e5b523b219241daa7d84b10ced044c8af561dd"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-32-128-4/asm.txt",
+            "sha256": "c7ab943d50c3f4b167962ada8a206e43d729a3c5ca60d20fdf091c0d89c472f5"
+          }
+        },
+        "vgpr_count": 83,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.11664807796478271,
+          "candidate_ms": 0.772015392780304,
+          "speedup": 0.15109553391764793
+        },
+        {
+          "candidate_ms": 0.772722065448761,
+          "baseline_ms": 0.11656250059604645,
+          "speedup": 0.15084660553643228
+        },
+        {
+          "baseline_ms": 0.11663557589054108,
+          "candidate_ms": 0.7720903754234314,
+          "speedup": 0.15106466756119782
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.15106466756119782,
+      "min_round_speedup": 0.15084660553643228,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        64,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          4,
+          96
+        ],
+        "n_regs_api": 92,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-4/ttir.txt",
+            "sha256": "72475105322a285f01397bd4692887566d7f57465e6317b91fc979797f8c0897"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-4/ttgir.txt",
+            "sha256": "41fced20823b6c3de58054ae724c86803d335997c3309286d9041afbe805dc95"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-4/llir.txt",
+            "sha256": "1ed5ba13c7fce7fc65d7056ad175e250d0112600c7588acccb5a23cbee8a533e"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-4/asm.txt",
+            "sha256": "67575b47ccb404728b31455be4c686746a52893fd665a1011402b5b016059bd6"
+          }
+        },
+        "vgpr_count": 92,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.11633077263832092,
+          "candidate_ms": 0.1704360544681549,
+          "speedup": 0.6825479092515412
+        },
+        {
+          "candidate_ms": 0.17054423689842224,
+          "baseline_ms": 0.11631249636411667,
+          "speedup": 0.6820077797961211
+        },
+        {
+          "baseline_ms": 0.11651970446109772,
+          "candidate_ms": 0.17067018151283264,
+          "speedup": 0.6827185828728766
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.6825479092515412,
+      "min_round_speedup": 0.6820077797961211,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 256,
+      "config": [
+        64,
+        64,
+        128,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          4,
+          96
+        ],
+        "n_regs_api": 61,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 8,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-8/ttir.txt",
+            "sha256": "72475105322a285f01397bd4692887566d7f57465e6317b91fc979797f8c0897"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-8/ttgir.txt",
+            "sha256": "4f9544441da80544cceaeb32008dcdb04469122eeb76d709221fbf14e058dc6c"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-8/llir.txt",
+            "sha256": "ac8cbdd747ae5b05714cd64e5e1f86378eb7b24a856d74a8cdb04f7c2fa5c2b4"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m256-64-64-128-8/asm.txt",
+            "sha256": "04ef49d54b82c7ab487824e3efa713390b3f87b48ed73c77d650eece0205504d"
+          }
+        },
+        "vgpr_count": 61,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.11642307788133621,
+          "candidate_ms": 0.15888172388076782,
+          "speedup": 0.7327657016656332
+        },
+        {
+          "candidate_ms": 0.15947787463665009,
+          "baseline_ms": 0.11676298826932907,
+          "speedup": 0.7321579155438244
+        },
+        {
+          "baseline_ms": 0.1164533719420433,
+          "candidate_ms": 0.1587793231010437,
+          "speedup": 0.7334290741870395
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.7327657016656332,
+      "min_round_speedup": 0.7321579155438244,
+      "avoided_int32_global_bytes": 12582912,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        32,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          64,
+          96
+        ],
+        "n_regs_api": 60,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-32-64-128-4/ttir.txt",
+            "sha256": "fc803f7d920209b4dca649b9ebffc665e4bc7cc04593636ea3a07c40e1e1ee17"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-32-64-128-4/ttgir.txt",
+            "sha256": "1d9c44890c9ba10ae8272edae8505e620d083ffc4aa17855da2e49bed6748043"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-32-64-128-4/llir.txt",
+            "sha256": "c2ce6035f53ec084274133a45ca4c78728b66eb1e355d7eec74f4f49ae31e297"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-32-64-128-4/asm.txt",
+            "sha256": "a8976f362d9f6829935edb6d4bbe34c71871eae3d8871cf43670d60c4e746ffb"
+          }
+        },
+        "vgpr_count": 60,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.7098312377929688,
+          "candidate_ms": 1.7982971668243408,
+          "speedup": 0.39472410394021695
+        },
+        {
+          "candidate_ms": 1.7990158796310425,
+          "baseline_ms": 0.7108360528945923,
+          "speedup": 0.39512494633475753
+        },
+        {
+          "baseline_ms": 0.7102952003479004,
+          "candidate_ms": 1.7987308502197266,
+          "speedup": 0.394886872742041
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.394886872742041,
+      "min_round_speedup": 0.39472410394021695,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        64,
+        32,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          32,
+          192
+        ],
+        "n_regs_api": 83,
+        "n_spills_api": 0,
+        "shared_bytes": 8192,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 4096,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-32-128-4/ttir.txt",
+            "sha256": "bb6989f1c56c5cc205d630a6de7d15bcf5b1b8f0374c56f9b076cbd1554eb837"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-32-128-4/ttgir.txt",
+            "sha256": "468f748526a50a185391213325b551934f6cfb4292ea3efbddfbd7e9726ed23e"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-32-128-4/llir.txt",
+            "sha256": "e0248ef84f0558814e3c62b92093a468d5e600753b66e481d60db8d9397495f5"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-32-128-4/asm.txt",
+            "sha256": "72b7e3e49db568c6cc0d0a454e977df3b1c4550f1e2e135b0779f2ad9027c043"
+          }
+        },
+        "vgpr_count": 83,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.7109355926513672,
+          "candidate_ms": 5.9267730712890625,
+          "speedup": 0.11995323325189165
+        },
+        {
+          "candidate_ms": 5.933086395263672,
+          "baseline_ms": 0.7110259532928467,
+          "speedup": 0.11984082245295671
+        },
+        {
+          "baseline_ms": 0.7105639576911926,
+          "candidate_ms": 5.929256439208984,
+          "speedup": 0.11984031471338895
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.11984082245295671,
+      "min_round_speedup": 0.11984031471338895,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        64,
+        64,
+        128,
+        4
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          32,
+          96
+        ],
+        "n_regs_api": 92,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 4,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-4/ttir.txt",
+            "sha256": "f124f760a2996dfc7d27bf3fc9094e3c3018ef0760cd3b8be730403267b943eb"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-4/ttgir.txt",
+            "sha256": "876ffdcaa2eee935262c63fd42adb60fb1cbdb5ebf3d80a4910f197bff758b25"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-4/llir.txt",
+            "sha256": "6dec5f88f7e926736a1e0e3b096b2b16e58f6d665ab5defef3f05ceec608ba48"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-4/asm.txt",
+            "sha256": "f55d9f6c946f5b4f440f84635734403d27622591576adcc8179ba13c09032f61"
+          }
+        },
+        "vgpr_count": 92,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.7107961773872375,
+          "candidate_ms": 1.1341760158538818,
+          "speedup": 0.6267071137561516
+        },
+        {
+          "candidate_ms": 1.1331452131271362,
+          "baseline_ms": 0.711003839969635,
+          "speedup": 0.6274604805570159
+        },
+        {
+          "baseline_ms": 0.7111841440200806,
+          "candidate_ms": 1.134865403175354,
+          "speedup": 0.6266682745197686
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.6267071137561516,
+      "min_round_speedup": 0.6266682745197686,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    },
+    {
+      "m": 2048,
+      "config": [
+        64,
+        64,
+        128,
+        8
+      ],
+      "patterns": [
+        {
+          "name": "zero",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "tiny",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "normal",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "large",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        },
+        {
+          "name": "outlier",
+          "full_native_comparison": true,
+          "cpu_int64_dot": true
+        }
+      ],
+      "passed": true,
+      "resources": {
+        "grid": [
+          32,
+          96
+        ],
+        "n_regs_api": 61,
+        "n_spills_api": 0,
+        "shared_bytes": 16384,
+        "warp_size": 64,
+        "num_warps": 8,
+        "explicit_accumulator_elements": 8192,
+        "artifacts": {
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-8/ttir.txt",
+            "sha256": "f124f760a2996dfc7d27bf3fc9094e3c3018ef0760cd3b8be730403267b943eb"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-8/ttgir.txt",
+            "sha256": "dd2fd569dc40ae86081172c349cd36a5a6bc71e366cf8f2e8046a55178968fc4"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-8/llir.txt",
+            "sha256": "eb1088ac199294e29aa3fd45dfc4757fb5d65101674db109fd0e32d1a5c25c50"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/gate-resources-20261025/compiled/m2048-64-64-128-8/asm.txt",
+            "sha256": "9d5576be7b387b5422e1e0173835986226a50b6eaa153e7fc9491681c1e8498c"
+          }
+        },
+        "vgpr_count": 61,
+        "vgpr_spill_count": 0,
+        "sgpr_spill_count": 0,
+        "private_segment_fixed_size": 0
+      },
+      "rounds": [
+        {
+          "baseline_ms": 0.7110283970832825,
+          "candidate_ms": 1.087502360343933,
+          "speedup": 0.6538177966422187
+        },
+        {
+          "candidate_ms": 1.0867884159088135,
+          "baseline_ms": 0.7111052870750427,
+          "speedup": 0.6543180592152242
+        },
+        {
+          "baseline_ms": 0.7118231058120728,
+          "candidate_ms": 1.0872846841812134,
+          "speedup": 0.6546796033902709
+        }
+      ],
+      "changed_input_graph": true,
+      "median_speedup": 0.6543180592152242,
+      "min_round_speedup": 0.6538177966422187,
+      "avoided_int32_global_bytes": 100663296,
+      "full_call_includes_quantizer": true,
+      "full_call_includes_output_allocation": true
+    }
+  ],
+  "summary": {
+    "records": 24,
+    "passed": 24
+  },
+  "diagnostic_completed": true
+}

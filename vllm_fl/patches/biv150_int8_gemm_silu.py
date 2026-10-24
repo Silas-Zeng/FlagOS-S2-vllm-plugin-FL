@@ -10,7 +10,7 @@ import triton.language as tl
 from torch._inductor.runtime.triton_helpers import libdevice
 
 
-CONFIGS=((16,64,64,4),(32,64,64,4),(32,128,64,8),(32,64,128,4))
+CONFIGS=((16,64,64,4),(32,64,64,4),(32,128,64,8),(32,64,128,4),(64,64,128,8))
 
 
 @triton.jit
@@ -60,27 +60,30 @@ def full_gate(x,wq,sw,config):
     return from_quantized(aq,sa,wq,sw,x.shape[0],config)
 
 
-_SELECTED=False
+_SELECTED=set()
 
 
-@torch.library.custom_op("biv150_fused_gate::gate_m32_or_auto",mutates_args=())
-def gate_m32_or_auto(x:torch.Tensor,wq:torch.Tensor,sw:torch.Tensor,
+@torch.library.custom_op("biv150_fused_gate::gate_m32_m64_or_auto",mutates_args=())
+def gate_m32_m64_or_auto(x:torch.Tensor,wq:torch.Tensor,sw:torch.Tensor,
                      original:torch.Tensor,min_rows:int)->torch.Tensor:
     global _SELECTED
-    if (tuple(x.shape)==(32,2048) and x.dtype==torch.bfloat16 and x.is_cuda
+    if (x.ndim==2 and x.shape[0] in (32,64) and x.shape[1]==2048
+        and x.dtype==torch.bfloat16 and x.is_cuda
         and x.is_contiguous() and tuple(wq.shape)==(2048,12288)
         and wq.dtype==torch.int8 and wq.is_contiguous()
         and tuple(sw.shape)==(12288,) and sw.dtype==torch.float32 and sw.is_contiguous()
         and tuple(original.shape)==(12288,2048) and original.dtype==torch.bfloat16
         and original.stride()==(0,0) and x.device==wq.device==sw.device==original.device
         and min_rows==17):
-        if not _SELECTED:
-            print("BIV150_INT8_GEMM_SILU_M32_SELECTED",flush=True)
-            _SELECTED=True
-        return full_gate(x,wq,sw,(32,64,128,4))
+        rows=x.shape[0]
+        config=(32,64,128,4) if rows==32 else (64,64,128,8)
+        if rows not in _SELECTED:
+            print(f"BIV150_INT8_GEMM_SILU_M{rows}_SELECTED",flush=True)
+            _SELECTED.add(rows)
+        return full_gate(x,wq,sw,config)
     return torch.ops.biv150_native.gate_silu_auto(x,wq,sw,original,min_rows)
 
 
-@gate_m32_or_auto.register_fake
-def fake_gate_m32_or_auto(x,wq,sw,original,min_rows):
+@gate_m32_m64_or_auto.register_fake
+def fake_gate_m32_m64_or_auto(x,wq,sw,original,min_rows):
     return torch.empty((*x.shape[:-1],wq.shape[1]//2),device=x.device,dtype=x.dtype)

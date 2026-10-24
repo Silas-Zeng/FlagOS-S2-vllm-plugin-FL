@@ -17,10 +17,12 @@ assert sum(isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.fun
            and any(ast.unparse(a)=='tl.bfloat16' for a in n.args) for n in ast.walk(kernel))==2
 assert 2048*127*127 < 2**31
 assert 2048*12288 < 2**31
-dispatcher=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name=='gate_m32_or_auto')
+dispatcher=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name=='gate_m32_m64_or_auto')
 assert len(dispatcher.body)==3
 assert isinstance(dispatcher.body[1],ast.If)
-assert 'tuple(x.shape) == (32, 2048)' in ast.unparse(dispatcher.body[1].test)
+assert 'x.shape[0] in (32, 64)' in ast.unparse(dispatcher.body[1].test)
+assert 'x.ndim == 2' in ast.unparse(dispatcher.body[1].test)
+assert 'x.shape[1] == 2048' in ast.unparse(dispatcher.body[1].test)
 assert 'original.stride() == (0, 0)' in ast.unparse(dispatcher.body[1].test)
 assert 'min_rows == 17' in ast.unparse(dispatcher.body[1].test)
 assert ast.unparse(dispatcher.body[-1].value.func)=='torch.ops.biv150_native.gate_silu_auto'
@@ -31,8 +33,13 @@ for name in ('fused_gate','from_quantized','full_gate'):
     b=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name==name)
     assert ast.dump(a,include_attributes=False)==ast.dump(b,include_attributes=False)
 assert not subprocess.check_output(['git','-C',str(root),'diff','0bf9d2efeaa10144dd7f0ff4597298df029f9328','--','csrc'],text=True)
+native=ast.parse((root/'vllm_fl/patches/biv150_native_w8a8.py').read_text())
+base=ast.parse(subprocess.check_output(['git','-C',str(root),'show','0bf9d2e:vllm_fl/patches/biv150_native_w8a8.py'],text=True))
+a=next(n for n in native.body if isinstance(n,ast.FunctionDef) and n.name=='quantize_weight')
+b=next(n for n in base.body if isinstance(n,ast.FunctionDef) and n.name=='quantize_weight')
+assert ast.dump(a,include_attributes=False)==ast.dump(b,include_attributes=False)
 print(json.dumps(dict(cpu_only=True,only_output_store=True,no_int32_global_output=True,
     two_integer_accumulators=True,int32_dot_bound=2048*127*127,
-    bf16_boundary_before_activation=True,native_cpp_cuda_unchanged=True,service_route_m32_only=True,
+    bf16_boundary_before_activation=True,native_cpp_cuda_unchanged=True,service_route_exact_rows=[32,64],
     same_kernel_math_as_34_layer_component=True,
     device_numeric_and_performance_pending=True)))

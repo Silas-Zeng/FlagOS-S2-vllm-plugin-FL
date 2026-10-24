@@ -328,9 +328,9 @@ def main(args):
             not native_states
             or native_states[-1].get("installed") is not True
             or tuple(native_states[-1].get("layers", ())) != ("gate_up_proj",)
-            or native_states[-1].get("gate_operator") != "gate_m32_or_auto"
-            or native_states[-1].get("fused_int8_gemm_rows") != [32,32]
-            or native_states[-1].get("fused_int8_gemm_config") != [32,64,128,4]
+            or native_states[-1].get("gate_operator") != "gate_m32_m64_or_auto"
+            or native_states[-1].get("fused_int8_gemm_exact_rows") != [32,64]
+            or native_states[-1].get("fused_int8_gemm_configs") != {"32":[32,64,128,4],"64":[64,64,128,8]}
             or native_states[-1].get("activation_residual_rows") != [1, 16]
             or native_states[-1].get("cached_quantization_rows") != [17, 2048]
             or native_states[-1].get("cached_quantization_threads") != 256
@@ -419,10 +419,12 @@ def main(args):
                 result["working_acceptance_passed"] = False
             if not order_hits or result["compute_order_scope_errors"]:
                 result["working_acceptance_passed"] = False
-            result["fused_gate_selection"] = [line for line in complete_log.splitlines()
-                if "BIV150_INT8_GEMM_SILU_M32_SELECTED" in line]
-            if not result["fused_gate_selection"]:
-                result["working_acceptance_passed"] = False
+            result["fused_gate_selection"] = {}
+            for rows in (32,64):
+                hits=[line for line in complete_log.splitlines()
+                    if f"BIV150_INT8_GEMM_SILU_M{rows}_SELECTED" in line]
+                result["fused_gate_selection"][str(rows)]=hits
+                if not hits:result["working_acceptance_passed"] = False
         (args.out / "acceptance.json").write_text(json.dumps(result, indent=2))
         if args.mode == "all" and not result["working_acceptance_passed"]:
             raise RuntimeError("Working throughput/TTFT/request gates failed; no merge")
