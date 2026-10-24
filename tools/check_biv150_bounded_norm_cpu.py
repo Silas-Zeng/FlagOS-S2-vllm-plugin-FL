@@ -34,9 +34,21 @@ def main(args):
     assert any(s.startswith("NORM_OUT +") for s in stores)
     assert not subprocess.check_output(["git","-C",str(root),"diff",base,"--",
                                         "vllm_fl","csrc/iluvatar/native_w8a8.cu"],text=True)
+    bench=ast.parse((root/"tools/bench_biv150_bounded_norm_quant.py").read_text())
+    local_modules=[n.module for n in ast.walk(bench) if isinstance(n,ast.ImportFrom)
+                   and n.module and n.module.startswith(("biv150_","audit_biv150_","bench_biv150_"))]
+    assert all((root/"tools"/(name+".py")).is_file() for name in local_modules)
+    original=ast.parse(subprocess.check_output(["git","-C",str(root),"show",
+        "8a1fc9bb05689b4b781ba8b065416bdfb459bcb5:tools/audit_biv150_residual_reference.py"],text=True))
+    extracted=ast.parse((root/"tools/biv150_residual_cpu_reference.py").read_text())
+    for name in ("cpu_quantize","cpu_output"):
+        before=next(n for n in original.body if isinstance(n,ast.FunctionDef) and n.name==name)
+        after=next(n for n in extracted.body if isinstance(n,ast.FunctionDef) and n.name==name)
+        assert ast.dump(before,include_attributes=False)==ast.dump(after,include_attributes=False)
     result=dict(cpu_only=True,base=base,cpp_shipping_functions_unchanged=True,
                 production_cuda_and_python_unchanged=True,
                 triton_inputs_not_store_targets=True,kernel_abi_checked=True,
+                local_probe_imports_present=local_modules,cpu_oracle_math_ast_unchanged=True,
                 real_alias_and_device_checks_pending=True)
     if args.out:
         args.out.parent.mkdir(parents=True,exist_ok=True)

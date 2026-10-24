@@ -16,7 +16,7 @@ from pathlib import Path
 import torch
 from safetensors import safe_open
 
-from audit_biv150_residual_reference import cpu_quantize, cpu_output
+from biv150_residual_cpu_reference import cpu_quantize, cpu_output
 from biv150_benchmark_utils import graph_time
 from biv150_bounded_norm_quant import SELECTED_ROWS, norm_quant
 

@@ -5,5 +5,11 @@
   "production_cuda_and_python_unchanged": true,
   "triton_inputs_not_store_targets": true,
   "kernel_abi_checked": true,
+  "local_probe_imports_present": [
+    "biv150_residual_cpu_reference",
+    "biv150_benchmark_utils",
+    "biv150_bounded_norm_quant"
+  ],
+  "cpu_oracle_math_ast_unchanged": true,
   "real_alias_and_device_checks_pending": true
 }

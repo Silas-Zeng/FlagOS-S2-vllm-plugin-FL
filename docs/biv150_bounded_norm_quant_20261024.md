@@ -1,5 +1,12 @@
 # B06：有界 residual RMSNorm＋量化，真实 norm 权重组件验证
 
+当前工具修复：cff7704私有build、原9和40检查通过，但probe在启动时因缺少
+`audit_biv150_residual_reference`退出，尚未运行238组合，不是norm核数值失败。
+原日志/state/检查文件保留在`evidence/bounded-norm-quant-20261024/rejected-v2/`。
+现将CPU量化/输出两个参考函数独立提取成`biv150_residual_cpu_reference.py`，
+CPU核对两函数AST与此前已验证audit逐字语义相同，并新增所有本地probe import存在性检查。
+该修复不恢复失败PR26生产路由、不改Triton数学、不放宽容差；新冻结版本仍需设备验证。
+
 当前独立基线为团队 main `31a0a7f`（含已验收 PR28、队友 Metax PR34）。
 PR26 新路由模型精度99/105=.9429失败，原1cc4e22组件队列正确拒绝启动，没有设备结果。
 新提交非重写同步main，再移除所有PR26/PR31生产改动及无关实验文件，
