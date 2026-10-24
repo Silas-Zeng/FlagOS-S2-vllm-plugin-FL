@@ -1,0 +1,27 @@
+{
+  "runtime_commit": "8694e87f4f0c9ab8f039364e43ee730499356059",
+  "working_acceptance_passed": true,
+  "accuracy": {
+    "score": 0.9524,
+    "metric_count": 105,
+    "predictions": 105,
+    "unique_questions": 105,
+    "failed_predictions": [],
+    "report": "/workspace/experiments/minicpm-s2/bf16-small-service-20261025/full/math500-level3/20261025_052643/reports/minicpm/math_500.json"
+  },
+  "accepted_reference_runtime": "84c1 via merged PR28; separate warmed singles, not matched control",
+  "comparison": {
+    "4096": {
+      "total_token_throughput": 5768.370829764784,
+      "ttft_ms": 3639.249344501877,
+      "separate_reference": 5765.810177399745,
+      "percent_change": 0.04441097237428693
+    },
+    "16384": {
+      "total_token_throughput": 4054.2755204285368,
+      "ttft_ms": 124242.94323530557,
+      "separate_reference": 4048.1358315864945,
+      "percent_change": 0.1516670659649222
+    }
+  }
+}

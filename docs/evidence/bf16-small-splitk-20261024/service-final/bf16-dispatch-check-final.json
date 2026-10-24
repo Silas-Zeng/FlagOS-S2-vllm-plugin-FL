@@ -1,0 +1,342 @@
+{
+  "installation": {
+    "installed": true,
+    "provider_file": "/usr/local/lib/python3.12/site-packages/flag_gems/runtime/backend/_iluvatar/ops/mm.py",
+    "provider_sha256": "4c2e23da2a6b65b89cbb8170967f14c5327d143e21137387f3907ccb4fcde090",
+    "hook_file": "/workspace/experiments/minicpm-s2/code/bf16-small-service-20261025/vllm_fl/patches/biv150_bf16_small_splitk.py",
+    "hook_sha256": "57a731f11985b2bed2ee0c451ed554478e8da05aee7137327266efc5d4be6bc3",
+    "original_launcher_sha256": "e0959c5c83a665ac97c02ff3572ff072b0126052ba07cef7e2ff035f3786cfde",
+    "exact_rows": [
+      1,
+      8,
+      16
+    ],
+    "geometries_k_n": [
+      [
+        2048,
+        2048
+      ],
+      [
+        2048,
+        2560
+      ],
+      [
+        6144,
+        2048
+      ]
+    ],
+    "config": [
+      16,
+      128,
+      64,
+      4,
+      4
+    ],
+    "caller_output_preserved": true,
+    "persistent_weight_copy": false,
+    "original_dispatch_registration_preserved": true
+  },
+  "dispatch_table": "CPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCPU_0.cpp:3455 [kernel]\nCUDA: registered at /usr/local/lib/python3.12/site-packages/flag_gems/__init__.py:62 [kernel]\nMeta: registered at /usr/local/lib/python3.12/site-packages/torch/_meta_registrations.py:51 [kernel]\nSparseCPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCPU_0.cpp:1272 [kernel]\nSparseCUDA: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCUDA_0.cpp:1324 [kernel]\nSparseCsrCPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCsrCPU_0.cpp:1115 [kernel]\nSparseCsrCUDA: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCsrCUDA_0.cpp:1220 [kernel]\nSparseCsrMeta: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCsrMeta_0.cpp:1080 [kernel]\nBackendSelect: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/BackendSelectFallbackKernel.cpp:3 [backend fallback]\nPython: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:198 [backend fallback]\nFuncTorchDynamicLayerBackMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:477 [backend fallback]\nFunctionalize: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterFunctionalization_0.cpp:23550 [kernel]\nNamed: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/NamedRegistrations.cpp:9 [kernel]\nConjugate: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ConjugateFallback.cpp:21 [kernel]\nNegative: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/native/NegateFallback.cpp:18 [backend fallback]\nZeroTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ZeroTensorFallback.cpp:115 [backend fallback]\nADInplaceOrView: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/ADInplaceOrViewType_0.cpp:5035 [kernel]\nAutogradOther: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCUDA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHIP: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXLA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMPS: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradIPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradVE: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradLazy: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMTIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMAIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse1: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse2: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse3: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMeta: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradNestedTensor: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nTracer: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/TraceType_3.cpp:15269 [kernel]\nAutocastCPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:324 [backend fallback]\nAutocastMTIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:468 [backend fallback]\nAutocastMAIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:506 [backend fallback]\nAutocastXPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:544 [backend fallback]\nAutocastMPS: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:209 [backend fallback]\nAutocastCUDA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:165 [backend fallback]\nFuncTorchBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:727 [backend fallback]\nBatchedNestedTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:754 [backend fallback]\nFuncTorchVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/VmapModeRegistrations.cpp:22 [backend fallback]\nBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/LegacyBatchingRegistrations.cpp:1072 [backend fallback]\nVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/VmapModeRegistrations.cpp:32 [backend fallback]\nFuncTorchGradWrapper: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/TensorWrapper.cpp:210 [backend fallback]\nPythonTLSSnapshot: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:206 [backend fallback]\nFuncTorchDynamicLayerFrontMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:473 [backend fallback]\nPreDispatch: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:210 [backend fallback]\nPythonDispatcher: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:202 [backend fallback]\n",
+  "records": [
+    {
+      "geometry": "qkv",
+      "m": 1,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.self_attn.q_proj.weight",
+          "sha256": "05a9b18b6dd9702ea6fee4ff33afd6ef1b4ea128b54e56444ed9095053906751"
+        },
+        {
+          "key": "model.layers.4.self_attn.k_proj.weight",
+          "sha256": "d82309a6979a10a35265c77ed3668af15f2a286f87f95311f267e7029e0d671e"
+        },
+        {
+          "key": "model.layers.4.self_attn.v_proj.weight",
+          "sha256": "1f8c3e247a5d4fb56fc6adc9a62b2144ed0757fc668378c33ea757862c3eb039"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 2560,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 0.0,
+        "max_finite_ulp": 0,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "qkv",
+      "m": 8,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.self_attn.q_proj.weight",
+          "sha256": "05a9b18b6dd9702ea6fee4ff33afd6ef1b4ea128b54e56444ed9095053906751"
+        },
+        {
+          "key": "model.layers.4.self_attn.k_proj.weight",
+          "sha256": "d82309a6979a10a35265c77ed3668af15f2a286f87f95311f267e7029e0d671e"
+        },
+        {
+          "key": "model.layers.4.self_attn.v_proj.weight",
+          "sha256": "1f8c3e247a5d4fb56fc6adc9a62b2144ed0757fc668378c33ea757862c3eb039"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 20480,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 1.9073486328125e-06,
+        "max_finite_ulp": 4,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "qkv",
+      "m": 16,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.self_attn.q_proj.weight",
+          "sha256": "05a9b18b6dd9702ea6fee4ff33afd6ef1b4ea128b54e56444ed9095053906751"
+        },
+        {
+          "key": "model.layers.4.self_attn.k_proj.weight",
+          "sha256": "d82309a6979a10a35265c77ed3668af15f2a286f87f95311f267e7029e0d671e"
+        },
+        {
+          "key": "model.layers.4.self_attn.v_proj.weight",
+          "sha256": "1f8c3e247a5d4fb56fc6adc9a62b2144ed0757fc668378c33ea757862c3eb039"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 40960,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 0.001953125,
+        "max_finite_ulp": 1,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "qkv",
+      "m": 32,
+      "original_fallback_handle_and_tensor_impls": true
+    },
+    {
+      "geometry": "qkv",
+      "m": 64,
+      "original_fallback_handle_and_tensor_impls": true
+    },
+    {
+      "geometry": "o",
+      "m": 1,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.self_attn.o_proj.weight",
+          "sha256": "e59a44f4f4750588619338670d8e76a48b57ab2062e6add9321aa40ca4e4b721"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 2048,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 0.0,
+        "max_finite_ulp": 0,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "o",
+      "m": 8,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.self_attn.o_proj.weight",
+          "sha256": "e59a44f4f4750588619338670d8e76a48b57ab2062e6add9321aa40ca4e4b721"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 16384,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 0.0,
+        "max_finite_ulp": 0,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "o",
+      "m": 16,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.self_attn.o_proj.weight",
+          "sha256": "e59a44f4f4750588619338670d8e76a48b57ab2062e6add9321aa40ca4e4b721"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 32768,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 0.0078125,
+        "max_finite_ulp": 1,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "o",
+      "m": 32,
+      "original_fallback_handle_and_tensor_impls": true
+    },
+    {
+      "geometry": "o",
+      "m": 64,
+      "original_fallback_handle_and_tensor_impls": true
+    },
+    {
+      "geometry": "down",
+      "m": 1,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.mlp.down_proj.weight",
+          "sha256": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 2048,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 0.0,
+        "max_finite_ulp": 0,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "down",
+      "m": 8,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.mlp.down_proj.weight",
+          "sha256": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 16384,
+        "nonfinite": 0,
+        "strict_violations": 0,
+        "strict_passed": true,
+        "max_abs": 0.03125,
+        "max_finite_ulp": 3,
+        "strict_finite_violations": 0,
+        "strict_finite_max_ulp": 0,
+        "strict_violations_single_ulp": 0,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "down",
+      "m": 16,
+      "weight_identity": [
+        {
+          "key": "model.layers.4.mlp.down_proj.weight",
+          "sha256": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07"
+        }
+      ],
+      "caller_output_same": true,
+      "original_weight_storage": true,
+      "hook_matches_tested_kernel_bit_exact": true,
+      "fullgraph_and_fake": true,
+      "changed_input_graph": true,
+      "cpu_diagnostic": {
+        "elements": 32768,
+        "nonfinite": 0,
+        "strict_violations": 1,
+        "strict_passed": false,
+        "max_abs": 0.03125,
+        "max_finite_ulp": 4,
+        "strict_finite_violations": 1,
+        "strict_finite_max_ulp": 1,
+        "strict_violations_single_ulp": 1,
+        "strict_violations_above_one_ulp": 0
+      }
+    },
+    {
+      "geometry": "down",
+      "m": 32,
+      "original_fallback_handle_and_tensor_impls": true
+    },
+    {
+      "geometry": "down",
+      "m": 64,
+      "original_fallback_handle_and_tensor_impls": true
+    }
+  ],
+  "completed": true,
+  "selected_cases": 9,
+  "fallback_cases": 6
+}

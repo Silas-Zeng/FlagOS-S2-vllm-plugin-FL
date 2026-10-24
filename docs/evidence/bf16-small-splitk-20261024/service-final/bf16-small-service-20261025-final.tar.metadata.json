@@ -1,0 +1,37 @@
+{
+  "archive": "/workspace/experiments/minicpm-s2/exports/bf16-small-service-20261025-final.tar.gz",
+  "bytes": 1004641,
+  "sha256": "25b7149bc66278875bb5281cf50d71789334662ecdeea0f8db9e697092721923",
+  "runtime_commit": "8694e87f4f0c9ab8f039364e43ee730499356059",
+  "complete_candidate_acceptance": true,
+  "working_acceptance_passed": true,
+  "accuracy": {
+    "score": 0.9524,
+    "metric_count": 105,
+    "predictions": 105,
+    "unique_questions": 105,
+    "failed_predictions": [],
+    "report": "/workspace/experiments/minicpm-s2/bf16-small-service-20261025/full/math500-level3/20261025_052643/reports/minicpm/math_500.json"
+  },
+  "scores": {
+    "4096": {
+      "total_token_throughput": 5768.370829764784,
+      "mean_ttft_ms": 3639.249344501877,
+      "completed": 256,
+      "failed": 0,
+      "total_input_tokens": 1048576,
+      "total_output_tokens": 262144
+    },
+    "16384": {
+      "total_token_throughput": 4054.2755204285368,
+      "mean_ttft_ms": 124242.94323530557,
+      "completed": 128,
+      "failed": 0,
+      "total_input_tokens": 2097152,
+      "total_output_tokens": 131072
+    }
+  },
+  "raw_inductor_binaries_excluded": true,
+  "all_generated_python_preserved_separately": true,
+  "snapshot_utc": "2026-10-24T22:14:56.068399+00:00"
+}
