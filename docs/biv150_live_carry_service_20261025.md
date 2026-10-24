@@ -13,3 +13,5 @@
 首次pipeline ff2a869在CPU AST来源校验停止，未启动GPU；本地Python3.14 ast.dump省略的空字段在远端3.12输出中存在，产生不同摘要。后继校验改为显式包含所有AST字段的canonical JSON，并重新从原7d组件函数生成预期值；旧3.14摘要保留，内核/生产代码未改。
 
 6b68后继CPU140、gate9、cached40全过。实际方法proxy在SiluAndMul构造时因测试未设current vLLM config停止，尚未执行新融合链。下一冻结版按SDK set_current_vllm_config契约补proxy初始化；原代码/库/9及40测试脚本完全相同时可复用原始通过JSON并记录来源，不重复相同GPU门。生产内核与方法重写不改。
+
+94816的实际forward fullgraph预检揭示生产安装器问题：复制original.__globals__可eager执行，但Dynamo CLOSURE_MATCH从真实llama模块解析新增helper时缺失。后继用原真实globals，仅插入本模块自有helper（若已有foreign binding拒绝）；exec生成方法使用独立locals，不污染模块global forward。添加CPU真实globals身份/locals隔离检查；数学四函数不改。必须重跑实际方法GPU门，未启动105或吞吐。v2原始CPU/gate9/cached40/配置失败和launch日志全部共享，原tar3656字节SHA03b13b0d85df072e4ea37594c71b46b095f2255d4b48e4905ef47412bc453fa5。

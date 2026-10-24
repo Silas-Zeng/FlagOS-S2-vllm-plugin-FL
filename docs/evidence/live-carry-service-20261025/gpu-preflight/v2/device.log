@@ -1,0 +1,53 @@
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:728: DeprecationWarning: use_cuda_graph is deprecated; use benchmark_mode='replay' or benchmark_mode='event'
+  super().__init__(*args, **kwargs)
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411: RuntimeWarning: active Triton backend does not provide a replay benchmarker; falling back to event timing
+  resolved_benchmark = resolve_benchmarker(
+INFO 10-25 07:49:41 [__init__.py:44] Available plugins for group vllm.platform_plugins:
+INFO 10-25 07:49:41 [__init__.py:46] - fl -> vllm_fl:register
+INFO 10-25 07:49:41 [__init__.py:49] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-25 07:49:45 [__init__.py:237] Platform plugin fl is activated
+/usr/local/lib/python3.12/site-packages/flag_gems/config.py:171: UserWarning: resolve_user_setting: no exclude ops found; returning empty list
+  warnings.warn(
+/usr/local/lib/python3.12/site-packages/torch/library.py:357: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+  Overriding a previously registered kernel for the same operator and the same dispatch key
+  operator: aten::__ilshift__.Tensor(Tensor(a!) self, Tensor other) -> Tensor(a!)
+    registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSchema.cpp:6
+  dispatch key: CUDA
+  previous kernel: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCPU_3.cpp:7148
+       new kernel: registered at /usr/local/lib/python3.12/site-packages/flag_gems/__init__.py:62 (Triggered internally at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+  self.m.impl(
+WARNING:root:Skipped registering operator: This is not allowed since there's already a kernel registered from python overriding ne_.Scalar's behavior for CUDA dispatch key and aten namespace.
+WARNING:root:Skipped registering operator: This is not allowed since there's already a kernel registered from python overriding ne_.Tensor's behavior for CUDA dispatch key and aten namespace.
+WARNING 10-25 07:49:48 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+/usr/local/lib/python3.12/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+WARNING 10-25 07:49:49 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+WARNING 10-25 07:49:49 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+WARNING 10-25 07:49:49 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+Traceback (most recent call last):
+  File "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v2-20261025/tools/check_biv150_live_carry_device.py", line 171, in <module>
+    with torch.inference_mode():main(p.parse_args())
+                                ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v2-20261025/tools/check_biv150_live_carry_device.py", line 107, in main
+    layer=Layer(nw,wq,sw,dw,nextw)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v2-20261025/tools/check_biv150_live_carry_device.py", line 95, in __init__
+    self.post_attention_layernorm=Norm(nw);self.mlp=MLP(wq,sw,down)
+                                                    ^^^^^^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v2-20261025/tools/check_biv150_live_carry_device.py", line 88, in __init__
+    super().__init__();self.gate_up_proj=Gate(wq,sw);self.down_proj=Down(down);self.act_fn=SiluAndMul()
+                                                                                           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/vllm/model_executor/layers/activation.py", line 131, in __init__
+    super().__init__(compile_native=compile_native)
+  File "/usr/local/lib/python3.12/site-packages/vllm/model_executor/custom_op.py", line 133, in __init__
+    self._forward_method = self.dispatch_forward(compile_native=compile_native)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/vllm/model_executor/custom_op.py", line 177, in dispatch_forward
+    compilation_config = get_cached_compilation_config()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/vllm/config/vllm.py", line 2249, in get_cached_compilation_config
+    return get_current_vllm_config().compilation_config
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/vllm/config/vllm.py", line 2254, in get_current_vllm_config
+    raise AssertionError(
+AssertionError: Current vLLM config is not set. This typically means get_current_vllm_config() was called outside of a set_current_vllm_config() context, or a CustomOp was instantiated at module import time or model forward time when config is not set. For tests that directly test custom ops/modules, use the 'default_vllm_config' pytest fixture from tests/conftest.py.

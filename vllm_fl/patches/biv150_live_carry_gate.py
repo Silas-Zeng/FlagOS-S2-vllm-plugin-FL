@@ -227,9 +227,16 @@ def install():
     generated=str(Path(__file__).resolve())+".generated_forward.py"
     source=ast.unparse(rewritten)+"\n"
     linecache.cache[generated]=(len(source),None,source.splitlines(keepends=True),generated)
-    namespace=dict(original.__globals__,_biv150_post_norm_mlp=_post_norm_mlp)
-    exec(compile(source,generated,"exec"),namespace)
-    forward=namespace["forward"]
+    # Dynamo resolves global guards through the function's real module. A copied
+    # globals dict can execute eagerly but leaves that module binding missing.
+    namespace=original.__globals__
+    key="_biv150_post_norm_mlp"
+    if key in namespace and namespace[key] is not _post_norm_mlp:
+        return {"installed":False,"reason":"foreign helper binding"}
+    namespace[key]=_post_norm_mlp
+    local={}
+    exec(compile(source,generated,"exec"),namespace,local)
+    forward=local["forward"]
     forward.__qualname__=original.__qualname__
     LlamaDecoderLayer.forward=forward
     LlamaDecoderLayer._biv150_live_carry=True

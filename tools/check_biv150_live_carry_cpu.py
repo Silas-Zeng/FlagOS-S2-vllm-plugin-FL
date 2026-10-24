@@ -85,6 +85,15 @@ generated_source=ast.unparse(ast.Module(body=[new],type_ignores=[]))+'\n'
 linecache.cache[generated]=(len(generated_source),None,generated_source.splitlines(keepends=True),generated)
 compiled={};exec(compile(generated_source,generated,'exec'),compiled)
 assert inspect.getsource(compiled['forward'])==generated_source
+# The installed method must retain its actual SDK module globals; locals keep
+# exec from adding an unrelated global forward symbol to that module.
+real_globals={'__name__':'sdk_proxy','_biv150_post_norm_mlp':object()};local={}
+exec(compile(generated_source,generated,'exec'),real_globals,local)
+assert local['forward'].__globals__ is real_globals and 'forward' not in real_globals
+install=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name=='install')
+assert any(isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='namespace' for t in n.targets)
+    and isinstance(n.value,ast.Attribute) and n.value.attr=='__globals__'
+    for n in ast.walk(install))
 try:ns['_rewrite_forward_ast'](source.replace('self.mlp(hidden_states)','self.other(hidden_states)'));raise AssertionError('changed structure accepted')
 except AssertionError as error:assert 'changed structure accepted' not in str(error)
 
