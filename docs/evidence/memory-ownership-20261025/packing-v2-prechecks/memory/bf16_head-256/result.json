@@ -1,0 +1,213 @@
+{
+  "kind": "bf16_head",
+  "rows": 256,
+  "pid": 189671,
+  "quantizer_source_sha256": "c9193039ff424f60fdd9a4a727e800de0fee497fa61c64ff69c822779d20a46e",
+  "quantizer_ast_sha256": "0658ba589c2fc9fda28fb64964f7d43bd1a12d2ebaf352f9ebfdefdf394f5832",
+  "library_sha256": "3e114fc0201dd8e4ef31b5aa7a3c75364469a6d69e54d3ae2d6ac929e254830d",
+  "torch_version": "2.10.0",
+  "probe_sha256": "f84bb9080fae82d8fd6b85459e6e809484d532ad7c7b668d3930f1cf3e352fae",
+  "weight_index_sha256": "6d839cd76e8395de548a0e6cc310386f66d1ecbb2c75d198a8dfd3d70892b756",
+  "explicit_tensor_bytes": {
+    "output": 66846720
+  },
+  "stages": [
+    {
+      "stage": "context",
+      "allocated": 0,
+      "reserved": 0,
+      "peak_allocated": 0,
+      "peak_reserved": 0,
+      "device_used_sample": 153092096,
+      "device_total": 34359738368,
+      "active_bytes": 0,
+      "inactive_split_bytes": 0
+    },
+    {
+      "stage": "weights_prepared_and_unused_tensors_released",
+      "allocated": 534773760,
+      "reserved": 534773760,
+      "peak_allocated": 534773760,
+      "peak_reserved": 534773760,
+      "device_used_sample": 687865856,
+      "device_total": 34359738368,
+      "active_bytes": 534773760,
+      "inactive_split_bytes": 0
+    },
+    {
+      "stage": "input_ready",
+      "allocated": 535822336,
+      "reserved": 536870912,
+      "peak_allocated": 535822336,
+      "peak_reserved": 536870912,
+      "device_used_sample": 754974720,
+      "device_total": 34359738368,
+      "active_bytes": 535822336,
+      "inactive_split_bytes": 1048576
+    },
+    {
+      "stage": "call_0_output_live",
+      "allocated": 602931200,
+      "reserved": 603979776,
+      "peak_allocated": 602931200,
+      "peak_reserved": 603979776,
+      "device_used_sample": 822083584,
+      "device_total": 34359738368,
+      "active_bytes": 602931200,
+      "inactive_split_bytes": 1048576,
+      "output": {
+        "pointer": 137815434199040,
+        "storage_nbytes": 66846720,
+        "shape": [
+          256,
+          130560
+        ],
+        "stride": [
+          130560,
+          1
+        ],
+        "dtype": "torch.bfloat16"
+      },
+      "call_peak_allocated_delta": 67108864
+    },
+    {
+      "stage": "call_0_output_released",
+      "allocated": 535822336,
+      "reserved": 603979776,
+      "peak_allocated": 602931200,
+      "peak_reserved": 603979776,
+      "device_used_sample": 822083584,
+      "device_total": 34359738368,
+      "active_bytes": 535822336,
+      "inactive_split_bytes": 1048576
+    },
+    {
+      "stage": "cold_call_inactive_cache_released",
+      "allocated": 535822336,
+      "reserved": 536870912,
+      "peak_allocated": 602931200,
+      "peak_reserved": 603979776,
+      "device_used_sample": 754974720,
+      "device_total": 34359738368,
+      "active_bytes": 535822336,
+      "inactive_split_bytes": 1048576
+    },
+    {
+      "stage": "call_1_output_live",
+      "allocated": 602931200,
+      "reserved": 603979776,
+      "peak_allocated": 602931200,
+      "peak_reserved": 603979776,
+      "device_used_sample": 822083584,
+      "device_total": 34359738368,
+      "active_bytes": 602931200,
+      "inactive_split_bytes": 1048576,
+      "output": {
+        "pointer": 137815434199040,
+        "storage_nbytes": 66846720,
+        "shape": [
+          256,
+          130560
+        ],
+        "stride": [
+          130560,
+          1
+        ],
+        "dtype": "torch.bfloat16"
+      },
+      "call_peak_allocated_delta": 67108864
+    },
+    {
+      "stage": "call_1_output_released",
+      "allocated": 535822336,
+      "reserved": 603979776,
+      "peak_allocated": 602931200,
+      "peak_reserved": 603979776,
+      "device_used_sample": 822083584,
+      "device_total": 34359738368,
+      "active_bytes": 535822336,
+      "inactive_split_bytes": 1048576
+    },
+    {
+      "stage": "call_2_output_live",
+      "allocated": 602931200,
+      "reserved": 603979776,
+      "peak_allocated": 602931200,
+      "peak_reserved": 603979776,
+      "device_used_sample": 822083584,
+      "device_total": 34359738368,
+      "active_bytes": 602931200,
+      "inactive_split_bytes": 1048576,
+      "output": {
+        "pointer": 137815434199040,
+        "storage_nbytes": 66846720,
+        "shape": [
+          256,
+          130560
+        ],
+        "stride": [
+          130560,
+          1
+        ],
+        "dtype": "torch.bfloat16"
+      },
+      "call_peak_allocated_delta": 67108864
+    },
+    {
+      "stage": "call_2_output_released",
+      "allocated": 535822336,
+      "reserved": 603979776,
+      "peak_allocated": 602931200,
+      "peak_reserved": 603979776,
+      "device_used_sample": 822083584,
+      "device_total": 34359738368,
+      "active_bytes": 535822336,
+      "inactive_split_bytes": 1048576
+    }
+  ],
+  "limits": [
+    "Standalone primitive, not production graph or KV sizing",
+    "mem_get_info samples retained bytes, not non-Torch transient peak",
+    "No graph capture, latency, model accuracy or gain claim"
+  ],
+  "weight_sources": [
+    {
+      "key": "lm_head.weight",
+      "shape": [
+        130560,
+        2048
+      ],
+      "tensor_sha256": "9f5cf86ab727309a3130cad08fc6153925b3a2b29084afc24e641a4733e65189"
+    }
+  ],
+  "retained_storages": {
+    "weight": {
+      "pointer": 137814832316416,
+      "storage_nbytes": 534773760,
+      "shape": [
+        130560,
+        2048
+      ],
+      "stride": [
+        2048,
+        1
+      ],
+      "dtype": "torch.bfloat16"
+    },
+    "input": {
+      "pointer": 137815367090176,
+      "storage_nbytes": 1048576,
+      "shape": [
+        256,
+        2048
+      ],
+      "stride": [
+        2048,
+        1
+      ],
+      "dtype": "torch.bfloat16"
+    }
+  },
+  "retained_unique_storage_bytes": 535822336,
+  "completed": true
+}

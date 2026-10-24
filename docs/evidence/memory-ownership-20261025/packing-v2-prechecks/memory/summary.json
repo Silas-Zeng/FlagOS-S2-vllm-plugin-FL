@@ -1,0 +1,36 @@
+{
+  "completed": true,
+  "cases": [
+    {
+      "kind": "gate",
+      "rows": 32,
+      "exit_code": 0,
+      "output": "/workspace/experiments/minicpm-s2/weight-packing-v2-20261025/memory/gate-32"
+    },
+    {
+      "kind": "gate",
+      "rows": 256,
+      "exit_code": 0,
+      "output": "/workspace/experiments/minicpm-s2/weight-packing-v2-20261025/memory/gate-256"
+    },
+    {
+      "kind": "gate",
+      "rows": 2048,
+      "exit_code": 0,
+      "output": "/workspace/experiments/minicpm-s2/weight-packing-v2-20261025/memory/gate-2048"
+    },
+    {
+      "kind": "bf16_head",
+      "rows": 256,
+      "exit_code": 0,
+      "output": "/workspace/experiments/minicpm-s2/weight-packing-v2-20261025/memory/bf16_head-256"
+    },
+    {
+      "kind": "historical_int8_head",
+      "rows": 256,
+      "exit_code": 0,
+      "output": "/workspace/experiments/minicpm-s2/weight-packing-v2-20261025/memory/historical_int8_head-256"
+    }
+  ],
+  "purpose": "memory attribution only"
+}

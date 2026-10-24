@@ -1,0 +1,248 @@
+{
+  "kind": "gate",
+  "rows": 2048,
+  "pid": 189593,
+  "quantizer_source_sha256": "c9193039ff424f60fdd9a4a727e800de0fee497fa61c64ff69c822779d20a46e",
+  "quantizer_ast_sha256": "0658ba589c2fc9fda28fb64964f7d43bd1a12d2ebaf352f9ebfdefdf394f5832",
+  "library_sha256": "3e114fc0201dd8e4ef31b5aa7a3c75364469a6d69e54d3ae2d6ac929e254830d",
+  "torch_version": "2.10.0",
+  "probe_sha256": "f84bb9080fae82d8fd6b85459e6e809484d532ad7c7b668d3930f1cf3e352fae",
+  "weight_index_sha256": "6d839cd76e8395de548a0e6cc310386f66d1ecbb2c75d198a8dfd3d70892b756",
+  "explicit_tensor_bytes": {
+    "output": 25165824,
+    "aq": 4194304,
+    "row_scales": 8192,
+    "int32_acc": 100663296
+  },
+  "stages": [
+    {
+      "stage": "context",
+      "allocated": 0,
+      "reserved": 0,
+      "peak_allocated": 0,
+      "peak_reserved": 0,
+      "device_used_sample": 153092096,
+      "device_total": 34359738368,
+      "active_bytes": 0,
+      "inactive_split_bytes": 0
+    },
+    {
+      "stage": "weights_prepared_and_unused_tensors_released",
+      "allocated": 25215488,
+      "reserved": 27262976,
+      "peak_allocated": 377536512,
+      "peak_reserved": 379584512,
+      "device_used_sample": 287309824,
+      "device_total": 34359738368,
+      "active_bytes": 25215488,
+      "inactive_split_bytes": 2047488
+    },
+    {
+      "stage": "input_ready",
+      "allocated": 33604096,
+      "reserved": 48234496,
+      "peak_allocated": 377536512,
+      "peak_reserved": 379584512,
+      "device_used_sample": 287309824,
+      "device_total": 34359738368,
+      "active_bytes": 33604096,
+      "inactive_split_bytes": 14630400
+    },
+    {
+      "stage": "call_0_output_live",
+      "allocated": 58769920,
+      "reserved": 174063616,
+      "peak_allocated": 163635712,
+      "peak_reserved": 174063616,
+      "device_used_sample": 387973120,
+      "device_total": 34359738368,
+      "active_bytes": 58769920,
+      "inactive_split_bytes": 14630400,
+      "output": {
+        "pointer": 138187420729344,
+        "storage_nbytes": 25165824,
+        "shape": [
+          2048,
+          6144
+        ],
+        "stride": [
+          6144,
+          1
+        ],
+        "dtype": "torch.bfloat16"
+      },
+      "call_peak_allocated_delta": 130031616
+    },
+    {
+      "stage": "call_0_output_released",
+      "allocated": 33604096,
+      "reserved": 174063616,
+      "peak_allocated": 163635712,
+      "peak_reserved": 174063616,
+      "device_used_sample": 387973120,
+      "device_total": 34359738368,
+      "active_bytes": 33604096,
+      "inactive_split_bytes": 14630400
+    },
+    {
+      "stage": "cold_call_inactive_cache_released",
+      "allocated": 33604096,
+      "reserved": 48234496,
+      "peak_allocated": 163635712,
+      "peak_reserved": 174063616,
+      "device_used_sample": 287309824,
+      "device_total": 34359738368,
+      "active_bytes": 33604096,
+      "inactive_split_bytes": 14630400
+    },
+    {
+      "stage": "call_1_output_live",
+      "allocated": 58769920,
+      "reserved": 174063616,
+      "peak_allocated": 163635712,
+      "peak_reserved": 174063616,
+      "device_used_sample": 387973120,
+      "device_total": 34359738368,
+      "active_bytes": 58769920,
+      "inactive_split_bytes": 14630400,
+      "output": {
+        "pointer": 138187420729344,
+        "storage_nbytes": 25165824,
+        "shape": [
+          2048,
+          6144
+        ],
+        "stride": [
+          6144,
+          1
+        ],
+        "dtype": "torch.bfloat16"
+      },
+      "call_peak_allocated_delta": 130031616
+    },
+    {
+      "stage": "call_1_output_released",
+      "allocated": 33604096,
+      "reserved": 174063616,
+      "peak_allocated": 163635712,
+      "peak_reserved": 174063616,
+      "device_used_sample": 387973120,
+      "device_total": 34359738368,
+      "active_bytes": 33604096,
+      "inactive_split_bytes": 14630400
+    },
+    {
+      "stage": "call_2_output_live",
+      "allocated": 58769920,
+      "reserved": 174063616,
+      "peak_allocated": 163635712,
+      "peak_reserved": 174063616,
+      "device_used_sample": 387973120,
+      "device_total": 34359738368,
+      "active_bytes": 58769920,
+      "inactive_split_bytes": 14630400,
+      "output": {
+        "pointer": 138187420729344,
+        "storage_nbytes": 25165824,
+        "shape": [
+          2048,
+          6144
+        ],
+        "stride": [
+          6144,
+          1
+        ],
+        "dtype": "torch.bfloat16"
+      },
+      "call_peak_allocated_delta": 130031616
+    },
+    {
+      "stage": "call_2_output_released",
+      "allocated": 33604096,
+      "reserved": 174063616,
+      "peak_allocated": 163635712,
+      "peak_reserved": 174063616,
+      "device_used_sample": 387973120,
+      "device_total": 34359738368,
+      "active_bytes": 33604096,
+      "inactive_split_bytes": 14630400
+    }
+  ],
+  "limits": [
+    "Standalone primitive, not production graph or KV sizing",
+    "mem_get_info samples retained bytes, not non-Torch transient peak",
+    "No graph capture, latency, model accuracy or gain claim"
+  ],
+  "weight_sources": [
+    {
+      "key": "model.layers.20.mlp.gate_proj.weight",
+      "shape": [
+        6144,
+        2048
+      ],
+      "tensor_sha256": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265"
+    },
+    {
+      "key": "model.layers.20.mlp.up_proj.weight",
+      "shape": [
+        6144,
+        2048
+      ],
+      "tensor_sha256": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4"
+    }
+  ],
+  "retained_storages": {
+    "weight_int8": {
+      "pointer": 138187487838208,
+      "storage_nbytes": 25165824,
+      "shape": [
+        2048,
+        12288
+      ],
+      "stride": [
+        12288,
+        1
+      ],
+      "dtype": "torch.int8"
+    },
+    "scales": {
+      "pointer": 138187471060992,
+      "storage_nbytes": 49152,
+      "shape": [
+        12288
+      ],
+      "stride": [
+        1
+      ],
+      "dtype": "torch.float32"
+    },
+    "marker": {
+      "pointer": 138187471110144,
+      "storage_nbytes": 2,
+      "shape": [
+        12288,
+        2048
+      ],
+      "stride": [
+        0,
+        0
+      ],
+      "dtype": "torch.bfloat16"
+    },
+    "input": {
+      "pointer": 138187513004032,
+      "storage_nbytes": 8388608,
+      "shape": [
+        2048,
+        2048
+      ],
+      "stride": [
+        2048,
+        1
+      ],
+      "dtype": "torch.bfloat16"
+    }
+  },
+  "retained_unique_storage_bytes": 33603586,
+  "completed": true
+}

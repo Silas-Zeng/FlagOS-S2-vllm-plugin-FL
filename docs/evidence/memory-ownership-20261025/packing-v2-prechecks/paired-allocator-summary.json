@@ -1,0 +1,80 @@
+{
+  "scope": "isolated primitives; not full-model capacity; BF16 head unchanged",
+  "rows": [
+    {
+      "case": "bf16_head-256",
+      "baseline": {
+        "allocated": 535822336,
+        "reserved": 536870912,
+        "inactive_split_bytes": 1048576,
+        "device_used_sample": 754974720
+      },
+      "candidate": {
+        "allocated": 535822336,
+        "reserved": 536870912,
+        "inactive_split_bytes": 1048576,
+        "device_used_sample": 754974720
+      }
+    },
+    {
+      "case": "gate-2048",
+      "baseline": {
+        "allocated": 33604096,
+        "reserved": 102760448,
+        "inactive_split_bytes": 69156352,
+        "device_used_sample": 320864256
+      },
+      "candidate": {
+        "allocated": 33604096,
+        "reserved": 48234496,
+        "inactive_split_bytes": 14630400,
+        "device_used_sample": 287309824
+      }
+    },
+    {
+      "case": "gate-256",
+      "baseline": {
+        "allocated": 26264064,
+        "reserved": 102760448,
+        "inactive_split_bytes": 76496384,
+        "device_used_sample": 320864256
+      },
+      "candidate": {
+        "allocated": 26264064,
+        "reserved": 27262976,
+        "inactive_split_bytes": 998912,
+        "device_used_sample": 287309824
+      }
+    },
+    {
+      "case": "gate-32",
+      "baseline": {
+        "allocated": 25346560,
+        "reserved": 102760448,
+        "inactive_split_bytes": 77413888,
+        "device_used_sample": 320864256
+      },
+      "candidate": {
+        "allocated": 25346560,
+        "reserved": 27262976,
+        "inactive_split_bytes": 1916416,
+        "device_used_sample": 287309824
+      }
+    },
+    {
+      "case": "historical_int8_head-256",
+      "baseline": {
+        "allocated": 268958208,
+        "reserved": 1071644672,
+        "inactive_split_bytes": 802686464,
+        "device_used_sample": 1289748480
+      },
+      "candidate": {
+        "allocated": 270006784,
+        "reserved": 270532608,
+        "inactive_split_bytes": 525824,
+        "device_used_sample": 488636416
+      }
+    }
+  ]
+}

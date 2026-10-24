@@ -53,3 +53,17 @@ CPU仅核对tensor几何/字节与语法，GPU及真实trace待验证。没有�
 原因是本机Python3.14 ast.dump默认省略空字段，远端3.12保留，导致同一baseline AST摘要不同。
 修复只更换工具摘要序列化为保留实际语义字段的canonical JSON，baseline合同仍锁定原函数；不更改量化数学或放宽数值门。
 旧失败目录weight-packing-20261025保留，新冻结版本与新输出目录单独重试。
+
+
+## 1280ae0设备预检通过，完整服务正在跑
+
+35/35真实weight组合的INT8权重/FP32 scale位模式、布局、输入不变均通过，五个新进程内存case均完成。
+input_ready时gate M32/256 Torch reserved98→26MiB，gate M2048为98→46MiB；历史INT8 head1022→258MiB，
+其allocated约增加1MiB（最终255MiB storage独立分配段的allocator rounding），不能混同storage字节、active分配和reserved。
+BF16 head primitive无变化。实际device_used采样也单独保存，不把reserved下降一比一换算非Torch瞬态或KV。
+原始位比较、全部snapshot、配对summary以及首轮工具拒绝记录在packing-v2-prechecks/，均校验capture SHA。
+
+个人实例冻结1280ae0，driver189360/start321195938，service parent189825，acceptance190256，server190259。
+原9/40门已过，105题与两档仍在验收。当前启动KV547440，相对近期PR37单次547632没有增容，
+不能因此直接认为完整服务吞吐提高，也不能将这192token的跨运行差异认定为确定回归。
+PR40继续Draft；分配段优化在历史INT8 head上的更大作用可后续独立组合验证，当前head仍BF16。

@@ -1,0 +1,22 @@
+{
+  "pid": 189195,
+  "source": "/workspace/experiments/minicpm-s2/code/weight-packing-20261025",
+  "commit": "724846bcc3e22c6b07e3c13f4aa6e72adc3659cb",
+  "library": "/workspace/experiments/minicpm-s2/code/int8-gate-service-20261025/build-native-w8a8/biv150_native_w8a8.so",
+  "library_sha256": "3e114fc0201dd8e4ef31b5aa7a3c75364469a6d69e54d3ae2d6ac929e254830d",
+  "completed": false,
+  "stage": "packing-equivalence",
+  "child_pid": 189200,
+  "command": [
+    "/usr/local/bin/python",
+    "/workspace/experiments/minicpm-s2/code/weight-packing-20261025/tools/check_biv150_weight_packing.py",
+    "--weights",
+    "/workspace/MiniCPM5-2B",
+    "--baseline-source",
+    "/workspace/experiments/minicpm-s2/code/memory-ownership-20261025/vllm_fl/patches/biv150_native_w8a8.py",
+    "--out",
+    "/workspace/experiments/minicpm-s2/weight-packing-20261025/packing-equivalence.json"
+  ],
+  "started_utc": "2026-10-24T17:45:26.187994+00:00",
+  "exit_code": 1
+}
