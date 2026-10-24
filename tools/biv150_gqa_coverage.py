@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 
 PINS = {
-    "vllm.compilation.breakable_cudagraph": "722683b44b4461ffd9a6498741da18945cbaac231c3bb01f0b0443dafe9e053e",
+    "vllm_fl.compilation.graph": "ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2",
     "vllm_fl.worker.model_runner": "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61",
     "vllm_fl.patches.biv150_gqa_decode": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
 }
@@ -34,6 +34,7 @@ class Coverage:
             phase="startup",
             generation=0,
             phase_history=[],
+            wrapper_instances={},
             entries={},
             replays={},
             eager_gqa={},
@@ -71,13 +72,28 @@ class Coverage:
             self.stop.wait(0.1)
 
     def wire(self, wrapper_type, kernel, context, none_mode):
+        original_init = wrapper_type.__init__
         original_call, original_run = wrapper_type.__call__, kernel.run
+
+        @functools.wraps(original_init)
+        def observed_init(wrapper, *args, **kwargs):
+            original_init(wrapper, *args, **kwargs)
+            with self.lock:
+                self.data["wrapper_instances"][f"{id(wrapper):x}"] = dict(
+                    module=type(wrapper).__module__,
+                    name=type(wrapper).__qualname__,
+                    runtime_mode=str(wrapper.runtime_mode),
+                )
 
         @functools.wraps(original_call)
         def observed_call(wrapper, *args, **kwargs):
             ctx = context()
             key, capture = None, False
-            if ctx is not None and ctx.cudagraph_runtime_mode != none_mode:
+            if (
+                ctx is not None
+                and ctx.cudagraph_runtime_mode != none_mode
+                and ctx.cudagraph_runtime_mode == wrapper.runtime_mode
+            ):
                 desc = ctx.batch_descriptor
                 if desc is not None:
                     descriptor = {
@@ -85,8 +101,8 @@ class Coverage:
                         for name in ("num_tokens", "num_reqs", "uniform", "has_lora")
                     }
                     key = f"{id(wrapper):x}:" + json.dumps(descriptor, sort_keys=True)
-                    entry = wrapper.entries.get(desc)
-                    capture = entry is None or entry.capture is None
+                    entry = wrapper.concrete_graph_entries.get(desc)
+                    capture = entry is None or entry.graph is None
                     with self.lock:
                         self.data["entries"].setdefault(
                             key, dict(descriptor=descriptor, gqa_grids={})
@@ -137,6 +153,7 @@ class Coverage:
                     counts[label] = counts.get(label, 0) + 1
             return compiled
 
+        wrapper_type.__init__ = observed_init
         wrapper_type.__call__ = observed_call
         kernel.run = observed_run
 
@@ -150,7 +167,7 @@ def install(root):
         if digest != expected:
             raise RuntimeError(f"Unpinned diagnostic source: {name}:{digest}")
         modules[name], sources[name] = module, dict(path=str(path), sha256=digest)
-    graph = modules["vllm.compilation.breakable_cudagraph"]
+    graph = modules["vllm_fl.compilation.graph"]
     gqa = modules["vllm_fl.patches.biv150_gqa_decode"]
     trace = Coverage(root, sources)
 
@@ -162,10 +179,12 @@ def install(root):
         )
 
     runner = modules["vllm_fl.worker.model_runner"]
-    if runner.BreakableCUDAGraphWrapper is not graph.BreakableCUDAGraphWrapper:
-        raise RuntimeError("Runner does not bind the observed Breakable wrapper")
+    if runner.GraphWrapper is not graph.GraphWrapper:
+        raise RuntimeError("Runner does not bind the observed project GraphWrapper")
+    if runner.is_breakable_cudagraph_enabled():
+        raise RuntimeError("Breakable graph enabled; this observer targets project GraphWrapper")
     trace.wire(
-        graph.BreakableCUDAGraphWrapper,
+        graph.GraphWrapper,
         gqa._gqa_decode_attention,
         context,
         graph.CUDAGraphMode.NONE,

@@ -13,6 +13,8 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
+from contextlib import nullcontext
+import builtins
 
 from biv150_gqa_coverage import Coverage, atomic_json
 from run_biv150_gqa_coverage import analyze
@@ -54,62 +56,62 @@ def main(args):
 
         kernel = Kernel()
 
+        class FakeDeviceGraph:
+            def replay(self):
+                pass
+
         class Graph:
             def __init__(self):
-                self.entries = {}
-                self.calls = 0
+                self.concrete_graph_entries = {}
                 self.fail = False
+                self.runtime_mode = "FULL"
+                self.cudagraph_options = SimpleNamespace(
+                    debug_log_enable=False, gc_disable=False, weak_ref_output=False
+                )
+                self.graph_pool = None
+                self.is_debugging_mode = False
 
             def runnable(self, *args, **kwargs):
-                self.calls += 1
                 if self.fail:
                     raise ValueError("expected original error")
-                kernel[(ctx.batch_descriptor.num_tokens, 2, 16)]()
+                desc = ctx.batch_descriptor
+                kernel[(desc.num_tokens, 2, 16 if desc.num_tokens == 40 else 4)]()
                 return output
 
-            def _capture(self, entry, args, kwargs):
-                self.calls += 1
-                if self.fail:
-                    raise ValueError("expected original error")
-                desc = entry.batch_descriptor
-                for _ in range(3):
-                    kernel[(desc.num_tokens, 2, 16 if desc.num_tokens == 40 else 4)]()
-                entry.capture = object()
-                return output
-
-            def _replay(self, entry, args, kwargs):
-                self.calls += 1
-                if self.fail:
-                    raise ValueError("expected original error")
-                return output
-
-        # Execute the pinned installed dispatch method itself with CPU stubs,
-        # rather than testing a hand-written classic-wrapper approximation.
-        actual = (
-            Path(__file__).resolve().parent
-            / "reference/breakable_cudagraph_20261024.py"
-        )
+        # Execute the project wrapper dispatch itself, including its actual
+        # capture/replay branches. Device operations alone use CPU stand-ins.
+        actual = Path(__file__).resolve().parents[1] / "vllm_fl/compilation/graph.py"
         raw = actual.read_bytes()
-        assert (
-            hashlib.sha256(raw).hexdigest()
-            == "722683b44b4461ffd9a6498741da18945cbaac231c3bb01f0b0443dafe9e053e"
+        assert hashlib.sha256(raw).hexdigest() == (
+            "ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2"
         )
-        tree = ast.parse(raw)
-        cls = next(
-            n
-            for n in tree.body
-            if isinstance(n, ast.ClassDef) and n.name == "BreakableCUDAGraphWrapper"
-        )
-        method = next(
-            n
-            for n in cls.body
-            if isinstance(n, ast.FunctionDef) and n.name == "__call__"
-        )
+        cls = next(n for n in ast.parse(raw).body
+                   if isinstance(n, ast.ClassDef) and n.name == "GraphWrapper")
+        method = next(n for n in cls.body
+                      if isinstance(n, ast.FunctionDef) and n.name == "__call__")
+        offloader = SimpleNamespace(sync_prev_onload=lambda: None,
+                                    join_after_forward=lambda: None)
+        def cpu_import(name, *args, **kwargs):
+            if name == "vllm.model_executor.offloader.base":
+                return SimpleNamespace(get_offloader=lambda: offloader)
+            return builtins.__import__(name, *args, **kwargs)
         namespace = dict(
+            __builtins__=dict(vars(builtins), __import__=cpu_import),
             is_forward_context_available=lambda: True,
             get_forward_context=lambda: ctx,
             CUDAGraphMode=SimpleNamespace(NONE="NONE"),
-            _BreakableEntry=lambda **kw: SimpleNamespace(capture=None, **kw),
+            GraphEntry=lambda **kw: SimpleNamespace(graph=None, **kw),
+            Graph=SimpleNamespace(graph=FakeDeviceGraph),
+            torch=SimpleNamespace(Tensor=type("Tensor", (), {})),
+            ExitStack=nullcontext,
+            set_graph_pool_id=lambda value: None,
+            validate_cudagraph_capturing_enabled=lambda: None,
+            current_platform=SimpleNamespace(
+                graph_pool_handle=lambda: None, device_type="cuda",
+                torch_device_fn=SimpleNamespace(graph=lambda *a, **kw: nullcontext())
+            ),
+            weak_ref_tensors=lambda value: value,
+            compilation_counter=SimpleNamespace(num_cudagraph_captured=0),
         )
         exec("from __future__ import annotations\n" + ast.unparse(method), namespace)
         Graph.__call__ = namespace["__call__"]
@@ -118,18 +120,18 @@ def main(args):
         trace.wire(Graph, kernel, lambda: ctx, "NONE")
         graph = Graph()
         assert graph() is output
-        assert kernel.calls == 3 and graph.calls == 1
+        assert kernel.calls == 1 and len(trace.data["wrapper_instances"]) == 1
         trace.data["phase"] = "score-4096"
         assert graph() is graph() is output
-        assert kernel.calls == 3 and graph.calls == 3
+        assert kernel.calls == 1
         ctx.batch_descriptor = Descriptor(32)
         assert graph() is output
-        assert kernel.calls == 6
+        assert kernel.calls == 2
         trace.data["phase"] = "score-16384"
         assert graph() is graph() is output
         verdict = analyze(trace.data)
         assert verdict["phases"]["score-4096"]["b40_full_graph_replays"] == 2
-        assert verdict["phases"]["score-4096"]["b40_graph_kernel_launches"] == 6
+        assert verdict["phases"]["score-4096"]["b40_graph_kernel_launches"] == 2
         assert not verdict["phases"]["score-16384"]["b40_selected"]
         assert not verdict["phases"]["score-16384"]["unmapped_entries"]
         ctx.cudagraph_runtime_mode = "NONE"
@@ -142,6 +144,9 @@ def main(args):
         before = json.dumps(trace.data, sort_keys=True)
         kernel.run(grid=(40, 2, 16), warmup=True)
         assert json.dumps(trace.data, sort_keys=True) == before
+        ctx.cudagraph_runtime_mode = "PIECEWISE"
+        assert graph() is output
+        assert len(trace.data["entries"]) == 2
         graph.fail = True
         try:
             graph()
@@ -193,7 +198,7 @@ def main(args):
         assert (root / "observed").read_text() == "yes"
     result = dict(
         cpu_only=True,
-        pinned_installed_dispatch_executed=True,
+        pinned_project_dispatch_executed=True,
         original_calls_preserved=True,
         capture_excluded_from_replay=True,
         replay_to_gqa_mapping=True,

@@ -111,10 +111,11 @@ preserved; phase acknowledgment enforced. Evidence is in
 proof. A real-load trace is pending and will be archived before deciding PR28.
 
 
-## Coverage v1 invalid; actual Breakable wrapper correction
+## Coverage v1 invalid; v2 Breakable hypothesis also rejected
 
-615bfd8 observed the legacy CUDAGraphWrapper, but the pinned actual model runner
-imports and constructs BreakableCUDAGraphWrapper. The real trace had0 entries
+615bfd8 observed the legacy CUDAGraphWrapper, but the actual runner has multiple conditional wrappers. The v2 attempt
+incorrectly inferred the selected Breakable wrapper from its import and conditional
+construction alone. Neither observation proved the actual selected class. The real trace had0 entries
 and0 replay mappings despite many GQA Python calls. Therefore its emptiness is
 invalid instrumentation, not evidence that B40 never runs. CPU fake checks did
 not prove attachment to the actual runtime class. No v1 diagnostic throughput
@@ -142,3 +143,27 @@ changes relative to the former da1 runtime are exclusively the merged PR25;
 observer changes remain tools-only. The old full da1 model results do not
 substitute for formal acceptance of the new combined runtime. Current draft
 still needs valid coverage and any required integrated service validation.
+
+
+## V2 preflight rejection and project-wrapper observer
+
+Frozen996b0d0 exited1 before issuing any benchmark requests: real trace has zero
+entries/replays and924 startup GQA invocations. The preflight refused further load
+and the acceptance finally cleaned its service. This is an instrumentation
+rejection, not an operator correctness failure or evidence of zero B40 use.
+Raw state, trace and rejection are retained under
+`evidence/gqa-wave-coverage-20261024/rejected-v2/`.
+
+The runner also imports `vllm_fl.compilation.graph.GraphWrapper` at line280 and
+constructs it in the FULL branch when breakable mode is disabled. This project
+class is distinct from both upstream wrappers tried earlier. Its actual source,
+verified locally and on the private machine, hashes to
+ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2.
+The revised tools pin this class, verify the runner alias and reject enabled
+breakable mode. They record constructed wrapper identities, use its actual
+concrete_graph_entries/graph and runtime-mode matching, and require real
+capture-to-GQA linkage before requests. CPU validation executes this exact
+project dispatch AST with only device operations stubbed; it also checks an
+incompatible runtime mode goes eager. These checks passed locally. Production
+files and competition parameters remain untouched. A successful real preflight
+and replay trace are still required; this draft is not ready to merge.
