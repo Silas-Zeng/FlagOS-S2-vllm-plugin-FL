@@ -5,7 +5,8 @@ after normal fetch timed out). No new upstream framework code is merged.
 
 The exact standalone gate source 20c991a passed one full Level-3 run at 102/105 and
 a warmed single 4K run at 5258.354991 total tokens/s, TTFT 4244.359266 ms, 256/256.
-Its 16K is still running. The separate mixed operator source e444c9c passed one
+Its completed 16K is 3113.626945 total tokens/s (-7.44%), with TTFT
+161138.989054 ms exceeding the working ceiling. Standalone gate is rejected. The separate mixed operator source e444c9c passed one
 Level-3 run at 102/105 and 4K at 5017.400661, but its 16K was interrupted by SIGTERM.
 These individual results do not validate this combination or predict additive
 speedup. The mixed operator code is copied byte-for-byte from the tested source.
@@ -26,3 +27,12 @@ This candidate has passed local Python syntax/lint checks only. It is not
 installed, queued or GPU-tested yet. Wait for the current acceptance and both
 queued probes, then choose the next model candidate from their actual results.
 Never copy separate candidates' accuracy, throughput or TTFT to this version.
+
+The complete mode now saves explicit working performance gates and exits with
+failure for a bad throughput/TTFT/request result. These conservative research
+TTFT limits are 4770.3209 / 156938.85 ms; original throughput references are
+4809.36 / 3364.03, with a 99% floor and a separately reported 120% goal.
+Raw measurement completion is distinct from acceptance. The gate function
+rejects the actual completed residual run, accepts a passing fixture, and
+rejects NaN/Inf, missing requests, failed requests, missing output and changed
+concurrency fixtures. This is runner validation, not GPU candidate validation.

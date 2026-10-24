@@ -6,6 +6,7 @@ import datetime
 import hashlib
 import importlib.metadata
 import json
+import math
 import os
 import signal
 import socket
@@ -19,6 +20,40 @@ from pathlib import Path
 def get_json(url):
     with urllib.request.urlopen(url, timeout=3) as response:
         return json.load(response)
+
+
+def performance_gates(scores):
+    """Working research limits; official scoring interpretation remains separate."""
+    limits = {
+        "4096": (4809.36, 4770.3209, 256),
+        "16384": (3364.03, 156938.85, 128),
+    }
+    verdicts = {}
+    for length, (baseline, ttft_limit, count) in limits.items():
+        score = scores.get(length, {})
+        tps = score.get("total_token_throughput", float("nan"))
+        ttft = score.get("mean_ttft_ms", float("nan"))
+        requests_ok = (
+            score.get("num_prompts") == count
+            and score.get("max_concurrency") == 64
+            and score.get("completed") == count
+            and score.get("failed") == 0
+            and score.get("total_input_tokens") == int(length) * count
+            and score.get("total_output_tokens") == 1024 * count
+        )
+        throughput_ok = math.isfinite(tps) and tps >= baseline * 0.99
+        ttft_ok = math.isfinite(ttft) and 0 < ttft <= ttft_limit
+        verdicts[length] = dict(
+            requests_ok=requests_ok,
+            throughput_ok=throughput_ok,
+            ttft_ok=ttft_ok,
+            passed=requests_ok and throughput_ok and ttft_ok,
+            baseline_total_tokens_per_s=baseline,
+            throughput_floor=baseline * 0.99,
+            working_mean_ttft_limit_ms=ttft_limit,
+            goal_20_percent=math.isfinite(tps) and tps >= baseline * 1.20,
+        )
+    return verdicts
 
 
 def benchmark(run_dir, name, input_len, output_len, count, seed):
@@ -341,6 +376,12 @@ def main(args):
         if args.mode == "all":
             result["throughput_scores"] = throughput(args.out)
             result["throughput_completed"] = True
+            result["working_performance_gates"] = performance_gates(
+                result["throughput_scores"]
+            )
+            result["working_acceptance_passed"] = all(
+                row["passed"] for row in result["working_performance_gates"].values()
+            )
             with log_path.open("rb") as events:
                 events.seek(evaluation_offset)
                 serving_log = events.read().decode(errors="replace")
@@ -353,6 +394,8 @@ def main(args):
                 raise RuntimeError("No post-ready mixed serving selection evidence")
             result["mixed_serving_selection"] = mixed_hits
         (args.out / "acceptance.json").write_text(json.dumps(result, indent=2))
+        if args.mode == "all" and not result["working_acceptance_passed"]:
+            raise RuntimeError("Working throughput/TTFT/request gates failed; no merge")
         print(json.dumps(dict(completed=True, accuracy=result["accuracy"])), flush=True)
     finally:
         if server.poll() is None:
