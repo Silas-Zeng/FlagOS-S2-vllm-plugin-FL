@@ -29,3 +29,17 @@ claimed by this diagnostic.
 
 Local validation: Ruff, syntax compilation and git diff whitespace checks only.
 GPU results for the expanded probe remain pending.
+
+## Completed expanded probe
+
+Source fe097dd0ae51aa5e501dc9f57bfe1a5f2095a4a1 completed96/96 numerical cases.
+B40 width16 vs4: uniform4K1.2956×/16896 1.4343×; ragged1.3319×/1.3860×.
+B36 width16: uniform1.3289×/1.4338×, ragged1.1135×/1.1347×.
+B33 width16: uniform1.2358×/1.3232× but ragged only1.0013×/1.0097×.
+B48 width8 is a candidate (uniform1.202×/1.262×, ragged4K1.169×;
+ragged16K width16 wins1.222×). B56/63 are not universal wins, and B32/64
+should retain shipping widths. Therefore do not replace the whole policy by16.
+A next service candidate should restrict tested physical rows, verify trailing
+zero padded rows at live33..40/41..48, preserve builder scratch bounds and all
+new team source/attention guards, then pass full accuracy and both workloads.
+These results alone do not prove service-path coverage or end-to-end gains.
