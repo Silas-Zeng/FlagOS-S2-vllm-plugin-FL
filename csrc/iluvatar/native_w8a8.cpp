@@ -180,7 +180,7 @@ at::Tensor gate_silu_auto(const at::Tensor& x, const at::Tensor& wq,
   // padded GEMM rows for the already-tested activation residual at small M.
   const bool compressed = original.dim()==2 && original.stride(0)==0 && original.stride(1)==0;
   if (compressed && x.dim()==2 && x.size(0)>=1 && x.size(0)<=16)
-    return gate_silu_residual(x,wq,scales);
+    return gate_silu_residual_impl(x,wq,scales,256);
   // The cached 256-thread quantizer is bit-exact to the original quantizer.
   // Bound it to the compressed MiniCPM geometry and measured service row range.
   if (compressed && x.dim()==2 && x.size(0)>=17 && x.size(0)<=2048 &&

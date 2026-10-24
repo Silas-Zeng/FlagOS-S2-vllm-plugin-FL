@@ -1,5 +1,39 @@
 # Residual small-M input cache component probe
 
+## Current: complete component pass, production-route service candidate
+
+Frozen `2dad25e` completed **36/36 records and all 180 input patterns**, including
+the previously skipped outlier. Original/new raw INT8/scales and whole gate are
+bit-exact; corrected independent CPU reference at unchanged .005/.005 and
+changed-input Graphs pass. Three alternating warmed complete-gate rounds for
+the 12 thread256 configurations observe median speedups **1.03523–1.05299x**,
+geometric mean1.04474x. The 64-thread regressions are not selected. Raw build
+state, original9 checks, result and summary are in
+`evidence/residual-cache-20261024/reference-fixed-full/`. This is a component
+result, not new model accuracy or throughput.
+
+The new candidate syncs merged main `6a013bd` (PR28) and explicitly stacks
+PR31 `0248416` (runtime e972997). Only the existing compressed small-M auto
+route now calls the validated residual implementation with256 threads. The
+original residual entry point stays unchanged as a comparison. M17..2048 input
+cache, BF16-weight fallbacks, all math, layouts, INT8 GEMM and SiLU are retained.
+Installation metadata and acceptance explicitly require the new cached residual
+range/thread count, so the service cannot silently validate the old route.
+
+Before loading a real model, the new actual-route check covers all M1..16,
+pitch2048/2080, five patterns (160), old/new raw and complete outputs, independent
+CPU reference, zero padded rows and changed-input Graphs. Real BF16 fallback
+and M0/17/32/40/64/2048/2049 are also checked; original9 and40 cached-dispatch
+checks remain, plus PR31's28784 CPU policy tuples. Actual private compilation
+and these new device checks are pending. Next full service still requires105
+questions and warmed one-round fixed4K/16K, full tokens/requests and TTFT.
+
+The candidate depends on PR31 and will be separately frozen. Its queue must
+wait for PR32's diagnostic to exit, additionally require PR31 e972997's formal
+state.completed, and refuse a busy GPU/port. No running frozen source is edited;
+unvalidated production changes stay on this Draft PR. Historical sections below
+retain earlier snapshots, superseded by this current state.
+
 The earlier quant-row cache probe improved M17..2048 full gate by1.5–4.9% with
 256 threads. That path is being evaluated separately in a real model. This
 probe checks M1..16 residual activation quantization, which uses a different

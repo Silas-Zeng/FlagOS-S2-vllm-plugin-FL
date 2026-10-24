@@ -196,7 +196,7 @@ extern "C" void biv150_quantize_cached(const void* x,int8_t* q,float* scales,
   else quantize_cached_rows<256><<<padded_m,256,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
 }
 
-// Probe only: keep the production residual quantizer unchanged.
+// Cached input path; production selects the validated 256-thread specialization.
 namespace {
 template<int THREADS>
 __global__ void quantize_residual_cached_rows(const BF16* x, int8_t* q, float* scales,
