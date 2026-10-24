@@ -227,6 +227,7 @@ class FlashAttentionMetadata:
     prefill_query_start_loc: torch.Tensor
     prefill_max_seq_len: int
     prefill_seq_lens: torch.Tensor
+    prefill_cu_seqlens_k: torch.Tensor | None
     prefill_block_table: torch.Tensor
     # \------------------------- Metax Modification -------------------------/
 
@@ -259,6 +260,13 @@ def _get_sliding_window_configs(
         assert isinstance(layer.impl, FlashAttentionImpl)
         sliding_window_configs.add(layer.impl.sliding_window)
     return sliding_window_configs
+
+
+def _cumulative_seq_lens(seq_lens: torch.Tensor) -> torch.Tensor:
+    """Return [0, s0, s0+s1, ...] without a device synchronization."""
+    return torch.cat((seq_lens.new_zeros(1), seq_lens)).cumsum(
+        dim=0, dtype=torch.int32
+    )
 
 
 class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetadata]):
@@ -337,6 +345,11 @@ class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetad
             self.compilation_config.cudagraph_mode.has_full_cudagraphs()
         )
         self.max_cudagraph_size = self.compilation_config.max_cudagraph_capture_size
+        self.prefill_cu_seqlens_k = torch.empty(
+            vllm_config.scheduler_config.max_num_seqs + 1,
+            dtype=torch.int32,
+            device=self.device,
+        )
 
         if self.use_full_cuda_graph and self.aot_schedule:
             self.scheduler_metadata = torch.zeros(
@@ -443,6 +456,15 @@ class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetad
                 - common_attn_metadata.query_start_loc[num_decodes]
             )
             prefill_seq_lens = common_attn_metadata.seq_lens[num_decodes:num_reqs]
+            prefill_cu_seqlens_k = self.prefill_cu_seqlens_k[: num_prefills + 1]
+            prefill_cu_seqlens_k.copy_(
+                _cumulative_seq_lens(
+                    common_attn_metadata.seq_lens_cpu[
+                        num_decodes:num_reqs
+                    ]
+                ),
+                non_blocking=True,
+            )
             prefill_block_table_tensor = common_attn_metadata.block_table_tensor[
                 num_decodes:num_reqs
             ]
@@ -450,6 +472,7 @@ class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetad
             prefill_max_seq_len = 0
             prefill_query_start_loc = None
             prefill_seq_lens = None
+            prefill_cu_seqlens_k = None
             prefill_block_table_tensor = None
         # \------------------------- Metax Modification -------------------------/
 
@@ -584,6 +607,7 @@ class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetad
             prefill_query_start_loc=prefill_query_start_loc,
             prefill_max_seq_len=prefill_max_seq_len,
             prefill_seq_lens=prefill_seq_lens,
+            prefill_cu_seqlens_k=prefill_cu_seqlens_k,
             prefill_block_table=prefill_block_table_tensor,
             # \------------------------- Metax Modification -------------------------/
             block_table=block_table_tensor,
@@ -798,11 +822,7 @@ class FlashAttentionImpl(AttentionImpl):
                 # For handling prefill decode split
                 num_decode_tokens = attn_metadata.num_decode_tokens
                 if attn_metadata.num_prefills > 0:
-                    cu_prefix_kv_lens = torch.tensor(
-                        [0] + attn_metadata.prefill_seq_lens.tolist(),
-                        device=attn_metadata.prefill_seq_lens.device,
-                        dtype=torch.int32,
-                    ).cumsum(dim=0, dtype=torch.int32)
+                    assert attn_metadata.prefill_cu_seqlens_k is not None
                     output[num_decode_tokens:num_actual_tokens] = (
                         flash_attn_varlen_func(
                             q=query[num_decode_tokens:num_actual_tokens],
@@ -810,7 +830,7 @@ class FlashAttentionImpl(AttentionImpl):
                             v=value_cache,
                             block_table=attn_metadata.prefill_block_table,
                             cu_seqlens_q=attn_metadata.prefill_query_start_loc,
-                            cu_seqlens_k=cu_prefix_kv_lens,
+                            cu_seqlens_k=attn_metadata.prefill_cu_seqlens_k,
                             max_seqlen_q=attn_metadata.max_query_len,
                             max_seqlen_k=attn_metadata.prefill_max_seq_len,
                             softmax_scale=self.scale,
