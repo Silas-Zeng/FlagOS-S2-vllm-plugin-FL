@@ -65,3 +65,34 @@ It checks CPU quantization against actual original raw quantization before using
 that oracle. No performance or model acceptance is inferred from this audit.
 Its private queue will wait for the owned PR28 coverage process to exit before
 building or using the GPU; it refuses any other busy GPU/port.
+
+
+## Reproduced reference failure; corrected probe oracle
+
+Frozen d4df0cb completed36 records/179 patterns, with zero candidate-vs-original
+raw/full-gate differences, zero independent CPU raw-quantization mismatches and
+zero corrected-reference tolerance violations. Original M15/pitch2080/t256
+failure reproduced on the `large` pattern: both original and candidate have the
+same one legacy-reference violation (abs0.0625). The original failed-result
+control flow skips its next pattern, so this audit covers179 rather than180.
+Do not call that a completed180-pattern performance recheck.
+
+The saved fixture SHA is
+3c4a41ba509736eb864d6a016593a1240d2f817843217b4844baa93bb15104ed.
+Its portable bytes are archived as `reference-audit/fixture-base64.json`:
+base64-decode data, verify SHA, then torch.load(..., map_location='cpu',
+weights_only=True). Raw audit and original9 checks are adjacent. The legacy
+oracle performs its quantization on GPU, despite its old CPU-reference name;
+CPU-only emulation of main_scale = peak * FP32(1/127) reproduces the saved legacy
+output exactly, with2 main and5 residual INT8 differences from the original.
+Direct CPU division matches original raw quantization. This strongly identifies
+the legacy GPU scalar-division strategy as the triggering reference discrepancy;
+direct GPU legacy intermediate capture has not yet been retained. FMA differences
+also exist in source/assembly, but are not by themselves the cause on this fixture.
+
+This probe now explicitly uses the independently validated CPU FP32/FMA oracle
+and compares both old and new against it at unchanged0.005/0.005. The old legacy
+helper and historical failure evidence stay unchanged. Next run must complete
+all36×5 patterns and changed-input Graph/performance checks, including the one
+skipped outlier case. Production dispatch remains unchanged until that recheck
+and then actual model acceptance pass. No model result is inferred from179.

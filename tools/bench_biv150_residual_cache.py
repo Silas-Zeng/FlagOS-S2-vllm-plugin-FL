@@ -11,7 +11,15 @@ from functools import partial
 from pathlib import Path
 
 import torch
-from bench_biv150_native_gate_residual import cpu_reference
+from audit_biv150_residual_reference import cpu_quantize, cpu_output
+
+def cpu_reference(x, wq, scales):
+    """Independent CPU oracle matching audited FP32/FMA native semantics."""
+    cols = torch.tensor([0, 1, 31, 127, 1023, 6143], dtype=torch.long)
+    both = torch.cat((cols, cols + 6144)).to(wq.device)
+    first, second, s1, s2 = cpu_quantize(x.cpu())
+    return cols, cpu_output(first, second, s1, s2, wq[:, both].cpu(), scales[both].cpu())
+
 from biv150_benchmark_utils import graph_time
 
 
@@ -58,6 +66,7 @@ def main(args):
                             x.mul_(100)
                         elif pattern == "outlier":
                             x[:, 0] = 32
+                        row["last_pattern"] = pattern
                         old_q, old_s = torch.ops.biv150_native.quantize_residual_probe(
                             x, 0
                         )
@@ -67,8 +76,10 @@ def main(args):
                         torch.testing.assert_close(new_q, old_q, atol=0, rtol=0)
                         torch.testing.assert_close(new_s, old_s, atol=0, rtol=0)
                         got = new()
-                        torch.testing.assert_close(got, old(), atol=0, rtol=0)
+                        original = old()
+                        torch.testing.assert_close(got, original, atol=0, rtol=0)
                         cols, gold = cpu_reference(x, q, scales)
+                        torch.testing.assert_close(original[:, cols.to(x.device)].cpu(), gold, atol=0.005, rtol=0.005)
                         torch.testing.assert_close(
                             got[:, cols.to(x.device)].cpu(),
                             gold,
