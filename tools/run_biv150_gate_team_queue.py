@@ -31,6 +31,11 @@ def main(args):
     build = source / "build-native-w8a8"
     steps = [
         (
+            "ragged-policy-cpu-check",
+            [sys.executable, str(source / "tools/check_biv150_ragged_gqa_policy_cpu.py"),
+             "--out", str(args.out / "ragged-policy-cpu-check.json")],
+        ),
+        (
             "build",
             [
                 sys.executable,
