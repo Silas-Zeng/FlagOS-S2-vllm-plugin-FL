@@ -21,9 +21,9 @@ SOURCES = {
     "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
     "vllm_fl.patches.biv150_cpu_metadata": "0e96152454a9197f65a34c2fe8805bd5073e1fa473070d59d4ec4f20a6d8846f",
     "vllm_fl.patches.biv150_mixed_decode": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
-    "vllm_fl.patches.biv150_gqa_decode": "1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a",
+    "vllm_fl.patches.biv150_gqa_decode": "37d11d08a6a2e563f550909b0011d0ea62f9495049f7983674f52f755f305256",
     "vllm_fl.patches.biv150_prefill_normalized": "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42",
-    "vllm_fl.patches.biv150_q_fragment_service": "ea361e6b604fbd3c7e3a6b95776892a7bc9d22e9988927db3f7876412c6e310f",
+    "vllm_fl.patches.biv150_q_fragment_service": "519ef8ed590b02c706115b3e75f01056b424e56f04a11718183fff68a4ed1d14",
     "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
     "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }

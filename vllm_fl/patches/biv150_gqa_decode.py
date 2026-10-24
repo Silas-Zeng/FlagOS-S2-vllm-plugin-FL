@@ -328,6 +328,16 @@ def _pick_segments(num_seqs, kv_heads, builder_segments):
     allocated for it; taking a prefix view is safe since the reduction only reads
     as many segments as it is given.
     """
+    # Measured packed-KV wave boundary; preserve every other shipping shape.
+    if (num_seqs, kv_heads, builder_segments) == (40, 2, 16):
+        return 16
+    # Actual mixed-prefix batches: all tested4K/16K configurations improve.
+    # Keep nondefault targets and unmeasured geometries on their original policy.
+    if TARGET_PROGRAMS == 256 and kv_heads == 2 and builder_segments == 16:
+        if num_seqs in (29, 30):
+            return 4
+        if num_seqs in (60, 61, 62, 63):
+            return 2
     programs_per_segment = max(1, num_seqs * kv_heads)
     need = -(-TARGET_PROGRAMS // programs_per_segment)
     segments = 1
