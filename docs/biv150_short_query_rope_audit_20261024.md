@@ -1,5 +1,27 @@
 # D02 / B09：真实短 query 与 RoPE/KV 入口审计
 
+## 当前：v5两档实际覆盖已完成，非性能优化成绩
+
+运行27202003a15c3dfd2bb9ca36406b0c020fc79abb（生产代码与已验收PR31 e972997相同），
+原检查、两档充分预热诊断完成，实际1个LlamaForCausalLM、42个RoPE层入口，errors为空。
+原始state/source manifest/scores/warmups/verdict/完整trace见`evidence/short-query-rope-audit-20261024/v5-final/`。
+
+| 阶段 | runner步 | forward query token | qlen2..8步/行/token | token占比 | 新split eager kernel launch |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 4K | 4244 | 1310464 | 2 / 2 / 7 | 0.000534% | 16800 |
+| 16K | 4850 | 2281166 | 1 / 1 / 8 | 0.000351% | 31206 |
+
+短query在两档均很少，D02暂降优先级；频度不是设备时间，未给出严格提速上界。
+新split计数证明PR31 B29/30/60..63确实被服务调用，但不证明整机增量收益。
+FULL Graph不在eager统计内，不能把这些数当所有attention launch总量。
+
+42个RoPE路径共享一个对象，类为RotaryEmbeddingFL，但实际选中的_forward_method均为
+`RotaryEmbedding.forward_native`，源码SHA c8180449…；不能把OOT候选当实际调用。
+因此B09后续应对照native编译路径与KV写入的组合总成本。先前缓存证明存在Q/K combo，
+本轮绑定审计仍不证明某个具体生成kernel被选中；尚未实现新的RoPE/KV融合核。
+
+以下早期段落为历史快照，其“待上机”由上方v5实际证据取代。
+
 基于已核实团队 main `5eda0b0da0ecbe1839105c49f58462329fd9ea22`；仅新增独立工具，不修改框架、调度、生产算子或 source guard。此 Draft PR 尚无新算子、无服务提速成绩。
 
 当前同步已合入main6a013bd和PR31的0248416，生产csrc/vllm_fl与PR31冻结e972997完全一致，诊断明确依赖PR31正式通过。compute-order pin同步为精确80b88140…，并重复PR31 CPU chooser检查；不是放宽source guard。实际模型按config/server选择LlamaForCausalLM，不能由目录名称推断使用models.minicpm。
