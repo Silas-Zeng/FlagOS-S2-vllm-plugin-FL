@@ -6,7 +6,7 @@
 
 - 当前实际 runner 是 `vllm_fl.worker.model_runner.ModelRunnerFL`，不是上游 GPUModelRunner。其 `execute_model` 在 `synchronize_input_prep()` 生命周期内，从原请求顺序生成 CPU int32 scheduled 数组，再调用本模块导入的 `_biv150_compute_order_plan`，然后 `_prepare_inputs`。该调用位于 `max_query_len` 判断之前，因此可观测纯 decode 与混合调用；观察 imported alias 才能命中真实入口。
 - 当前实际 Graph wrapper 是项目 `vllm_fl.compilation.graph.GraphWrapper`。在原构造函数返回后读取其实际 runnable 的 42 个 rotary 对象与 42 个 attention impl；记录 `_forward_method` 的绑定、源码 SHA、native/OOT 候选与 custom_ops 配置。不会执行这些 forward，也不改 attention wrapper 的函数/闭包。
-- 已只读复制个人实例安装源码并核对 SHA：MiniCPM 在 QKV 后先做 rotary，再调用 attention。TritonAttentionImpl.do_kv_cache_update 使用 `triton_reshape_and_cache_flash`；现成 `do_rope_and_kv_cache_update` 依赖 ROCm AITER。该接口存在不表示天数当前使用融合，也不能仅凭 RotaryEmbeddingFL 类存在断定 OOT 路径实际生效。
+- 已核对模型config及实际server resolved architecture：权重目录名为MiniCPM5-2B，但实际架构是 **LlamaForCausalLM**，不是models.minicpm。观察器pin实际models.llama SHA `1e1003454985bf86d3868a7755bcf5324676881548b3895809edf0b76698d384`，并检查配置/记录实际runnable类。Llama在QKV后先做rotary，再调用attention；decoder post_attention_layernorm接收hidden_states与residual，适用residual RMSNorm路径。TritonAttentionImpl.do_kv_cache_update 使用 `triton_reshape_and_cache_flash`；现成 `do_rope_and_kv_cache_update` 依赖 ROCm AITER。该接口存在不表示天数当前使用融合，也不能仅凭 RotaryEmbeddingFL 类存在断定 OOT 路径实际生效。此前读取minicpm.py只能说明另一个实现，不能当作当前模型路径证据。
 
 ## 采集与边界
 

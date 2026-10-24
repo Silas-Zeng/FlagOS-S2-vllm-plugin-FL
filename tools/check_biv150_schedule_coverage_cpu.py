@@ -51,6 +51,10 @@ def main(args):
         class Wrapper:
             def __init__(self, runnable, config):
                 self.runnable, self.compilation_config = runnable, config
+                self.vllm_config = SimpleNamespace(model_config=SimpleNamespace(
+                    hf_config=SimpleNamespace(architectures=["LlamaForCausalLM"]),
+                    hf_text_config=SimpleNamespace(hidden_size=2048, num_hidden_layers=42,
+                        num_attention_heads=16, num_key_value_heads=2)))
                 self.runtime_mode = "FULL"
 
         module = SimpleNamespace(_biv150_compute_order_plan=original)
@@ -112,6 +116,7 @@ def main(args):
         assert wrapper.runnable is runnable and len(trace.data["models"]) == 1
         assert len(next(iter(trace.data["models"].values()))["rotary"]) == 42
         assert next(iter(trace.data["models"].values()))["unique_rotary_objects"] == 1
+        assert next(iter(trace.data["models"].values()))["configured_architectures"] == ["LlamaForCausalLM"]
         assert rotary._forward_method is fn and impl.do_kv_cache_update is fn
         trace.flush()
         assert json.loads((root / f"trace-{os.getpid()}.json").read_text())["phases"]

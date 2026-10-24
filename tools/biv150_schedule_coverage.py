@@ -18,7 +18,7 @@ PINS = {
     "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
     "vllm.model_executor.custom_op": "4b4ba01623005d6a93698eaec007a934dd512bf9ec7241090927de819621de2e",
     "vllm.model_executor.layers.rotary_embedding.base": "c81804498f08f072356a26b41967f211475df2694dabf5da9f488c074d1fdef5",
-    "vllm.model_executor.models.minicpm": "086cbb063b8d6413b15f011f92e83d82af2c08fe28d6bdc8794139e21413bd1e",
+    "vllm.model_executor.models.llama": "1e1003454985bf86d3868a7755bcf5324676881548b3895809edf0b76698d384",
 }
 
 
@@ -163,7 +163,18 @@ class Coverage:
         if len(rotary) != 42 or len(attention) != 42:
             raise ValueError(f"Expected 42 actual rotary/attention objects: {len(rotary)}/{len(attention)}")
         config = wrapper.compilation_config
+        model_config = wrapper.vllm_config.model_config
+        text_config = model_config.hf_text_config
+        architectures = list(model_config.hf_config.architectures)
+        if architectures != ["LlamaForCausalLM"] or (
+            text_config.hidden_size, text_config.num_hidden_layers,
+            text_config.num_attention_heads, text_config.num_key_value_heads
+        ) != (2048, 42, 16, 2):
+            raise ValueError("Expected actual MiniCPM5 weights with LlamaForCausalLM config")
         record = dict(wrapper_module=type(wrapper).__module__,
+                      runnable_class_module=type(runnable).__module__,
+                      runnable_class_name=type(runnable).__qualname__,
+                      configured_architectures=architectures,
                       runtime_mode=str(wrapper.runtime_mode), rotary=rotary, attention=attention,
                       unique_rotary_objects=len({entry["object_id"] for entry in rotary}),
                       custom_ops=list(config.custom_ops),
