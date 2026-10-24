@@ -49,6 +49,16 @@ def load_library():
     def fake(x, wq, scales, original, bias, min_rows):
         return torch.empty((*x.shape[:-1], wq.shape[1]), dtype=x.dtype, device=x.device)
 
+    if hasattr(torch.ops.biv150_native, "linear_bounded"):
+
+        @torch.library.register_fake("biv150_native::linear_bounded")
+        def fake_bounded(
+            x, wq, scales, original, bias, min_rows, accumulator_budget_bytes
+        ):
+            return torch.empty(
+                (*x.shape[:-1], wq.shape[1]), dtype=x.dtype, device=x.device
+            )
+
     if hasattr(torch.ops.biv150_native, "gate_silu"):
 
         @torch.library.register_fake("biv150_native::gate_silu")

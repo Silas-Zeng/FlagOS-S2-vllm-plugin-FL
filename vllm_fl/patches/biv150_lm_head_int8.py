@@ -29,6 +29,8 @@ def install():
     if getattr(UnquantizedEmbeddingMethod, "_biv150_lm_head_int8", False):
         return {"installed": True, "already": True}
     load_library()
+    if not hasattr(torch.ops.biv150_native, "linear_bounded"):
+        raise RuntimeError("Bounded LM head operator missing from private library")
     original_after = UnquantizedEmbeddingMethod.process_weights_after_loading
     original_apply = UnquantizedEmbeddingMethod.apply
 
@@ -85,13 +87,14 @@ def install():
                     dict(calls=calls, shape=list(x.shape)),
                     flush=True,
                 )
-        y = torch.ops.biv150_native.linear(
+        y = torch.ops.biv150_native.linear_bounded(
             x.reshape(-1, 2048),
             layer._biv150_head_q,
             layer._biv150_head_scales,
             layer.weight,
             None,
             17,
+            64 * 1024 * 1024,
         )
         return y.reshape(*x.shape[:-1], 130560)
 
@@ -105,4 +108,6 @@ def install():
         compressed_only=True,
         hidden_layer_quantization=False,
         input_embedding_quantization=False,
+        operator="linear_bounded",
+        accumulator_budget_bytes=64 * 1024 * 1024,
     )

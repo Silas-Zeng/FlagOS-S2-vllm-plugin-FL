@@ -21,7 +21,8 @@ extern "C" void biv150_residual_silu_epilogue(const int32_t*,const float*,const 
 namespace {
 at::Tensor linear_impl(const at::Tensor& x, const at::Tensor& wq,
                   const at::Tensor& scales, const at::Tensor& original,
-                  const std::optional<at::Tensor>& bias, int64_t min_rows, bool fused_silu) {
+                  const std::optional<at::Tensor>& bias, int64_t min_rows, bool fused_silu,
+                  int64_t accumulator_budget_bytes = 0) {
   TORCH_CHECK(x.is_cuda() && x.scalar_type() == at::kBFloat16 && x.dim() == 2);
   TORCH_CHECK(wq.scalar_type() == at::kChar && wq.dim() == 2 && wq.is_contiguous());
   TORCH_CHECK(scales.scalar_type() == at::kFloat && scales.is_contiguous());
@@ -43,7 +44,15 @@ at::Tensor linear_impl(const at::Tensor& x, const at::Tensor& wq,
   auto input = x.contiguous();
   auto output = at::empty({m, output_n}, x.options());
   if (m == 0) return output;
-  const int64_t chunks = (m + 8191) / 8192;
+  int64_t max_rows = 8192;
+  if (accumulator_budget_bytes > 0) {
+    // Bound the live INT32 result independently of the full output allocation.
+    // Quantization and GEMM remain row-independent; only the row partition changes.
+    TORCH_CHECK(accumulator_budget_bytes >= 32 * n * int64_t(sizeof(int32_t)));
+    max_rows = std::min<int64_t>(max_rows,
+        (accumulator_budget_bytes / (n * int64_t(sizeof(int32_t))) / 32) * 32);
+  }
+  const int64_t chunks = (m + max_rows - 1) / max_rows;
   const int64_t span = (m + chunks - 1) / chunks;
   const auto stream = c10::cuda::getCurrentCUDAStream();
   for (int64_t start = 0; start < m; start += span) {
@@ -76,6 +85,21 @@ at::Tensor linear(const at::Tensor& x, const at::Tensor& wq,
                   const at::Tensor& scales, const at::Tensor& original,
                   const std::optional<at::Tensor>& bias, int64_t min_rows) {
   return linear_impl(x,wq,scales,original,bias,min_rows,false);
+}
+
+at::Tensor linear_bounded(const at::Tensor& x, const at::Tensor& wq,
+                         const at::Tensor& scales, const at::Tensor& original,
+                         const std::optional<at::Tensor>& bias, int64_t min_rows,
+                         int64_t accumulator_budget_bytes) {
+  TORCH_CHECK(x.dim()==2 && wq.dim()==2 && scales.dim()==1 && original.dim()==2);
+  TORCH_CHECK(wq.is_cuda() && scales.is_cuda() && original.is_cuda());
+  TORCH_CHECK(x.device()==wq.device() && x.device()==scales.device() && x.device()==original.device());
+  TORCH_CHECK(x.size(1)==2048 && wq.size(0)==2048 && wq.size(1)==130560);
+  TORCH_CHECK(original.size(0)==130560 && original.size(1)==2048);
+  TORCH_CHECK(original.stride(0)==0 && original.stride(1)==0);
+  TORCH_CHECK(scales.numel()==130560 && !bias.has_value());
+  TORCH_CHECK(accumulator_budget_bytes >= 32 * 130560 * int64_t(sizeof(int32_t)));
+  return linear_impl(x,wq,scales,original,bias,min_rows,false,accumulator_budget_bytes);
 }
 
 at::Tensor gate_silu(const at::Tensor& x, const at::Tensor& wq,
@@ -125,11 +149,13 @@ TORCH_LIBRARY(biv150_native, m) {
   m.def("gate_silu_auto(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, int min_rows) -> Tensor");
   m.def("gate_silu_residual(Tensor x, Tensor weight_int8, Tensor scales) -> Tensor");
   m.def("linear(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, Tensor? bias, int min_rows) -> Tensor");
+  m.def("linear_bounded(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, Tensor? bias, int min_rows, int accumulator_budget_bytes) -> Tensor");
   m.def("gate_silu(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, int min_rows) -> Tensor");
 }
 TORCH_LIBRARY_IMPL(biv150_native, CUDA, m) {
   m.impl("gate_silu_auto", &gate_silu_auto);
   m.impl("gate_silu_residual", &gate_silu_residual);
   m.impl("linear", &linear);
+  m.impl("linear_bounded", &linear_bounded);
   m.impl("gate_silu", &gate_silu);
 }
