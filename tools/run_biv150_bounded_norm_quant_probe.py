@@ -32,9 +32,6 @@ def main(args):
         ("bounded-abi-cpu-check", [sys.executable,
             str(source / "tools/check_biv150_bounded_norm_cpu.py"),
             "--out", str(args.out / "bounded-abi-cpu-check.json")]),
-        ("ragged-policy-cpu-check", [sys.executable,
-            str(source / "tools/check_biv150_ragged_gqa_policy_cpu.py"),
-            "--out", str(args.out / "ragged-policy-cpu-check.json")]),
         (
             "build",
             [
@@ -59,10 +56,6 @@ def main(args):
             str(source / "tools/check_biv150_quant_cached_dispatch.py"),
             "--library", str(build / "biv150_native_w8a8.so"),
             "--out", str(args.out / "cached-dispatch-check.json")]),
-        ("residual-cached-dispatch-check", [sys.executable,
-            str(source / "tools/check_biv150_residual_cached_dispatch.py"),
-            "--library", str(build / "biv150_native_w8a8.so"),
-            "--out", str(args.out / "residual-cached-dispatch-check.json")]),
         (
             "probe",
             [

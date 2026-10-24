@@ -18,19 +18,7 @@ def identity(pid):
         return None
 
 
-def require_completed(path, commit):
-    if path is None and commit is None:
-        return
-    if path is None or commit is None:
-        raise ValueError("Require both completed-state path and commit")
-    predecessor = json.loads(path.read_text())
-    if predecessor.get("completed") is not True or predecessor.get("commit") != commit:
-        raise RuntimeError("Required upstream formal acceptance did not complete")
-
-
 def main(args):
-    if (args.require_completed_state is None) != (args.require_commit is None):
-        raise ValueError("Require both completed-state path and commit")
     source = Path(__file__).resolve().parents[1]
     if subprocess.check_output(
         ["git", "-C", str(source), "status", "--porcelain"], text=True
@@ -60,12 +48,6 @@ def main(args):
             state_path.write_text(json.dumps(state, indent=2))
             raise TimeoutError("Owned predecessor is still live; no probe started")
         time.sleep(5)
-    try:
-        require_completed(args.require_completed_state, args.require_commit)
-    except Exception as error:
-        state.update(stage="upstream_not_validated", error=repr(error))
-        state_path.write_text(json.dumps(state, indent=2))
-        raise
     # The queue may exit just before its server's final GPU cleanup.
     deadline = time.monotonic() + 120
     while True:
@@ -111,7 +93,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--after-pid", type=int, required=True)
     parser.add_argument("--after-start-ticks", required=True)
-    parser.add_argument("--require-completed-state", type=Path)
-    parser.add_argument("--require-commit")
     parser.add_argument("--out", type=Path, required=True)
     main(parser.parse_args())

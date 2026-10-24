@@ -329,8 +329,6 @@ def main(args):
             or tuple(native_states[-1].get("layers", ())) != ("gate_up_proj",)
             or native_states[-1].get("gate_operator") != "gate_silu_auto"
             or native_states[-1].get("activation_residual_rows") != [1, 16]
-            or native_states[-1].get("cached_residual_quantization_rows") != [1, 16]
-            or native_states[-1].get("cached_residual_quantization_threads") != 256
             or native_states[-1].get("cached_quantization_rows") != [17, 2048]
             or native_states[-1].get("cached_quantization_threads") != 256
             or native_states[-1].get("compressed_only") is not True

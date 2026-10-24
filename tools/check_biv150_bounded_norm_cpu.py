@@ -9,7 +9,7 @@ from pathlib import Path
 
 def main(args):
     root=Path(__file__).resolve().parents[1]
-    base="8a1fc9bb05689b4b781ba8b065416bdfb459bcb5"
+    base="31a0a7f9205d90904afac0ba19e9e65856c79867"
     old=subprocess.check_output(["git","-C",str(root),"show",
                                  base+":csrc/iluvatar/native_w8a8.cpp"],text=True)
     current=(root/"csrc/iluvatar/native_w8a8.cpp").read_text()
