@@ -100,7 +100,7 @@ def main(args):
         command = [sys.executable, "-u", str(source / "tools/bench_biv150_live_carry_chain.py"),
                    "--library", str(args.library), "--library-source", str(args.library_source),
                    "--library-sha256", args.library_sha256, "--out", str(args.out)]
-        env["TORCHINDUCTOR_CACHE_DIR"] = str(args.out / "inductor-cache")
+        env["TORCHINDUCTOR_CACHE_DIR"] = str(args.out.with_name(args.out.name + "-inductor-cache"))
     with args.out.with_suffix(".log").open("x") as log:
         process = subprocess.Popen(
             command,

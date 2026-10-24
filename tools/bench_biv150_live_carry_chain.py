@@ -79,7 +79,8 @@ def main(args):
         assert (args.library_source / "csrc/iluvatar" / name).read_bytes() == (root / "csrc/iluvatar" / name).read_bytes()
     assert hashlib.sha256(args.library.read_bytes()).hexdigest() == args.library_sha256
     args.out.mkdir(parents=True, exist_ok=False)
-    assert Path(os.environ["TORCHINDUCTOR_CACHE_DIR"]).resolve() == args.out / "inductor-cache"
+    cache = args.out.with_name(args.out.name + "-inductor-cache").resolve()
+    assert Path(os.environ["TORCHINDUCTOR_CACHE_DIR"]).resolve() == cache
     os.environ["BIV150_NATIVE_W8A8_LIBRARY"] = str(args.library.resolve())
     import flag_gems
     from vllm_fl.utils import use_flaggems, get_flag_gems_whitelist_blacklist
@@ -117,6 +118,7 @@ def main(args):
     cf = torch.compile(candidate, fullgraph=True, dynamic=True)
     result = dict(commit=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
                   component_only=True, service_installed=False, synthetic_activations=True,
+                  inductor_cache=str(cache),
                   preserves_original_transparent_carry_expression=True,
                   shipping_cpp_cuda_and_quantizer_unchanged=True,
                   library_sha256=args.library_sha256,
@@ -206,7 +208,7 @@ def main(args):
         graph_eager_bit_exact=sum(row["graph_eager_bit_exact"] for row in result["records"]),
         timed=sum("rounds" in row for row in result["records"]))
     result["generated_python"] = [dict(path=str(p), sha256=hashlib.sha256(p.read_bytes()).hexdigest())
-                                   for p in sorted((args.out / "inductor-cache").rglob("*.py"))]
+                                   for p in sorted(cache.rglob("*.py"))]
     save()
 
 

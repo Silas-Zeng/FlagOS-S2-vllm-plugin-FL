@@ -2,6 +2,8 @@
 
 ## 新联合探针：融合算子不物化carry，保留原透明表达式
 
+842bbb4首轮在目录前置检查停止：Torch导入会按TORCHINDUCTOR_CACHE_DIR提前创建目录，其原来位于结果目录内，与结果目录exclusive创建冲突。没有进入数学/性能测试，不能据此否定融合。后继将cache移至结果目录外的独立同级目录，使用新冻结source/out；首轮源码/日志/队列保持不动。
+
 fresh共享main仍0bf9d2e，且为当前PR33分支祖先。新增benchmark完整比较post-attention norm→native gate→真实down projection→下一层input norm，而不只比较孤立norm/gate。候选opaque算子只返回gate；原norm的residual表达式继续留在外部图中，不能由融合核先转BF16写回再送给下一norm。
 原_norm_quant只增加constexpr WRITE_CARRY，关闭时不分配/写入残差，默认开启保持旧probe；移除该条件后的AST与459432d逐项相同。CPU ABI/生产C++数学/CUDA/Python不变、原CPU参考AST检查通过，脚本编译过。
 先用真实层4/20/37的post-norm、gate/up、down以及下一层input-norm权重，测试M32/M64六组、六模式及输入不变、变输入Graph/eager逐位一致与三轮交替完整链条成本。保持原.005/.005失败标记；有限且Graph一致的近误差案例仍测吞吐，不能将其重命名为数值通过。需要查看新生成代码，确认无新增残差buffer或未消掉的首个norm；源码意图不作为该证明。
