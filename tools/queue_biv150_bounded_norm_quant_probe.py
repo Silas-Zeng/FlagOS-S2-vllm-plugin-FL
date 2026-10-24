@@ -113,6 +113,27 @@ def main(args):
         state.update(stage="probe", pid=process.pid, command=command)
         state_path.write_text(json.dumps(state, indent=2))
         code = process.wait()
+    if code == 0 and args.live_carry_chain and args.expand_positive:
+        representative = json.loads((args.out / "result.json").read_text())
+        assert representative.get("completed") and len(representative["records"]) == 6
+        selected_rows = []
+        for m in (64,32):
+            rows = [row for row in representative["records"] if row["m"] == m]
+            if len(rows)==3 and {row["layer"] for row in rows}=={4,20,37} and all(
+                row.get("graph_eager_bit_exact") and row.get("min_round_speedup",0)>1
+                for row in rows):
+                selected_rows.append(m)
+        state["positive_uniform_rows_for_full34"] = selected_rows
+        if selected_rows:
+            full = args.out.with_name(args.out.name + "-full34")
+            full_command = command[:-2] + ["--out", str(full), "--all-layers", "--rows"] + [str(m) for m in selected_rows]
+            full_env = dict(env,TORCHINDUCTOR_CACHE_DIR=str(full.with_name(full.name + "-inductor-cache")))
+            with full.with_suffix(".log").open("x") as log:
+                process = subprocess.Popen(full_command,cwd=source,env=full_env,
+                    stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)
+                state.update(stage="full34",pid=process.pid,command=full_command)
+                state_path.write_text(json.dumps(state,indent=2))
+                code = process.wait()
     state.update(stage="finished", exit_code=code)
     state_path.write_text(json.dumps(state, indent=2))
     raise SystemExit(code)
@@ -126,6 +147,7 @@ if __name__ == "__main__":
     parser.add_argument("--require-commit")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--live-carry-chain", action="store_true")
+    parser.add_argument("--expand-positive", action="store_true")
     parser.add_argument("--library", type=Path)
     parser.add_argument("--library-source", type=Path)
     parser.add_argument("--library-sha256")

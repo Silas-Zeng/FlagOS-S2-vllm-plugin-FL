@@ -96,22 +96,25 @@ def main(args):
     config = json.loads((args.model / "config.json").read_text())
     assert config["architectures"] == ["LlamaForCausalLM"]
     eps = config["rms_norm_eps"]
+    assert eps == 1e-6, "Revalidate service specialization for another model epsilon"
+    layers = list(range(4, 38)) if args.all_layers else [4, 20, 37]
 
     def baseline(o, residual, nw, wq, scales, marker, down_weight, next_weight):
-        normal, carry = native_norm(o, residual, nw, eps)
+        normal, carry = native_norm(o, residual, nw, 1e-6)
         gate = torch.ops.biv150_native.gate_silu_auto(normal, wq, scales, marker, 17)
         down = torch.nn.functional.linear(gate, down_weight)
-        next_normal, next_residual = native_norm(down, carry, next_weight, eps)
+        next_normal, next_residual = native_norm(down, carry, next_weight, 1e-6)
         return next_normal, next_residual, gate
 
     def candidate(o, residual, nw, wq, scales, marker, down_weight, next_weight):
+        assert o.shape[0] in (32, 64)
         # Keep the original graph expression instead of returning a BF16 carry
         # from the opaque fused operator. Dead norm work should be eliminated;
         # generated code is preserved to check whether that actually happened.
-        _, carry = native_norm(o, residual, nw, eps)
-        gate = gate_without_carry_store(o, residual, nw, wq, scales, eps)
+        _, carry = native_norm(o, residual, nw, 1e-6)
+        gate = gate_without_carry_store(o, residual, nw, wq, scales, 1e-6)
         down = torch.nn.functional.linear(gate, down_weight)
-        next_normal, next_residual = native_norm(down, carry, next_weight, eps)
+        next_normal, next_residual = native_norm(down, carry, next_weight, 1e-6)
         return next_normal, next_residual, gate
 
     bf = torch.compile(baseline, fullgraph=True, dynamic=True)
@@ -119,6 +122,9 @@ def main(args):
     result = dict(commit=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
                   component_only=True, service_installed=False, synthetic_activations=True,
                   inductor_cache=str(cache),
+                  layers=layers, rows=args.rows, static_features=True,
+                  model_epsilon=eps, epsilon_specialized_as_service=True,
+                  baseline_initial_trace_rows=2048,
                   preserves_original_transparent_carry_expression=True,
                   shipping_cpp_cuda_and_quantizer_unchanged=True,
                   library_sha256=args.library_sha256,
@@ -128,15 +134,29 @@ def main(args):
     save = lambda: (args.out / "result.json").write_text(json.dumps(result, indent=2))
     torch.set_num_threads(2)
     torch.manual_seed(20261025)
-    for layer in (4, 20, 37):
+    for layer in layers:
         (nw, gate_w, up_w, down_w, next_w), identities = learned(args.model, layer)
         combined = torch.cat((gate_w, up_w))
         wq, scales = quantize_weight(combined)
         marker = torch.zeros((), device="cuda", dtype=torch.bfloat16).expand_as(combined)
         del combined, gate_w, up_w
-        for m in (32, 64):
+        for tensor in (nw, wq, scales, marker, down_w, next_w):
+            torch._dynamo.mark_static(tensor)
+        if layer == layers[0]:
+            # The actual service profiles its generic graph at2048 tokens;
+            # do not tune the unfused reference for the small test shape only.
+            warm_o = torch.zeros((2048,2048),device="cuda",dtype=torch.bfloat16)
+            warm_r = torch.zeros_like(warm_o)
+            torch._dynamo.mark_static(warm_o,1)
+            torch._dynamo.mark_static(warm_r,1)
+            warm = bf(warm_o,warm_r,nw,wq,scales,marker,down_w,next_w)
+            assert all(bool(torch.isfinite(v.cpu()).all()) for v in warm)
+            del warm,warm_o,warm_r
+        for m in args.rows:
             o = torch.empty((m, 2048), device="cuda", dtype=torch.bfloat16)
             residual = torch.empty_like(o)
+            torch._dynamo.mark_static(o, 1)
+            torch._dynamo.mark_static(residual, 1)
             inputs = (o, residual, nw, wq, scales, marker, down_w, next_w)
             row = dict(layer=layer, m=m, learned_weight_sha256=identities, patterns=[],
                        original_strict_passed=True, graph_eager_bit_exact=True)
@@ -150,29 +170,35 @@ def main(args):
                     elif pattern == "cancel": residual.copy_(-o); residual[:, ::17] += .00390625
                     elif pattern == "outlier": o[:, 0] = 32; residual[:, 7] = -64
                     before = (o.cpu(), residual.cpu())
-                    expected, actual = bf(*inputs), cf(*inputs)
+                    expected_gpu = bf(*inputs)
+                    expected = [v.cpu() for v in expected_gpu]
+                    actual_gpu = cf(*inputs)
+                    actual = [v.cpu() for v in actual_gpu]
                     checked = {name: compare(a, b) for name, a, b in zip(
                         ("next_norm", "next_residual", "gate"), actual, expected)}
                     row["original_strict_passed"] &= all(v["passed"] for v in checked.values())
                     assert torch.equal(o.cpu(), before[0]) and torch.equal(residual.cpu(), before[1])
-                    row["patterns"].append(dict(name=pattern, checks=checked, inputs_unchanged=True))
+                    row["patterns"].append(dict(name=pattern, checks=checked, inputs_unchanged=True,
+                        output_storage_overlap=bool({v.data_ptr() for v in expected_gpu} & {v.data_ptr() for v in actual_gpu})))
                     if not all(v["passed"] for v in checked.values()) and "fixture" not in row:
                         fixture = args.out / f"failed-l{layer}-m{m}.pt"
                         torch.save(dict(o=o.cpu(), residual=residual.cpu(),
                                         expected=[v.cpu() for v in expected],
                                         candidate=[v.cpu() for v in actual], pattern=pattern), fixture)
                         row.update(fixture=fixture.name, fixture_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest())
+                    del expected_gpu, actual_gpu
                 graph = torch.cuda.CUDAGraph()
                 with torch.cuda.graph(graph): captured = cf(*inputs)
                 for factor in (0., .5, 4.):
                     o.normal_().mul_(factor); residual.normal_().mul_(factor)
                     before = (o.cpu(), residual.cpu())
                     graph.replay(); torch.cuda.synchronize()
-                    eager = cf(*inputs)
-                    row["graph_eager_bit_exact"] &= all(torch.equal(a.cpu(), b.cpu()) for a, b in zip(captured, eager))
-                    expected = bf(*inputs)
+                    captured_snapshot = [v.cpu() for v in captured]
+                    eager = [v.cpu() for v in cf(*inputs)]
+                    row["graph_eager_bit_exact"] &= all(torch.equal(a, b) for a, b in zip(captured_snapshot, eager))
+                    expected = [v.cpu() for v in bf(*inputs)]
                     checked = {name: compare(a, b) for name, a, b in zip(
-                        ("next_norm", "next_residual", "gate"), captured, expected)}
+                        ("next_norm", "next_residual", "gate"), captured_snapshot, expected)}
                     row.setdefault("changed_input_graph_checks", []).append(dict(factor=factor, checks=checked))
                     row["original_strict_passed"] &= all(v["passed"] for v in checked.values())
                     assert torch.equal(o.cpu(), before[0]) and torch.equal(residual.cpu(), before[1])
@@ -180,7 +206,7 @@ def main(args):
                         fixture = args.out / f"failed-l{layer}-m{m}.pt"
                         torch.save(dict(o=o.cpu(), residual=residual.cpu(),
                                         expected=[v.cpu() for v in expected],
-                                        candidate=[v.cpu() for v in captured], pattern=f"graph-factor-{factor}"), fixture)
+                                        candidate=captured_snapshot, pattern=f"graph-factor-{factor}"), fixture)
                         row.update(fixture=fixture.name, fixture_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest())
                 del graph, captured
                 finite = all(v["finite"] for p in row["patterns"] for v in p["checks"].values())
@@ -202,7 +228,7 @@ def main(args):
                 save()
                 raise
             save(); print(json.dumps({k: v for k, v in row.items() if k not in ("patterns", "learned_weight_sha256", "traceback")}), flush=True)
-    result["completed"] = len(result["records"]) == 6
+    result["completed"] = len(result["records"]) == len(layers) * len(args.rows)
     result["summary"] = dict(records=len(result["records"]),
         original_strict_passed=sum(row["original_strict_passed"] for row in result["records"]),
         graph_eager_bit_exact=sum(row["graph_eager_bit_exact"] for row in result["records"]),
@@ -219,4 +245,6 @@ if __name__ == "__main__":
     p.add_argument("--library-source", type=Path, required=True)
     p.add_argument("--library-sha256", required=True)
     p.add_argument("--out", type=Path, required=True)
+    p.add_argument("--all-layers", action="store_true")
+    p.add_argument("--rows", type=int, nargs="+", choices=(32, 64), default=[64, 32])
     with torch.inference_mode(): main(p.parse_args())

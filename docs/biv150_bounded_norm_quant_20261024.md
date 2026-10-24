@@ -2,6 +2,11 @@
 
 ## 新联合探针：融合算子不物化carry，保留原透明表达式
 
+4f12b62代表层六组完成：5/6原严格门过、6/6 Graph/eager逐位一致，M32三组min1.0478–1.0642、M64三组1.0216–1.0259。失败保留在layer37/M32的变输入Graph，gate12坐标超差；真实down权重CPU重放表明其传播到818个residual/819个next-norm BF16位差，并非下游没有计算。
+生成wrapper确实无首个norm单独launch/残差buffer，下一norm仍直接接受down、O和旧residual。但参考编译时把特征维也泛化为符号、eps当动态scalar，与生产静态2048/6144/12288和常量epsilon不同。故先保留这批原始结果，不把2–6%认作当前生产组件增益；后继统一标记权重和输入feature维static，pin模型eps=1e-6后重测。即时CPU快照进一步固定比较边界；数学/容差不变。
+新模式支持在三个代表层同一行数三轮最小比均>1且Graph一致时，自动扩展该行数到全部34个压缩层。只按统一行数作性能筛选，禁止按夹具层名单接入；任何原数值失败仍保留并允许诊断timing。当前未有该特征特化版本的GPU结果。
+参考generic图先用2048行预编译，匹配实际服务profile；权重尺寸和输入feature维固定，行数保留动态。候选保留实际M32/M64支持条件，按捕获顺序先M64再M32。两边epsilon固定为已验证模型配置的1e-6，不以泛化hidden/动态scalar制造额外基线开销；正式服务和benchmark均未更改。
+
 842bbb4首轮在目录前置检查停止：Torch导入会按TORCHINDUCTOR_CACHE_DIR提前创建目录，其原来位于结果目录内，与结果目录exclusive创建冲突。没有进入数学/性能测试，不能据此否定融合。后继将cache移至结果目录外的独立同级目录，使用新冻结source/out；首轮源码/日志/队列保持不动。
 
 fresh共享main仍0bf9d2e，且为当前PR33分支祖先。新增benchmark完整比较post-attention norm→native gate→真实down projection→下一层input norm，而不只比较孤立norm/gate。候选opaque算子只返回gate；原norm的residual表达式继续留在外部图中，不能由融合核先转BF16写回再送给下一norm。
