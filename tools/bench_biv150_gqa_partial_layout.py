@@ -61,6 +61,7 @@ def main(args):
     args.out.mkdir(parents=True,exist_ok=False)
     result=dict(component_only=True,service_installed=False,same_producer_reducer_source_sha256=PIN,
         same_scratch_capacity=True,scalar_layout_unchanged=True,extra_transpose_copy=False,
+        inference_mode=torch.is_inference_mode_enabled(),pure_shipping_triton_producer_reducer=True,
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),records=[])
     save=lambda:(args.out/'result.json').write_text(json.dumps(result,indent=2))
     for batch in BATCHES:
@@ -114,4 +115,5 @@ def main(args):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);main(p.parse_args())
+    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True)
+    with torch.inference_mode():main(p.parse_args())
