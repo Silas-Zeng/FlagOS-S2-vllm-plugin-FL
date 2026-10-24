@@ -1,6 +1,6 @@
 # S19/S12/AD18：隔离 primitive 的内存归因准备
 
-不修改生产算子或服务，不排入GPU队列；当前PR37→PR36串行任务优先。
+不修改生产算子或服务；当前PR37→PR36串行任务优先，内存诊断只能作为后继。
 基于实时团队main 0bf9d2e。探针使用明确传入的私有native SO，记录SHA，禁止在9031服务或GPU占用时运行。
 每种primitive/shape在新子进程执行，避免把前一个GEMM的lazy workspace带入下一个基线。
 
@@ -21,3 +21,11 @@ mem_get_info调用后差值只说明残留分配，不能证明非Torch瞬态峰
 M2048/1020MiB仅是假设大head行数，不是当前sampler profile已发生的事实。
 
 CPU仅核对tensor几何/字节与语法，GPU及真实trace待验证。没有性能/内存改善结论，也不能据此合入生产改动。
+
+
+## 01:24后：已串行排队，尚无GPU结果
+
+冻结源码0cb108a，个人实例独立目录code/memory-ownership-20261025。
+队列188322等待PR36队列185093/start320829287；后者等待PR37队列178221/start320757084。
+原服务源/依赖未改，队列与子进程均检查9031/GPU空闲。复用明确SHA为3e114fc0201dd8e4ef31b5aa7a3c75364469a6d69e54d3ae2d6ac929e254830d的私有SO，
+这是当前a19ff5c服务manifest的build，不是先前组件build。尚未开始任何内存测量，不把排队当结果。
