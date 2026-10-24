@@ -48,3 +48,17 @@ Draft PR25 tracks this direction. The fixed sufficiently warmed4K/16K formal
 throughput and TTFT acceptance continues on the same frozen service. No new
 service throughput is credited yet. Subsequent shared commits only add docs
 and evidence; running source and service arguments remain unchanged.
+
+
+## Complete formal4K observation,16K still running
+
+The same frozen6762da8 runtime completed256/256 requests,0 failed,1048576 input
+and262144 output tokens in227.416809s:5763.514163 total tok/s, mean TTFT
+3683.410328ms. Gain vs original4809.36 is19.8395%; this remains below the20%
+threshold5771.232. The PR24 observation5750.700805 was0.2228% lower, from a
+separate single round; this is not a controlled isolated causal estimate.
+Warmup TPOT113.722974/101.133267/101.279981ms met the stability gate.
+Raw result and warmup snapshot are in `evidence/quant-cache-service-20261024/score-4096/`.
+
+16K warmup285.653800/279.706251ms stabilized and the fixed128-request formal
+round is running. No repeat sampling is scheduled to cross a goal threshold.
