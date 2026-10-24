@@ -9,3 +9,5 @@
 新增顺序pipeline：源CPP/CUDA逐字节核实后复用已验证私有主线SO，副本置于本冻结source独立build目录，不装共享包。旧gate9/cached40之后，实际SDK原/改写forward在真实权重proxy模块上核对M64提升、M32原路径、FakeTensor/fullgraph和变输入Graph；attention/input-norm为identity proxy，不能称为完整模型。选中结果须对直接提升同数学组件逐位一致，回退须对原方法逐位一致，原近误差数值报告仍单独保留。
 
 这些门通过才自动启动完整服务。首次105若99/105继续吞吐但precision_gate=false，绝不合并。4K预热改为128请求/128输出、并发64，以覆盖滚动请求mixed阶段；16K仍64请求/128输出，稳定后正式4K256请求和16K128请求、输入4096/16384及输出1024、seed0、并发64完全原样。后续匹配对照使用相同预热；不与不同预热旧单轮直接认定小增益。
+
+首次pipeline ff2a869在CPU AST来源校验停止，未启动GPU；本地Python3.14 ast.dump省略的空字段在远端3.12输出中存在，产生不同摘要。后继校验改为显式包含所有AST字段的canonical JSON，并重新从原7d组件函数生成预期值；旧3.14摘要保留，内核/生产代码未改。

@@ -15,9 +15,16 @@ r=Path(__file__).resolve().parents[1]
 p=r/'vllm_fl/patches/biv150_live_carry_gate.py'
 module=ast.parse(p.read_text())
 provenance=json.loads((r/'docs/evidence/live-carry-service-20261025/kernel-ast-provenance.json').read_text())
+def canonical_ast(node):
+    if isinstance(node,ast.AST):
+        return [type(node).__name__,[[key,canonical_ast(value)] for key,value in ast.iter_fields(node)]]
+    if isinstance(node,list):return [canonical_ast(value) for value in node]
+    return node
+
+assert provenance['hash_format']=='json-all-ast-fields-v1'
 for name,expected in provenance['functions'].items():
     function=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name==name)
-    assert hashlib.sha256(ast.dump(function,include_attributes=False).encode()).hexdigest()==expected
+    assert hashlib.sha256(json.dumps(canonical_ast(function),ensure_ascii=True,separators=(',',':')).encode()).hexdigest()==expected
 assert not subprocess.check_output(['git','-C',str(r),'diff','0bf9d2e','--','csrc'],text=True)
 allowed={'vllm_fl/patches/biv150_live_carry_gate.py','vllm_fl/patches/biv150_native_w8a8.py','vllm_fl/compile_semantics.py'}
 assert set(subprocess.check_output(['git','-C',str(r),'diff','0bf9d2e','--name-only','--','vllm_fl'],text=True).splitlines())<=allowed
