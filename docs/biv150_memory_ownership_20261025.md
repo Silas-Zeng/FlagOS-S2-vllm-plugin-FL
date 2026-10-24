@@ -29,3 +29,21 @@ CPU仅核对tensor几何/字节与语法，GPU及真实trace待验证。没有�
 队列188322等待PR36队列185093/start320829287；后者等待PR37队列178221/start320757084。
 原服务源/依赖未改，队列与子进程均检查9031/GPU空闲。复用明确SHA为3e114fc0201dd8e4ef31b5aa7a3c75364469a6d69e54d3ae2d6ac929e254830d的私有SO，
 这是当前a19ff5c服务manifest的build，不是先前组件build。尚未开始任何内存测量，不把排队当结果。
+
+
+## 实测结果与下一项候选（当前仍Draft）
+
+0cb108a五个新进程案例全部结束并保存snapshot。实际main-native gate M32的24MiB wq位于96MiB分配段；
+除该权重以外该大段其余72MiB空闲但无法归还。head的255MiB wq位于1020MiB段；输入就绪且empty_cache后
+仍有约765MiB大段空闲分片被该权重钉住。原权重已释放，不能称为双份BF16常驻；调用后allocator/device样本
+也没有证实一个额外的多GiB vendor常驻工作区。此为隔离primitive证据，不证明完整模型加载的碎片形态或历史KV下降根因，
+不能把单层72MiB直接乘34（后续层可能复用空洞）。
+
+候选仅调整quantize_weight分配顺序：先分配最终KxN INT8 packed buffer，保留原来的FP32 abs/amax/clamp/div/round，
+最后copy_原q.t()。原contiguous同样需要一次转置copy，不新增权重常驻副本；保证最后wq布局/每元素INT8和scale位模式一致。
+不改native CPP/CUDA/量化算法、模型选择、head部署范围、服务参数或内存计账。目标是避免最终权重分配进FP32临时大段，
+而非把真实峰值移出profile或改allocator环境变量。
+
+新增35个真实weight检查（34 gate/up+一个仅用于历史head探针的head）比较所有INT8/FP32 scale位与输入不变；
+内存探针现在从候选生产函数提取精确AST执行并记录源码/AST SHA。先验证数值合同与真实snapshot是否改善，
+再做完整服务profile/KV、105题和两档充分预热，现阶段不宣称容量或吞吐收益。

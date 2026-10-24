@@ -53,10 +53,15 @@ def load_library():
 
 
 def quantize_weight(weight):
+    # Keep long-lived packed weights out of the FP32 temporary allocation.
+    packed = torch.empty(
+        (weight.shape[1], weight.shape[0]), dtype=torch.int8, device=weight.device
+    )
     wide = weight.float()
     scales = wide.abs().amax(1).clamp_min(1.0e-6) / 127.0
     q = torch.round(wide / scales[:, None]).clamp_(-127, 127).to(torch.int8)
-    return q.t().contiguous(), scales.contiguous()
+    packed.copy_(q.t())
+    return packed, scales.contiguous()
 
 
 def install():

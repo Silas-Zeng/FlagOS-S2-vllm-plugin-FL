@@ -1,6 +1,7 @@
 """Isolated allocation evidence; never a model/KV-capacity or timing verdict."""
 
 import argparse
+import ast
 import gc
 import hashlib
 import json
@@ -54,7 +55,14 @@ def worker(args):
     torch.cuda.init()
     torch.cuda.synchronize()
     args.out.mkdir(parents=True, exist_ok=False)
+    quantizer_path = Path(__file__).resolve().parents[1] / "vllm_fl/patches/biv150_native_w8a8.py"
+    function = next(n for n in ast.parse(quantizer_path.read_text()).body
+                    if isinstance(n, ast.FunctionDef) and n.name == "quantize_weight")
+    scope = {"torch": torch}
+    exec(compile(ast.Module(body=[function], type_ignores=[]), str(quantizer_path), "exec"), scope)
     result = dict(kind=args.kind, rows=args.rows, pid=os.getpid(),
+                  quantizer_source_sha256=sha(quantizer_path),
+                  quantizer_ast_sha256=hashlib.sha256(ast.dump(function, include_attributes=False).encode()).hexdigest(),
                   library_sha256=sha(args.library), torch_version=torch.__version__,
                   probe_sha256=sha(__file__),
                   weight_index_sha256=sha(args.weights / "model.safetensors.index.json"),
@@ -104,12 +112,10 @@ def worker(args):
     if args.kind == "bf16_head":
         operands = {"weight": weight}
     else:
-        wide = weight.float()
-        scales = wide.abs().amax(1).clamp_min(1e-6) / 127.0
-        wq = torch.round(wide / scales[:, None]).clamp_(-127, 127).to(torch.int8).t().contiguous()
+        wq, scales = scope["quantize_weight"](weight)
         marker = torch.zeros((), device="cuda", dtype=torch.bfloat16).expand_as(weight)
         operands = {"weight_int8": wq, "scales": scales, "marker": marker}
-        del wide, weight
+        del weight
     gc.collect()
     torch.cuda.empty_cache()
     sample("weights_prepared_and_unused_tensors_released")
