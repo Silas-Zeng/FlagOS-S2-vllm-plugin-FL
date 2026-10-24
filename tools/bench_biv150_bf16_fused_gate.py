@@ -129,8 +129,10 @@ def main(args):
         # Independent CPU FP64 selected rows/channels: no tensor-core reference.
         rows = sorted(set([0, m // 2, m - 1]))
         cols = sorted(set([0, 1, 17, 123, n // 2, n - 1]))
-        selected_w = w[cols + [c + n for c in cols]].double().cpu()
-        linear = (x[rows].double().cpu() @ selected_w.t()).to(torch.bfloat16).float()
+        # Transfer BF16 first: the independent FP64 reference must execute all
+        # conversions and arithmetic on the CPU, including on non-FP64 GPUs.
+        selected_w = w[cols + [c + n for c in cols]].cpu().double()
+        linear = (x[rows].cpu().double() @ selected_w.t()).to(torch.bfloat16).float()
         g, u = linear.chunk(2, dim=1)
         dense = (g * torch.sigmoid(g) * u).to(torch.bfloat16)
         for bm, bn, bk, warps, split in variants:
