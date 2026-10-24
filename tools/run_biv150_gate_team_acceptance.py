@@ -213,6 +213,8 @@ def accuracy(run_dir):
 
 
 def main(args):
+    if args.bf16_small_control and args.mode != "throughput":
+        raise ValueError("The disabled-operator control is throughput-only; it cannot establish accuracy")
     source = args.source.resolve()
     with socket.socket() as probe:
         if probe.connect_ex(("127.0.0.1", 9031)) == 0:
@@ -226,7 +228,7 @@ def main(args):
         ):
             env.pop(key)
     env.update(
-        VLLM_FL_BIV150_BF16_SMALL_SPLITK="1",
+        VLLM_FL_BIV150_BF16_SMALL_SPLITK="0" if args.bf16_small_control else "1",
         VLLM_PLUGINS="fl",
         PYTHONPATH=str(source),
         VLLM_DISABLE_COMPILE_CACHE="1",
@@ -253,6 +255,8 @@ def main(args):
         "vllm_fl/worker/model_runner.py",
         "vllm_fl/patches/biv150_gqa_decode.py",
         "vllm_fl/patches/biv150_native_w8a8.py",
+        "vllm_fl/patches/biv150_bf16_small_splitk.py",
+        "vllm_fl/compile_semantics.py",
         "vllm_fl/patches/biv150_compute_order.py",
         "vllm_fl/patches/biv150_q_fragment_service.py",
         "csrc/iluvatar/native_w8a8.cpp",
@@ -271,6 +275,9 @@ def main(args):
             p: hashlib.sha256((source / p).read_bytes()).hexdigest() for p in paths
         },
         mode=args.mode,
+        bf16_small_control=args.bf16_small_control,
+        acceptance_driver=dict(file=str(Path(__file__).resolve()),
+                               sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()),
         started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
         python=sys.version,
         packages={
@@ -345,7 +352,10 @@ def main(args):
         if not fragments or fragments[-1].get("installed") is not True:
             raise RuntimeError(f"Team Q fragment missing: {fragments}")
         bf16=native_states[-1].get("bf16_small_splitk",{})
-        if (bf16.get("installed") is not True or bf16.get("exact_rows")!=[1,8,16]
+        if args.bf16_small_control:
+            if bf16 != {"installed": False} or "BIV150_BF16_SMALL_SELECTED" in log_path.read_text():
+                raise RuntimeError(f"Disabled-operator control unexpectedly installed the hook: {bf16}")
+        elif (bf16.get("installed") is not True or bf16.get("exact_rows")!=[1,8,16]
             or bf16.get("config")!=[16,128,64,4,4]
             or bf16.get("geometries_k_n")!=[[2048,2048],[2048,2560],[6144,2048]]
             or Path(bf16.get("hook_file","")).resolve()!=source/"vllm_fl/patches/biv150_bf16_small_splitk.py"
@@ -365,6 +375,19 @@ def main(args):
         evaluation_offset = log_path.stat().st_size
         if args.mode == "throughput":
             scores = throughput(args.out)
+            complete_log = log_path.read_text()
+            hits = [line for line in complete_log.splitlines() if "BIV150_BF16_SMALL_SELECTED" in line]
+            if args.bf16_small_control and hits:
+                raise RuntimeError("Disabled-operator control selected the candidate during serving")
+            if not args.bf16_small_control and not hits:
+                raise RuntimeError("Enabled-operator throughput run has no candidate selection evidence")
+            gates = performance_gates(scores)
+            (args.out / "throughput-verdict.json").write_text(json.dumps(dict(
+                completed=True, bf16_small_control=args.bf16_small_control,
+                accuracy_evaluated=False, precision_gate=None,
+                working_performance_gates=gates, bf16_selection=hits,
+                performance_passed=all(row["passed"] for row in gates.values()),
+            ), indent=2))
             print(
                 json.dumps(dict(completed=True, mode=args.mode, scores=scores)),
                 flush=True,
@@ -447,6 +470,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--bf16-small-control", action="store_true",
+                        help="Throughput-only matched control: disable only the owned BF16 hook")
     parser.add_argument(
         "--mode", choices=["accuracy", "throughput", "all"], default="all"
     )
