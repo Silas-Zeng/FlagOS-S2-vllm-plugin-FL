@@ -1,5 +1,35 @@
 # Physical-B40 decode segmentation on the latest-team residual gate
 
+## Current integrated acceptance: passed, 2026-10-24 21:29
+
+Frozen runtime `84c1be5fa5ae3d1f0b0485c5d430798913eb78f5` includes validated team main
+`5eda0b0` (PR24/25). The observer was disabled for a new complete run. Private
+build, 9 gate checks and 40 cached-dispatch boundary checks passed. Fresh Level3
+accuracy is **100/105 (0.9524)** with 105 unique questions and no failed outputs.
+
+| Fixed load | Total tok/s | Vs original reference | Mean TTFT ms | Requests |
+| --- | ---: | ---: | ---: | --- |
+| 4K | 5765.810177 | +19.8873% | 3685.493031 | 256/256, 0 failed |
+| 16K | 4048.135832 | +20.3359% | 124258.674985 | 128/128, 0 failed |
+
+Both complete token counts, sufficient warmup, working TTFT/throughput gates,
+compute-order selection and Q-fragment selection passed, with no scope errors
+or fallback. Raw manifest, acceptance, warmup, scores and prechecks are archived
+in `evidence/gqa-wave-main-cache-formal-20261024/final/`. The manifest's production
+source hashes match this branch. Runtime csrc/vllm_fl/tools are unchanged from
+the tested 84c1be5 to the documentation delivery commit.
+
+The prior valid diagnostic proved actual B40 use (4K 16 FULL replays plus 84
+eager calls; 16K 241 FULL replays), but diagnostic throughput is not credited.
+This fresh combined result passes the working acceptance and is ready for
+integration. **4K still misses the 5771.232 goal; the overall 20% goal remains
+unfinished.** Relative to PR25's separate single-round 5763.514163/4010.102823,
+this run observes about +0.04%/+0.95%; these are not isolated causal estimates.
+PR31's additional bounded shapes remain a separately validated candidate.
+
+All sections below retain historical experiment snapshots; pending/draft
+statements in those snapshots are superseded by this current acceptance.
+
 Parent e3a0497adbd6570dd522877131bc47058350da83 already incorporates team
 main1ea082f (PR22+PR23) and the compressed residual gate. The parent has now passed full acceptance: IQ102/105,4K5750.700805 and
 16K4002.302967 total tok/s; it was merged through PR24 into main1ad9a708.
