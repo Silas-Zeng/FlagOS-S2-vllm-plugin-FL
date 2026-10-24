@@ -135,9 +135,11 @@ class Coverage:
         if named_modules is None:
             raise ValueError("Actual GraphWrapper runnable has no named_modules")
         rotary, attention = [], []
-        for name, module in named_modules():
+        # get_rope may reuse the same nn.Module for all 42 layer call sites.
+        # Count layer paths rather than torch's default deduplicated objects.
+        for name, module in named_modules(remove_duplicate=False):
             if name.endswith("rotary_emb"):
-                entry = dict(name=name, class_module=type(module).__module__,
+                entry = dict(name=name, object_id=f"{id(module):x}", class_module=type(module).__module__,
                              class_name=type(module).__qualname__,
                              selected=callable_description(module._forward_method),
                              native=callable_description(module.forward_native),
@@ -163,6 +165,7 @@ class Coverage:
         config = wrapper.compilation_config
         record = dict(wrapper_module=type(wrapper).__module__,
                       runtime_mode=str(wrapper.runtime_mode), rotary=rotary, attention=attention,
+                      unique_rotary_objects=len({entry["object_id"] for entry in rotary}),
                       custom_ops=list(config.custom_ops),
                       enabled_custom_ops=sorted(config.enabled_custom_ops),
                       disabled_custom_ops=sorted(config.disabled_custom_ops))

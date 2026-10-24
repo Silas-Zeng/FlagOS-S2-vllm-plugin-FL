@@ -21,3 +21,5 @@
 本机 CPU 检查通过：执行真实 pinned runner 的连续 schedule/alias/prepare AST 语句，覆盖 qlen1..8 与 9/16/32/2048；核对完整直方图、短 query/KV 二元表、原数组/结果/异常不变、实际方法未替换，以及 bootstrap 开关与原 install 返回值。
 
 真实模型绑定、实际 qlen 频度与设备成本仍待上机。获取频度和实际入口后，D02 再决定短 query 专核，B09 再比较原组合总成本并设计天数融合；不能把此审计描述成两个优化方向已经实现。
+
+注意 `get_rope` 可缓存并跨层复用同一个 nn.Module，默认 named_modules 会去重。观察器明确使用 remove_duplicate=False，统计 42 个层路径并同时记录独立 rotary 对象数；CPU 检查包含 42 条路径共享一个对象的情况。不能把对象数少于 42 误判成缺层。

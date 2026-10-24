@@ -102,12 +102,16 @@ def main(args):
         impl = SimpleNamespace(do_kv_cache_update=fn, kv_cache_dtype="auto")
         entries = [(f"model.layers.{i}.self_attn.rotary_emb", rotary) for i in range(42)]
         entries += [(f"model.layers.{i}.self_attn.attn", SimpleNamespace(impl=impl)) for i in range(42)]
-        runnable = SimpleNamespace(named_modules=lambda: iter(entries))
+        def named_modules(*, remove_duplicate=True):
+            assert remove_duplicate is False, "Shared RoPE paths must not be deduplicated"
+            return iter(entries)
+        runnable = SimpleNamespace(named_modules=named_modules)
         config = SimpleNamespace(custom_ops=["none"], enabled_custom_ops=set(),
                                  disabled_custom_ops={"rotary_embedding"})
         wrapper = Wrapper(runnable, config)
         assert wrapper.runnable is runnable and len(trace.data["models"]) == 1
         assert len(next(iter(trace.data["models"].values()))["rotary"]) == 42
+        assert next(iter(trace.data["models"].values()))["unique_rotary_objects"] == 1
         assert rotary._forward_method is fn and impl.do_kv_cache_update is fn
         trace.flush()
         assert json.loads((root / f"trace-{os.getpid()}.json").read_text())["phases"]
@@ -131,7 +135,7 @@ def main(args):
     result = dict(cpu_only=True, actual_pinned_runner_schedule_executed=True,
                   original_result_and_exception_preserved=True, cpu_qlen_1_through_8_and_large_checked=True,
                   exact_cpu_length_histogram_checked=True, no_forward_methods_replaced=True,
-                  import_hook_opt_in_and_install_preserved=True,
+                  import_hook_opt_in_and_install_preserved=True, shared_rotary_layer_paths_checked=True,
                   real_model_bindings_pending=True, gpu_diagnostic_pending=True)
     if args.out:
         args.out.write_text(json.dumps(result, indent=2))
