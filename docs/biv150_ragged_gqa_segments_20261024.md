@@ -53,3 +53,27 @@ several alternate widths there regress. Raw cases and precise summary are in
 `evidence/ragged-gqa-segments-20261024/`. These remain component measurements,
 not model scores. Next stack these exact bounded host choices on PR28 and
 preserve all unselected geometry/target behavior, then run full service checks.
+
+
+## Bounded service candidate stacked on PR28
+
+Non-rewriting merge51aec26 imports current PR28 bed003e (which includes validated
+main5eda0b0). This draft now depends on PR28, whose independent current-main full
+acceptance is running at84c1be5. Added choices apply only to kv_heads2,
+builder_segments16 and TARGET_PROGRAMS256: B29/30→4 and B60..63→2. Existing
+B40→16 remains from PR28. Every other geometry and nondefault target stays exact.
+No producer, reducer, eligibility or wrapper AST changes; only the chooser differs.
+CPU execution checks28784 tuples, exactly6 changed, all scratch bounds valid.
+
+The new exact GQA hash is
+37d11d08a6a2e563f550909b0011d0ea62f9495049f7983674f52f755f305256;
+Q-fragment EXPECTED_GQA and compute-order's corresponding source pins are updated
+explicitly, producing Q-fragment hash
+519ef8ed590b02c706115b3e75f01056b424e56f04a11718183fff68a4ed1d14.
+Optional observer pin follows the same new source, with no guard disabled.
+The service queue adds this CPU policy/source-identity check before the existing
+private native build,9 gate checks,40 cached-dispatch cases and fresh full105-item
+accuracy plus fixed warmed single-round4K/16K/TTFT acceptance. Production values
+cannot be credited until that new service run completes. The original probes
+remain frozen at their respective pre-policy hashes and their evidence remains valid
+because the producer/reducer ASTs are unchanged.
