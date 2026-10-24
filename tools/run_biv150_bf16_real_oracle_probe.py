@@ -26,6 +26,10 @@ def main(args):
                           "--baseline","out","--out",str(args.out/"out-baseline-audit")]),
            ("bf16-full42",[sys.executable,"-u",str(source/"tools/bench_biv150_bf16_real_oracle.py"),
                           "--baseline","out","--all-layers","--out",str(args.out/"full42")])]
+    if args.dominant_rows:
+        steps=steps[:1]+[('dominant-row-representatives',[sys.executable,'-u',
+            str(source/'tools/bench_biv150_bf16_real_oracle.py'),'--baseline','out','--dominant-rows',
+            '--out',str(args.out/'representatives')])]
     for stage,command in steps:
         if stage!='cpu-check':
             deadline=time.monotonic()+30
@@ -65,6 +69,7 @@ def main(args):
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
+    parser.add_argument("--dominant-rows",action="store_true")
     parser.add_argument("--source",type=Path,required=True)
     parser.add_argument("--out",type=Path,required=True)
     main(parser.parse_args())

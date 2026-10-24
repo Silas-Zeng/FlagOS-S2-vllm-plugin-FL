@@ -22,6 +22,7 @@ from biv150_benchmark_utils import graph_time
 from biv150_bf16_small_splitk import allocate,matmul,run_into
 
 CHOICES=((16,128,64,1,4),(16,128,64,2,4),(16,128,64,4,4))
+DOMINANT_CHOICES=((16,128,64,4,4),(64,64,64,2,4),(64,64,64,4,4))
 
 
 def weights(model,layers=(4,20,37)):
@@ -72,10 +73,19 @@ def main(args):
         dispatch_policy=dict(use_flaggems=True,whitelist=whitelist,blacklist=blacklist,
                              diagnostic_record=False,worker_record=True)
     layers=list(range(42)) if args.all_layers else [4,20,37]
+    rows=(32,64) if args.dominant_rows else (1,8,16)
+    choices=DOMINANT_CHOICES if args.dominant_rows else CHOICES
+    if args.dominant_config is not None:
+        assert args.dominant_rows
+        choices=(DOMINANT_CHOICES[args.dominant_config],)
+    if args.dominant_rows:
+        assert args.baseline=='out'
+        from audit_biv150_bf16_saved_ulp_cpu import describe
     torch.set_num_threads(2);torch.manual_seed(20261025)
     args.out.mkdir(parents=True,exist_ok=False)
     result=dict(component_only=True,service_installed=False,full_cpu_fp64_output_oracle=True,
-        synthetic_activations=True,layers=layers,rows=[1,8,16],baseline=args.baseline,pitches='contiguous',
+        synthetic_activations=True,layers=layers,rows=list(rows),choices=[list(c) for c in choices],dominant_rows=args.dominant_rows,
+        numerical_failures_preserved=True,continue_failed_numerics_for_diagnostic_timing=args.dominant_rows,baseline=args.baseline,pitches='contiguous',
         inference_mode=torch.is_inference_mode_enabled(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         native_mm_file=str(path) if args.baseline=='returning' else None,
@@ -85,7 +95,7 @@ def main(args):
     save=lambda:(args.out/'result.json').write_text(json.dumps(result,indent=2))
     for layer,name,host,identities in weights(args.model,layers):
         w=host.to('cuda');host64=host.double();n,k=host.shape
-        for m in (1,8,16):
+        for m in rows:
             x=torch.empty(m,k,device='cuda',dtype=torch.bfloat16)
             weight_view=torch.as_strided(w,(k,n),(1,k))
             assert weight_view.untyped_storage().data_ptr()==w.untyped_storage().data_ptr()
@@ -96,7 +106,7 @@ def main(args):
                 return flag_gems.mm(x,w.t())
             records=[dict(layer=layer,geometry=name,m=m,n=n,k=k,weight_identity=identities,
                 config=list(c),patterns=[],candidate_cpu_all_passed=True,native_cpu_all_passed=True,
-                direct_native_all_passed=True) for c in CHOICES]
+                direct_native_all_passed=True) for c in choices]
             for pattern in ('zero','tiny','normal','large','outlier'):
                 x.normal_()
                 if pattern=='zero':x.zero_()
@@ -105,13 +115,24 @@ def main(args):
                 elif pattern=='outlier':x[:,k//2]=32
                 gold=(x.cpu().double()@host64.t()).to(torch.bfloat16)
                 native=native_mm();native_check=check(native,gold)
-                for config,row in zip(CHOICES,records):
+                for config,row in zip(choices,records):
                     try:
                         output,scratch=allocate(x,w,config)
                         if config[3]>1:scratch.fill_(float('nan'))
-                        run_into(x,w,output,scratch,config)
+                        compiled=run_into(x,w,output,scratch,config)
+                        if args.dominant_rows and 'compiled_resources' not in row:
+                            try:
+                                meta=compiled.metadata
+                                md=meta._asdict() if hasattr(meta,'_asdict') else vars(meta)
+                                row['compiled_resources']=json.loads(json.dumps(dict(metadata=md,
+                                    n_regs=getattr(compiled,'n_regs',None),n_spills=getattr(compiled,'n_spills',None)),default=str))
+                            except Exception as e:row['resource_error']=repr(e)
                         cpu=check(output,gold);direct=check(output,native)
-                        row['patterns'].append(dict(name=pattern,candidate_cpu=cpu,native_cpu=native_check,direct_native=direct))
+                        entry=dict(name=pattern,candidate_cpu=cpu,native_cpu=native_check,direct_native=direct)
+                        if args.dominant_rows:
+                            entry['candidate_ulp']=describe(output.cpu(),gold)
+                            entry['native_ulp']=describe(native.cpu(),gold)
+                        row['patterns'].append(entry)
                         row['candidate_cpu_all_passed'] &= cpu['passed']
                         row['native_cpu_all_passed'] &= native_check['passed']
                         row['direct_native_all_passed'] &= direct['passed']
@@ -122,23 +143,34 @@ def main(args):
                             row.update(fixture=p.name,fixture_sha256=hashlib.sha256(p.read_bytes()).hexdigest())
                     except Exception as error:
                         row.update(candidate_cpu_all_passed=False,error=repr(error),traceback=traceback.format_exc())
-            for config,row in zip(CHOICES,records):
-                if not row['candidate_cpu_all_passed']:continue
+            for config,row in zip(choices,records):
+                if row.get('error') or (not row['candidate_cpu_all_passed'] and not args.dominant_rows):continue
                 try:
                     graph=torch.cuda.CUDAGraph()
                     with torch.cuda.graph(graph):output=matmul(x,w,config)
                     row['graph_cpu_passed']=True
+                    if args.dominant_rows:row['graph_eager_bit_exact']=True
                     for factor in (0.,.5,4.):
                         x.normal_().mul_(factor);graph.replay();torch.cuda.synchronize()
                         gold=(x.cpu().double()@host64.t()).to(torch.bfloat16)
                         checked=check(output,gold);row['graph_cpu_passed'] &= checked['passed']
+                        if args.dominant_rows:
+                            row['graph_eager_bit_exact'] &= torch.equal(output.cpu(),matmul(x,w,config).cpu())
+                            row.setdefault('graph_ulp',[]).append(describe(output.cpu(),gold))
                     del graph,output
-                    if not row['graph_cpu_passed']:continue
+                    if args.dominant_rows and not row['graph_eager_bit_exact']:continue
+                    if not row['graph_cpu_passed'] and not args.dominant_rows:continue
                     x.normal_()
                     timing_gold=(x.cpu().double()@host64.t()).to(torch.bfloat16)
                     row['timing_candidate_cpu']=check(matmul(x,w,config),timing_gold)
                     row['timing_native_cpu']=check(native_mm(),timing_gold)
-                    if not row['timing_candidate_cpu']['passed']:continue
+                    if args.dominant_rows:
+                        row['timing_candidate_ulp']=describe(matmul(x,w,config).cpu(),timing_gold)
+                        row['diagnostic_timing_despite_numerical_failure']=not (
+                            row['candidate_cpu_all_passed'] and row['graph_cpu_passed']
+                            and row['timing_candidate_cpu']['passed'])
+                        if any(p['candidate_ulp']['nonfinite'] for p in row['patterns']):continue
+                    if not row['timing_candidate_cpu']['passed'] and not args.dominant_rows:continue
                     def baseline():return native_mm()
                     def candidate():return matmul(x,w,config)
                     rounds=[]
@@ -155,7 +187,7 @@ def main(args):
             print(json.dumps(dict(layer=layer,geometry=name,m=m,candidate_cpu_passed=sum(a['candidate_cpu_all_passed'] for a in records),
                 native_cpu_passed=records[0]['native_cpu_all_passed'],graph_cpu_passed=sum(a.get('graph_cpu_passed',False) for a in records))),flush=True)
         del w,host,host64
-    result['summary']=dict(records=len(result['records']),expected=len(layers)*3*3*len(CHOICES),
+    result['summary']=dict(records=len(result['records']),expected=len(layers)*3*len(rows)*len(choices),
         candidate_full_cpu_passed=sum(a['candidate_cpu_all_passed'] for a in result['records']),
         candidate_graph_cpu_passed=sum(a.get('graph_cpu_passed',False) for a in result['records']),
         native_full_cpu_passed_records=sum(a['native_cpu_all_passed'] for a in result['records']))
@@ -165,6 +197,8 @@ def main(args):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--model',type=Path,default=Path('/workspace/MiniCPM5-2B'))
     p.add_argument('--all-layers',action='store_true')
+    p.add_argument('--dominant-rows',action='store_true')
+    p.add_argument('--dominant-config',type=int,choices=(0,1,2))
     p.add_argument('--baseline',choices=('returning','out'),default='returning')
     p.add_argument('--out',type=Path,required=True);args=p.parse_args()
     if args.baseline=='out':

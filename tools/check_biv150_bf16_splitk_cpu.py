@@ -34,7 +34,7 @@ def main(args):
     for m in (1,8,16,31,32,40,63,64):
         for n,k in ((2560,2048),(2048,2048),(2048,6144),(12288,2048),(130560,2048)):
             for bm,bn,bk,split,warps in configurations:
-                assert bm in (16,32) and split in (1,2,4) and bk==64
+                assert bm in (16,32,64) and split in (1,2,4) and bk==64
                 # Actual kernel offsets remain representable in signed32 bits,
                 # including the largest head weight and full FP32 workspace.
                 assert n*k*2 < 2**31 and split*m*n*4 < 2**31
