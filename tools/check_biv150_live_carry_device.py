@@ -56,6 +56,7 @@ def main(args):
     from vllm_fl.patches import biv150_live_carry_gate as own
     from vllm.model_executor.models.llama import LlamaDecoderLayer
     from vllm.model_executor.layers.activation import SiluAndMul
+    from vllm.config import VllmConfig,set_current_vllm_config
     from vllm.ir.ops.layernorm import fused_add_rms_norm
     load_library()
     native=fused_add_rms_norm.impls['native'].impl_fn
@@ -64,6 +65,7 @@ def main(args):
     installed=own.install();assert installed.get('installed') and not installed.get('already')
     patched=LlamaDecoderLayer.forward
     assert '_biv150_post_norm_mlp' in inspect.getsource(patched)
+    test_config=VllmConfig()
 
     class IdentityNorm(torch.nn.Module):
         def forward(self,x,residual=None):return x if residual is None else (x,residual)
@@ -85,7 +87,8 @@ def main(args):
         def forward(self,x):return torch.nn.functional.linear(x,self.weight),None
     class MLP(torch.nn.Module):
         def __init__(self,wq,sw,down):
-            super().__init__();self.gate_up_proj=Gate(wq,sw);self.down_proj=Down(down);self.act_fn=SiluAndMul()
+            super().__init__();self.gate_up_proj=Gate(wq,sw);self.down_proj=Down(down)
+            with set_current_vllm_config(test_config):self.act_fn=SiluAndMul()
         def forward(self,x):
             g=self.gate_up_proj
             return self.down_proj(torch.ops.biv150_native.gate_silu_auto(x,g._biv150_native_wq,g._biv150_native_sw,g.weight,17))[0]

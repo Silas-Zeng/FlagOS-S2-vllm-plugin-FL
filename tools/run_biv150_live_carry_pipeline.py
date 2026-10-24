@@ -41,6 +41,24 @@ def main(args):
     state=dict(driver_pid=os.getpid(),source=str(source),commit=subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip(),
         library_sha256=args.library_sha256,library_reused_from=str(args.library),
         started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat())
+    if args.native_checks_from:
+        prior=json.loads((args.native_checks_from/'state.json').read_text())
+        old=Path(prior['source'])
+        assert prior['library_sha256']==args.library_sha256
+        assert subprocess.check_output(['git','-C',str(old),'rev-parse','HEAD'],text=True).strip()==prior['commit']
+        for file in ('csrc/iluvatar/native_w8a8.cpp','csrc/iluvatar/native_w8a8.cu',
+            'tools/check_biv150_gate_auto.py','tools/check_biv150_quant_cached_dispatch.py',
+            'vllm_fl/patches/biv150_native_w8a8.py'):
+            assert (source/file).read_bytes()==(old/file).read_bytes(),file
+        for name,count in (('gate9',9),('cached40',40)):
+            report=json.loads((args.native_checks_from/(name+'.json')).read_text())
+            assert report['library_sha256']==args.library_sha256 and len(report['records'])==count
+            assert all(row.get('passed',row.get('bit_exact')) for row in report['records'])
+            if name=='gate9':assert report['original_weight_fallback_unchanged']
+            else:assert all(row['changed_input_graph'] for row in report['records'])
+            shutil.copyfile(args.native_checks_from/(name+'.json'),args.out/(name+'-reused.json'))
+        state['native_checks_reused_from']=dict(out=str(args.native_checks_from),source_commit=prior['commit'])
+        steps=[item for item in steps if item[0] not in ('gate9','cached40')]
     for stage,command in steps:
         if stage!='cpu':idle()
         stage_env=dict(env,TORCHINDUCTOR_CACHE_DIR=str(args.out/(stage+'-inductor-cache')))
@@ -59,4 +77,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--source',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--library',type=Path,required=True)
     p.add_argument('--library-source',type=Path,required=True);p.add_argument('--library-sha256',required=True)
+    p.add_argument('--native-checks-from',type=Path)
     main(p.parse_args())
