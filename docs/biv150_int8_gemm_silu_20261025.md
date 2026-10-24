@@ -18,7 +18,10 @@ source manifest包含新kernel；PR35官方缓存身份已涵盖全部biv150补�
 新route设备检查覆盖26个行数/权重组合、非连续/参数回退、原路径逐位一致，
 opaque fake/fullgraph及改变输入Graph。随后保持原完整105题、充分预热单轮4K/16K、
 请求tokens/TTFT/compute-order/Qfragment门槛；只有模型联合验收后才能决定是否保留。
-当前代码已接入候选，不能称服务验证通过或模型提速。
+当前a19ff5c私有build、原9/40、新26行数/权重组合及非连续/参数回退、fullgraph/fake/changedGraph已全部通过，
+原始设备分发前检见`evidence/int8-gemm-silu-20261025/service-prechecks/`。
+完整验收已启动：队列178221/start320757084、driver178225、acceptance178862，服务178865已ready，
+当前实际ps确认存活；尚无105题精度或新4K16K成绩，不能称服务验证通过或模型提速。
 
 ## 首轮完整结果
 
