@@ -1,0 +1,24 @@
+{
+  "queue_pid": 188322,
+  "after_pid": 185093,
+  "after_start_ticks": "320829287",
+  "source": "/workspace/experiments/minicpm-s2/code/memory-ownership-20261025",
+  "stage": "finished",
+  "commit": "0cb108a64a7434a5e7972d533f6605bd0b08be8c",
+  "library": "/workspace/experiments/minicpm-s2/code/int8-gate-service-20261025/build-native-w8a8/biv150_native_w8a8.so",
+  "library_sha256": "3e114fc0201dd8e4ef31b5aa7a3c75364469a6d69e54d3ae2d6ac929e254830d",
+  "pid": 188664,
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "/workspace/experiments/minicpm-s2/code/memory-ownership-20261025/tools/probe_biv150_memory_ownership.py",
+    "--library",
+    "/workspace/experiments/minicpm-s2/code/int8-gate-service-20261025/build-native-w8a8/biv150_native_w8a8.so",
+    "--weights",
+    "/workspace/MiniCPM5-2B",
+    "--out",
+    "/workspace/experiments/minicpm-s2/memory-ownership-20261025"
+  ],
+  "started_utc": "2026-10-24T17:31:39.913303+00:00",
+  "exit_code": 0
+}
