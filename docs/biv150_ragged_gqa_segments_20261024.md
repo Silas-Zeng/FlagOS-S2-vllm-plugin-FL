@@ -1,5 +1,34 @@
 # Actual mixed-load ragged GQA segment-width probe
 
+## Current full-service result: gates pass, incremental throughput unresolved
+
+Frozen `e972997522a8623178d932e5ec79e30e6724d69c` completed fresh Level3
+**102/105 (0.9714)** with105 unique questions and no failed outputs. Warmed
+single rounds retain the exact fixed workloads:
+
+| Load | Total tok/s | Mean TTFT ms | Requests | Vs PR28 separate round |
+| --- | ---: | ---: | --- | ---: |
+| 4K | 5766.410667 | 3594.680828 | 256/256,0 failed | +0.010415% |
+| 16K | 4048.277609 | 124268.055334 | 128/128,0 failed | +0.003502% |
+
+All input/output token counts, warmup stability, working throughput/TTFT gates,
+actual compute-order and Q-fragment selection passed, with no scope errors or
+fallback. Raw acceptance/manifest/scores/warmups/state are in
+`evidence/ragged-gqa-segments-20261024/service-final/`; the shipping source hashes
+match this branch. The sync-to-main commit0248416 only adds PR28's final evidence,
+with csrc/vllm_fl/tools unchanged from the tested runtime.
+
+**These tiny differences do not establish an end-to-end gain.** The440 component
+cases and old valid shape coverage remain useful evidence, but must not be added
+to service throughput or described as a confirmed new whole-model improvement.
+The candidate stays Draft while current-call coverage and weighted complete
+cost are checked. It is not a numerical/TTFT failure; preserve the bounded local
+results rather than discarding every shape. PR26 explicitly stacks this runtime
+and has a separate full-service test pending. PR32's schedule/binding diagnostic
+is now running; it is not itself a GQA split-count trace.
+
+The historic sections below retain their original snapshots and pending state.
+
 Validated team main5eda0b0 is the base; production GQA source remains exactly
 SHA1a81409ba23a149081f7fc257460ea1512cbfdceeb0af32a2698994958749b9a.
 No serving hook, scheduling choice, source guard or kernel body is changed.
