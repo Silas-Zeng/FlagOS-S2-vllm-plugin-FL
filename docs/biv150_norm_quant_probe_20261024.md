@@ -55,3 +55,21 @@ The owned queue waits for residual-cache probe84926/start_ticks318602347, then
 refuses a busy GPU/port. It builds a private SO and passes the existing9 gate
 checks before the new probe. Model/service parameters and current running
 checkouts are untouched. GPU compilation, numeric and timing results are pending.
+
+
+## Reference correction before GPU execution
+
+At18:55, inspected the actual service log and installed CustomOp/RMSNorm sources.
+The running engine has custom_ops=['none'] and IR priorities rms_norm=['native'],
+fused_add_rms_norm=['native']. CustomOp.dispatch_forward selects forward_native
+before reaching any OOT dispatch when custom ops are disabled. Thus FlagGems
+preference does not describe this service boundary.
+
+Native IR also casts the unweighted normalized value to BF16 before multiplying
+by norm weight; the FlagGems reference above multiplies in FP32 before its final
+BF16 store. This is a material semantic difference. Do not install or interpret
+this prototype as a service improvement. The owned waiting queue86365 (verified
+start_ticks318669240, stage waiting, no children) was stopped at10:55:07UTC before
+build/probe. Current model evaluation and residual probe queue remain untouched.
+No GPU result or model score exists for01281a4. A corrected native-IR probe will
+use a separate frozen checkout and new queue rather than alter this queued source.
