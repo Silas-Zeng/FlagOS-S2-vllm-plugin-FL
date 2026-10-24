@@ -11,26 +11,31 @@ SO SHA df090263f0c4f13a44d5c41c7a9290f4c0910cab8c85256b30a88cb62ae53076.
 Formal105-question accuracy plus fixed4K/16K is now running privately in
 residual-cache-service-v2-20261024; no new model score/gain is claimed yet.
 
-## Current: Draft restored for performance/accuracy tradeoff exploration
+## Current: throughput measured; no observed extra headroom, close without merge
 
-User explicitly requested on2026-10-24 that near-threshold candidates such as
-99/105 should also be benchmarked: substantial throughput could fund selective
-higher-precision fallbacks. The PR is therefore reopened as Draft. Precision
-still fails0.95; it remains ineligible for merging. No passing accuracy is claimed.
+Per the user instruction, the near-threshold candidate was fully benchmarked
+before deciding. Runtime8a1fc9b (follow-up tools954ce13) produced:
 
-A separate throughput-only follow-up will reproduce exactly runtime8a1fc9b:
-source hashes match the original manifest and the exact checked private SO is
-copied by SHA. Fresh private service/cache, fixed serve/benchmark, sufficient
-TPOT-stable warmup and one full4K/16K round. It reuses existing `--mode throughput`,
-without changing the original `all` accuracy gate or rerunning105 questions to
-select a passing score. Output explicitly records diagnostic_only,
-precision_gate=false and eligible_for_merge=false; original99/105 stays attached.
+| Load | Total tok/s | Mean TTFT ms | Requests | Delta vs accepted e972997 |
+| --- | ---: | ---: | ---: | ---: |
+| 4K | 5751.164820 | 3684.767298 | 256/256,0 failed | -0.2644% |
+| 16K | 4042.312235 | 124314.754578 | 128/128,0 failed | -0.1474% |
 
-The queue runs after the current norm-v2 queue and refuses a busy GPU/port.
-The e972997 passing reference is reported as a separate warmed-round comparison;
-only meaningful measured performance would justify layer/shape-specific accuracy
-recovery or a narrower route. Formal merge still requires fresh joint validation.
-PR33 remains independent of this failing production route.
+Both have full expected input/output token counts and pass working TTFT limits.
+Fresh private service and exact original checked SO/source hashes were used;
+TPOT stabilized before each single full round. These are separate warmed-round
+comparisons, not proof of a statistically significant regression. They show no
+established extra performance to spend on recovering the known99/105 accuracy.
+Precision remains0.9429<0.95; no passing score was selected by repeating accuracy.
+
+Raw diagnostic, known verdict, state, fixed-command/source/SO manifest, scores
+and warmups: `evidence/residual-cache-20261024/throughput-followup-final/`.
+The diagnostic's completed staysfalse, precision_gate=false and
+eligible_for_merge=false; only throughput_completed/diagnostic_completed aretrue.
+No merge, no further accuracy-recovery work for this version absent new evidence.
+Component36/36/180 patterns and local1.035–1.053x improvements stay archived for
+future applicable shapes. This closes this version, not the residual-gate class
+or the user's policy of testing near-threshold candidates.
 
 ## Historical: rejected by real-model accuracy; closed before user steering
 
