@@ -7707,3 +7707,9 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_prefill_normalized import install as _install_prefill_normalization
 
     print("BIV150_PREFILL_NORMALIZATION_INSTALL", _install_prefill_normalization(), flush=True)
+
+# Isolated full-vocabulary operator candidate; retain existing hidden layers.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_lm_head_int8 import install as _install_lm_head_int8
+
+    print("BIV150_LM_HEAD_INSTALL", _install_lm_head_int8(), flush=True)
