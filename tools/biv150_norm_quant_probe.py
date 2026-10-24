@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Standalone fusion of audited FlagGems BF16 residual RMSNorm and quantization.
+"""Standalone fusion of audited native IR BF16 residual RMSNorm and quantization.
 
-RMSNorm math follows FlagGems5.3.5 fused_add_rms_norm.py (Apache2.0).
+RMSNorm math follows installed vLLM native IR layernorm.py (Apache2.0).
 This module is not installed in a model or dispatcher.
 """
 
@@ -43,10 +43,12 @@ def _norm_quant(
         x += r
         # Preserve BF16 residual storage but normalize the unrounded FP32 sum.
         tl.store(R + row * 2048 + cols, x)
-        var = tl.sum(x * x / 2048, axis=0)
-        rrms = 1 / tl.sqrt(var + EPS)
+        var = tl.sum(x * x, axis=0) / 2048
+        rrms = tl.rsqrt(var + EPS)
         w = tl.load(W + cols)
-        y = (x * rrms * w).to(tl.bfloat16)
+        # Native IR casts before multiplication by BF16 weight.
+        unweighted = (x * rrms).to(tl.bfloat16).to(tl.float32)
+        y = (unweighted * w.to(tl.float32)).to(tl.bfloat16)
         if WRITE_NORM:
             tl.store(X + row * 2048 + cols, y)
         y32 = y.to(tl.float32)

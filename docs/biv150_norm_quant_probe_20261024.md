@@ -1,5 +1,8 @@
 # Residual RMSNorm + activation quantization fusion probe
 
+Historical, cancelled before GPU execution. The corrected active variant is
+documented in `biv150_native_norm_quant_probe_20261024.md`.
+
 This independent operator probe is based on6762da8, the candidate containing
 team main1ad9a708 and cached quantization for compressed gate M17..2048. Its
 model precision/throughput acceptance is running separately. The fusion is not
