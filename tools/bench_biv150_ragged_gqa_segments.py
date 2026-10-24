@@ -67,6 +67,7 @@ def main(args):
                 torch.testing.assert_close(
                     gold[row].cpu(), refs[row], atol=0.005, rtol=0.005
                 )
+            base_query, base_lengths = case["q"].clone(), case["lengths"].clone()
             for segments in (1, 2, 4, 8, 16):
                 row = dict(
                     batch=batch,
@@ -137,10 +138,13 @@ def main(args):
                     )
                 except Exception as error:
                     row["error"] = repr(error)
+                finally:
+                    case["q"].copy_(base_query)
+                    case["lengths"].copy_(base_lengths)
                 result["records"].append(row)
                 args.out.write_text(json.dumps(result, indent=2))
                 print(json.dumps(row), flush=True)
-            del case, packed, k, v, gold
+            del case, packed, k, v, gold, base_query, base_lengths
 
     if len(result["records"]) != expected_cases or not all(r.get("passed") for r in result["records"]):
         raise RuntimeError("Incomplete numerical gates; no service claim")
