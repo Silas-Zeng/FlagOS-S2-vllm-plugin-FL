@@ -44,7 +44,7 @@ Raw result and9 checks are retained under `evidence/compiled-norm-quant-20261024
 Failure input/weight/actual-native-reference CPU fixtures remain in the private
 compiled-norm-quant-20261024/probe directory with SHA checksums in the report.
 No model installed or score credited. Close this full-range variant with evidence.
-The general direction and successful exact tested M1/8/16/17/32/64/256 pairs
+The general direction and successful tested M1/8/16/17/32/64/256 pairs
 remain useful for a later bounded fusion or an exact compiled-layout rewrite.
 Do not select M40 based on its ones-only success, extrapolate to untested rows,
 loosen tolerance or describe15/18 as full success.
