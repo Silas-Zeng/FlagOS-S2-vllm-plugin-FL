@@ -1,5 +1,18 @@
 # B06：有界 residual RMSNorm＋量化，真实 norm 权重组件验证
 
+## 新AD01/AD09/S11证据：接入前还需保持跨op residual表达式
+
+PR37候选a19ff5c的当前私有编译cache新增只读证据（该PR的generated-graph-audit/）：
+包含opaque gate的动态生成区块，pre-gate norm只写BF16 norm结果，未单独写出本步residual；
+后续norm直接消费down输出、先前O输出与旧residual，生成FP32的down+(O+residual)，
+两个加法之间没有BF16 cast/store。仅这是该生成区块的静态契约，不推断所有main版本或全部请求命中。
+
+当前独立probe输出BF16 residual是一个孤立组件边界。即使某行/层数值通过，
+把这个输出直接接回真实图也可能新增舍入/物化、改变下一norm的结果，不能认为只剩归约树问题。
+下一版应先核对目标生产图，保留原透明residual表达式/原活跃输入或在实际子图上融合，
+再做norm→quant→gate与后继norm的联合数值门；不能将此视为单独提高精度或改变模型数学的授权。
+该证据改变接入与验证范围，不删除原206/238正结果或宣称整个norm方向失败。
+
 ## v3真实权重完整矩阵：保留206个通过组合，定位32个失败
 
 运行a8c02d71526dc8ea7427c288cd07f9c0beceee2d私有构建和既有9/40检查通过，完整238组合收齐。
