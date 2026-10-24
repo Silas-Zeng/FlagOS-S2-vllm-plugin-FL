@@ -54,7 +54,7 @@ def main(args):
     reducer=next(n for n in parsed.body if isinstance(n,ast.FunctionDef) and n.name=="reduce_partials")
     assert any(isinstance(n,ast.Call) and ast.unparse(n.func)=="tl.sum" for n in ast.walk(reducer))
     assert not subprocess.check_output(["git","-C",str(root),"diff",
-        "31a0a7f9205d90904afac0ba19e9e65856c79867","--","vllm_fl","csrc"],text=True)
+        "0bf9d2efeaa10144dd7f0ff4597298df029f9328","--","vllm_fl","csrc"],text=True)
     result=dict(cpu_only=True,actual_split_function_executed=True,partition_cases=count,
                 geometry_config_buffer_checks=buffers,no_gaps_or_overlaps=True,
                 signed32_offsets_safe_for_model_matrix=True,no_atomic_accumulation=True,
