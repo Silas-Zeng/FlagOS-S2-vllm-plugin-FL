@@ -36,3 +36,21 @@ be copied from another branch. Record actual KV capacity from the service log.
 Local syntax, Ruff and diff checks pass. No GPU hook or model result is available
 yet. The predecessor-aware queue will run only after the current combination
 acceptance and the independent prefill diagnosis, with GPU/port idle checks.
+
+
+## First service failure and compatibility correction
+
+Source 4f6616a built privately and passed the eight minimal-module checks, but
+real service initialization failed at 10:31 CST before any model evaluation:
+ParallelLMHead has no prefix attribute. The newly added weight telemetry read
+layer.prefix directly. The checker had manually added that property, masking
+the integration defect. This was a test-fixture gap, not a measured accuracy
+or performance failure. No model precision or throughput score exists for it.
+
+The correction uses a diagnostic class-name fallback for the optional prefix
+and removes the artificial property from the checker. Scope selection still
+uses the actual SDK ParallelLMHead type, audited shape, TP1 and untied config;
+no numerical operator or compression behavior changes. Repeat the private
+build, revised hook checks and whole-model acceptance in a fresh output/source
+directory. Keep the original failed logs, with exact source identity, separate.
+Local Ruff, compile and diff checks pass; repaired service is unvalidated.

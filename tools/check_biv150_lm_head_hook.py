@@ -60,7 +60,9 @@ def main(args):
         )
         head = ParallelLMHead.__new__(ParallelLMHead)
         torch.nn.Module.__init__(head)
-        head.prefix = "lm_head"
+        # The actual SDK constructor does not retain a prefix attribute. Do not
+        # add one here: doing so previously hid a service-startup logging error.
+        assert not hasattr(head, "prefix")
         head.bias = None
         head.weight = torch.nn.Parameter(
             torch.randn((130560, 2048), device="cuda", dtype=torch.bfloat16)

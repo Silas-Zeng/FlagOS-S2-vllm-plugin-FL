@@ -55,7 +55,7 @@ def install():
         print(
             "BIV150_LM_HEAD_WEIGHT",
             dict(
-                prefix=layer.prefix,
+                prefix=getattr(layer, "prefix", type(layer).__name__),
                 shape=list(weight.shape),
                 q_stride=list(q.stride()),
                 bytes_saved=weight.numel() * weight.element_size()
