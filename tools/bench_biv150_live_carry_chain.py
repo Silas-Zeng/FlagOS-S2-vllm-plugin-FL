@@ -20,6 +20,7 @@ import torch
 from safetensors import safe_open
 from biv150_benchmark_utils import graph_time
 from biv150_bounded_norm_quant import norm_quant
+from biv150_live_carry_fused_gemm import from_quantized
 
 
 @torch.library.custom_op("biv150_joint_probe::gate_without_carry_store", mutates_args=())
@@ -34,9 +35,23 @@ def gate_without_carry_store(o: torch.Tensor, residual: torch.Tensor,
                                                        o.shape[0], False)
 
 
+@torch.library.custom_op("biv150_joint_probe::gate_without_carry_store_fused_gemm", mutates_args=())
+def gate_without_carry_store_fused_gemm(o: torch.Tensor, residual: torch.Tensor,
+                            norm_weight: torch.Tensor, wq: torch.Tensor,
+                            scales: torch.Tensor, eps: float) -> torch.Tensor:
+    assert o.shape[0] == 64
+    q, s, carry, _, _ = norm_quant(o, residual, norm_weight, eps,
+                                   materialize_residual=False)
+    assert carry is None
+    return from_quantized(q, s, wq, scales, 64, (64,64,128,8))
+
+
 @gate_without_carry_store.register_fake
 def fake_gate(o, residual, norm_weight, wq, scales, eps):
     return torch.empty((o.shape[0], 6144), dtype=o.dtype, device=o.device)
+
+
+gate_without_carry_store_fused_gemm.register_fake(fake_gate)
 
 
 def compare(actual, expected):
@@ -67,6 +82,10 @@ def learned(model, layer):
 
 
 def main(args):
+    if args.rows is None:
+        args.rows = [64] if args.fused_gemm else [64,32]
+    if args.fused_gemm:
+        assert args.rows == [64]
     with socket.socket() as port:
         assert port.connect_ex(("127.0.0.1", 9031)) != 0
     assert "No running processes found" in subprocess.check_output(
@@ -98,6 +117,7 @@ def main(args):
     eps = config["rms_norm_eps"]
     assert eps == 1e-6, "Revalidate service specialization for another model epsilon"
     layers = list(range(4, 38)) if args.all_layers else [4, 20, 37]
+    gate_impl = gate_without_carry_store_fused_gemm if args.fused_gemm else gate_without_carry_store
 
     def baseline(o, residual, nw, wq, scales, marker, down_weight, next_weight):
         normal, carry = native_norm(o, residual, nw, 1e-6)
@@ -112,7 +132,7 @@ def main(args):
         # from the opaque fused operator. Dead norm work should be eliminated;
         # generated code is preserved to check whether that actually happened.
         _, carry = native_norm(o, residual, nw, 1e-6)
-        gate = gate_without_carry_store(o, residual, nw, wq, scales, 1e-6)
+        gate = gate_impl(o, residual, nw, wq, scales, 1e-6)
         down = torch.nn.functional.linear(gate, down_weight)
         next_normal, next_residual = native_norm(down, carry, next_weight, 1e-6)
         return next_normal, next_residual, gate
@@ -125,6 +145,7 @@ def main(args):
                   layers=layers, rows=args.rows, static_features=True,
                   model_epsilon=eps, epsilon_specialized_as_service=True,
                   baseline_initial_trace_rows=2048,
+                  fused_gemm=args.fused_gemm, fused_gemm_source="3756f22 exact AST" if args.fused_gemm else None,
                   preserves_original_transparent_carry_expression=True,
                   shipping_cpp_cuda_and_quantizer_unchanged=True,
                   library_sha256=args.library_sha256,
@@ -246,5 +267,6 @@ if __name__ == "__main__":
     p.add_argument("--library-sha256", required=True)
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--all-layers", action="store_true")
-    p.add_argument("--rows", type=int, nargs="+", choices=(32, 64), default=[64, 32])
+    p.add_argument("--rows", type=int, nargs="+", choices=(32, 64))
+    p.add_argument("--fused-gemm", action="store_true")
     with torch.inference_mode(): main(p.parse_args())

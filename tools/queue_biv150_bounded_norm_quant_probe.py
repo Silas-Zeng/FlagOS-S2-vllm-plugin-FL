@@ -100,6 +100,8 @@ def main(args):
         command = [sys.executable, "-u", str(source / "tools/bench_biv150_live_carry_chain.py"),
                    "--library", str(args.library), "--library-source", str(args.library_source),
                    "--library-sha256", args.library_sha256, "--out", str(args.out)]
+        if args.fused_gemm:
+            command = command[:-2] + ["--fused-gemm"] + command[-2:]
         env["TORCHINDUCTOR_CACHE_DIR"] = str(args.out.with_name(args.out.name + "-inductor-cache"))
     with args.out.with_suffix(".log").open("x") as log:
         process = subprocess.Popen(
@@ -115,7 +117,7 @@ def main(args):
         code = process.wait()
     if code == 0 and args.live_carry_chain and args.expand_positive:
         representative = json.loads((args.out / "result.json").read_text())
-        assert representative.get("completed") and len(representative["records"]) == 6
+        assert representative.get("completed") and len(representative["records"]) == (3 if args.fused_gemm else 6)
         selected_rows = []
         for m in (64,32):
             rows = [row for row in representative["records"] if row["m"] == m]
@@ -148,6 +150,7 @@ if __name__ == "__main__":
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--live-carry-chain", action="store_true")
     parser.add_argument("--expand-positive", action="store_true")
+    parser.add_argument("--fused-gemm", action="store_true")
     parser.add_argument("--library", type=Path)
     parser.add_argument("--library-source", type=Path)
     parser.add_argument("--library-sha256")

@@ -3,6 +3,7 @@
 import argparse
 import ast
 import copy
+import hashlib
 import json
 import subprocess
 from pathlib import Path
@@ -59,11 +60,20 @@ def main(args):
         before=next(n for n in original.body if isinstance(n,ast.FunctionDef) and n.name==name)
         after=next(n for n in extracted.body if isinstance(n,ast.FunctionDef) and n.name==name)
         assert ast.dump(before,include_attributes=False)==ast.dump(after,include_attributes=False)
+    fused = ast.parse((root/"tools/biv150_live_carry_fused_gemm.py").read_text())
+    raw_f09=(root/"docs/evidence/bounded-norm-quant-20261024/f09-provenance/source-3756f22.py.txt").read_bytes()
+    assert hashlib.sha1(b"blob "+str(len(raw_f09)).encode()+b"\0"+raw_f09).hexdigest()=="d86b7fa9abf97f6027e3004252ee7f700a4deff3"
+    f09 = ast.parse(raw_f09)
+    for name in ("fused_gate","from_quantized"):
+        before=next(n for n in f09.body if isinstance(n,ast.FunctionDef) and n.name==name)
+        after=next(n for n in fused.body if isinstance(n,ast.FunctionDef) and n.name==name)
+        assert ast.dump(before,include_attributes=False)==ast.dump(after,include_attributes=False)
     result=dict(cpu_only=True,base=base,cpp_shipping_functions_unchanged=True,
                 production_cuda_and_python_unchanged=True,
                 triton_inputs_not_store_targets=True,kernel_abi_checked=True,
                 previous_norm_quant_math_ast_unchanged=True,
                 residual_store_guarded_by_compile_time_flag=True,
+                f09_from_quantized_math_ast_unchanged=True,
                 local_probe_imports_present=local_modules,cpu_oracle_math_ast_unchanged=True,
                 real_alias_and_device_checks_pending=True)
     if args.out:
