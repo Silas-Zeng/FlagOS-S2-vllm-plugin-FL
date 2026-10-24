@@ -15,9 +15,9 @@ def main(args):
     os.environ['BIV150_NATIVE_W8A8_LIBRARY']=str(args.library.resolve())
     from vllm_fl.patches.biv150_native_w8a8 import load_library,quantize_weight
     from vllm_fl.patches.biv150_int8_gemm_silu import gate_m32_m64_or_auto
-    from vllm_fl.utils import use_flag_gems,get_flag_gems_whitelist_blacklist
+    from vllm_fl.utils import use_flaggems,get_flag_gems_whitelist_blacklist
     import flag_gems
-    assert use_flag_gems()
+    assert use_flaggems()
     whitelist,blacklist=get_flag_gems_whitelist_blacklist()
     assert not whitelist and not blacklist
     flag_gems.enable(record=False,once=True)
