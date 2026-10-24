@@ -47,3 +47,9 @@ CPU仅核对tensor几何/字节与语法，GPU及真实trace待验证。没有�
 新增35个真实weight检查（34 gate/up+一个仅用于历史head探针的head）比较所有INT8/FP32 scale位与输入不变；
 内存探针现在从候选生产函数提取精确AST执行并记录源码/AST SHA。先验证数值合同与真实snapshot是否改善，
 再做完整服务profile/KV、105题和两档充分预热，现阶段不宣称容量或吞吐收益。
+
+
+首轮724846b在packing-equivalence保护门即退出1，未生成任何数值比较或进入memory/service。
+原因是本机Python3.14 ast.dump默认省略空字段，远端3.12保留，导致同一baseline AST摘要不同。
+修复只更换工具摘要序列化为保留实际语义字段的canonical JSON，baseline合同仍锁定原函数；不更改量化数学或放宽数值门。
+旧失败目录weight-packing-20261025保留，新冻结版本与新输出目录单独重试。

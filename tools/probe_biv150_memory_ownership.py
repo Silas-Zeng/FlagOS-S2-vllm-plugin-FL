@@ -11,6 +11,8 @@ import socket
 import subprocess
 import sys
 
+from biv150_weight_quantizer_ast import digest
+
 
 CASES = (("gate", 32), ("gate", 256), ("gate", 2048),
          ("bf16_head", 256), ("historical_int8_head", 256))
@@ -62,7 +64,7 @@ def worker(args):
     exec(compile(ast.Module(body=[function], type_ignores=[]), str(quantizer_path), "exec"), scope)
     result = dict(kind=args.kind, rows=args.rows, pid=os.getpid(),
                   quantizer_source_sha256=sha(quantizer_path),
-                  quantizer_ast_sha256=hashlib.sha256(ast.dump(function, include_attributes=False).encode()).hexdigest(),
+                  quantizer_ast_sha256=digest(function),
                   library_sha256=sha(args.library), torch_version=torch.__version__,
                   probe_sha256=sha(__file__),
                   weight_index_sha256=sha(args.weights / "model.safetensors.index.json"),

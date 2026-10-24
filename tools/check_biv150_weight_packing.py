@@ -7,18 +7,19 @@ import json
 from pathlib import Path
 
 from probe_biv150_memory_ownership import require_idle, sha
+from biv150_weight_quantizer_ast import digest
 
 
-BASELINE_AST = "16133e9295cea198c7edd73a865f59c0cb5fd57c1d29a2d448050a5df37ecc3e"
+BASELINE_AST = "e03b3bfe905810a196dacaffec7b79db7eb61784729118f8132d286ea9c0dc79"
 
 
 def function(path, torch):
     node = next(n for n in ast.parse(path.read_text()).body
                 if isinstance(n, ast.FunctionDef) and n.name == "quantize_weight")
-    digest = hashlib.sha256(ast.dump(node, include_attributes=False).encode()).hexdigest()
+    ast_hash = digest(node)
     scope = {"torch": torch}
     exec(compile(ast.Module(body=[node], type_ignores=[]), str(path), "exec"), scope)
-    return scope["quantize_weight"], digest
+    return scope["quantize_weight"], ast_hash
 
 
 def main(args):
