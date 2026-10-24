@@ -1,64 +1,63 @@
-# Cached activation quantization on current team main
+# Cached activation quantization: full accepted service result
 
-Parent abf760a contains the standalone probe and team main1ad9a708 (mergedPR24,
-including PR22/PR23 and the compressed residual gate). Full-gate36-case results
-support256 threads: minimum speedup1.01525, maximum1.04910; all bit-exact to old
-quantization/CPU references/full gate/changed-input Graphs.
+The row quantizer previously reloaded BF16 activations after computing amax.
+For compressed MiniCPM gate K2048/N12288/M17..2048, a256-thread kernel now keeps
+values in registers between these passes. Small-M residual, M0, larger M and
+original BF16-weight fallback retain the previous implementation. Quantized
+weights/scales, vendor int_mm, epilogue, attention, request ordering, scheduler,
+model and fixed competition service/benchmark arguments are unchanged.
 
-The service dispatch selects this quantizer only for compressed gate geometry
-K2048,N12288,M17..2048. Small-M residual, M0, larger M and original BF16-weight
-fallback retain their previous behavior. Weights, activation scales, integer
-GEMM, epilogue, attention, model runner and scheduling remain unchanged.
-No B40 segmentation experiment is included, so the service comparison remains
-against the merged main implementation.
+## Provenance and operator evidence
 
-The owned queue builds a private SO, runs the existing9-case route checker,
-then40 full-gate boundary/stride cases (including M2049 unchanged fallback),
-independent CPU quantization and changed-input Graphs. Only after these pass
-does it run fresh105-item accuracy and fixed warmed4K/16K formal benchmarks.
-The existing service runner adds strict installation checks for the cached-row
-range and256-thread selection. All competition arguments and benchmark loads
-remain byte-identical. No model/service improvement is claimed before results.
+Frozen runtime6762da85b0a64bdb0b60ad2b4f73335aed2ea80b incorporates team
+main1ad9a708 (PR22/23/24). Subsequent branch commits only archive evidence;
+csrc, vllm_fl and tools remain byte-identical to the measured runtime.
+No B40 segmentation experiment is included. Private native SO SHA256:
+b014522cc8b05592bdd3de15c1e2d53bebfa284b7b0428c3ace14f7f6424b2de.
 
+The standalone36 cases passed bit-exact old-quantizer/CPU INT8 and scale,
+complete gate and changed-input Graph checks.256 threads improved every tested
+complete-gate case, ratios1.01525–1.04910.64-thread small-M regressions were not
+selected. Private build, existing9 route checks and40 additional row/stride/
+CPU/changed-input Graph checks passed, including M2049 unchanged fallback.
+The original component evidence is in biv150_quant_row_cache_20261024.md.
 
-## Started full model acceptance
+## Full model acceptance on personal BI-V150
 
-Frozen source6762da85b0a64bdb0b60ad2b4f73335aed2ea80b passed private native
-compilation, existing9 operator-route checks and all40 added row-boundary/stride
-cases, including CPU quantization, bit-exact full gate and changed-input Graphs.
-Evidence: `evidence/quant-cache-service-20261024/cached-dispatch-check.json`.
+Fresh Math500 Level3:102/105 (0.9714),105 unique questions,0 failed predictions.
+After sufficient warmup, one fixed formal round per length:
 
-18:36:58 personal-instance GPU was idle with no running compute processes.
-Owned queue79227/start_ticks318577084 started in its private checkout and run
-folder quant-cache-service-20261024. Acceptance driver79671 started18:38:09;
-API79674 and engine79831 became ready. The runner verified the installation
-metadata for cached M17..2048 with256 threads before full105-item evaluation.
-No new full precision/throughput result is available yet. Current main remains
-1ad9a708 and no unvalidated runtime has been merged.
+|Load|Total tok/s|Vs original reference|Mean TTFT ms|Requests|
+|---|---:|---:|---:|---|
+|4K|5763.514163|+19.8395%|3683.410328|256/256,0 failed|
+|16K|4010.102823|+19.2053%|125077.489141|128/128,0 failed|
 
+Input/output counts are exact:4K1048576/262144 and16K2097152/131072.
+Durations227.416809s and555.652585s. Working precision/request/throughput/TTFT
+acceptance passes. Actual compute-order and Q-fragment serving paths were
+selected; no recorded scope rejection or Q-fragment fallback. Queue completed
+normally. Shutdown cleanup warnings are not evidence of an inference failure.
 
-## Complete precision result
+Warmup TPOT(ms):4K113.722974/101.133267/101.279981;
+16K285.653800/279.706251. Both stabilized before the formal round.
+Compared with PR24's separate single-round observations, totals are0.2228% and
+0.1949% higher; these small differences are not isolated causal estimates.
+The controlled component timings support the operator improvement.
 
-The frozen6762da8 runtime completed fresh105-question Math500 Level3 at
-19:06:07 on the personal BI-V150:102/105 (0.9714),105 unique questions,
-0 failed predictions. Full report, verdict and runtime/native-SO manifest are
-archived under `evidence/quant-cache-service-20261024/accuracy/`.
+Neither length reaches the overall20% goal5771.232/4036.836. This does not
+prevent retaining a verified incremental operator improvement. Work continues
+past20% or30%; no repeated sampling was used to cross a score threshold.
 
-Draft PR25 tracks this direction. The fixed sufficiently warmed4K/16K formal
-throughput and TTFT acceptance continues on the same frozen service. No new
-service throughput is credited yet. Subsequent shared commits only add docs
-and evidence; running source and service arguments remain unchanged.
+All full acceptance/report/manifest/raw-score/warmup evidence is in
+`evidence/quant-cache-service-20261024/final/`. Earlier standalone and boundary
+checks remain alongside it. Draft PR25 can now be marked ready and merged after
+fresh main/head verification; dependent PR26/27 must then sync to integrated main.
 
+## Reproduction
 
-## Complete formal4K observation,16K still running
-
-The same frozen6762da8 runtime completed256/256 requests,0 failed,1048576 input
-and262144 output tokens in227.416809s:5763.514163 total tok/s, mean TTFT
-3683.410328ms. Gain vs original4809.36 is19.8395%; this remains below the20%
-threshold5771.232. The PR24 observation5750.700805 was0.2228% lower, from a
-separate single round; this is not a controlled isolated causal estimate.
-Warmup TPOT113.722974/101.133267/101.279981ms met the stability gate.
-Raw result and warmup snapshot are in `evidence/quant-cache-service-20261024/score-4096/`.
-
-16K warmup285.653800/279.706251ms stabilized and the fixed128-request formal
-round is running. No repeat sampling is scheduled to cross a goal threshold.
+Build the SO in the desired private checkout before serving:
+`MAX_JOBS=2 python tools/build_biv150_native_w8a8.py`.
+Use that same source path via PYTHONPATH. The owned build/check/acceptance queue
+is tools/run_biv150_gate_team_queue.py. Formal service and benchmark arguments
+are preserved in the final manifest and raw score files; the research protocol
+uses one formal round after the recorded sufficient warmup.
