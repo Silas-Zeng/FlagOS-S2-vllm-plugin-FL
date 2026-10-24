@@ -43,7 +43,9 @@ def main(a):
             original_candidate_all_patterns=r['candidate_cpu_all_passed'],
             original_native_all_patterns=r['native_cpu_all_passed'],
             candidate=describe(d['candidate'],d['cpu']),native=describe(d['native'],d['cpu'])))
-    assert len(report['records'])==701
+    expected={r['fixture'] for r in source['records'] if r.get('fixture')}
+    assert expected=={p.name for p in a.probe.glob('*.pt')}
+    assert len(report['records'])==len(expected)
     report['summary']={'fixtures':len(report['records'])}
     for key in ('candidate','native'):
         stats=[r[key] for r in report['records']]
