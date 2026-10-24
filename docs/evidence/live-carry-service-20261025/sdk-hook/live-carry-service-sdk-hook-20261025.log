@@ -1,0 +1,15 @@
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:728: DeprecationWarning: use_cuda_graph is deprecated; use benchmark_mode='replay' or benchmark_mode='event'
+  super().__init__(*args, **kwargs)
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411: RuntimeWarning: active Triton backend does not provide a replay benchmarker; falling back to event timing
+  resolved_benchmark = resolve_benchmarker(
+INFO 10-25 07:35:00 [__init__.py:44] Available plugins for group vllm.platform_plugins:
+INFO 10-25 07:35:00 [__init__.py:46] - fl -> vllm_fl:register
+INFO 10-25 07:35:00 [__init__.py:49] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-25 07:35:02 [__init__.py:237] Platform plugin fl is activated
+WARNING 10-25 07:35:06 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+/usr/local/lib/python3.12/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+WARNING 10-25 07:35:06 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+WARNING 10-25 07:35:06 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+WARNING 10-25 07:35:06 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+{"sdk_install_only": true, "gpu_math_not_tested": true, "package": "/workspace/experiments/minicpm-s2/code/live-carry-service-sdk-20261025/vllm_fl/__init__.py", "disabled": {"installed": false, "reason": "disabled"}, "enabled": {"installed": true, "exact_rows": [64], "epsilon": 1e-06, "norm_weight_shape": [2048], "compressed_gate_shape": [2048, 12288], "original_transparent_carry": true, "persistent_weight_copy": false, "original_llama_sha256": "1e1003454985bf86d3868a7755bcf5324676881548b3895809edf0b76698d384", "generated_forward_sha256": "05b6891b5c90f827aca061e9ee05c553c39818ce74292310aa695fc0596492bb", "generated_forward_file": "/workspace/experiments/minicpm-s2/code/live-carry-service-sdk-20261025/vllm_fl/patches/biv150_live_carry_gate.py.generated_forward.py", "hook_file": "/workspace/experiments/minicpm-s2/code/live-carry-service-sdk-20261025/vllm_fl/patches/biv150_live_carry_gate.py", "hook_sha256": "bc6dbd265e12d0e76b74379af1442554146bcad27fa8c7446e866b55c8818c9c"}, "generated_source": "def forward(self, positions: torch.Tensor, hidden_states: torch.Tensor, residual: torch.Tensor | None) -> tuple[torch.Tensor, torch.Tensor]:\n    if residual is None:\n        residual = hidden_states\n        hidden_states = self.input_layernorm(hidden_states)\n    else:\n        hidden_states, residual = self.input_layernorm(hidden_states, residual)\n    hidden_states = self.self_attn(positions=positions, hidden_states=hidden_states)\n    hidden_states, residual = _biv150_post_norm_mlp(self, hidden_states, residual)\n    return (hidden_states, residual)\n"}
