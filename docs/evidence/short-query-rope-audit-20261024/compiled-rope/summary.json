@@ -1,0 +1,47 @@
+{
+  "runtime_commit": "84c1be5fa5ae3d1f0b0485c5d430798913eb78f5",
+  "readonly_compiled_sources": true,
+  "device_times_measured": false,
+  "records": [
+    {
+      "path": "/workspace/experiments/minicpm-s2/gqa-wave-main-cache-formal-v2-20261024/full/inductor-cache/u5/cu54otbftftkrymidlndq57nx56ffwjh5pdhqu6owdblsgqzfdba.py",
+      "sha256": "a0a5beb4dad3c8ee136a84d26fa4130d506612194908e31bcfeeba75c718e53a",
+      "shapes": [
+        "(2048, 2560), (2560, 1), device='cuda:0', dtype=torch.bfloat16)",
+        "(2048,), (1,), device='cuda:0', dtype=torch.int64)",
+        "(131072, 128), (128, 1), device='cuda:0', dtype=torch.bfloat16)",
+        "(2048, 2, 128), (256, 128, 1), device='cuda:0', dtype=torch.bfloat16)"
+      ],
+      "uses_fp_fusion": true,
+      "produces_separate_contiguous_q_or_k": true,
+      "has_slot_mapping": false
+    },
+    {
+      "path": "/workspace/experiments/minicpm-s2/gqa-wave-main-cache-formal-v2-20261024/full/inductor-cache/kj/ckjp53lb77ibrtoqd7rpok4zs6pjarhx5jfudz3ygvvcwrrgehjk.py",
+      "sha256": "493b7c17c43805d313e7db9deb4ec703ac25dddeffd11fd7ccd99d3505c05538",
+      "shapes": [
+        "(2048, 2560), (2560, 1), device='cuda:0', dtype=torch.bfloat16)",
+        "(2048,), (1,), device='cuda:0', dtype=torch.int64)",
+        "(131072, 128), (128, 1), device='cuda:0', dtype=torch.bfloat16)",
+        "(2048, 16, 128), (2048, 128, 1), device='cuda:0', dtype=torch.bfloat16)"
+      ],
+      "uses_fp_fusion": true,
+      "produces_separate_contiguous_q_or_k": true,
+      "has_slot_mapping": false
+    },
+    {
+      "path": "/workspace/experiments/minicpm-s2/gqa-wave-main-cache-formal-v2-20261024/full/inductor-cache/ey/cey3rxw3jrlzk3mwqgix5vj7yykpxiyxhlyazbuzglxeghgxoj6m.py",
+      "sha256": "4d9a6ad82b6acf5fd3e6b2502fbdd35e87ca5b2c026631bf28f7753256db1966",
+      "shapes": [
+        "(2048, 2560), (2560, 1), device='cuda:0', dtype=torch.bfloat16)",
+        "(2048,), (1,), device='cuda:0', dtype=torch.int64)",
+        "(131072, 128), (128, 1), device='cuda:0', dtype=torch.bfloat16)",
+        "(2048, 2, 128), (256, 128, 1), device='cuda:0', dtype=torch.bfloat16)",
+        "(2048, 16, 128), (2048, 128, 1), device='cuda:0', dtype=torch.bfloat16)"
+      ],
+      "uses_fp_fusion": false,
+      "produces_separate_contiguous_q_or_k": true,
+      "has_slot_mapping": false
+    }
+  ]
+}

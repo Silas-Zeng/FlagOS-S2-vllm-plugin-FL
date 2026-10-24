@@ -23,3 +23,11 @@
 真实模型绑定、实际 qlen 频度与设备成本仍待上机。获取频度和实际入口后，D02 再决定短 query 专核，B09 再比较原组合总成本并设计天数融合；不能把此审计描述成两个优化方向已经实现。
 
 注意 `get_rope` 可缓存并跨层复用同一个 nn.Module，默认 named_modules 会去重。观察器明确使用 remove_duplicate=False，统计 42 个层路径并同时记录独立 rotary 对象数；CPU 检查包含 42 条路径共享一个对象的情况。不能把对象数少于 42 误判成缺层。
+
+## 只读编译证据与排队
+
+已核实实际安装的 rotary 工厂 SHA `f703d3f7ca6be6b41837d4a07a27b94d1442149554bb4f4837cd3722671a5bbd`，含 `_ROPE_DICT`。修正版 `efd80d3` 本机与个人实例 CPU 检查均通过。
+
+从正在正式验收的 `84c1be5` 服务缓存只读取得 M2048 Q/K 两个单独源及一个双输出 `SequentialComboKernelGrid` 源，保存在 `docs/evidence/short-query-rope-audit-20261024/compiled-rope/`，原路径与 SHA 见 summary.json。三者均无 slot_mapping。**生成缓存不证明具体 kernel 运行时被选中**；尤其不能根据两份单独文件就认定实际需要两个 RoPE launch，简单 Q/K 拼核也不能直接算新优化。下一步比较必须包含已有 combo 候选与 cache 写入的完整成本。
+
+第一版等待队列122662只在 waiting、无child时受控取消，未占GPU；新冻结快照 `code/short-query-rope-audit-v2-20261024` 为 efd80d3，队列123076/start319596243，等待 PR31 的119285/start319363061。还要求PR31 e972997的正式验收completed后才启动，输出short-query-rope-audit-v2-20261024。此处记录的是排队身份，不代表已完成GPU诊断。
