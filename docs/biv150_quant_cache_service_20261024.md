@@ -35,3 +35,16 @@ API79674 and engine79831 became ready. The runner verified the installation
 metadata for cached M17..2048 with256 threads before full105-item evaluation.
 No new full precision/throughput result is available yet. Current main remains
 1ad9a708 and no unvalidated runtime has been merged.
+
+
+## Complete precision result
+
+The frozen6762da8 runtime completed fresh105-question Math500 Level3 at
+19:06:07 on the personal BI-V150:102/105 (0.9714),105 unique questions,
+0 failed predictions. Full report, verdict and runtime/native-SO manifest are
+archived under `evidence/quant-cache-service-20261024/accuracy/`.
+
+Draft PR25 tracks this direction. The fixed sufficiently warmed4K/16K formal
+throughput and TTFT acceptance continues on the same frozen service. No new
+service throughput is credited yet. Subsequent shared commits only add docs
+and evidence; running source and service arguments remain unchanged.
