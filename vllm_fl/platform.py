@@ -307,6 +307,10 @@ class PlatformFL(Platform):
                 attention_config.use_trtllm_attention = False
                 attention_config.disable_flashinfer_prefill = True
 
+        # 插件语义变化必须在首次 AOT 查找之前进入官方缓存键。
+        from vllm_fl.compile_semantics import apply_compile_semantics
+        apply_compile_semantics(vllm_config, cls.vendor_name)
+
     @classmethod
     def get_attn_backend_cls(
         cls,
