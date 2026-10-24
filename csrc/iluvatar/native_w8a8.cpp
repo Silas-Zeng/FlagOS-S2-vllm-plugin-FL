@@ -189,9 +189,52 @@ at::Tensor gate_silu_auto(const at::Tensor& x, const at::Tensor& wq,
   return gate_silu(x,wq,scales,original,min_rows);
 }
 
+// Standalone fusion probe: the already-quantized inputs use the same vendor
+// GEMM and epilogue as production. No production dispatch is changed.
+std::vector<at::Tensor> norm_quant_reference_probe(const at::Tensor& x) {
+  TORCH_CHECK(x.is_cuda() && x.dim()==2 && x.scalar_type()==at::kBFloat16);
+  const auto m=x.size(0);
+  TORCH_CHECK(x.size(1)==2048 && m>=1 && m<=2048);
+  c10::cuda::CUDAGuard guard(x.device());
+  auto input=x.contiguous();
+  const auto padded=std::max<int64_t>(32,m);
+  auto q=at::empty({padded,2048},x.options().dtype(at::kChar));
+  auto scales=at::empty({padded},x.options().dtype(at::kFloat));
+  auto stream=c10::cuda::getCurrentCUDAStream();
+  if (m<=16) biv150_quantize_residual(input.data_ptr<at::BFloat16>(),q.data_ptr<int8_t>(),scales.data_ptr<float>(),int(m),2048,stream);
+  else biv150_quantize_cached(input.data_ptr<at::BFloat16>(),q.data_ptr<int8_t>(),scales.data_ptr<float>(),int(m),int(padded),2048,256,stream);
+  C10_CUDA_KERNEL_LAUNCH_CHECK();
+  return {q,scales};
+}
+
+at::Tensor gate_quantized_probe(const at::Tensor& aq,const at::Tensor& row_scales,
+    const at::Tensor& wq,const at::Tensor& scales,int64_t m,bool residual) {
+  TORCH_CHECK(m>=1 && m<=2048 && residual==(m<=16));
+  const int64_t padded=std::max<int64_t>(32,m);
+  TORCH_CHECK(aq.is_cuda() && aq.scalar_type()==at::kChar && aq.is_contiguous());
+  TORCH_CHECK(aq.dim()==2 && aq.size(0)==padded && aq.size(1)==2048);
+  TORCH_CHECK(row_scales.is_cuda() && row_scales.scalar_type()==at::kFloat && row_scales.is_contiguous());
+  TORCH_CHECK(row_scales.dim()==1 && row_scales.numel()==padded);
+  TORCH_CHECK(wq.is_cuda() && wq.scalar_type()==at::kChar && wq.is_contiguous());
+  TORCH_CHECK(wq.dim()==2 && wq.size(0)==2048 && wq.size(1)==12288);
+  TORCH_CHECK(scales.is_cuda() && scales.scalar_type()==at::kFloat && scales.is_contiguous());
+  TORCH_CHECK(scales.dim()==1 && scales.numel()==12288);
+  TORCH_CHECK(aq.device()==row_scales.device() && aq.device()==wq.device() && aq.device()==scales.device());
+  c10::cuda::CUDAGuard guard(aq.device());
+  auto output=at::empty({m,6144},aq.options().dtype(at::kBFloat16));
+  auto acc=at::_int_mm(aq,wq);
+  auto stream=c10::cuda::getCurrentCUDAStream();
+  if (residual) biv150_residual_silu_epilogue(acc.data_ptr<int32_t>(),row_scales.data_ptr<float>(),scales.data_ptr<float>(),output.data_ptr<at::BFloat16>(),int(m),12288,stream);
+  else biv150_silu_epilogue(acc.data_ptr<int32_t>(),row_scales.data_ptr<float>(),scales.data_ptr<float>(),output.data_ptr<at::BFloat16>(),int(m),12288,stream);
+  C10_CUDA_KERNEL_LAUNCH_CHECK();
+  return output;
+}
+
 }
 
 TORCH_LIBRARY(biv150_native, m) {
+  m.def("norm_quant_reference_probe(Tensor normalized) -> Tensor[]");
+  m.def("gate_quantized_probe(Tensor activations_int8, Tensor row_scales, Tensor weight_int8, Tensor weight_scales, int rows, bool residual) -> Tensor");
   m.def("quantize_residual_probe(Tensor x, int threads) -> Tensor[]");
   m.def("gate_residual_cached_probe(Tensor x, Tensor weight_int8, Tensor scales, int threads) -> Tensor");
   m.def("quantize_rows_probe(Tensor x, int threads) -> Tensor[]");
@@ -202,6 +245,8 @@ TORCH_LIBRARY(biv150_native, m) {
   m.def("gate_silu(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, int min_rows) -> Tensor");
 }
 TORCH_LIBRARY_IMPL(biv150_native, CUDA, m) {
+  m.impl("norm_quant_reference_probe", &norm_quant_reference_probe);
+  m.impl("gate_quantized_probe", &gate_quantized_probe);
   m.impl("quantize_residual_probe", &quantize_residual_probe);
   m.impl("gate_residual_cached_probe", &gate_residual_cached_probe);
   m.impl("quantize_rows_probe", &quantize_rows_probe);
