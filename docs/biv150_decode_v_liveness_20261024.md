@@ -75,3 +75,21 @@ result nor arithmetic32→16KiB is proof of the new combination's behavior.
 No additional prefill experiment is queued solely on that unsupported capacity
 claim. Eliminating or changing Q's initial shared staging would require a distinct
 layout/communication design plus new compiler evidence and full validation.
+
+
+## Final component recheck: not a service candidate
+
+Runtime217007790eb3cb8118aafe8ddda14867c2e109ff passed16/16 bit-exact,
+CPU FP64 and changed-input Graph cases on actual packed KV strides. Evidence:
+`evidence/decode-v-liveness-20261024/final/result.json`.
+
+The candidate reduced shared memory8192→4096 bytes but increased registers
+93→97, with0 reported spills. B8 ratios were0.9311/1.0420 (4K uniform/ragged)
+and0.9376/0.9786 (16K); B32 and B64 remained slower in every tested case.
+Only B40 improved,1.1389/1.1194 (4K) and1.1463/1.0880 (16K).
+
+Do not enable globally. The separate B40 width16 policy already yielded larger
+microbenchmark gains against width4; a combined candidate would need a direct
+comparison with that policy before any further full service test. This late-V
+transformation also exists in historical c2b4215 (with other changes), so this
+run is a component recheck, not a newly discovered optimization.
