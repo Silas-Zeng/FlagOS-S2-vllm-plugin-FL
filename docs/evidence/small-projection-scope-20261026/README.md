@@ -13,3 +13,7 @@ GPU state: not yet launched. Plan exclusive personal-instance service diagnostic
 ## First live service observation
 
 Runtime remains frozen at47e1405; this documentation commit does not hot-edit it. Worker install and M2 selection confirm gate-only. Generated AST Call nodes show nine extern MM sites and two custom-op sites, excluding comment/reference strings; these are static sites, not runtime counts or timings. The initial mixed fixture still fails the long request while counting succeeds. Complete105 is active (33 prediction rows at04:47 Shanghai); no final precision or throughput result is available. The current candidate is diagnostic until its outstanding gates are resolved. Post-score mixed checking is enabled.
+
+## Partial105 and4K update
+
+Runtime47e1405:99/105=.9429,105 unique predictions and metric count, zero failed_predictions. Precision gate fails. Diagnostic4K:5311.820237520383 total tok/s, TTFT3705.551362952974ms,256 successes/zero failures. Three short warmups plus full warm231.8356s preceded scoring, but26 new Triton kernel metadata JSONs appeared during the score (including MM/normalization/index variants). This is not a compilation-free steady-state comparison or an isolated regression estimate.16K and the post-score mixed check remain in progress; do not close the performance question or merge based on this partial run.
