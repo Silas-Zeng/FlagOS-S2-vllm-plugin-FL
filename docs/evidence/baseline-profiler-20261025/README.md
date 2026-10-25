@@ -36,3 +36,11 @@ v2 改为 `vllm_fl.compilation.graph.GraphWrapper.concrete_graph_entries` / `ent
 以上均为诊断工具验证，尚无新的可合并性能收益。
 
 第一轮完整4K的时间线、非Graph热点及每请求阶段核对见 [v1报告](v1-timeline/report.md)。该报告是runtime9ac118e的已有证据；正在运行的v2固定为b37125e，不随文档提交变化。
+
+## v2完整4K节点采样已通过
+
+运行版本b37125e，4243步、4个选定纯decode样本（实际64行）。4次原图positive control及boundary/full clone全部finite、数值完全相等，API与scope errors为空，离线结构分析通过。16K仍在运行，这不是完整4K/16K成对结果。原始完整窗口、benchmark和验证记录保存在[v2-4k归档](v2-4k/archive.json)，可直接重做离线分析。
+
+图边界计时中位31.515ms，全部节点插桩后33.991ms，配对增量中位7.857%。按每样本插桩区间和排序：GQA主计算22.692ms、BF16 MM6.109ms、INT8 GEMM1.798ms、GQA reducer0.440ms。这是带插桩的图内排序，不能当作未插桩核时间或服务吞吐；GQA主计算是明确的首要decode热点，现有证据尚未区分其带宽/延迟/指令瓶颈。
+
+M2048原生BF16 GEMM探针已另开Draft PR44。尚未执行GPU验证，也没有新增可合并吞吐收益。
