@@ -25,12 +25,11 @@ def _overlap(left, right):
 
 
 class HiddenStateOutputGuard:
-    def __init__(self, output, *, worker, graph_args, graph_kwargs):
+    def __init__(self, output, *, worker, graph_args, graph_kwargs, valid_rows=None):
         import torch
         from vllm.sequence import IntermediateTensors
 
         self.torch = torch
-        self.output = output
         self._expected = None
         self._original_passed = False
         self._clone_poisoned = False
@@ -42,6 +41,15 @@ class HiddenStateOutputGuard:
             raise OutputGuardError("Expected contiguous CUDA BF16 hidden states [32|64,2048], without grad")
         if not isinstance(graph_args, tuple) or not isinstance(graph_kwargs, dict):
             raise OutputGuardError("Exact wrapper args tuple and kwargs dict are required")
+        padded_shape = tuple(output.shape)
+        if valid_rows is None:
+            valid_rows = output.shape[0]
+        if type(valid_rows) is not int or not 1 <= valid_rows <= output.shape[0]:
+            raise OutputGuardError("Invalid live-row count for the captured output")
+        # A padded graph can leave unused rows unspecified. Validate and poison
+        # every live output row; do not interpret padding as model output.
+        output = output[:valid_rows]
+        self.output = output
         self._identity = (int(output.data_ptr()), tuple(output.shape), tuple(output.stride()))
 
         def storage(tensor):
@@ -140,6 +148,7 @@ class HiddenStateOutputGuard:
         if counts["static_context_kv"] != counts["kv_caches"]:
             raise OutputGuardError("Static context and runner KV cache counts disagree")
         self.audit = {"validated": True, "shape": list(output.shape), "dtype": str(output.dtype),
+                      "padded_shape": list(padded_shape), "validated_live_rows": valid_rows,
                       "device": str(output.device), "output_storage": list(self.output_storage),
                       "protected_tensor_counts": counts,
                       "scope": "current wrapper inputs, registered model state, bound KV caches"}

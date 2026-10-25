@@ -26,7 +26,7 @@ def install():
     if not destination or _INSTALLED:
         return
     import torch
-    from vllm.compilation.cuda_graph import CUDAGraphWrapper
+    from vllm_fl.compilation.graph import GraphWrapper
     from vllm.forward_context import get_forward_context, is_forward_context_available
     from vllm.profiler.wrapper import CudaProfilerWrapper
     from biv150_graph_probe import CorexAPI, GraphProbe
@@ -121,8 +121,12 @@ def install():
                         self.probes[key] = boundary, full
                 pair = self.probes[key]
                 old_replay(graph)
+                scheduler = getattr(self.local, "scheduler", None)
+                if scheduler is None or scheduler["scheduled_token_sum"] != scheduler["total_num_scheduled_tokens"]:
+                    raise RuntimeError("Missing or inconsistent live-row scheduler metadata")
                 guard = HiddenStateOutputGuard(entry.output, worker=self.scopes.current_worker,
-                                               graph_args=inputs[0], graph_kwargs=inputs[1])
+                                               graph_args=inputs[0], graph_kwargs=inputs[1],
+                                               valid_rows=scheduler["total_num_scheduled_tokens"])
                 control = guard.original_positive_control(
                     lambda: old_replay(graph), stream.synchronize)
                 observations = []
@@ -180,7 +184,7 @@ def install():
         return old_init(graph, keep_graph=True)
     torch.cuda.CUDAGraph.__init__ = graph_init
 
-    old_call = CUDAGraphWrapper.__call__
+    old_call = GraphWrapper.__call__
     @functools.wraps(old_call)
     def graph_call(wrapper, *args, **kwargs):
         previous = getattr(state.local, "entry", None)
@@ -189,19 +193,19 @@ def install():
                 context = get_forward_context()
                 descriptor = context.batch_descriptor
                 if context.cudagraph_runtime_mode == wrapper.runtime_mode and descriptor is not None:
-                    entry = wrapper.concrete_cudagraph_entries.get(descriptor)
-                    if entry is not None and entry.cudagraph is not None:
+                    entry = wrapper.concrete_graph_entries.get(descriptor)
+                    if entry is not None and entry.graph is not None:
                         state.local.entry = (entry, descriptor, (args, kwargs))
             return old_call(wrapper, *args, **kwargs)
         finally:
             state.local.entry = previous
-    CUDAGraphWrapper.__call__ = graph_call
+    GraphWrapper.__call__ = graph_call
 
     old_replay = torch.cuda.CUDAGraph.replay
     @functools.wraps(old_replay)
     def replay(graph):
         context = getattr(state.local, "entry", None)
-        if not state.active or context is None or context[0].cudagraph is not graph:
+        if not state.active or context is None or context[0].graph is not graph:
             return old_replay(graph)
         entry, descriptor, inputs = context
         fields = dataclasses.asdict(descriptor)
