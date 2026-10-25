@@ -1,0 +1,9 @@
+# BF16 small-row O projection stability experiment
+
+On the personal BI-V150, the existing FlagGems O projection at M2, K=N2048 produced multiple different finite outputs for unchanged inputs:32/80 calls exceeded the independent FP64 tolerance on the default stream,21/80 on a side stream. Graph/eager equality also failed. The vendor BLAS diagnostic control was stable and passed all160 calls. These are the same real weights and sliced independently verified input/oracle rows from the prior M8 fixture; the original RNG-reconstruction caveat is retained. This is evidence of an operator fault, not yet proof that it causes the native-on mixed model failure in PR50.
+
+The new self-developed BF16 kernel uses a masked16x64 tile, K128,4 warps and1 stage; FP32 accumulation and one final BF16 rounding. It keeps the original weights and does not quantize. The direct-out seam permits the same output buffer as the faulty baseline in component checks. The functional custom op is tested separately, and keeps runtime M branching inside its CUDA implementation to preserve vLLM's dynamic row contract.
+
+Serving integration is default-off (VLLM_FL_BIV150_STABLE_SMALL_O). It targets only TP1 MiniCPM BF16 self_attn.o_proj, M1–8; larger rows retain FlagGems mm inside the functional custom op. Other projections and native gate remain unchanged. New source/feature identity enters compile-cache semantics. The strict compute_order runner pin is updated with the worker installer; CPU reconstruction verifies the previous runner is otherwise byte-identical.
+
+Current checks: Python syntax, inert component plan, default/off versus on cache identity and the strict runner pin pass. GPU compilation/numerical stability, actual mixed-request recovery,105-question precision, resource/KV capacity and fixed-workload throughput are not yet validated. No root cause, speedup or merge claim. This is an independent branch from teammain0915f01, not an official-upstream upgrade.
