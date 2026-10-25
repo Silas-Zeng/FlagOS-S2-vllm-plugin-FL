@@ -13,7 +13,7 @@
 
 ## 下一步与判定边界
 
-服务诊断接入已准备：`run_biv150_baseline_profile.py` 启动独立 ixsys/service session，复用原 `benchmark()`，每长度先固定三轮预热，仅诊断轮添加 `--profile`。`biv150_profile_service.py` 保留正常图，在 padded rows 32/64 的第 32、128、512、900 次回放抽样；原图、仅边界、全节点图分开验证。输出 storage 与当前输入、模型参数/buffer、全部绑定 KV cache 交叉检查后才可填 NaN，并用原图恢复正控及每个 clone 的有限值/逐位检查排除输出残留。CPU scope 使用实际 SDK 的 `_PROFILER_FUNC`，不依赖缺失的 Python nvtx 包；每步元数据只留 RAM，窗口结束统一落盘。
+服务诊断接入已准备：`run_biv150_baseline_profile.py` 启动独立 ixsys/service session，复用原 `benchmark()`，每长度先固定三轮预热，仅诊断轮添加 `--profile`。`biv150_profile_service.py` 保留正常图，在 padded rows 32/64 的第 32、128、512、900 次回放抽样；原图、仅边界、全节点图分开验证。输出 storage 与当前输入、模型参数/buffer、全部绑定 KV cache 交叉检查后才可填 NaN，并用原图恢复正控及每个 clone 的有限值/逐元素数值检查排除输出残留。CPU scope 使用实际 SDK 的 `_PROFILER_FUNC`，不依赖缺失的 Python nvtx 包；每步元数据只留 RAM，窗口结束统一落盘。
 
 第二个实机小图验证了 driver function 核名映射：64×2048 @ 2048×2560 加逐元素运算，2 输入×5 轮均逐位一致。仅边界图中位 31.908 µs，全节点图 45.512 µs，约增加 42.6%；这只证明探针开销明显，不能套用于完整模型。完整结果见 `graph-probe-library-result.json`。实际 SDK 导入及构造 smoke 还确认此版本需同时传递 Python `__new__` 与 pybind `__init__` 的 `keep_graph=True`，第二次 smoke 才成功保留原图。完整模型的热点结果仍待实际运行。
 

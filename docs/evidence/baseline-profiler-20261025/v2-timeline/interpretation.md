@@ -1,4 +1,4 @@
-v2 两窗整轮诊断已完成。collector 最终为 Z，日志明确 Report saved，SQLite quick_check 通过；原 driver 的超时失败状态保留。未启动 GPU 任务。
+v2 两窗整轮诊断已完成。collector 最终为 Z，日志明确 Report saved，SQLite quick_check 通过；原 driver 的超时失败状态保留。本报告只使用 CPU 读取 trace，没有额外启动 GPU 任务。
 
 | 指标 | 4K | 16K |
 |---|---:|---:|
