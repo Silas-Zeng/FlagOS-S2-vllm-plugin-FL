@@ -90,6 +90,9 @@ def install():
         return {'installed':False,'reason':'unsupported original GEMM dispatch'}
     from vllm.model_executor.layers.linear import UnquantizedLinearMethod
     _register()
+    if os.environ.get('VLLM_FL_BIV150_SMALL_OUT_LOWERING','0')=='1':
+        from vllm_fl.patches.biv150_small_out_lowering import install as install_out_lowering
+        print('BIV150_SMALL_OUT_LOWERING_INSTALL',install_out_lowering(),flush=True)
     previous=UnquantizedLinearMethod.apply
     def apply(self,layer,x,bias=None):
         projection=(layer.prefix.endswith('.self_attn.o_proj') and tuple(layer.weight.shape)==(2048,2048)

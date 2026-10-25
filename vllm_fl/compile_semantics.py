@@ -81,6 +81,8 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     facts = {"schema": 1, "source": source, "features": features, "dispatch": dispatch,
              "external_config": external_config, "abi": _runtime_abi() if abi is None else abi,
              "gqa_target_programs": int(env.get("VLLM_FL_BIV150_GQA_TARGET_PROGRAMS", "256"))}
+    facts["small_out_lowering"] = (features["VLLM_FL_BIV150_STABLE_SMALL_O"]
+        and env.get("VLLM_FL_BIV150_SMALL_OUT_LOWERING","0") == "1")
     if features["VLLM_FL_BIV150_NATIVE_W8A8"]:
         library = native_library_path(package_root=package, environ=env)
         # wheel 可以不携带构建源码；实际加载的 SO 始终必须存在并按内容哈希。
