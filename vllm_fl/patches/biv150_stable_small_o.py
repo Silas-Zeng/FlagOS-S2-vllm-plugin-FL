@@ -8,6 +8,7 @@ import triton.language as tl
 _DEFINITION = None
 _IMPLEMENTATION = None
 _INSTALLED = False
+_OBSERVED_ROWS = set()
 
 
 @triton.jit(do_not_specialize=['M'])
@@ -48,6 +49,12 @@ def _linear(x, weight):
             and x.stride(0)>=2048 and weight.stride(0)>=2048):
         return torch.mm(x,weight.t())
     with torch.cuda.device(x.device):
+        if x.shape[0] not in _OBSERVED_ROWS and not torch.cuda.is_current_stream_capturing():
+            _OBSERVED_ROWS.add(x.shape[0])
+            print('BIV150_STABLE_SMALL_O_SELECTED', {
+                'rows': x.shape[0], 'input_stride': tuple(x.stride()),
+                'weight_stride': tuple(weight.stride()), 'warps': 4, 'stages': 1,
+            }, flush=True)
         output=torch.empty((x.shape[0],2048),device=x.device,dtype=x.dtype)
         return _small_o_into(x,weight,output)
 
