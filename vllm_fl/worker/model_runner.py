@@ -7752,3 +7752,9 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_gate
 
     print("BIV150_NATIVE_W8A8_INSTALL", _install_native_gate(), flush=True)
+
+# Audited BF16 small-row MiniCPM projections.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_stable_small_o import install as _install_stable_small_o
+
+    print("BIV150_STABLE_SMALL_O_INSTALL", _install_stable_small_o(), flush=True)

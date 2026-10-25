@@ -1,0 +1,34 @@
+{
+  "archive": "small-bf16-control-and-default-evidence-v7.tar.gz",
+  "sha256": "d8f2044b8877212df85d1a1f37cea8fe86db1b64562af471dde3da6e4ce568f2",
+  "bytes": 23412,
+  "members": [
+    "control/manifest.json",
+    "control/state.json",
+    "control/scores.json",
+    "control/warmups.json",
+    "control/accuracy-verdict.json",
+    "control/score-4096-new-kernels.json",
+    "control/score-16384-new-kernels.json",
+    "control/accuracy-report.json",
+    "control/score-4096/command.json",
+    "control/score-4096/score-4096-infqps-concurrency64-minicpm-20261026-003813.json",
+    "control/score-16384/command.json",
+    "control/score-16384/score-16384-infqps-concurrency64-minicpm-20261026-010945.json",
+    "default-smoke/state.json",
+    "default-smoke/manifest.json",
+    "default-smoke/mixed-requests/result.json",
+    "default-smoke/mixed-requests/decode-response.json",
+    "default-smoke/mixed-requests/prefill-response.json",
+    "default-smoke/driver.py",
+    "control/cold-audit.json"
+  ],
+  "validated_explicit_on_runtime": "8c0ca8cdaa6403d58ddf066dd1854fcd0e9def38",
+  "default_unset_smoke_runtime": "6d3ccdbea1f0bd36325571f9fa9377ca450bc9ff",
+  "both_arms_complete_and_cleaned": true,
+  "comparison": "native-on + BF16 correction versus native-off original BF16; two factors",
+  "one_round_tps_gain_percent": {
+    "4096": 5.08709733670627,
+    "16384": 8.662089423544895
+  }
+}

@@ -27,7 +27,7 @@ def main():
 
 '''
     assert runner.count(extra)==1
-    assert digest(runner.replace(extra,'').encode())=='677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61'
+    assert digest(runner.replace(extra,'').encode())=='cbbbabcea66663b033f2209febc55e75a9e14ac72d1693173d9d4aad1be7fac6'
     source=(root/'vllm_fl/patches/biv150_q_fragment_service.py').read_text()
     inverse={
         'def transform_ir(raw, block_m=128):':'def transform_ir(raw):',
