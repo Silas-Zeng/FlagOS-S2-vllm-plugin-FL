@@ -26,11 +26,11 @@ CASES = {
 }
 
 
-def q_allocation(text):
+def q_allocation(text, rows=64):
     """Q and V can both be64x128; only Q's lhs-dot load dominates the loop."""
     loop = text.index('= scf.for ')
     candidates = []
-    for match in re.finditer(r'(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<64x128xbf16', text):
+    for match in re.finditer(rf'(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<{rows}x128xbf16', text):
         if match.start() < loop and re.search(
             r'ttg.local_load ' + re.escape(match[1]) + r'(?=\s| :).+dot_op<\{opIdx = 0', text
         ):
@@ -38,7 +38,7 @@ def q_allocation(text):
     return candidates
 
 
-def adapted_manager(original):
+def adapted_manager(original, rows=64, warps=8):
     source = Path(original.__file__).read_text()
     first = '''allocations = re.findall(
         r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16",
@@ -50,8 +50,10 @@ def adapted_manager(original):
     edits = {
         first: 'allocations = _probe_q_allocation(text)',
         second: 'alloc = _probe_q_allocation(ttgir)',
-        '"BLOCK_M": 128,': '"BLOCK_M": 64,',
-        '"BLOCK_Q": 16,': '"BLOCK_Q": 8,',
+        '"BLOCK_M": 128,': f'"BLOCK_M": {rows},',
+        '"BLOCK_Q": 16,': f'"BLOCK_Q": {rows//8},',
+        '"num_warps": 8,': f'"num_warps": {warps},',
+        '!= (8, 1)': f'!= ({warps}, 1)',
     }
     for old, new in edits.items():
         if source.count(old) != 1:
@@ -59,7 +61,7 @@ def adapted_manager(original):
         source = source.replace(old, new)
     module = types.ModuleType('_biv150_bm64_private_manager')
     module.__file__ = __file__
-    module._probe_q_allocation = q_allocation
+    module._probe_q_allocation = lambda text: q_allocation(text,rows)
     sys.modules[module.__name__] = module
     exec(compile(source, '<biv150-bm64-private-manager>', 'exec'), module.__dict__)
     return module, hashlib.sha256(source.encode()).hexdigest()
@@ -80,12 +82,12 @@ class Tap:
         return invoke
 
 
-def candidate_function(attention, backend, qmodule):
+def candidate_function(attention, backend, qmodule, rows=64, warps=8):
     jit = importlib.import_module('triton.runtime.jit')
     from vllm_fl.patches.biv150_prefill_normalized import make_normalized
     normalized, _ = make_normalized(attention)
     source = inspect.getsource(inspect.unwrap(attention.unified_attention))
-    for old, new in [('BLOCK_M = 128', 'BLOCK_M = 64'), ('BLOCK_Q = 16', 'BLOCK_Q = 8')]:
+    for old, new in [('BLOCK_M = 128', f'BLOCK_M = {rows}'), ('BLOCK_Q = 16', f'BLOCK_Q = {rows//8}'), ('biv150_prefill_tile = 64\n        launch_num_warps = 8', f'biv150_prefill_tile = 64\n        launch_num_warps = {warps}')]:
         if source.count(old) != 1:
             raise RuntimeError('Audited launch anchor changed: ' + old)
         source = source.replace(old, new)
@@ -106,7 +108,7 @@ def candidate_function(attention, backend, qmodule):
 
 def main(args):
     if not args.run_gpu:
-        print(json.dumps({'cases': CASES, 'tiles': [[128,16],[64,8]], 'warps':8, 'stages':1}))
+        print(json.dumps({'cases': CASES, 'tiles': [[128,16],[args.bm,args.bm//8]], 'warps':args.warps, 'stages':1}))
         return
     with socket.socket() as sock:
         assert sock.connect_ex(('127.0.0.1',9031)) != 0, 'Service running'
@@ -118,10 +120,10 @@ def main(args):
     torch.set_num_threads(4)
     baseline, baseline_manager, installations = fixture.install_baseline()
     qoriginal = importlib.import_module('vllm_fl.patches.biv150_q_fragment_service')
-    qmodule, adapted_sha = adapted_manager(qoriginal)
+    qmodule, adapted_sha = adapted_manager(qoriginal,args.bm,args.warps)
     attention = importlib.import_module('vllm.v1.attention.ops.triton_unified_attention')
     backend = importlib.import_module('vllm.v1.attention.backends.triton_attn')
-    candidate, candidate_manager = candidate_function(attention, backend, qmodule)
+    candidate, candidate_manager = candidate_function(attention, backend, qmodule,args.bm,args.warps)
     taps = {}
     for label, manager in [('baseline',baseline_manager),('candidate',candidate_manager)]:
         tap = Tap(manager.wrapper)
@@ -130,7 +132,7 @@ def main(args):
     result = dict(completed=False, official_score=False, service_installed=False,
                   source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                  adapted_manager_sha256=adapted_sha, installations=installations, cases=[], errors=[])
+                  adapted_manager_sha256=adapted_sha, candidate_tile=[args.bm,args.bm//8], candidate_warps=args.warps, installations=installations, cases=[], errors=[])
     def save():
         temp=args.out/'result.tmp';temp.write_text(json.dumps(result,indent=2)+'\n');temp.replace(args.out/'result.json')
     save()
@@ -214,6 +216,8 @@ def main(args):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-gpu',action='store_true')
+    parser.add_argument('--bm',type=int,choices=[64,128,256],default=64)
+    parser.add_argument('--warps',type=int,choices=[4,8],default=8)
     parser.add_argument('--out',type=Path)
     parser.add_argument('--case',action='append',choices=CASES)
     args=parser.parse_args()
