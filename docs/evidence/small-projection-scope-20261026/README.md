@@ -9,3 +9,7 @@ First candidate: gate only. Real service M2 selection must equal the exact selec
 CPU passed:140 routing cases across five scopes and rows1/2/4/8/16/64/2048,100 fallback cases, six invalid scopes, attempted live scope changes, canonical cache separation, unchanged CUDA-math AST, unchanged owned-process cleanup AST. These are not GPU or model qualification. Existing BF16 kernel validation remains evidence in PR51/PR53, not a newly executed component result here.
 
 GPU state: not yet launched. Plan exclusive personal-instance service diagnostics, then full105 and sufficiently warmed one-round4K/16K measurements against matched controls only for viable scopes. Keep historical and default-all results. No production change is ready to merge, and PR55 GPU work remains deferred.
+
+## First live service observation
+
+Runtime remains frozen at47e1405; this documentation commit does not hot-edit it. Worker install and M2 selection confirm gate-only. Generated AST Call nodes show nine extern MM sites and two custom-op sites, excluding comment/reference strings; these are static sites, not runtime counts or timings. The initial mixed fixture still fails the long request while counting succeeds. Complete105 is active (33 prediction rows at04:47 Shanghai); no final precision or throughput result is available. The current candidate is diagnostic until its outstanding gates are resolved. Post-score mixed checking is enabled.

@@ -1,0 +1,103 @@
+{
+  "observed_at_utc": "2026-10-25T20:47:01.113851+00:00",
+  "source_commit": "47e1405a50f41d5a558877e5c0f0036c3dde6d88",
+  "scope": [
+    "gate"
+  ],
+  "actual_small_rows": [
+    {
+      "rows": 8,
+      "output_columns": 12288,
+      "input_columns": 2048,
+      "input_stride": [
+        2048,
+        1
+      ],
+      "weight_stride": [
+        2048,
+        1
+      ],
+      "warps": 4,
+      "stages": 1
+    },
+    {
+      "rows": 4,
+      "output_columns": 12288,
+      "input_columns": 2048,
+      "input_stride": [
+        2048,
+        1
+      ],
+      "weight_stride": [
+        2048,
+        1
+      ],
+      "warps": 4,
+      "stages": 1
+    },
+    {
+      "rows": 2,
+      "output_columns": 12288,
+      "input_columns": 2048,
+      "input_stride": [
+        2048,
+        1
+      ],
+      "weight_stride": [
+        2048,
+        1
+      ],
+      "warps": 4,
+      "stages": 1
+    },
+    {
+      "rows": 1,
+      "output_columns": 12288,
+      "input_columns": 2048,
+      "input_stride": [
+        2048,
+        1
+      ],
+      "weight_stride": [
+        2048,
+        1
+      ],
+      "warps": 4,
+      "stages": 1
+    }
+  ],
+  "initial_mixed": {
+    "all_correct": false,
+    "decode_correct": true,
+    "prefill_correct": false,
+    "http_overlap": true
+  },
+  "generated_modules": [
+    {
+      "file": "inductor-cache/4q/c4qwmfdpewu6wrc4aquugjhoccw6msctmx7lgr6ysfbzp7m56wor.py",
+      "sha256": "262bbdebabf70845afefd45e8856ac71236f4ce3bafeb0ee17f2acc3e5f6204d",
+      "generated_mm_calls": 1,
+      "generated_custom_calls": 0
+    },
+    {
+      "file": "inductor-cache/ne/cnekgegrpdbjdfarqihjcvfaikbejx4vb4ufjadqv22re36dc5h5.py",
+      "sha256": "9ad53b4b4dd69029234b9ee5538d011959584ae7dbbc1555082eaa9212fb76d3",
+      "generated_mm_calls": 3,
+      "generated_custom_calls": 1
+    },
+    {
+      "file": "inductor-cache/pc/cpcthivypurz3yr2yqbh6cwod5e3rscecmbjmyijtekgb74plr3x.py",
+      "sha256": "185b7c647e2b654259545a174dce159694903b437e2585ab1628cf1b444c5dcc",
+      "generated_mm_calls": 3,
+      "generated_custom_calls": 0
+    },
+    {
+      "file": "inductor-cache/oe/coe3d5avtdittvp6uttue4wwivkizjjfvr52iuc5dy7ywleyq6dd.py",
+      "sha256": "d3b60dd4827b4c65037a3468c2465a8ecc73a6db1d8eb0adfd479e5cbfd96d5f",
+      "generated_mm_calls": 2,
+      "generated_custom_calls": 1
+    }
+  ],
+  "limitation": "Generated call sites, not runtime counts or timings. Startup mixed fixture precedes105 and workload warmup; no precision/performance claim yet.",
+  "count_method": "Python AST Call nodes; excludes comments and non-call op references"
+}
