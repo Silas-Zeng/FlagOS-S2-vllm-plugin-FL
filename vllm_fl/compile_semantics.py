@@ -11,7 +11,8 @@ _KEY = "vllm_fl_compile_semantics"
 _GEOMETRY = dict(hidden_size=2048, intermediate_size=6144, num_hidden_layers=42,
                  num_attention_heads=16, num_key_value_heads=2, vocab_size=130560)
 _FEATURES = ("VLLM_FL_BIV150_NATIVE_W8A8", "VLLM_FL_BIV150_GQA_DECODE",
-             "VLLM_FL_BIV150_PREFILL_NORMALIZE", "VLLM_FL_BIV150_Q_FRAGMENT")
+             "VLLM_FL_BIV150_PREFILL_NORMALIZE", "VLLM_FL_BIV150_Q_FRAGMENT",
+             "VLLM_FL_BIV150_STABLE_SMALL_O")
 # 仅记录会影响实际计算选择的配置；不收集凭据、实验目录或 profiler 开关。
 _DISPATCH_ENV = ("VLLM_FL_PREFER", "VLLM_FL_STRICT", "VLLM_FL_DENY_VENDORS",
                  "VLLM_FL_ALLOW_VENDORS", "VLLM_FL_PER_OP", "VLLM_FL_OOT_ENABLED",

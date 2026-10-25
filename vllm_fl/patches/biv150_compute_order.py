@@ -10,7 +10,7 @@ import sys
 import types
 from pathlib import Path
 
-EXPECTED_RUNNER = "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61"
+EXPECTED_RUNNER = "cbbbabcea66663b033f2209febc55e75a9e14ac72d1693173d9d4aad1be7fac6"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
