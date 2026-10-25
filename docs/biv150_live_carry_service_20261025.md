@@ -30,3 +30,7 @@ CPU112策略、6个拒绝改写反例、真实transform执行、原bound基线�
 a0a2487首GPU代理未命中：norm输出buf1在gate后作为buf4供down mm(out=buf4)完整覆写，简单引用计数拒绝了合法存储复用，因此候选还是原路径，不能把与提升参考的小差值归因新核。后继严格证明额外读取只允许gate后的storage别名，别名首次使用必须是唯一out关键字的extern_kernels.mm且输入不读该别名；否则拒绝。CPU新增3反例，112策略/9拒绝检查过，真实失败代理wrapper新规则恰1处匹配并保留原源码/hash/配对证据。GPU测试现在先检查真实paired选择，再做数值对比，失败保存生成配对。尚未验证修复版GPU/服务。
 
 4068f08成对GPU代理六组全过：4/20/37层各M64选中8次host/capture调用、M32选中0次；候选64对独立同数学提升参考逐位一致、32对强制原producer/consumer逐位一致，Fake/fullgraph/变输入Graph/输入不变过，原SDK forward对象未改。原始源码/改写后真实方法/权重hash/JSON/日志归档9943字节SHA514f5f9c759680b1eb3e5236c4bcffcd0e7ffffc4c81037e9093bf9bc5450aa9已共享paired-codegen-v2/。随后完整服务已startup并实际产生M64_SELECTED与CODEGEN_PAIR，coverage门通过，首次105进行中。KV547536，较旧参考547632少96，记录容量差异不归因性能；正式4K/16K成绩尚未出。
+
+首次完整精度最终99/105（0.9429），105唯一题/0请求错误，低于0.95，不能合并；未重采样。按用户策略继续吞吐，但自适应4K warmup四轮TPOT147.0636/138.9561/216.0688/138.9720ms不满足相邻两轮3%，driver在任何计分前失败并释放服务；旧control队列正确skipped，无计分成绩。所有预热/错误保留。
+实际完整服务生成代码独立CPU审计通过：按元数据核对原/替换源SHA，撤销两条已知调用替换后，整个Runner AST与原版相等；原缓存源未改，nextnorm含down+(O+res)三个FP32输入和方差平方直接使用该未舍入和，无中间BF16边界。原件actual-service-carry-audit.json共享，不把结构证明当精度或性能通过。
+恢复诊断采用新独立driver run_biv150_live_carry_fixedwarm_pair：同4068源码/5cbb库/原CLI与官方计分命令，候选与flag0对照均预先固定3轮warmup（4K128请求/16K64、输出128），全部时序包括离群值保留，不按耗时筛轮；后各长度仅一次原p256/p128、输出1024/seed0计分。CPU真实嵌套throughput函数执行证明6次预热与两次计分调用，故意离群TPOT也完整保留。复用首次99精度，仅标候选precision_gate=false；control不重评也不继承精度。旧运行源/失败输出不改，恢复的吞吐只能作为精度修复余量诊断。尚未启动恢复driver。

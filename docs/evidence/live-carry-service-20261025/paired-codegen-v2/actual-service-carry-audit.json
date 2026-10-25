@@ -1,0 +1,60 @@
+{
+  "cpu_only": true,
+  "imports_torch_or_executes_cached_code": false,
+  "runtime_commit": "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+  "accuracy_or_performance_not_credited": true,
+  "passed": true,
+  "records": [
+    {
+      "source": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/full/inductor-cache/ft/cft4cc5vcma3ezs66zkjd4cq5r2v7fgdbqr3c3hzam3weqxclcyr.py",
+      "generated": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/full/inductor-cache/ft/biv150-live-carry-4oq85kjx.py",
+      "pairs": [
+        {
+          "kernel": "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0",
+          "norm_line": 829,
+          "gate_line": 832,
+          "normalized_buffer": "buf2",
+          "output": "buf3",
+          "sole_value_consumer": true,
+          "storage_reuse": []
+        }
+      ],
+      "only_two_call_statements_changed": true,
+      "all_other_runner_ast_unchanged": true,
+      "original_cached_source_unchanged": true,
+      "fp32_carry_kernels": [
+        {
+          "kernel": "triton_red_fused_fused_add_rms_norm_1",
+          "source_sha256": "451929b977b8dd12b0008be7f00abae723c68637bdd8a2a85475313e3b8c64f2",
+          "fp32_three_input_trees": [
+            {
+              "line": 44,
+              "input_pointers": [
+                "in_ptr0",
+                "in_ptr1",
+                "in_ptr2"
+              ],
+              "expression": "(in_ptr0+(in_ptr1+in_ptr2))",
+              "all_add_operands_fp32": true,
+              "no_intermediate_bf16_cast": true,
+              "variance_square_uses_unrounded_fp32_sum": true
+            },
+            {
+              "line": 68,
+              "input_pointers": [
+                "in_ptr0",
+                "in_ptr1",
+                "in_ptr2"
+              ],
+              "expression": "(in_ptr0+(in_ptr1+in_ptr2))",
+              "all_add_operands_fp32": true,
+              "no_intermediate_bf16_cast": true,
+              "variance_square_uses_unrounded_fp32_sum": true
+            }
+          ]
+        }
+      ],
+      "runtime_frequency_or_cost_measured": false
+    }
+  ]
+}

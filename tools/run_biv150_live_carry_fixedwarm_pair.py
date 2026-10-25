@@ -53,6 +53,7 @@ def run_side(args):
     runner=importlib.util.module_from_spec(spec);spec.loader.exec_module(runner)
     protocol=dict(diagnostic_throughput_only=True,accuracy_resampled=False,
         accuracy_evaluated_here=False,linked_first_accuracy=accuracy,
+        linked_accuracy_applies_to='candidate flag1 only; control has no accuracy credit',
         linked_first_accuracy_file=str(args.accuracy_run/'accuracy-verdict.json'),
         side=args.side,runtime_commit=args.commit,
         frozen_driver_sha256=hashlib.sha256(file.read_bytes()).hexdigest(),
