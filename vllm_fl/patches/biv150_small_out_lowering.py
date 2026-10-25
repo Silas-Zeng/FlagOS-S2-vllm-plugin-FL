@@ -4,9 +4,12 @@ No imports of Torch/vLLM or GPU work until explicit install/call. The callback
 is used by generated code; eager and unsupported compiled inputs keep the old op.
 """
 from __future__ import annotations
+import os
 
 _INSTALLED = False
 _CHOICE = None
+_RECORD_SELECTION = False
+_SELECTED = set()
 _GEOMETRIES = ((2048,2048),(12288,2048),(2560,2048),(2048,6144))
 
 
@@ -25,12 +28,18 @@ def small_linear_out(x, weight, *, out):
         return out
     with torch.cuda.device(x.device):
         if 0 < x.shape[0] <= 8:
+            if _RECORD_SELECTION:
+                key=(x.shape[0],weight.shape[0],weight.shape[1])
+                if key not in _SELECTED and not torch.cuda.is_current_stream_capturing():
+                    _SELECTED.add(key)
+                    print('BIV150_SMALL_OUT_SELECTED',{'rows':key[0],'output_columns':key[1],
+                          'input_columns':key[2],'allocation':'compiler output buffer'},flush=True)
             return _small_o_into(x, weight, out)
         return torch.mm(x, weight.t(), out=out)
 
 
 def install():
-    global _CHOICE, _INSTALLED
+    global _CHOICE, _INSTALLED, _RECORD_SELECTION
     if _INSTALLED:
         return {'installed':True,'reason':'already installed','allocation':'Inductor out buffer'}
     import torch
@@ -59,6 +68,7 @@ def install():
         layout = ir.FixedLayout(x.get_device(),x.get_dtype(),[xs[0],ws[0]],[ws[0],1])
         return choice.bind([x,weight],layout).output_node()
 
+    _RECORD_SELECTION = os.environ.get("VLLM_FL_BIV150_SMALL_OUT_RECORD_SELECTION","0")=="1"
     _CHOICE = choice
     _INSTALLED = True
     return {'installed':True,'allocation':'Inductor out buffer',

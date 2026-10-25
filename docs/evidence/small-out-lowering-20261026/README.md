@@ -13,3 +13,11 @@ CPU passed:40 output callback cases including M0/1/2/4/8/16/32/64/2048 and strid
 Pending: actual Torch compile and generated out-buffer call verification; real-weight CPU FP64 comparison; default/side streams and changed-input poisoned CUDA Graphs; then model105, original mixed request before/after warmup, and matched sufficiently warmed4K/16K scores. No GPU job is queued while PR57 owns the personal instance. No measured gain or merge readiness is claimed.
 
 A separately considered compiler-hint hypothesis was not accepted: fixed-snapshot rows1/2/4/8 generally use BLOCK_M=M, so the simple wrapped-row contiguity counterexample does not explain the observed failures at those shapes. This PR is a buffer/planning experiment, not a claimed fix of that unproved cause.
+
+## Real compiler component passed
+
+Frozen1d00e0d ran36 real-weight projection/row cases and576 FP64/default+side/changed-input poisoned Graph checks, all passed with no errors;8 actual generated out modules were found. This qualifies the component, not a model speedup. Archive9007bytes SHA25616188416f7f04fe93bbcb3cb58498ae460feaf504b22a14b820ff5d170036a32.
+
+The initial CPU waiter failed before starting any child because its upstream path incorrectly said gate-only-v2 instead of v1. No GPU task ran from that queue. After confirming PR57 terminal cleanup, noGPU processes and closed9031, the component was directly launched under PID462835/start331269046 and finished successfully. Both records are preserved.
+
+Next source adds opt-in selection recording and an owned model controller. CUDA arithmetic remains unchanged. The controller verifies actual M2 selection in all four projections and generated out calls, runs original105 and sufficiently warmed single scored4K/16K, and repeats mixed after warmup. Its finally cleanup AST matches main. Re-run the component with recording enabled before model testing. Default behavior and CLI remain unchanged. No performance gain or merge readiness is claimed.
