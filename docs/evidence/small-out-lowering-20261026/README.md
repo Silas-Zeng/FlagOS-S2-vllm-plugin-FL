@@ -35,3 +35,11 @@ After3short+1full4K warmup, one official4K round:5760.266264365806 total tok/s; 
 ## Sequential matched control prepared
 
 queue_biv150_small_out_control.py waits for exact live upstream queue/driver identities, requires candidate cleanup, both workload gates, formal precision and pre/post-warm mixed semantics, then dispatches the identical recorded acceptance command with only output directory and out-lowering1→0 changed. Full105, native-on, all small-row protections, snapshot, warmups, serving and benchmark arguments remain identical. A CPU command-difference contract passed. It is CPU-only until both owners exit and aborts without touching any occupied GPU/port. This does not yet constitute an executed or qualified control.
+
+## Completed candidate (07:10 Shanghai), exact-source control running
+
+Frozen61d completed102/105, both working request/throughput/TTFT gates, initial and post-score mixed semantics, generated out proof and owned cleanup. Scores4K5760.266264365806/TTFT3735.5155516306695ms;16K4049.275299845021/124241.82034386467ms. Exact256/128 successes, zero failures and full token counts. Both scored rounds follow3short+1complete-workload warmup;16K fullwarm4045.366566.4K remains just below the original5771.232(+20%) target; do not mark the unbounded goal complete.
+
+Full performance/commands/warmups/semantics/controller/cleanup archive60839bytes SHA256d13a2c3662b0b8dc0d43950a5f63826b1abcc085a78878a7f0a75fc9c68ba3ef. Formal105 raw data are in the separately hashed924150byte archive above. Candidate scored4K adds4index/0MM metadata;16K metadata counts remain to be inspected. A mid16K metrics snapshot has11 cumulative preemptions, but includes previous workloads; it is not a per-score count or proof of the capacity effect.
+
+The exact-source full105 control started only after all candidate owners exited/cleanup passed. Queue474606/start331601392, driver475424/start331734914, server475428/start331734936, Engine475576 (starttime rechecked at observation). Outputsmall-out-lowering-control-v1-20261026, currently accuracy. Default remains disabled, no deployment/merge or matched speedup is claimed.
