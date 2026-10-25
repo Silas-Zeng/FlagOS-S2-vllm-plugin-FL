@@ -18,7 +18,7 @@ def main():
     for n in ast.walk(helper):
         assert not (isinstance(n,ast.Attribute) and n.attr in ['bfloat16','float16']), 'wide V reconstruction introduced'
     for pages in [1,3]:
-        key=set();value=set();padding=set()
+        key=set();value=set();scale=set();padding=set()
         for page in range(pages):
             for slot in range(16):
                 for head in range(2):
@@ -26,10 +26,11 @@ def main():
                         offset=page*16384+((slot*2+head)*128+dim)*2
                         key.update([offset,offset+1])
                         value.add(page*16384+8192+(slot*2+head)*128+dim)
-            padding.update(range(page*16384+12288,(page+1)*16384))
+            scale.update(range(page*16384+12288,page*16384+12416))
+            padding.update(range(page*16384+12416,(page+1)*16384))
         assert len(key)==pages*8192 and len(value)==pages*4096
-        assert not (key&value or key&padding or value&padding)
-        assert key|value|padding==set(range(pages*16384))
+        assert not (key&value or key&scale or value&scale or key&padding or value&padding or scale&padding)
+        assert key|value|scale|padding==set(range(pages*16384))
     cases=0
     for length in range(1,258):
         page_count=(length+15)//16;table=list(reversed(range(page_count)))
@@ -48,7 +49,7 @@ def main():
                         observed.append(logical)
             assert observed==list(range(length));cases+=1
     print(json.dumps({'passed':True,'gpu_executed':False,'mapping_cases':cases,'direct_int8_dot_ast':True,
-                      'physical_page_bytes':16384,'payload_bytes_per_page':12416,'separate_scale_bytes_per_page':128,
+                      'physical_page_bytes':16384,'payload_bytes_per_page':12416,'embedded_scale_bytes_per_page':128,'scale_float32_stride':[4096,2,1],'scale_byte_offset':12288,
                       'probe_capacity_reclaimed':False,'limitation':'CPU convention/static checks, not runtime address/Graph/precision proof'},indent=2))
 
 

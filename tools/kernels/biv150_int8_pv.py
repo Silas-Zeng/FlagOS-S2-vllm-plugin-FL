@@ -190,13 +190,13 @@ def gqa_decode_int8_pv(
 def encode_cache_v(source,encoded,scales,
                    src_block:tl.constexpr,src_slot:tl.constexpr,src_head:tl.constexpr,
                    dst_block:tl.constexpr,dst_slot:tl.constexpr,dst_head:tl.constexpr,
-                   DIM:tl.constexpr):
+                   SCALE_BLOCK:tl.constexpr,DIM:tl.constexpr):
     vector=tl.program_id(0);page=vector//32;slot=(vector//2)%16;head=vector%2
     dims=tl.arange(0,DIM)
     values=tl.load(source+page*src_block+slot*src_slot+head*src_head+dims)
     codes,scale=_quantized_values(values)
     tl.store(encoded+page*dst_block+slot*dst_slot+head*dst_head+dims,codes)
-    tl.store(scales+vector,scale)
+    tl.store(scales+page*SCALE_BLOCK+slot*2+head,scale)
 
 
 @triton.jit
@@ -204,7 +204,7 @@ def append_token_kv(source_key,source_value,slot_mapping,cache_key,cache_value,v
                     source_token:tl.constexpr,source_head:tl.constexpr,
                     key_block:tl.constexpr,key_slot:tl.constexpr,key_head:tl.constexpr,
                     value_block:tl.constexpr,value_slot:tl.constexpr,value_head:tl.constexpr,
-                    TOTAL_SLOTS:tl.constexpr,DIM:tl.constexpr,ENCODE:tl.constexpr):
+                    SCALE_BLOCK:tl.constexpr,TOTAL_SLOTS:tl.constexpr,DIM:tl.constexpr,ENCODE:tl.constexpr):
     token=tl.program_id(0);head=tl.program_id(1);slot=tl.load(slot_mapping+token)
     if slot<0 or slot>=TOTAL_SLOTS:return
     dims=tl.arange(0,DIM);src=token*source_token+head*source_head+dims
@@ -215,7 +215,7 @@ def append_token_kv(source_key,source_value,slot_mapping,cache_key,cache_value,v
     if ENCODE:
         codes,scale=_quantized_values(value)
         tl.store(cache_value+voffset,codes)
-        tl.store(value_scales+(slot//16)*32+(slot%16)*2+head,scale)
+        tl.store(value_scales+(slot//16)*SCALE_BLOCK+(slot%16)*2+head,scale)
     else:tl.store(cache_value+voffset,value)
 
 

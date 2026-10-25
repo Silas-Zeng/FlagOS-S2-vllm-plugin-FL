@@ -107,13 +107,15 @@ def main(args):
             encoded_storage=packed.clone()
             raw_bytes=encoded_storage.view(torch.int8).reshape(-1)
             encoded_v=torch.as_strided(raw_bytes,(packed.shape[0],16,2,128),(16384,256,128,1),8192)
-            padding=torch.as_strided(raw_bytes,(packed.shape[0],4096),(16384,1),12288)
+            padding=torch.as_strided(raw_bytes,(packed.shape[0],3968),(16384,1),12416)
             padding_before=padding.clone()
-            scales=torch.full((packed.shape[0],16,2),float('nan'),dtype=torch.float32,device='cuda')
+            scales=torch.as_strided(encoded_storage.view(torch.float32).reshape(-1),
+                (packed.shape[0],16,2),(4096,2,1),3072)
+            scales.fill_(float('nan'))
             quant=dict(c,k=encoded_storage[:,0],v=encoded_v,vscale=scales)
             own.encode_cache_v[(packed.shape[0]*32,)](value,encoded_v,scales,
                 src_block=value.stride(0),src_slot=value.stride(1),src_head=value.stride(2),
-                dst_block=encoded_v.stride(0),dst_slot=encoded_v.stride(1),dst_head=encoded_v.stride(2),DIM=128,num_warps=1)
+                dst_block=encoded_v.stride(0),dst_slot=encoded_v.stride(1),dst_head=encoded_v.stride(2),SCALE_BLOCK=scales.stride(0),DIM=128,num_warps=1)
             class Producer:
                 def __getitem__(self,grid):
                     def run(**kwargs):
@@ -137,7 +139,7 @@ def main(args):
                     source_token=new_key.stride(0),source_head=new_key.stride(1),
                     key_block=case['k'].stride(0),key_slot=case['k'].stride(1),key_head=case['k'].stride(2),
                     value_block=case['v'].stride(0),value_slot=case['v'].stride(1),value_head=case['v'].stride(2),
-                    TOTAL_SLOTS=packed.shape[0]*16,DIM=128,ENCODE=encode,num_warps=1)
+                    SCALE_BLOCK=scales.stride(0),TOTAL_SLOTS=packed.shape[0]*16,DIM=128,ENCODE=encode,num_warps=1)
 
             def run(encode, writer=True):
                 case, module = (quant, candidate) if encode else (c, base)
@@ -149,9 +151,9 @@ def main(args):
             row = dict(name=name, batch=batch, length=length, segments=segments,
                        key_stride=list(key.stride()), baseline_v_stride=list(value.stride()), candidate_v_stride=list(encoded_v.stride()), table_stride=list(table.stride()),
                        original_cache_bytes=packed.numel()*packed.element_size(),
-                       candidate_allocated_bytes=encoded_storage.numel()*encoded_storage.element_size()+scales.numel()*4,
+                       candidate_allocated_bytes=encoded_storage.numel()*encoded_storage.element_size(),
                        candidate_payload_bytes=quant['k'].numel()*2+quant['v'].numel()+scales.numel()*4,probability_codes=127,candidate_warps=args.warps,
-                       dual_cache_retained_in_probe=True, numeric=[], rounds=[], completed=False)
+                       dual_cache_retained_in_probe=True,v_scale_stride=list(scales.stride()),v_scale_byte_offset=12288, numeric=[], rounds=[], completed=False)
             result['cases'].append(row);save()
             graphs = {}
             # Explicit non-default capture stream, warmed before capture.

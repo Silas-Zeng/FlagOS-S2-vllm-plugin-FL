@@ -5,7 +5,13 @@
   "direct_int8_dot_ast": true,
   "physical_page_bytes": 16384,
   "payload_bytes_per_page": 12416,
-  "separate_scale_bytes_per_page": 128,
+  "embedded_scale_bytes_per_page": 128,
+  "scale_float32_stride": [
+    4096,
+    2,
+    1
+  ],
+  "scale_byte_offset": 12288,
   "probe_capacity_reclaimed": false,
   "limitation": "CPU convention/static checks, not runtime address/Graph/precision proof"
 }
