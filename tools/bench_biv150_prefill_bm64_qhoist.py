@@ -49,6 +49,10 @@ def adapted_manager(original, rows=64, warps=8):
     second = '''alloc = re.findall(
         r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16", ttgir
     )'''
+    parameterized = 'block_m' in inspect.signature(original.transform_ir).parameters
+    if parameterized:
+        first = first.replace('r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16"', 'rf"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<{block_m}x128xbf16"')
+        second = second.replace('r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16"', 'rf"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<{block_m}x128xbf16"')
     edits = {
         first: 'allocations = _probe_q_allocation(text)',
         second: 'alloc = _probe_q_allocation(ttgir)',
@@ -57,6 +61,9 @@ def adapted_manager(original, rows=64, warps=8):
         '"num_warps": 8,': f'"num_warps": {warps},',
         '!= (8, 1)': f'!= ({warps}, 1)',
     }
+    if parameterized:
+        del edits['"BLOCK_M": 128,']
+        del edits['"BLOCK_Q": 16,']
     for old, new in edits.items():
         if source.count(old) != 1:
             raise RuntimeError('Audited manager anchor changed: ' + old)
@@ -103,7 +110,8 @@ def candidate_function(attention, backend, qmodule, rows=64, warps=8):
         debug=raw.debug, noinline=raw.noinline, repr=raw._repr,
         launch_metadata=raw.launch_metadata,
     )
-    manager = qmodule.Manager(attention, backend, namespace, 'kernel_unified_attention', raw, clone)
+    extra = {'block_m': rows} if 'block_m' in inspect.signature(qmodule.Manager).parameters else {}
+    manager = qmodule.Manager(attention, backend, namespace, 'kernel_unified_attention', raw, clone, **extra)
     manager.install()
     return function, manager
 

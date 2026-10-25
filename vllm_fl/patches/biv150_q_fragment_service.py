@@ -37,11 +37,11 @@ def _sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def transform_ir(raw):
+def transform_ir(raw, block_m=128):
     text = raw.decode("utf-8")
     lines = text.splitlines(keepends=True)
     allocations = re.findall(
-        r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16",
+        rf"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<{block_m}x128xbf16",
         text,
     )
     if len(allocations) != 1:
@@ -91,7 +91,7 @@ def _freeze(value):
     raise ValueError("unknown specialization/options object")
 
 
-def _eligible(values):
+def _eligible(values, block_m=128):
     """Descriptor-only checks. No D2H, .item(), RNG or metadata mutation."""
     exact = {
         "IS_3D": False,
@@ -99,8 +99,8 @@ def _eligible(values):
         "HEAD_SIZE_PADDED": 128,
         "num_query_heads": 16,
         "num_queries_per_kv": 8,
-        "BLOCK_M": 128,
-        "BLOCK_Q": 16,
+        "BLOCK_M": block_m,
+        "BLOCK_Q": block_m // 8,
         "BLOCK_SIZE": 16,
         "TILE_SIZE": 64,
         "NUM_SEGMENTS_PER_SEQ": 1,
@@ -211,9 +211,9 @@ def _q_debug_lines(source):
     return result
 
 
-def lowered_proof(ttgir, llir, q_source_lines):
+def lowered_proof(ttgir, llir, q_source_lines, block_m=128):
     alloc = re.findall(
-        r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16", ttgir
+        rf"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<{block_m}x128xbf16", ttgir
     )
     if len(alloc) != 1:
         raise RuntimeError("cannot identify actual Q allocation")
@@ -346,7 +346,7 @@ class _Launch:
                 selected = (
                     not args
                     and "ir_override" not in kwargs
-                    and _eligible(kwargs)
+                    and _eligible(kwargs, m.block_m)
                     and m.async_mode.get() is None
                     and not m.raw.pre_run_hooks
                     and not m.candidate.pre_run_hooks
@@ -391,7 +391,8 @@ class _Launch:
 class Manager:
     MAX_RECORDS = 8
 
-    def __init__(self, attention, backend, holder, kernel_key, raw, candidate):
+    def __init__(self, attention, backend, holder, kernel_key, raw, candidate, block_m=128):
+        self.block_m = block_m
         self.attention, self.backend, self.raw, self.candidate = (
             attention,
             backend,
@@ -489,7 +490,7 @@ class Manager:
                 self.fallback_compiles += 1
                 self._record(record, normal)
                 return normal
-            changed = transform_ir(normal.asm["ttgir"].encode())
+            changed = transform_ir(normal.asm["ttgir"].encode(), self.block_m)
             sha = _sha(changed)
             path = self.artifact_dir / ("q-fragment-" + sha + ".ttgir")
             if path.exists():
@@ -516,6 +517,7 @@ class Manager:
                 compiled.asm["ttgir"],
                 compiled.asm["llir"],
                 q_source_lines,
+                self.block_m,
             )
             if not proof["mechanism_pass"]:
                 record.update(
