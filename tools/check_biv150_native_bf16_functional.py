@@ -20,9 +20,13 @@ def ring_keys():
     return [(layer,kind) for layer in range(42) for kind in ('qkv','o','gate_up','down') if kind!='gate_up' or layer in EDGES]
 
 
+def uses_native(kind, rows):
+    return rows == 2048 or (kind == 'o' and rows == 8)
+
+
 def plan(layers=LAYERS,gate_layers=(0,41)):
     keys=ring_keys();representative=[(layer,kind) for layer in layers for kind in ('qkv','o','down')]+[(layer,'gate_up') for layer in gate_layers]
-    return dict(representative_weights=representative,numeric_cases=len(representative)*len(ROWS),rows=list(ROWS),dynamic_rows=list(DYNAMIC_ROWS),ring_weights=len(keys),ring_order=keys,ring_weight_bytes=sum(2*math.prod(GEOMETRIES[kind]) for _,kind in keys),cpu_fp64_products=2*len(representative),cpu_fp64_flops=2*sum(2*2048*math.prod(GEOMETRIES[kind]) for _,kind in representative),ring_round_orders=[['baseline','native'],['native','baseline'],['baseline','native']],default_replays_per_round=10)
+    return dict(representative_weights=representative,numeric_cases=len(representative)*len(ROWS),rows=list(ROWS),dynamic_rows=list(DYNAMIC_ROWS),ring_weights=len(keys),ring_order=keys,ring_weight_bytes=sum(2*math.prod(GEOMETRIES[kind]) for _,kind in keys),cpu_fp64_products=2*sum(uses_native(kind,m) for _,kind in representative for m in ROWS),cpu_fp64_flops=4*sum(m*math.prod(GEOMETRIES[kind]) for _,kind in representative for m in ROWS if uses_native(kind,m)),ring_round_orders=[['baseline','native'],['native','baseline'],['baseline','native']],default_replays_per_round=10)
 
 
 def sha(path):
@@ -71,12 +75,12 @@ def capture_pair(x,weight,baseline_out,functional,stream):
 
 def numeric_case(entry,m,functional,native_out,folder):
     layer,kind=entry['key'];weight=entry['device'];host=entry['host'];n,k=host.shape
-    record=dict(layer=layer,geometry=kind,m=m,n=n,k=k,patterns=[],graph_checks=[],errors=[])
+    record=dict(layer=layer,geometry=kind,m=m,n=n,k=k,uses_native_route=uses_native(kind,m),patterns=[],graph_checks=[],errors=[])
     stream=torch.cuda.Stream();stream.wait_stream(torch.cuda.current_stream())
     host_inputs=[torch.randn((m,k),dtype=torch.bfloat16),torch.randn((m,k),dtype=torch.bfloat16).mul_(-0.75)]
     host_inputs[1][:,k//2]=3
     references=[None,None]
-    if m==2048:
+    if uses_native(kind,m):
         w64=host.double()
         references=[x.double()@w64.t() for x in host_inputs]
         del w64
@@ -109,8 +113,8 @@ def numeric_case(entry,m,functional,native_out,folder):
         record['graph_checks'].append(dict(input=index,baseline_graph_vs_eager=difference(gb,baseline_out.cpu(),folder/f'{stem}-a{index}-baseline-graph.pt',save_exact=True),functional_graph_vs_eager=difference(gc,eager.cpu(),folder/f'{stem}-a{index}-functional-graph.pt',save_exact=True),graph_vs_baseline=difference(gc,gb,folder/f'{stem}-a{index}-graph-direct.pt',save_exact=True)))
         del eager,gb,gc
     record['graph_eager_exact']=all(c['baseline_graph_vs_eager']['numeric_exact'] and c['functional_graph_vs_eager']['numeric_exact'] for c in record['graph_checks'])
-    record['non2048_fallback_exact']=(all(p['baseline_vs_functional']['numeric_exact'] for p in record['patterns']) if m!=2048 else None)
-    record['cpu_fp64_complete']=all('functional_cpu_fp64' in p for p in record['patterns']) if m==2048 else None
+    record['non2048_fallback_exact']=(all(p['baseline_vs_functional']['numeric_exact'] for p in record['patterns']) if not uses_native(kind,m) else None)
+    record['cpu_fp64_complete']=all('functional_cpu_fp64' in p for p in record['patterns']) if uses_native(kind,m) else None
     torch.cuda.current_stream().wait_stream(stream)
     return record
 
@@ -230,7 +234,7 @@ def main(args):
     loader_file=source/'tools/bench_biv150_native_bf16_prefill.py'
     spec=importlib.util.spec_from_file_location('_native_bf16_weight_loader',loader_file);loader=importlib.util.module_from_spec(spec);spec.loader.exec_module(loader);loader.torch=torch
     source_hashes={name:sha(source/name) for name in ['csrc/iluvatar/native_bf16_probe.cpp','vllm_fl/patches/biv150_native_bf16_prefill.py','vllm_fl/compile_semantics.py','vllm_fl/utils.py']}
-    result=dict(diagnostic_only=True,official_score=False,precision_gate=False,source_hashes=source_hashes,source=str(source),source_commit=args.commit,library=str(library),library_sha256=sha(library),script_sha256=sha(__file__),loader_sha256=sha(loader_file),flaggems_mm_sha256=sha(baseline_file),dispatch_table=torch._C._dispatch_dump_table('aten::mm.out'),plan=specification,requested_stages=args.stages,precision_policy='All discrepancies are retained. Tolerance failures do not automatically suppress ring timing or establish service acceptance.',oracle='M2048: both inputs, full CPU FP64 and rounded BF16; other M: exact actual FlagGems fallback',numeric=[],dynamic=[],ring=None,weights=[],stage_seconds={},errors=[],completed=False)
+    result=dict(diagnostic_only=True,official_score=False,precision_gate=False,source_hashes=source_hashes,source=str(source),source_commit=args.commit,library=str(library),library_sha256=sha(library),script_sha256=sha(__file__),loader_sha256=sha(loader_file),flaggems_mm_sha256=sha(baseline_file),dispatch_table=torch._C._dispatch_dump_table('aten::mm.out'),plan=specification,requested_stages=args.stages,precision_policy='All discrepancies are retained. Tolerance failures do not automatically suppress ring timing or establish service acceptance.',oracle='M2048 and M8 O: both inputs, full CPU FP64 and rounded BF16; other shapes: exact actual FlagGems fallback',numeric=[],dynamic=[],ring=None,weights=[],stage_seconds={},errors=[],completed=False)
     save=lambda:save_json(args.out/'result.json',result)
     save();started=time.monotonic();entries={}
     try:

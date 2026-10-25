@@ -1,4 +1,4 @@
-"""Opt-in native BF16 projection for the measured 2048-token prefill shape."""
+"""Opt-in native BF16 prefill and stable M8 O-projection dispatch."""
 import os
 
 import torch
@@ -57,4 +57,9 @@ def install():
 
     UnquantizedLinearMethod.apply = apply
     UnquantizedLinearMethod._biv150_native_bf16_prefill = True
-    return {"installed": True, "rows": 2048, "library": str(native_bf16_library_path())}
+    return {
+        "installed": True,
+        "rows": 2048,
+        "additional_native_shapes_mnk": [(8, 2048, 2048)],
+        "library": str(native_bf16_library_path()),
+    }

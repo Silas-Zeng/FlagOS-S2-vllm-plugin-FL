@@ -102,7 +102,12 @@ at::Tensor bf16_linear(const at::Tensor& x, const at::Tensor& w) {
   TORCH_CHECK(x.dim() == 2 && w.dim() == 2, "expected matrices");
   // Functional schema keeps allocation and aliasing explicit to torch.compile.
   auto out = at::empty({x.size(0), w.size(0)}, x.options());
-  if (x.size(0) == 2048) return bf16_linear_out(x, w, out);
+  // Repeated CPU-oracle tests find intermittent 64-value block errors in the
+  // selected M8 O-projection FlagGems fallback. Native BF16 is stable for this
+  // exact geometry; keep all other small-row shapes on their existing route.
+  const bool small_o = x.size(0) == 8 && x.size(1) == 2048 &&
+                       w.size(0) == 2048 && w.size(1) == 2048;
+  if (x.size(0) == 2048 || small_o) return bf16_linear_out(x, w, out);
   // Keep the exact registered FlagGems mm.out route used by compiled serving.
   // at::linear would select FlagGems' separate linear_kernel instead.
   at::mm_out(out, x, w.t());

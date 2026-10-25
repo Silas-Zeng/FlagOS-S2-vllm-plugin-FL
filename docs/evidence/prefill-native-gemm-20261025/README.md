@@ -26,3 +26,13 @@ The initial queue stopped before GPU work when the profiler export exceeded its 
 ## Service acceptance
 
 The candidate/control runner and16 CPU fault checks are prepared at c56c4d3. It preserves the fixed competition CLI, full105-question accuracy and three warmups before one scored round per length. A99/105 near miss permits diagnostic throughput only. Actual105-question accuracy, fixed4K/16K throughput/TTFT and matched latest control are still pending. No service gain, precision pass, or merge is claimed.
+
+## M8 O回退问题与窄范围替代
+
+重复AB/BA与调用间同步验证显示，原FlagGems mm.out和functional中的同一回退都会间歇产生约64值块异常，不能再描述为仅首次调用。选中配置BM8/BN64/BK128、SPLIT_K1、16warps/2stages；根本硬件/编译机制尚未确定。CPU按原随机序列重建的63个异常坐标，functional63/63等于FP64舍入BF16、原baseline0/63；原始输入未保存，RNG路径假设明确保留。随后完整输入重复测试独立重现两条原MM路线的误差。
+
+现有native_out在非默认stream的64次eager+16次变化输入Graph输出稳定，CPU容差违规0，Graph/eager相同；热组件计时约16.50us，原mm.out约34.03us。首个三路线probe误将默认stream用于Graph capture，默认stream的Graph阶段失败，不能视为全通过；修复后的独立capture验证待完成。
+
+本次代码将native路径额外限定到M8/N2048/K2048的O投影，其他小行形状仍使用原回退，M2048计算实现不变。新SO、动态编译与完整服务精度/吞吐仍待验收。
+
+修正capture后的v2已完成：default/side各64次eager+16次变化输入Graph，native_out全部finite、CPU容差违规0、Graph/eager相同、每输入仅1种输出。native计时16.442/16.620us；同轮原baseline分别2/4次CPU违规、functional原回退4/10次违规。v2无异常退出，完整原件m8-routes-v2-result.json；工具check_biv150_m8_o_routes.py。原v1失败保持不变。这里证明M8窄替代的组件稳定性，仍不代表全模型精度或吞吐通过。

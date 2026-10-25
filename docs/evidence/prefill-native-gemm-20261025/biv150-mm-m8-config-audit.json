@@ -1,0 +1,401 @@
+{
+  "path": "/root/.flaggems/config_cache/TunedConfig_iluvatar_triton_3_6.db",
+  "tables": [
+    {
+      "name": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "sql": "CREATE TABLE \"mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22\" (\n\tkey_0 BIGINT NOT NULL, \n\tkey_1 BIGINT NOT NULL, \n\tkey_2 BIGINT NOT NULL, \n\tkey_3 VARCHAR NOT NULL, \n\tkey_4 VARCHAR NOT NULL, \n\tkey_5 VARCHAR NOT NULL, \n\tkey_6 VARCHAR NOT NULL, \n\tkey_7 BIGINT NOT NULL, \n\tkey_8 BIGINT NOT NULL, \n\t\"BLOCK_M\" BIGINT NOT NULL, \n\t\"BLOCK_N\" BIGINT NOT NULL, \n\t\"BLOCK_K\" BIGINT NOT NULL, \n\t\"SPLIT_K\" BIGINT NOT NULL, \n\tnum_warps BIGINT NOT NULL, \n\tnum_ctas BIGINT NOT NULL, \n\tnum_stages BIGINT NOT NULL, \n\tp50 FLOAT NOT NULL, \n\tp20 FLOAT NOT NULL, \n\tp80 FLOAT NOT NULL, \n\tPRIMARY KEY (key_0, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, \"BLOCK_M\", \"BLOCK_N\", \"BLOCK_K\", \"SPLIT_K\", num_warps, num_ctas, num_stages)\n)"
+    },
+    {
+      "name": "mm_kernel_7ea0a6df3012d3bc5475d21d5eb156a7-45eed7266d4cc0f7be44aaaa091bc3b1",
+      "sql": "CREATE TABLE \"mm_kernel_7ea0a6df3012d3bc5475d21d5eb156a7-45eed7266d4cc0f7be44aaaa091bc3b1\" (\n\tkey_0 BIGINT NOT NULL, \n\tkey_1 BIGINT NOT NULL, \n\tkey_2 BIGINT NOT NULL, \n\tkey_3 VARCHAR NOT NULL, \n\tkey_4 VARCHAR NOT NULL, \n\tkey_5 VARCHAR NOT NULL, \n\t\"BLOCK_M\" BIGINT NOT NULL, \n\t\"BLOCK_N\" BIGINT NOT NULL, \n\t\"BLOCK_K\" BIGINT NOT NULL, \n\t\"SPLIT_K\" BIGINT NOT NULL, \n\tnum_warps BIGINT NOT NULL, \n\tnum_ctas BIGINT NOT NULL, \n\tnum_stages BIGINT NOT NULL, \n\tPRIMARY KEY (key_0, key_1, key_2, key_3, key_4, key_5)\n)"
+    },
+    {
+      "name": "scaled_mm_kernel_813baf34c47258bd609f8c22416015f60afd772c7f9f0268c86ebe60aee574a0_benchmark_v2-8d946837381c122312949c4b880d150d",
+      "sql": "CREATE TABLE \"scaled_mm_kernel_813baf34c47258bd609f8c22416015f60afd772c7f9f0268c86ebe60aee574a0_benchmark_v2-8d946837381c122312949c4b880d150d\" (\n\tkey_0 BIGINT NOT NULL, \n\tkey_1 BIGINT NOT NULL, \n\tkey_2 BIGINT NOT NULL, \n\tkey_3 BIGINT NOT NULL, \n\tkey_4 BIGINT NOT NULL, \n\tkey_5 VARCHAR NOT NULL, \n\tkey_6 VARCHAR NOT NULL, \n\tkey_7 VARCHAR NOT NULL, \n\tkey_8 VARCHAR NOT NULL, \n\tkey_9 VARCHAR NOT NULL, \n\tkey_10 VARCHAR NOT NULL, \n\tkey_11 VARCHAR NOT NULL, \n\tkey_12 BIGINT NOT NULL, \n\tkey_13 BIGINT NOT NULL, \n\t\"BLOCK_M\" BIGINT NOT NULL, \n\t\"BLOCK_N\" BIGINT NOT NULL, \n\t\"BLOCK_K\" BIGINT NOT NULL, \n\tnum_warps BIGINT NOT NULL, \n\tnum_ctas BIGINT NOT NULL, \n\tnum_stages BIGINT NOT NULL, \n\tp50 FLOAT NOT NULL, \n\tp20 FLOAT NOT NULL, \n\tp80 FLOAT NOT NULL, \n\tPRIMARY KEY (key_0, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9, key_10, key_11, key_12, key_13, \"BLOCK_M\", \"BLOCK_N\", \"BLOCK_K\", num_warps, num_ctas, num_stages)\n)"
+    },
+    {
+      "name": "scaled_mm_kernel_b02cda7e0df6c3a26a8364ae2f256f2e-e988b2372f9acc213568c9a4adae6e45",
+      "sql": "CREATE TABLE \"scaled_mm_kernel_b02cda7e0df6c3a26a8364ae2f256f2e-e988b2372f9acc213568c9a4adae6e45\" (\n\tkey_0 BIGINT NOT NULL, \n\tkey_1 BIGINT NOT NULL, \n\tkey_2 BIGINT NOT NULL, \n\tkey_3 BIGINT NOT NULL, \n\tkey_4 BIGINT NOT NULL, \n\tkey_5 VARCHAR NOT NULL, \n\tkey_6 VARCHAR NOT NULL, \n\tkey_7 VARCHAR NOT NULL, \n\tkey_8 VARCHAR NOT NULL, \n\tkey_9 VARCHAR NOT NULL, \n\tkey_10 VARCHAR NOT NULL, \n\t\"BLOCK_M\" BIGINT NOT NULL, \n\t\"BLOCK_N\" BIGINT NOT NULL, \n\t\"BLOCK_K\" BIGINT NOT NULL, \n\tnum_warps BIGINT NOT NULL, \n\tnum_ctas BIGINT NOT NULL, \n\tnum_stages BIGINT NOT NULL, \n\tPRIMARY KEY (key_0, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9, key_10)\n)"
+    }
+  ],
+  "matches": [
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 32,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 8,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.04667307808995247,
+        "p20": 0.04467692300677299,
+        "p80": 0.04837692230939865
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 32,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "p50": 0.04652884602546692,
+        "p20": 0.046161539107561114,
+        "p80": 0.047476922720670695
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 32,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.04582692310214043,
+        "p20": 0.04526153802871704,
+        "p80": 0.04622307717800141
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 32,
+        "SPLIT_K": 1,
+        "num_warps": 8,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "p50": 0.07378846406936646,
+        "p20": 0.07288461178541183,
+        "p80": 0.07421153783798218
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 32,
+        "SPLIT_K": 1,
+        "num_warps": 8,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.0628846138715744,
+        "p20": 0.06140384450554848,
+        "p80": 0.06380768865346909
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 32,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "p50": 0.07871153950691223,
+        "p20": 0.07769230753183365,
+        "p80": 0.07982692122459412
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 32,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.06534615159034729,
+        "p20": 0.06353846192359924,
+        "p80": 0.06559615582227707
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 64,
+        "SPLIT_K": 1,
+        "num_warps": 8,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "p50": 0.06165384501218796,
+        "p20": 0.05884615331888199,
+        "p80": 0.06338461488485336
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 64,
+        "SPLIT_K": 1,
+        "num_warps": 8,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.05350961536169052,
+        "p20": 0.05311922952532768,
+        "p80": 0.054038462787866594
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 64,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "p50": 0.05911538563668728,
+        "p20": 0.05659230723977089,
+        "p80": 0.05994999930262566
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 64,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.05898077040910721,
+        "p20": 0.05332692340016365,
+        "p80": 0.06463461369276047
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 8,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "p50": 0.045596154406666756,
+        "p20": 0.044330769777297975,
+        "p80": 0.05155384540557861
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 8,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.04670192301273346,
+        "p20": 0.040819229930639266,
+        "p80": 0.048811537027359006
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "p50": 0.04617307707667351,
+        "p20": 0.04545769169926643,
+        "p80": 0.04670384600758553
+      }
+    },
+    {
+      "table": "mm_kernel_36ce59ddfe9157c845ec97dbe082e4199b4bb981085cde1f6da15a432167592c_benchmark_v2-45d27be3cd9525ad18861f4533a01e22",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "key_6": "triton_do_bench",
+        "key_7": 5,
+        "key_8": 10,
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 2,
+        "p50": 0.04474038444459438,
+        "p20": 0.044523076713085176,
+        "p80": 0.04517692402005195
+      }
+    },
+    {
+      "table": "mm_kernel_7ea0a6df3012d3bc5475d21d5eb156a7-45eed7266d4cc0f7be44aaaa091bc3b1",
+      "row": {
+        "key_0": 8,
+        "key_1": 2048,
+        "key_2": 2048,
+        "key_3": "torch.bfloat16",
+        "key_4": "torch.bfloat16",
+        "key_5": "torch.bfloat16",
+        "BLOCK_M": 8,
+        "BLOCK_N": 64,
+        "BLOCK_K": 128,
+        "SPLIT_K": 1,
+        "num_warps": 16,
+        "num_ctas": 1,
+        "num_stages": 2
+      }
+    }
+  ]
+}
