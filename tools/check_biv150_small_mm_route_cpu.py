@@ -30,7 +30,7 @@ def main():
     pin=next(n.value.value for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='_MM_SHA' for t in n.targets))
     assert pin=='4c2e23da2a6b65b89cbb8170967f14c5327d143e21137387f3907ccb4fcde090'
     fallback=[];launched=[]
-    module=ModuleType('audited_mm_stub')
+    module=ModuleType('_iluvatar.ops.mm')
     def original(*args):
         fallback.append(args)
         return fallback
@@ -49,16 +49,19 @@ def main():
                '_MM_SHA':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                '_OBSERVED_ROWS':set(),'_small_o_kernel':fake_kernel}
     exec(compile(ast.Module(body=[node],type_ignores=[]),str(PATH),'exec'),namespace)
-    with patch.dict(sys.modules,{'flag_gems':gems}),patch('inspect.getsourcefile',return_value=__file__),patch('importlib.import_module',return_value=module):
+    decoy=ModuleType('flag_gems.runtime.backend._iluvatar.ops.mm')
+    decoy._launch_mm=original
+    with patch.dict(sys.modules,{'flag_gems':gems,'_iluvatar.ops.mm':module,decoy.__name__:decoy}),patch('inspect.getsourcefile',return_value=__file__),patch('importlib.import_module',side_effect=lambda name:sys.modules[name]):
         expected=namespace['_MM_SHA'];namespace['_MM_SHA']='0'*64
         assert namespace['_install_mm_route']()['installed'] is False
         assert module._launch_mm is original
         namespace['_MM_SHA']=expected
-        alien=ModuleType('alien');exec('def mm(*args): pass',alien.__dict__)
+        alien=ModuleType('_iluvatar.ops.mm');exec('def mm(*args): pass',alien.__dict__)
         gems.mm=alien.mm
         assert namespace['_install_mm_route']()['installed'] is False
         gems.mm=module.mm
         assert namespace['_install_mm_route']()['installed'] is True
+        assert decoy._launch_mm is original,'inactive duplicate module must not be patched'
     positive=0
     for m in [1,2,4,8]:
         for n,k in [(2048,2048),(2560,2048),(12288,2048),(2048,6144)]:
@@ -98,7 +101,7 @@ def main():
     assert fingerprint('0','mm')==fingerprint('0','linear')
     result={'passed':True,'gpu_executed':False,'math_ast_unchanged':True,'positive_routes':positive,
             'fallback_routes':len(fallback),'source_rejection':True,'symbol_rejection':True,
-            'launch_errors_propagated':True,'binding_cache_identity':True}
+            'inactive_duplicate_unchanged':True,'selected_alias_resolved':True,'launch_errors_propagated':True,'binding_cache_identity':True}
     print(json.dumps(result,indent=2))
 
 

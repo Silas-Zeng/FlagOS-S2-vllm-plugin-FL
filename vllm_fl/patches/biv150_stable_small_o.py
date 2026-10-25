@@ -19,12 +19,19 @@ def _install_mm_route():
     import inspect
     from pathlib import Path
     import flag_gems
-    module=importlib.import_module('flag_gems.runtime.backend._iluvatar.ops.mm')
+    # The SDK loads this file under its short backend name. Importing the
+    # fully qualified path can create a second, inactive module instance.
+    selected=inspect.unwrap(flag_gems.mm)
+    module_name=getattr(selected,'__module__','')
+    if module_name not in ('_iluvatar.ops.mm','flag_gems.runtime.backend._iluvatar.ops.mm'):
+        return {'installed':False,'reason':'unsupported selected FlagGems MM module'}
+    module=importlib.import_module(module_name)
     path=Path(inspect.getsourcefile(module))
     if hashlib.sha256(path.read_bytes()).hexdigest()!=_MM_SHA:
         return {'installed':False,'reason':'unsupported FlagGems MM source'}
-    if not all(inspect.unwrap(fn).__globals__ is module.__dict__
-               for fn in (flag_gems.mm,flag_gems.mm_out)):
+    if not all(getattr(inspect.unwrap(fn),'__globals__',None) is module.__dict__
+               and inspect.unwrap(fn) is getattr(module,name,None)
+               for name,fn in (('mm',flag_gems.mm),('mm_out',flag_gems.mm_out))):
         return {'installed':False,'reason':'MM symbols do not use audited launch globals'}
     previous=module._launch_mm
     def launch(a,b,c,m,n,k):
@@ -54,7 +61,7 @@ def _install_mm_route():
     module._launch_mm=launch
     return {'installed':True,'binding':'mm','scope':'BF16 TP1 MiniCPM MM/out M1-8',
             'block_m':16,'block_n':64,'block_k':128,'warps':4,'stages':1,
-            'original_mm_sha256':_MM_SHA,'larger_rows':'original vendor launch unchanged'}
+            'original_mm_sha256':_MM_SHA,'selected_module':module_name,'larger_rows':'original vendor launch unchanged'}
 
 
 @triton.jit(do_not_specialize=['M'])
