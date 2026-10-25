@@ -5289,6 +5289,16 @@ class ModelRunnerFL(
                 self.model = model_loader.load_model(
                     vllm_config=self.vllm_config, model_config=self.model_config
                 )
+                if getattr(current_platform, "vendor_name", None) == "metax":
+                    from vllm_fl.patches.metax_fused_gate_up_silu import (
+                        install as _install_metax_gate_up_silu,
+                    )
+
+                    print(
+                        "METAX_FUSED_GATE_UP_SILU_INSTALL",
+                        _install_metax_gate_up_silu(),
+                        flush=True,
+                    )
                 if self.lora_config:
                     self.model = self.load_lora_model(
                         self.model, self.vllm_config, self.device
