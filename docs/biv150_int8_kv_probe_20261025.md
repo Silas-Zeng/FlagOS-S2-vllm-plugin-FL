@@ -19,3 +19,11 @@ CPU FP64 oracles are separate: original BF16 and independently reconstructed qua
 Current status: Python syntax and inert CPU planning path pass. No GPU compilation, numeric result, throughput result, full accuracy or actual model-cache integration has run. GPU remains reserved for the Q32 paired full-workload-warmup pipeline. This direction must not be merged as a serving improvement on component evidence alone.
 
 Future integration must implement a real cache specification/allocation including scales, a compatible self-developed prefill consumer and normal model-wide fallback ownership. A decode-only INT8 cache cannot serve prefill or be declared a memory saving while retaining the BF16 copy. Keep fixed competition serving parameters; do not switch an existing quantization hyperparameter.
+
+## Initial GPU result, sourcef339109
+
+All three cases compile and complete. Quantized-operand CPU FP64 gates, changed-input poisoned Graph checks, positive finite scales,[-127,127] representation, invalid-slot no-write and ragged pointwise error bounds pass. This confirms the intended approximate representation/consumer, not equality to BF16 or model accuracy; ragged BF16-reference error reaches0.03125 and exceeds the diagnostic0.005+0.005r tolerance at1109 values in one pattern. Full model accuracy is untested.
+
+The actual4K baseline compiled hash is641478e6. Writer+producer+reducer median speedups are0.85776x for ragged,0.70993x for B64/4K,0.70514x for B32/16K. Registers increase from93 to162, shared remains8192; use_sme changes14→206 with the new input types/arguments. n_spills=0 is not proof of no SGPR spills. No serving integration or performance gain is claimed. Raw reports: docs/evidence/int8-kv-probe-20261025/.
+
+One bounded follow-up moves V-scale load and INT8→FP32→BF16 V reconstruction after QK/softmax, preserving the arithmetic and representation. The aim is to shorten simultaneous K/V temporary lifetimes; register/timing effects must be measured, not assumed. It has syntax-only validation at this commit. Related baseline correctness work PR48 now reports native-on mixed failure; this direct GQA component does not load that gate library, and future model integration must use a validated baseline.

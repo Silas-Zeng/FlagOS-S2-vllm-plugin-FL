@@ -1,0 +1,158 @@
+{
+  "completed": true,
+  "service_installed": false,
+  "official_score": false,
+  "model_accuracy_tested": false,
+  "capacity_reclaimed": false,
+  "source_commit": "f3391095c68426c01149ad581577d98a6ae074e3",
+  "operator_sha256": "85ee7c7b4794bd3ae15917b54ffdcf39944c914339fe9a00d5084f33ae8c1d3c",
+  "baseline_source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+  "cases": [
+    {
+      "name": "ragged",
+      "batch": 8,
+      "length": 257,
+      "segments": 16,
+      "key_stride": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "table_stride": [
+        8192,
+        1
+      ],
+      "original_cache_bytes": 2228224,
+      "quantized_cache_bytes": 1148928,
+      "dual_cache_retained_in_probe": true,
+      "numeric": [
+        {
+          "pattern": 0,
+          "quantized": false,
+          "cpu": {
+            "finite": true,
+            "max_abs": 0.0009108781814575195,
+            "mse": 1.28139481248013e-08,
+            "tol_005_violations": 0
+          },
+          "changed_graph_equal": true
+        },
+        {
+          "pattern": 0,
+          "quantized": true,
+          "cpu": {
+            "finite": true,
+            "max_abs": 0.0009469985961914062,
+            "mse": 1.2018567474569863e-08,
+            "tol_005_violations": 0
+          },
+          "changed_graph_equal": true
+        },
+        {
+          "pattern": 0,
+          "quantization_error": {
+            "finite": true,
+            "max_abs": 0.015625,
+            "mse": 1.1223863111808896e-05,
+            "tol_005_violations": 818
+          },
+          "model_accuracy_claim": false
+        },
+        {
+          "pattern": 1,
+          "quantized": false,
+          "cpu": {
+            "finite": true,
+            "max_abs": 0.0011484622955322266,
+            "mse": 1.444730912680825e-08,
+            "tol_005_violations": 0
+          },
+          "changed_graph_equal": true
+        },
+        {
+          "pattern": 1,
+          "quantized": true,
+          "cpu": {
+            "finite": true,
+            "max_abs": 0.0017050504684448242,
+            "mse": 1.502812452258695e-08,
+            "tol_005_violations": 0
+          },
+          "changed_graph_equal": true
+        },
+        {
+          "pattern": 1,
+          "quantization_error": {
+            "finite": true,
+            "max_abs": 0.03125,
+            "mse": 2.1352880139602348e-05,
+            "tol_005_violations": 1109
+          },
+          "model_accuracy_claim": false
+        }
+      ],
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.01358557678759098,
+            "int8": 0.015838460996747017
+          },
+          "speedup": 0.8577586414728839
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8": 0.01579807698726654,
+            "baseline": 0.013628365471959114
+          },
+          "speedup": 0.8626597707394233
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.013562018983066082,
+            "int8": 0.01585192233324051
+          },
+          "speedup": 0.8555441225337926
+        }
+      ],
+      "completed": true,
+      "invalid_slots_no_write": true,
+      "baseline_resources": {
+        "hash": "c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "use_sme": 15
+      },
+      "int8_resources": {
+        "hash": "4d6d9d35778b8bafb596b92a1c7485fbe5917f4b53ffc7250d18baa744002906",
+        "n_regs": 162,
+        "n_spills": 0,
+        "shared": 8192,
+        "use_sme": 207
+      },
+      "pointwise_quantization_bound": true,
+      "speedup_median": 0.8577586414728839,
+      "attention_only_ms": {
+        "False": 0.011980769224464893,
+        "True": 0.013435577042400837
+      }
+    }
+  ],
+  "errors": []
+}
