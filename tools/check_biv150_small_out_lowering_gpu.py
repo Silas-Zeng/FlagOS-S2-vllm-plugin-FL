@@ -30,6 +30,8 @@ def main(a):
     import sys
     sys.path.insert(0,str(a.source.resolve()))
     import torch
+    import torch._dynamo
+    import torch._inductor.config
     import flag_gems
     from safetensors import safe_open
     from vllm_fl.patches import biv150_stable_small_o as small
