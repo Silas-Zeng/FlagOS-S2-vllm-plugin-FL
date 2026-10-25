@@ -40,7 +40,7 @@ def q_allocation(text, rows=64):
     return candidates
 
 
-def adapted_manager(original, rows=64, warps=8, kv_tile=64):
+def adapted_manager(original, rows=64, warps=8, kv_tile=64, stages=1):
     source = Path(original.__file__).read_text()
     first = '''allocations = re.findall(
         r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16",
@@ -59,8 +59,9 @@ def adapted_manager(original, rows=64, warps=8, kv_tile=64):
         '"BLOCK_M": 128,': f'"BLOCK_M": {rows},',
         '"BLOCK_Q": 16,': f'"BLOCK_Q": {rows//8},',
         '"num_warps": 8,': f'"num_warps": {warps},',
+        '"num_stages": 1,': f'"num_stages": {stages},',
         '"TILE_SIZE": 64,': f'"TILE_SIZE": {kv_tile},',
-        '!= (8, 1)': f'!= ({warps}, 1)',
+        '!= (8, 1)': f'!= ({warps}, {stages})',
     }
     if parameterized:
         del edits['"BLOCK_M": 128,']
@@ -92,7 +93,7 @@ class Tap:
         return invoke
 
 
-def candidate_function(attention, backend, qmodule, rows=64, warps=8, kv_tile=64):
+def candidate_function(attention, backend, qmodule, rows=64, warps=8, kv_tile=64, stages=1):
     jit = importlib.import_module('triton.runtime.jit')
     from vllm_fl.patches.biv150_prefill_normalized import make_normalized
     normalized, _ = make_normalized(attention)
@@ -103,6 +104,8 @@ def candidate_function(attention, backend, qmodule, rows=64, warps=8, kv_tile=64
         source = source.replace(old, new)
     assert source.count('biv150_prefill_tile = 64') == 1
     source = source.replace('biv150_prefill_tile = 64', f'biv150_prefill_tile = {kv_tile}')
+    assert source.count('launch_num_stages = 1') == 1
+    source = source.replace('launch_num_stages = 1', f'launch_num_stages = {stages}')
     namespace = dict(normalized.__globals__)
     exec(compile(source, '<biv150-bm64-launch>', 'exec'), namespace)
     function = namespace['unified_attention']
@@ -121,7 +124,7 @@ def candidate_function(attention, backend, qmodule, rows=64, warps=8, kv_tile=64
 
 def main(args):
     if not args.run_gpu:
-        print(json.dumps({'cases': CASES, 'tiles': [[128,16],[args.bm,args.bm//8]], 'warps':args.warps, 'stages':1}))
+        print(json.dumps({'cases': CASES, 'tiles': [[128,16],[args.bm,args.bm//8]], 'warps':args.warps, 'stages':args.stages}))
         return
     with socket.socket() as sock:
         assert sock.connect_ex(('127.0.0.1',9031)) != 0, 'Service running'
@@ -133,10 +136,10 @@ def main(args):
     torch.set_num_threads(4)
     baseline, baseline_manager, installations = fixture.install_baseline()
     qoriginal = importlib.import_module('vllm_fl.patches.biv150_q_fragment_service')
-    qmodule, adapted_sha = adapted_manager(qoriginal,args.bm,args.warps,args.kv_tile)
+    qmodule, adapted_sha = adapted_manager(qoriginal,args.bm,args.warps,args.kv_tile,args.stages)
     attention = importlib.import_module('vllm.v1.attention.ops.triton_unified_attention')
     backend = importlib.import_module('vllm.v1.attention.backends.triton_attn')
-    candidate, candidate_manager = candidate_function(attention, backend, qmodule,args.bm,args.warps,args.kv_tile)
+    candidate, candidate_manager = candidate_function(attention, backend, qmodule,args.bm,args.warps,args.kv_tile,args.stages)
     taps = {}
     for label, manager in [('baseline',baseline_manager),('candidate',candidate_manager)]:
         tap = Tap(manager.wrapper)
@@ -145,7 +148,7 @@ def main(args):
     result = dict(completed=False, official_score=False, service_installed=False,
                   source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                  adapted_manager_sha256=adapted_sha, candidate_tile=[args.bm,args.bm//8], candidate_warps=args.warps, candidate_kv_tile=args.kv_tile, installations=installations, cases=[], errors=[])
+                  adapted_manager_sha256=adapted_sha, candidate_tile=[args.bm,args.bm//8], candidate_warps=args.warps, candidate_kv_tile=args.kv_tile, candidate_stages=args.stages, installations=installations, cases=[], errors=[])
     def save():
         temp=args.out/'result.tmp';temp.write_text(json.dumps(result,indent=2)+'\n');temp.replace(args.out/'result.json')
     save()
@@ -232,6 +235,7 @@ if __name__=='__main__':
     parser.add_argument('--bm',type=int,choices=[64,128,256],default=64)
     parser.add_argument('--warps',type=int,choices=[4,8,16],default=8)
     parser.add_argument('--kv-tile',type=int,choices=[64,128],default=64)
+    parser.add_argument('--stages',type=int,choices=[1,2],default=1)
     parser.add_argument('--out',type=Path)
     parser.add_argument('--case',action='append',choices=CASES)
     args=parser.parse_args()
