@@ -5,6 +5,7 @@ import datetime
 import hashlib
 import json
 import os
+import shutil
 from pathlib import Path
 import signal
 import socket
@@ -28,7 +29,19 @@ def sha(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def throughput(out):
+def cache_inventory(root):
+    result = {}
+    if root.exists():
+        for path in root.rglob("*.json"):
+            if path.name.startswith("__grp__"):
+                continue
+            result[str(path.relative_to(root))] = dict(
+                path=str(path.relative_to(root)), sha256=sha(path),
+                mtime_ns=path.stat().st_mtime_ns)
+    return result
+
+
+def throughput(out, *, full_workload_warmup=False):
     scores, warmups = {}, {}
     for length, count in ((4096, 256), (16384, 128)):
         warmups[str(length)] = []
@@ -36,7 +49,18 @@ def throughput(out):
             value = benchmark(out, f"warm-{length}-{index}", length, 128, 64, 920000 + index)
             warmups[str(length)].append(value)
             (out / "warmups.json").write_text(json.dumps(warmups, indent=2) + "\n")
+        if full_workload_warmup:
+            # Short 64-request warmups do not visit the late mixed/tail shapes
+            # of the official multi-wave workload. Keep this unscored run in
+            # the evidence rather than treating cache-cold stalls as a gain.
+            value = benchmark(out, f"full-warm-{length}", length, 1024, count, 0)
+            warmups[str(length)].append(dict(value, full_workload=True))
+            (out / "warmups.json").write_text(json.dumps(warmups, indent=2) + "\n")
+        before = cache_inventory(out / "triton-cache")
         scores[str(length)] = benchmark(out, f"score-{length}", length, 1024, count, 0)
+        after = cache_inventory(out / "triton-cache")
+        additions = [after[key] for key in sorted(after.keys() - before.keys())]
+        (out / f"score-{length}-new-kernels.json").write_text(json.dumps(additions, indent=2) + "\n")
         (out / "scores.json").write_text(json.dumps(scores, indent=2) + "\n")
     return scores
 
@@ -52,6 +76,19 @@ def main(args):
     assert sha(args.gate_library) == "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe"
     args.out.mkdir(parents=True, exist_ok=False)
     (args.out / "idle.txt").write_text(idle)
+    snapshot_manifest = None
+    if args.flaggems_config_snapshot is not None:
+        snapshot = args.flaggems_config_snapshot.resolve()
+        snapshot_manifest = json.loads((snapshot / "manifest.json").read_text())
+        destination = args.out / "flaggems-cache/config_cache"
+        destination.mkdir(parents=True)
+        assert snapshot_manifest["databases"], "Empty tuning snapshot"
+        for entry in snapshot_manifest["databases"]:
+            name = entry["name"]
+            assert Path(name).name == name and name.endswith(".db")
+            assert sha(snapshot / name) == entry["sha256"], "Tuning snapshot changed"
+            shutil.copy2(snapshot / name, destination / name)
+            assert sha(destination / name) == entry["sha256"]
     state = dict(complete=False, cleanup_complete=False, acceptance_passed=False,
                  precision_passed=None, diagnostic_only=False, phase="starting",
                  commit=args.commit, candidate=args.candidate)
@@ -71,13 +108,17 @@ def main(args):
                TRITON_CACHE_DIR=str(args.out / "triton-cache"),
                BIV150_NATIVE_W8A8_LIBRARY=str(args.gate_library.resolve()),
                VLLM_FL_BIV150_PREFILL_Q32="1" if args.candidate else "0")
+    if snapshot_manifest is not None:
+        env["FLAGGEMS_CACHE_DIR"] = str(args.out / "flaggems-cache")
     command = ["/usr/local/bin/vllm", "serve", "/workspace/MiniCPM5-2B", "--port", "9031",
                "--compilation-config", '{"cudagraph_mode":"FULL_DECODE_ONLY"}',
                "--served-model-name", "minicpm", "--gpu-memory-utilization", "0.85", "--max-model-len", "131072"]
     manifest = dict(command=command, source=str(source), commit=args.commit,
                     candidate=args.candidate, mode=args.mode, driver_sha256=sha(__file__),
+                    full_workload_warmup=args.full_workload_warmup,
+                    flaggems_config_snapshot=snapshot_manifest,
                     gate_library_sha256=sha(args.gate_library),
-                    env={k: v for k, v in env.items() if k.startswith(("VLLM_", "BIV150_", "TRITON_", "TORCHINDUCTOR_"))})
+                    env={k: v for k, v in env.items() if k.startswith(("VLLM_", "BIV150_", "TRITON_", "TORCHINDUCTOR_", "FLAGGEMS_"))})
     (args.out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     log_path = args.out / "server.log"
     log = log_path.open("x")
@@ -148,7 +189,7 @@ def main(args):
             verdict = json.loads((args.out / "accuracy-verdict.json").read_text())
             state.update(accuracy=verdict, precision_passed=verdict["score"] >= 0.95)
         save("throughput")
-        scores = throughput(args.out)
+        scores = throughput(args.out, full_workload_warmup=args.full_workload_warmup)
         for length, count in ((4096, 256), (16384, 128)):
             result = scores[str(length)]
             expected = dict(completed=count, failed=0, num_prompts=count, max_concurrency=64,
@@ -226,4 +267,8 @@ if __name__ == "__main__":
     parser.add_argument("--gate-library", type=Path, required=True)
     parser.add_argument("--candidate", action="store_true")
     parser.add_argument("--mode", choices=("all", "throughput"), default="all")
+    parser.add_argument("--full-workload-warmup", action="store_true",
+                        help="Run each full official workload once unscored before its scored round")
+    parser.add_argument("--flaggems-config-snapshot", type=Path,
+                        help="Copy the same immutable SQLite backup into each arm's private tuning cache")
     main(parser.parse_args())
