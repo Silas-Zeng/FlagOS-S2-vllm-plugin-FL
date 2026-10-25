@@ -52,7 +52,53 @@ def merge(ranges, start, end):
     return merged
 
 
-def analyze(window, benchmark, length, block_size, capacity):
+def scope_counter_audit(window, previous_window=None):
+    """Validate cumulative counters against an independent window checkpoint."""
+    errors = []
+    epoch, pid = window.get("epoch"), window.get("pid")
+    cumulative = window.get("scope_diagnostics", {}).get("observation_counts", {}).get("worker.execute_model")
+    current_scope = window.get("scope_diagnostics", {})
+    if (window.get("diagnostic_only") is not True
+            or window.get("finished_monotonic_ns", 0) <= window.get("started_monotonic_ns", 0)
+            or current_scope.get("errors") != [] or current_scope.get("error_total") != 0
+            or current_scope.get("callback_disabled") is not False or current_scope.get("enabled") is not False):
+        errors.append("cumulative scope checkpoint is not a completed healthy diagnostic window")
+    previous_count = None
+    if epoch == 1:
+        previous_count = 0
+    elif isinstance(epoch, int) and epoch > 1 and previous_window is not None:
+        ps = previous_window.get("scope_diagnostics", {})
+        if (previous_window.get("epoch") != epoch - 1 or previous_window.get("pid") != pid
+                or previous_window.get("diagnostic_only") is not True
+                or previous_window.get("finished_monotonic_ns", 0) <= previous_window.get("started_monotonic_ns", 0)
+                or previous_window.get("finished_monotonic_ns", 0) > window.get("started_monotonic_ns", 0)
+                or ps.get("errors") != [] or ps.get("error_total") != 0
+                or ps.get("callback_disabled") is not False or ps.get("enabled") is not False):
+            errors.append("preceding cumulative scope checkpoint has invalid identity, time, or callback state")
+        else:
+            previous_count = ps.get("observation_counts", {}).get("worker.execute_model")
+    else:
+        errors.append("missing preceding cumulative scope checkpoint; window boundary cannot be verified")
+    steps = window.get("scheduled_steps", [])
+    if type(cumulative) is not int or type(previous_count) is not int or previous_count < 0:
+        errors.append("missing or invalid cumulative worker observation count")
+        delta = None
+    else:
+        delta = cumulative - previous_count
+        if delta != len(steps):
+            errors.append("worker cumulative observation count delta does not match recorded steps")
+        if any(step.get("sequence") != previous_count + i or step.get("step") != i
+               or step.get("pid") != pid or step.get("source") != "worker.execute_model"
+               or step.get("event") != "worker.execute_model.begin"
+               for i, step in enumerate(steps, 1)):
+            errors.append("worker observation sequence has a missing, duplicate, or out-of-window entry")
+    return dict(previous_cumulative_count=previous_count, cumulative_count=cumulative,
+                window_count_delta=delta, recorded_steps=len(steps),
+                checkpoint_epoch=epoch - 1 if type(epoch) is int else None,
+                passed=not errors, errors=errors)
+
+
+def analyze(window, benchmark, length, block_size, capacity, previous_window=None):
     errors, warnings = [], []
     scope = window.get("scope_diagnostics", {})
     for condition, error in [
@@ -66,16 +112,21 @@ def analyze(window, benchmark, length, block_size, capacity):
     steps = window["scheduled_steps"]
     if not steps:
         errors.append("no scheduled steps")
-    if scope.get("observation_counts", {}).get("worker.execute_model") != len(steps):
-        errors.append("worker observation count does not match recorded steps")
+    counter_audit = scope_counter_audit(window, previous_window)
+    errors.extend(counter_audit["errors"])
     records, rows, request_rows = {}, [], []
+    boundary_events = []
     qlens, qlen_semantic = collections.Counter(), collections.Counter()
     totals, phases = collections.Counter(), collections.Counter()
+    previous_timestamp = window.get("started_monotonic_ns", 0)
     for ordinal, step in enumerate(steps, 1):
         if step.get("step") != ordinal or step.get("pid") != window.get("pid"):
             errors.append(f"step {ordinal}: noncontiguous step or wrong PID")
         if not window["started_monotonic_ns"] <= step["monotonic_ns"] <= window["finished_monotonic_ns"]:
             errors.append(f"step {ordinal}: timestamp outside window")
+        if step["monotonic_ns"] < previous_timestamp:
+            errors.append(f"step {ordinal}: non-monotonic timestamp")
+        previous_timestamp = step["monotonic_ns"]
         scheduled = step["num_scheduled_tokens"]
         if (sum(scheduled.values()) != step["total_num_scheduled_tokens"]
                 or step.get("scheduled_token_sum") != sum(scheduled.values())
@@ -89,6 +140,8 @@ def analyze(window, benchmark, length, block_size, capacity):
             errors.append(f"step {ordinal}: scheduled IDs and CPU metadata disagree")
         for item in new:
             rid, prompt = item["req_id"], item["prompt_token_count"]
+            if type(prompt) is not int or prompt != length:
+                errors.append(f"step {ordinal}: request {rid} prompt does not match fixed {length}-token protocol")
             if rid in records and records[rid]["prompt"] not in (None, prompt):
                 errors.append(f"step {ordinal}: prompt size changed for {rid}")
             rec = records.setdefault(rid, dict(prompt=prompt, ranges=[], last_end=None,
@@ -110,7 +163,7 @@ def analyze(window, benchmark, length, block_size, capacity):
                 continue
             end = start + qlen
             semantic = ("unknown" if prompt is None else "decode" if start >= prompt
-                        else "prefill" if end <= prompt else "cross_boundary")
+                        else "prefill" if end <= prompt else "prompt_and_generated_history")
             counts[semantic + "_requests"] += 1
             qclass = "1" if qlen == 1 else "2_to_8" if qlen <= 8 else "9_plus"
             counts["qlen_" + qclass + "_requests"] += 1
@@ -126,10 +179,28 @@ def analyze(window, benchmark, length, block_size, capacity):
             rec["counts"]["resumed_metadata_events"] += int(item.get("resumed") is True)
             if prompt is not None:
                 prompt_tokens = max(0, min(end, prompt) - start)
+                history_tokens = qlen - prompt_tokens
+                repeated_prompt = overlap(rec["ranges"], start, min(end, prompt)) if start < prompt else 0
+                repeated_history = overlap(rec["ranges"], max(start, prompt), end) if end > prompt else 0
                 rec["counts"]["scheduled_prompt_tokens"] += prompt_tokens
-                rec["counts"]["scheduled_generated_history_tokens"] += qlen - prompt_tokens
-                rec["counts"]["repeated_prompt_positions"] += overlap(rec["ranges"], start, min(end, prompt)) if start < prompt else 0
-                rec["counts"]["repeated_generated_history_positions"] += overlap(rec["ranges"], max(start, prompt), end) if end > prompt else 0
+                rec["counts"]["scheduled_generated_history_tokens"] += history_tokens
+                rec["counts"]["repeated_prompt_positions"] += repeated_prompt
+                rec["counts"]["repeated_generated_history_positions"] += repeated_history
+                counts["scheduled_prompt_tokens"] += prompt_tokens
+                counts["scheduled_generated_history_tokens"] += history_tokens
+                counts["repeated_prompt_positions"] += repeated_prompt
+                counts["repeated_generated_history_positions"] += repeated_history
+                if semantic == "prompt_and_generated_history":
+                    rec["counts"]["prompt_boundary_crossings"] += 1
+                    boundary_events.append(dict(step=ordinal, request_id=rid, start=start, end=end,
+                                                prompt_boundary=prompt, scheduled_tokens=qlen,
+                                                prompt_tokens=prompt_tokens, generated_history_tokens=history_tokens,
+                                                repeated_prompt_positions=repeated_prompt,
+                                                repeated_generated_history_positions=repeated_history,
+                                                new_prompt_positions=prompt_tokens - repeated_prompt,
+                                                new_generated_history_positions=history_tokens - repeated_history,
+                                                cached_num_output_tokens=item.get("num_output_tokens"),
+                                                resumed_metadata=item.get("resumed")))
             else:
                 rec["counts"]["unknown_phase_tokens"] += qlen
             if rec["last_end"] is not None:
@@ -146,8 +217,9 @@ def analyze(window, benchmark, length, block_size, capacity):
             rec["last_computed"], rec["last_end"] = start, end
             rec["ranges"] = merge(rec["ranges"], start, end)
             logical_slots += ((end + block_size - 1) // block_size) * block_size
-        phase = ("empty" if not scheduled else "unknown" if counts["unknown_requests"] or counts["cross_boundary_requests"]
-                 else "mixed" if counts["decode_requests"] and counts["prefill_requests"]
+        phase = ("empty" if not scheduled else "unknown" if counts["unknown_requests"]
+                 else "mixed" if counts["prompt_and_generated_history_requests"]
+                 or (counts["decode_requests"] and counts["prefill_requests"])
                  else "decode_only" if counts["decode_requests"] else "prefill_only")
         phases[phase] += 1
         for field in ("finished_request_count", "preempted_request_count"):
@@ -158,8 +230,10 @@ def analyze(window, benchmark, length, block_size, capacity):
         rows.append(dict(step=ordinal, monotonic_ns=step["monotonic_ns"], phase=phase,
                          scheduled_requests=len(scheduled), scheduled_tokens=step["total_num_scheduled_tokens"],
                          **{key: counts[key] for key in ("decode_requests", "single_token_decode_requests", "prefill_requests",
-                                                        "unknown_requests", "cross_boundary_requests", "qlen_1_requests",
-                                                        "qlen_2_to_8_requests", "qlen_9_plus_requests")},
+                                                        "unknown_requests", "prompt_and_generated_history_requests", "qlen_1_requests",
+                                                        "qlen_2_to_8_requests", "qlen_9_plus_requests", "scheduled_prompt_tokens",
+                                                        "scheduled_generated_history_tokens", "repeated_prompt_positions",
+                                                        "repeated_generated_history_positions")},
                          finished_count=step["finished_request_count"], preempted_count=step["preempted_request_count"],
                          scheduled_requests_logical_paged_extent=logical_slots,
                          logical_extent_div_capacity=logical_slots / capacity if capacity else None))
@@ -203,6 +277,7 @@ def analyze(window, benchmark, length, block_size, capacity):
         warnings.append("not all last cached output counters are 1023; inspect request rows")
     result = dict(cpu_accounting_passed=not errors, errors=errors, warnings=warnings,
                   pid=window["pid"], epoch=window["epoch"], step_count=len(steps),
+                  scope_counter_audit=counter_audit, prompt_boundary_crossing_events=boundary_events,
                   phases=dict(phases), totals=dict(totals), closure=closure,
                   request_qlen_histogram=dict(sorted(qlens.items())),
                   request_qlen_semantics=[dict(semantic=a, qlen_class=b, request_steps=n)
@@ -217,6 +292,8 @@ def analyze(window, benchmark, length, block_size, capacity):
                   limitations=[
                       "CPU schedule observations, not measured GPU work or production throughput.",
                       "Decode means computed >= known prompt length; new/cached membership is never a phase classifier.",
+                      "Prompt-boundary crossings are known mixed intervals, split into prompt/history and repeated/new positions; they are not unknown or single-token decode.",
+                      "Scope observation counters are cumulative across windows; epoch > 1 requires the preceding mapped window checkpoint.",
                       "Request qlen bins count request-step occurrences; step distributions are not time weighted.",
                       "Metadata dictionary/list order is not input_batch or compute-order; routing/optimization hit counts are unknown.",
                       "Only finished/preempted COUNTS were captured; their request IDs, causes and per-request attribution are unknown.",
@@ -237,6 +314,31 @@ def write_csv(path, rows):
                              for key, value in row.items()})
 
 
+def load_mapped_windows(run):
+    """Only driver-mapped, fully written windows; never infer identity by epoch."""
+    mapped, checkpoints, seen_paths = {}, {}, set()
+    for length in (4096, 16384):
+        validation_path = run / f"diagnostic-{length}-profile-validation.json"
+        if not validation_path.is_file():
+            continue
+        validation = read(validation_path)
+        if len(validation["windows"]) != 1:
+            raise ValueError("This TP1/DP1 analyzer requires exactly one mapped worker window per workload")
+        entry = validation["windows"][0]
+        path = run / "observations" / Path(entry["path"]).name
+        if path in seen_paths:
+            raise ValueError("A worker window is mapped to two workloads")
+        seen_paths.add(path)
+        window = read(path)
+        identity = (window["pid"], window["epoch"])
+        if (window["pid"] != entry["pid"] or window["epoch"] != entry["epoch"]
+                or len(window["scheduled_steps"]) != entry["scheduled_steps"] or identity in checkpoints):
+            raise ValueError("Validation/window identity or count mismatch")
+        mapped[length] = (validation_path, validation, path, window)
+        checkpoints[identity] = window
+    return mapped, checkpoints
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-dir", type=Path, required=True)
@@ -250,32 +352,41 @@ def main():
     run = args.run_dir.resolve()
     diagnostics_path = run / "diagnostic_results.json"
     diagnostics = read(diagnostics_path)
-    lengths = args.length or [n for n in (4096, 16384) if (run / f"diagnostic-{n}-profile-validation.json").is_file()]
+    mapped, checkpoints = load_mapped_windows(run)
+    lengths = args.length or list(mapped)
     if not lengths or len(set(lengths)) != len(lengths):
         parser.error("need unique completed validation windows")
     report = dict(diagnostic_only=True, official_score=False, source_run=str(run),
                   diagnostics_sha256=sha(diagnostics_path), workloads={})
     outputs = []
-    seen_windows = set()
     for length in lengths:
-        validation_path = run / f"diagnostic-{length}-profile-validation.json"
-        validation = read(validation_path)
-        if len(validation["windows"]) != 1:
-            raise ValueError("This TP1/DP1 analyzer requires exactly one mapped worker window per workload")
-        entry = validation["windows"][0]
+        if length not in mapped:
+            raise ValueError(f"No completed mapped window for input length {length}")
+        validation_path, validation, path, window = mapped[length]
         # Resolve only within the supplied mirror/run. Never fall through to a live remote path.
-        path = run / "observations" / Path(entry["path"]).name
-        if path in seen_windows:
-            raise ValueError("A worker window is mapped to two workloads")
-        seen_windows.add(path)
-        window = read(path)
-        if window["pid"] != entry["pid"] or window["epoch"] != entry["epoch"] or len(window["scheduled_steps"]) != entry["scheduled_steps"]:
-            raise ValueError("Validation/window identity mismatch")
+        previous_window = checkpoints.get((window["pid"], window["epoch"] - 1))
         result, rows, request_rows = analyze(window, diagnostics["results"][str(length)], length,
-                                            args.block_size, args.kv_capacity_tokens)
+                                            args.block_size, args.kv_capacity_tokens, previous_window)
+        # A preceding checkpoint must itself be a complete observed window.
+        for epoch in range(1, window["epoch"]):
+            preceding = checkpoints.get((window["pid"], epoch))
+            if preceding is None:
+                result["errors"].append(f"missing mapped cumulative checkpoint epoch {epoch}")
+            else:
+                audit = scope_counter_audit(preceding, checkpoints.get((window["pid"], epoch - 1)))
+                result["errors"].extend(f"checkpoint epoch {epoch}: {error}" for error in audit["errors"])
+        result["cpu_accounting_passed"] = not result["errors"]
         result.update(profile_validation_passed=validation["passed"], profile_validation_errors=validation["errors"],
                       validation_path=str(validation_path), validation_sha256=sha(validation_path),
                       window_path=str(path), window_sha256=sha(path))
+        if previous_window is not None:
+            previous_validation_path, _, previous_path, _ = next(
+                value for value in mapped.values() if value[3] is previous_window)
+            result["previous_window_checkpoint"] = dict(
+                pid=previous_window["pid"], epoch=previous_window["epoch"],
+                window_path=str(previous_path), window_sha256=sha(previous_path),
+                validation_path=str(previous_validation_path), validation_sha256=sha(previous_validation_path),
+                cumulative_count=previous_window["scope_diagnostics"]["observation_counts"]["worker.execute_model"])
         report["workloads"][str(length)] = result
         outputs.append((length, rows, request_rows))
     report["cpu_accounting_passed"] = all(x["cpu_accounting_passed"] for x in report["workloads"].values())
@@ -286,10 +397,14 @@ def main():
         write_csv(args.out / f"steps-{length}.csv", rows)
         write_csv(args.out / f"requests-{length}.csv", request_rows)
         r = report["workloads"][str(length)]
+        if r["prompt_boundary_crossing_events"]:
+            write_csv(args.out / f"prompt-boundary-crossings-{length}.csv", r["prompt_boundary_crossing_events"])
         lines += [f"\n{length}: CPU accounting={r['cpu_accounting_passed']}; graph profile validation={r['profile_validation_passed']}",
+                  f"Cumulative worker counter: {r['scope_counter_audit']}",
                   f"Phases: {r['phases']}", f"Token closure: {r['closure']}",
                   f"qlen classification: {r['request_qlen_semantics']}",
                   f"Preemptions={r['totals']['preempted_request_count']}; resumes={r['totals'].get('resumed_metadata_events', 0)}; repeated scheduled positions={r['totals'].get('repeated_scheduled_positions', 0)}",
+                  f"Scheduled prompt/history tokens={r['totals'].get('scheduled_prompt_tokens', 0)}/{r['totals'].get('scheduled_generated_history_tokens', 0)}; repeated prompt/history positions={r['totals'].get('repeated_prompt_positions', 0)}/{r['totals'].get('repeated_generated_history_positions', 0)}; prompt-boundary events={len(r['prompt_boundary_crossing_events'])}",
                   f"Decode lanes/step: {r['distributions']['decode_requests']}",
                   f"Logical paged extent max={r['distributions']['scheduled_requests_logical_paged_extent']['maximum']}; supplied capacity={args.kv_capacity_tokens}",
                   *r["errors"], *r["warnings"]]

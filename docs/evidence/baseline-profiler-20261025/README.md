@@ -44,3 +44,11 @@ v2 改为 `vllm_fl.compilation.graph.GraphWrapper.concrete_graph_entries` / `ent
 图边界计时中位31.515ms，全部节点插桩后33.991ms，配对增量中位7.857%。按每样本插桩区间和排序：GQA主计算22.692ms、BF16 MM6.109ms、INT8 GEMM1.798ms、GQA reducer0.440ms。这是带插桩的图内排序，不能当作未插桩核时间或服务吞吐；GQA主计算是明确的首要decode热点，现有证据尚未区分其带宽/延迟/指令瓶颈。
 
 M2048原生BF16 GEMM探针已另开Draft PR44。尚未执行GPU验证，也没有新增可合并吞吐收益。
+
+## v2成对4K/16K节点与调度核对通过
+
+16K于15:49完成，4818步、4个实际32行样本；4K/16K合计8次采样、3976条kernel区间，数值/API/别名审计和离线完整性检查均通过。成对报告见[v2-pair/summary.md](v2-pair/summary.md)，16K原始完整窗口1413187B、SHA d61a4a8132e122126962d7ddc11d7a9019f602b0e5fc356700cbc91c4f542f2d。它与v2-4k归档共同构成可复现输入。
+
+16K边界图median52.012573ms、full54.510248ms，配对插桩增量4.802052%。按每样本带插桩区间和排序GQA44.102310ms、BF16MM5.541262ms、INT8GEMM1.743987ms、GQA reducer0.350513ms。与4K一样主计算显著大于reducer；仍然不将这些区间和当native墙钟/正式分数。
+
+调度分析器已修正跨window累计counter：第二窗9061−4243=4818，而非直接拿9061与4818比。prompt边界的8次重算被按区间分摊，已知数据不再标unknown。15项CPU检查（含真数据、缺前窗、重复/缺失sequence、跨PID/时间及逐请求prompt长度错误）通过；root重跑两个窗口CPU账目均通过。16K抢占8次、重复调度位置51038，其中prompt48880、生成历史2158；4K均为0。逻辑分页范围不可冒充物理KV占用，metadata重算量也不等同GPU成本。完整轨迹尚在collector flush时不读SQLite、不宣称其完整性。
