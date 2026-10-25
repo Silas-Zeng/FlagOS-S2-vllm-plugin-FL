@@ -27,8 +27,19 @@ class Handle:
         self.destination=Path(destination);self.destination.mkdir(parents=True,exist_ok=True)
         self.original=package.compile;self.errors=0;self.provenance=provenance
         original=self.original
+        self.origin_pid=os.getpid();self.seen_pids={self.origin_pid}
         @functools.wraps(original)
         def wrapper(*args,**kwargs):
+            pid=os.getpid()
+            if pid not in self.seen_pids:
+                self.seen_pids.add(pid)
+                try:self.emit({'event':'installation','pid':pid,'inherited_from_pid':self.origin_pid,
+                               'installed_ns':time.monotonic_ns(),'provenance':self.provenance,
+                               'limitation':'Inherited hook; still require a real kernel positive control.'})
+                except Exception:
+                    self.seen_pids.discard(pid);self.errors+=1
+                    try:os.write(2,b'BIV150_COMPILE_OBSERVER_RECORD_ERROR\n')
+                    except OSError:pass
             begin=time.monotonic_ns();failed=None
             try:return original(*args,**kwargs)
             except BaseException as error:

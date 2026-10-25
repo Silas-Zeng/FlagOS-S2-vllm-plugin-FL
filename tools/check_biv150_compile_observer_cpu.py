@@ -23,6 +23,13 @@ with tempfile.TemporaryDirectory() as temp:
     records=[json.loads(line) for p in destination.glob('*.jsonl') for line in p.read_text().splitlines()];assert len([r for r in records if r['event']=='compile_call'])==2
     assert already_bound(SimpleNamespace(name='unobserved_before_install')) is sentinel
     assert len([json.loads(line) for p in destination.glob('*.jsonl') for line in p.read_text().splitlines() if json.loads(line)['event']=='compile_call'])==2
+    real_pid=m.os.getpid
+    try:
+        m.os.getpid=lambda:1234567
+        assert late_bound(SimpleNamespace(name='_small_o_kernel')) is sentinel
+    finally:m.os.getpid=real_pid
+    inherited=[json.loads(line) for p in destination.glob('*.jsonl') for line in p.read_text().splitlines()]
+    assert any(r['event']=='installation' and r['pid']==1234567 and r.get('inherited_from_pid')==real_pid() for r in inherited)
     assert handle.uninstall()=={'aliases_restored':[True,True],'record_errors':0};assert package.compile is implementation.compile is compile
     try:m.Handle(package,SimpleNamespace(compile=lambda x:x),destination,{})
     except RuntimeError:pass
