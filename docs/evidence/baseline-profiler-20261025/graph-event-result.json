@@ -1,0 +1,1490 @@
+{
+  "diagnostic_only": true,
+  "production_graph_modified": false,
+  "capability_proven": true,
+  "started_unix_s": 1792909690.1932547,
+  "script_sha256": "717be1049456c5a4059f9e95f7a21fb0754c1e61acf63bf675819dc8a7f60c2c",
+  "calls": [
+    {
+      "api": "ixGraphGetNodes",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetNodes",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetEdges",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetEdges",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a0c870"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a0cb10"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphInstantiateWithFlags",
+      "return_code": 0,
+      "context": {
+        "graph": "0x558c10c0fa10"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphLaunch",
+      "return_code": 0,
+      "context": "original",
+      "error_string": null
+    },
+    {
+      "api": "ixStreamSynchronize",
+      "return_code": 0,
+      "context": "original",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphClone",
+      "return_code": 0,
+      "context": null,
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetNodes",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetNodes",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetEdges",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetEdges",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a18940"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a18be0"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependentNodes",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependentNodes",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixEventCreateWithFlags",
+      "return_code": 0,
+      "context": "timing enabled, flags=0",
+      "error_string": null
+    },
+    {
+      "api": "ixEventCreateWithFlags",
+      "return_code": 0,
+      "context": "timing enabled, flags=0",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphAddEventRecordNode",
+      "return_code": 0,
+      "context": {
+        "event": "0x558c11a18190",
+        "dependencies": []
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphAddDependencies",
+      "return_code": 0,
+      "context": {
+        "edges": [
+          [
+            "0x558c11a191c0",
+            "0x558c11a18940"
+          ]
+        ]
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphAddEventRecordNode",
+      "return_code": 0,
+      "context": {
+        "event": "0x558c11a0da60",
+        "dependencies": [
+          "0x558c11a18940"
+        ]
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphAddDependencies",
+      "return_code": 0,
+      "context": {
+        "edges": [
+          [
+            "0x558c11a194a0",
+            "0x558c11a18be0"
+          ]
+        ]
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependentNodes",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixEventCreateWithFlags",
+      "return_code": 0,
+      "context": "timing enabled, flags=0",
+      "error_string": null
+    },
+    {
+      "api": "ixEventCreateWithFlags",
+      "return_code": 0,
+      "context": "timing enabled, flags=0",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphAddEventRecordNode",
+      "return_code": 0,
+      "context": {
+        "event": "0x558c11a0db40",
+        "dependencies": [
+          "0x558c11a18940",
+          "0x558c11a194a0"
+        ]
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphAddDependencies",
+      "return_code": 0,
+      "context": {
+        "edges": [
+          [
+            "0x558c11a19ae0",
+            "0x558c11a18be0"
+          ]
+        ]
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphAddEventRecordNode",
+      "return_code": 0,
+      "context": {
+        "event": "0x558c11a0dc00",
+        "dependencies": [
+          "0x558c11a18be0"
+        ]
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetNodes",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetNodes",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetEdges",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphGetEdges",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a18940"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a18be0"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a191c0"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a194a0"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a19ae0"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetType",
+      "return_code": 0,
+      "context": {
+        "node": "0x558c11a19e40"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "count",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphNodeGetDependencies",
+      "return_code": 0,
+      "context": "values",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphInstantiateWithFlags",
+      "return_code": 0,
+      "context": {
+        "graph": "0x558c11a18580"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventCreateWithFlags",
+      "return_code": 0,
+      "context": "timing enabled, flags=0",
+      "error_string": null
+    },
+    {
+      "api": "ixEventCreateWithFlags",
+      "return_code": 0,
+      "context": "timing enabled, flags=0",
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphLaunch",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventSynchronize",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0,
+        "kind": "outer"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0,
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0,
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0,
+        "kind": "offset_start",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0,
+        "kind": "offset_end",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0,
+        "kind": "offset_start",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 0,
+        "kind": "offset_end",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphLaunch",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventSynchronize",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1,
+        "kind": "outer"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1,
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1,
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1,
+        "kind": "offset_start",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1,
+        "kind": "offset_end",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1,
+        "kind": "offset_start",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 1,
+        "kind": "offset_end",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphLaunch",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventSynchronize",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2,
+        "kind": "outer"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2,
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2,
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2,
+        "kind": "offset_start",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2,
+        "kind": "offset_end",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2,
+        "kind": "offset_start",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 0,
+        "repeat": 2,
+        "kind": "offset_end",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphLaunch",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventSynchronize",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0,
+        "kind": "outer"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0,
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0,
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0,
+        "kind": "offset_start",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0,
+        "kind": "offset_end",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0,
+        "kind": "offset_start",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 0,
+        "kind": "offset_end",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphLaunch",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventSynchronize",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1,
+        "kind": "outer"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1,
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1,
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1,
+        "kind": "offset_start",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1,
+        "kind": "offset_end",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1,
+        "kind": "offset_start",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 1,
+        "kind": "offset_end",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixGraphLaunch",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventRecord",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventSynchronize",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2,
+        "kind": "outer"
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2,
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2,
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2,
+        "kind": "offset_start",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2,
+        "kind": "offset_end",
+        "kernel_index": 0
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2,
+        "kind": "offset_start",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixEventElapsedTime",
+      "return_code": 0,
+      "context": {
+        "variant": 1,
+        "repeat": 2,
+        "kind": "offset_end",
+        "kernel_index": 1
+      },
+      "error_string": null
+    },
+    {
+      "api": "ixStreamSynchronize",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphExecDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphExecDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixGraphDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixEventDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixEventDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixEventDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixEventDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixEventDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    },
+    {
+      "api": "ixEventDestroy",
+      "return_code": 0,
+      "context": "cleanup",
+      "error_string": null
+    }
+  ],
+  "records": [
+    {
+      "label": "idle_preflight",
+      "return_code": 0,
+      "output": "Timestamp    Sun Oct 25 14:28:10 2026\n+--------------------------------------------------------------------------------+\n|  IX-ML: 4.4.0            Driver Version: 4.5.0          CUDA Version: 10.2     |\n|----------------------------------+----------------------+----------------------|\n| GPU  Name                        | Bus-Id               | Clock-SM  Clock-Mem  |\n| Fan  Temp  Perf    Pwr:Usage/Cap |      Memory-Usage    | GPU-Util  Compute M. |\n|==================================+======================+======================|\n| 0    Iluvatar BI-V150            | 00000000:13:00.0     | 1500MHz   1600MHz    |\n| N/A  35C   P0       N/A / N/A    | 68MiB / 32768MiB     | 0%        Default    |\n+----------------------------------+----------------------+----------------------+\n\n+--------------------------------------------------------------------------------+\n| Processes:                                                          GPU Memory |\n|  GPU        PID      Process name                                   Usage(MiB) |\n|================================================================================|\n|  No running processes found                                                    |\n+--------------------------------------------------------------------------------+\n"
+    },
+    {
+      "label": "runtime_bound",
+      "library": "/usr/local/corex-4.5.0/lib64/libcudart.so.10.2.89",
+      "symbols": [
+        "ixEventCreateWithFlags",
+        "ixEventDestroy",
+        "ixEventElapsedTime",
+        "ixEventRecord",
+        "ixEventSynchronize",
+        "ixGraphAddDependencies",
+        "ixGraphAddEventRecordNode",
+        "ixGraphClone",
+        "ixGraphDestroy",
+        "ixGraphExecDestroy",
+        "ixGraphGetEdges",
+        "ixGraphGetNodes",
+        "ixGraphInstantiateWithFlags",
+        "ixGraphLaunch",
+        "ixGraphNodeGetDependencies",
+        "ixGraphNodeGetDependentNodes",
+        "ixGraphNodeGetType",
+        "ixStreamSynchronize"
+      ],
+      "node_types": {
+        "0": "kernel",
+        "1": "memcpy",
+        "2": "memset",
+        "3": "host",
+        "4": "child_graph",
+        "5": "empty",
+        "6": "event_wait",
+        "7": "event_record",
+        "10": "mem_alloc",
+        "11": "mem_free",
+        "13": "conditional"
+      },
+      "event_flags": 0,
+      "kernel_node_type": 0,
+      "event_record_node_type": 7
+    },
+    {
+      "label": "torch",
+      "version": "2.10.0",
+      "cuda": "10.2",
+      "device": "Iluvatar BI-V150",
+      "matrix_size": 256
+    },
+    {
+      "label": "captured",
+      "raw_graph": "0x558c10c0fa10",
+      "keep_graph": true,
+      "output_ptr": 137726786011136,
+      "product_ptr": 137726785880064
+    },
+    {
+      "label": "original_graph",
+      "nodes": [
+        {
+          "handle": "0x558c11a0c870",
+          "type": 0,
+          "type_name": "kernel"
+        },
+        {
+          "handle": "0x558c11a0cb10",
+          "type": 0,
+          "type_name": "kernel"
+        }
+      ],
+      "edges": [
+        [
+          "0x558c11a0c870",
+          "0x558c11a0cb10"
+        ]
+      ]
+    },
+    {
+      "label": "original_numeric",
+      "exact": true
+    },
+    {
+      "label": "instrumented_graph",
+      "original_edges_retained": true,
+      "original_node_count": 2,
+      "instrumented_node_count": 6,
+      "kernel_count": 2,
+      "topological_order": [
+        "0x558c11a191c0",
+        "0x558c11a18940",
+        "0x558c11a194a0",
+        "0x558c11a19ae0",
+        "0x558c11a18be0",
+        "0x558c11a19e40"
+      ],
+      "edges": [
+        [
+          "0x558c11a19ae0",
+          "0x558c11a18be0"
+        ],
+        [
+          "0x558c11a18be0",
+          "0x558c11a19e40"
+        ],
+        [
+          "0x558c11a191c0",
+          "0x558c11a18940"
+        ],
+        [
+          "0x558c11a194a0",
+          "0x558c11a18be0"
+        ],
+        [
+          "0x558c11a194a0",
+          "0x558c11a19ae0"
+        ],
+        [
+          "0x558c11a18940",
+          "0x558c11a18be0"
+        ],
+        [
+          "0x558c11a18940",
+          "0x558c11a194a0"
+        ],
+        [
+          "0x558c11a18940",
+          "0x558c11a19ae0"
+        ]
+      ],
+      "probes": [
+        {
+          "index": 0,
+          "kernel": "0x558c11a18940",
+          "start": "0x558c11a18190",
+          "end": "0x558c11a0da60",
+          "start_node": "0x558c11a191c0",
+          "end_node": "0x558c11a194a0"
+        },
+        {
+          "index": 1,
+          "kernel": "0x558c11a18be0",
+          "start": "0x558c11a0db40",
+          "end": "0x558c11a0dc00",
+          "start_node": "0x558c11a19ae0",
+          "end_node": "0x558c11a19e40"
+        }
+      ]
+    },
+    {
+      "label": "replay",
+      "variant": 0,
+      "repeat": 0,
+      "outer_ms": 1.6772807836532593,
+      "kernel_intervals_ms": [
+        0.007242307532578707,
+        0.004607692360877991
+      ],
+      "relative_bounds_ms": [
+        [
+          0.004996153991669416,
+          0.012238461524248123
+        ],
+        [
+          0.014357692562043667,
+          0.018965383991599083
+        ]
+      ],
+      "product_and_output_poisoned_before_replay": true,
+      "numeric_exact": true,
+      "finite": true,
+      "max_abs": 0.0,
+      "positive_intervals": true,
+      "within_outer_bounds": true
+    },
+    {
+      "label": "replay",
+      "variant": 0,
+      "repeat": 1,
+      "outer_ms": 2.0891575813293457,
+      "kernel_intervals_ms": [
+        0.006838461384177208,
+        0.004603845998644829
+      ],
+      "relative_bounds_ms": [
+        [
+          0.004757692106068134,
+          0.011596153490245342
+        ],
+        [
+          0.013715384528040886,
+          0.018319230526685715
+        ]
+      ],
+      "product_and_output_poisoned_before_replay": true,
+      "numeric_exact": true,
+      "finite": true,
+      "max_abs": 0.0,
+      "positive_intervals": true,
+      "within_outer_bounds": true
+    },
+    {
+      "label": "replay",
+      "variant": 0,
+      "repeat": 2,
+      "outer_ms": 2.4342000484466553,
+      "kernel_intervals_ms": [
+        0.006857692264020443,
+        0.004603845998644829
+      ],
+      "relative_bounds_ms": [
+        [
+          0.004776922985911369,
+          0.011634615249931812
+        ],
+        [
+          0.013757692649960518,
+          0.018361538648605347
+        ]
+      ],
+      "product_and_output_poisoned_before_replay": true,
+      "numeric_exact": true,
+      "finite": true,
+      "max_abs": 0.0,
+      "positive_intervals": true,
+      "within_outer_bounds": true
+    },
+    {
+      "label": "replay",
+      "variant": 1,
+      "repeat": 0,
+      "outer_ms": 2.844749927520752,
+      "kernel_intervals_ms": [
+        0.006857692264020443,
+        0.004623076878488064
+      ],
+      "relative_bounds_ms": [
+        [
+          0.004776922985911369,
+          0.011634615249931812
+        ],
+        [
+          0.013738461770117283,
+          0.018361538648605347
+        ]
+      ],
+      "product_and_output_poisoned_before_replay": true,
+      "numeric_exact": true,
+      "finite": true,
+      "max_abs": 0.0,
+      "positive_intervals": true,
+      "within_outer_bounds": true
+    },
+    {
+      "label": "replay",
+      "variant": 1,
+      "repeat": 1,
+      "outer_ms": 3.1482653617858887,
+      "kernel_intervals_ms": [
+        0.006853846367448568,
+        0.004607692360877991
+      ],
+      "relative_bounds_ms": [
+        [
+          0.004738461691886187,
+          0.011592308059334755
+        ],
+        [
+          0.013692307285964489,
+          0.018300000578165054
+        ]
+      ],
+      "product_and_output_poisoned_before_replay": true,
+      "numeric_exact": true,
+      "finite": true,
+      "max_abs": 0.0,
+      "positive_intervals": true,
+      "within_outer_bounds": true
+    },
+    {
+      "label": "replay",
+      "variant": 1,
+      "repeat": 2,
+      "outer_ms": 3.7011001110076904,
+      "kernel_intervals_ms": [
+        0.006853846367448568,
+        0.004607692360877991
+      ],
+      "relative_bounds_ms": [
+        [
+          0.004780769348144531,
+          0.011634615249931812
+        ],
+        [
+          0.013757692649960518,
+          0.01836538501083851
+        ]
+      ],
+      "product_and_output_poisoned_before_replay": true,
+      "numeric_exact": true,
+      "finite": true,
+      "max_abs": 0.0,
+      "positive_intervals": true,
+      "within_outer_bounds": true
+    }
+  ],
+  "cleanup_errors": [],
+  "verdict": "tiny_top_level_kernel_event_nodes_passed",
+  "limits": [
+    "Not a production trace or a throughput measurement.",
+    "Event instrumentation adds graph nodes, dependencies and timing overhead.",
+    "No production graph or nested child graph was mutated.",
+    "Only this tiny graph, dtype, runtime and input variants were tested."
+  ],
+  "completed": true,
+  "finished_unix_s": 1792909692.3074636
+}
