@@ -1,0 +1,73 @@
+{
+  "source": "/private/tmp/flagos-prefill-native-gemm-20261025/tools/run_biv150_native_prefill_acceptance.py",
+  "source_sha256": "1cc2c9d4552c3e1ca8594814d91b0d7949ffde504f31c486db97888011fe4fb6",
+  "validation": "Selected actual source AST, synthetic processes/accuracy, CPU only",
+  "limits": "No real process signals, HTTP, service, GPU, timing or concurrent PID-reuse race was exercised.",
+  "checks": [
+    {
+      "name": "live_launcher_adopts_only_same_session",
+      "passed": true
+    },
+    {
+      "name": "reused_launcher_pid_sid_cannot_anchor",
+      "passed": true
+    },
+    {
+      "name": "dead_launcher_no_anchor_cannot_adopt_recycled_session",
+      "passed": true
+    },
+    {
+      "name": "surviving_owned_child_anchors_original_session",
+      "passed": true
+    },
+    {
+      "name": "reused_owned_child_pid_cannot_anchor",
+      "passed": true
+    },
+    {
+      "name": "old_pid_identity_is_never_overwritten",
+      "passed": true
+    },
+    {
+      "name": "near_miss_allows_diagnostic_throughput_only",
+      "passed": true
+    },
+    {
+      "name": "below_near_miss_fails_closed",
+      "passed": true
+    },
+    {
+      "name": "near_miss_with_failed_prediction_fails_closed",
+      "passed": true
+    },
+    {
+      "name": "missing_prediction_fails_closed",
+      "passed": true
+    },
+    {
+      "name": "duplicate_question_fails_closed",
+      "passed": true
+    },
+    {
+      "name": "precision_pass_still_needs_paired_acceptance",
+      "passed": true
+    },
+    {
+      "name": "throughput_only_keeps_precision_unknown",
+      "passed": true
+    },
+    {
+      "name": "fixed_three_warmups_then_one_score_per_length",
+      "passed": true
+    },
+    {
+      "name": "cleanup_complete_False_controls_normal_exit",
+      "passed": true
+    },
+    {
+      "name": "cleanup_complete_True_controls_normal_exit",
+      "passed": true
+    }
+  ],
+  "all_passed": true
+}

@@ -1,0 +1,278 @@
+{
+  "cpu_only": true,
+  "no_torch_import": true,
+  "results": [
+    {
+      "geometry": "qkv",
+      "pattern": "normal",
+      "max_absolute_error_where_ulp_gt_one": 9.5367431640625e-07,
+      "max_error_div_tolerance_where_ulp_gt_one": 0.00019072032591793686,
+      "nonzero_sign_flip_examples": [
+        {
+          "flat_index": 1607885,
+          "candidate": 1.0058283805847168e-07,
+          "reference": -1.7695128917694092e-07,
+          "absolute_error": 2.775341272354126e-07,
+          "tolerance": 0.005000000819563866,
+          "ulp_distance": 26646
+        },
+        {
+          "flat_index": 3377787,
+          "candidate": -8.940696716308594e-08,
+          "reference": 6.426125764846802e-08,
+          "absolute_error": 1.5366822481155396e-07,
+          "tolerance": 0.005000000353902578,
+          "ulp_distance": 26442
+        }
+      ],
+      "tolerance_violation_examples": [
+        {
+          "flat_index": 4776268,
+          "candidate": -2.078125,
+          "reference": -2.0625,
+          "absolute_error": 0.015625,
+          "tolerance": 0.01531249936670065,
+          "ulp_distance": 1
+        }
+      ]
+    },
+    {
+      "geometry": "o",
+      "pattern": "normal",
+      "max_absolute_error_where_ulp_gt_one": 9.5367431640625e-07,
+      "max_error_div_tolerance_where_ulp_gt_one": 0.00019073192379437387,
+      "nonzero_sign_flip_examples": [
+        {
+          "flat_index": 810729,
+          "candidate": 1.1175870895385742e-07,
+          "reference": -3.4924596548080444e-08,
+          "absolute_error": 1.4668330550193787e-07,
+          "tolerance": 0.004999999888241291,
+          "ulp_distance": 26374
+        }
+      ],
+      "tolerance_violation_examples": [
+        {
+          "flat_index": 201047,
+          "candidate": 2.046875,
+          "reference": 2.03125,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015156249515712261,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 1342525,
+          "candidate": 2.015625,
+          "reference": 2.03125,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015156249515712261,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 4126591,
+          "candidate": 2.125,
+          "reference": 2.109375,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015546875074505806,
+          "ulp_distance": 1
+        }
+      ]
+    },
+    {
+      "geometry": "down",
+      "pattern": "normal",
+      "max_absolute_error_where_ulp_gt_one": 2.86102294921875e-06,
+      "max_error_div_tolerance_where_ulp_gt_one": 0.0005721200141124427,
+      "nonzero_sign_flip_examples": [
+        {
+          "flat_index": 604461,
+          "candidate": 1.341104507446289e-07,
+          "reference": -8.265487849712372e-09,
+          "absolute_error": 1.4237593859434128e-07,
+          "tolerance": 0.004999999888241291,
+          "ulp_distance": 26142
+        }
+      ],
+      "tolerance_violation_examples": [
+        {
+          "flat_index": 308,
+          "candidate": 4.3125,
+          "reference": 4.28125,
+          "absolute_error": 0.03125,
+          "tolerance": 0.02640625089406967,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 1460021,
+          "candidate": -4.125,
+          "reference": -4.09375,
+          "absolute_error": 0.03125,
+          "tolerance": 0.025468748062849045,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 1778300,
+          "candidate": -2.046875,
+          "reference": -2.0625,
+          "absolute_error": 0.015625,
+          "tolerance": 0.01531249936670065,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2364112,
+          "candidate": 2.046875,
+          "reference": 2.0625,
+          "absolute_error": 0.015625,
+          "tolerance": 0.01531249936670065,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2442848,
+          "candidate": 4.375,
+          "reference": 4.34375,
+          "absolute_error": 0.03125,
+          "tolerance": 0.026718750596046448,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2703234,
+          "candidate": -2.078125,
+          "reference": -2.0625,
+          "absolute_error": 0.015625,
+          "tolerance": 0.01531249936670065,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2827451,
+          "candidate": 2.015625,
+          "reference": 2.0,
+          "absolute_error": 0.015625,
+          "tolerance": 0.014999999664723873,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2943746,
+          "candidate": -2.0625,
+          "reference": -2.046875,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015234374441206455,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2992343,
+          "candidate": -2.125,
+          "reference": -2.109375,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015546875074505806,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 3262142,
+          "candidate": -4.78125,
+          "reference": -4.8125,
+          "absolute_error": 0.03125,
+          "tolerance": 0.02906249836087227,
+          "ulp_distance": 1
+        }
+      ]
+    },
+    {
+      "geometry": "gate_up",
+      "pattern": "normal",
+      "max_absolute_error_where_ulp_gt_one": 9.5367431640625e-07,
+      "max_error_div_tolerance_where_ulp_gt_one": 0.00019072582654189318,
+      "nonzero_sign_flip_examples": [
+        {
+          "flat_index": 1869253,
+          "candidate": 3.725290298461914e-08,
+          "reference": -6.705522537231445e-08,
+          "absolute_error": 1.043081283569336e-07,
+          "tolerance": 0.005000000353902578,
+          "ulp_distance": 26288
+        },
+        {
+          "flat_index": 19898902,
+          "candidate": -1.4528632164001465e-07,
+          "reference": 3.306195139884949e-08,
+          "absolute_error": 1.7834827303886414e-07,
+          "tolerance": 0.004999999888241291,
+          "ulp_distance": 26410
+        }
+      ],
+      "tolerance_violation_examples": [
+        {
+          "flat_index": 622942,
+          "candidate": -2.078125,
+          "reference": -2.09375,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015468749217689037,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2122555,
+          "candidate": -2.03125,
+          "reference": -2.046875,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015234374441206455,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 2911943,
+          "candidate": 2.0625,
+          "reference": 2.078125,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015390624292194843,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 3829676,
+          "candidate": -2.078125,
+          "reference": -2.09375,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015468749217689037,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 8403274,
+          "candidate": -2.0625,
+          "reference": -2.078125,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015390624292194843,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 14738637,
+          "candidate": 2.03125,
+          "reference": 2.046875,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015234374441206455,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 17027231,
+          "candidate": 2.0625,
+          "reference": 2.078125,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015390624292194843,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 20308497,
+          "candidate": -2.03125,
+          "reference": -2.046875,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015234374441206455,
+          "ulp_distance": 1
+        },
+        {
+          "flat_index": 24782760,
+          "candidate": -2.0625,
+          "reference": -2.046875,
+          "absolute_error": 0.015625,
+          "tolerance": 0.015234374441206455,
+          "ulp_distance": 1
+        }
+      ]
+    }
+  ]
+}
