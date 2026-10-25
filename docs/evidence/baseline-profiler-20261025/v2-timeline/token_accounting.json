@@ -1,0 +1,89 @@
+[
+  {
+    "epoch": 1,
+    "pid": 290618,
+    "unique_requests": 256,
+    "declared_prompt_tokens": 1048576,
+    "new_request_events": 256,
+    "reintroduced_requests": 0,
+    "preempted_requests": 0,
+    "preemption_steps": [],
+    "positions": {
+      "prompt": {
+        "scheduled_positions": 1048576,
+        "unique_positions": 1048576,
+        "recomputed_positions": 0
+      },
+      "output": {
+        "scheduled_positions": 261888,
+        "unique_positions": 261888,
+        "recomputed_positions": 0
+      }
+    },
+    "notes": [
+      "Computed-token intervals are taken from CPU scheduler metadata, not GPU argument registers.",
+      "Output positions are tokens fed back into the model; the final sampled token of each completed request is not fed back.",
+      "Repeated positions identify recomputation; no GPU time is attributed to recomputation by CPU wall-window clipping."
+    ]
+  },
+  {
+    "epoch": 2,
+    "pid": 290618,
+    "unique_requests": 128,
+    "declared_prompt_tokens": 2097152,
+    "new_request_events": 136,
+    "reintroduced_requests": 5,
+    "preempted_requests": 8,
+    "preemption_steps": [
+      {
+        "step": 339,
+        "requests": 1
+      },
+      {
+        "step": 858,
+        "requests": 1
+      },
+      {
+        "step": 1356,
+        "requests": 1
+      },
+      {
+        "step": 1900,
+        "requests": 1
+      },
+      {
+        "step": 2398,
+        "requests": 1
+      },
+      {
+        "step": 2942,
+        "requests": 1
+      },
+      {
+        "step": 3445,
+        "requests": 1
+      },
+      {
+        "step": 3989,
+        "requests": 1
+      }
+    ],
+    "positions": {
+      "prompt": {
+        "scheduled_positions": 2146032,
+        "unique_positions": 2097152,
+        "recomputed_positions": 48880
+      },
+      "output": {
+        "scheduled_positions": 133102,
+        "unique_positions": 130944,
+        "recomputed_positions": 2158
+      }
+    },
+    "notes": [
+      "Computed-token intervals are taken from CPU scheduler metadata, not GPU argument registers.",
+      "Output positions are tokens fed back into the model; the final sampled token of each completed request is not fed back.",
+      "Repeated positions identify recomputation; no GPU time is attributed to recomputation by CPU wall-window clipping."
+    ]
+  }
+]

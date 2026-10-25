@@ -1,0 +1,345 @@
+[
+  {
+    "name": "kernel_biv150_prefill_normalized",
+    "retained_count": 44814,
+    "gpu_sum_s": 209.497096915,
+    "mean_retained_ms": 4.674813605458116,
+    "max_retained_ms": 10.772311
+  },
+  {
+    "name": "mm_kernel",
+    "retained_count": 142978,
+    "gpu_sum_s": 68.861543351,
+    "mean_retained_ms": 0.48162335010281304,
+    "max_retained_ms": 1.450219
+  },
+  {
+    "name": "_gqa_decode_attention",
+    "retained_count": 43806,
+    "gpu_sum_s": 42.855412187,
+    "mean_retained_ms": 0.9783000544902525,
+    "max_retained_ms": 1.104538
+  },
+  {
+    "name": "void Gemm_tcu_mr_kernel::gemm_tcu_h<256u, 256u, 64u, 64u, 64u, 2u, (ixblasTrans_t)1, (ixblasTrans_t)1, (ixblasTCUGEMMCategory_t)0, (ixmma::MMEdgeCheckMode)0, (ixblasGEMMBoundary_t)2, (ixblasLtEpilogue_t)1, false, int, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, false, true, 4u, 4u, false, int, int, int, signed char, signed char>(int*, int*, signed char const*, signed char const*, int, int, int, int, int, int, int, int, int, int, long, long, long, long, long, long, ixblasGEMMBatchMode_t, int, void*, void*, void*, unsigned int)",
+    "retained_count": 36040,
+    "gpu_sum_s": 16.711487098,
+    "mean_retained_ms": 0.4636927607658157,
+    "max_retained_ms": 0.485346
+  },
+  {
+    "name": "(anonymous namespace)::silu_epilogue(int const*, float const*, float const*, __ix_bfloat16*, int)",
+    "retained_count": 36278,
+    "gpu_sum_s": 8.280153168,
+    "mean_retained_ms": 0.2282417213738354,
+    "max_retained_ms": 0.234769
+  },
+  {
+    "name": "linear_kernel",
+    "retained_count": 4812,
+    "gpu_sum_s": 4.506923359,
+    "mean_retained_ms": 0.9366008642975894,
+    "max_retained_ms": 1.064061
+  },
+  {
+    "name": "triton_red_fused_fused_add_rms_norm_1",
+    "retained_count": 36278,
+    "gpu_sum_s": 3.010538772,
+    "mean_retained_ms": 0.08298524648547329,
+    "max_retained_ms": 0.08963
+  },
+  {
+    "name": "triton_poi_fused_2",
+    "retained_count": 36278,
+    "gpu_sum_s": 2.97492711,
+    "mean_retained_ms": 0.0820036140360549,
+    "max_retained_ms": 0.084384
+  },
+  {
+    "name": "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0",
+    "retained_count": 36278,
+    "gpu_sum_s": 1.826303609,
+    "mean_retained_ms": 0.0503419044324384,
+    "max_retained_ms": 0.054192
+  },
+  {
+    "name": "reshape_and_cache_kernel_flash",
+    "retained_count": 44814,
+    "gpu_sum_s": 1.357065209,
+    "mean_retained_ms": 0.030282170951042083,
+    "max_retained_ms": 0.033492
+  },
+  {
+    "name": "triton_poi_fused_mul_silu_slice_1",
+    "retained_count": 8536,
+    "gpu_sum_s": 1.170664954,
+    "mean_retained_ms": 0.13714444165885661,
+    "max_retained_ms": 0.143311
+  },
+  {
+    "name": "void (anonymous namespace)::quantize_cached_rows<256>(__ix_bfloat16 const*, signed char*, float*, int)",
+    "retained_count": 36278,
+    "gpu_sum_s": 0.973859563,
+    "mean_retained_ms": 0.026844356441920725,
+    "max_retained_ms": 0.029161
+  },
+  {
+    "name": "_weighted_hist",
+    "retained_count": 8578,
+    "gpu_sum_s": 0.969439045,
+    "mean_retained_ms": 0.11301457740732104,
+    "max_retained_ms": 0.25273
+  },
+  {
+    "name": "true_div_func_kernel_rank_2",
+    "retained_count": 4812,
+    "gpu_sum_s": 0.740836882,
+    "mean_retained_ms": 0.1539561267664173,
+    "max_retained_ms": 0.18495
+  },
+  {
+    "name": "triton_red_fused_fused_add_rms_norm_2",
+    "retained_count": 8536,
+    "gpu_sum_s": 0.688316518,
+    "mean_retained_ms": 0.08063689292408623,
+    "max_retained_ms": 0.089892
+  },
+  {
+    "name": "triton_poi_fused_3",
+    "retained_count": 7469,
+    "gpu_sum_s": 0.611347412,
+    "mean_retained_ms": 0.08185130700227608,
+    "max_retained_ms": 0.084388
+  },
+  {
+    "name": "triton_red_fused_fused_add_rms_norm_0",
+    "retained_count": 8536,
+    "gpu_sum_s": 0.4299027,
+    "mean_retained_ms": 0.05036348406747892,
+    "max_retained_ms": 0.054234
+  },
+  {
+    "name": "true_div_func_kernel_rank_1",
+    "retained_count": 4812,
+    "gpu_sum_s": 0.429140002,
+    "mean_retained_ms": 0.0891812140482128,
+    "max_retained_ms": 0.109907
+  },
+  {
+    "name": "_reduce_partials",
+    "retained_count": 43806,
+    "gpu_sum_s": 0.416404837,
+    "mean_retained_ms": 0.00950565760398119,
+    "max_retained_ms": 0.011311
+  },
+  {
+    "name": "softmax_kernel_inner",
+    "retained_count": 5335,
+    "gpu_sum_s": 0.379592898,
+    "mean_retained_ms": 0.07115143355201499,
+    "max_retained_ms": 0.098123
+  },
+  {
+    "name": "sweep",
+    "retained_count": 4184,
+    "gpu_sum_s": 0.348265315,
+    "mean_retained_ms": 0.08323740798279158,
+    "max_retained_ms": 0.283823
+  },
+  {
+    "name": "argmax_kernel_inner",
+    "retained_count": 4812,
+    "gpu_sum_s": 0.326183614,
+    "mean_retained_ms": 0.06778545594347465,
+    "max_retained_ms": 0.07783
+  },
+  {
+    "name": "_row_stats_partial",
+    "retained_count": 4289,
+    "gpu_sum_s": 0.294380545,
+    "mean_retained_ms": 0.06863617276754488,
+    "max_retained_ms": 0.078411
+  },
+  {
+    "name": "fused_exponential_kernel_f32_unroll8",
+    "retained_count": 4812,
+    "gpu_sum_s": 0.222848133,
+    "mean_retained_ms": 0.04631091708229426,
+    "max_retained_ms": 0.055865
+  },
+  {
+    "name": "_to_copy_func_kernel_rank_1",
+    "retained_count": 10147,
+    "gpu_sum_s": 0.197021149,
+    "mean_retained_ms": 0.01941668956341776,
+    "max_retained_ms": 0.044638
+  },
+  {
+    "name": "compute_global_hist_kernel",
+    "retained_count": 523,
+    "gpu_sum_s": 0.171626352,
+    "mean_retained_ms": 0.3281574608030593,
+    "max_retained_ms": 0.782765
+  },
+  {
+    "name": "_apply_mask",
+    "retained_count": 4289,
+    "gpu_sum_s": 0.147413766,
+    "mean_retained_ms": 0.034370194917230125,
+    "max_retained_ms": 0.044742
+  },
+  {
+    "name": "triton_poi_fused_1",
+    "retained_count": 1067,
+    "gpu_sum_s": 0.087340526,
+    "mean_retained_ms": 0.08185616307403935,
+    "max_retained_ms": 0.083419
+  },
+  {
+    "name": "void Gemm_tcu_mr_kernel::gemm_tcu_h<256u, 256u, 64u, 64u, 64u, 2u, (ixblasTrans_t)1, (ixblasTrans_t)1, (ixblasTCUGEMMCategory_t)0, (ixmma::MMEdgeCheckMode)0, (ixblasGEMMBoundary_t)2, (ixblasLtEpilogue_t)1, false, int, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, (ixblasLtMatmulMatrixScale_t)1002, false, false, 4u, 4u, false, int, int, int, signed char, signed char>(int*, int*, signed char const*, signed char const*, int, int, int, int, int, int, int, int, int, int, long, long, long, long, long, long, ixblasGEMMBatchMode_t, int, void*, void*, void*, unsigned int)",
+    "retained_count": 238,
+    "gpu_sum_s": 0.078692904,
+    "mean_retained_ms": 0.33064245378151264,
+    "max_retained_ms": 0.451269
+  },
+  {
+    "name": "_hist_walk",
+    "retained_count": 8578,
+    "gpu_sum_s": 0.061535079,
+    "mean_retained_ms": 0.007173592795523432,
+    "max_retained_ms": 0.008676
+  },
+  {
+    "name": "zeros_kernel",
+    "retained_count": 14435,
+    "gpu_sum_s": 0.05812382,
+    "mean_retained_ms": 0.004026589539314167,
+    "max_retained_ms": 0.005269
+  },
+  {
+    "name": "triton_red_fused__to_copy_embedding_rms_norm_0",
+    "retained_count": 1067,
+    "gpu_sum_s": 0.045605229,
+    "mean_retained_ms": 0.042741545454545456,
+    "max_retained_ms": 0.053157
+  },
+  {
+    "name": "_compute_slot_mapping_kernel",
+    "retained_count": 4812,
+    "gpu_sum_s": 0.039057197,
+    "mean_retained_ms": 0.008116624480465502,
+    "max_retained_ms": 0.011142
+  },
+  {
+    "name": "fill_scalar_func_kernel_rank_1",
+    "retained_count": 7635,
+    "gpu_sum_s": 0.0300993,
+    "mean_retained_ms": 0.003942278978388998,
+    "max_retained_ms": 0.006688
+  },
+  {
+    "name": "_index_linearized_jit_function",
+    "retained_count": 4812,
+    "gpu_sum_s": 0.028059728,
+    "mean_retained_ms": 0.005831198669991688,
+    "max_retained_ms": 0.00765
+  },
+  {
+    "name": "_row_max_reduce",
+    "retained_count": 4289,
+    "gpu_sum_s": 0.021341472,
+    "mean_retained_ms": 0.0049758619724877585,
+    "max_retained_ms": 0.006211
+  },
+  {
+    "name": "sub_func_tensor_scalar_kernel_rank_1",
+    "retained_count": 5601,
+    "gpu_sum_s": 0.020997858,
+    "mean_retained_ms": 0.0037489480449919657,
+    "max_retained_ms": 0.00418
+  },
+  {
+    "name": "_copy_kernel_kernel_rank_1",
+    "retained_count": 4499,
+    "gpu_sum_s": 0.016897788,
+    "mean_retained_ms": 0.003755898644143143,
+    "max_retained_ms": 0.004307
+  },
+  {
+    "name": "_copy_kernel_kernel_rank_2",
+    "retained_count": 620,
+    "gpu_sum_s": 0.009519073,
+    "mean_retained_ms": 0.015353343548387096,
+    "max_retained_ms": 0.037265
+  },
+  {
+    "name": "le_func_kernel_rank_2",
+    "retained_count": 523,
+    "gpu_sum_s": 0.007704489,
+    "mean_retained_ms": 0.014731336520076481,
+    "max_retained_ms": 0.042984
+  },
+  {
+    "name": "_scatter_jit_function",
+    "retained_count": 523,
+    "gpu_sum_s": 0.006954769,
+    "mean_retained_ms": 0.013297837476099427,
+    "max_retained_ms": 0.0504
+  },
+  {
+    "name": "reduce_then_scan_block_scan_kernel_row",
+    "retained_count": 523,
+    "gpu_sum_s": 0.006672136,
+    "mean_retained_ms": 0.01275743021032505,
+    "max_retained_ms": 0.028565
+  },
+  {
+    "name": "reduce_then_scan_root_scan_kernel_row",
+    "retained_count": 1046,
+    "gpu_sum_s": 0.004414184,
+    "mean_retained_ms": 0.004220061185468451,
+    "max_retained_ms": 0.006684
+  },
+  {
+    "name": "masked_fill_kernel_kernel_rank_1",
+    "retained_count": 523,
+    "gpu_sum_s": 0.004091996,
+    "mean_retained_ms": 0.00782408413001912,
+    "max_retained_ms": 0.016696
+  },
+  {
+    "name": "reduce_then_scan_block_sum_kernel_row",
+    "retained_count": 523,
+    "gpu_sum_s": 0.003370592,
+    "mean_retained_ms": 0.006444726577437858,
+    "max_retained_ms": 0.0093
+  },
+  {
+    "name": "arange_func",
+    "retained_count": 523,
+    "gpu_sum_s": 0.003365265,
+    "mean_retained_ms": 0.006434541108986616,
+    "max_retained_ms": 0.007242
+  },
+  {
+    "name": "sub_func_kernel_rank_1",
+    "retained_count": 523,
+    "gpu_sum_s": 0.002175046,
+    "mean_retained_ms": 0.00415878776290631,
+    "max_retained_ms": 0.006411
+  },
+  {
+    "name": "rsub_func_tensor_scalar_kernel_rank_1",
+    "retained_count": 523,
+    "gpu_sum_s": 0.001874223,
+    "mean_retained_ms": 0.003583600382409178,
+    "max_retained_ms": 0.004138
+  },
+  {
+    "name": "_gather_scatter_i32",
+    "retained_count": 305,
+    "gpu_sum_s": 0.001275408,
+    "mean_retained_ms": 0.004181665573770491,
+    "max_retained_ms": 0.004453
+  }
+]

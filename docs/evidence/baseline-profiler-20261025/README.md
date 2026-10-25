@@ -52,3 +52,9 @@ M2048原生BF16 GEMM探针已另开Draft PR44。尚未执行GPU验证，也没�
 16K边界图median52.012573ms、full54.510248ms，配对插桩增量4.802052%。按每样本带插桩区间和排序GQA44.102310ms、BF16MM5.541262ms、INT8GEMM1.743987ms、GQA reducer0.350513ms。与4K一样主计算显著大于reducer；仍然不将这些区间和当native墙钟/正式分数。
 
 调度分析器已修正跨window累计counter：第二窗9061−4243=4818，而非直接拿9061与4818比。prompt边界的8次重算被按区间分摊，已知数据不再标unknown。15项CPU检查（含真数据、缺前窗、重复/缺失sequence、跨PID/时间及逐请求prompt长度错误）通过；root重跑两个窗口CPU账目均通过。16K抢占8次、重复调度位置51038，其中prompt48880、生成历史2158；4K均为0。逻辑分页范围不可冒充物理KV占用，metadata重算量也不等同GPU成本。完整轨迹尚在collector flush时不读SQLite、不宣称其完整性。
+
+## v2完整时间线已完成导出与校验
+
+collector保存超过900秒时driver如实留下failed/flush_pending，并未终止collector。随后已确认Report saved、collector退出、SQLite quick_check=ok，最终trace为1050116096B、SHA11394a8b0cbdc0b74802dd466aad6fa4884cde6916bc9a1b9510cabbba150a85。原failed状态未改写，完成审计与原始trace身份另存。
+
+[v2-timeline/report.md](v2-timeline/report.md)对CPU/GPU/分母统一剔除8个诊断采样范围。4K保留231.999898s、GPU227.414830s（98.0237%）；16K保留555.886648s、GPU549.859611s（98.9158%）。16K非Graph prefill attention209.497097s、MM68.861543s、GQA42.855412s，opaque Graph180.669046s；不能把节点采样乘次数冒充全程算子占比。host等待绝大多数与GPU重叠，不是可直接消除的CPU开销。
