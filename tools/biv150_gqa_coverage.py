@@ -12,7 +12,7 @@ from pathlib import Path
 PINS = {
     "vllm_fl.compilation.graph": "ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2",
     "vllm_fl.worker.model_runner": "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61",
-    "vllm_fl.patches.biv150_gqa_decode": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+    "vllm_fl.patches.biv150_gqa_decode": "37d11d08a6a2e563f550909b0011d0ea62f9495049f7983674f52f755f305256",
 }
 
 
