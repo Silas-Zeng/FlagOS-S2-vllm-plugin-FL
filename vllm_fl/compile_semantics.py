@@ -21,6 +21,25 @@ _DISPATCH_ENV = ("VLLM_FL_PREFER", "VLLM_FL_STRICT", "VLLM_FL_DENY_VENDORS",
                  "VLLM_FL_FLAGOS_BLACKLIST_APPEND")
 
 
+_SMALL_PROJECTIONS = ("qkv", "o", "down", "gate")
+_SMALL_SCOPE_ENV = "VLLM_FL_BIV150_STABLE_SMALL_O_PROJECTIONS"
+
+
+def small_projection_scope(environ=None):
+    """Canonical model-projection scope; never branches on requests or row counts."""
+    env = os.environ if environ is None else environ
+    value = env.get(_SMALL_SCOPE_ENV, "all").strip()
+    if value == "all":
+        return _SMALL_PROJECTIONS
+    if value == "none":
+        return ()
+    selected = tuple(part.strip() for part in value.split(","))
+    if (not selected or len(set(selected)) != len(selected)
+            or any(part not in _SMALL_PROJECTIONS for part in selected)):
+        raise ValueError(f"Invalid {_SMALL_SCOPE_ENV}: {value!r}")
+    return tuple(part for part in _SMALL_PROJECTIONS if part in selected)
+
+
 def native_model_matches(config) -> bool:
     return all(getattr(config, key, None) == value for key, value in _GEOMETRY.items())
 
@@ -81,6 +100,8 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     facts = {"schema": 1, "source": source, "features": features, "dispatch": dispatch,
              "external_config": external_config, "abi": _runtime_abi() if abi is None else abi,
              "gqa_target_programs": int(env.get("VLLM_FL_BIV150_GQA_TARGET_PROGRAMS", "256"))}
+    facts["small_projection_scope"] = (small_projection_scope(env)
+        if features["VLLM_FL_BIV150_STABLE_SMALL_O"] else ())
     if features["VLLM_FL_BIV150_NATIVE_W8A8"]:
         library = native_library_path(package_root=package, environ=env)
         # wheel 可以不携带构建源码；实际加载的 SO 始终必须存在并按内容哈希。

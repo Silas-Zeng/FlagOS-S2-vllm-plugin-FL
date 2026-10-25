@@ -8,6 +8,7 @@ import triton.language as tl
 _DEFINITION = None
 _IMPLEMENTATION = None
 _INSTALLED = False
+_PROJECTION_SCOPE = None
 _OBSERVED_ROWS = set()
 
 
@@ -75,10 +76,9 @@ def _register():
 
 
 def install():
-    global _INSTALLED
+    global _INSTALLED, _PROJECTION_SCOPE
     if os.environ.get('VLLM_FL_BIV150_STABLE_SMALL_O','1')!='1':
         return {'installed':False,'reason':'disabled'}
-    if _INSTALLED:return {'installed':True,'reason':'already installed'}
     from vllm_fl.patches.biv150_native_w8a8 import _eligible_model
     if not _eligible_model():return {'installed':False,'reason':'unsupported model'}
     from vllm.distributed import get_tensor_model_parallel_world_size
@@ -88,14 +88,22 @@ def install():
     from vllm.model_executor.layers.utils import dispatch_unquantized_gemm, default_unquantized_gemm
     if envs.VLLM_BATCH_INVARIANT or dispatch_unquantized_gemm() is not default_unquantized_gemm:
         return {'installed':False,'reason':'unsupported original GEMM dispatch'}
+    from vllm_fl.compile_semantics import small_projection_scope
+    projections = small_projection_scope()
+    if _INSTALLED:
+        if projections != _PROJECTION_SCOPE:
+            raise RuntimeError('Projection scope cannot change after installation')
+        return {'installed':True,'reason':'already installed','projections':list(projections)}
+    if not projections:
+        return {'installed':False,'reason':'no projections selected','projections':[]}
     from vllm.model_executor.layers.linear import UnquantizedLinearMethod
     _register()
     previous=UnquantizedLinearMethod.apply
     def apply(self,layer,x,bias=None):
-        projection=(layer.prefix.endswith('.self_attn.o_proj') and tuple(layer.weight.shape)==(2048,2048)
-                    or layer.prefix.endswith('.mlp.gate_up_proj') and tuple(layer.weight.shape)==(12288,2048)
-                    or layer.prefix.endswith('.self_attn.qkv_proj') and tuple(layer.weight.shape)==(2560,2048)
-                    or layer.prefix.endswith('.mlp.down_proj') and tuple(layer.weight.shape)==(2048,6144))
+        projection=('o' in projections and layer.prefix.endswith('.self_attn.o_proj') and tuple(layer.weight.shape)==(2048,2048)
+                    or 'gate' in projections and layer.prefix.endswith('.mlp.gate_up_proj') and tuple(layer.weight.shape)==(12288,2048)
+                    or 'qkv' in projections and layer.prefix.endswith('.self_attn.qkv_proj') and tuple(layer.weight.shape)==(2560,2048)
+                    or 'down' in projections and layer.prefix.endswith('.mlp.down_proj') and tuple(layer.weight.shape)==(2048,6144))
         if (bias is not None or not projection or hasattr(layer,'_biv150_native_wq')
                 or layer.weight.dtype!=torch.bfloat16):
             return previous(self,layer,x,bias)
@@ -104,7 +112,9 @@ def install():
         output=torch.ops.biv150_stable_small_o.linear(x.reshape(-1,layer.weight.shape[1]),layer.weight)
         return output.reshape(*x.shape[:-1],layer.weight.shape[0])
     UnquantizedLinearMethod.apply=apply
+    _PROJECTION_SCOPE=projections
     _INSTALLED=True
-    return {'installed':True,'scope':'BF16 TP1 QKV/O/down and uncompressed edge-gate projections M1-8',
+    return {'installed':True,'scope':'BF16 TP1 selected projections M1-8',
+            'projections':list(projections),
             'block_m':16,'block_n':64,'block_k':128,'warps':4,'stages':1,
             'larger_rows':'original default_unquantized_gemm F.linear route inside the opaque operation'}
