@@ -224,8 +224,12 @@ def install():
         or hashlib.sha256(path.read_bytes()).hexdigest()!=EXPECTED_LLAMA_SHA256):
         return {"installed":False,"reason":"unaudited or already wrapped decoder forward"}
     rewritten=_rewrite_forward_ast(inspect.getsource(original))
-    generated=str(Path(__file__).resolve())+".generated_forward.py"
-    source=ast.unparse(rewritten)+"\n"
+    template=Path(__file__).with_name('biv150_live_carry_forward.py')
+    source=template.read_text()
+    functions=[n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef)]
+    if len(functions)!=1 or ast.dump(functions[0],include_attributes=False)!=ast.dump(rewritten.body[0],include_attributes=False):
+        return {"installed":False,"reason":"forward template differs from audited minimal rewrite"}
+    generated=str(template.resolve())
     linecache.cache[generated]=(len(source),None,source.splitlines(keepends=True),generated)
     # Dynamo resolves global guards through the function's real module. A copied
     # globals dict can execute eagerly but leaves that module binding missing.

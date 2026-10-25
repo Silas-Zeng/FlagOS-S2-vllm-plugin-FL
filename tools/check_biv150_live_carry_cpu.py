@@ -26,7 +26,7 @@ for name,expected in provenance['functions'].items():
     function=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name==name)
     assert hashlib.sha256(json.dumps(canonical_ast(function),ensure_ascii=True,separators=(',',':')).encode()).hexdigest()==expected
 assert not subprocess.check_output(['git','-C',str(r),'diff','0bf9d2e','--','csrc'],text=True)
-allowed={'vllm_fl/patches/biv150_live_carry_gate.py','vllm_fl/patches/biv150_native_w8a8.py','vllm_fl/compile_semantics.py'}
+allowed={'vllm_fl/patches/biv150_live_carry_gate.py','vllm_fl/patches/biv150_live_carry_forward.py','vllm_fl/patches/biv150_native_w8a8.py','vllm_fl/compile_semantics.py'}
 assert set(subprocess.check_output(['git','-C',str(r),'diff','0bf9d2e','--name-only','--','vllm_fl'],text=True).splitlines())<=allowed
 before=ast.parse(subprocess.check_output(['git','-C',str(r),'show','0bf9d2e:vllm_fl/patches/biv150_native_w8a8.py'],text=True))
 after=ast.parse((r/'vllm_fl/patches/biv150_native_w8a8.py').read_text())
@@ -94,6 +94,14 @@ install=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name=
 assert any(isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='namespace' for t in n.targets)
     and isinstance(n.value,ast.Attribute) and n.value.attr=='__globals__'
     for n in ast.walk(install))
+template=r/'vllm_fl/patches/biv150_live_carry_forward.py'
+template_source=template.read_text();parsed=ast.parse(template_source)
+template_forward=next(n for n in parsed.body if isinstance(n,ast.FunctionDef))
+sdk_generated=json.loads((r/'docs/evidence/live-carry-service-20261025/sdk-hook/install-verdict.json').read_text())['generated_source']
+assert ast.dump(template_forward,include_attributes=False)==ast.dump(ast.parse(sdk_generated).body[0],include_attributes=False)
+local={};exec(compile(ast.Module(body=[template_forward],type_ignores=[]),str(template),'exec'),{'torch':NS(Tensor=object)},local)
+assert Path(inspect.getsourcefile(local['forward'])).is_file()
+assert inspect.getsource(local['forward'])==sdk_generated
 try:ns['_rewrite_forward_ast'](source.replace('self.mlp(hidden_states)','self.other(hidden_states)'));raise AssertionError('changed structure accepted')
 except AssertionError as error:assert 'changed structure accepted' not in str(error)
 
