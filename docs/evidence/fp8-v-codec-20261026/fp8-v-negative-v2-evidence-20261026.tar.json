@@ -1,0 +1,168 @@
+{
+  "archive_sha256": "a541f9c9226361e34fe609260bc7c6c9bd8a6701240c01736a8dfa979f92916d",
+  "source": "513d508e67ca89f28d9832dea3543b9178ff8747",
+  "source_main": "34942f7e28da5c954ab05878dec75807da9d7a93",
+  "cpu_gpu_numerics_pass": true,
+  "performance_qualified": false,
+  "model_tested": false,
+  "capacity_reclaimed": false,
+  "closed_implementation": "software E4M3 bits and BF16 LUT reconstruct-before-PV",
+  "records": [
+    {
+      "name": "ragged",
+      "speedup_median": 0.5707125619640715,
+      "baseline_resources": {
+        "hash": "c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 15
+      },
+      "fp8_v_resources": {
+        "hash": "070ca1ec492a2e829fd0a3f1a96e2ffe2224b0e1a3c8ab9e5960c8a3b86f0e44",
+        "n_regs": 256,
+        "n_spills": 35,
+        "shared": 6144,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 15
+      },
+      "attention_only_ms": {
+        "False": 0.011960095725953579,
+        "True": 0.02129182778298855
+      }
+    },
+    {
+      "name": "steady4k",
+      "speedup_median": 0.41406974428976656,
+      "baseline_resources": {
+        "hash": "641478e6ddcd3d9c11192fbd0c6d4d472bf8ad3e3bb2fd9fa27b09f18e4dc9ff",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "fp8_v_resources": {
+        "hash": "7b84ba988518bee15eb9de051b820f50418710750a4e41279e791fb181b03cdb",
+        "n_regs": 256,
+        "n_spills": 35,
+        "shared": 6144,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "attention_only_ms": {
+        "False": 0.5257230997085571,
+        "True": 1.2710388898849487
+      }
+    },
+    {
+      "name": "steady16k",
+      "speedup_median": 0.4006073841123248,
+      "baseline_resources": {
+        "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "fp8_v_resources": {
+        "hash": "458558837fd28b3ac49ce02370ac66ed7ec0fc0ee8c2583c02956ef2009cdeed",
+        "n_regs": 256,
+        "n_spills": 35,
+        "shared": 6144,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "attention_only_ms": {
+        "False": 1.029166340827942,
+        "True": 2.566714286804199
+      }
+    },
+    {
+      "name": "ragged",
+      "speedup_median": 0.7558419588915034,
+      "baseline_resources": {
+        "hash": "c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 15
+      },
+      "fp8_v_resources": {
+        "hash": "6cfa554e385d643209eb0f07d669601b7fe3489cf1c040370f7201caf1f2df07",
+        "n_regs": 163,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 15
+      },
+      "attention_only_ms": {
+        "False": 0.011876923032104969,
+        "True": 0.015739422291517258
+      }
+    },
+    {
+      "name": "steady4k",
+      "speedup_median": 0.5138197595695876,
+      "baseline_resources": {
+        "hash": "641478e6ddcd3d9c11192fbd0c6d4d472bf8ad3e3bb2fd9fa27b09f18e4dc9ff",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "fp8_v_resources": {
+        "hash": "3189be561cf8a643fab660b1edbc1118bb14c4e72979453e435ebe774385f2aa",
+        "n_regs": 163,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "attention_only_ms": {
+        "False": 0.5255942344665527,
+        "True": 1.0238678455352783
+      }
+    },
+    {
+      "name": "steady16k",
+      "speedup_median": 0.4864550545413959,
+      "baseline_resources": {
+        "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "fp8_v_resources": {
+        "hash": "94696a3c0f27f841d3c8c55dc1185fc93c54010189a40d793b50dceaa54eb188",
+        "n_regs": 163,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14
+      },
+      "attention_only_ms": {
+        "False": 1.0292249917984009,
+        "True": 2.1176090240478516
+      }
+    }
+  ]
+}
