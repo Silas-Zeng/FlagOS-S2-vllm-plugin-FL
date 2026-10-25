@@ -1,5 +1,13 @@
 # M64 norm/quant＋INT8 GEMM/SiLU 有界接入
 
+当前状态（2026-10-25）：生产试跑冻结在4068f08，SDK decoder forward保持原对象，通过编译后配对接入；下文旧forward方案为历史过程。首次105为99/105（准确比值0.942857），105唯一、0请求错误，不合并、未重采样。第一次adaptive预热失败无计分结果，完整456702字节原始预测/报告/日志/预热已共享于paired-codegen-v2/first99-and-adaptive-warmup-failure.tar.gz（SHAbe88eb0e…）。
+新固定3轮预热、同源candidate→control串行对照正在运行：candidate已计分4K5775.468674 total tok/s、TTFT3637.191876ms、256/256、完整1048576+262144 tokens；16K及control尚未完成，不能认定新增收益。runtime4068f08/private SO5cbb/官方CLI和计分benchmark保持不变，control只关自有flag并使用私有cache；driver与状态见7018fef。
+
+AD10精度修复备选目前只完成CPU源码准备，没有生产hook、GPU结果或精度恢复声明。唯一原norm源SHAa80edc5a…与本仓参考源逐字节相同，同目录cached配置XBLOCK2/R0_BLOCK2048/warps16/stages1；当前融合NQ为单行/warps4。旧十种树只测过XBLOCK1/4、warps4，未覆盖该配置。新tools/biv150_original_topology_norm_quant.py保持原norm两段循环、所有cast/求和/方差/rsqrt/权重表达式，仅在原BF16 store处追加量化，并提供不写norm输出路径。CPU撤销这段追加后整个原函数AST相同；这仍不能证明编译布局或最终精度相同。
+独立GPU探针tools/probe_biv150_original_topology_norm_quant.py预设42层真实norm权重×6种输入（含零值/抵消/列动态范围），对精确原kernel固定缓存配置、独立CPU RN/away量化oracle及当前NQ比较norm/q/scales；保留所有误差和失败fixture，检查无norm物化路径、输入不变、变输入Graph、资源及3轮交替NQ组件计时。该探针尚未部署或排队，要等当前完整吞吐对照结束且GPU/9031空闲再运行；不预先把同拓扑当精度修复，也不把NQ计时外推服务收益。
+
+以下保留此前交接与失败记录。
+
 从fresh团队main0bf9d2e单独建立接入分支。只提升PR33/PR37已验证的M64组合，不带旧CPP probe API或全局M32/M64 gate替换。四个数学函数AST与7dca973组件一致；压缩层全部34层完整链条三轮最小比1.049584–1.070327，Graph/eager34/34逐位一致，原严格29/34，其余5个失败保留，尚无模型质量/吞吐声明。
 
 仅在已审核MiniCPM/BI-V150 native安装之后，核实原Llama模块SHA及forward身份，将原forward中相邻post-norm＋MLP两句替为helper，其余参数、attention、input-norm、返回保持原AST。helper在M64/隐藏2048/原INT8压缩gate/原SiluAndMul/连续BF16且模型epsilon1e-6时，opaque算子返回融合gate；原norm的透明residual继续独立留在图中，down projection仍原方法。M32/prefill/边缘BF16层等直接执行原两句。
@@ -33,4 +41,4 @@ a0a2487首GPU代理未命中：norm输出buf1在gate后作为buf4供down mm(out=
 
 首次完整精度最终99/105（0.9429），105唯一题/0请求错误，低于0.95，不能合并；未重采样。按用户策略继续吞吐，但自适应4K warmup四轮TPOT147.0636/138.9561/216.0688/138.9720ms不满足相邻两轮3%，driver在任何计分前失败并释放服务；旧control队列正确skipped，无计分成绩。所有预热/错误保留。
 实际完整服务生成代码独立CPU审计通过：按元数据核对原/替换源SHA，撤销两条已知调用替换后，整个Runner AST与原版相等；原缓存源未改，nextnorm含down+(O+res)三个FP32输入和方差平方直接使用该未舍入和，无中间BF16边界。原件actual-service-carry-audit.json共享，不把结构证明当精度或性能通过。
-恢复诊断采用新独立driver run_biv150_live_carry_fixedwarm_pair：同4068源码/5cbb库/原CLI与官方计分命令，候选与flag0对照均预先固定3轮warmup（4K128请求/16K64、输出128），全部时序包括离群值保留，不按耗时筛轮；后各长度仅一次原p256/p128、输出1024/seed0计分。CPU真实嵌套throughput函数执行证明6次预热与两次计分调用，故意离群TPOT也完整保留。复用首次99精度，仅标候选precision_gate=false；control不重评也不继承精度。旧运行源/失败输出不改，恢复的吞吐只能作为精度修复余量诊断。尚未启动恢复driver。
+恢复诊断采用新独立driver run_biv150_live_carry_fixedwarm_pair：同4068源码/5cbb库/原CLI与官方计分命令，候选与flag0对照均预先固定3轮warmup（4K128请求/16K64、输出128），全部时序包括离群值保留，不按耗时筛轮；后各长度仅一次原p256/p128、输出1024/seed0计分。CPU真实嵌套throughput函数执行证明6次预热与两次计分调用，故意离群TPOT也完整保留。复用首次99精度，仅标候选precision_gate=false；control不重评也不继承精度。旧运行源/失败输出不改，恢复的吞吐只能作为精度修复余量诊断。该恢复driver随后已启动，最新进度见文首；此处保留首次编写时的准备记录。
