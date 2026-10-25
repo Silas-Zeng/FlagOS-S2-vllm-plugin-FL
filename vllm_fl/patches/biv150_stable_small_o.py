@@ -9,6 +9,52 @@ _DEFINITION = None
 _IMPLEMENTATION = None
 _INSTALLED = False
 _OBSERVED_ROWS = set()
+_MM_SHA = '4c2e23da2a6b65b89cbb8170967f14c5327d143e21137387f3907ccb4fcde090'
+
+
+def _install_mm_route():
+    """Replace only the selected FlagGems vendor launch seam, keeping mm/out API."""
+    import hashlib
+    import importlib
+    import inspect
+    from pathlib import Path
+    import flag_gems
+    module=importlib.import_module('flag_gems.runtime.backend._iluvatar.ops.mm')
+    path=Path(inspect.getsourcefile(module))
+    if hashlib.sha256(path.read_bytes()).hexdigest()!=_MM_SHA:
+        return {'installed':False,'reason':'unsupported FlagGems MM source'}
+    if not all(inspect.unwrap(fn).__globals__ is module.__dict__
+               for fn in (flag_gems.mm,flag_gems.mm_out)):
+        return {'installed':False,'reason':'MM symbols do not use audited launch globals'}
+    previous=module._launch_mm
+    def launch(a,b,c,m,n,k):
+        if not (1<=m<=8 and (n,k) in ((2048,2048),(2560,2048),(12288,2048),(2048,6144))
+                and tuple(a.shape)==(m,k) and tuple(b.shape)==(k,n) and tuple(c.shape)==(m,n)
+                and a.dtype==b.dtype==c.dtype==torch.bfloat16
+                and a.is_cuda and b.is_cuda and c.is_cuda and a.device==b.device==c.device
+                and a.stride(1)==b.stride(0)==c.stride(1)==1
+                and a.stride(0)>=k and b.stride(1)>=k and c.stride(0)>=n):
+            return previous(a,b,c,m,n,k)
+        with torch.cuda.device(a.device):
+            key=(m,n,k)
+            if key not in _OBSERVED_ROWS and not torch.cuda.is_current_stream_capturing():
+                _OBSERVED_ROWS.add(key)
+                print('BIV150_STABLE_SMALL_O_SELECTED', {
+                    'rows':m,'output_columns':n,'input_columns':k,'binding':'mm',
+                    'input_stride':tuple(a.stride()),'rhs_stride':tuple(b.stride()),
+                    'output_stride':tuple(c.stride()),'warps':4,'stages':1,
+                },flush=True)
+            # B is KxN; the original kernel views weights as NxK. Swap only
+            # pointer strides, without a transpose/copy operation or allocation.
+            _small_o_kernel[(n//64,)](a,b,c,m,K=k,
+                XS0=a.stride(0),XS1=a.stride(1),
+                WS0=b.stride(1),WS1=b.stride(0),
+                YS0=c.stride(0),YS1=c.stride(1),num_warps=4,num_stages=1)
+        return c
+    module._launch_mm=launch
+    return {'installed':True,'binding':'mm','scope':'BF16 TP1 MiniCPM MM/out M1-8',
+            'block_m':16,'block_n':64,'block_k':128,'warps':4,'stages':1,
+            'original_mm_sha256':_MM_SHA,'larger_rows':'original vendor launch unchanged'}
 
 
 @triton.jit(do_not_specialize=['M'])
@@ -88,6 +134,12 @@ def install():
     from vllm.model_executor.layers.utils import dispatch_unquantized_gemm, default_unquantized_gemm
     if envs.VLLM_BATCH_INVARIANT or dispatch_unquantized_gemm() is not default_unquantized_gemm:
         return {'installed':False,'reason':'unsupported original GEMM dispatch'}
+    binding=os.environ.get('VLLM_FL_BIV150_STABLE_SMALL_O_BINDING','linear')
+    if binding=='mm':
+        result=_install_mm_route()
+        _INSTALLED=bool(result.get('installed'))
+        return result
+    if binding!='linear':return {'installed':False,'reason':'unknown small GEMM binding'}
     from vllm.model_executor.layers.linear import UnquantizedLinearMethod
     _register()
     previous=UnquantizedLinearMethod.apply
