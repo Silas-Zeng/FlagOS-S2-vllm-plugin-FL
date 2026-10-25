@@ -11,9 +11,14 @@
   "introducing_fx_predicate": "Eq(s72, 64), _supported row condition",
   "prospective_fix": "guard_size_oblivious row decision; CPU minimal original eq retained, guarded eq removed; exact branches 2048/64/32/64",
   "current_runtime": "3a7dc042fe34fb219f0695bc2111bf206f4b8d56",
-  "gpu_model_startup_fix_pending": true,
+  "gpu_model_startup_fix_pending": false,
   "raw_archive_bytes": 344883,
   "raw_archive_sha256": "ea468734e671b0e9c87569b9461c65e19022f03a13a595295d572bb3b70a19c5",
   "field_archive_bytes": 111527,
-  "field_archive_sha256": "081e6b61872cfcecaa2dae1dbd5b05af1d3398537f042c98214edabfd817ff70"
+  "field_archive_sha256": "081e6b61872cfcecaa2dae1dbd5b05af1d3398537f042c98214edabfd817ff70",
+  "guarded_runtime_started": true,
+  "guarded_runtime_m64_capture_selected": false,
+  "guarded_runtime_accuracy_evaluated": false,
+  "guarded_runtime_throughput_evaluated": false,
+  "outcome": "SymBool fixed; generic compilation did not activate M64 path; pre-accuracy route gate stopped run"
 }

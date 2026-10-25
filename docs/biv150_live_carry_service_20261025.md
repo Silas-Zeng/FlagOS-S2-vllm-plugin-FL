@@ -21,3 +21,5 @@
 启动诊断1/0因果对照：相同4cd源码/SO/CLI，新flag1在FX pickle失败；flag0完整启动成功后正常关闭，均0计分请求。owner追踪定位匿名函数属于aten::as_strided.default。仍未解决pickle，不能泛化捕获RuntimeError跳过缓存。另日志明确无法读取虚拟generated_forward文件，vLLM因此关闭自己的compile cache；后继将同一最小forward保存为真实源码模板，安装时AST严格比较pin原方法的两句改写，真实源路径可读、inspect精确、进入既有源指纹glob；数学与策略不变。这是源码身份缺陷修复，不预先宣称解决pickle。
 
 969字段诊断精确定位details.example_inputs[3]为torch.SymBool→SymNode→ShapeEnv.fake_tensor_cache→as_strided。实际FX源行来自_supported行数条件，Eq(s72,64)被保留在图中。纯CPU最小Dynamo复现2048→64→32→64：旧tuple guard生成eq/not_，显式guard_size_oblivious后不生成该FX布尔操作且分支输出相同。下一冻结版只将行数分支改为显式形状guard，新增CPU回归再跑六组实际SDK/Graph和完整服务；必须验证M64真实命中，不能把启动成功当优化生效，未修改FX pickle实现/缓存参数。
+
+3a7dc04实机结果：CPU140/row guard回归/六组SDK方法GPU+Graph均过，完整服务启动成功，pickle错误消失。但startup无M64 marker，实际新路径没有激活；首105前的capture命中门正确终止，0精度题/0计分吞吐。固定compile range的通用路径不能把显式guard的组件分支当服务生效。保持Draft与原组件证据，不降低验收门；后续分析编译后norm输出→gate调用的成对接入，避免forward形状谓词/额外BF16 carry/原prefill回退改写。当前没有GPU队列继续跑评分。
