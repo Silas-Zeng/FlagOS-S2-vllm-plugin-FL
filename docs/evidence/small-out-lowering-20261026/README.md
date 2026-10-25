@@ -21,3 +21,7 @@ Frozen1d00e0d ran36 real-weight projection/row cases and576 FP64/default+side/ch
 The initial CPU waiter failed before starting any child because its upstream path incorrectly said gate-only-v2 instead of v1. No GPU task ran from that queue. After confirming PR57 terminal cleanup, noGPU processes and closed9031, the component was directly launched under PID462835/start331269046 and finished successfully. Both records are preserved.
 
 Next source adds opt-in selection recording and an owned model controller. CUDA arithmetic remains unchanged. The controller verifies actual M2 selection in all four projections and generated out calls, runs original105 and sufficiently warmed single scored4K/16K, and repeats mixed after warmup. Its finally cleanup AST matches main. Re-run the component with recording enabled before model testing. Default behavior and CLI remain unchanged. No performance gain or merge readiness is claimed.
+
+## Actual model first semantic gate passed
+
+Frozen61d198e: recording-enabled component repeat again passes36 cases. The real model installs the lowering, reports all4 M2 projection geometries using the compiler output, and generated model code has11 actual extern out sites (static sites, not runtime counts/times). The initial mixed long arithmetic gives85 and concurrent1..128 counting succeeds with HTTP overlap. At06:12 Shanghai, complete105 is active with43 prediction rows. This is not a full accuracy, warm-after-score semantic, or throughput qualification. Runtime stays frozen61d; this evidence-only commit does not hot-edit it.
