@@ -14,12 +14,19 @@ CASES = {
     'suffix16k': ([2017], [16384]),
     'small_fallback': ([256], [4096]),
     'multi_fallback': ([1,17,33], [65,130,257]),
+    'below_threshold': ([1023], [4096]),
+    'at_threshold': ([1024], [4096]),
+    'partial_q_tile': ([1025], [4096]),
+    'observed_tail1739': ([1739], [4096]),
+    'observed_tail1798': ([1798], [4096]),
+    'fresh_chunk2048': ([2048], [2048]),
 }
 
 
 def main(args):
+    cases = {name: CASES[name] for name in args.case} if args.case else CASES
     if not args.run_gpu:
-        print(json.dumps(CASES))
+        print(json.dumps(cases))
         return
     with socket.socket() as sock:
         assert sock.connect_ex(('127.0.0.1',9031)) != 0
@@ -43,7 +50,7 @@ def main(args):
         temp=args.out/'result.tmp';temp.write_text(json.dumps(result,indent=2)+'\n');temp.replace(args.out/'result.json')
     save()
     try:
-        for name,(qlens,klens) in CASES.items():
+        for name,(qlens,klens) in cases.items():
             row=dict(name=name,checks=[]);result['cases'].append(row)
             host=fixture.cpu_inputs(qlens,klens,20261025,0)
             stream=torch.cuda.Stream()
@@ -97,6 +104,8 @@ def main(args):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--run-gpu',action='store_true');p.add_argument('--out',type=Path)
+    p.add_argument('--case', action='append', choices=sorted(CASES),
+                   help='Select cases; default is the entire numerical/scope matrix')
     args=p.parse_args()
     if args.run_gpu and args.out is None:p.error('--out required')
     main(args)
