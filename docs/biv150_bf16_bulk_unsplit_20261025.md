@@ -10,4 +10,8 @@
 
 不按某层成功建立白名单。某结构若在代表层相应几何与行数有一致正收益，才扩展全部42层；实际服务接入需另外验证真实覆盖、首次105≥0.95、充分预热固定单轮4K/16K与TTFT、完整请求/tokens和匹配对照。99/105仍可测吞吐但不得合并。若无统一增益则归档并关闭Draft。
 
-未启动命令示例：`python tools/bench_biv150_bf16_bulk_unsplit.py --out /workspace/experiments/minicpm-s2/bf16-bulk-unsplit-repr-20261025`。必须等待前序精度/吞吐进程及GPU/端口真实空闲，不重启或打断既有作业。
+未启动命令示例：`python tools/bench_biv150_bf16_bulk_unsplit.py --out /workspace/experiments/minicpm-s2/bf16-bulk-unsplit-repr-20261025 --edge-gates`。必须等待前序精度/吞吐进程及GPU/端口真实空闲，不重启或打断既有作业。
+
+
+补充原主线实际算子覆盖：`--edge-gates` 从现有安装器 `selected=(gate_up_proj,)`、`skip_edges=4` 推导保留BF16的0–3、38–41全部8层，不依据本次精度/吞吐挑层。将这8层原BF16 gate/up按原顺序拼为[N,K]=(12288,2048)（与主线加载方式相同），仍M32/64×4配置、完整CPU FP64/5模式/Graph/交替计时，额外64记录；代表QKV/O/down加它们为136，`--all-layers --edge-gates` 为1072。该选项不是修改量化例外或生产层白名单，只扩展独立组件覆盖；目前仍未上GPU。
+同时修正失败fixture命名，加入完整BM/BN/BK/split/warps，避免4种Split1配置覆盖同一文件、使早先记录SHA失配。每种配置首次失败原件和所有模式误差均保留。

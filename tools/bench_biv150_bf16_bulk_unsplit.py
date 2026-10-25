@@ -6,6 +6,7 @@ as passes. These are components with synthetic activations, not model accuracy.
 """
 
 import argparse
+import ast
 import hashlib
 import inspect
 import json
@@ -23,25 +24,38 @@ from biv150_bf16_bulk_unsplit import CONFIGS,allocate,matmul,run_into
 
 
 
-def weights(model,layers=(4,20,37)):
+def existing_bf16_gate_layers():
+    """Derive the edge scope from baseline policy, never from test outcomes."""
+    root=Path(__file__).resolve().parents[1]
+    tree=ast.parse((root/'vllm_fl/patches/biv150_native_w8a8.py').read_text())
+    install=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='install')
+    assignments={n.targets[0].id:ast.literal_eval(n.value) for n in install.body
+        if isinstance(n,ast.Assign) and len(n.targets)==1 and isinstance(n.targets[0],ast.Name)
+        and n.targets[0].id in ('selected','skip_edges')}
+    assert assignments==dict(selected=('gate_up_proj',),skip_edges=4), 'Reaudit current quantization scope'
+    return [layer for layer in range(42) if layer<4 or layer>=38]
+
+
+def weights(model,layers=(4,20,37),gate_layers=()):
     locations={}
     for path in sorted(model.glob('*.safetensors')):
         with safe_open(str(path),framework='pt',device='cpu') as h:
             for key in h.keys():locations[key]=path
-    for layer in layers:
-        for name,projections in (('qkv',('q_proj','k_proj','v_proj')),
-                                 ('o',('o_proj',)),('down',('down_proj',))):
-            parts=[];identities=[]
-            for proj in projections:
-                section='mlp' if proj=='down_proj' else 'self_attn'
-                key=f'model.layers.{layer}.{section}.{proj}.weight'
-                with safe_open(str(locations[key]),framework='pt',device='cpu') as h:w=h.get_tensor(key)
-                assert w.dtype==torch.bfloat16 and w.ndim==2
-                parts.append(w);identities.append(dict(key=key,sha256=hashlib.sha256(w.view(torch.uint8).numpy().tobytes()).hexdigest()))
-            weight=torch.cat(parts) if len(parts)>1 else parts[0]
-            expected={'qkv':(2560,2048),'o':(2048,2048),'down':(2048,6144)}[name]
-            assert tuple(weight.shape)==expected
-            yield layer,name,weight,identities
+    cases=[(layer,name,projections) for layer in layers
+        for name,projections in (('qkv',('q_proj','k_proj','v_proj')),('o',('o_proj',)),('down',('down_proj',)))]
+    cases.extend((layer,'gate_up',('gate_proj','up_proj')) for layer in gate_layers)
+    for layer,name,projections in cases:
+        parts=[];identities=[]
+        for proj in projections:
+            section='mlp' if proj in ('down_proj','gate_proj','up_proj') else 'self_attn'
+            key=f'model.layers.{layer}.{section}.{proj}.weight'
+            with safe_open(str(locations[key]),framework='pt',device='cpu') as h:w=h.get_tensor(key)
+            assert w.dtype==torch.bfloat16 and w.ndim==2
+            parts.append(w);identities.append(dict(key=key,sha256=hashlib.sha256(w.view(torch.uint8).numpy().tobytes()).hexdigest()))
+        weight=torch.cat(parts) if len(parts)>1 else parts[0]
+        expected={'qkv':(2560,2048),'o':(2048,2048),'down':(2048,6144),'gate_up':(12288,2048)}[name]
+        assert tuple(weight.shape)==expected
+        yield layer,name,weight,identities
 
 
 def check(a,b):
@@ -71,6 +85,7 @@ def main(args):
         dispatch_policy=dict(use_flaggems=True,whitelist=whitelist,blacklist=blacklist,
                              diagnostic_record=False,worker_record=True)
     layers=list(range(42)) if args.all_layers else [4,20,37]
+    gate_layers=existing_bf16_gate_layers() if args.edge_gates else []
     diagnostic=True
     rows=(32,64)
     choices=CONFIGS if args.config is None else (CONFIGS[args.config],)
@@ -78,7 +93,7 @@ def main(args):
     torch.set_num_threads(2);torch.manual_seed(20261025)
     args.out.mkdir(parents=True,exist_ok=False)
     result=dict(component_only=True,service_installed=False,full_cpu_fp64_output_oracle=True,
-        synthetic_activations=True,layers=layers,rows=list(rows),choices=[list(c) for c in choices],bulk_unsplit=True,
+        synthetic_activations=True,layers=layers,edge_bf16_gate_layers=gate_layers,rows=list(rows),choices=[list(c) for c in choices],bulk_unsplit=True,
         numerical_failures_preserved=True,continue_failed_numerics_for_diagnostic_timing=diagnostic,baseline=args.baseline,pitches='contiguous',
         inference_mode=torch.is_inference_mode_enabled(),
         commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
@@ -87,7 +102,7 @@ def main(args):
         native_function='torch.mm(out=caller_buffer) under current worker FlagGems policy' if args.baseline=='out' else 'flag_gems.mm',
         dispatch_policy=dispatch_policy,mm_out_dispatch_tables=dispatch_tables,records=[])
     save=lambda:(args.out/'result.json').write_text(json.dumps(result,indent=2))
-    for layer,name,host,identities in weights(args.model,layers):
+    for layer,name,host,identities in weights(args.model,layers,gate_layers):
         w=host.to('cuda');host64=host.double();n,k=host.shape
         for m in rows:
             x=torch.empty(m,k,device='cuda',dtype=torch.bfloat16)
@@ -131,7 +146,7 @@ def main(args):
                         row['native_cpu_all_passed'] &= native_check['passed']
                         row['direct_native_all_passed'] &= direct['passed']
                         if (not cpu['passed'] or not native_check['passed'] or not direct['passed']) and 'fixture' not in row:
-                            p=args.out/f'failed-l{layer}-{name}-m{m}-s{config[3]}.pt'
+                            p=args.out/(f'failed-l{layer}-{name}-m{m}-c'+ '-'.join(map(str,config))+'.pt')
                             torch.save(dict(x=x.cpu(),weight_identity=identities,cpu=gold,
                                 candidate=output.cpu(),native=native.cpu(),pattern=pattern),p)
                             row.update(fixture=p.name,fixture_sha256=hashlib.sha256(p.read_bytes()).hexdigest())
@@ -181,7 +196,7 @@ def main(args):
             print(json.dumps(dict(layer=layer,geometry=name,m=m,candidate_cpu_passed=sum(a['candidate_cpu_all_passed'] for a in records),
                 native_cpu_passed=records[0]['native_cpu_all_passed'],graph_cpu_passed=sum(a.get('graph_cpu_passed',False) for a in records))),flush=True)
         del w,host,host64
-    result['summary']=dict(records=len(result['records']),expected=len(layers)*3*len(rows)*len(choices),
+    result['summary']=dict(records=len(result['records']),expected=(len(layers)*3+len(gate_layers))*len(rows)*len(choices),
         candidate_full_cpu_passed=sum(a['candidate_cpu_all_passed'] for a in result['records']),
         candidate_graph_cpu_passed=sum(a.get('graph_cpu_passed',False) for a in result['records']),
         native_full_cpu_passed_records=sum(a['native_cpu_all_passed'] for a in result['records']))
@@ -191,6 +206,7 @@ def main(args):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--model',type=Path,default=Path('/workspace/MiniCPM5-2B'))
     p.add_argument('--all-layers',action='store_true')
+    p.add_argument('--edge-gates',action='store_true',help='Also test all8 BF16 edge gate/up projections retained by existing policy')
     p.add_argument('--config',type=int,choices=range(4))
     p.add_argument('--baseline',choices=('out',),default='out')
     p.add_argument('--out',type=Path,required=True);args=p.parse_args()
