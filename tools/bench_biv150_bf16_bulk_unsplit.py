@@ -180,8 +180,16 @@ def main(args):
                             and row['timing_candidate_cpu']['passed'])
                         if any(p['candidate_ulp']['nonfinite'] for p in row['patterns']):continue
                     if not row['timing_candidate_cpu']['passed'] and not diagnostic:continue
+                    # Actual service uses mm(out). Match its buffer lifetime
+                    # on both sides, including repeated calls in one Graph.
+                    timing_output,timing_scratch=allocate(x,w,config)
                     def baseline():return native_mm()
-                    def candidate():return matmul(x,w,config)
+                    def candidate():return run_into(x,w,timing_output,timing_scratch,config)
+                    candidate()
+                    row['timed_caller_buffer_cpu']=check(timing_output,timing_gold)
+                    row['timed_caller_buffer_matches_returning']=torch.equal(timing_output.cpu(),matmul(x,w,config).cpu())
+                    row['timing_output_policy']='fixed caller-owned buffer on both sides'
+                    assert row['timed_caller_buffer_matches_returning']
                     rounds=[]
                     for i in range(3):
                         calls=[('baseline_ms',baseline),('candidate_ms',candidate)]

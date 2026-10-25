@@ -17,3 +17,5 @@
 同时修正失败fixture命名，加入完整BM/BN/BK/split/warps，避免4种Split1配置覆盖同一文件、使早先记录SHA失配。每种配置首次失败原件和所有模式误差均保留。
 
 实际服务静态证据已补：冻结4068f08首次完整服务缓存中，两份模型Runner在norm后调用原 `mm(out)`，权重view为(2048,12288)、stride(1,2048)，输出BF16(s72,12288)，随后SiLU/乘法核再接down。保存完整两份源码原件12683字节SHAecdf7318…及索引到docs/evidence/bf16-bulk-unsplit-20261025/。后续若探索BF16 gate/SiLU融合，必须保留GEMM后BF16边界；原激活是FP32 `gate * tl.sigmoid(gate) * up` 最后写BF16，无独立的中间BF16 SiLU边界。不能直接套用INT8路径的exp/div实现当逐位等价。这仍是静态源码覆盖，不是运行时次数或耗时归因，也没有新增性能结论。
+
+计时审查补正：实际服务为mm(out)，因此基线和候选均在3轮交替Graph计时前各分配一次输出缓冲，所有unroll/replay复用相同地址。候选通过原run_into写入调用方缓冲，并独立核对CPU FP64 oracle及与分配型matmul逐位相同。原分配型接口的数值/变输入Graph检查仍保留，但计时不再让其展开4份输出工作集，与基线单个out不对称。Python分配/分发成本仍没有被Graph事件计时覆盖，后续真实服务另验。此时仍无GPU结果；尚未改变已冻结原验收任务。
