@@ -1,0 +1,1456 @@
+{
+  "runtime_commit": "97d5d479bdf03567859085a787a408e7bd16eeea",
+  "accepted": false,
+  "reason": "Both matched single-round throughput points regress; close global MM binding implementation",
+  "arms": {
+    "mm": {
+      "scores": {
+        "4096": {
+          "date": "20261026-025538",
+          "endpoint_type": "vllm",
+          "backend": "vllm",
+          "label": "score-4096",
+          "model_id": "minicpm",
+          "tokenizer_id": "/workspace/MiniCPM5-2B",
+          "num_prompts": 256,
+          "request_rate": "inf",
+          "burstiness": 1.0,
+          "max_concurrency": 64,
+          "duration": 249.48908656835556,
+          "completed": 256,
+          "failed": 0,
+          "total_input_tokens": 1048576,
+          "total_output_tokens": 262144,
+          "request_throughput": 1.026096986931172,
+          "request_goodput": null,
+          "output_throughput": 1050.7233146175201,
+          "total_token_throughput": 5253.616573087601,
+          "max_output_tokens_per_s": 1920.0,
+          "max_concurrent_requests": 68,
+          "rtfx": 0.0,
+          "mean_ttft_ms": 3782.9428037839534,
+          "median_ttft_ms": 1292.0318220276386,
+          "std_ttft_ms": 5460.586876388688,
+          "p99_ttft_ms": 21641.033888841044,
+          "mean_tpot_ms": 56.90555981738783,
+          "median_tpot_ms": 54.21622972462038,
+          "std_tpot_ms": 11.344397237026982,
+          "p99_tpot_ms": 75.07967760400412,
+          "mean_itl_ms": 56.905560536123346,
+          "median_itl_ms": 36.430643405765295,
+          "std_itl_ms": 339.8024406586291,
+          "p99_itl_ms": 210.96082463394853
+        },
+        "16384": {
+          "date": "20261026-032509",
+          "endpoint_type": "vllm",
+          "backend": "vllm",
+          "label": "score-16384",
+          "model_id": "minicpm",
+          "tokenizer_id": "/workspace/MiniCPM5-2B",
+          "num_prompts": 128,
+          "request_rate": "inf",
+          "burstiness": 1.0,
+          "max_concurrency": 64,
+          "duration": 550.0314390813,
+          "completed": 128,
+          "failed": 0,
+          "total_input_tokens": 2097152,
+          "total_output_tokens": 131072,
+          "request_throughput": 0.23271397033921246,
+          "request_goodput": null,
+          "output_throughput": 238.29910562735355,
+          "total_token_throughput": 4051.0847956650105,
+          "max_output_tokens_per_s": 608.0,
+          "max_concurrent_requests": 65,
+          "rtfx": 0.0,
+          "mean_ttft_ms": 124190.50304527627,
+          "median_ttft_ms": 140080.780639546,
+          "std_ttft_ms": 52889.476163384454,
+          "p99_ttft_ms": 215970.73259430006,
+          "mean_tpot_ms": 117.38666069172896,
+          "median_tpot_ms": 124.40484529543205,
+          "std_tpot_ms": 18.58446437192934,
+          "p99_tpot_ms": 146.06582037618392,
+          "mean_itl_ms": 117.38666143204165,
+          "median_itl_ms": 54.76391990669072,
+          "std_itl_ms": 186.2302048737072,
+          "p99_itl_ms": 475.5840809782967
+        }
+      },
+      "state": {
+        "complete": true,
+        "cleanup_complete": true,
+        "acceptance_passed": false,
+        "precision_passed": true,
+        "diagnostic_only": true,
+        "phase": "completed",
+        "commit": "97d5d479bdf03567859085a787a408e7bd16eeea",
+        "native_mode": "on",
+        "updated": "2026-10-25T19:25:16.972005+00:00",
+        "owner": {
+          "pid": 423480,
+          "start_ticks": 330027944,
+          "sid": 423480,
+          "state": "R"
+        },
+        "driver": {
+          "pid": 423476,
+          "start_ticks": 330027920,
+          "sid": 423476,
+          "state": "R"
+        },
+        "diagnostic": {
+          "completed": true,
+          "all_correct": true,
+          "decode_correct": true,
+          "prefill_correct": true,
+          "decode_visible": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n60\n61\n62\n63\n64\n65\n66\n67\n68\n69\n70\n71\n72\n73\n74\n75\n76\n77\n78\n79\n80\n81\n82\n83\n84\n85\n86\n87\n88\n89\n90\n91\n92\n93\n94\n95\n96\n97\n98\n99\n100\n101\n102\n103\n104\n105\n106\n107\n108\n109\n110\n111\n112\n113\n114\n115\n116\n117\n118\n119\n120\n121\n122\n123\n124\n125\n126\n127\n128",
+          "prefill_visible": "85",
+          "prefill_usage": {
+            "prompt_tokens": 4652,
+            "total_tokens": 4713,
+            "completion_tokens": 61,
+            "prompt_tokens_details": null
+          },
+          "prefill_started": 3300406.097414763,
+          "prefill_finished": 3300409.05693751,
+          "decode_started": 3300400.490696215,
+          "decode_finished": 3300411.276556721,
+          "http_overlap": true,
+          "limitation": "Exact peer requests once; semantic diagnostic only, not105-question accuracy or model-step overlap proof."
+        },
+        "semantic_passed": true,
+        "accuracy": {
+          "score": 0.9714,
+          "metric_count": 105,
+          "predictions": 105,
+          "unique_questions": 105,
+          "failed_predictions": [],
+          "report": "/workspace/experiments/minicpm-s2/small-mm-route-mm-model-v5-20261026/math500-level3/20261026_022745/reports/minicpm/math_500.json"
+        },
+        "official_accuracy_evaluated": true,
+        "scores": {
+          "4096": {
+            "date": "20261026-025538",
+            "endpoint_type": "vllm",
+            "backend": "vllm",
+            "label": "score-4096",
+            "model_id": "minicpm",
+            "tokenizer_id": "/workspace/MiniCPM5-2B",
+            "num_prompts": 256,
+            "request_rate": "inf",
+            "burstiness": 1.0,
+            "max_concurrency": 64,
+            "duration": 249.48908656835556,
+            "completed": 256,
+            "failed": 0,
+            "total_input_tokens": 1048576,
+            "total_output_tokens": 262144,
+            "request_throughput": 1.026096986931172,
+            "request_goodput": null,
+            "output_throughput": 1050.7233146175201,
+            "total_token_throughput": 5253.616573087601,
+            "max_output_tokens_per_s": 1920.0,
+            "max_concurrent_requests": 68,
+            "rtfx": 0.0,
+            "mean_ttft_ms": 3782.9428037839534,
+            "median_ttft_ms": 1292.0318220276386,
+            "std_ttft_ms": 5460.586876388688,
+            "p99_ttft_ms": 21641.033888841044,
+            "mean_tpot_ms": 56.90555981738783,
+            "median_tpot_ms": 54.21622972462038,
+            "std_tpot_ms": 11.344397237026982,
+            "p99_tpot_ms": 75.07967760400412,
+            "mean_itl_ms": 56.905560536123346,
+            "median_itl_ms": 36.430643405765295,
+            "std_itl_ms": 339.8024406586291,
+            "p99_itl_ms": 210.96082463394853
+          },
+          "16384": {
+            "date": "20261026-032509",
+            "endpoint_type": "vllm",
+            "backend": "vllm",
+            "label": "score-16384",
+            "model_id": "minicpm",
+            "tokenizer_id": "/workspace/MiniCPM5-2B",
+            "num_prompts": 128,
+            "request_rate": "inf",
+            "burstiness": 1.0,
+            "max_concurrency": 64,
+            "duration": 550.0314390813,
+            "completed": 128,
+            "failed": 0,
+            "total_input_tokens": 2097152,
+            "total_output_tokens": 131072,
+            "request_throughput": 0.23271397033921246,
+            "request_goodput": null,
+            "output_throughput": 238.29910562735355,
+            "total_token_throughput": 4051.0847956650105,
+            "max_output_tokens_per_s": 608.0,
+            "max_concurrent_requests": 65,
+            "rtfx": 0.0,
+            "mean_ttft_ms": 124190.50304527627,
+            "median_ttft_ms": 140080.780639546,
+            "std_ttft_ms": 52889.476163384454,
+            "p99_ttft_ms": 215970.73259430006,
+            "mean_tpot_ms": 117.38666069172896,
+            "median_tpot_ms": 124.40484529543205,
+            "std_tpot_ms": 18.58446437192934,
+            "p99_tpot_ms": 146.06582037618392,
+            "mean_itl_ms": 117.38666143204165,
+            "median_itl_ms": 54.76391990669072,
+            "std_itl_ms": 186.2302048737072,
+            "p99_itl_ms": 475.5840809782967
+          }
+        },
+        "working_gates": {
+          "4096": {
+            "requests_ok": true,
+            "throughput_ok": true,
+            "ttft_ok": true,
+            "passed": true,
+            "baseline_total_tokens_per_s": 4809.36,
+            "throughput_floor": 4761.2663999999995,
+            "working_mean_ttft_limit_ms": 4770.3209,
+            "goal_20_percent": false
+          },
+          "16384": {
+            "requests_ok": true,
+            "throughput_ok": true,
+            "ttft_ok": true,
+            "passed": true,
+            "baseline_total_tokens_per_s": 3364.03,
+            "throughput_floor": 3330.3897,
+            "working_mean_ttft_limit_ms": 156938.85,
+            "goal_20_percent": true
+          }
+        },
+        "matched_validated_control_required": true,
+        "work_completed": true,
+        "official_throughput_claim": false,
+        "accuracy_skipped_due_mixed_failure": false,
+        "owned_service_members": [
+          {
+            "pid": 423480,
+            "start_ticks": 330027944,
+            "sid": 423480,
+            "state": "R"
+          },
+          {
+            "pid": 423640,
+            "start_ticks": 330029753,
+            "sid": 423480,
+            "state": "S"
+          },
+          {
+            "pid": 423641,
+            "start_ticks": 330029753,
+            "sid": 423480,
+            "state": "R"
+          },
+          {
+            "pid": 423969,
+            "start_ticks": 330031499,
+            "sid": 423480,
+            "state": "R"
+          },
+          {
+            "pid": 423995,
+            "start_ticks": 330031519,
+            "sid": 423480,
+            "state": "S"
+          },
+          {
+            "pid": 424222,
+            "start_ticks": 330031870,
+            "sid": 423480,
+            "state": "S"
+          },
+          {
+            "pid": 424223,
+            "start_ticks": 330031870,
+            "sid": 423480,
+            "state": "R"
+          },
+          {
+            "pid": 424318,
+            "start_ticks": 330032167,
+            "sid": 423480,
+            "state": "S"
+          },
+          {
+            "pid": 424319,
+            "start_ticks": 330032167,
+            "sid": 423480,
+            "state": "R"
+          },
+          {
+            "pid": 424565,
+            "start_ticks": 330033692,
+            "sid": 423480,
+            "state": "S"
+          },
+          {
+            "pid": 424566,
+            "start_ticks": 330033692,
+            "sid": 423480,
+            "state": "R"
+          },
+          {
+            "pid": 425460,
+            "start_ticks": 330036998,
+            "sid": 423480,
+            "state": "S"
+          },
+          {
+            "pid": 425461,
+            "start_ticks": 330036999,
+            "sid": 423480,
+            "state": "R"
+          }
+        ],
+        "cleanup_remaining": [],
+        "port_9031_closed": true
+      },
+      "manifest": {
+        "command": [
+          "/usr/local/bin/vllm",
+          "serve",
+          "/workspace/MiniCPM5-2B",
+          "--port",
+          "9031",
+          "--compilation-config",
+          "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+          "--served-model-name",
+          "minicpm",
+          "--gpu-memory-utilization",
+          "0.85",
+          "--max-model-len",
+          "131072"
+        ],
+        "source": "/workspace/experiments/minicpm-s2/code/small-mm-route-v5-20261026",
+        "commit": "97d5d479bdf03567859085a787a408e7bd16eeea",
+        "native_mode": "on",
+        "stable_small_o": "1",
+        "small_binding": "mm",
+        "run_accuracy": true,
+        "run_throughput": true,
+        "full_workload_warmup": true,
+        "driver_sha256": "a659baff684aa8f95a066979893b518162c04bde5f6fcb3ea7a2aa6f28533cd7",
+        "diagnostic_sha256": "13087caf97350595fbfa057ebfec36df5d434bed1f4c5380ab3b2022476a4c16",
+        "gate_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+        "tuning_snapshot": [
+          {
+            "name": "TunedConfig_iluvatar_triton_3_2.db",
+            "source": "/workspace/experiments/minicpm-s2/prefill-q32-control-fullwarm-v2-20261025/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_2.db",
+            "sha256": "5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55",
+            "bytes": 1605632,
+            "quick_check": "ok"
+          },
+          {
+            "name": "TunedConfig_iluvatar_triton_3_6.db",
+            "source": "/workspace/experiments/minicpm-s2/prefill-q32-control-fullwarm-v2-20261025/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_6.db",
+            "sha256": "2c5aa448065453188f1ff1794d8e929bacb63dcad84a600e086ae05165821314",
+            "bytes": 15712256,
+            "quick_check": "ok"
+          }
+        ],
+        "env": {
+          "VLLM_PLUGINS": "fl",
+          "VLLM_DISABLE_COMPILE_CACHE": "1",
+          "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/small-mm-route-mm-model-v5-20261026/inductor-cache",
+          "TRITON_CACHE_DIR": "/workspace/experiments/minicpm-s2/small-mm-route-mm-model-v5-20261026/triton-cache",
+          "FLAGGEMS_CACHE_DIR": "/workspace/experiments/minicpm-s2/small-mm-route-mm-model-v5-20261026/flaggems-cache",
+          "BIV150_NATIVE_W8A8_LIBRARY": "/workspace/experiments/minicpm-s2/code/baseline-profiler-v2-20261025/build-native-w8a8/biv150_native_w8a8.so",
+          "VLLM_FL_BIV150_NATIVE_W8A8": "1",
+          "VLLM_FL_BIV150_STABLE_SMALL_O": "1",
+          "VLLM_FL_BIV150_STABLE_SMALL_O_BINDING": "mm"
+        },
+        "installations": {
+          "BIV150_NATIVE_W8A8_INSTALL": {
+            "installed": true,
+            "layers": [
+              "gate_up_proj"
+            ],
+            "min_rows": 17,
+            "compressed_only": true,
+            "skip_edge_layers": 4,
+            "fused_silu": true,
+            "activation_residual_rows": [
+              1,
+              16
+            ],
+            "cached_quantization_rows": [
+              17,
+              2048
+            ],
+            "cached_quantization_threads": 256,
+            "gate_operator": "gate_silu_auto"
+          },
+          "BIV150_Q_FRAGMENT_INSTALL": {
+            "installed": true,
+            "scope": "audited BI-V150 MiniCPM BF16 prefill Q fragment lifetime",
+            "binding": "normalization-over-gqa",
+            "temporary_ir": true
+          },
+          "BIV150_PREFILL_NORMALIZATION_INSTALL": {
+            "installed": true,
+            "scope": "audited BF16 causal MiniCPM prefill without sinks",
+            "backend_rebound": true,
+            "audited": {
+              "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+              "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+            },
+            "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+            "initial_mass": 0
+          },
+          "BIV150_GQA_DECODE_INSTALL": {
+            "installed": true,
+            "scope": "BF16 MiniCPM pure-decode 3D only",
+            "rows": 8,
+            "page_size": 16,
+            "backend_rebound": true
+          },
+          "BIV150_MIXED_DECODE_INSTALLED": {
+            "installed": true,
+            "scope": "BF16 MiniCPM natural-prefix mixed Attention only",
+            "ordinary_mixed_dummy_may_split": true,
+            "accuracy": "mixed 2D to 3D remains unverified"
+          },
+          "BIV150_STABLE_SMALL_O_INSTALL": {
+            "installed": true,
+            "binding": "mm",
+            "scope": "BF16 TP1 MiniCPM MM/out and functional linear M1-8",
+            "block_m": 16,
+            "block_n": 64,
+            "block_k": 128,
+            "warps": 4,
+            "stages": 1,
+            "original_mm_sha256": "4c2e23da2a6b65b89cbb8170967f14c5327d143e21137387f3907ccb4fcde090",
+            "original_linear_sha256": "d431a4fa144ed67dc3deab46dd5beace3612858075f85c39e602447ba3bf768a",
+            "selected_module": "_iluvatar.ops.mm",
+            "selected_linear_module": "_iluvatar.ops.linear",
+            "larger_rows": "original vendor launches unchanged"
+          }
+        },
+        "kv_cache_lines": [
+          "(EngineCore pid=423641) INFO 10-26 02:26:57 [kv_cache_utils.py:2146] GPU KV cache size: 547,632 tokens"
+        ],
+        "selected_small_o": [
+          {
+            "rows": 8,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2560,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 8,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 8,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              12288,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 8,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "binding": "mm",
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              1,
+              6144
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2560,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              12288,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "binding": "mm",
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              1,
+              6144
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2560,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              12288,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "binding": "mm",
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              1,
+              6144
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2560,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "binding": "mm",
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              1,
+              2048
+            ],
+            "output_stride": [
+              12288,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "binding": "mm",
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              1,
+              6144
+            ],
+            "output_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          }
+        ]
+      }
+    },
+    "linear": {
+      "scores": {
+        "4096": {
+          "date": "20261026-033909",
+          "endpoint_type": "vllm",
+          "backend": "vllm",
+          "label": "score-4096",
+          "model_id": "minicpm",
+          "tokenizer_id": "/workspace/MiniCPM5-2B",
+          "num_prompts": 256,
+          "request_rate": "inf",
+          "burstiness": 1.0,
+          "max_concurrency": 64,
+          "duration": 232.93682708591223,
+          "completed": 256,
+          "failed": 0,
+          "total_input_tokens": 1048576,
+          "total_output_tokens": 262144,
+          "request_throughput": 1.0990104192738126,
+          "request_goodput": null,
+          "output_throughput": 1125.386669336384,
+          "total_token_throughput": 5626.933346681921,
+          "max_output_tokens_per_s": 1792.0,
+          "max_concurrent_requests": 68,
+          "rtfx": 0.0,
+          "mean_ttft_ms": 3457.9781125794398,
+          "median_ttft_ms": 1183.1201494205743,
+          "std_ttft_ms": 4927.266469882387,
+          "p99_ttft_ms": 19691.35133347008,
+          "mean_tpot_ms": 53.15767066837596,
+          "median_tpot_ms": 55.54387269119203,
+          "std_tpot_ms": 4.928959463593859,
+          "p99_tpot_ms": 57.209972404639984,
+          "mean_itl_ms": 53.157671381681176,
+          "median_itl_ms": 38.306392496451735,
+          "std_itl_ms": 65.6669738438825,
+          "p99_itl_ms": 192.68187038134784
+        },
+        "16384": {
+          "date": "20261026-040914",
+          "endpoint_type": "vllm",
+          "backend": "vllm",
+          "label": "score-16384",
+          "model_id": "minicpm",
+          "tokenizer_id": "/workspace/MiniCPM5-2B",
+          "num_prompts": 128,
+          "request_rate": "inf",
+          "burstiness": 1.0,
+          "max_concurrency": 64,
+          "duration": 543.0554159092717,
+          "completed": 128,
+          "failed": 0,
+          "total_input_tokens": 2097152,
+          "total_output_tokens": 131072,
+          "request_throughput": 0.23570338541911343,
+          "request_goodput": null,
+          "output_throughput": 241.36026666917215,
+          "total_token_throughput": 4103.124533375926,
+          "max_output_tokens_per_s": 576.0,
+          "max_concurrent_requests": 65,
+          "rtfx": 0.0,
+          "mean_ttft_ms": 122497.28084806702,
+          "median_ttft_ms": 138792.66640054993,
+          "std_ttft_ms": 52587.57547295688,
+          "p99_ttft_ms": 212022.80021138026,
+          "mean_tpot_ms": 117.2621623640828,
+          "median_tpot_ms": 123.33658881433571,
+          "std_tpot_ms": 18.719785478189312,
+          "p99_tpot_ms": 160.19054648708126,
+          "mean_itl_ms": 117.26216308543388,
+          "median_itl_ms": 57.66106187365949,
+          "std_itl_ms": 210.7782079671853,
+          "p99_itl_ms": 492.49398780521005
+        }
+      },
+      "state": {
+        "complete": true,
+        "cleanup_complete": true,
+        "acceptance_passed": false,
+        "precision_passed": null,
+        "diagnostic_only": true,
+        "phase": "completed",
+        "commit": "97d5d479bdf03567859085a787a408e7bd16eeea",
+        "native_mode": "on",
+        "updated": "2026-10-25T20:09:22.091572+00:00",
+        "owner": {
+          "pid": 434170,
+          "start_ticks": 330387062,
+          "sid": 434170,
+          "state": "R"
+        },
+        "driver": {
+          "pid": 434166,
+          "start_ticks": 330387039,
+          "sid": 434166,
+          "state": "R"
+        },
+        "diagnostic": {
+          "completed": true,
+          "all_correct": true,
+          "decode_correct": true,
+          "prefill_correct": true,
+          "decode_visible": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n60\n61\n62\n63\n64\n65\n66\n67\n68\n69\n70\n71\n72\n73\n74\n75\n76\n77\n78\n79\n80\n81\n82\n83\n84\n85\n86\n87\n88\n89\n90\n91\n92\n93\n94\n95\n96\n97\n98\n99\n100\n101\n102\n103\n104\n105\n106\n107\n108\n109\n110\n111\n112\n113\n114\n115\n116\n117\n118\n119\n120\n121\n122\n123\n124\n125\n126\n127\n128",
+          "prefill_visible": "85",
+          "prefill_usage": {
+            "prompt_tokens": 4652,
+            "total_tokens": 4713,
+            "completion_tokens": 61,
+            "prompt_tokens_details": null
+          },
+          "prefill_started": 3304006.298653031,
+          "prefill_finished": 3304014.697386048,
+          "decode_started": 3304000.742010681,
+          "decode_finished": 3304016.912088609,
+          "http_overlap": true,
+          "limitation": "Exact peer requests once; semantic diagnostic only, not105-question accuracy or model-step overlap proof."
+        },
+        "semantic_passed": true,
+        "scores": {
+          "4096": {
+            "date": "20261026-033909",
+            "endpoint_type": "vllm",
+            "backend": "vllm",
+            "label": "score-4096",
+            "model_id": "minicpm",
+            "tokenizer_id": "/workspace/MiniCPM5-2B",
+            "num_prompts": 256,
+            "request_rate": "inf",
+            "burstiness": 1.0,
+            "max_concurrency": 64,
+            "duration": 232.93682708591223,
+            "completed": 256,
+            "failed": 0,
+            "total_input_tokens": 1048576,
+            "total_output_tokens": 262144,
+            "request_throughput": 1.0990104192738126,
+            "request_goodput": null,
+            "output_throughput": 1125.386669336384,
+            "total_token_throughput": 5626.933346681921,
+            "max_output_tokens_per_s": 1792.0,
+            "max_concurrent_requests": 68,
+            "rtfx": 0.0,
+            "mean_ttft_ms": 3457.9781125794398,
+            "median_ttft_ms": 1183.1201494205743,
+            "std_ttft_ms": 4927.266469882387,
+            "p99_ttft_ms": 19691.35133347008,
+            "mean_tpot_ms": 53.15767066837596,
+            "median_tpot_ms": 55.54387269119203,
+            "std_tpot_ms": 4.928959463593859,
+            "p99_tpot_ms": 57.209972404639984,
+            "mean_itl_ms": 53.157671381681176,
+            "median_itl_ms": 38.306392496451735,
+            "std_itl_ms": 65.6669738438825,
+            "p99_itl_ms": 192.68187038134784
+          },
+          "16384": {
+            "date": "20261026-040914",
+            "endpoint_type": "vllm",
+            "backend": "vllm",
+            "label": "score-16384",
+            "model_id": "minicpm",
+            "tokenizer_id": "/workspace/MiniCPM5-2B",
+            "num_prompts": 128,
+            "request_rate": "inf",
+            "burstiness": 1.0,
+            "max_concurrency": 64,
+            "duration": 543.0554159092717,
+            "completed": 128,
+            "failed": 0,
+            "total_input_tokens": 2097152,
+            "total_output_tokens": 131072,
+            "request_throughput": 0.23570338541911343,
+            "request_goodput": null,
+            "output_throughput": 241.36026666917215,
+            "total_token_throughput": 4103.124533375926,
+            "max_output_tokens_per_s": 576.0,
+            "max_concurrent_requests": 65,
+            "rtfx": 0.0,
+            "mean_ttft_ms": 122497.28084806702,
+            "median_ttft_ms": 138792.66640054993,
+            "std_ttft_ms": 52587.57547295688,
+            "p99_ttft_ms": 212022.80021138026,
+            "mean_tpot_ms": 117.2621623640828,
+            "median_tpot_ms": 123.33658881433571,
+            "std_tpot_ms": 18.719785478189312,
+            "p99_tpot_ms": 160.19054648708126,
+            "mean_itl_ms": 117.26216308543388,
+            "median_itl_ms": 57.66106187365949,
+            "std_itl_ms": 210.7782079671853,
+            "p99_itl_ms": 492.49398780521005
+          }
+        },
+        "working_gates": {
+          "4096": {
+            "requests_ok": true,
+            "throughput_ok": true,
+            "ttft_ok": true,
+            "passed": true,
+            "baseline_total_tokens_per_s": 4809.36,
+            "throughput_floor": 4761.2663999999995,
+            "working_mean_ttft_limit_ms": 4770.3209,
+            "goal_20_percent": false
+          },
+          "16384": {
+            "requests_ok": true,
+            "throughput_ok": true,
+            "ttft_ok": true,
+            "passed": true,
+            "baseline_total_tokens_per_s": 3364.03,
+            "throughput_floor": 3330.3897,
+            "working_mean_ttft_limit_ms": 156938.85,
+            "goal_20_percent": true
+          }
+        },
+        "matched_validated_control_required": true,
+        "work_completed": true,
+        "official_throughput_claim": false,
+        "accuracy_skipped_due_mixed_failure": false,
+        "owned_service_members": [
+          {
+            "pid": 434170,
+            "start_ticks": 330387062,
+            "sid": 434170,
+            "state": "R"
+          },
+          {
+            "pid": 434317,
+            "start_ticks": 330388862,
+            "sid": 434170,
+            "state": "S"
+          },
+          {
+            "pid": 434318,
+            "start_ticks": 330388862,
+            "sid": 434170,
+            "state": "R"
+          },
+          {
+            "pid": 434495,
+            "start_ticks": 330390390,
+            "sid": 434170,
+            "state": "S"
+          },
+          {
+            "pid": 434496,
+            "start_ticks": 330390390,
+            "sid": 434170,
+            "state": "R"
+          },
+          {
+            "pid": 434646,
+            "start_ticks": 330390598,
+            "sid": 434170,
+            "state": "R"
+          },
+          {
+            "pid": 434672,
+            "start_ticks": 330390618,
+            "sid": 434170,
+            "state": "S"
+          },
+          {
+            "pid": 434715,
+            "start_ticks": 330390678,
+            "sid": 434170,
+            "state": "S"
+          },
+          {
+            "pid": 434716,
+            "start_ticks": 330390678,
+            "sid": 434170,
+            "state": "R"
+          },
+          {
+            "pid": 434995,
+            "start_ticks": 330391276,
+            "sid": 434170,
+            "state": "S"
+          },
+          {
+            "pid": 434998,
+            "start_ticks": 330391298,
+            "sid": 434170,
+            "state": "S"
+          },
+          {
+            "pid": 436017,
+            "start_ticks": 330394925,
+            "sid": 434170,
+            "state": "S"
+          },
+          {
+            "pid": 436018,
+            "start_ticks": 330394926,
+            "sid": 434170,
+            "state": "R"
+          },
+          {
+            "pid": 436263,
+            "start_ticks": 330396418,
+            "sid": 434170,
+            "state": "S"
+          }
+        ],
+        "cleanup_remaining": [],
+        "port_9031_closed": true
+      },
+      "manifest": {
+        "command": [
+          "/usr/local/bin/vllm",
+          "serve",
+          "/workspace/MiniCPM5-2B",
+          "--port",
+          "9031",
+          "--compilation-config",
+          "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+          "--served-model-name",
+          "minicpm",
+          "--gpu-memory-utilization",
+          "0.85",
+          "--max-model-len",
+          "131072"
+        ],
+        "source": "/workspace/experiments/minicpm-s2/code/small-mm-route-v5-20261026",
+        "commit": "97d5d479bdf03567859085a787a408e7bd16eeea",
+        "native_mode": "on",
+        "stable_small_o": "1",
+        "small_binding": "linear",
+        "run_accuracy": false,
+        "run_throughput": true,
+        "full_workload_warmup": true,
+        "driver_sha256": "a659baff684aa8f95a066979893b518162c04bde5f6fcb3ea7a2aa6f28533cd7",
+        "diagnostic_sha256": "13087caf97350595fbfa057ebfec36df5d434bed1f4c5380ab3b2022476a4c16",
+        "gate_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+        "tuning_snapshot": [
+          {
+            "name": "TunedConfig_iluvatar_triton_3_2.db",
+            "source": "/workspace/experiments/minicpm-s2/prefill-q32-control-fullwarm-v2-20261025/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_2.db",
+            "sha256": "5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55",
+            "bytes": 1605632,
+            "quick_check": "ok"
+          },
+          {
+            "name": "TunedConfig_iluvatar_triton_3_6.db",
+            "source": "/workspace/experiments/minicpm-s2/prefill-q32-control-fullwarm-v2-20261025/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_6.db",
+            "sha256": "2c5aa448065453188f1ff1794d8e929bacb63dcad84a600e086ae05165821314",
+            "bytes": 15712256,
+            "quick_check": "ok"
+          }
+        ],
+        "env": {
+          "VLLM_PLUGINS": "fl",
+          "VLLM_DISABLE_COMPILE_CACHE": "1",
+          "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/small-mm-route-linear-model-v5-20261026/inductor-cache",
+          "TRITON_CACHE_DIR": "/workspace/experiments/minicpm-s2/small-mm-route-linear-model-v5-20261026/triton-cache",
+          "FLAGGEMS_CACHE_DIR": "/workspace/experiments/minicpm-s2/small-mm-route-linear-model-v5-20261026/flaggems-cache",
+          "BIV150_NATIVE_W8A8_LIBRARY": "/workspace/experiments/minicpm-s2/code/baseline-profiler-v2-20261025/build-native-w8a8/biv150_native_w8a8.so",
+          "VLLM_FL_BIV150_NATIVE_W8A8": "1",
+          "VLLM_FL_BIV150_STABLE_SMALL_O": "1",
+          "VLLM_FL_BIV150_STABLE_SMALL_O_BINDING": "linear"
+        },
+        "installations": {
+          "BIV150_NATIVE_W8A8_INSTALL": {
+            "installed": true,
+            "layers": [
+              "gate_up_proj"
+            ],
+            "min_rows": 17,
+            "compressed_only": true,
+            "skip_edge_layers": 4,
+            "fused_silu": true,
+            "activation_residual_rows": [
+              1,
+              16
+            ],
+            "cached_quantization_rows": [
+              17,
+              2048
+            ],
+            "cached_quantization_threads": 256,
+            "gate_operator": "gate_silu_auto"
+          },
+          "BIV150_Q_FRAGMENT_INSTALL": {
+            "installed": true,
+            "scope": "audited BI-V150 MiniCPM BF16 prefill Q fragment lifetime",
+            "binding": "normalization-over-gqa",
+            "temporary_ir": true
+          },
+          "BIV150_PREFILL_NORMALIZATION_INSTALL": {
+            "installed": true,
+            "scope": "audited BF16 causal MiniCPM prefill without sinks",
+            "backend_rebound": true,
+            "audited": {
+              "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+              "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+            },
+            "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+            "initial_mass": 0
+          },
+          "BIV150_GQA_DECODE_INSTALL": {
+            "installed": true,
+            "scope": "BF16 MiniCPM pure-decode 3D only",
+            "rows": 8,
+            "page_size": 16,
+            "backend_rebound": true
+          },
+          "BIV150_MIXED_DECODE_INSTALLED": {
+            "installed": true,
+            "scope": "BF16 MiniCPM natural-prefix mixed Attention only",
+            "ordinary_mixed_dummy_may_split": true,
+            "accuracy": "mixed 2D to 3D remains unverified"
+          },
+          "BIV150_STABLE_SMALL_O_INSTALL": {
+            "installed": true,
+            "scope": "BF16 TP1 QKV/O/down and uncompressed edge-gate projections M1-8",
+            "block_m": 16,
+            "block_n": 64,
+            "block_k": 128,
+            "warps": 4,
+            "stages": 1,
+            "larger_rows": "original default_unquantized_gemm F.linear route inside the opaque operation"
+          }
+        },
+        "kv_cache_lines": [
+          "(EngineCore pid=434318) INFO 10-26 03:26:54 [kv_cache_utils.py:2146] GPU KV cache size: 548,416 tokens"
+        ],
+        "selected_small_o": [
+          {
+            "rows": 8,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 8,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 8,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 8,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              6144,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 4,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              6144,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 2,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              6144,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 2560,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 2048,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 12288,
+            "input_columns": 2048,
+            "input_stride": [
+              2048,
+              1
+            ],
+            "weight_stride": [
+              2048,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          },
+          {
+            "rows": 1,
+            "output_columns": 2048,
+            "input_columns": 6144,
+            "input_stride": [
+              6144,
+              1
+            ],
+            "weight_stride": [
+              6144,
+              1
+            ],
+            "warps": 4,
+            "stages": 1
+          }
+        ]
+      }
+    }
+  },
+  "ratios": {
+    "4096": {
+      "throughput_ratio": 0.9336553766334452,
+      "throughput_delta_percent": -6.634462336655478,
+      "ttft_delta_percent": 9.397534646687223
+    },
+    "16384": {
+      "throughput_ratio": 0.9873170464879605,
+      "throughput_delta_percent": -1.2682953512039519,
+      "ttft_delta_percent": 1.3822528838900006
+    }
+  },
+  "precision": {
+    "score": 0.9714,
+    "metric_count": 105,
+    "predictions": 105,
+    "unique_questions": 105,
+    "failed_predictions": [],
+    "report": "/workspace/experiments/minicpm-s2/small-mm-route-mm-model-v5-20261026/math500-level3/20261026_022745/reports/minicpm/math_500.json"
+  },
+  "control_precision_note": "Not rerun, not inferred as an independently evaluated105 result"
+}
