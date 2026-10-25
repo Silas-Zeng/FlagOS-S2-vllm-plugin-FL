@@ -1,5 +1,9 @@
 # M64 norm/quant＋INT8 GEMM/SiLU 有界接入
 
+最终结论（2026-10-25恢复读取）：关闭当前服务实验，不合并。首次99/105低于0.95；同源单轮对照4K5775.468674对5753.078359（+0.3892%）、16K4042.845547对4050.257237（−0.1830%），没有证明稳定新增收益。两侧各长度三轮预热及全部计分请求/tokens完整；候选TTFT3637.191876/124273.074226ms通过working门，但不抵消精度失败。候选4K第三轮预热离群值保留，不能据此宣称小幅收益稳定。
+源码4068f08、所有源hash、服务CLI、包和SO相同，仅own flag与cache不同；实际候选hook选中、control禁用。总precision_gate=false，叶级throughput precision=null只表示未重评。完整63文件归档64755字节，SHA3b3614976b91266e47bc951ce01c8d0ce14c84b2f9fb006905ad7e532b88f12b，与命令/manifest/score/warmups/关闭结论共享于matched-final/；此前首次105及adaptive失败原件继续保留。
+原任务已自行完整结束、进程终态核实，没有重启或重跑。原2行/16warps精度修复仅作为未验证组件研究保留，当前没有整服务性能余量依据，不马上再跑105。后续若有新组件精度与收益证据再单独立项。以下保留历史尝试与交接。
+
 当前状态（2026-10-25）：生产试跑冻结在4068f08，SDK decoder forward保持原对象，通过编译后配对接入；下文旧forward方案为历史过程。首次105为99/105（准确比值0.942857），105唯一、0请求错误，不合并、未重采样。第一次adaptive预热失败无计分结果，完整456702字节原始预测/报告/日志/预热已共享于paired-codegen-v2/first99-and-adaptive-warmup-failure.tar.gz（SHAbe88eb0e…）。
 新固定3轮预热、同源candidate→control串行对照正在运行：candidate已计分4K5775.468674 total tok/s、TTFT3637.191876ms、256/256、完整1048576+262144 tokens；16K及control尚未完成，不能认定新增收益。runtime4068f08/private SO5cbb/官方CLI和计分benchmark保持不变，control只关自有flag并使用私有cache；driver与状态见7018fef。
 

@@ -1,0 +1,29 @@
+{
+  "diagnostic_throughput_only": true,
+  "accuracy_resampled": false,
+  "accuracy_evaluated_here": false,
+  "linked_first_accuracy": {
+    "score": 0.9429,
+    "metric_count": 105,
+    "predictions": 105,
+    "unique_questions": 105,
+    "failed_predictions": [],
+    "report": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/full/math500-level3/20261025_090703/reports/minicpm/math_500.json"
+  },
+  "linked_accuracy_applies_to": "candidate flag1 only; control has no accuracy credit",
+  "linked_first_accuracy_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/full/accuracy-verdict.json",
+  "side": "control",
+  "runtime_commit": "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+  "frozen_driver_sha256": "91e9ea2f85bb6c816306acb277398e279e3c750a3268ef9ab6aa20edb39fb331",
+  "diagnostic_driver_sha256": "1d4be2f380953934af503d30f277c149c5a413268f9335cd3acc30d2951a6bfe",
+  "warmup_rounds": 3,
+  "warmup_output_len": 128,
+  "warmup_requests": {
+    "4096": 128,
+    "16384": 64
+  },
+  "timing_rounds_discarded": 0,
+  "warmup_timing_used_to_choose_scored_start": false,
+  "scored_command_unchanged": true,
+  "scored_rounds_per_length": 1
+}

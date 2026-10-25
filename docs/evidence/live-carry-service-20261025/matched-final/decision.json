@@ -1,0 +1,44 @@
+{
+  "decision": "close_without_merge",
+  "reason": [
+    "first_level3_99_of_105_below_0.95",
+    "single_matched_pair_does_not_prove_stable_increment"
+  ],
+  "runtime_commit": "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+  "first_precision_correct": 99,
+  "first_precision_total": 105,
+  "first_precision_exact": 0.9428571428571428,
+  "model_precision_gate": false,
+  "leaf_throughput_precision_null_means_not_reevaluated": true,
+  "score_comparison": {
+    "4096": {
+      "candidate_toks": 5775.468674320623,
+      "control_toks": 5753.078358786842,
+      "relative_gain": 0.0038918843334687647,
+      "candidate_ttft_ms": 3637.1918755867227,
+      "control_ttft_ms": 3593.0992653084104
+    },
+    "16384": {
+      "candidate_toks": 4042.845546908602,
+      "control_toks": 4050.257237285939,
+      "relative_gain": -0.001829930778002531,
+      "candidate_ttft_ms": 124273.07422587182,
+      "control_ttft_ms": 124209.60176413791
+    }
+  },
+  "env_differences": {
+    "TORCHINDUCTOR_CACHE_DIR": [
+      "/workspace/experiments/minicpm-s2/live-carry-fixedwarm-pair-20261025/candidate/inductor-cache",
+      "/workspace/experiments/minicpm-s2/live-carry-fixedwarm-pair-20261025/control/inductor-cache"
+    ],
+    "VLLM_FL_BIV150_LIVE_CARRY_GATE": [
+      "1",
+      "0"
+    ]
+  },
+  "matched_source_cli_packages_so": true,
+  "raw_files": 63,
+  "raw_bytes": 64755,
+  "raw_sha256": "3b3614976b91266e47bc951ce01c8d0ce14c84b2f9fb006905ad7e532b88f12b",
+  "native_topology_repair": "retain as untested component research; no immediate full-service rerun"
+}

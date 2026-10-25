@@ -1,0 +1,93 @@
+{
+  "command": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/live-carry-codegen-v2-20261025",
+  "git_commit": "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+  "git_status": "",
+  "source_hashes": {
+    "vllm_fl/patches/biv150_prefill_normalized.py": "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42",
+    "vllm_fl/worker/model_runner.py": "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61",
+    "vllm_fl/patches/biv150_gqa_decode.py": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+    "vllm_fl/patches/biv150_native_w8a8.py": "125f4b3e1a0a20d3b3c3724089fdf7a9169c4f1e5c6963a2d833db644b770bcd",
+    "vllm_fl/patches/biv150_live_carry_gate.py": "659db149d81d37b8fd5b7ca0acb352839993cc3d27a80f6beb71f2a6d5254cf8",
+    "vllm_fl/patches/biv150_live_carry_codegen.py": "6809efbf4ce2cf97cfd2bf906d2568fcd36aedf92b980fb73bf349b1da221a1b",
+    "vllm_fl/compile_semantics.py": "86f7c0cf00bbeb0f761600e4899d9b66827a4390a8dfe0f96149811d66c759dc",
+    "vllm_fl/patches/biv150_compute_order.py": "fb8509c5fe7e92960b95c4891a42aa72a236fc98ef54724296fe2779e293f44a",
+    "vllm_fl/patches/biv150_q_fragment_service.py": "3f90de854adeb7d3584b19bad1f317cb527f16f14bec15d40f55ffa3e13b4d8a",
+    "csrc/iluvatar/native_w8a8.cpp": "b37c84064474fe904334d7c06f473712077230f0d319df53032372b8b8111bcb",
+    "csrc/iluvatar/native_w8a8.cu": "d18191625fe45ec4aacba09d1f982bfc88a61ddd0efae32566f8a8b91f502297"
+  },
+  "mode": "throughput",
+  "live_carry_control": true,
+  "started_utc": "2026-10-25T02:20:19.742812+00:00",
+  "python": "3.12.11 (main, Jul 31 2025, 06:45:11) [GCC 13.3.0]",
+  "packages": {
+    "torch": "2.10.0+corex.4.5.0",
+    "vllm": "0.24.0+empty",
+    "flag_gems": "5.3.5",
+    "evalscope": "1.11.1"
+  },
+  "env": {
+    "VLLM_FL_BIV150_LIVE_CARRY_GATE": "0",
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/live-carry-fixedwarm-pair-20261025/control/inductor-cache"
+  },
+  "native_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "startup_capture_selection": [],
+  "generated_pairs": [],
+  "q_fragment_installation": {
+    "installed": true,
+    "scope": "audited BI-V150 MiniCPM BF16 prefill Q fragment lifetime",
+    "binding": "normalization-over-gqa",
+    "temporary_ir": true
+  },
+  "native_installation": {
+    "installed": true,
+    "live_carry_m64": {
+      "installed": false,
+      "reason": "disabled"
+    },
+    "layers": [
+      "gate_up_proj"
+    ],
+    "min_rows": 17,
+    "compressed_only": true,
+    "skip_edge_layers": 4,
+    "fused_silu": true,
+    "activation_residual_rows": [
+      1,
+      16
+    ],
+    "cached_quantization_rows": [
+      17,
+      2048
+    ],
+    "cached_quantization_threads": 256,
+    "gate_operator": "gate_silu_auto"
+  },
+  "installation": {
+    "installed": true,
+    "scope": "audited BF16 causal MiniCPM prefill without sinks",
+    "backend_rebound": true,
+    "audited": {
+      "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+    },
+    "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+    "initial_mass": 0
+  }
+}

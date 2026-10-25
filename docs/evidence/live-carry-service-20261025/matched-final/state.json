@@ -1,0 +1,55 @@
+{
+  "driver_pid": 262999,
+  "runtime_commit": "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+  "source": "/workspace/experiments/minicpm-s2/code/live-carry-codegen-v2-20261025",
+  "first_accuracy": {
+    "score": 0.9429,
+    "metric_count": 105,
+    "predictions": 105,
+    "unique_questions": 105,
+    "failed_predictions": [],
+    "report": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/full/math500-level3/20261025_090703/reports/minicpm/math_500.json"
+  },
+  "precision_gate": false,
+  "control_accuracy_evaluated": false,
+  "scored_rounds_per_side_per_length": 1,
+  "fixed_warmup_rounds": 3,
+  "stable_gain_proven": false,
+  "started_utc": "2026-10-25T01:49:47.516317+00:00",
+  "stage": "finished",
+  "pid": 271216,
+  "start_ticks": "324237113",
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "/workspace/experiments/minicpm-s2/drivers/live-carry-fixedwarm-20261025/run_biv150_live_carry_fixedwarm_pair.py",
+    "--source",
+    "/workspace/experiments/minicpm-s2/code/live-carry-codegen-v2-20261025",
+    "--commit",
+    "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+    "--accuracy-run",
+    "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/full",
+    "--out",
+    "/workspace/experiments/minicpm-s2/live-carry-fixedwarm-pair-20261025/control",
+    "--side",
+    "control"
+  ],
+  "matched_source_library_cli_other_flags_and_warmup": true,
+  "comparison": {
+    "4096": {
+      "candidate_toks": 5775.468674320623,
+      "control_toks": 5753.078358786842,
+      "relative_gain": 0.0038918843334687647,
+      "candidate_ttft_ms": 3637.1918755867227,
+      "control_ttft_ms": 3593.0992653084104
+    },
+    "16384": {
+      "candidate_toks": 4042.845546908602,
+      "control_toks": 4050.257237285939,
+      "relative_gain": -0.001829930778002531,
+      "candidate_ttft_ms": 124273.07422587182,
+      "control_ttft_ms": 124209.60176413791
+    }
+  },
+  "completed": true
+}
