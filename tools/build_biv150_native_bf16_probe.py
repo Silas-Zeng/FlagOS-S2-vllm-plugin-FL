@@ -24,7 +24,7 @@ def main():
         build_directory=str(args.out.resolve()),
         extra_include_paths=['/usr/local/corex/include'],
         extra_cflags=['-O3', '-std=c++17'],
-        extra_ldflags=['-L/usr/local/corex/lib64', '-lcublas', '-ltorch_cuda', '-lc10_cuda'],
+        extra_ldflags=['-L/usr/local/corex/lib64', '-lcublas', '-lcudart', '-ltorch_cuda', '-lc10_cuda'],
         with_cuda=False, is_python_module=False, verbose=True)
     record = dict(library=str(library), source=str(source),
         source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
