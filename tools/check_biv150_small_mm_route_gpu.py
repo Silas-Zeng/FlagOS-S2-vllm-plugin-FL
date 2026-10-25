@@ -54,9 +54,13 @@ def main(a):
     assert inspect.unwrap(flag_gems.mm).__globals__ is module.__dict__
     assert inspect.unwrap(flag_gems.mm_out).__globals__ is module.__dict__
     original_launch=module._launch_mm
+    linear_module=importlib.import_module(inspect.unwrap(flag_gems.linear).__module__)
+    original_linear=linear_module.linear_kernel
     installation=small._install_mm_route()
     assert installation.get('installed'),installation
     direct_launch=module._launch_mm
+    direct_linear=linear_module.linear_kernel
+    assert direct_linear is not original_linear
     assert direct_launch is not original_launch
     definitions = {
         'o': ['model.layers.0.self_attn.o_proj.weight'],
@@ -106,6 +110,7 @@ def main(a):
                 stream.wait_stream(default)
                 for route in ['functional','out','direct_functional','direct_out']:
                     module._launch_mm=direct_launch if route.startswith('direct_') else original_launch
+                    linear_module.linear_kernel=direct_linear if route.startswith('direct_') else original_linear
                     small._OBSERVED_ROWS.clear()
                     row = dict(**metadata, route=route, stream=stream_name, calls=0,
                                violation_calls=0, nonfinite_calls=0, max_abs_error=0.0,
@@ -150,7 +155,7 @@ def main(a):
                             row['patterns'].append(dict(input=pattern, output_hashes=len(hashes)))
                         del graph, graph_out, value, actual, eager
                     row['selected_by_vendor_wrapper']=(a.rows,n,k) in small._OBSERVED_ROWS
-                    if route=='direct_out':assert row['selected_by_vendor_wrapper'],'actual out path never entered vendor patch'
+                    if route.startswith('direct_'):assert row['selected_by_vendor_wrapper'],'actual out path never entered vendor patch'
                     row['passed'] = (row['violation_calls'] == row['nonfinite_calls'] == 0
                                      and row['graph_eager_different'] == 0
                                      and all(v['output_hashes'] == 1 for v in row['patterns']))
@@ -161,7 +166,8 @@ def main(a):
             torch.cuda.synchronize()
             del w, x, out, weight, gold
     module._launch_mm=original_launch
-    result['vendor_restored']=module._launch_mm is original_launch
+    linear_module.linear_kernel=original_linear
+    result['vendor_restored']=(module._launch_mm is original_launch and linear_module.linear_kernel is original_linear)
     owned=[v for v in result['records'] if v['route'].startswith('direct_') and v['selected_by_vendor_wrapper']]
     result['owned_routes_passed']=bool(owned) and all(v['passed'] for v in owned)
     result['all_direct_functional_passed']=all(v['passed'] for v in result['records'] if v['route']=='direct_functional')

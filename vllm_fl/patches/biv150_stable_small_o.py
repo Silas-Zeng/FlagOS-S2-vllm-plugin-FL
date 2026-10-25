@@ -10,30 +10,48 @@ _IMPLEMENTATION = None
 _INSTALLED = False
 _OBSERVED_ROWS = set()
 _MM_SHA = '4c2e23da2a6b65b89cbb8170967f14c5327d143e21137387f3907ccb4fcde090'
+_LINEAR_SHA = 'd431a4fa144ed67dc3deab46dd5beace3612858075f85c39e602447ba3bf768a'
 
 
 def _install_mm_route():
-    """Replace only the selected FlagGems vendor launch seam, keeping mm/out API."""
+    """Replace audited small-row launches, preserving the original linear APIs."""
     import hashlib
     import importlib
     import inspect
     from pathlib import Path
     import flag_gems
-    # The SDK loads this file under its short backend name. Importing the
-    # fully qualified path can create a second, inactive module instance.
     selected=inspect.unwrap(flag_gems.mm)
     module_name=getattr(selected,'__module__','')
     if module_name not in ('_iluvatar.ops.mm','flag_gems.runtime.backend._iluvatar.ops.mm'):
         return {'installed':False,'reason':'unsupported selected FlagGems MM module'}
     module=importlib.import_module(module_name)
-    path=Path(inspect.getsourcefile(module))
-    if hashlib.sha256(path.read_bytes()).hexdigest()!=_MM_SHA:
+    if hashlib.sha256(Path(inspect.getsourcefile(module)).read_bytes()).hexdigest()!=_MM_SHA:
         return {'installed':False,'reason':'unsupported FlagGems MM source'}
     if not all(getattr(inspect.unwrap(fn),'__globals__',None) is module.__dict__
                and inspect.unwrap(fn) is getattr(module,name,None)
                for name,fn in (('mm',flag_gems.mm),('mm_out',flag_gems.mm_out))):
         return {'installed':False,'reason':'MM symbols do not use audited launch globals'}
+    functional=inspect.unwrap(flag_gems.linear)
+    linear_name=getattr(functional,'__module__','')
+    if linear_name not in ('_iluvatar.ops.linear','flag_gems.runtime.backend._iluvatar.ops.linear'):
+        return {'installed':False,'reason':'unsupported selected FlagGems linear module'}
+    linear_module=importlib.import_module(linear_name)
+    if hashlib.sha256(Path(inspect.getsourcefile(linear_module)).read_bytes()).hexdigest()!=_LINEAR_SHA:
+        return {'installed':False,'reason':'unsupported FlagGems linear source'}
+    if (functional is not getattr(linear_module,'linear',None)
+            or getattr(functional,'__globals__',None) is not linear_module.__dict__):
+        return {'installed':False,'reason':'linear symbol does not use audited kernel globals'}
     previous=module._launch_mm
+    previous_linear=linear_module.linear_kernel
+    def observe(m,n,k,binding,a,w,c):
+        key=(m,n,k)
+        if key not in _OBSERVED_ROWS and not torch.cuda.is_current_stream_capturing():
+            _OBSERVED_ROWS.add(key)
+            print('BIV150_STABLE_SMALL_O_SELECTED', {
+                'rows':m,'output_columns':n,'input_columns':k,'binding':binding,
+                'input_stride':tuple(a.stride()),'weight_stride':tuple(w.stride()),
+                'output_stride':tuple(c.stride()),'warps':4,'stages':1,
+            },flush=True)
     def launch(a,b,c,m,n,k):
         if not (1<=m<=8 and (n,k) in ((2048,2048),(2560,2048),(12288,2048),(2048,6144))
                 and tuple(a.shape)==(m,k) and tuple(b.shape)==(k,n) and tuple(c.shape)==(m,n)
@@ -43,25 +61,43 @@ def _install_mm_route():
                 and a.stride(0)>=k and b.stride(1)>=k and c.stride(0)>=n):
             return previous(a,b,c,m,n,k)
         with torch.cuda.device(a.device):
-            key=(m,n,k)
-            if key not in _OBSERVED_ROWS and not torch.cuda.is_current_stream_capturing():
-                _OBSERVED_ROWS.add(key)
-                print('BIV150_STABLE_SMALL_O_SELECTED', {
-                    'rows':m,'output_columns':n,'input_columns':k,'binding':'mm',
-                    'input_stride':tuple(a.stride()),'rhs_stride':tuple(b.stride()),
-                    'output_stride':tuple(c.stride()),'warps':4,'stages':1,
-                },flush=True)
-            # B is KxN; the original kernel views weights as NxK. Swap only
-            # pointer strides, without a transpose/copy operation or allocation.
+            observe(m,n,k,'mm',a,b,c)
             _small_o_kernel[(n//64,)](a,b,c,m,K=k,
                 XS0=a.stride(0),XS1=a.stride(1),
                 WS0=b.stride(1),WS1=b.stride(0),
                 YS0=c.stride(0),YS1=c.stride(1),num_warps=4,num_stages=1)
         return c
+    class LinearLaunch:
+        def __getattr__(self,name):return getattr(previous_linear,name)
+        def __getitem__(self,grid):
+            def call(*args,**kwargs):
+                # Exact signature of the pinned SDK linear wrapper, before its
+                # tuner runs. Every other signature and meta value delegates.
+                if (len(args)!=14 or set(kwargs)!={'BIAS','GROUP_M','SPLIT_K'}
+                        or kwargs['BIAS'] is not False or kwargs['GROUP_M']!=8
+                        or kwargs['SPLIT_K']!=1):
+                    return previous_linear[grid](*args,**kwargs)
+                a,w,_,c,m,n,k,am,ak,wn,wk,cm,cn,bn=args
+                if not (1<=m<=8 and (n,k) in ((2048,2048),(2560,2048),(12288,2048),(2048,6144))
+                        and tuple(a.shape)==(m,k) and tuple(w.shape)==(n,k) and tuple(c.shape)==(m,n)
+                        and a.dtype==w.dtype==c.dtype==torch.bfloat16
+                        and a.is_cuda and w.is_cuda and c.is_cuda and a.device==w.device==c.device
+                        and a.stride()==(am,ak) and w.stride()==(wn,wk) and c.stride()==(cm,cn)
+                        and ak==wk==cn==1 and am>=k and wn>=k and cm>=n and bn==0):
+                    return previous_linear[grid](*args,**kwargs)
+                with torch.cuda.device(a.device):
+                    observe(m,n,k,'linear-kernel',a,w,c)
+                    return _small_o_kernel[(n//64,)](a,w,c,m,K=k,
+                        XS0=am,XS1=ak,WS0=wn,WS1=wk,YS0=cm,YS1=cn,num_warps=4,num_stages=1)
+            return call
+    # Validate both seams before changing either SDK global.
     module._launch_mm=launch
-    return {'installed':True,'binding':'mm','scope':'BF16 TP1 MiniCPM MM/out M1-8',
+    linear_module.linear_kernel=LinearLaunch()
+    return {'installed':True,'binding':'mm','scope':'BF16 TP1 MiniCPM MM/out and functional linear M1-8',
             'block_m':16,'block_n':64,'block_k':128,'warps':4,'stages':1,
-            'original_mm_sha256':_MM_SHA,'selected_module':module_name,'larger_rows':'original vendor launch unchanged'}
+            'original_mm_sha256':_MM_SHA,'original_linear_sha256':_LINEAR_SHA,
+            'selected_module':module_name,'selected_linear_module':linear_name,
+            'larger_rows':'original vendor launches unchanged'}
 
 
 @triton.jit(do_not_specialize=['M'])
