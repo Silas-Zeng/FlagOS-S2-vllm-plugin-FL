@@ -110,12 +110,13 @@ def main(args):
                FLAGGEMS_CACHE_DIR=str(args.out / "flaggems-cache"),
                BIV150_NATIVE_W8A8_LIBRARY=str(args.gate_library.resolve()),
                VLLM_FL_BIV150_NATIVE_W8A8="1" if args.native_mode == "on" else "0",
-               VLLM_FL_BIV150_STABLE_SMALL_O=args.stable_small_o)
+               VLLM_FL_BIV150_STABLE_SMALL_O=args.stable_small_o,
+               VLLM_FL_BIV150_STABLE_SMALL_O_BINDING=args.small_binding)
     command = ["/usr/local/bin/vllm", "serve", "/workspace/MiniCPM5-2B", "--port", "9031",
                "--compilation-config", '{"cudagraph_mode":"FULL_DECODE_ONLY"}',
                "--served-model-name", "minicpm", "--gpu-memory-utilization", "0.85", "--max-model-len", "131072"]
     manifest = dict(command=command, source=str(source), commit=args.commit,
-                    native_mode=args.native_mode, stable_small_o=args.stable_small_o, run_accuracy=args.run_accuracy, run_throughput=args.run_throughput, full_workload_warmup=args.full_workload_warmup, driver_sha256=sha(__file__),
+                    native_mode=args.native_mode, stable_small_o=args.stable_small_o, small_binding=args.small_binding, run_accuracy=args.run_accuracy, run_throughput=args.run_throughput, full_workload_warmup=args.full_workload_warmup, driver_sha256=sha(__file__),
                     diagnostic_sha256=sha(Path(__file__).with_name("biv150_peer_mixed_diagnostic.py")),
                     gate_library_sha256=sha(args.gate_library), tuning_snapshot=records,
                     env={k: v for k, v in env.items() if k.startswith(("VLLM_", "BIV150_", "TRITON_", "TORCHINDUCTOR_", "FLAGGEMS_"))})
@@ -272,6 +273,7 @@ if __name__ == "__main__":
     parser.add_argument("--native-mode", choices=("on", "off"), required=True)
     parser.add_argument("--fixtures", type=Path, required=True)
     parser.add_argument("--stable-small-o", choices=("0","1"), required=True)
+    parser.add_argument("--small-binding",choices=("linear","mm"),default="linear")
     parser.add_argument("--run-accuracy", action="store_true")
     parser.add_argument("--run-throughput", action="store_true")
     parser.add_argument("--full-workload-warmup", action="store_true")
