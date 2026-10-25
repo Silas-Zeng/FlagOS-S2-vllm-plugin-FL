@@ -544,7 +544,7 @@ def arguments(argv=None):
     parser.add_argument('--commit', required=True)
     parser.add_argument('--startup-timeout', type=int, default=1200)
     parser.add_argument('--service-stop-timeout', type=int, default=90)
-    parser.add_argument('--collector-flush-timeout', type=int, default=180)
+    parser.add_argument('--collector-flush-timeout', type=int, default=1800)
     args = parser.parse_args(argv)
     args.source = args.source.resolve()
     args.out = args.out.resolve()
