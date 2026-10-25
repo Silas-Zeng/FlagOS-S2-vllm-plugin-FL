@@ -19,7 +19,7 @@ def blocks(length, segments, tile=32, page=16):
 def quantize_values(values):
     largest=max((abs(v) for v in values),default=0.)
     assert math.isfinite(largest)
-    scale=max(largest,1e-12)/127
+    scale=1. if largest==0 else max(largest/127,1.1754943508222875e-38)
     return [max(-127,min(127,(math.floor(abs(v/scale)+.5) if v>=0 else -math.floor(abs(v/scale)+.5)))) for v in values],scale
 
 
