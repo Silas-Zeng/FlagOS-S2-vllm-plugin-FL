@@ -1,0 +1,120 @@
+{
+  "source_branch": "PR36",
+  "source_commit": "cf313362972b94f7f6f5bc7d4676fd852ef0fee7",
+  "old_configs": [
+    [
+      16,
+      128,
+      64,
+      1,
+      4
+    ],
+    [
+      32,
+      128,
+      64,
+      1,
+      4
+    ],
+    [
+      16,
+      256,
+      64,
+      1,
+      4
+    ],
+    [
+      32,
+      256,
+      64,
+      1,
+      8
+    ],
+    [
+      16,
+      128,
+      64,
+      2,
+      4
+    ],
+    [
+      16,
+      128,
+      64,
+      4,
+      4
+    ],
+    [
+      32,
+      128,
+      64,
+      2,
+      4
+    ],
+    [
+      16,
+      256,
+      64,
+      2,
+      4
+    ],
+    [
+      64,
+      64,
+      64,
+      2,
+      4
+    ],
+    [
+      64,
+      64,
+      64,
+      4,
+      4
+    ]
+  ],
+  "new_configs": [
+    [
+      32,
+      64,
+      128,
+      1,
+      4
+    ],
+    [
+      32,
+      64,
+      128,
+      1,
+      8
+    ],
+    [
+      32,
+      128,
+      128,
+      1,
+      8
+    ],
+    [
+      64,
+      64,
+      128,
+      1,
+      8
+    ]
+  ],
+  "no_repeated_configuration": true,
+  "kernel_math_unchanged": true,
+  "production_sources_unchanged": true,
+  "gpu_not_run": true,
+  "source_kernel_sha256": "05bd3f8b80a436f45243087ffd46e5b8c05f55c31948ca977525a9721ce05a6b",
+  "kernel_function_canonical_hashes": {
+    "chunk_intervals": "61b35fc45b6aa9f8c293bf533daa365174611c34bdd65f349c992f83a5981f3a",
+    "partial_mm": "b0cee56eeb0ff940d37d3c3c19267d5d8e9faae8dbc5dd79b698fbd7f22922df",
+    "reduce_partials": "b4d4ffbfeca1bec8eeb19be0c8b7436a86c4ebf38339cbed9d942d006d101a74",
+    "allocate": "f64ec2cc4a73e2f130ca3ec617fa06f4b5c04939f232e2f88da0de22559a093f",
+    "run_into": "933301e5a9572790fa2d9b90710100ec4ce7bd4ec7b0b165e31984791ee844bf",
+    "matmul": "a4ca78e21fa4508c909891916e912fe5b7214be203418d6b21be388df7b679ae"
+  },
+  "hash_format": "json-all-ast-fields-v1"
+}
