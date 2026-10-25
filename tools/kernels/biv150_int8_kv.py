@@ -157,17 +157,15 @@ def _gqa_decode_attention_int8(
         )
         scale_offsets = page * scale_stride_block + column_slot * scale_stride_slot + kv_head_idx
         key_scale = tl.load(key_scale_ptr + scale_offsets)
+        value_scale = tl.load(value_scale_ptr + scale_offsets)
         K = (tl.load(key_cache_ptr + k_offsets).to(tl.float32) * key_scale[None, :]).to(Q.dtype)
+        V = (tl.load(value_cache_ptr + v_offsets).to(tl.float32) * value_scale[:, None]).to(Q.dtype)
 
         scores = tl.dot(Q, K) * softmax_scale_log2e
         new_max = tl.maximum(running_max, tl.max(scores, 1))
         probability = tl.math.exp2(scores - new_max[:, None])
         rescale = tl.math.exp2(running_max - new_max)
         running_sum = running_sum * rescale + tl.sum(probability, 1)
-        # Delay V reconstruction until K/scores are dead. INT8-to-FP32-to-
-        # BF16 temporaries otherwise overlap both matrix operands.
-        value_scale = tl.load(value_scale_ptr + scale_offsets)
-        V = (tl.load(value_cache_ptr + v_offsets).to(tl.float32) * value_scale[:, None]).to(Q.dtype)
         accumulator = accumulator * rescale[:, None] + tl.dot(
             probability.to(V.dtype), V
         )
@@ -193,7 +191,9 @@ def _gqa_decode_attention_int8(
         )
         scale_offsets = page * scale_stride_block + column_slot * scale_stride_slot + kv_head_idx
         key_scale = tl.load(key_scale_ptr + scale_offsets, mask=column_valid, other=1.0)
+        value_scale = tl.load(value_scale_ptr + scale_offsets, mask=column_valid, other=1.0)
         K = (tl.load(key_cache_ptr + k_offsets, mask=column_valid[None, :], other=0).to(tl.float32) * key_scale[None, :]).to(Q.dtype)
+        V = (tl.load(value_cache_ptr + v_offsets, mask=column_valid[:, None], other=0).to(tl.float32) * value_scale[:, None]).to(Q.dtype)
 
         scores = tl.dot(Q, K) * softmax_scale_log2e
         scores = tl.where(column_valid[None, :], scores, float("-inf"))
@@ -201,8 +201,6 @@ def _gqa_decode_attention_int8(
         probability = tl.math.exp2(scores - new_max[:, None])
         rescale = tl.math.exp2(running_max - new_max)
         running_sum = running_sum * rescale + tl.sum(probability, 1)
-        value_scale = tl.load(value_scale_ptr + scale_offsets, mask=column_valid, other=1.0)
-        V = (tl.load(value_cache_ptr + v_offsets, mask=column_valid[:, None], other=0).to(tl.float32) * value_scale[:, None]).to(Q.dtype)
         accumulator = accumulator * rescale[:, None] + tl.dot(
             probability.to(V.dtype), V
         )

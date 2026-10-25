@@ -37,7 +37,7 @@ def main(args):
     own = bench.load_module(kernel_path, 'int8_kv_experimental_kernels')
     assert base.TARGET_PROGRAMS == 256
     result = dict(completed=False, service_installed=False, official_score=False,
-                  model_accuracy_tested=False, capacity_reclaimed=False,
+                  model_accuracy_tested=False, capacity_reclaimed=False, candidate_warps=args.candidate_warps,
                   source_commit=subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip(),
                   operator_sha256=hashlib.sha256(kernel_path.read_bytes()).hexdigest(),
                   baseline_source_sha256=SOURCE_SHA, cases=[], errors=[])
@@ -78,6 +78,7 @@ def main(args):
     def resources(compiled):
         return dict(hash=str(compiled.hash), n_regs=compiled.n_regs,
                     n_spills=compiled.n_spills, shared=compiled.metadata.shared,
+                    num_warps=compiled.metadata.num_warps, num_stages=compiled.metadata.num_stages,
                     use_sme=getattr(compiled.metadata, 'use_sme', None))
 
     save()
@@ -99,6 +100,7 @@ def main(args):
             class Producer:
                 def __getitem__(self, grid):
                     def run(**kwargs):
+                        kwargs["num_warps"] = args.candidate_warps
                         return own._gqa_decode_attention_int8[grid](
                             **kwargs, key_scale_ptr=quant['key_scale'], value_scale_ptr=quant['value_scale'],
                             scale_stride_block=quant['key_scale'].stride(0), scale_stride_slot=quant['key_scale'].stride(1))
@@ -158,6 +160,7 @@ def main(args):
                 stream.synchronize()
                 if not encode and name == 'steady4k':assert str(compiled.hash) == SERVICE_4K_HASH
                 row['int8_resources' if encode else 'baseline_resources'] = resources(compiled)
+                assert compiled.metadata.num_warps == (args.candidate_warps if encode else 1)
                 graph = torch.cuda.CUDAGraph()
                 with torch.cuda.graph(graph, stream=stream):run(encode)
                 graphs[encode] = graph
@@ -219,6 +222,7 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--run-gpu', action='store_true');p.add_argument('--out', type=Path)
     p.add_argument('--case', action='append', choices=sorted(CASES))
+    p.add_argument('--candidate-warps', type=int, choices=(1,2), default=1)
     a = p.parse_args()
     if a.run_gpu and a.out is None:p.error('--out is required for GPU work')
     main(a)
