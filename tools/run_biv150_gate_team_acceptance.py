@@ -257,6 +257,7 @@ def main(args):
         "vllm_fl/patches/biv150_gqa_decode.py",
         "vllm_fl/patches/biv150_native_w8a8.py",
         "vllm_fl/patches/biv150_live_carry_gate.py",
+        "vllm_fl/patches/biv150_live_carry_codegen.py",
         "vllm_fl/compile_semantics.py",
         "vllm_fl/patches/biv150_compute_order.py",
         "vllm_fl/patches/biv150_q_fragment_service.py",
@@ -357,12 +358,17 @@ def main(args):
         elif (live.get('installed') is not True or live.get('exact_rows')!=[64]
               or live.get('original_transparent_carry') is not True
               or live.get('persistent_weight_copy') is not False
-              or Path(live.get('hook_file','')).resolve()!=source/'vllm_fl/patches/biv150_live_carry_gate.py'):
+              or live.get('original_decoder_forward_unchanged') is not True
+              or Path(live.get('hook_file','')).resolve()!=source/'vllm_fl/patches/biv150_live_carry_codegen.py'):
             raise RuntimeError(f'Live-carry candidate missing or wrong source: {live}')
         startup_hits=[line for line in log_path.read_text().splitlines() if 'BIV150_LIVE_CARRY_M64_SELECTED' in line]
+        generated_pairs=[line for line in log_path.read_text().splitlines() if 'BIV150_LIVE_CARRY_CODEGEN_PAIR' in line]
         if not args.live_carry_control and not startup_hits:
             raise RuntimeError('No M64 selection during startup Graph capture; do not score an inactive candidate')
         manifest['startup_capture_selection']=startup_hits
+        manifest['generated_pairs']=generated_pairs
+        if not args.live_carry_control and not generated_pairs:
+            raise RuntimeError('No audited generated norm/gate pair transformed')
         manifest["q_fragment_installation"] = fragments[-1]
         manifest["native_installation"] = native_states[-1]
         manifest["installation"] = states[-1]

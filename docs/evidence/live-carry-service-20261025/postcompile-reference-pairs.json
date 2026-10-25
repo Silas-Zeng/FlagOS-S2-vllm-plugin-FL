@@ -1,0 +1,21 @@
+{
+  "cpu_only": true,
+  "source_archive_sha256": "a75a7e44931794f67926c7255ac388a2c6e88d04e8f8d53e4219357687133bff",
+  "matches": [
+    {
+      "member": "5i/c5iu52txqj4juwyc5pes6yjz42dc5fweqyig3ra3jmohswmdmqgb.py",
+      "wrapper_sha256": "dbdc6f4eea81b6ebc59d8399cb21bfacb9a889ed4b3c2ac1cfd624c2e422ca8c",
+      "pairs": [
+        {
+          "kernel": "triton_red_fused_fused_add_rms_norm_gate_silu_auto_0",
+          "norm_line": 829,
+          "gate_line": 832,
+          "normalized_buffer": "buf2",
+          "output": "buf3",
+          "sole_consumer": true
+        }
+      ],
+      "rewritten_function_sha256": "2ce1332772f0e90329e4a7a3a614b2024db80b65014e18b551f836d26eec905f"
+    }
+  ]
+}

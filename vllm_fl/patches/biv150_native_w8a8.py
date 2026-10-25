@@ -172,7 +172,7 @@ def install():
             return y
 
         LlamaMLP.forward = forward
-    from vllm_fl.patches.biv150_live_carry_gate import install as install_live_carry
+    from vllm_fl.patches.biv150_live_carry_codegen import install as install_live_carry
     live_carry = install_live_carry()
     return {
         "installed": True,

@@ -1,5 +1,6 @@
 """Owned sequential CPU/device/full-model acceptance; no shared installation."""
 import argparse
+import ast
 import datetime
 import hashlib
 import json
@@ -34,10 +35,10 @@ def main(args):
     assert hashlib.sha256(target.read_bytes()).hexdigest()==args.library_sha256
     env=dict(os.environ,PYTHONPATH=str(source),PYTHONUNBUFFERED='1',MAX_JOBS='2')
     steps=[('cpu',[sys.executable,str(source/'tools/check_biv150_live_carry_cpu.py')]),
-        ('row-guard-cpu',[sys.executable,str(source/'tools/check_biv150_row_guard_cpu.py'),'--out',str(args.out/'row-guard-cpu.json')]),
+        ('paired-cpu',[sys.executable,str(source/'tools/check_biv150_live_carry_codegen_cpu.py')]),
         ('gate9',[sys.executable,str(source/'tools/check_biv150_gate_auto.py'),'--library',str(target),'--out',str(args.out/'gate9.json')]),
         ('cached40',[sys.executable,str(source/'tools/check_biv150_quant_cached_dispatch.py'),'--library',str(target),'--out',str(args.out/'cached40.json')]),
-        ('device',[sys.executable,'-u',str(source/'tools/check_biv150_live_carry_device.py'),'--library',str(target),'--out',str(args.out/'device')]),
+        ('device',[sys.executable,'-u',str(source/'tools/check_biv150_live_carry_codegen_device.py'),'--library',str(target),'--out',str(args.out/'device')]),
         ('acceptance',[sys.executable,'-u',str(source/'tools/run_biv150_gate_team_acceptance.py'),'--source',str(source),'--out',str(args.out/'full'),'--mode','all'])]
     state=dict(driver_pid=os.getpid(),source=str(source),commit=subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip(),
         library_sha256=args.library_sha256,library_reused_from=str(args.library),
@@ -48,9 +49,14 @@ def main(args):
         assert prior['library_sha256']==args.library_sha256
         assert subprocess.check_output(['git','-C',str(old),'rev-parse','HEAD'],text=True).strip()==prior['commit']
         for file in ('csrc/iluvatar/native_w8a8.cpp','csrc/iluvatar/native_w8a8.cu',
-            'tools/check_biv150_gate_auto.py','tools/check_biv150_quant_cached_dispatch.py',
-            'vllm_fl/patches/biv150_native_w8a8.py'):
+            'tools/check_biv150_gate_auto.py','tools/check_biv150_quant_cached_dispatch.py'):
             assert (source/file).read_bytes()==(old/file).read_bytes(),file
+        native='vllm_fl/patches/biv150_native_w8a8.py'
+        previous=ast.parse((old/native).read_text());current=ast.parse((source/native).read_text())
+        for name in ('load_library','quantize_weight'):
+            a=next(n for n in previous.body if isinstance(n,ast.FunctionDef) and n.name==name)
+            b=next(n for n in current.body if isinstance(n,ast.FunctionDef) and n.name==name)
+            assert ast.dump(a,include_attributes=False)==ast.dump(b,include_attributes=False)
         for name,count in (('gate9',9),('cached40',40)):
             report=json.loads((args.native_checks_from/(name+'.json')).read_text())
             assert report['library_sha256']==args.library_sha256 and len(report['records'])==count
@@ -61,7 +67,7 @@ def main(args):
         state['native_checks_reused_from']=dict(out=str(args.native_checks_from),source_commit=prior['commit'])
         steps=[item for item in steps if item[0] not in ('gate9','cached40')]
     for stage,command in steps:
-        if stage not in ('cpu','row-guard-cpu'):idle()
+        if stage not in ('cpu','paired-cpu'):idle()
         stage_env=dict(env,TORCHINDUCTOR_CACHE_DIR=str(args.out/(stage+'-inductor-cache')))
         with (args.out/(stage+'.log')).open('x') as log:
             child=subprocess.Popen(command,cwd=source,env=stage_env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)

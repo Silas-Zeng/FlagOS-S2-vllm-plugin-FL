@@ -23,3 +23,6 @@
 969字段诊断精确定位details.example_inputs[3]为torch.SymBool→SymNode→ShapeEnv.fake_tensor_cache→as_strided。实际FX源行来自_supported行数条件，Eq(s72,64)被保留在图中。纯CPU最小Dynamo复现2048→64→32→64：旧tuple guard生成eq/not_，显式guard_size_oblivious后不生成该FX布尔操作且分支输出相同。下一冻结版只将行数分支改为显式形状guard，新增CPU回归再跑六组实际SDK/Graph和完整服务；必须验证M64真实命中，不能把启动成功当优化生效，未修改FX pickle实现/缓存参数。
 
 3a7dc04实机结果：CPU140/row guard回归/六组SDK方法GPU+Graph均过，完整服务启动成功，pickle错误消失。但startup无M64 marker，实际新路径没有激活；首105前的capture命中门正确终止，0精度题/0计分吞吐。固定compile range的通用路径不能把显式guard的组件分支当服务生效。保持Draft与原组件证据，不降低验收门；后续分析编译后norm输出→gate调用的成对接入，避免forward形状谓词/额外BF16 carry/原prefill回退改写。当前没有GPU队列继续跑评分。
+
+编译后接入原型：biv150_live_carry_codegen.install只替换精确SHA的PyCodeCache类方法，原Llama forward不再改写。对生成Runner.call精确匹配哈希473b4350...的单输出norm、相同BF16连续buf唯一gate消费者、固定17门和原分配结构；不匹配保持原样。实际当前3a7缓存norm函数同哈希已只读核实。将这一对改为运行时helper，M64且原压缩权重/形状/布局/当前流相符才调用原已测norm_quant(no carry)+F09，其余调用原norm.run与原native gate，所有其他生成AST/返回残差链保留。新方法源写入私有cache可读文件，原cache文件不覆盖，重新加载幂等；自有源进入既有fingerprint glob。
+CPU112策略、6个拒绝改写反例、真实transform执行、原bound基线保留、原调用回退、carry对象身份/输入不变、异流回退、执行失败不吞检查过；旧140仅历史forward源检查，不能冒充新运行时验收。历史真实生成wrapper恰1处配对，原件/源码SHA/函数hash已共享。新GPU代理用原SDK forward不改写；参考调用强制原producer/consumer，候选64须实际host选择次数>0，32须0；检查同数学、fake/fullgraph/变输入Graph，再完整服务startup实际capture命中、首次105及固定充分预热4K/16K。原9/40只在库/C++/CUDA/原测试字节及load_library/quantize_weight AST一致时复用，安装器import变更不被误当执行数值入口变更。GPU/服务尚未验证本原型，不认定收益。

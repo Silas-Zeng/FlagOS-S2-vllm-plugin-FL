@@ -26,7 +26,7 @@ for name,expected in provenance['functions'].items():
     function=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name==name)
     assert hashlib.sha256(json.dumps(canonical_ast(function),ensure_ascii=True,separators=(',',':')).encode()).hexdigest()==expected
 assert not subprocess.check_output(['git','-C',str(r),'diff','0bf9d2e','--','csrc'],text=True)
-allowed={'vllm_fl/patches/biv150_live_carry_gate.py','vllm_fl/patches/biv150_live_carry_forward.py','vllm_fl/patches/biv150_native_w8a8.py','vllm_fl/compile_semantics.py'}
+allowed={'vllm_fl/patches/biv150_live_carry_gate.py','vllm_fl/patches/biv150_live_carry_forward.py','vllm_fl/patches/biv150_live_carry_codegen.py','vllm_fl/patches/biv150_native_w8a8.py','vllm_fl/compile_semantics.py'}
 assert set(subprocess.check_output(['git','-C',str(r),'diff','0bf9d2e','--name-only','--','vllm_fl'],text=True).splitlines())<=allowed
 before=ast.parse(subprocess.check_output(['git','-C',str(r),'show','0bf9d2e:vllm_fl/patches/biv150_native_w8a8.py'],text=True))
 after=ast.parse((r/'vllm_fl/patches/biv150_native_w8a8.py').read_text())
@@ -133,6 +133,7 @@ with tempfile.TemporaryDirectory() as td:
     disabled=sem.build_fingerprint(model,'iluvatar',environ=dict(env,VLLM_FL_BIV150_LIVE_CARRY_GATE='0'),abi=abi)
     assert default==enabled and enabled!=disabled
 print(json.dumps(dict(cpu_only=True,policy_cases=checks,exact_tested_kernel_ast=True,
+    legacy_forward_source_check_only=True,
     shipping_cpp_cuda_and_quantizer_unchanged=True,minimal_decoder_ast_rewrite=True,
     original_carry_identity_preserved=True,original_fallback_contract=True,
     default_enabled_disabled_cache_identity_checked=True,gpu_model_acceptance_pending=True)))
