@@ -50,7 +50,9 @@ def main(a):
     assert hashlib.sha256(baseline_file.read_bytes()).hexdigest() == '4c2e23da2a6b65b89cbb8170967f14c5327d143e21137387f3907ccb4fcde090'
     flag_gems.enable(record=False, once=True)
     from vllm_fl.patches import biv150_stable_small_o as small
-    module=importlib.import_module('flag_gems.runtime.backend._iluvatar.ops.mm')
+    module=importlib.import_module(inspect.unwrap(flag_gems.mm).__module__)
+    assert inspect.unwrap(flag_gems.mm).__globals__ is module.__dict__
+    assert inspect.unwrap(flag_gems.mm_out).__globals__ is module.__dict__
     original_launch=module._launch_mm
     installation=small._install_mm_route()
     assert installation.get('installed'),installation
@@ -66,7 +68,7 @@ def main(a):
     result = {'complete': False, 'diagnostic_only': True, 'rows': a.rows,
               'source_commit': subprocess.check_output(['git', '-C', str(a.source), 'rev-parse', 'HEAD'], text=True).strip(),
               'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-              'binding':'mm','installation':installation,'tuning_snapshot':records,
+              'binding':'mm','selected_module':module.__name__,'installation':installation,'tuning_snapshot':records,
               'records': []}
     result['candidate_operator_sha256'] = hashlib.sha256((a.source / 'vllm_fl/patches/biv150_stable_small_o.py').read_bytes()).hexdigest()
     def save():
