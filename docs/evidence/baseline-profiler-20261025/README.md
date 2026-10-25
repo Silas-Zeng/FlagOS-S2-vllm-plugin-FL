@@ -29,8 +29,10 @@
 
 第一轮实际服务运行于 `9ac118e09cf0984af3a358aa3edf9754c6650fb4`，生产代码等同 main `0bf9d2e`。4K 完成了三轮固定 warmup 和完整 diagnostic workload，保留了 4,246 步调度元数据及完整 ixsys SQLite 时间线；但错误地挂到 SDK CUDAGraphWrapper，实际服务使用 FL GraphWrapper，因此采样数为0，未执行16K。该结果只支持 CPU、非Graph kernel 和整Graph分析，不能当内部节点热点。
 
-v2 改为 `vllm_fl.compilation.graph.GraphWrapper.concrete_graph_entries` / `entry.graph`。真实该 wrapper 的32次replay微测成功产生1次采样：原图 poison positive control、boundary/full clone 均 finite 且 bit-exact，原生和Triton节点均可命名，Triton function handle 可对应 hash/cache源码。补测64行捕获、63个有效token同样通过；只验证模型实际使用的行，完整 allocation 仍参与别名保护。原始窗口与摘要见同目录 actual-wrapper-smoke-v3 文件。
+v2 改为 `vllm_fl.compilation.graph.GraphWrapper.concrete_graph_entries` / `entry.graph`。真实该 wrapper 的32次replay微测成功产生1次采样：原图 poison positive control、boundary/full clone 均 finite 且 torch.equal 数值完全相等（不声称区分 signed zero 的字节逐位一致），原生和Triton节点均可命名，Triton function handle 可对应 hash/cache源码。补测64行捕获、63个有效token同样通过；只验证模型实际使用的行，完整 allocation 仍参与别名保护。原始窗口与摘要见同目录 actual-wrapper-smoke-v3 文件。
 
 启动 instrumentation 改为 WorkerFL.__init__ 前执行，避免 cpuinfo 等普通Python子进程被导入Torch或污染JSON stdout；8项CPU启动时序/隔离检查通过。新增离线节点分析器按诊断窗口关联4K/16K，不把不同 kernel 区间相加当GPU墙钟，也不把诊断吞吐当正式分数。
 
 以上均为诊断工具验证，尚无新的可合并性能收益。
+
+第一轮完整4K的时间线、非Graph热点及每请求阶段核对见 [v1报告](v1-timeline/report.md)。该报告是runtime9ac118e的已有证据；正在运行的v2固定为b37125e，不随文档提交变化。
