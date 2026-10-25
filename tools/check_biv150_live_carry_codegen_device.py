@@ -147,6 +147,7 @@ def main(args):
                     elif pattern=='large':x.mul_(100);r.mul_(100)
                     elif pattern=='cancel':r.copy_(-x);r[:,::17]+=.00390625
                     before=snapshot((x,r));gold=snapshot(reference_call(bf,x,r));actual=snapshot(cf(x,r))
+                    if m==64:assert codegen._SELECTIONS>selections_before,dict(error='paired route not selected',patches=codegen._PATCHED)
                     expected=snapshot(pf(x,r)) if m==64 else gold
                     checks=[compare(a,b) for a,b in zip(actual,expected)]
                     assert all(v['bit_exact'] and v['finite'] for v in checks),checks
@@ -172,6 +173,7 @@ def main(args):
                 record.update(passed=True,fullgraph=True,fake_checked=m==64,changed_input_graph=True,
                     selected_host_calls_not_graph_replays=selected_calls)
             except Exception as error:
+                result['generated_pairs']=codegen._PATCHED
                 record.update(passed=False,error=repr(error),traceback=traceback.format_exc());save();raise
             save()
     result.update(completed=True,passed=all(r['passed'] for r in result['records']),

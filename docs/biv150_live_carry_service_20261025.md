@@ -26,3 +26,5 @@
 
 编译后接入原型：biv150_live_carry_codegen.install只替换精确SHA的PyCodeCache类方法，原Llama forward不再改写。对生成Runner.call精确匹配哈希473b4350...的单输出norm、相同BF16连续buf唯一gate消费者、固定17门和原分配结构；不匹配保持原样。实际当前3a7缓存norm函数同哈希已只读核实。将这一对改为运行时helper，M64且原压缩权重/形状/布局/当前流相符才调用原已测norm_quant(no carry)+F09，其余调用原norm.run与原native gate，所有其他生成AST/返回残差链保留。新方法源写入私有cache可读文件，原cache文件不覆盖，重新加载幂等；自有源进入既有fingerprint glob。
 CPU112策略、6个拒绝改写反例、真实transform执行、原bound基线保留、原调用回退、carry对象身份/输入不变、异流回退、执行失败不吞检查过；旧140仅历史forward源检查，不能冒充新运行时验收。历史真实生成wrapper恰1处配对，原件/源码SHA/函数hash已共享。新GPU代理用原SDK forward不改写；参考调用强制原producer/consumer，候选64须实际host选择次数>0，32须0；检查同数学、fake/fullgraph/变输入Graph，再完整服务startup实际capture命中、首次105及固定充分预热4K/16K。原9/40只在库/C++/CUDA/原测试字节及load_library/quantize_weight AST一致时复用，安装器import变更不被误当执行数值入口变更。GPU/服务尚未验证本原型，不认定收益。
+
+a0a2487首GPU代理未命中：norm输出buf1在gate后作为buf4供down mm(out=buf4)完整覆写，简单引用计数拒绝了合法存储复用，因此候选还是原路径，不能把与提升参考的小差值归因新核。后继严格证明额外读取只允许gate后的storage别名，别名首次使用必须是唯一out关键字的extern_kernels.mm且输入不读该别名；否则拒绝。CPU新增3反例，112策略/9拒绝检查过，真实失败代理wrapper新规则恰1处匹配并保留原源码/hash/配对证据。GPU测试现在先检查真实paired选择，再做数值对比，失败保存生成配对。尚未验证修复版GPU/服务。

@@ -35,6 +35,31 @@ def norm_hash(source):
     return hashlib.sha256(json.dumps(_canonical(fn),separators=(',',':')).encode()).hexdigest()
 
 
+def _storage_reuse(fn,output,norm,gate,gate_line):
+    """Norm value has one reader; optional later storage alias is fully written."""
+    parents={child:parent for parent in ast.walk(fn) for child in ast.iter_child_nodes(parent)}
+    allowed={norm.args[3],gate.args[0]};aliases=[]
+    for node in ast.walk(fn):
+        if not (isinstance(node,ast.Name) and isinstance(node.ctx,ast.Load) and node.id==output):continue
+        if node in allowed:continue
+        assignment=parents.get(node)
+        if not (isinstance(assignment,ast.Assign) and assignment.value is node
+            and assignment.lineno>gate_line and len(assignment.targets)==1
+            and isinstance(assignment.targets[0],ast.Name)):return None
+        alias=assignment.targets[0].id
+        uses=sorted((n for n in ast.walk(fn) if isinstance(n,ast.Name) and isinstance(n.ctx,ast.Load)
+            and n.id==alias and n.lineno>assignment.lineno),key=lambda n:(n.lineno,n.col_offset))
+        if not uses:return None
+        keyword=parents.get(uses[0]);writer=parents.get(keyword)
+        if not (isinstance(keyword,ast.keyword) and keyword.arg=='out'
+            and isinstance(writer,ast.Call) and ast.unparse(writer.func)=='extern_kernels.mm'
+            and len(writer.args)==2 and len(writer.keywords)==1
+            and sum(isinstance(n,ast.Name) and n.id==alias for n in ast.walk(writer))==1):return None
+        aliases.append(dict(alias=alias,alias_line=assignment.lineno,complete_write_line=writer.lineno))
+    if len(aliases)>1:return None
+    return aliases
+
+
 def transform(source):
     """Return a standalone rewritten Runner.call, or None on nonmatching code."""
     if 'gate_silu_auto.default' not in source or 'class Runner' not in source:return None
@@ -72,8 +97,8 @@ def transform(source):
                     and isinstance(gate.args[0],ast.Name) and gate.args[0].id==norm.args[3].id
                     and isinstance(gate.args[4],ast.Constant) and gate.args[4].value==17):continue
                 output=norm.args[3].id
-                uses=[n for n in ast.walk(fn) if isinstance(n,ast.Name) and isinstance(n.ctx,ast.Load) and n.id==output]
-                if len(uses)!=2:continue
+                reuse=_storage_reuse(fn,output,norm,gate,assignment.lineno)
+                if reuse is None:continue
                 allocations=[n for n in ast.walk(fn) if isinstance(n,ast.Assign)
                     and any(isinstance(t,ast.Name) and t.id==output for t in n.targets)]
                 if len(allocations)!=1:continue
@@ -91,7 +116,8 @@ def transform(source):
                 body[i]=ast.copy_location(ast.Assign(targets=copy.deepcopy(assignment.targets),value=replacement),stmt)
                 body[j]=ast.copy_location(ast.Pass(),assignment)
                 pairs.append(dict(kernel=norm.func.value.id,norm_line=stmt.lineno,gate_line=assignment.lineno,
-                    normalized_buffer=output,output=assignment.targets[0].id,sole_consumer=True))
+                    normalized_buffer=output,output=assignment.targets[0].id,sole_value_consumer=True,
+                    storage_reuse=reuse))
     if not pairs:return None
     return dict(function_source=ast.unparse(ast.fix_missing_locations(fn))+'\n',pairs=pairs)
 

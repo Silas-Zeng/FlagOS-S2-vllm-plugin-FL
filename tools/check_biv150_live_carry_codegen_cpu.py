@@ -31,6 +31,12 @@ class Runner:
 call=Runner([]).call
 '''
 change=own.transform(fixture);assert change and len(change['pairs'])==1
+reuse_fixture=fixture.replace('del out','storage=out\n        del out\n        extern_kernels.mm(result,q,out=storage)')
+reuse=own.transform(reuse_fixture);assert reuse and len(reuse['pairs'][0]['storage_reuse'])==1
+for broken in (reuse_fixture.replace('extern_kernels.mm','consume(storage)\n        extern_kernels.mm'),
+    reuse_fixture.replace('mm(result,q','mm(storage,q'),
+    reuse_fixture.replace('extern_kernels.mm','extern_kernels.addmm')):
+    assert own.transform(broken) is None
 negative=0
 for broken in (fixture.replace('1e-06','1e-05'),
     fixture.replace('del out','consume(out); del out'),fixture.replace('marker,17','marker,18'),
@@ -105,7 +111,8 @@ finally:
         if value is None:sys.modules.pop(name,None)
         else:sys.modules[name]=value
 
-result=dict(cpu_only=True,passed=True,policy_cases=policy,negative_transform_cases=negative,
+result=dict(cpu_only=True,passed=True,policy_cases=policy,negative_transform_cases=negative+3,
+    sole_value_consumer_with_proven_full_write_reuse=True,
     real_transform_executed=True,selected_skips_original_norm=True,fallback_original_callables=True,
     original_bound_baseline_preserved=True,carry_object_identity=True,readable_generated_source=True,
     foreign_stream_falls_back=True,execution_failure_not_hidden=True)

@@ -1,0 +1,24 @@
+{
+  "cpu_only": true,
+  "original_source_sha256": "4f9d13f0f764e316686405348ed8de271cab7c1853f6dfca464a64d88a714d44",
+  "pairs": [
+    {
+      "kernel": "triton_red_fused__to_copy_add_gate_silu_auto_mean_mul_pow_rsqrt_0",
+      "norm_line": 278,
+      "gate_line": 281,
+      "normalized_buffer": "buf1",
+      "output": "buf2",
+      "sole_value_consumer": true,
+      "storage_reuse": [
+        {
+          "alias": "buf4",
+          "alias_line": 289,
+          "complete_write_line": 291
+        }
+      ]
+    }
+  ],
+  "after_source_sha256": "a994132c40b64ab6de30fa1590d00dd1e9b3ba8a85c1041229c677e0eb3d16a0",
+  "previous_gpu_route_not_selected": true,
+  "model_accuracy_not_evaluated": true
+}
