@@ -1,0 +1,34 @@
+{
+  "driver_pid": 278935,
+  "source": "/workspace/experiments/minicpm-s2/code/bf16-bulk-unsplit-repr-v1-20261025",
+  "commit": "6a184b7a56e93a6f3865609281f0bebe097c0a1d",
+  "started_utc": "2026-10-25T06:09:27.321916+00:00",
+  "stage": "finished",
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "tools/bench_biv150_bf16_bulk_unsplit.py",
+    "--edge-gates",
+    "--out",
+    "/workspace/experiments/minicpm-s2/bf16-bulk-unsplit-repr-v1-20261025"
+  ],
+  "expected_records": 136,
+  "preflight_gpu": "Timestamp    Sun Oct 25 14:09:27 2026\n+--------------------------------------------------------------------------------+\n|  IX-ML: 4.4.0            Driver Version: 4.5.0          CUDA Version: 10.2     |\n|----------------------------------+----------------------+----------------------|\n| GPU  Name                        | Bus-Id               | Clock-SM  Clock-Mem  |\n| Fan  Temp  Perf    Pwr:Usage/Cap |      Memory-Usage    | GPU-Util  Compute M. |\n|==================================+======================+======================|\n| 0    Iluvatar BI-V150            | 00000000:13:00.0     | 1500MHz   1600MHz    |\n| N/A  35C   P0       N/A / N/A    | 68MiB / 32768MiB     | 0%        Default    |\n+----------------------------------+----------------------+----------------------+\n\n+--------------------------------------------------------------------------------+\n| Processes:                                                          GPU Memory |\n|  GPU        PID      Process name                                   Usage(MiB) |\n|================================================================================|\n|  No running processes found                                                    |\n+--------------------------------------------------------------------------------+\n",
+  "source_hashes": {
+    "tools/bench_biv150_bf16_bulk_unsplit.py": "9a6687b14211ac2d63b3b1fd893384fa5808221f7b7a3c43be3c392f147edfb5",
+    "tools/biv150_bf16_bulk_unsplit.py": "c54b265b73cbb057fc4989e4f54681ef9190447accede9f4e05d11ef62a730ac",
+    "vllm_fl/patches/biv150_native_w8a8.py": "78a9af84ef73c295e85698bed215c60c7547a584f32635c31186dace5e0ac708"
+  },
+  "pid": 278939,
+  "start_ticks": "325611898",
+  "returncode": 0,
+  "finished_utc": "2026-10-25T06:10:54.417752+00:00",
+  "summary": {
+    "records": 136,
+    "expected": 136,
+    "candidate_full_cpu_passed": 0,
+    "candidate_graph_cpu_passed": 37,
+    "native_full_cpu_passed_records": 0
+  },
+  "diagnostic_completed": true
+}
