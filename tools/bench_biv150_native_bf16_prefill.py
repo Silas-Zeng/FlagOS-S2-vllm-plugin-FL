@@ -93,7 +93,8 @@ def main(args):
             n, k = host.shape
             for rows in args.rows:
                 record = dict(layer=layer, geometry=name, m=rows, n=n, k=k,
-                    weights=identities, patterns=[], full_cpu_passed=True)
+                    weights=identities, patterns=[], full_cpu_passed=False,
+                    eager_cpu_complete=False, graph_cpu_complete=False)
                 result['records'].append(record)
                 try:
                     x = torch.empty((rows,k),device='cuda',dtype=torch.bfloat16)
@@ -108,16 +109,18 @@ def main(args):
                         elif pattern == 'large': x.mul_(100)
                         elif pattern == 'outlier': x[:,k//2] = 32
                         reference = (x.cpu().double() @ host64.t()).to(torch.bfloat16)
+                        baseline_out.fill_(float('nan')); candidate_out.fill_(float('nan'))
                         baseline(); candidate(); torch.cuda.synchronize()
                         b, c = compare(baseline_out, reference), compare(candidate_out, reference)
                         direct = compare(candidate_out,baseline_out)
                         record['patterns'].append(dict(name=pattern,baseline_cpu=b,candidate_cpu=c,direct=direct))
-                        record['full_cpu_passed'] &= c['tolerance_passed']
                         if not c['tolerance_passed'] and 'failure_fixture' not in record:
                             path=args.out/f'failure-l{layer}-{name}-m{rows}.pt'
                             torch.save(dict(x=x.cpu(),weight_identity=identities,reference=reference,
                                 candidate=candidate_out.cpu(),baseline=baseline_out.cpu(),pattern=pattern),path)
                             record['failure_fixture']=dict(path=path.name,sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+                    record['eager_cpu_complete'] = True
+                    record['eager_cpu_passed'] = all(p['candidate_cpu']['tolerance_passed'] for p in record['patterns'])
                     assert all(p['candidate_cpu']['finite'] for p in record['patterns']), 'Nonfinite candidate'
                     # Verify actual non-default stream execution and graph input changes.
                     stream = torch.cuda.Stream()
@@ -129,15 +132,27 @@ def main(args):
                     record['changed_input_graph_checks'] = []
                     with torch.cuda.stream(stream):
                         for factor in (0.,.5,4.):
-                            x.normal_().mul_(factor); graph.replay(); stream.synchronize()
-                            actual=candidate_out.cpu().clone(); candidate(); stream.synchronize()
+                            x.normal_().mul_(factor); candidate_out.fill_(float('nan'))
+                            graph.replay(); stream.synchronize()
+                            actual=candidate_out.cpu().clone(); candidate_out.fill_(float('nan'))
+                            candidate(); stream.synchronize()
                             exact=bool(torch.equal(actual,candidate_out.cpu()))
                             check=compare(actual,(x.cpu().double()@host64.t()).to(torch.bfloat16))
                             record['changed_input_graph_checks'].append(dict(factor=factor,eager_numeric_equal=exact,cpu=check))
-                            assert exact and check['finite']
+                            assert check['finite'] and bool(torch.isfinite(candidate_out).all()), 'Nonfinite Graph/eager output'
+                    record['graph_cpu_complete'] = True
+                    record['graph_cpu_passed'] = all(v['cpu']['tolerance_passed'] for v in record['changed_input_graph_checks'])
+                    record['graph_eager_numeric_equal'] = all(v['eager_numeric_equal'] for v in record['changed_input_graph_checks'])
                     torch.cuda.current_stream().wait_stream(stream)
                     del graph
-                    x.normal_(); candidate(); baseline(); torch.cuda.synchronize()
+                    x.normal_(); candidate_out.fill_(float('nan')); baseline_out.fill_(float('nan'))
+                    candidate(); baseline(); torch.cuda.synchronize()
+                    timing_reference=(x.cpu().double()@host64.t()).to(torch.bfloat16)
+                    record['timing_candidate_cpu']=compare(candidate_out,timing_reference)
+                    record['timing_baseline_cpu']=compare(baseline_out,timing_reference)
+                    assert record['timing_candidate_cpu']['finite'], 'Nonfinite timed input'
+                    record['full_cpu_passed'] = (record['eager_cpu_passed'] and record['graph_cpu_passed']
+                                                and record['timing_candidate_cpu']['tolerance_passed'])
                     rounds=[]
                     for index in range(3):
                         calls=[('baseline_ms',baseline),('candidate_ms',candidate)]
@@ -147,7 +162,7 @@ def main(args):
                     record.update(rounds=rounds, median_speedup=statistics.median(r['speedup'] for r in rounds),
                         min_round_speedup=min(r['speedup'] for r in rounds))
                 except Exception as error:
-                    record.update(error=repr(error),traceback=traceback.format_exc())
+                    record.update(error=repr(error),traceback=traceback.format_exc(),full_cpu_passed=False)
                 save()
                 print(json.dumps({key:record.get(key) for key in ('layer','geometry','m','full_cpu_passed','median_speedup','error')}),flush=True)
             del weight,host64
