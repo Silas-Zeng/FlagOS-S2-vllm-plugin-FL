@@ -25,3 +25,9 @@ Next source adds opt-in selection recording and an owned model controller. CUDA 
 ## Actual model first semantic gate passed
 
 Frozen61d198e: recording-enabled component repeat again passes36 cases. The real model installs the lowering, reports all4 M2 projection geometries using the compiler output, and generated model code has11 actual extern out sites (static sites, not runtime counts/times). The initial mixed long arithmetic gives85 and concurrent1..128 counting succeeds with HTTP overlap. At06:12 Shanghai, complete105 is active with43 prediction rows. This is not a full accuracy, warm-after-score semantic, or throughput qualification. Runtime stays frozen61d; this evidence-only commit does not hot-edit it.
+
+## Actual model precision and first4K score (06:42 Shanghai)
+
+Frozen61d198e300f0889a109d43cc9eec2e7b87455984 completed102/105 (0.9714),105 unique predictions/no failed predictions. Archive924150bytes SHA25678dfae958f9f67f0d4eb9dbdfcca8d0fd2397a0f4961c289e268280d89c16ac8 preserves formal results. Actual M2 selected all4 projection geometries;11 generated model out sites. Initial mixed fixture passes.
+
+After3short+1full4K warmup, one official4K round:5760.266264365806 total tok/s; mean TTFT3735.5155516306695ms;256completed/0failed;1048576input/262144outputtokens. Historical PR28 scored5765.810177399745/4048.1358315864945 and100/105; its optimizations remain in main. These separate rounds do not establish a causal gain.16K, post-warm mixed checks and exact-source output-lowering-disabled control are still pending. No merge readiness claimed. partial-4k-scores.json and partial-4k-state.json are snapshots while the controller remains in throughput.
