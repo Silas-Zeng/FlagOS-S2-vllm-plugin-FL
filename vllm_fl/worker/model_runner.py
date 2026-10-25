@@ -7749,7 +7749,7 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
 
     print("BIV150_NATIVE_W8A8_INSTALL", _install_native_gate(), flush=True)
 
-# Independent BF16 O-projection stability experiment; default disabled.
+# Audited BF16 small-row MiniCPM projections.
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_stable_small_o import install as _install_stable_small_o
 

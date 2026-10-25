@@ -62,7 +62,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         return None
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
     env = os.environ if environ is None else environ
-    features = {key: env.get(key, "0" if key == "VLLM_FL_BIV150_STABLE_SMALL_O" else "1") == "1" for key in _FEATURES}
+    features = {key: env.get(key, "1") == "1" for key in _FEATURES}
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}

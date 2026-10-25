@@ -122,7 +122,7 @@ def _register():
 
 def install():
     global _INSTALLED
-    if os.environ.get('VLLM_FL_BIV150_STABLE_SMALL_O','0')!='1':
+    if os.environ.get('VLLM_FL_BIV150_STABLE_SMALL_O','1')!='1':
         return {'installed':False,'reason':'disabled'}
     if _INSTALLED:return {'installed':True,'reason':'already installed'}
     from vllm_fl.patches.biv150_native_w8a8 import _eligible_model
