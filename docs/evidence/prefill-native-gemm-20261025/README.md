@@ -1,23 +1,28 @@
-# M2048 prefill BF16 native BLAS experiment
+# M2048 native BF16 GEMM experiment — Draft PR44
 
-Base: team main `0bf9d2efeaa10144dd7f0ff4597298df029f9328`. Latest fetch was attempted before creating this branch; network timeout was followed by GitHub API verification of that exact main commit. No upstream framework upgrade is involved.
+Base: team main `0bf9d2efeaa10144dd7f0ff4597298df029f9328`, verified again through the GitHub API before service acceptance. No official upstream upgrade. PR43's CPU enqueue correlation finds 99.24% of non-Graph BF16 MM time at M2048. The earlier PR42 negative tests cover M32/M64 and do not test this shape.
 
-PR43's complete 4K diagnostic found 33.988 seconds in 70,484 non-Graph BF16 mm kernels. CPU enqueue correlation associates these launches with 526 model steps; 522 scheduled 2048 tokens. The earlier PR42 negative set covered M32/M64 and does not test these large-row shapes. All measurements here are components, not service results.
+## Implementation and scope
 
-This experiment calls the installed Corex `ixblasGemmEx` directly using BF16 inputs/output and FP32 accumulation. It bypasses the registered ATen mm/linear dispatch; calling `at::mm` again would select FlagGems. Installed `CUDABlas.h` declares BF16 gemm but the dynamic libraries do not export that specialization. The current BLAS handle getter is exported and its disassembly proves that it sets the current Torch stream. The installed legacy GemmEx ABI takes `ixDataType`, so FP32 compute is `IX_R_32F=0`; the distinct `IXBLAS_COMPUTE_32F=68` enum must not be substituted. Pointer mode is saved/restored; math mode is unchanged.
+The opt-in service hook calls a functional C++ custom-op. At M2048 it invokes the installed Corex ixblasGemmEx with BF16 input/output and FP32 compute; other rows call the existing registered FlagGems mm.out. The 34 middle INT8 gate projections retain their existing route. The hook defaults off and its flag, source and library identities enter compile-cache semantics. An opaque operator avoids a Python M==2048 guard conflicting with vLLM's explicitly dynamic row dimension.
 
-The C++ probe is not registered into any model path. Build and benchmark tools refuse a busy GPU or a service on port9031. They use an isolated shared library, real MiniCPM weights, the current worker's FlagGems `mm.out` baseline, and an independent CPU FP64 oracle for every output element. Finite numerical failures remain visible and may receive diagnostic timings. Non-default stream and changing-input Graph tests precede three alternating timing rounds. Timings reuse a single weight; cold weight-ring and service validation remain pending.
+The installed legacy GemmEx ABI uses IX_R_32F=0, not the separate compute-type enum value68. The current Torch BLAS handle is bound to the current stream; pointer mode is saved/restored, math mode unchanged. The out operator allocates and synchronizes nothing; the functional operator owns its output allocation. The actual service must still verify performance, accuracy and memory effects.
 
-Initial planned probe: M2048, layer20 QKV/O/down and existing BF16 edge layer0 gate/up. No layer is selected using accuracy outcomes. Expansion to layers4/20/37 and other existing BF16 edge layers follows only if this native route warrants further evaluation. Actual service integration, first 105-question accuracy, warmed fixed 4K/16K throughput/TTFT and a matched control are still required before merge. M32/M64 production routing is unchanged because this branch currently has no production hook.
+## Hot-weight component evidence (fe3abc9)
 
-Current status: source and benchmark prepared; Python syntax checked; C++ compile, GPU numerical tests and all performance measurements pending. The GPU is reserved for PR43's baseline profiling first.
+`v1-component-result.json` records three alternating timing rounds on real weights: QKV1.059618x, O1.243085x, down1.338432x, edge gate/up1.214994x (median baseline/candidate duration). Twenty direct numerical comparisons across four geometries and five inputs are identical, and twelve changed-input Graph checks match eager. Strict CPU FP64 tolerance fails for both implementations with equal error statistics; those failures remain in the evidence. Timing inputs have aggregate CPU metrics only, not a direct equality comparison. This is component evidence, not model accuracy or throughput.
 
-## 首轮真实权重组件结果（fe3abc9，尚无服务验收）
+The initial queue stopped before GPU work when the profiler export exceeded its timeout. The resumed queue verified collector exit, Report saved, SQLite quick_check and both profiling windows. Original failed state remains preserved.
 
-独立out为prefill-native-gemm-v2-20261025，原v1队列因profiling导出超时而退出，没有运行GPU。v2在collector真正退出、Report saved、SQLite quick_check=ok、两窗validation通过后开始；原失败记录保持原样。编译/链接/加载通过，SO SHA4fdf4fa03d1514ab63e8cabc581149913a014b942f8ec6e70ab4db0205f0cc3b。
+## Functional, dynamic-M and real-weight-ring evidence (0118a13)
 
-4个几何各3轮交替计时：QKV median1.059618x/min1.058734x，O1.243085x/min1.238557x，down1.338432x/min1.334176x，BF16 edge gate/up1.214994x/min1.213961x。仅热权重组件计时，尚无服务收益。
+`functional-v1-result.json` is the original unmodified result. Its probe is saved as `tools/check_biv150_native_bf16_functional.py` (original SHA1ef32fd54e315791a6aecc2bcc3d0f0209fe5c933c641c7b6b05fc720221dad4). Library SHA: cba804a1bdd3f7e514443043f6f11c5ce6864af4a7f79e8244728d7f1d3af9d7. Source and model-weight identities are embedded in the result.
 
-严格CPU FP64容差四组均未通过，原结果保留。但4几何×5种输入的20个直接比较全部numeric_differences=0、max_abs=0，候选与原FlagGems基线逐元素数值相同；两者对CPU参考的统计也完全相同。12个变化输入Graph与随后eager数值相同。timing输入只记录二者对CPU的指标一致，没有直接比较，不能额外声称逐元素一致；不称byte-bit-exact或未经审计的一ULP。
+- Four actual projection geometries with closed-over nn.Parameter each compile one graph for M32,64,2048,2030,8; all outputs equal eager.
+- All 134 model-order BF16 weights (2,252,341,248 bytes) at M2048 give numerically identical FlagGems, native-out and functional outputs. Changed-input Graph endpoints also match; endpoints are the last writer per reused output width, not a claim to retain all intermediate Graph outputs.
+- Three alternating AB/BA/AB rounds, ten complete weight-ring replays each: 64.4617/51.7504ms, 64.4597/51.7390ms, 64.4518/51.7389ms. Median baseline/native ratio1.245712. This is a cold-weight component result, not end-to-end throughput.
+- All28 sampled non-default-stream Graph/eager cases match. However, the first eager O-projection M8 input has63/16384 differing elements,60 beyond tolerance, max_abs0.3515625. They occupy row1 columns128..191 (one element is equal). The second input and all later Graph comparisons match. This anomaly is under investigation; do not call all fallback tests passed or assume ordinary rounding.
 
-下一阶段将扩展功能式custom-op、真实权重覆盖和冷权重链，再做完整105题精度与充分预热的固定4K/16K服务验收。原始数值和计时见v1-component-result.json，保留所有full_cpu_passed=false。
+## Service acceptance
+
+The candidate/control runner and16 CPU fault checks are prepared at c56c4d3. It preserves the fixed competition CLI, full105-question accuracy and three warmups before one scored round per length. A99/105 near miss permits diagnostic throughput only. Actual105-question accuracy, fixed4K/16K throughput/TTFT and matched latest control are still pending. No service gain, precision pass, or merge is claimed.
