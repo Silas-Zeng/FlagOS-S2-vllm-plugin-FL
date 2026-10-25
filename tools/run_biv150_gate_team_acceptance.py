@@ -359,6 +359,10 @@ def main(args):
               or live.get('persistent_weight_copy') is not False
               or Path(live.get('hook_file','')).resolve()!=source/'vllm_fl/patches/biv150_live_carry_gate.py'):
             raise RuntimeError(f'Live-carry candidate missing or wrong source: {live}')
+        startup_hits=[line for line in log_path.read_text().splitlines() if 'BIV150_LIVE_CARRY_M64_SELECTED' in line]
+        if not args.live_carry_control and not startup_hits:
+            raise RuntimeError('No M64 selection during startup Graph capture; do not score an inactive candidate')
+        manifest['startup_capture_selection']=startup_hits
         manifest["q_fragment_installation"] = fragments[-1]
         manifest["native_installation"] = native_states[-1]
         manifest["installation"] = states[-1]
