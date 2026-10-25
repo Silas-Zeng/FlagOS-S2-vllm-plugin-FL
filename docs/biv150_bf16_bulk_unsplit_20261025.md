@@ -15,3 +15,5 @@
 
 补充原主线实际算子覆盖：`--edge-gates` 从现有安装器 `selected=(gate_up_proj,)`、`skip_edges=4` 推导保留BF16的0–3、38–41全部8层，不依据本次精度/吞吐挑层。将这8层原BF16 gate/up按原顺序拼为[N,K]=(12288,2048)（与主线加载方式相同），仍M32/64×4配置、完整CPU FP64/5模式/Graph/交替计时，额外64记录；代表QKV/O/down加它们为136，`--all-layers --edge-gates` 为1072。该选项不是修改量化例外或生产层白名单，只扩展独立组件覆盖；目前仍未上GPU。
 同时修正失败fixture命名，加入完整BM/BN/BK/split/warps，避免4种Split1配置覆盖同一文件、使早先记录SHA失配。每种配置首次失败原件和所有模式误差均保留。
+
+实际服务静态证据已补：冻结4068f08首次完整服务缓存中，两份模型Runner在norm后调用原 `mm(out)`，权重view为(2048,12288)、stride(1,2048)，输出BF16(s72,12288)，随后SiLU/乘法核再接down。保存完整两份源码原件12683字节SHAecdf7318…及索引到docs/evidence/bf16-bulk-unsplit-20261025/。后续若探索BF16 gate/SiLU融合，必须保留GEMM后BF16边界；原激活是FP32 `gate * tl.sigmoid(gate) * up` 最后写BF16，无独立的中间BF16 SiLU边界。不能直接套用INT8路径的exp/div实现当逐位等价。这仍是静态源码覆盖，不是运行时次数或耗时归因，也没有新增性能结论。

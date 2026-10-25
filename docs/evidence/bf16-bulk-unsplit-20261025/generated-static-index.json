@@ -1,0 +1,53 @@
+{
+  "runtime_commit": "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+  "source_run": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/full",
+  "static_source_evidence_only": true,
+  "runtime_frequency_proven": false,
+  "gpu_time_attribution_proven": false,
+  "raw_bytes": 12683,
+  "raw_sha256": "ecdf7318e4326a1cf048faf1375ec3deb89a7360f40d81e26587745d9977b094",
+  "files": [
+    {
+      "file": "cbnt76qswfczlbcpmkpelh7tf2w3l7pceazzvlfervycp4mzhrrk.py",
+      "sha256": "20c81d308da7326647f22eb84a2f55918b230deb70fd930627d394f7e9c566d5",
+      "activation_kernels": [
+        {
+          "function": "triton_poi_fused_mul_silu_slice_1",
+          "source_sha256": "2077eeed3cb635af436273a4ca3c69e6fb2d32e303bbf50b739950086df2cb6a"
+        }
+      ]
+    },
+    {
+      "file": "cssbto4quxul2eoh4ee6tb2jn55kvnr2zldojpbkah64xugooiue.py",
+      "sha256": "0d40d65cc5c6b34fc4f2c905d4c2fd240269a72f46110b31595facfcb415dbc9",
+      "activation_kernels": [
+        {
+          "function": "triton_poi_fused_mul_silu_slice_1",
+          "source_sha256": "2077eeed3cb635af436273a4ca3c69e6fb2d32e303bbf50b739950086df2cb6a"
+        }
+      ]
+    }
+  ],
+  "projection": {
+    "input_h": 2048,
+    "packed_output_width": 12288,
+    "output_bfloat16": true,
+    "weight_view_shape": [
+      2048,
+      12288
+    ],
+    "weight_view_stride": [
+      1,
+      2048
+    ]
+  },
+  "activation_contract": {
+    "loads_bf16_gate_up": true,
+    "gate_promoted_fp32": true,
+    "sigmoid": "tl.sigmoid",
+    "intermediate_silu_bf16_round": false,
+    "multiplication_fp32": true,
+    "output_bfloat16": true
+  },
+  "extra_bf16_projection_rounding_must_be_preserved": true
+}
