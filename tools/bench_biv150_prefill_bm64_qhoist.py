@@ -81,7 +81,7 @@ class Tap:
 
 
 def candidate_function(attention, backend, qmodule):
-    import triton.runtime.jit as jit
+    jit = importlib.import_module('triton.runtime.jit')
     from vllm_fl.patches.biv150_prefill_normalized import make_normalized
     normalized, _ = make_normalized(attention)
     source = inspect.getsource(inspect.unwrap(attention.unified_attention))
