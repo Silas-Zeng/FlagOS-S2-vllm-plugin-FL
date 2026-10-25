@@ -1,5 +1,5 @@
-// Standalone, UNTESTED Corex BF16 linear-out candidate. No GPU work was run
-// while preparing this file. Keep M32/M64 production routing unchanged.
+// Corex BF16 linear candidate. Isolated M2048 component validation is recorded
+// in docs/evidence/prefill-native-gemm-20261025; service acceptance is separate.
 // Inputs: contiguous row-major X[M,K], W[N,K]; caller-owned C[M,N].
 // Computes C = X @ W.T with BF16 input/output and FP32 compute.
 //
@@ -98,12 +98,25 @@ at::Tensor bf16_linear_out(const at::Tensor& x, const at::Tensor& w,
   return out;
 }
 
+at::Tensor bf16_linear(const at::Tensor& x, const at::Tensor& w) {
+  TORCH_CHECK(x.dim() == 2 && w.dim() == 2, "expected matrices");
+  // Functional schema keeps allocation and aliasing explicit to torch.compile.
+  auto out = at::empty({x.size(0), w.size(0)}, x.options());
+  if (x.size(0) == 2048) return bf16_linear_out(x, w, out);
+  // Keep the exact registered FlagGems mm.out route used by compiled serving.
+  // at::linear would select FlagGems' separate linear_kernel instead.
+  at::mm_out(out, x, w.t());
+  return out;
+}
+
 }  // namespace
 
 TORCH_LIBRARY(biv150_native_bf16_probe, m) {
   m.def("linear_out(Tensor x, Tensor w, Tensor(a!) out) -> Tensor(a!)");
+  m.def("linear(Tensor x, Tensor w) -> Tensor");
 }
 
 TORCH_LIBRARY_IMPL(biv150_native_bf16_probe, CUDA, m) {
   m.impl("linear_out", TORCH_FN(bf16_linear_out));
+  m.impl("linear", TORCH_FN(bf16_linear));
 }

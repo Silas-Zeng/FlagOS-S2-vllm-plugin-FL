@@ -11,3 +11,13 @@ The C++ probe is not registered into any model path. Build and benchmark tools r
 Initial planned probe: M2048, layer20 QKV/O/down and existing BF16 edge layer0 gate/up. No layer is selected using accuracy outcomes. Expansion to layers4/20/37 and other existing BF16 edge layers follows only if this native route warrants further evaluation. Actual service integration, first 105-question accuracy, warmed fixed 4K/16K throughput/TTFT and a matched control are still required before merge. M32/M64 production routing is unchanged because this branch currently has no production hook.
 
 Current status: source and benchmark prepared; Python syntax checked; C++ compile, GPU numerical tests and all performance measurements pending. The GPU is reserved for PR43's baseline profiling first.
+
+## 首轮真实权重组件结果（fe3abc9，尚无服务验收）
+
+独立out为prefill-native-gemm-v2-20261025，原v1队列因profiling导出超时而退出，没有运行GPU。v2在collector真正退出、Report saved、SQLite quick_check=ok、两窗validation通过后开始；原失败记录保持原样。编译/链接/加载通过，SO SHA4fdf4fa03d1514ab63e8cabc581149913a014b942f8ec6e70ab4db0205f0cc3b。
+
+4个几何各3轮交替计时：QKV median1.059618x/min1.058734x，O1.243085x/min1.238557x，down1.338432x/min1.334176x，BF16 edge gate/up1.214994x/min1.213961x。仅热权重组件计时，尚无服务收益。
+
+严格CPU FP64容差四组均未通过，原结果保留。但4几何×5种输入的20个直接比较全部numeric_differences=0、max_abs=0，候选与原FlagGems基线逐元素数值相同；两者对CPU参考的统计也完全相同。12个变化输入Graph与随后eager数值相同。timing输入只记录二者对CPU的指标一致，没有直接比较，不能额外声称逐元素一致；不称byte-bit-exact或未经审计的一ULP。
+
+下一阶段将扩展功能式custom-op、真实权重覆盖和冷权重链，再做完整105题精度与充分预热的固定4K/16K服务验收。原始数值和计时见v1-component-result.json，保留所有full_cpu_passed=false。

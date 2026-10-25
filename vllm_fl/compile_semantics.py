@@ -32,6 +32,13 @@ def native_library_path(*, package_root=None, environ=None) -> Path:
                         str(package.parent / "build-native-w8a8/biv150_native_w8a8.so"))).resolve()
 
 
+def native_bf16_library_path(*, package_root=None, environ=None) -> Path:
+    env = os.environ if environ is None else environ
+    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
+    return Path(env.get("BIV150_NATIVE_BF16_LIBRARY",
+                        str(package.parent / "build-native-bf16/biv150_native_bf16_probe.so"))).resolve()
+
+
 def _sha(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -62,6 +69,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
     env = os.environ if environ is None else environ
     features = {key: env.get(key, "1") == "1" for key in _FEATURES}
+    features["VLLM_FL_BIV150_NATIVE_BF16_PREFILL"] = env.get("VLLM_FL_BIV150_NATIVE_BF16_PREFILL", "0") == "1"
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
@@ -88,6 +96,11 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             path = package.parent / "csrc/iluvatar" / name
             native_sources[name] = _sha(path) if path.is_file() else None
         facts["native"] = {"library_sha256": _sha(library), "source": native_sources}
+    if features["VLLM_FL_BIV150_NATIVE_BF16_PREFILL"]:
+        library = native_bf16_library_path(package_root=package, environ=env)
+        path = package.parent / "csrc/iluvatar/native_bf16_probe.cpp"
+        facts["native_bf16_prefill"] = {"library_sha256": _sha(library),
+                                      "source": _sha(path) if path.is_file() else None}
     return {"schema": 1, "sha256": _digest(facts),
             "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
 

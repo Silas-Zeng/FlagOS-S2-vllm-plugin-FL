@@ -7748,3 +7748,9 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_gate
 
     print("BIV150_NATIVE_W8A8_INSTALL", _install_native_gate(), flush=True)
+
+# Opt-in M2048 BF16 experiment; keep the accepted compressed gate in front.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_native_bf16_prefill import install as _install_native_bf16_prefill
+
+    print("BIV150_NATIVE_BF16_PREFILL_INSTALL", _install_native_bf16_prefill(), flush=True)
