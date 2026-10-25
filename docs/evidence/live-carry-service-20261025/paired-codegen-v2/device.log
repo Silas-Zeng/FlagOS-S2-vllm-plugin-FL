@@ -1,0 +1,33 @@
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:728: DeprecationWarning: use_cuda_graph is deprecated; use benchmark_mode='replay' or benchmark_mode='event'
+  super().__init__(*args, **kwargs)
+/usr/local/lib/python3.12/site-packages/flag_gems/utils/libentry.py:411: RuntimeWarning: active Triton backend does not provide a replay benchmarker; falling back to event timing
+  resolved_benchmark = resolve_benchmarker(
+INFO 10-25 09:04:26 [__init__.py:44] Available plugins for group vllm.platform_plugins:
+INFO 10-25 09:04:26 [__init__.py:46] - fl -> vllm_fl:register
+INFO 10-25 09:04:26 [__init__.py:49] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+INFO 10-25 09:04:29 [__init__.py:237] Platform plugin fl is activated
+/usr/local/lib/python3.12/site-packages/flag_gems/config.py:171: UserWarning: resolve_user_setting: no exclude ops found; returning empty list
+  warnings.warn(
+/usr/local/lib/python3.12/site-packages/torch/library.py:357: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+  Overriding a previously registered kernel for the same operator and the same dispatch key
+  operator: aten::__ilshift__.Tensor(Tensor(a!) self, Tensor other) -> Tensor(a!)
+    registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSchema.cpp:6
+  dispatch key: CUDA
+  previous kernel: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCPU_3.cpp:7148
+       new kernel: registered at /usr/local/lib/python3.12/site-packages/flag_gems/__init__.py:62 (Triggered internally at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+  self.m.impl(
+WARNING:root:Skipped registering operator: This is not allowed since there's already a kernel registered from python overriding ne_.Scalar's behavior for CUDA dispatch key and aten namespace.
+WARNING:root:Skipped registering operator: This is not allowed since there's already a kernel registered from python overriding ne_.Tensor's behavior for CUDA dispatch key and aten namespace.
+WARNING 10-25 09:04:33 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+/usr/local/lib/python3.12/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+WARNING 10-25 09:04:33 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+WARNING 10-25 09:04:33 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+WARNING 10-25 09:04:33 [interface.py:358] Failed to import from vllm._C: ModuleNotFoundError("No module named 'vllm._C'")
+INFO 10-25 09:04:34 [scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=2048.
+INFO 10-25 09:04:34 [vllm.py:1006] Asynchronous scheduling is enabled.
+INFO 10-25 09:04:34 [kernel.py:276] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+BIV150_LIVE_CARRY_CODEGEN_PAIR {"source_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/cfz3miwh3cmfx7jzzodb2bepgsdeusdmv37nnr3dsidfpmtlcvfx.py", "source_sha256": "7a46420f38406b038f8007d04e5509dee5768bb811ff2afa07fb89b2ec77b11a", "generated_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/biv150-live-carry-0g8b0hc2.py", "generated_sha256": "a994132c40b64ab6de30fa1590d00dd1e9b3ba8a85c1041229c677e0eb3d16a0", "pairs": [{"kernel": "triton_red_fused__to_copy_add_gate_silu_auto_mean_mul_pow_rsqrt_0", "norm_line": 278, "gate_line": 281, "normalized_buffer": "buf1", "output": "buf2", "sole_value_consumer": true, "storage_reuse": [{"alias": "buf4", "alias_line": 289, "complete_write_line": 291}]}], "original_transparent_carry": true}
+BIV150_LIVE_CARRY_CODEGEN_PAIR {"source_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/cfz3miwh3cmfx7jzzodb2bepgsdeusdmv37nnr3dsidfpmtlcvfx.py", "source_sha256": "7a46420f38406b038f8007d04e5509dee5768bb811ff2afa07fb89b2ec77b11a", "generated_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/biv150-live-carry-v8w30h91.py", "generated_sha256": "a994132c40b64ab6de30fa1590d00dd1e9b3ba8a85c1041229c677e0eb3d16a0", "pairs": [{"kernel": "triton_red_fused__to_copy_add_gate_silu_auto_mean_mul_pow_rsqrt_0", "norm_line": 278, "gate_line": 281, "normalized_buffer": "buf1", "output": "buf2", "sole_value_consumer": true, "storage_reuse": [{"alias": "buf4", "alias_line": 289, "complete_write_line": 291}]}], "original_transparent_carry": true}
+BIV150_LIVE_CARRY_M64_SELECTED
+{"completed": true, "passed": true, "cases": 6}

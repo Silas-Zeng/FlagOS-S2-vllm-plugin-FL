@@ -1,0 +1,770 @@
+{
+  "commit": "4068f08fa0b743642cfdbb413d5b76301f78a0a6",
+  "integration_proxy_only": true,
+  "actual_sdk_decoder_forward": true,
+  "actual_model": false,
+  "reference_forces_original_producer_consumer": true,
+  "library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "installation": {
+    "installed": true,
+    "exact_rows": [
+      64
+    ],
+    "epsilon": 1e-06,
+    "original_transparent_carry": true,
+    "persistent_weight_copy": false,
+    "original_decoder_forward_unchanged": true,
+    "hook_target": "PyCodeCache.load_by_key_path",
+    "expected_norm_sha256": "473b43506d9a4bdd98ef096830092c771bff0b0e1381606520f066d9b2aec4a8",
+    "expected_codecache_sha256": "d8dcb8ce11fa4be5a7f97aca9933b3ed986b08f9857e19b3328e4bd60bb2c352",
+    "hook_file": "/workspace/experiments/minicpm-s2/code/live-carry-codegen-v2-20261025/vllm_fl/patches/biv150_live_carry_codegen.py",
+    "hook_sha256": "6809efbf4ce2cf97cfd2bf906d2568fcd36aedf92b980fb73bf349b1da221a1b"
+  },
+  "records": [
+    {
+      "layer": 4,
+      "m": 64,
+      "weight_sha256": {
+        "model.layers.4.post_attention_layernorm.weight": "6b616cb20075ddb04599545e87811515d6a3cc4e1a6a60558d5693223447cd7a",
+        "model.layers.4.mlp.gate_proj.weight": "e5e8090504b4f3e75c6edcfb57aa37a367b660f47b3daea549550540644adee9",
+        "model.layers.4.mlp.up_proj.weight": "899f24e90a24c9556ddac0e4fd83cb9f9207b99754120f92dd2304d08c0fea67",
+        "model.layers.4.mlp.down_proj.weight": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07",
+        "model.layers.5.input_layernorm.weight": "5e1166094f51ede2cbc39ef1d3c761f33bba2d80dee4d1bf99e92417947be0b3"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": false,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.00048828125
+            },
+            {
+              "bit_exact": false,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0625
+            },
+            {
+              "bit_exact": false,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.001953125
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": true,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": true,
+      "changed_input_graph": true,
+      "selected_host_calls_not_graph_replays": 8
+    },
+    {
+      "layer": 4,
+      "m": 32,
+      "weight_sha256": {
+        "model.layers.4.post_attention_layernorm.weight": "6b616cb20075ddb04599545e87811515d6a3cc4e1a6a60558d5693223447cd7a",
+        "model.layers.4.mlp.gate_proj.weight": "e5e8090504b4f3e75c6edcfb57aa37a367b660f47b3daea549550540644adee9",
+        "model.layers.4.mlp.up_proj.weight": "899f24e90a24c9556ddac0e4fd83cb9f9207b99754120f92dd2304d08c0fea67",
+        "model.layers.4.mlp.down_proj.weight": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07",
+        "model.layers.5.input_layernorm.weight": "5e1166094f51ede2cbc39ef1d3c761f33bba2d80dee4d1bf99e92417947be0b3"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": false,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": false,
+      "changed_input_graph": true,
+      "selected_host_calls_not_graph_replays": 0
+    },
+    {
+      "layer": 20,
+      "m": 64,
+      "weight_sha256": {
+        "model.layers.20.post_attention_layernorm.weight": "1bd579ae94df5ae601dd0d9d7f5774d6e73dec184e2f116c9772261bdbd00499",
+        "model.layers.20.mlp.gate_proj.weight": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265",
+        "model.layers.20.mlp.up_proj.weight": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4",
+        "model.layers.20.mlp.down_proj.weight": "9267dc789507453f482c38d122e1f4697288eba7a1042d6eb835cd8d27d3b85d",
+        "model.layers.21.input_layernorm.weight": "fb47699a99559b5537d637aed4962bb653a3f89f4080e9dba988d8ed15088979"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": true,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": true,
+      "changed_input_graph": true,
+      "selected_host_calls_not_graph_replays": 8
+    },
+    {
+      "layer": 20,
+      "m": 32,
+      "weight_sha256": {
+        "model.layers.20.post_attention_layernorm.weight": "1bd579ae94df5ae601dd0d9d7f5774d6e73dec184e2f116c9772261bdbd00499",
+        "model.layers.20.mlp.gate_proj.weight": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265",
+        "model.layers.20.mlp.up_proj.weight": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4",
+        "model.layers.20.mlp.down_proj.weight": "9267dc789507453f482c38d122e1f4697288eba7a1042d6eb835cd8d27d3b85d",
+        "model.layers.21.input_layernorm.weight": "fb47699a99559b5537d637aed4962bb653a3f89f4080e9dba988d8ed15088979"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": false,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": false,
+      "changed_input_graph": true,
+      "selected_host_calls_not_graph_replays": 0
+    },
+    {
+      "layer": 37,
+      "m": 64,
+      "weight_sha256": {
+        "model.layers.37.post_attention_layernorm.weight": "43387bd08278609bd92a83049060b992fb66b41ad9c55359dad2b0fa91bfa9be",
+        "model.layers.37.mlp.gate_proj.weight": "c953eb5bee3ced99ca2b54ccbd802220af594b10da468311cf7b51ef4fa4c0ac",
+        "model.layers.37.mlp.up_proj.weight": "0401512a3bb29014be905730cc7aa1cb0c2f8b2c7c644d775549ff83e79ca9dc",
+        "model.layers.37.mlp.down_proj.weight": "84fdf0faf547d4aeee35e9ec525df5800c7d188ec2a53abafc59790fea817c83",
+        "model.layers.38.input_layernorm.weight": "eaea508752f59e0e18e379f80bc55ba9e5b0a0bb9e5ea80343f74a0a0ce2c875"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": true,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": true,
+      "changed_input_graph": true,
+      "selected_host_calls_not_graph_replays": 8
+    },
+    {
+      "layer": 37,
+      "m": 32,
+      "weight_sha256": {
+        "model.layers.37.post_attention_layernorm.weight": "43387bd08278609bd92a83049060b992fb66b41ad9c55359dad2b0fa91bfa9be",
+        "model.layers.37.mlp.gate_proj.weight": "c953eb5bee3ced99ca2b54ccbd802220af594b10da468311cf7b51ef4fa4c0ac",
+        "model.layers.37.mlp.up_proj.weight": "0401512a3bb29014be905730cc7aa1cb0c2f8b2c7c644d775549ff83e79ca9dc",
+        "model.layers.37.mlp.down_proj.weight": "84fdf0faf547d4aeee35e9ec525df5800c7d188ec2a53abafc59790fea817c83",
+        "model.layers.38.input_layernorm.weight": "eaea508752f59e0e18e379f80bc55ba9e5b0a0bb9e5ea80343f74a0a0ce2c875"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": false,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": false,
+      "changed_input_graph": true,
+      "selected_host_calls_not_graph_replays": 0
+    }
+  ],
+  "device": "Iluvatar BI-V150",
+  "completed": true,
+  "passed": true,
+  "generated_pairs": [
+    {
+      "source_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/cfz3miwh3cmfx7jzzodb2bepgsdeusdmv37nnr3dsidfpmtlcvfx.py",
+      "source_sha256": "7a46420f38406b038f8007d04e5509dee5768bb811ff2afa07fb89b2ec77b11a",
+      "generated_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/biv150-live-carry-0g8b0hc2.py",
+      "generated_sha256": "a994132c40b64ab6de30fa1590d00dd1e9b3ba8a85c1041229c677e0eb3d16a0",
+      "pairs": [
+        {
+          "kernel": "triton_red_fused__to_copy_add_gate_silu_auto_mean_mul_pow_rsqrt_0",
+          "norm_line": 278,
+          "gate_line": 281,
+          "normalized_buffer": "buf1",
+          "output": "buf2",
+          "sole_value_consumer": true,
+          "storage_reuse": [
+            {
+              "alias": "buf4",
+              "alias_line": 289,
+              "complete_write_line": 291
+            }
+          ]
+        }
+      ],
+      "original_transparent_carry": true
+    },
+    {
+      "source_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/cfz3miwh3cmfx7jzzodb2bepgsdeusdmv37nnr3dsidfpmtlcvfx.py",
+      "source_sha256": "7a46420f38406b038f8007d04e5509dee5768bb811ff2afa07fb89b2ec77b11a",
+      "generated_file": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache/fz/biv150-live-carry-v8w30h91.py",
+      "generated_sha256": "a994132c40b64ab6de30fa1590d00dd1e9b3ba8a85c1041229c677e0eb3d16a0",
+      "pairs": [
+        {
+          "kernel": "triton_red_fused__to_copy_add_gate_silu_auto_mean_mul_pow_rsqrt_0",
+          "norm_line": 278,
+          "gate_line": 281,
+          "normalized_buffer": "buf1",
+          "output": "buf2",
+          "sole_value_consumer": true,
+          "storage_reuse": [
+            {
+              "alias": "buf4",
+              "alias_line": 289,
+              "complete_write_line": 291
+            }
+          ]
+        }
+      ],
+      "original_transparent_carry": true
+    }
+  ],
+  "decoder_forward_unchanged": true,
+  "generated_cache": "/workspace/experiments/minicpm-s2/live-carry-codegen-v2-20261025/device-inductor-cache"
+}
