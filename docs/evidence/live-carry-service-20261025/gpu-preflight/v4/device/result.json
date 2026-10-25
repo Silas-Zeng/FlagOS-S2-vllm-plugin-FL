@@ -1,0 +1,718 @@
+{
+  "commit": "4cd6c96e2c9ffde61eadd09e5a1c1eca5bc234b2",
+  "integration_proxy_only": true,
+  "actual_sdk_decoder_forward": true,
+  "actual_model": false,
+  "library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "installation": {
+    "installed": true,
+    "exact_rows": [
+      64
+    ],
+    "epsilon": 1e-06,
+    "norm_weight_shape": [
+      2048
+    ],
+    "compressed_gate_shape": [
+      2048,
+      12288
+    ],
+    "original_transparent_carry": true,
+    "persistent_weight_copy": false,
+    "original_llama_sha256": "1e1003454985bf86d3868a7755bcf5324676881548b3895809edf0b76698d384",
+    "generated_forward_sha256": "05b6891b5c90f827aca061e9ee05c553c39818ce74292310aa695fc0596492bb",
+    "generated_forward_file": "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v4-20261025/vllm_fl/patches/biv150_live_carry_gate.py.generated_forward.py",
+    "hook_file": "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v4-20261025/vllm_fl/patches/biv150_live_carry_gate.py",
+    "hook_sha256": "66c3990a59f3a0dab3de59b8d14a32ad11468925728f5c4d0f4cf510a8484fbb"
+  },
+  "records": [
+    {
+      "layer": 4,
+      "m": 64,
+      "weight_sha256": {
+        "model.layers.4.post_attention_layernorm.weight": "6b616cb20075ddb04599545e87811515d6a3cc4e1a6a60558d5693223447cd7a",
+        "model.layers.4.mlp.gate_proj.weight": "e5e8090504b4f3e75c6edcfb57aa37a367b660f47b3daea549550540644adee9",
+        "model.layers.4.mlp.up_proj.weight": "899f24e90a24c9556ddac0e4fd83cb9f9207b99754120f92dd2304d08c0fea67",
+        "model.layers.4.mlp.down_proj.weight": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07",
+        "model.layers.5.input_layernorm.weight": "5e1166094f51ede2cbc39ef1d3c761f33bba2d80dee4d1bf99e92417947be0b3"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": false,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.00048828125
+            },
+            {
+              "bit_exact": false,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0625
+            },
+            {
+              "bit_exact": false,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.001953125
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": true,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": true,
+      "changed_input_graph": true
+    },
+    {
+      "layer": 4,
+      "m": 32,
+      "weight_sha256": {
+        "model.layers.4.post_attention_layernorm.weight": "6b616cb20075ddb04599545e87811515d6a3cc4e1a6a60558d5693223447cd7a",
+        "model.layers.4.mlp.gate_proj.weight": "e5e8090504b4f3e75c6edcfb57aa37a367b660f47b3daea549550540644adee9",
+        "model.layers.4.mlp.up_proj.weight": "899f24e90a24c9556ddac0e4fd83cb9f9207b99754120f92dd2304d08c0fea67",
+        "model.layers.4.mlp.down_proj.weight": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07",
+        "model.layers.5.input_layernorm.weight": "5e1166094f51ede2cbc39ef1d3c761f33bba2d80dee4d1bf99e92417947be0b3"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": false,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": false,
+      "changed_input_graph": true
+    },
+    {
+      "layer": 20,
+      "m": 64,
+      "weight_sha256": {
+        "model.layers.20.post_attention_layernorm.weight": "1bd579ae94df5ae601dd0d9d7f5774d6e73dec184e2f116c9772261bdbd00499",
+        "model.layers.20.mlp.gate_proj.weight": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265",
+        "model.layers.20.mlp.up_proj.weight": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4",
+        "model.layers.20.mlp.down_proj.weight": "9267dc789507453f482c38d122e1f4697288eba7a1042d6eb835cd8d27d3b85d",
+        "model.layers.21.input_layernorm.weight": "fb47699a99559b5537d637aed4962bb653a3f89f4080e9dba988d8ed15088979"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": true,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": true,
+      "changed_input_graph": true
+    },
+    {
+      "layer": 20,
+      "m": 32,
+      "weight_sha256": {
+        "model.layers.20.post_attention_layernorm.weight": "1bd579ae94df5ae601dd0d9d7f5774d6e73dec184e2f116c9772261bdbd00499",
+        "model.layers.20.mlp.gate_proj.weight": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265",
+        "model.layers.20.mlp.up_proj.weight": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4",
+        "model.layers.20.mlp.down_proj.weight": "9267dc789507453f482c38d122e1f4697288eba7a1042d6eb835cd8d27d3b85d",
+        "model.layers.21.input_layernorm.weight": "fb47699a99559b5537d637aed4962bb653a3f89f4080e9dba988d8ed15088979"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": false,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": false,
+      "changed_input_graph": true
+    },
+    {
+      "layer": 37,
+      "m": 64,
+      "weight_sha256": {
+        "model.layers.37.post_attention_layernorm.weight": "43387bd08278609bd92a83049060b992fb66b41ad9c55359dad2b0fa91bfa9be",
+        "model.layers.37.mlp.gate_proj.weight": "c953eb5bee3ced99ca2b54ccbd802220af594b10da468311cf7b51ef4fa4c0ac",
+        "model.layers.37.mlp.up_proj.weight": "0401512a3bb29014be905730cc7aa1cb0c2f8b2c7c644d775549ff83e79ca9dc",
+        "model.layers.37.mlp.down_proj.weight": "84fdf0faf547d4aeee35e9ec525df5800c7d188ec2a53abafc59790fea817c83",
+        "model.layers.38.input_layernorm.weight": "eaea508752f59e0e18e379f80bc55ba9e5b0a0bb9e5ea80343f74a0a0ce2c875"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": true,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": true,
+      "changed_input_graph": true
+    },
+    {
+      "layer": 37,
+      "m": 32,
+      "weight_sha256": {
+        "model.layers.37.post_attention_layernorm.weight": "43387bd08278609bd92a83049060b992fb66b41ad9c55359dad2b0fa91bfa9be",
+        "model.layers.37.mlp.gate_proj.weight": "c953eb5bee3ced99ca2b54ccbd802220af594b10da468311cf7b51ef4fa4c0ac",
+        "model.layers.37.mlp.up_proj.weight": "0401512a3bb29014be905730cc7aa1cb0c2f8b2c7c644d775549ff83e79ca9dc",
+        "model.layers.37.mlp.down_proj.weight": "84fdf0faf547d4aeee35e9ec525df5800c7d188ec2a53abafc59790fea817c83",
+        "model.layers.38.input_layernorm.weight": "eaea508752f59e0e18e379f80bc55ba9e5b0a0bb9e5ea80343f74a0a0ce2c875"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "normal",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "large",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        },
+        {
+          "name": "cancel",
+          "promotion_or_fallback_bit_exact": true,
+          "original_strict_comparison": [
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            },
+            {
+              "bit_exact": true,
+              "finite": true,
+              "violations": 0,
+              "max_abs": 0.0
+            }
+          ]
+        }
+      ],
+      "selected": false,
+      "passed": true,
+      "fullgraph": true,
+      "fake_checked": false,
+      "changed_input_graph": true
+    }
+  ],
+  "device": "Iluvatar BI-V150",
+  "completed": true,
+  "passed": true,
+  "generated_cache": "/workspace/experiments/minicpm-s2/live-carry-gpu-v4-20261025/device-inductor-cache"
+}

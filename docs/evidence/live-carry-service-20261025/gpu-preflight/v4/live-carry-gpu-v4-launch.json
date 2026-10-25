@@ -1,0 +1,22 @@
+{
+  "pid": 239565,
+  "start_ticks": "323371655",
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v4-20261025/tools/run_biv150_live_carry_pipeline.py",
+    "--source",
+    "/workspace/experiments/minicpm-s2/code/live-carry-gpu-v4-20261025",
+    "--out",
+    "/workspace/experiments/minicpm-s2/live-carry-gpu-v4-20261025",
+    "--library-source",
+    "/workspace/experiments/minicpm-s2/code/bf16-small-service-20261025",
+    "--library",
+    "/workspace/experiments/minicpm-s2/code/bf16-small-service-20261025/build-native-w8a8/biv150_native_w8a8.so",
+    "--library-sha256",
+    "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+    "--native-checks-from",
+    "/workspace/experiments/minicpm-s2/live-carry-gpu-v2-20261025"
+  ],
+  "source_commit": "4cd6c96e2c9ffde61eadd09e5a1c1eca5bc234b2"
+}
