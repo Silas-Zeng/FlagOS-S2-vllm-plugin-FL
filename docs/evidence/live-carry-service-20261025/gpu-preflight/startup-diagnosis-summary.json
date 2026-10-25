@@ -1,0 +1,19 @@
+{
+  "runtime_v4": "4cd6c96e2c9ffde61eadd09e5a1c1eca5bc234b2",
+  "runtime_v5": "1a8d4a7ca9b7ff78238d15518a51f5060e1ef661",
+  "diagnostic_only": true,
+  "accuracy_evaluated": false,
+  "throughput_evaluated": false,
+  "same_source_library_cli_flag0_ready": true,
+  "flag1_ready": false,
+  "anonymous_pybind_owner": "aten::as_strided.default",
+  "failing_path": "details.example_inputs[3]: torch.SymBool -> SymNode -> ShapeEnv.fake_tensor_cache",
+  "introducing_fx_predicate": "Eq(s72, 64), _supported row condition",
+  "prospective_fix": "guard_size_oblivious row decision; CPU minimal original eq retained, guarded eq removed; exact branches 2048/64/32/64",
+  "current_runtime": "3a7dc042fe34fb219f0695bc2111bf206f4b8d56",
+  "gpu_model_startup_fix_pending": true,
+  "raw_archive_bytes": 344883,
+  "raw_archive_sha256": "ea468734e671b0e9c87569b9461c65e19022f03a13a595295d572bb3b70a19c5",
+  "field_archive_bytes": 111527,
+  "field_archive_sha256": "081e6b61872cfcecaa2dae1dbd5b05af1d3398537f042c98214edabfd817ff70"
+}
