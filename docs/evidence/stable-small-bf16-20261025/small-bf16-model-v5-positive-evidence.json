@@ -1,0 +1,23 @@
+{
+  "archive": "small-bf16-model-v5-positive-evidence.tar.gz",
+  "sha256": "45cfe585316643b7c4102398fcfb34ef8496dd30b822b786941a09f15ff0c6a1",
+  "bytes": 16606,
+  "members": [
+    "state.json",
+    "manifest.json",
+    "accuracy-verdict.json",
+    "math500-level3/command.json",
+    "mixed-requests/result.json",
+    "mixed-requests/requests.json",
+    "mixed-requests/decode-response.json",
+    "mixed-requests/prefill-response.json",
+    "accuracy-report.json",
+    "driver.py",
+    "component-qkv-down-m2.json",
+    "component-qkv-down-m8.json"
+  ],
+  "runtime_commit": "8c0ca8cdaa6403d58ddf066dd1854fcd0e9def38",
+  "precision": "101/105, 0.9619; 105 unique complete predictions, no request errors",
+  "semantic_mixed": "count1..128 and long answer85 both pass; HTTP overlap; native on",
+  "acceptance": "Performance/control/TTFT qualification pending"
+}
