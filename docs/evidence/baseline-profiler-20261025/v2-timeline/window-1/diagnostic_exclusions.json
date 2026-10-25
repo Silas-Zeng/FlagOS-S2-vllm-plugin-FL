@@ -1,0 +1,458 @@
+{
+  "outer_sample_ranges": [
+    {
+      "id": 19950947,
+      "tid": 290618,
+      "start": 3260698103420534,
+      "end": 3260699028624374,
+      "name": "biv150_diag.sample",
+      "depth": 4
+    },
+    {
+      "id": 19959207,
+      "tid": 290618,
+      "start": 3260702499708244,
+      "end": 3260702925025588,
+      "name": "biv150_diag.sample",
+      "depth": 4
+    },
+    {
+      "id": 19992234,
+      "tid": 290618,
+      "start": 3260716782397110,
+      "end": 3260717222115265,
+      "name": "biv150_diag.sample",
+      "depth": 4
+    },
+    {
+      "id": 20036690,
+      "tid": 290618,
+      "start": 3260756627888816,
+      "end": 3260757122558252,
+      "name": "biv150_diag.sample",
+      "depth": 4
+    }
+  ],
+  "outer_sample_union_s": 2.284908775,
+  "common_excluded_ranges_ns": [
+    [
+      3260698103420534,
+      3260699028624374
+    ],
+    [
+      3260702499708244,
+      3260702925025588
+    ],
+    [
+      3260716782397110,
+      3260717222115265
+    ],
+    [
+      3260756627888816,
+      3260757122558252
+    ]
+  ],
+  "excluded_from_active_window_s": 2.284908775,
+  "diagnostic_api_count": 18822,
+  "diagnostic_gpu_events": {
+    "cuda_graph": [
+      {
+        "id": 20545900,
+        "name": "CUDA Graph 1",
+        "start": 3260698296866875,
+        "end": 3260698328120109,
+        "stream": 1,
+        "cid": 10036994
+      },
+      {
+        "id": 20545901,
+        "name": "CUDA Graph 1",
+        "start": 3260698683365407,
+        "end": 3260698714625975,
+        "stream": 1,
+        "cid": 10037031
+      },
+      {
+        "id": 20545902,
+        "name": "CUDA Graph 12",
+        "start": 3260698723710338,
+        "end": 3260698754987988,
+        "stream": 1,
+        "cid": 10037054
+      },
+      {
+        "id": 20545903,
+        "name": "CUDA Graph 13",
+        "start": 3260698900080282,
+        "end": 3260698933818562,
+        "stream": 1,
+        "cid": 10037077
+      },
+      {
+        "id": 20545999,
+        "name": "CUDA Graph 1",
+        "start": 3260702528960901,
+        "end": 3260702560728201,
+        "stream": 1,
+        "cid": 10078414
+      },
+      {
+        "id": 20546000,
+        "name": "CUDA Graph 1",
+        "start": 3260702562715630,
+        "end": 3260702594464498,
+        "stream": 1,
+        "cid": 10078442
+      },
+      {
+        "id": 20546001,
+        "name": "CUDA Graph 12",
+        "start": 3260702603472945,
+        "end": 3260702635260867,
+        "stream": 1,
+        "cid": 10078465
+      },
+      {
+        "id": 20546002,
+        "name": "CUDA Graph 13",
+        "start": 3260702707159377,
+        "end": 3260702741469353,
+        "stream": 1,
+        "cid": 10078488
+      },
+      {
+        "id": 20546386,
+        "name": "CUDA Graph 1",
+        "start": 3260716814804849,
+        "end": 3260716848568165,
+        "stream": 1,
+        "cid": 10239347
+      },
+      {
+        "id": 20546387,
+        "name": "CUDA Graph 1",
+        "start": 3260716855892034,
+        "end": 3260716889648634,
+        "stream": 1,
+        "cid": 10239375
+      },
+      {
+        "id": 20546388,
+        "name": "CUDA Graph 12",
+        "start": 3260716903371071,
+        "end": 3260716937147235,
+        "stream": 1,
+        "cid": 10239398
+      },
+      {
+        "id": 20546389,
+        "name": "CUDA Graph 13",
+        "start": 3260717006771347,
+        "end": 3260717043082211,
+        "stream": 1,
+        "cid": 10239421
+      },
+      {
+        "id": 20546777,
+        "name": "CUDA Graph 1",
+        "start": 3260756653514520,
+        "end": 3260756684612412,
+        "stream": 1,
+        "cid": 11687891
+      },
+      {
+        "id": 20546778,
+        "name": "CUDA Graph 1",
+        "start": 3260756686474042,
+        "end": 3260756717607442,
+        "stream": 1,
+        "cid": 11687919
+      },
+      {
+        "id": 20546779,
+        "name": "CUDA Graph 12",
+        "start": 3260756805007240,
+        "end": 3260756836122254,
+        "stream": 1,
+        "cid": 11687942
+      },
+      {
+        "id": 20546780,
+        "name": "CUDA Graph 13",
+        "start": 3260756906884672,
+        "end": 3260756940540276,
+        "stream": 1,
+        "cid": 11687965
+      }
+    ],
+    "cuda_kernel": [
+      {
+        "id": 18882918,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260698683291738,
+        "end": 3260698683297907,
+        "stream": 1,
+        "cid": 10037022
+      },
+      {
+        "id": 18882919,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260698723696542,
+        "end": 3260698723703226,
+        "stream": 1,
+        "cid": 10037051
+      },
+      {
+        "id": 18882920,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260698900048998,
+        "end": 3260698900055724,
+        "stream": 1,
+        "cid": 10037074
+      },
+      {
+        "id": 18885033,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260702562701873,
+        "end": 3260702562708515,
+        "stream": 1,
+        "cid": 10078433
+      },
+      {
+        "id": 18885034,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260702602119048,
+        "end": 3260702602125413,
+        "stream": 1,
+        "cid": 10078462
+      },
+      {
+        "id": 18885035,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260702703361149,
+        "end": 3260702703367725,
+        "stream": 1,
+        "cid": 10078485
+      },
+      {
+        "id": 18893484,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260716855856461,
+        "end": 3260716855862741,
+        "stream": 1,
+        "cid": 10239366
+      },
+      {
+        "id": 18893485,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260716902362368,
+        "end": 3260716902368775,
+        "stream": 1,
+        "cid": 10239395
+      },
+      {
+        "id": 18893486,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260717003259743,
+        "end": 3260717003266300,
+        "stream": 1,
+        "cid": 10239418
+      },
+      {
+        "id": 18975838,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260756686461784,
+        "end": 3260756686468107,
+        "stream": 1,
+        "cid": 11687910
+      },
+      {
+        "id": 18975839,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260756803532143,
+        "end": 3260756803538977,
+        "stream": 1,
+        "cid": 11687939
+      },
+      {
+        "id": 18975840,
+        "name": "fill_scalar_func_kernel_rank_1",
+        "start": 3260756903387382,
+        "end": 3260756903393939,
+        "stream": 1,
+        "cid": 11687962
+      }
+    ],
+    "cuda_memcpy": [
+      {
+        "id": 19882894,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260698328137199,
+        "end": 3260698328148683,
+        "stream": 1,
+        "cid": 10037002
+      },
+      {
+        "id": 19882895,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260698714854334,
+        "end": 3260698714865626,
+        "stream": 1,
+        "cid": 10037040
+      },
+      {
+        "id": 19882896,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260698800996971,
+        "end": 3260698801008244,
+        "stream": 1,
+        "cid": 10037063
+      },
+      {
+        "id": 19882897,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260699026893091,
+        "end": 3260699026904341,
+        "stream": 1,
+        "cid": 10038577
+      },
+      {
+        "id": 19883474,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260702560731946,
+        "end": 3260702560743238,
+        "stream": 1,
+        "cid": 10078422
+      },
+      {
+        "id": 19883475,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260702600328309,
+        "end": 3260702600339643,
+        "stream": 1,
+        "cid": 10078451
+      },
+      {
+        "id": 19883476,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260702700587542,
+        "end": 3260702700598838,
+        "stream": 1,
+        "cid": 10078474
+      },
+      {
+        "id": 19883477,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260702923069312,
+        "end": 3260702923080604,
+        "stream": 1,
+        "cid": 10079988
+      },
+      {
+        "id": 19885782,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260716848571662,
+        "end": 3260716848582954,
+        "stream": 1,
+        "cid": 10239355
+      },
+      {
+        "id": 19885783,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260716900344830,
+        "end": 3260716900356122,
+        "stream": 1,
+        "cid": 10239384
+      },
+      {
+        "id": 19885784,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260717000582186,
+        "end": 3260717000593436,
+        "stream": 1,
+        "cid": 10239407
+      },
+      {
+        "id": 19885785,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260717220702203,
+        "end": 3260717220713453,
+        "stream": 1,
+        "cid": 10240921
+      },
+      {
+        "id": 19889591,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260756684617064,
+        "end": 3260756684628360,
+        "stream": 1,
+        "cid": 11687899
+      },
+      {
+        "id": 19889592,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260756800441506,
+        "end": 3260756800452798,
+        "stream": 1,
+        "cid": 11687928
+      },
+      {
+        "id": 19889593,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260756900686702,
+        "end": 3260756900697994,
+        "stream": 1,
+        "cid": 11687951
+      },
+      {
+        "id": 19889594,
+        "name": "[CUDA memcpy DtoH]",
+        "start": 3260757120757080,
+        "end": 3260757120768330,
+        "stream": 1,
+        "cid": 11689465
+      }
+    ],
+    "cuda_memset": []
+  },
+  "diagnostic_gpu_extensions": [],
+  "normal_gpu_work_overlapping_exclusion": {
+    "cuda_graph": {
+      "events": 4,
+      "masked_ns": 105501637,
+      "partially_retained_events": 4
+    },
+    "cuda_kernel": {
+      "events": 88,
+      "masked_ns": 10805301,
+      "partially_retained_events": 0
+    },
+    "cuda_memcpy": {
+      "events": 24,
+      "masked_ns": 373401,
+      "partially_retained_events": 0
+    }
+  },
+  "retained_ranges_ns": [
+    [
+      3260674401967752,
+      3260698103420534
+    ],
+    [
+      3260699028624374,
+      3260702499708244
+    ],
+    [
+      3260702925025588,
+      3260716782397110
+    ],
+    [
+      3260717222115265,
+      3260756627888816
+    ],
+    [
+      3260757122558252,
+      3260908686774525
+    ]
+  ]
+}
