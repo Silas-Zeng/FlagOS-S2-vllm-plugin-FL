@@ -12,6 +12,7 @@ import torch
 import triton
 import triton.language as tl
 from torch._inductor.runtime.triton_helpers import libdevice
+from torch.fx.experimental.symbolic_shapes import guard_size_oblivious
 
 CONFIGS = ((64,64,128,8),)
 SELECTED_ROWS = (64,)
@@ -156,7 +157,11 @@ def fake_gate_m64(x,residual,weight,wq,scales):
 
 
 def _supported(layer,x,residual):
-    if (residual is None or x.ndim!=2 or tuple(x.shape)!=(64,2048)
+    if residual is None or x.ndim!=2:
+        return False
+    # Materialize a guarded Python decision, not an FX SymBool shared across
+    # vLLM attention partitions (the SDK cache cannot serialize that input).
+    if (not guard_size_oblivious(x.shape[0]==64) or x.shape[1]!=2048
         or not x.is_cuda or x.dtype!=torch.bfloat16 or not x.is_contiguous()
         or tuple(residual.shape)!=tuple(x.shape) or residual.dtype!=x.dtype
         or residual.device!=x.device or not residual.is_contiguous()):

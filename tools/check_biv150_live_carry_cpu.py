@@ -42,7 +42,8 @@ class Tensor:
     def is_contiguous(self):return self.contiguous
     def stride(self):return self.strides
 class Act:pass
-namespace={'torch':NS(bfloat16='bf16',int8='i8',float32='f32'),'_ACTIVATION_TYPE':Act}
+namespace={'torch':NS(bfloat16='bf16',int8='i8',float32='f32'),'_ACTIVATION_TYPE':Act,
+    'guard_size_oblivious':bool}
 function=next(n for n in module.body if isinstance(n,ast.FunctionDef) and n.name=='_supported')
 exec(compile(ast.Module(body=[function],type_ignores=[]),'<actual-policy>','exec'),namespace)
 checks=0

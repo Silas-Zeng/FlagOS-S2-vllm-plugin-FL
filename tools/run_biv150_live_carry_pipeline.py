@@ -34,6 +34,7 @@ def main(args):
     assert hashlib.sha256(target.read_bytes()).hexdigest()==args.library_sha256
     env=dict(os.environ,PYTHONPATH=str(source),PYTHONUNBUFFERED='1',MAX_JOBS='2')
     steps=[('cpu',[sys.executable,str(source/'tools/check_biv150_live_carry_cpu.py')]),
+        ('row-guard-cpu',[sys.executable,str(source/'tools/check_biv150_row_guard_cpu.py'),'--out',str(args.out/'row-guard-cpu.json')]),
         ('gate9',[sys.executable,str(source/'tools/check_biv150_gate_auto.py'),'--library',str(target),'--out',str(args.out/'gate9.json')]),
         ('cached40',[sys.executable,str(source/'tools/check_biv150_quant_cached_dispatch.py'),'--library',str(target),'--out',str(args.out/'cached40.json')]),
         ('device',[sys.executable,'-u',str(source/'tools/check_biv150_live_carry_device.py'),'--library',str(target),'--out',str(args.out/'device')]),
@@ -60,7 +61,7 @@ def main(args):
         state['native_checks_reused_from']=dict(out=str(args.native_checks_from),source_commit=prior['commit'])
         steps=[item for item in steps if item[0] not in ('gate9','cached40')]
     for stage,command in steps:
-        if stage!='cpu':idle()
+        if stage not in ('cpu','row-guard-cpu'):idle()
         stage_env=dict(env,TORCHINDUCTOR_CACHE_DIR=str(args.out/(stage+'-inductor-cache')))
         with (args.out/(stage+'.log')).open('x') as log:
             child=subprocess.Popen(command,cwd=source,env=stage_env,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT)

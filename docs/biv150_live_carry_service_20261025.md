@@ -19,3 +19,5 @@
 4cd6c96实际SDK方法proxy六组全过：layer4/20/37×M64/M32，4种固定pattern，提升/回退同数学逐位、FakeTensor/fullgraph与3种变输入Graph精确、输入不变；原严格误差单独保留。原件v4/与摘要共享，归档4828字节SHA6adc45729799b19dfc6664abf381827f7dd2d8fb1c1e5979cf2052da7df30d11。随后完整模型服务在FX缓存键pickle pybind对象阶段失败，105题/吞吐均未开始。8b8e539仅新增启动诊断工具，部署为独立driver，无修改4cd运行源码：相同CLI候选1/关闭0串行启动，观察序列化对象但不改变结果/缓存设置，不计作精度或性能验收。
 
 启动诊断1/0因果对照：相同4cd源码/SO/CLI，新flag1在FX pickle失败；flag0完整启动成功后正常关闭，均0计分请求。owner追踪定位匿名函数属于aten::as_strided.default。仍未解决pickle，不能泛化捕获RuntimeError跳过缓存。另日志明确无法读取虚拟generated_forward文件，vLLM因此关闭自己的compile cache；后继将同一最小forward保存为真实源码模板，安装时AST严格比较pin原方法的两句改写，真实源路径可读、inspect精确、进入既有源指纹glob；数学与策略不变。这是源码身份缺陷修复，不预先宣称解决pickle。
+
+969字段诊断精确定位details.example_inputs[3]为torch.SymBool→SymNode→ShapeEnv.fake_tensor_cache→as_strided。实际FX源行来自_supported行数条件，Eq(s72,64)被保留在图中。纯CPU最小Dynamo复现2048→64→32→64：旧tuple guard生成eq/not_，显式guard_size_oblivious后不生成该FX布尔操作且分支输出相同。下一冻结版只将行数分支改为显式形状guard，新增CPU回归再跑六组实际SDK/Graph和完整服务；必须验证M64真实命中，不能把启动成功当优化生效，未修改FX pickle实现/缓存参数。
