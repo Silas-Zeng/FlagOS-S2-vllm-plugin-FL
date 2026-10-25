@@ -1,4 +1,4 @@
-"""Opt-in BF16 small-row O/edge-gate projections; original linear above8 rows."""
+"""Opt-in BF16 small-row MiniCPM projections; original linear above8 rows."""
 import os
 
 import torch
@@ -15,7 +15,7 @@ _OBSERVED_ROWS = set()
 def _small_o_kernel(X, W, Y, M, K: tl.constexpr, XS0: tl.constexpr, XS1: tl.constexpr,
                     WS0: tl.constexpr, WS1: tl.constexpr,
                     YS0: tl.constexpr, YS1: tl.constexpr):
-    # Both accepted output widths are multiples of64; only M needs masking.
+    # All accepted output widths are multiples of64; only M needs masking.
     row = tl.arange(0,16)
     col = tl.program_id(0)*64 + tl.arange(0,64)
     inner = tl.arange(0,128)
@@ -40,21 +40,21 @@ def _small_o_into(x, weight, output):
 
 
 def _linear(x, weight):
-    if not (x.ndim==weight.ndim==2 and x.shape[1]==2048
-            and tuple(weight.shape) in ((2048,2048),(12288,2048))
+    if not (x.ndim==weight.ndim==2 and x.shape[1]==weight.shape[1]
+            and tuple(weight.shape) in ((2048,2048),(12288,2048),(2560,2048),(2048,6144))
             and x.dtype==weight.dtype==torch.bfloat16
             and x.device==weight.device and x.device.type=='cuda'
             and 0<x.shape[0]<=8 and x.stride(1)==weight.stride(1)==1
-            and x.stride(0)>=2048 and weight.stride(0)>=2048):
+            and x.stride(0)>=x.shape[1] and weight.stride(0)>=weight.shape[1]):
         # On the supported CUDA platform the original framework dispatch is
         # default_unquantized_gemm -> F.linear. Preserve that exact route.
         return torch.nn.functional.linear(x,weight)
     with torch.cuda.device(x.device):
-        key=(x.shape[0],weight.shape[0])
+        key=(x.shape[0],weight.shape[0],weight.shape[1])
         if key not in _OBSERVED_ROWS and not torch.cuda.is_current_stream_capturing():
             _OBSERVED_ROWS.add(key)
             print('BIV150_STABLE_SMALL_O_SELECTED', {
-                'rows': x.shape[0], 'output_columns': weight.shape[0], 'input_stride': tuple(x.stride()),
+                'rows': x.shape[0], 'output_columns': weight.shape[0], 'input_columns': weight.shape[1], 'input_stride': tuple(x.stride()),
                 'weight_stride': tuple(weight.stride()), 'warps': 4, 'stages': 1,
             }, flush=True)
         output=torch.empty((x.shape[0],weight.shape[0]),device=x.device,dtype=x.dtype)
@@ -93,16 +93,18 @@ def install():
     previous=UnquantizedLinearMethod.apply
     def apply(self,layer,x,bias=None):
         projection=(layer.prefix.endswith('.self_attn.o_proj') and tuple(layer.weight.shape)==(2048,2048)
-                    or layer.prefix.endswith('.mlp.gate_up_proj') and tuple(layer.weight.shape)==(12288,2048))
+                    or layer.prefix.endswith('.mlp.gate_up_proj') and tuple(layer.weight.shape)==(12288,2048)
+                    or layer.prefix.endswith('.self_attn.qkv_proj') and tuple(layer.weight.shape)==(2560,2048)
+                    or layer.prefix.endswith('.mlp.down_proj') and tuple(layer.weight.shape)==(2048,6144))
         if (bias is not None or not projection or hasattr(layer,'_biv150_native_wq')
                 or layer.weight.dtype!=torch.bfloat16):
             return previous(self,layer,x,bias)
         # M dispatch is inside the opaque CUDA implementation, keeping vLLM's
         # dynamic row dimension out of Python/Dynamo shape branches.
-        output=torch.ops.biv150_stable_small_o.linear(x.reshape(-1,2048),layer.weight)
+        output=torch.ops.biv150_stable_small_o.linear(x.reshape(-1,layer.weight.shape[1]),layer.weight)
         return output.reshape(*x.shape[:-1],layer.weight.shape[0])
     UnquantizedLinearMethod.apply=apply
     _INSTALLED=True
-    return {'installed':True,'scope':'BF16 TP1 O and uncompressed edge-gate projections M1-8',
+    return {'installed':True,'scope':'BF16 TP1 QKV/O/down and uncompressed edge-gate projections M1-8',
             'block_m':16,'block_n':64,'block_k':128,'warps':4,'stages':1,
             'larger_rows':'original default_unquantized_gemm F.linear route inside the opaque operation'}
