@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-25T23:19:00.144061+00:00",
+  "read_only_static_backend_source_audit": true,
+  "gpu_executed": false,
+  "files": {
+    "runtime/jit.py": {
+      "sha256": "6e9ce85c877b84807d97191211e53fbc7547328dd22dc6b8d9185c7bafc67210",
+      "mtime_utc": "2026-09-07T07:13:59+00:00"
+    },
+    "compiler/compiler.py": {
+      "sha256": "f9646f23963160af7856e6f725df7af01c2bf0fc0ee98afeb7987f552507e5fd",
+      "mtime_utc": "2026-09-07T07:13:59+00:00"
+    },
+    "spec/iluvatar/triton/runtime/jit.py": {
+      "sha256": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+      "mtime_utc": "2026-09-07T07:13:59+00:00"
+    },
+    "spec/iluvatar/triton/compiler/compiler.py": {
+      "sha256": "a97f067023873acf2e348c28f61494e59170ca84c3ee2314f20e491d3e833dfd",
+      "mtime_utc": "2026-09-07T07:13:59+00:00"
+    },
+    "runtime/autotuner.py": {
+      "sha256": "631052b97f5807f9179fa72f339c0aaef1caae8f6c63e07083b29fcdd54094ed",
+      "mtime_utc": "2026-09-07T07:13:59+00:00"
+    }
+  },
+  "observer_sha256": "bb0358f5b6eb3243266a59cb99e1aeb562674431362fe2449a22fb35c2b85154",
+  "redirect": "runtime and compiler package __init__ call FlagTree spec_path, which prepends triton/spec/iluvatar/triton/ when backend iluvatar is selected",
+  "jit_binding_lines": [
+    {
+      "line": 704,
+      "source": "from ..compiler import CompiledKernel, compile, ASTSource, make_backend"
+    },
+    {
+      "line": 708,
+      "source": "self.compile = compile"
+    },
+    {
+      "line": 885,
+      "source": "return self.compile(src, target=target, options=options.__dict__, _env_vars=env_vars)"
+    },
+    {
+      "line": 894,
+      "source": "kernel = self.compile(src, target=target, options=options.__dict__)"
+    }
+  ]
+}
