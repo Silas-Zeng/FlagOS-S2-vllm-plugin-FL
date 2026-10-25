@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checks": [
+    "baseline CUDA完整逐字前缀",
+    "baseline CPP函数逐字与candidate唯一callee差异",
+    "6144列恰好一次覆盖且无尾部",
+    "所有行列8B读和4B写对齐",
+    "Python AST通过",
+    "旧owner finally逐字AST复用",
+    "仅私有注册无生产namespace",
+    "原计时helper逐字复用"
+  ],
+  "gpu_run": false,
+  "scope": "只新增源/列边界/接线；未重跑旧套件"
+}

@@ -1,0 +1,29 @@
+--- reused-owner
++++ entry.py
+@@ -38,7 +38,7 @@
+         if sha(HERE / name) != expected:
+             raise RuntimeError("入口资产变化：" + name)
+     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+-    run = ROOT / "framework" / (stamp + "-lm-head-paired-gemv-component")
++    run = ROOT / "framework" / (stamp + "-native-silu-vec2-component")
+     run.mkdir(exist_ok=False)
+     assets = run / "source"
+     assets.mkdir()
+@@ -46,7 +46,7 @@
+         shutil.copyfile(HERE / name, assets / name)
+     shutil.copyfile(HERE / "asset-pins.json", assets / "asset-pins.json")
+     state = dict(started_utc=stamp, owner_pid=os.getpid(),
+-        scope="独立M2算子随机组件，不加载框架模型或native", run=str(run),
++        scope="独立M2048尾处理组件；只加载私有测试库，生产native不变", run=str(run),
+         command=[sys.executable, *sys.argv], owned_processes=[], exit_code=1)
+     save(run / "manifest.json", state)
+     lock = child = monitor = None
+@@ -67,7 +67,7 @@
+         state["database_original_sha256"] = sha(DB)
+         shutil.copyfile(args.model / "config.json", assets / "model-config.json")
+         env = dict(os.environ)
+-        # 固定两臂同一个 worker/DB；本组件不加载框架或 native。
++        # 固定两臂同一个 worker/DB；本组件只加载私有命名空间测试库，不加载框架或生产 native。
+         for key in tuple(env):
+             if key.startswith(("VLLM_FL_BIV150_", "BIV150_", "MINICPM_NATIVE_", "MINICPM_DECODE_GAP_")):
+                 del env[key]

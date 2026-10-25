@@ -1,0 +1,39 @@
+
+// Component-only: two adjacent columns, preserving every original BF16 round.
+#include <cstring>
+namespace {
+__device__ __forceinline__ BF16 vec2_scalar(int32_t acc_g, int32_t acc_u,
+                                          float row, float col_g, float col_u) {
+  const float gate = __bfloat162float(__float2bfloat16_rn(float(acc_g) * (row * col_g)));
+  const float up = __bfloat162float(__float2bfloat16_rn(float(acc_u) * (row * col_u)));
+  return __float2bfloat16_rn((gate / (1.f + expf(-gate))) * up);
+}
+__global__ void silu_vec2_epilogue(const int32_t* acc, const float* rows,
+                                  const float* cols, BF16* output, int n) {
+  const int row = blockIdx.y;
+  const int pair = blockIdx.x * blockDim.x + threadIdx.x;
+  const int half = n / 2;
+  const int col = pair * 2;
+  if (col + 1 < half) {
+    const int64_t index = int64_t(row) * n + col;
+    const int2 gate_acc = *reinterpret_cast<const int2*>(acc + index);
+    const int2 up_acc = *reinterpret_cast<const int2*>(acc + index + half);
+    const float2 gate_cols = *reinterpret_cast<const float2*>(cols + col);
+    const float2 up_cols = *reinterpret_cast<const float2*>(cols + col + half);
+    const float row_scale = rows[row];
+    const BF16 left = vec2_scalar(gate_acc.x, up_acc.x, row_scale, gate_cols.x, up_cols.x);
+    const BF16 right = vec2_scalar(gate_acc.y, up_acc.y, row_scale, gate_cols.y, up_cols.y);
+    ushort2 packed;
+    static_assert(sizeof(BF16) == sizeof(unsigned short), "BF16 size");
+    memcpy(&packed.x, &left, sizeof(left));
+    memcpy(&packed.y, &right, sizeof(right));
+    *reinterpret_cast<ushort2*>(output + int64_t(row) * half + col) = packed;
+  }
+}
+}
+extern "C" void biv150_silu_vec2(const int32_t* acc, const float* rows,
+                                const float* cols, void* output,
+                                int m, int n, cudaStream_t stream) {
+  silu_vec2_epilogue<<<dim3((n/4+255)/256,m),256,0,stream>>>(
+      acc, rows, cols, static_cast<BF16*>(output), n);
+}
