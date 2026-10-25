@@ -47,4 +47,18 @@ with tempfile.TemporaryDirectory() as temp:
     try:m.summarize(temp,[{'label':'score','start_ns':0,'end_ns':1}])
     except ValueError:pass
     else:raise AssertionError('corrupt evidence treated as zero compile')
+with tempfile.TemporaryDirectory() as temp:
+    p=Path(temp)/'compile-1.jsonl'
+    rows=[{'event':'installation','pid':1,'provenance':{'jit':m.JIT_SHA,'compiler':m.COMPILER_SHA}},
+          {'event':'compile_call','pid':1,'kernel':'_small_o_kernel'}]
+    p.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    assert m.verify_worker_coverage(temp,'(EngineCore pid=1) ready')['engine_pids']==[1]
+    for log in ['(EngineCore pid=2) ready','no worker evidence']:
+        try:m.verify_worker_coverage(temp,log)
+        except ValueError:pass
+        else:raise AssertionError('worker coverage gap hidden')
+    p.write_text(json.dumps(rows[0])+'\n')
+    try:m.verify_worker_coverage(temp,'(EngineCore pid=1) ready')
+    except ValueError:pass
+    else:raise AssertionError('no real kernel positive control accepted')
 print(json.dumps({'passed':True,'gpu_executed':False,'return_identity_and_kwargs':True,'original_exception_preserved':True,'late_binding_observed':True,'already_bound_limitation_proved':True,'alias_guard_and_restore':True,'overlap_union_clipping':True,'corrupt_evidence_rejected':True}))

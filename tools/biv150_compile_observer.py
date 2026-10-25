@@ -91,6 +91,20 @@ def install(destination):
     return _HANDLE
 
 
+
+def verify_worker_coverage(directory,server_log):
+    import re
+    workers={int(pid) for pid in re.findall(r'EngineCore[^)\n]*?pid=(\d+)',server_log)}
+    if not workers:raise ValueError('No actual EngineCore PID evidence')
+    records=[json.loads(line) for path in Path(directory).glob('compile-*.jsonl') for line in path.read_text().splitlines()]
+    installed={r['pid'] for r in records if r['event']=='installation' and r.get('provenance')=={'jit':JIT_SHA,'compiler':COMPILER_SHA}}
+    if not workers<=installed:raise ValueError({'unobserved_workers':sorted(workers-installed)})
+    positive={r['pid'] for r in records if r['event']=='compile_call' and '_small_o_kernel' in r.get('kernel','')}
+    if not workers<=positive:raise ValueError({'missing_small_kernel_positive_control':sorted(workers-positive)})
+    return {'engine_pids':sorted(workers),'early_installation_and_small_kernel_positive_control':True,
+            'limitation':'Positive control does not quantify every background alias; compare new metadata coverage too.'}
+
+
 def summarize(directory,windows):
     events=[];installations=[]
     for path in sorted(Path(directory).glob('compile-*.jsonl')):
