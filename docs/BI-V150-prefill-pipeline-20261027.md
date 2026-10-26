@@ -54,3 +54,9 @@ Controller568657/start338951699/SID568657已经实际存活，baseline driver568
 03:40基线完成精度：独立重读全部105唯一prediction/review/report，无错误或漏题，**102/105=0.9714285714**、通过。对应独立JSON已共享。本轮baseline实际KV为548416tokens（上轮548320不能直接套），实际加载fp74b验证通过，真实Q32 w16/K64选中。随后进入吞吐：4K三短和完整warm已完成，完整warm5871.7426tok/s为**未计分暖场**；正式得分及candidate仍须等原件，不能把暖场当历史最好或配对收益。
 
 03:50基线正式4K完成：**5778.458274320222 total tok/s**、mean TTFT **3285.4543949870276ms**、256/256成功/0失败，input1048576/output262144严格匹配。真实C3首选N62/M2048/Dprefix2/Dall61/outside59、无SCOPE_REJECTED，Q32选中。原计分命令区间selected-config changed=True、8条新kernel metadata，保留此范围含client preflight的局限，不将其称为纯计时区间编译成本或完全无编译扰动。独立partial JSON已共享；16K及candidate尚未完成，不能给出新优化端到端收益。
+
+04:18:38基线完整结束并完成owned cleanup，原driver568661/server568665/Engine568837均已实际不在`/proc`。16K正式原件为`score-16384-infqps-concurrency64-minicpm-20261027-041828.json`：**4480.988345123086 total tok/s**、mean TTFT **111265.90971279802ms**、duration497.2617262941785s、128/128/0失败，input2097152/output131072。工作TTFT限值156938.85ms内；4K也在4770.3209ms内。16K计分命令区间selected-config未变、0条新metadata；完整warm3940.9087仍是未计分暖场。保留单轮和调度/缓存差异限制，不把基线分数当新优化收益。
+
+基线独立审计和原件archive已共享：941710B、62members、SHA`74dfc21fffc38ff3441b9a5678b25b9077106fae3feea8a213ba5ba7f6c1e7ea`。本机重验61个原文件SHA，独立重算105题、两档score/预热/TTFT、实际Q32/C3，逐项核对固定服务和正式benchmark完整命令。`tools/audit_biv150_peer_semantics.py`重新从原始SSE、decode/prefill response和固定SHA请求fixture验证前后两次语义/HTTP时间重叠，与state一致；它不发HTTP或使用GPU。修改decode内容、fixture payload、结果标志和重叠时间四个负例均拒绝。两条请求的语义诊断不能替代105题精度或证明模型步重叠。基线state中`acceptance_passed=false`为此harness保留待配对判断的状态，不能改写成已通过整个候选验收。
+
+04:19已观测同一controller568657自然转入candidate，driver579266、server579270均实际存活；候选仍为冻结b0d，当前本地新增的审计/证据文件不改变其生产代码。当前没有候选完整结果，无新增端到端收益或合并结论；后续仍须完整独立配对审计、进程清理及fresh团队main核对。

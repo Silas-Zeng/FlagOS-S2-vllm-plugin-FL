@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "cpu_only": true,
+  "archive": "/private/tmp/flagos-prefill-pipeline2-20261027/docs/evidence/prefill-pipeline2-20261027/prefill-k128-pair-v1-baseline-completed-evidence-20261027.tar.gz",
+  "archive_sha256": "74dfc21fffc38ff3441b9a5678b25b9077106fae3feea8a213ba5ba7f6c1e7ea",
+  "archive_members": 62,
+  "individual_sha_rechecked": 61,
+  "extracted": "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35",
+  "baseline_commit": "241220723a09061c182764f8f738e5ec01190367",
+  "accuracy": {
+    "correct": 102.0,
+    "count": 105,
+    "fraction": 0.9714285714285714,
+    "passed": true
+  },
+  "ttft": {
+    "4096": {
+      "mean_ttft_ms": 3285.4543949870276,
+      "working_ttft_limit_ms": 4770.3209,
+      "passed": true
+    },
+    "16384": {
+      "mean_ttft_ms": 111265.90971279802,
+      "working_ttft_limit_ms": 156938.85,
+      "passed": true
+    }
+  },
+  "scores": {
+    "4096": {
+      "total_token_throughput": 5778.458274320222,
+      "mean_ttft_ms": 3285.4543949870276,
+      "completed": 256,
+      "failed": 0
+    },
+    "16384": {
+      "total_token_throughput": 4480.988345123086,
+      "mean_ttft_ms": 111265.90971279802,
+      "completed": 128,
+      "failed": 0
+    }
+  },
+  "official_service_command_matches": true,
+  "official_scored_benchmark_commands_match": true,
+  "actual_q32_and_natural_c3": true,
+  "raw_peer_semantics": {
+    "passed": true,
+    "cpu_only": true,
+    "initial": {
+      "passed": true,
+      "raw_sha256": {
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/mixed-requests/requests.json": "a5097d125a0c8dc6a4a246107d45799a5afebf598a5f7425db1fe382745dfb44",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/mixed-requests/decode-sse.txt": "1e1e191081f4dd01ffa634c7db30413329c28b67e929cf6f07b58bac22dc4260",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/mixed-requests/decode-response.json": "aeae1b82530f551ed599007a25a436a42b236fed7e92081137a82c61bc3bf23d",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/mixed-requests/prefill-response.json": "939b8c0ec65e5ec88dae537b791ab05118e0b04208b5574689f9c074cf77aabe",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/mixed-requests/result.json": "fb199d40fb009f45786d36f2f1912026ba4d3d2022f40d769ea8823d79ce6ad7"
+      },
+      "transport_timing_overlap": true,
+      "result": {
+        "completed": true,
+        "all_correct": true,
+        "decode_correct": true,
+        "prefill_correct": true,
+        "decode_visible": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n60\n61\n62\n63\n64\n65\n66\n67\n68\n69\n70\n71\n72\n73\n74\n75\n76\n77\n78\n79\n80\n81\n82\n83\n84\n85\n86\n87\n88\n89\n90\n91\n92\n93\n94\n95\n96\n97\n98\n99\n100\n101\n102\n103\n104\n105\n106\n107\n108\n109\n110\n111\n112\n113\n114\n115\n116\n117\n118\n119\n120\n121\n122\n123\n124\n125\n126\n127\n128",
+        "prefill_visible": "85",
+        "prefill_usage": {
+          "prompt_tokens": 4652,
+          "total_tokens": 4713,
+          "completion_tokens": 61,
+          "prompt_tokens_details": null
+        },
+        "prefill_started": 3389655.182672304,
+        "prefill_finished": 3389666.200757671,
+        "decode_started": 3389649.292693492,
+        "decode_finished": 3389668.405916287,
+        "http_overlap": true,
+        "limitation": "Exact peer requests once; semantic diagnostic only, not105-question accuracy or model-step overlap proof."
+      }
+    },
+    "post": {
+      "passed": true,
+      "raw_sha256": {
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/post-score-semantic/mixed-requests/requests.json": "a5097d125a0c8dc6a4a246107d45799a5afebf598a5f7425db1fe382745dfb44",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/post-score-semantic/mixed-requests/decode-sse.txt": "75d5e5018565cfb7874f0208fca6c5ad17a6d9f116d28427d8a6597aabee1a62",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/post-score-semantic/mixed-requests/decode-response.json": "199b8fe20e48ea62f58609bc226b037ab48bf51cb3625f3c33cd8459c0439822",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/post-score-semantic/mixed-requests/prefill-response.json": "6439031d857265d57f40c3a1f8805413134663a0bd35c938e27d78a8bb3f932e",
+        "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-k128-baseline-replay-s1_byn35/baseline/post-score-semantic/mixed-requests/result.json": "5bea930b12f3d01042b1ac68687d2ef38af07801441f2ad14b7d4c698f7279f6"
+      },
+      "transport_timing_overlap": true,
+      "result": {
+        "completed": true,
+        "all_correct": true,
+        "decode_correct": true,
+        "prefill_correct": true,
+        "decode_visible": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n60\n61\n62\n63\n64\n65\n66\n67\n68\n69\n70\n71\n72\n73\n74\n75\n76\n77\n78\n79\n80\n81\n82\n83\n84\n85\n86\n87\n88\n89\n90\n91\n92\n93\n94\n95\n96\n97\n98\n99\n100\n101\n102\n103\n104\n105\n106\n107\n108\n109\n110\n111\n112\n113\n114\n115\n116\n117\n118\n119\n120\n121\n122\n123\n124\n125\n126\n127\n128",
+        "prefill_visible": "85",
+        "prefill_usage": {
+          "prompt_tokens": 4652,
+          "total_tokens": 4713,
+          "completion_tokens": 61,
+          "prompt_tokens_details": null
+        },
+        "prefill_started": 3393462.961556183,
+        "prefill_finished": 3393464.094899036,
+        "decode_started": 3393462.840690481,
+        "decode_finished": 3393466.323084305,
+        "http_overlap": true,
+        "limitation": "Exact peer requests once; semantic diagnostic only, not105-question accuracy or model-step overlap proof."
+      }
+    },
+    "fixture_sha256": {
+      "decode": "90e8284043b131ead2842c04cf83b5e3af3aa2f79358bee412769b76f61574c2",
+      "prefill": "ecf8e319aa48e3c66e8b40019df2dff483ace79dbfdd61de41d436bb3961a42b"
+    },
+    "limitation": "Two peer requests only; not105-question precision or model-step overlap proof."
+  },
+  "negative_raw_semantic_cases_rejected": [
+    "decode-content",
+    "fixture-payload",
+    "result-bool",
+    "transport-overlap"
+  ],
+  "semantic_audit_sha256": "bb39b25782c234901358361ef1a6f060a98fb53031d54fa10d23ae060a8aa00a",
+  "candidate_not_evaluated": true,
+  "torch_imported": false
+}
