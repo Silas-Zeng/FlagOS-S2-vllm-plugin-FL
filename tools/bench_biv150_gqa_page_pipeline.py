@@ -11,6 +11,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import re
 import socket
 import statistics
 import subprocess
@@ -67,15 +68,107 @@ def pipeline_source(text, stages=2):
         tail_and_math_preserved=True)
 
 
+def reuse_invariant_query(raw):
+    """CSE one readonly duplicate Q load against its existing dominator."""
+    lines = raw.splitlines(keepends=True)
+    allocations = [(i, re.search(r'(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<8x128xbf16', x))
+                   for i, x in enumerate(lines)]
+    allocations = [(i, m.group(1)) for i, m in allocations if m]
+    if len(allocations) != 1:
+        raise ValueError('Unique original Q allocation required')
+    alloc_index, allocation = allocations[0]
+    token = re.compile(re.escape(allocation) + r'(?![A-Za-z0-9_])')
+    loads = []
+    for i, line in enumerate(lines):
+        if token.search(line) and 'ttg.local_load ' in line:
+            match = re.fullmatch(r'\s*(%[A-Za-z0-9_]+) = (ttg.local_load .*?)\n?', line)
+            if match is None or 'dot_op<{opIdx = 0' not in line:
+                raise ValueError('Unknown Q operand load')
+            loads.append((i, match.group(1), match.group(2)))
+    loops = [i for i, line in enumerate(lines) if '= scf.for ' in line]
+    if len(loads) != 2 or len(loops) != 1:
+        raise ValueError('Expected exactly one existing outside and one duplicate inside Q read')
+    first, second = loads
+    begin = loops[0]
+    indent = re.match(r'\s*', lines[begin]).group()
+    end = next((i for i in range(begin+1, len(lines)) if lines[i].startswith(indent+'}')), None)
+    if end is None or not alloc_index < first[0] < begin < second[0] < end:
+        raise ValueError('Q dominance/loop boundaries not established')
+    if first[2] != second[2]:
+        raise ValueError('Q pointer/type/layout/source location differ')
+    allowed = {alloc_index, first[0], second[0]}
+    for i, line in enumerate(lines):
+        if token.search(line) and i not in allowed:
+            if i <= end or 'ttg.local_dealloc ' not in line:
+                raise ValueError('Unknown Q descriptor use or potential write')
+    old_token = re.compile(re.escape(second[1]) + r'(?![A-Za-z0-9_])')
+    new_token = re.compile(re.escape(first[1]) + r'(?![A-Za-z0-9_])')
+    uses = [i for i, line in enumerate(lines) if i != second[0] and old_token.search(line)]
+    if not uses or any(not second[0] < i < end or new_token.search(lines[i]) for i in uses):
+        raise ValueError('Duplicate SSA must be used only inside the same loop')
+    changed = lines.copy()
+    for i in uses:
+        changed[i] = old_token.sub(first[1], changed[i])
+    del changed[second[0]]
+    restored = changed.copy()
+    restored.insert(second[0], lines[second[0]])
+    for i in uses:
+        restored[i] = new_token.sub(second[1], restored[i])
+    if restored != lines:
+        raise ValueError('Exact byte inverse failed')
+    text = ''.join(changed)
+    return text, dict(exact_byte_inverse=True, readonly_q_descriptor=True,
+        existing_dominating_value=first[1], removed_duplicate_value=second[1],
+        q_descriptor=allocation,
+        replaced_uses=len(uses), input_sha256=hashlib.sha256(raw.encode()).hexdigest(),
+        output_sha256=hashlib.sha256(text.encode()).hexdigest(),
+        explicit_sync_operations_unchanged=True,
+        limits='Readonly typed SSA equivalence; actual lowering and device tests remain required')
+
+
 class StagedKernel:
-    def __init__(self, kernel, stages):
+    def __init__(self, kernel, stages, *, reuse_query=False, out=None, label=None,
+                 lowering_checker=None, abi_checker=None, q_source_lines=None):
         self.kernel = kernel
         self.stages = stages
+        self.reuse_query = reuse_query
+        self.out, self.label = out, label
+        self.lowering_checker, self.q_source_lines = lowering_checker, q_source_lines
+        self.abi_checker = abi_checker
+        self.launch_options = None
+        self.proof = None
 
     def __getitem__(self, grid):
         launch = self.kernel[grid]
         def call(**kw):
             kw['num_stages'] = self.stages
+            if self.reuse_query:
+                if self.launch_options is None:
+                    normal = self.kernel.warmup(grid=grid, **kw)
+                    normal._init_handles()
+                    resources(normal,self.out,self.label+'-normal-before-reuse')
+                    changed, proof = reuse_invariant_query(normal.asm['ttgir'])
+                    path = self.out / (self.label+'-query-reuse.ttgir')
+                    path.write_text(changed)
+                    replacement = dict(kw, ir_override=str(path))
+                    candidate = self.kernel.warmup(grid=grid, **replacement)
+                    candidate._init_handles()
+                    resources(candidate,self.out,self.label+'-candidate-before-launch')
+                    if candidate.hash == normal.hash:
+                        raise ValueError('Query reuse did not create a distinct compilation')
+                    if self.abi_checker(candidate.src) != self.abi_checker(normal.src):
+                        raise ValueError('Query reuse changed ABI/constants/attributes')
+                    lowered = self.lowering_checker(candidate.asm['ttgir'], candidate.asm['llir'],
+                                                    self.q_source_lines, block_m=8)
+                    self.proof = dict(**proof, normal_hash=normal.hash,
+                                      candidate_hash=candidate.hash, lowered=lowered)
+                    atomic(self.out/(self.label+'-query-reuse-proof.json'),self.proof)
+                    if not lowered['mechanism_pass']:
+                        raise ValueError('LLVM rematerialized query reads in cyclic blocks')
+                    if hashlib.sha256(path.read_bytes()).hexdigest() != proof['output_sha256']:
+                        raise ValueError('Override content changed')
+                    self.launch_options = {'ir_override':str(path)}
+                kw.update(self.launch_options)
             return launch(**kw)
         return call
 
@@ -118,6 +211,8 @@ def main(args):
     generated_path.write_text(generated)
     atomic(args.out / 'source-transform-proof.json', proof)
     candidate_module = load_module(generated_path, 'gqa_page_pipeline_private')
+    q_guard = load_module(source/'vllm_fl/patches/biv150_q_fragment_service.py','gqa_query_lowering_guard')
+    q_source_lines = q_guard._q_debug_lines(generated_path)
     result = dict(component_only=True, official_score=False, production_unchanged=True,
                   source_commit=args.commit, production_baseline=MAIN, sdk_jit_sha256=JIT_SHA, source_transform=proof,
                   kernel_source_sha256=hashlib.sha256((source / 'vllm_fl/patches/biv150_gqa_decode.py').read_bytes()).hexdigest(),
@@ -138,7 +233,10 @@ def main(args):
             for key in ('scratch', 'maxima', 'sums'):
                 c[key] = c[key].narrow(2, 0, segments)
             proxy = SimpleNamespace(LOG2E=module.LOG2E,
-                                    _gqa_decode_attention=StagedKernel(candidate_module._gqa_decode_attention, args.pipeline_stages))
+                _gqa_decode_attention=StagedKernel(candidate_module._gqa_decode_attention,args.pipeline_stages,
+                    reuse_query=args.reuse_query,out=args.out,label=f'b{batch}',
+                    lowering_checker=q_guard.lowered_proof,abi_checker=q_guard._abi,
+                    q_source_lines=q_source_lines))
             def run(selected):
                 kernel = main_call(selected, c, segments)
                 reduce_call(module, c, segments, 4)
@@ -149,6 +247,7 @@ def main(args):
             new = run(proxy); torch.cuda.synchronize()
             row['baseline'] = resources(old, args.out, f'b{batch}-baseline')
             row['candidate'] = resources(new, args.out, f'b{batch}-candidate')
+            row['query_reuse_proof'] = proxy._gqa_decode_attention.proof
             if batch == 64:
                 assert old.hash == MODEL_4K_HASH, 'Fixture differs from actual current model kernel'
             assert row['baseline']['metadata']['use_sme'] == 14
@@ -224,6 +323,7 @@ if __name__ == '__main__':
     parser.add_argument('--commit')
     parser.add_argument('--out', type=Path)
     parser.add_argument('--pipeline-stages', type=int, choices=(1,2), default=2)
+    parser.add_argument('--reuse-query', action='store_true')
     parser.add_argument('--check-source', action='store_true')
     args=parser.parse_args()
     if args.check_source:
