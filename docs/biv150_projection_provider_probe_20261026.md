@@ -440,3 +440,30 @@ original dispatcher fallbacks. The existing FlagGems5.3.5registration includes
 mm.out and the Iluvatar implementation launches its MM kernel into caller output;
 these source facts are not an additional unmeasured model-speed claim. This scope
 is relevant to the rule forbidding switching operators without operator work.
+
+### Latest-main baseline finished; candidate defaults are actually running
+
+06:18–06:21UTC: baseline697completed both workloads, initial/post-score semantics,
+strict request/input/output gates and owned cleanup; all working gates passed.
+Independent105raw binary reviews:102correct/105unique,allsuccess,report.9714.
+4K5588.222434518669tok/s,TTFT3468.8149666089885ms,256/256;16K4108.862492355601,
+TTFT122302.69498110283ms,128/128. No failures, unchanged official geometry.
+The generic driver's acceptance_passed sentinel remainsFalse; it never grants
+merge acceptance. Use actual complete/cleanup/semantics/precision/working gates
+and matched comparison. It is not a failed baseline workload.
+
+Controller is nowcandidate; server533456/start334284112/SID533456,phaseaccuracy.
+Actual loaded-source fingerprint verified,production_defaults=True,bothmanual
+feature env vars absent. It is the frozen87shipping-default source, not merely
+the earlier explicitly-enableda48. No manual second dispatch. Baseline4Kselected
+config changed in the conservative audit interval(52warmsamples);16Kunchanged
+(129samples). This does not isolate4Kscore compilation cost. No extra A/A queued.
+Connected GitHub mainref still697at06:09UTC; a subsequent CLI fetch failed to
+connect after75s, no source change. Fresh sync is still required before merge.
+
+Shared latest-main-pair-v1-baseline-final-evidence-20261026.tar.gz857331B,
+SHA0f4879fa0582050bf48add1e74195be644791f5aaa73920c04c094bb0b9c68c1,
+plus latest-main-pair-v1-baseline-final-summary.json. Raw105reviews/reports,
+commands/warmups/scores/metadata/initial+postsemantics/cleanup/source manifest
+retained; private kernel/DB caches excluded. Candidate still pending, so no
+candidate improvement, qualification or merge is claimed.
