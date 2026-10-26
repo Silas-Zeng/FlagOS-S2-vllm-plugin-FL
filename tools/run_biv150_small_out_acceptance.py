@@ -55,6 +55,7 @@ def expected_source_fingerprint(source, env):
 
 
 def throughput(out, *, full_workload_warmup=False):
+    from run_biv150_provider_noise import tuning_config_fingerprint
     scores, warmups = {}, {}
     for length, count in ((4096, 256), (16384, 128)):
         warmups[str(length)] = []
@@ -70,7 +71,12 @@ def throughput(out, *, full_workload_warmup=False):
             warmups[str(length)].append(dict(value, full_workload=True))
             (out / "warmups.json").write_text(json.dumps(warmups, indent=2) + "\n")
         before = cache_inventory(out / "triton-cache")
+        config_before = tuning_config_fingerprint(out / 'flaggems-cache/config_cache')
         scores[str(length)] = benchmark(out, f"score-{length}", length, 1024, count, 0)
+        config_after = tuning_config_fingerprint(out / 'flaggems-cache/config_cache')
+        (out/f'score-{length}-selected-config.json').write_text(json.dumps(dict(
+            before=config_before, after=config_after, changed=config_before!=config_after,
+            scope='Complete benchmark command including client preflight; not isolated timed scoring cost.'),indent=2)+'\n')
         after = cache_inventory(out / "triton-cache")
         additions = [after[key] for key in sorted(after.keys() - before.keys())]
         (out / f"score-{length}-new-kernels.json").write_text(json.dumps(additions, indent=2) + "\n")
