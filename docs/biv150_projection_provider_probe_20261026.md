@@ -217,3 +217,13 @@ attributing a small effect. The A/A runner derives only the4K workload check
 and diagnostic path from the qualified owned harness; cleanup AST and serving
 command stay exact. It uses original benchmark helper/seed0/256requests/64concurrency/
 4096input/1024output unchanged. No A/A GPU job has been launched yet.
+
+A/A scheduling is now actual: CPU-only owner511292/start333129429/SID511292,
+launch2026-10-26T03:02:22UTC, state exports/provider-noise-v1-state.json,
+log exports/provider-noise-v1-queue.log; it waits for exact control owner
+496536/start332536002 and driver502095/start332901041. TargetPython derive/
+cleanup/statistics/logical SQLite WAL contracts pass without importing Torch.
+Uploaded runner SHA2f9e5e2fd4a7c7782c90d6405eeadd0fa964c28ab6d0196977e809f79f8f7a88,
+queue SHA325115b024e6d5a75fca6e1d81dd142c6099608a7ae45fab60d7803f3539ba99.
+No A/A score exists yet; no noise conclusion is made. A transientSSH publickey
+failure resolved on immediate same-key retry; no model job was restarted.
