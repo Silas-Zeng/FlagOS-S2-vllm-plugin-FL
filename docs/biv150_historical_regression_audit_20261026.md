@@ -39,3 +39,15 @@ Shared CPU tools analyze_biv150_codegen_artifacts.py and compare_biv150_native_e
 Recorded hardware metadata in all three roots matches: cc71,16SM,warp64,262144registers/SM,8192threads/SM and4096threads/block. Do not apply a64K-register NVIDIA occupancy model to these records. Some saved pointwise launch choices differ but the counts of five XBLOCK2/R0_BLOCK2048/16warp reductions match. Any performance attribution still requires actual selected launches and matched measurement.
 
 The legacy source's package resolution was checked with the same interpreter/PYTHONPATH/cwd, without importing its package or GPU runtime; it resolves to the exact84c source and has no new small-GEMM hook file. Actual server marker/provenance still must be checked when replay starts. Additional AST/device archive2204bytes,SHA580113fa91090dfcab378ae8c220dcbc1c9cd6ed3dc9367ea408e79267e16f00. At04:04the exact owners419113/434166 remain live and the control benchmark is score-16384; historical waiter441671 remains live waiting, with no concurrent GPU test.
+
+## 历史最好为何没有直接恢复为当前配置
+
+用户记得的已验收成绩确实存在：PR28/runtime84c1be5，100/105，4K5765.810177、16K4048.135832。合并提交6a013bd仍是当前main34942f7的祖先，原日志、源码和成绩保留。2026-10-26相同旧源码在当前条件下重放4K5739.277280，仅低0.46%；本次重放没有重跑105或16K，不能冒充新的完整资格。
+
+后来PR51修复小行数BF16投影的不稳定输出，合入时测得5520.225676/4103.509891。相对历史的两次独立观测，4K低4.2593%、16K高1.3679%；该PR报告的+5.09%/+8.66%是相对native-off安全对照，不能作为超过历史最佳的证据。合并前没有做足历史性能回归审查，已经明确纠正这一判断。不同时间/source/cache的分数差异不能全部归因于某一个算子。
+
+旧源码重放时，新增并发混合请求在完成启动图捕获、完整workload预热前出现长问输出[8]+1023个0，计数请求正常。这是需要处理的真实异常，但不是比赛判定旧成绩不合法，也没有证明旧源码充分workload预热后仍错。历史100/105和正式两档成绩继续作为有效参考。
+
+PR58保留所有tiny-row保护，并恢复编译器输出缓冲规划：新候选102/105，4K5760.266264、16K4049.275300，前后混合请求、请求/token及TTFT均通过，已接近历史速度。同源码关闭该优化的完整控制是103/105、5624.274341/4110.860080；因此候选实际成对变化为4K+2.41795%、16K-1.49810%，暂不合并，保留4K增益继续修16K。原始控制archive867035B SHA507765fd0e7995c194367826b6ee8077771b78ccaa3a7b31ce2720c276478096，已共享PR58。
+
+PR59首轮全权重工作集组件进一步测得：32/64行MM更快，2048行provided-output linear更快（依投影1.07–1.29x）；2880数值/双流/变化输入Graph检查通过。下一步只按算子几何和行数寻找通用分流，保留既有小行保护。组件收益不能等同于服务吞吐收益，尚未选择或合入生产策略。
