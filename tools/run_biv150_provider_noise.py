@@ -15,6 +15,13 @@ from types import SimpleNamespace
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
+def snapshot_database(source,target):
+    source_db=sqlite3.connect(Path(source).resolve().as_uri()+'?mode=ro',uri=True)
+    target_db=sqlite3.connect(target)
+    try:source_db.backup(target_db)
+    finally:target_db.close();source_db.close()
+
+
 def tuning_config_fingerprint(root):
     result={}
     for p in sorted(root.glob('*.db')):
@@ -43,7 +50,7 @@ def summarize(rows):
                 limitation='Observed finite-sample spread, not a confidence interval; within-process only. New-metadata counts do not bound all compile/tuning cost. No cross-workload transfer.')
 
 
-def derive(text,source_sha):
+def derive(text,source_sha,*,restore_cache=False):
     assert hashlib.sha256(text.encode()).hexdigest()==source_sha
     anchor='for length,count in ((4096,256),(16384,128)):'
     assert text.count(anchor)==1
@@ -51,6 +58,10 @@ def derive(text,source_sha):
     marker='sha(Path(__file__).with_name("biv150_peer_mixed_diagnostic.py"))'
     assert changed.count(marker)==1
     changed=changed.replace(marker,'sha(source / "tools/biv150_peer_mixed_diagnostic.py")')
+    if restore_cache:
+        anchor='    (args.out / "idle.txt").write_text(idle)'
+        assert changed.count(anchor)==1
+        changed=changed.replace(anchor,anchor+'\n    _noise_cache_restore(args.out / "triton-cache")')
     # Replace only the diagnostic workload loop, preserving serving, semantics,
     # source checks and owned cleanup. Production package files are untouched.
     a,b=ast.parse(text),ast.parse(changed)
@@ -67,12 +78,30 @@ def main(a):
     assert subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()==commit
     assert not subprocess.check_output(['git','-C',str(source),'status','--porcelain','--untracked-files=no'],text=True).strip()
     base=source/'tools/run_biv150_small_out_acceptance.py';assert sha(base)==m['driver_sha256']
-    code=derive(base.read_text(),m['driver_sha256']);generated=a.out.parent/(a.out.name+'-owned-harness.py');assert not generated.exists();generated.write_text(code)
+    mature=getattr(a,'mature_seed',None)
+    if mature:
+        from biv150_provider_cache_restore import validate_seed
+        validate_seed(mature,m)
+    code=derive(base.read_text(),m['driver_sha256'],restore_cache=bool(mature));generated=a.out.parent/(a.out.name+'-owned-harness.py');assert not generated.exists();generated.write_text(code)
     spec=importlib.util.spec_from_file_location('_provider_noise_owned_harness',generated);h=importlib.util.module_from_spec(spec);spec.loader.exec_module(h)
+    if mature:
+        from biv150_provider_cache_restore import restore
+        def restore_cache(target):
+            proof=restore(mature,target,m)
+            (a.out/'mature-cache-restoration.json').write_text(json.dumps(proof,indent=2)+'\n')
+        h._noise_cache_restore=restore_cache
     snapshot=a.out.parent/(a.out.name+'-fixed-tuning');snapshot.mkdir(exist_ok=False)
     dbs=[]
-    for p in sorted((seed/'flaggems-cache/config_cache').glob('*.db')):
-        assert not p.is_symlink();shutil.copy2(p,snapshot/p.name);assert sha(p)==sha(snapshot/p.name);dbs.append(dict(name=p.name,sha256=sha(p)))
+    config_source=Path(mature).resolve() if mature else seed
+    for p in sorted((config_source/'flaggems-cache/config_cache').glob('*.db')):
+        assert not p.is_symlink()
+        if mature:
+            # SQLite backup includes committed WAL pages; never merge configs.
+            snapshot_database(p,snapshot/p.name)
+        else:
+            shutil.copy2(p,snapshot/p.name);assert sha(p)==sha(snapshot/p.name)
+        dbs.append(dict(name=p.name,sha256=sha(snapshot/p.name)))
+    assert tuning_config_fingerprint(config_source/'flaggems-cache/config_cache')==tuning_config_fingerprint(snapshot)
     assert dbs;(snapshot/'manifest.json').write_text(json.dumps(dict(databases=dbs),indent=2)+'\n')
     def throughput(out,*,full_workload_warmup=False):
         assert full_workload_warmup
@@ -97,8 +126,8 @@ def main(a):
     h.throughput=throughput
     args=SimpleNamespace(source=source,commit=commit,out=a.out,gate_library=Path(m['env']['BIV150_NATIVE_W8A8_LIBRARY']),native_mode='on',stable_small_o='1',out_lowering='1',large_linear='1',provider_probe=True,post_score_semantic_check=True,diagnostic_after_semantic_failure=False,run_accuracy=False,run_throughput=True,full_workload_warmup=True,tuning_snapshot=snapshot,fixtures=a.fixtures)
     h.main(args)
-    plan=dict(seed=str(seed),seed_manifest_sha256=sha(seed/'manifest.json'),source=str(source),commit=commit,qualified_precision_reused=True,accuracy_rerun=False,tuning_database_fixed=True,triton_cache_fresh=True,only_mature_suffix_used_for_noise=True,repeats=a.repeats,workload=4096,serving_command_unchanged=True,within_process_only=True,production_modified=False,driver_sha256=sha(__file__))
+    plan=dict(seed=str(seed),seed_manifest_sha256=sha(seed/'manifest.json'),source=str(source),commit=commit,qualified_precision_reused=True,accuracy_rerun=False,tuning_database_fixed=True,tuning_seed=str(config_source),triton_cache_fresh=not bool(mature),mature_cache_seed=str(mature) if mature else None,only_mature_suffix_used_for_noise=True,repeats=a.repeats,workload=4096,serving_command_unchanged=True,within_process_only=True,production_modified=False,driver_sha256=sha(__file__))
     (a.out/'noise-protocol.json').write_text(json.dumps(plan,indent=2)+'\n')
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--seed',type=Path,required=True);p.add_argument('--commit',required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--fixtures',type=Path,required=True);p.add_argument('--repeats',type=int,choices=[2,3],default=3);main(p.parse_args())
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--seed',type=Path,required=True);p.add_argument('--commit',required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--fixtures',type=Path,required=True);p.add_argument('--repeats',type=int,choices=[2,3],default=3);p.add_argument('--mature-seed',type=Path);main(p.parse_args())

@@ -267,3 +267,44 @@ start333317954/SID512713 is running, outputprojection-provider-noise4k-v1-202610
 This is no longer merely queued;3repetitions remain to be observed. Do not queue
 a duplicate from stale control state or an SSH timeout. No new operator work
 or PR47/53/55GPU test has been started during the noise screen.
+
+## A/A v1 completed: measurement-state drift, no steady-noise estimate yet
+
+Same productiona48/flags, fixed copied final tuning DB and fresh private Triton
+cache, no production changes. Three predeclared full4K scores are:
+
+|Round|Total tok/s|Mean TTFT ms|New kernel metadata|Config changed|
+|---|---:|---:|---|---|
+|0|5776.982623|3456.093968|14linear+4index|yes|
+|1|5879.490541|3433.471060|4index|yes|
+|2|5925.396060|3475.200666|1index|no|
+
+All3complete256/256 with exact token counts; pre/post-score semantics and owned
+cleanup pass. Complete at03:55:47UTC, driver512713and waiter511292 exited. Full
+unscored warmup5899.241267is retained, not substituted for a score. All-round
+mean5860.623075/median5879.490541,observed range/mean2.53238%,sample CV1.29652%.
+Every round still adds metadata, so valid_mature_suffix=False: there is NO
+steady-noise estimate, no confidence interval and no new stable-best claim.
+This directly demonstrates that same-code measurement state can create changes
+on the scale of previous1–3%observations; stop operator attribution/merging based
+on those single observations. It does not prove all small changes false or
+explain16K. Before/after device snapshots all1500/1600MHz and38–39C; they do not
+continuously observe clocks during scoring.
+
+Full raw80023B SHA256df6f9018deec0404b8ecbc437c28043c4f4bb8905f612edbc5f248acbdeab9ff,
+final-summary includes all three raw results, new-metadata lists, DB fingerprints,
+semantics, launch and cleanup. Actual SQLite tables use benchmark-named timing
+tables and separate selected-config tables, consistent with the existing filter.
+Both final DBs have no WAL sidecars. No benchmark data were pruned or best picked.
+
+A bounded v2 diagnostic will reuse this completed identical runtime's selected
+config DB and Triton artifacts in a new private directory. Only cache-group file
+paths are rebased; all kernel artifact bytes are verified unchanged. Completed
+matching source/flags/CLI/native-library/semantic/cleanup are required. SQLite
+backup includes committed WAL pages, with equal logical config fingerprints;
+configs are never merged. Cleanup AST and official CLI remain exact. CPU fixture
+contracts exercise byte preservation/rebase, mismatched seeds, unfinished cleanup,
+symlink/path escapes and an open committed WAL. Host and targetPython3.12 pass
+without importingTorch. v1exported scripts remain untouched. Planned:3short+1full
+warmup then only2predeclared full4K repetitions, no repeated105. This reduces cold
+state before asking whether a mature suffix exists; no claim until actual run.
