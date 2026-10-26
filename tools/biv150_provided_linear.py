@@ -50,6 +50,7 @@ def linear_into(x,weight,out):
             and x.stride(1)==weight.stride(1)==out.stride(1)==1
             and x.stride(0)>=x.shape[1] and weight.stride(0)==weight.shape[1]
             and out.stride(0)>=out.shape[1]
+            and out.untyped_storage().data_ptr() not in (x.untyped_storage().data_ptr(),weight.untyped_storage().data_ptr())
             and not x.requires_grad and not weight.requires_grad and not out.requires_grad):
         raise ValueError('Unsupported provided-output linear scope; keep protected fallback')
     initialize()

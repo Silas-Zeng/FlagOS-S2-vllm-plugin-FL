@@ -12,6 +12,7 @@ def main():
     class Tensor:
         def __init__(self,shape):self.shape=shape;self.ndim=len(shape);self.dtype=dtype;self.device=device;self.requires_grad=False
         def stride(self,axis):return 1 if axis==1 else self.shape[1]
+        def untyped_storage(self):return SimpleNamespace(data_ptr=lambda:id(self))
     class Kernel:
         def __getitem__(self,grid):
             def run(*args,**kwargs):calls.append((grid({'BLOCK_M':32,'BLOCK_N':64}),args,kwargs))
@@ -37,6 +38,10 @@ def main():
     try:module.linear_into(x,Tensor((2048,2048)),Tensor((32,2048)))
     except ValueError:pass
     else:raise AssertionError('Autograd silently bypassed')
+    x=Tensor((32,2048))
+    try:module.linear_into(x,Tensor((2048,2048)),x)
+    except ValueError:pass
+    else:raise AssertionError('Input/output alias accepted')
     print(json.dumps(dict(passed=True,gpu_executed=False,valid_descriptor_launch_cases=count,
                          tiny_rows_rejected=True,autograd_rejected=True,provided_output_identity=True,
                          limitation='CPU ABI mocks only; actual SDK selection, numerical/Graph correctness and performance pending.')))
