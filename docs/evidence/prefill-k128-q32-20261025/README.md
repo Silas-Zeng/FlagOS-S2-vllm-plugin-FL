@@ -228,3 +228,18 @@ was independently verified by the serving harness. Manual enable variables are
 absent. Both source-default provider paths, fixed CLI and initial snapshot match;
 both have548320KV tokens. This confirms real service integration only.
 Candidate full precision/4K/16K and post-score semantics remain pending.
+
+## Candidate complete105 precision passed, 2026-10-27 01:21 CST
+
+Independent raw report/prediction/review audit confirms103/105=0.98095238095,
+all105unique, binary and all-success, no failed predictions. Actual default/source
+fingerprint checks pass. Compared with this run's main101/105, two question scores
+changed0→1; under stochastic evaluation this is not a causal accuracy improvement
+claim for the kernel. Cleaned per-question scores, changes and original SHA256 are
+in prefill-w16-pair-v1-candidate-independent-accuracy-20261027.json.
+
+The same service has moved automatically to throughput. Three short4K warmups
+completed, full4K warmup is active. The existing compute-order path has now emitted
+FIRST_SELECTED, with no SCOPE_REJECTED or Q32_FALLBACK in the observed log.
+Candidate scored4K/16K, post-score semantics/cleanup and final merge judgment
+remain pending. No extra GPU workload or benchmark-parameter change was made.
