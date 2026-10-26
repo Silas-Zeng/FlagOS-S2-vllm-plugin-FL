@@ -13,6 +13,7 @@ import math
 import os
 from pathlib import Path
 import signal
+import shutil
 import socket
 import subprocess
 import sys
@@ -20,7 +21,7 @@ import time
 import types
 import urllib.request
 
-MAIN = '0bf9d2efeaa10144dd7f0ff4597298df029f9328'
+MAIN = '6971ef48615af97a1637405c71f96dd89969563e'
 LIBRARY_SHA256 = '5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe'
 SERVICE_ARGS = [
     'serve', '/workspace/MiniCPM5-2B', '--port', '9031',
@@ -128,7 +129,11 @@ def make_environment(args, bootstrap):
         'VLLM_PLUGINS': 'fl', 'PYTHONPATH': str(args.source),
         'VLLM_DISABLE_COMPILE_CACHE': '1',
         'TORCHINDUCTOR_CACHE_DIR': str(args.out / 'inductor-cache'),
-        'PYTHONUNBUFFERED': '1', 'VLLM_FL_BIV150_LIVE_CARRY_GATE': '0',
+        'TRITON_CACHE_DIR': str(args.out / 'triton-cache'),
+        'FLAGGEMS_CACHE_DIR': str(args.out / 'flaggems-cache'),
+        'PYTHONUNBUFFERED': '1',
+        'VLLM_FL_BIV150_NATIVE_W8A8': '1',
+        'VLLM_FL_BIV150_STABLE_SMALL_O': '1',
         'BIV150_NATIVE_W8A8_LIBRARY': str(args.library),
     })
     service = common.copy()
@@ -138,6 +143,35 @@ def make_environment(args, bootstrap):
         'BIV150_PROFILE_BOOTSTRAP': '1',
     })
     return service, common
+
+
+def prepare_tuning(args):
+    snapshot = args.tuning_snapshot.resolve()
+    manifest = snapshot / 'manifest.json'
+    records = json.loads(manifest.read_text())['databases']
+    assert records
+    target = args.out / 'flaggems-cache/config_cache'
+    target.mkdir(parents=True, exist_ok=False)
+    for record in records:
+        name = record['name']
+        assert Path(name).name == name and name.endswith('.db')
+        assert sha256(snapshot / name) == record['sha256']
+        shutil.copy2(snapshot / name, target / name)
+        assert sha256(target / name) == record['sha256']
+    return dict(source=str(snapshot), manifest_sha256=sha256(manifest), databases=records)
+
+
+def installed_runtime(logs):
+    result = {}
+    for marker in ('BIV150_NATIVE_W8A8_INSTALL', 'BIV150_STABLE_SMALL_O_INSTALL',
+                   'BIV150_Q_FRAGMENT_INSTALL', 'BIV150_PREFILL_NORMALIZATION_INSTALL',
+                   'BIV150_GQA_DECODE_INSTALL', 'BIV150_MIXED_DECODE_INSTALLED'):
+        values = [ast.literal_eval(line.split(marker + ' ', 1)[1])
+                  for line in logs.splitlines() if marker + ' ' in line]
+        if not values or values[-1].get('installed') is not True:
+            raise RuntimeError('Missing or inactive baseline installation: ' + marker)
+        result[marker] = values[-1]
+    return result
 
 
 def environment_evidence(env):
@@ -150,7 +184,8 @@ def environment_evidence(env):
         'VLLM_DISABLE_COMPILE_CACHE', 'VLLM_LOGGING_LEVEL',
         'VLLM_ATTENTION_BACKEND', 'VLLM_USE_FLASHINFER_SAMPLER',
         'VLLM_FL_BIV150_LIVE_CARRY_GATE', 'BIV150_NATIVE_W8A8_LIBRARY',
-        'TORCHINDUCTOR_CACHE_DIR', 'TRITON_CACHE_DIR',
+        'TORCHINDUCTOR_CACHE_DIR', 'TRITON_CACHE_DIR', 'FLAGGEMS_CACHE_DIR',
+        'VLLM_FL_BIV150_NATIVE_W8A8', 'VLLM_FL_BIV150_STABLE_SMALL_O',
         'BIV150_PROFILE_DIR', 'BIV150_PROFILE_BOOTSTRAP',
         'NVTX_SCOPES', 'VLLM_NVTX_SCOPES', 'USE_C_EXTENSION', 'FLAGTUNE',
     }
@@ -363,6 +398,7 @@ class Driver:
         self.update('source_verified')
         idle_preflight(self.args.out)
         self.update('idle_confirmed')
+        tuning = prepare_tuning(self.args)
         bootstrap, launcher = make_bootstrap(self.args)
         self.service_env, self.bench_env = make_environment(self.args, bootstrap)
         command = [
@@ -382,6 +418,7 @@ class Driver:
             launcher_sha256=sha256(launcher), python=sys.executable,
             ixsys='/usr/local/corex/bin/ixsys',
             env_files=['service-env.json', 'benchmark-env.json'],
+            tuning_snapshot=tuning, workload=self.args.workload,
         ))
         self.server_log = (self.args.out / 'server.log').open('w')
         self.collector = subprocess.Popen(command, env=self.service_env,
@@ -411,6 +448,9 @@ class Driver:
                     origin = json.loads(record.read_text())['vllm_fl_origin']
                     if origin is None or not Path(origin).resolve().is_relative_to(self.args.source):
                         raise RuntimeError(f'Unexpected vllm_fl import origin: {origin}')
+                manifest = json.loads((self.args.out / 'manifest.json').read_text())
+                manifest['installations'] = installed_runtime((self.args.out / 'server.log').read_text())
+                atomic_json(self.args.out / 'manifest.json', manifest)
                 atomic_json(self.args.out / 'models.json', models)
                 self.update('service_ready')
                 return
@@ -451,11 +491,15 @@ class Driver:
         load = self.args.out / 'load'
         load.mkdir()
         warmups, diagnostics = {}, {}
-        for length, count in ((4096, 256), (16384, 128)):
-            warm_count = 128 if length == 4096 else 64
+        selected = ((4096, 256), (16384, 128))
+        if self.args.workload != 'both':
+            selected = tuple(case for case in selected if str(case[0]) == self.args.workload)
+        for length, count in selected:
+            warm_count = 64
             warmups[str(length)] = []
             cases = [(f'warm-{length}-{index}', 128, warm_count, 920000 + index, False)
                      for index in range(3)]
+            cases.append((f'full-warm-{length}', 1024, count, 0, False))
             cases.append((f'diagnostic-{length}', 1024, count, 0, True))
             for name, output_len, num_prompts, seed, profile in cases:
                 geometry = dict(name=name, input_len=length, output_len=output_len,
@@ -542,6 +586,8 @@ def arguments(argv=None):
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--library', type=Path, required=True)
     parser.add_argument('--commit', required=True)
+    parser.add_argument('--tuning-snapshot', type=Path, required=True)
+    parser.add_argument('--workload', choices=('4096', '16384', 'both'), default='4096')
     parser.add_argument('--startup-timeout', type=int, default=1200)
     parser.add_argument('--service-stop-timeout', type=int, default=90)
     parser.add_argument('--collector-flush-timeout', type=int, default=1800)
