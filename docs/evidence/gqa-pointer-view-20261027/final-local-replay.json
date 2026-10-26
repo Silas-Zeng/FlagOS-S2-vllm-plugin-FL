@@ -1,0 +1,82 @@
+{
+  "component_only": true,
+  "official_score": false,
+  "archive_sha256": "22277439bab406cf1aaed7090e0921301d3dc503a111ffba629c1d9ccf1fe793",
+  "all_original_hashes_rechecked": true,
+  "records": [
+    {
+      "batch": 64,
+      "kv": 4096,
+      "numeric_passed": true,
+      "uniform_exact": true,
+      "speedup": 0.9999781098874576,
+      "timings": [
+        {
+          "baseline_ms": 0.5253000259399414,
+          "candidate_ms": 0.5257201790809631,
+          "speedup": 0.999200804614812
+        },
+        {
+          "candidate_ms": 0.5254312753677368,
+          "baseline_ms": 0.5256485342979431,
+          "speedup": 1.000413486863823
+        },
+        {
+          "baseline_ms": 0.5255087018013,
+          "candidate_ms": 0.5255202054977417,
+          "speedup": 0.9999781098874576
+        }
+      ],
+      "masks": [
+        14,
+        62
+      ],
+      "generated_file_bytes_equal": {
+        "source": true,
+        "ttir": true,
+        "ttgir": true,
+        "llir": true,
+        "asm": true,
+        "cubin": true
+      }
+    },
+    {
+      "batch": 32,
+      "kv": 16384,
+      "numeric_passed": true,
+      "uniform_exact": true,
+      "speedup": 0.9998466625004575,
+      "timings": [
+        {
+          "baseline_ms": 1.029160499572754,
+          "candidate_ms": 1.0293183326721191,
+          "speedup": 0.9998466625004575
+        },
+        {
+          "candidate_ms": 1.0292413234710693,
+          "baseline_ms": 1.0292788743972778,
+          "speedup": 1.0000364840833265
+        },
+        {
+          "baseline_ms": 1.0289918184280396,
+          "candidate_ms": 1.0292649269104004,
+          "speedup": 0.9997346567679318
+        }
+      ],
+      "masks": [
+        14,
+        62
+      ],
+      "generated_file_bytes_equal": {
+        "source": true,
+        "ttir": true,
+        "ttgir": true,
+        "llir": true,
+        "asm": true,
+        "cubin": true
+      }
+    }
+  ],
+  "conclusion": "No executable change or measurable gain. Close pointer-rank subexperiment; no model integration or long service test.",
+  "local_replay_directory": "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-gqa-pointer-v2-replay-qs__sb4m"
+}
