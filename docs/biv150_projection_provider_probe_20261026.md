@@ -145,3 +145,19 @@ still pending. Exact selected paths/identities/probe response/installations
 and private cache source are in projection-integrated-model-v3-initial-positive.json.
 The actual CPU-only control waiter496536/start332536002 waits for driver
 491667/start332519497; state exports/projection-integrated-control-v1-state.json.
+
+## Complete integrated precision pass
+
+The same frozen a48model completed all105unique Level3 predictions with no
+failed predictions. Reported accuracy is0.981; independent reading of all105
+review scores confirms103binary-correct/105, exact fraction0.98095238, all
+review statuses successful. Initial mixed and post-ready provider proof remain
+passed. This is the integrated row-policy's full accuracy result, not a
+component inference. Original command remains temperature1/top_p.95/max32768,
+batch8, no shortened tail. The last long question was allowed to finish.
+
+Full raw105/command/reports/reviews/predictions/initial model state/probe/log
+archive785717bytes SHAe1f7c05a44f156848b9ba77f8059b8777edddde15ba4299abce3142df7ac8c5d
+is shared alongside integrated-model-v3-full-accuracy.json. Performance/TTFT
+and post-score semantics remain pending; short/fullwarm results are not scores.
+No production merge or default change is implied by this precision pass.
