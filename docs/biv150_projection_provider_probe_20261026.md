@@ -161,3 +161,28 @@ archive785717bytes SHAe1f7c05a44f156848b9ba77f8059b8777edddde15ba4299abce3142df7
 is shared alongside integrated-model-v3-full-accuracy.json. Performance/TTFT
 and post-score semantics remain pending; short/fullwarm results are not scores.
 No production merge or default change is implied by this precision pass.
+
+## Integrated4K score: no recovered gain established
+
+After3short+onecomplete256-request unscored warmup, the single scored4K is
+5603.546050280927 total tok/s, meanTTFT3456.967683712719ms,256/256success,
+zero failure,1048576input+262144output tokens. Fullwarm5744.875167 is preserved
+as unscored, not substituted for this lower score. It does not recover earlier
+PR58out-only5760.266264 or historical PR285765.810177; those are different
+runs/sources, not matched isolated effects. The new same-source control and
+16K remain pending. Keep Draft and do not merge this observed regression.
+
+Score added4index-linearized metadata files and0MM/linear files. File counts
+alone do not bound compile/tuning wall time, but there is no evidence yet for
+a large new-matmul compilation confound. Actual2048-row provider log counters
+reach65536for O/QKV/down and8192for edgegate, all supplied-linear, so the
+main row was actually integrated; this is not merely a1739-only installation.
+
+The existing provider experiment times CUDA Graph chains. It excludes eager
+Python/metadata/launch costs and attention interleaving; therefore its1.07–2x
+component ratios cannot justify a service gain. After current serial service
+and matched control finish, a targeted complete eager-vs-Graph callback probe
+or current-model timeline can distinguish entry/overlap costs from tuning/
+compiled-kernel changes. No such cost attribution is measured yet. Do not
+repeat a large configuration scan or discard the whole output-planning win
+on this one combined variant. Raw partial score/new-metadata JSON is shared.
