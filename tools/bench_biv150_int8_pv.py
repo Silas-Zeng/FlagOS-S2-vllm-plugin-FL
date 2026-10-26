@@ -85,10 +85,18 @@ def main(args):
         return selected,torch.stack(answers)
 
     def resources(compiled):
+        destination=args.out/'compiler-ir'/str(compiled.hash)
+        destination.mkdir(parents=True,exist_ok=True)
+        hashes={}
+        for name,value in compiled.asm.items():
+            if name not in ('ttgir','llir','asm','cubin'):continue
+            raw=value.encode() if isinstance(value,str) else value
+            (destination/('actual.'+name)).write_bytes(raw)
+            hashes[name]=hashlib.sha256(raw).hexdigest()
         return dict(hash=str(compiled.hash), n_regs=compiled.n_regs,
                     n_spills=compiled.n_spills, shared=compiled.metadata.shared,
                     num_warps=compiled.metadata.num_warps, num_stages=compiled.metadata.num_stages,
-                    use_sme=getattr(compiled.metadata, 'use_sme', None))
+                    use_sme=getattr(compiled.metadata, 'use_sme', None),asm_sha256=hashes)
 
     save()
     try:

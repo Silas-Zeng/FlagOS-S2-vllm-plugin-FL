@@ -27,6 +27,15 @@ def main(a):
     result={'passed':False,'gpu_executed':True,'warps':a.warps,'source_commit':subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip(),
             'operator_sha256':hashlib.sha256((root/'tools/kernels/biv150_int8_pv.py').read_bytes()).hexdigest(),'checks':[]}
     def save():(a.out/'result.json').write_text(json.dumps(result,indent=2))
+    def preserve(compiled):
+        destination=a.out/'compiler-ir';destination.mkdir(exist_ok=True)
+        hashes={}
+        for name,value in compiled.asm.items():
+            if name not in ('ttgir','llir','asm','cubin'):continue
+            raw=value.encode() if isinstance(value,str) else value
+            (destination/('actual.'+name)).write_bytes(raw)
+            hashes[name]=hashlib.sha256(raw).hexdigest()
+        result['asm_sha256']=hashes;save()
     save();default=torch.cuda.current_stream()
     for name in ['default','side']:
         stream=default if name=='default' else torch.cuda.Stream();stream.wait_stream(default)
@@ -39,7 +48,7 @@ def main(a):
             result['checks'].append({'stream':name,'pattern':index,'mode':mode,'exact':True,'canaries':True});save()
         with torch.cuda.stream(stream):
             for index,(hp,hv) in enumerate(patterns):
-                p.copy_(hp);v.copy_(hv);out.fill_(-999);compiled=call();check(index,'eager')
+                p.copy_(hp);v.copy_(hv);out.fill_(-999);compiled=call();preserve(compiled);check(index,'eager')
             capture=torch.cuda.Stream();capture.wait_stream(stream);graph=torch.cuda.CUDAGraph()
             with torch.cuda.graph(graph,stream=capture):call()
             stream.wait_stream(capture)
