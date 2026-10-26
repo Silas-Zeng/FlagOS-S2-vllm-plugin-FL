@@ -10,7 +10,8 @@ import sys
 import types
 from pathlib import Path
 
-EXPECTED_RUNNER = "cbbbabcea66663b033f2209febc55e75a9e14ac72d1693173d9d4aad1be7fac6"
+# Current team runner plus the opt-in Q32 installer; input/order code is unchanged.
+EXPECTED_RUNNER = "268804cb09d84baa8497d020adaf04329ead8bf29951609d8bf602bf92b04613"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
@@ -23,7 +24,7 @@ SOURCES = {
     "vllm_fl.patches.biv150_mixed_decode": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
     "vllm_fl.patches.biv150_gqa_decode": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
     "vllm_fl.patches.biv150_prefill_normalized": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
-    "vllm_fl.patches.biv150_q_fragment_service": "2d469d54034d85badd158d452bcc9f61d6f53e885e2a724c1032bc54e13a32c9",
+    "vllm_fl.patches.biv150_q_fragment_service": "38e44e6b0272116a1c76561119e9742337caed4dfaf5ab891fc57df4f2c16a82",
     "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
     "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }

@@ -1,0 +1,191 @@
+{
+  "complete": true,
+  "cleanup_complete": true,
+  "acceptance_passed": false,
+  "precision_passed": null,
+  "diagnostic_only": false,
+  "phase": "completed",
+  "commit": "aa2661f6070bbe822e7886779bdd9dc176f36fc8",
+  "candidate": false,
+  "updated": "2026-10-25T11:29:14.723117+00:00",
+  "owner": {
+    "pid": 317715,
+    "start_ticks": 327353446,
+    "sid": 317715,
+    "state": "R"
+  },
+  "driver": {
+    "pid": 317711,
+    "start_ticks": 327353429,
+    "sid": 317711,
+    "state": "R"
+  },
+  "work_completed": true,
+  "scores": {
+    "4096": {
+      "date": "20261025-190900",
+      "endpoint_type": "vllm",
+      "backend": "vllm",
+      "label": "score-4096",
+      "model_id": "minicpm",
+      "tokenizer_id": "/workspace/MiniCPM5-2B",
+      "num_prompts": 256,
+      "request_rate": "inf",
+      "burstiness": 1.0,
+      "max_concurrency": 64,
+      "duration": 238.5656926529482,
+      "completed": 256,
+      "failed": 0,
+      "total_input_tokens": 1048576,
+      "total_output_tokens": 262144,
+      "request_throughput": 1.0730796920260208,
+      "request_goodput": null,
+      "output_throughput": 1098.8336046346453,
+      "total_token_throughput": 5494.168023173227,
+      "max_output_tokens_per_s": 1920.0,
+      "max_concurrent_requests": 68,
+      "rtfx": 0.0,
+      "mean_ttft_ms": 3715.305123008875,
+      "median_ttft_ms": 1241.6393454186618,
+      "std_ttft_ms": 5301.748672266226,
+      "p99_ttft_ms": 21188.833701703694,
+      "mean_tpot_ms": 54.30098543461798,
+      "median_tpot_ms": 56.436324220574946,
+      "std_tpot_ms": 5.862088287079333,
+      "p99_tpot_ms": 59.399500772022876,
+      "mean_itl_ms": 54.3009860977863,
+      "median_itl_ms": 36.47010098211467,
+      "std_itl_ms": 68.67691007031243,
+      "p99_itl_ms": 230.31297657173127
+    },
+    "16384": {
+      "date": "20261025-192908",
+      "endpoint_type": "vllm",
+      "backend": "vllm",
+      "label": "score-16384",
+      "model_id": "minicpm",
+      "tokenizer_id": "/workspace/MiniCPM5-2B",
+      "num_prompts": 128,
+      "request_rate": "inf",
+      "burstiness": 1.0,
+      "max_concurrency": 64,
+      "duration": 563.5748130017892,
+      "completed": 128,
+      "failed": 0,
+      "total_input_tokens": 2097152,
+      "total_output_tokens": 131072,
+      "request_throughput": 0.22712157649173303,
+      "request_goodput": null,
+      "output_throughput": 232.57249432753463,
+      "total_token_throughput": 3953.7324035680886,
+      "max_output_tokens_per_s": 608.0,
+      "max_concurrent_requests": 65,
+      "rtfx": 0.0,
+      "mean_ttft_ms": 127304.87881350564,
+      "median_ttft_ms": 145312.11157375947,
+      "std_ttft_ms": 54385.46179250451,
+      "p99_ttft_ms": 219823.49585781808,
+      "mean_tpot_ms": 120.44898750550117,
+      "median_tpot_ms": 128.56752867446275,
+      "std_tpot_ms": 19.671830812667633,
+      "p99_tpot_ms": 150.4457185496572,
+      "mean_itl_ms": 120.44898826965807,
+      "median_itl_ms": 54.67721703462303,
+      "std_itl_ms": 192.74582332089213,
+      "p99_itl_ms": 516.3425522064789
+    }
+  },
+  "working_gates": {
+    "4096": {
+      "requests_ok": true,
+      "throughput_ok": true,
+      "ttft_ok": true,
+      "passed": true,
+      "baseline_total_tokens_per_s": 4809.36,
+      "throughput_floor": 4761.2663999999995,
+      "working_mean_ttft_limit_ms": 4770.3209,
+      "goal_20_percent": false
+    },
+    "16384": {
+      "requests_ok": true,
+      "throughput_ok": true,
+      "ttft_ok": true,
+      "passed": true,
+      "baseline_total_tokens_per_s": 3364.03,
+      "throughput_floor": 3330.3897,
+      "working_mean_ttft_limit_ms": 156938.85,
+      "goal_20_percent": false
+    }
+  },
+  "matched_control_comparison_required": true,
+  "owned_service_members": [
+    {
+      "pid": 317715,
+      "start_ticks": 327353446,
+      "sid": 317715,
+      "state": "R"
+    },
+    {
+      "pid": 317862,
+      "start_ticks": 327355270,
+      "sid": 317715,
+      "state": "S"
+    },
+    {
+      "pid": 317863,
+      "start_ticks": 327355270,
+      "sid": 317715,
+      "state": "R"
+    },
+    {
+      "pid": 318191,
+      "start_ticks": 327357009,
+      "sid": 317715,
+      "state": "R"
+    },
+    {
+      "pid": 318217,
+      "start_ticks": 327357029,
+      "sid": 317715,
+      "state": "S"
+    },
+    {
+      "pid": 318540,
+      "start_ticks": 327357678,
+      "sid": 317715,
+      "state": "S"
+    },
+    {
+      "pid": 318541,
+      "start_ticks": 327357678,
+      "sid": 317715,
+      "state": "R"
+    },
+    {
+      "pid": 318787,
+      "start_ticks": 327359192,
+      "sid": 317715,
+      "state": "S"
+    },
+    {
+      "pid": 318788,
+      "start_ticks": 327359192,
+      "sid": 317715,
+      "state": "R"
+    },
+    {
+      "pid": 319592,
+      "start_ticks": 327362207,
+      "sid": 317715,
+      "state": "S"
+    },
+    {
+      "pid": 319593,
+      "start_ticks": 327362207,
+      "sid": 317715,
+      "state": "R"
+    }
+  ],
+  "cleanup_remaining": [],
+  "port_9031_closed": true
+}

@@ -19,13 +19,15 @@ def identity(pid):
 
 def command(a,label):
     candidate=label=='candidate'
+    baseline_out=getattr(a,'baseline_out_lowering','0')
+    baseline_large=getattr(a,'baseline_large_linear','0')
     result=['/usr/local/bin/python',str(a.tool),'--source',str(a.candidate_source if candidate else a.baseline_source),
             '--commit',a.candidate_commit if candidate else a.baseline_commit,'--out',str(a.out/label),
-            '--out-lowering','1' if candidate else '0','--large-linear','1' if candidate else '0',
+            '--out-lowering','1' if candidate else baseline_out,'--large-linear','1' if candidate else baseline_large,
             '--native-mode','on','--stable-small-o','1','--gate-library',str(a.library),
             '--tuning-snapshot',str(a.tuning_snapshot),'--fixtures',str(a.fixtures),
             '--provider-probe','--post-score-semantic-check','--run-accuracy','--run-throughput','--full-workload-warmup']
-    if candidate:result.append('--production-defaults')
+    if candidate or getattr(a,'baseline_production_defaults',False):result.append('--production-defaults')
     return result
 
 
@@ -59,7 +61,7 @@ def main(a):
             manifest=json.loads((a.out/label/'manifest.json').read_text())
             assert result['complete'] and result['cleanup_complete'] and result['semantic_passed'] and result['post_score_semantic_passed']
             assert manifest['loaded_source_fingerprint_verified']
-            if label=='candidate':
+            if label=='candidate' or getattr(a,'baseline_production_defaults',False):
                 assert manifest['production_defaults']
                 assert not any(k in manifest['env'] for k in ['VLLM_FL_BIV150_SMALL_OUT_LOWERING','VLLM_FL_BIV150_LARGE_LINEAR'])
             state['results'][label]=dict(state=result,manifest=manifest)
@@ -82,4 +84,7 @@ if __name__=='__main__':
     for key in ['tool','out','baseline-source','candidate-source','library','tuning-snapshot','fixtures']:
         p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--baseline-commit',required=True);p.add_argument('--candidate-commit',required=True)
+    p.add_argument('--baseline-out-lowering',choices=['0','1'],default='0')
+    p.add_argument('--baseline-large-linear',choices=['0','1'],default='0')
+    p.add_argument('--baseline-production-defaults',action='store_true')
     main(p.parse_args())
