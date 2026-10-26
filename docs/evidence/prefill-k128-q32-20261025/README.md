@@ -155,3 +155,25 @@ process terminated. Do not restart or schedule another GPU workload until checki
 the same controller/start ticks and owned state after access returns.
 The user was asked to verify reservation/login information; no teammate instance
 was accessed. The full model comparison and merge gate remain incomplete.
+
+## Access restored and baseline precision, 2026-10-27 00:30 CST
+
+A new key restored access at 16:24:25 UTC. The exact original controller546274,
+driver546278 and service546282 PID/start identities match; no restart occurred.
+The original pair is healthy, baseline phase throughput. The prior observation gap
+does not establish that the compute task stopped or that a benchmark was interrupted.
+
+Independent raw prediction/review/report audit confirms baseline main594:
+101/105 =0.9619047619,105 unique question IDs, binary scores, all review statuses
+success, no failed predictions; actual source fingerprint and provider production
+defaults verified with all manual provider/Q32 enable variables absent.
+See prefill-w16-pair-v1-baseline-independent-accuracy-20261027.json for cleaned
+per-question scores and original file hashes. This is baseline precision only.
+
+Baseline official4K score5778.243627140731tok/s,meanTTFT3502.0497929726844ms,
+256/256/no failures and exact1048576input/262144outputtokens. Fullwarm5804.0409746
+is unscored. Selected-config fingerprints changed over the complete score command
+(including client preflight), and four new index metadata files were recorded;
+do not call this completely compilation-free steady state. 16K and the candidate
+are pending. Compare the candidate against this matched main, not an older peak.
+No service, benchmark, cache policy or production file changed during recovery.
