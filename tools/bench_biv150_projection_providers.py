@@ -25,8 +25,10 @@ def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def main(a):
+    timed_rows=tuple(dict.fromkeys(a.timed_row or TIMED_ROWS))
+    awkward_rows=() if a.skip_awkward_checks else AWKWARD_ROWS
     if not a.run_gpu:
-        print(json.dumps(dict(gpu_executed=False,timed_rows=TIMED_ROWS,awkward_rows=AWKWARD_ROWS,
+        print(json.dumps(dict(gpu_executed=False,timed_rows=timed_rows,awkward_rows=awkward_rows,
                               weight_layers=dict(o=42,qkv=42,down=42,gate=8),routes=ROUTES,
                               gates='CPU FP64;default/side;changed-input poisoned Graph before timing')));return
     assert subprocess.check_output(['git','-C',str(a.source),'rev-parse','HEAD'],text=True).strip()==a.commit
@@ -50,7 +52,7 @@ def main(a):
     mm=inspect.unwrap(flag_gems.mm_out);assert sha(inspect.getsourcefile(mm))==MM_SHA,'MM provider changed'
     result=dict(complete=False,passed=False,source=str(a.source),commit=a.commit,
                 script_sha256=sha(__file__),helper_sha256=sha(Path(__file__).with_name('biv150_provided_linear.py')),
-                provider=installation,mm_sha256=MM_SHA,env=env,tuning_snapshot=records,
+                provider=installation,mm_sha256=MM_SHA,env=env,tuning_snapshot=records,timed_rows=timed_rows,awkward_rows=awkward_rows,
                 model_score_claim=False,groups=[],errors=[])
     def save():
         p=a.out/'result.tmp';p.write_text(json.dumps(result,indent=2)+'\n');p.replace(a.out/'result.json')
@@ -91,7 +93,7 @@ def main(a):
                 torch.cuda.synchronize();n,k=gpu[0].shape
                 row_group=dict(projection=group,weights=weights,working_set_bytes=sum(w.numel()*w.element_size() for w in gpu),
                                checks=[],timings=[],passed=False);result['groups'].append(row_group);save()
-                for rows in (*TIMED_ROWS,*AWKWARD_ROWS):
+                for rows in dict.fromkeys((*timed_rows,*awkward_rows)):
                     generator=torch.Generator().manual_seed(20261026+rows+k)
                     h0=torch.randn((rows,k),generator=generator).to(torch.bfloat16)
                     hosts=[h0,(-0.75*h0.float()+0.125).to(torch.bfloat16)]
@@ -118,7 +120,7 @@ def main(a):
                             item=dict(rows=rows,layer=layers[i],route=route,checks=checks,passed=all(c['passed'] for c in checks));row_group['checks'].append(item);save()
                             if not item['passed']:raise RuntimeError(f'{group}/{rows}/{layers[i]}/{route} numerical failure')
                             del graph,graph_out,fn,out,v
-                    if rows in TIMED_ROWS:
+                    if rows in timed_rows:
                         graphs={};held=[];x.copy_(hosts[0]);torch.cuda.synchronize()
                         for route in ROUTES:
                             out=torch.empty((rows,n),device='cuda',dtype=torch.bfloat16);held.append(out);side.wait_stream(default)
@@ -161,6 +163,8 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run-gpu',action='store_true')
     p.add_argument('--source',type=Path);p.add_argument('--commit');p.add_argument('--out',type=Path);p.add_argument('--tuning-snapshot',type=Path)
     p.add_argument('--model',type=Path,default=Path('/workspace/MiniCPM5-2B'));p.add_argument('--group',action='append',choices=GROUPS)
+    p.add_argument('--timed-row',type=int,action='append',choices=[16,32,40,64,96,128,256,512,1024,1739,1798,1985,2017,2048])
+    p.add_argument('--skip-awkward-checks',action='store_true',help='Earlier awkward cases remain qualified in their original artifact; new timed rows still receive all numerical checks.')
     a=p.parse_args()
     if a.run_gpu and any(getattr(a,v) is None for v in ('source','commit','out','tuning_snapshot')):p.error('GPU execution requires source/commit/out/tuning-snapshot')
     main(a)
