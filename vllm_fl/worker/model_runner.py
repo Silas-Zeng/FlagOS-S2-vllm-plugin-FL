@@ -7747,6 +7747,10 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
 
     print("BIV150_PREFILL_Q32_INSTALL", _install_prefill_q32(), flush=True)
 
+    from vllm_fl.patches.biv150_prefill_k128 import install as _install_prefill_k128
+
+    print("BIV150_PREFILL_K128_INSTALL", _install_prefill_k128(), flush=True)
+
 # Audited gate/up operator only; attention and request preparation remain on team main.
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_gate

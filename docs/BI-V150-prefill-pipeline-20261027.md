@@ -27,4 +27,18 @@ stage2随机/全uniform与baseline数值全等；K128随机有舍入差异，但
 
 驱动cuDeviceGetAttribute返回：warp64、SM16、每SM寄存器262144、共享内存131072、threads8192；每block4096 threads/262144 regs。106号max-blocks返回0，不能把它当有效驻留能力。按1024线程CTA，K128的131regs使两CTA所需268288>262144；stage2两CTA共享163840>131072。它们都跨过当前Q32可能容纳两CTA的资源上限，但这些上界计算尚不证明实际驻留数或性能因果。
 
-因此再做唯一有针对性的K128/maxnreg128试验，观察是否用很少的寄存器溢出换回并行度；不会放宽IR/数学门槛。工具额外记录驱动对实际已加载function与真实dynamic-shared的occupancy容量查询，查询失败原样保留，不能冒称实测occupancy。若没有实际组件收益则停止该变体，不继续参数遍历。新试验尚未运行。
+因此再做唯一有针对性的K128/maxnreg128试验，观察是否能换回并行度；不放宽IR/数学门槛。实际结果为**127regs、0spill、65536B shared**；驱动对实际已加载function报告baseline/candidate均可驻留2CTA。这是驱动容量查询，不是测得的活跃驻留轨迹。
+
+| maxnreg128候选形状 | 相对当前Q32组件速度比 |
+| --- | --- |
+| 2048×4K | 1.04990 |
+| 2048×16K | 1.02972 |
+| fresh1024 | 1.08077 |
+| fresh2048 | 1.05111 |
+| 1024×16K | 1.04117 |
+| suffix1985×4K | 1.04995 |
+| suffix2017×16K | 1.03101 |
+
+7形状×2输入图案均通过原数值/CPU oracle/changed-input Graph，随机图案含允许范围内舍入差异。全部三轮交错计时原件与两项负结果在`docs/evidence/prefill-pipeline2-20261027/`；archive443625B/50members/SHA7caecdc17997fe529469bb5c7364f978ac6e417efccaa4764027e4cf48e7ef33。本地逐一重验49原文件SHA及11个case计时比例/门槛；未冒称模型吞吐。
+
+已实现默认实际服务候选：仅Q32适用的单序列>=1024行，K128/w16/maxnreg128；沿用严格Q-hoist，cold时先load函数并检查regs<=128/0spill/shared<=65536，再允许launch。未知编译/资源条件在launch前回当前Q32 K64；设备执行错误传播且不重试。独立child flag缓存语义在Q32/parent关闭时折叠，runner只增4行installer并更新严格source pin，compute-order主体不变。CPU策略故障、cache/原路保持、runner逆变换及严格compute-order函数相等检查通过。实际策略12形状与后续完整服务资格仍待验证。
