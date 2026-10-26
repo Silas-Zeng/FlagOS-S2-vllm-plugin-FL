@@ -227,3 +227,43 @@ Uploaded runner SHA2f9e5e2fd4a7c7782c90d6405eeadd0fa964c28ab6d0196977e809f79f8f7
 queue SHA325115b024e6d5a75fca6e1d81dd142c6099608a7ae45fab60d7803f3539ba99.
 No A/A score exists yet; no noise conclusion is made. A transientSSH publickey
 failure resolved on immediate same-key retry; no model job was restarted.
+
+## Published repeat context and new team baseline (noise check remains frozen)
+
+Fresh fetch at2026-10-26T03:24UTC found team main6971ef48615af97a1637405c71f96dd89969563e,
+which merges PR60's prefill stride specialization from34942f7. Do not change the
+running a48control/A/A source or flags: these measurements remain scoped to their
+frozen34942f7-based runtime. A future production proposal must first incorporate
+the actual new team baseline and revalidate the resulting combination.
+
+The teammate's published main34942-prefill-stride-pair.json (GitHub blob
+c84a66a759f73244756589fdfad66e0fa394c19a) is retained in
+peer-published-stride-repeat-context.json. No teammate instance was accessed.
+After discarding the first of four full rounds, the unchanged baseline4K still
+increases5504.07→5661.71→5750.80tok/s: observed range/mean4.3755%,first-to-last
++4.4827%. Candidate4K similarly increases5533.03→5677.28→5760.00(+4.1021%).
+These are visibly nonstationary sequences, not estimates of random steady noise.
+Baseline16K repeats4100.21/4100.36/4099.66 have range/mean0.01707%;candidate
+4119.46/4119.07/4119.19 have0.00947%. Do not transfer these finite-sample spreads
+across machines, processes, native libraries, DBs or workloads; they motivate
+testing maturity separately from variance. PR60's own report explicitly preserves
+its small-gain/qualification limitations. Do not infer from4K drift that16K
+regressions are noise, or claim all small changes are false. Personal-instance
+A/A remains pending and must retain dirty rounds as well as the mature suffix.
+
+The frozen same-source control completed and cleaned at03:33UTC: independent
+105successful binary reviews sum102correct/105unique(no failed predictions);
+4K5484.242423640023tok/s,TTFT3444.88904705031ms,256/256;16K4102.5176415718315tok/s,
+TTFT122508.46646928039ms,128/128. Both initial/post-score semantic checks and
+cleanup pass, KV capacity548320. Scored4K adds the same4index kernels as the
+candidate;16Kadds0. Apparent candidate/control differences+2.175%/+1.761% remain
+single-observation comparisons, not established stable benefits. Full control
+raw evidence972655bytes SHAe6b141eb8fa9905bb7961f7187965192eb7efe341ee4e36ad55cefa82319ad0a
+and final-summary/independent-review are retained beside candidate evidence.
+
+The CPU waiter actually handed off at2026-10-26T03:33:47UTC, after both control
+owners terminated and cleanup/port/GPUidle checks passed. A/A driver512713/
+start333317954/SID512713 is running, outputprojection-provider-noise4k-v1-20261026.
+This is no longer merely queued;3repetitions remain to be observed. Do not queue
+a duplicate from stale control state or an SSH timeout. No new operator work
+or PR47/53/55GPU test has been started during the noise screen.
