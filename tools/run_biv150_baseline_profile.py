@@ -8,6 +8,7 @@ import argparse
 import ast
 import datetime
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -21,7 +22,9 @@ import time
 import types
 import urllib.request
 
-MAIN = '6971ef48615af97a1637405c71f96dd89969563e'
+import biv150_profile_routes
+
+MAIN = '241220723a09061c182764f8f738e5ec01190367'
 LIBRARY_SHA256 = '5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe'
 SERVICE_ARGS = [
     'serve', '/workspace/MiniCPM5-2B', '--port', '9031',
@@ -83,7 +86,8 @@ def source_identity(args):
         raise RuntimeError(f'HEAD mismatch: expected {args.commit}, got {head}')
     if checked_output(['git', '-C', str(source), 'status', '--porcelain', '--untracked-files=no']):
         raise RuntimeError('Source has tracked modifications')
-    subprocess.run(['git', '-C', str(source), 'diff', '--exit-code', MAIN, '--',
+    baseline = getattr(args, 'production_baseline_commit', MAIN)
+    subprocess.run(['git', '-C', str(source), 'diff', '--exit-code', baseline, '--',
                     'vllm_fl', 'csrc'], check=True, timeout=30)
     library = args.library.resolve()
     if sha256(library) != LIBRARY_SHA256:
@@ -92,10 +96,12 @@ def source_identity(args):
         'tools/run_biv150_gate_team_acceptance.py', 'tools/biv150_profile_service.py',
         'tools/biv150_graph_probe.py', 'tools/biv150_profile_scopes.py',
         'tools/biv150_profile_output_guard.py',
+        'tools/biv150_profile_routes.py', 'tools/run_biv150_baseline_profile.py',
         'vllm_fl/worker/worker.py', 'vllm_fl/compile_semantics.py',
         'csrc/iluvatar/native_w8a8.cpp', 'csrc/iluvatar/native_w8a8.cu',
     ]
-    return dict(source=str(source), commit=head, production_equivalent_to=MAIN,
+    return dict(source=str(source), commit=head, production_equivalent_to=baseline,
+                required_attention_route=production_route(source),
                 library=str(library), library_sha256=sha256(library),
                 source_hashes={p: sha256(source / p) for p in paths},
                 driver=str(Path(__file__).resolve()), driver_sha256=sha256(__file__))
@@ -161,17 +167,55 @@ def prepare_tuning(args):
     return dict(source=str(snapshot), manifest_sha256=sha256(manifest), databases=records)
 
 
-def installed_runtime(logs):
+def production_route(source):
+    return 'k128' if (source / 'vllm_fl/patches/biv150_prefill_k128.py').is_file() else 'q32'
+
+
+def installed_runtime(logs, *, required_route='q32'):
     result = {}
-    for marker in ('BIV150_NATIVE_W8A8_INSTALL', 'BIV150_STABLE_SMALL_O_INSTALL',
+    markers = ['BIV150_NATIVE_W8A8_INSTALL', 'BIV150_STABLE_SMALL_O_INSTALL',
                    'BIV150_Q_FRAGMENT_INSTALL', 'BIV150_PREFILL_NORMALIZATION_INSTALL',
-                   'BIV150_GQA_DECODE_INSTALL', 'BIV150_MIXED_DECODE_INSTALLED'):
+                   'BIV150_GQA_DECODE_INSTALL', 'BIV150_MIXED_DECODE_INSTALLED',
+                   'BIV150_PREFILL_Q32_INSTALL', 'BIV150_SMALL_OUT_LOWERING_INSTALL']
+    if required_route == 'k128':
+        markers.append('BIV150_PREFILL_K128_INSTALL')
+    elif required_route != 'q32':
+        raise ValueError('Unknown production attention route')
+    for marker in markers:
         values = [ast.literal_eval(line.split(marker + ' ', 1)[1])
                   for line in logs.splitlines() if marker + ' ' in line]
         if not values or values[-1].get('installed') is not True:
             raise RuntimeError('Missing or inactive baseline installation: ' + marker)
         result[marker] = values[-1]
+    if result['BIV150_SMALL_OUT_LOWERING_INSTALL'].get('large_linear') is not True:
+        raise RuntimeError('Current default large-linear provider is not enabled')
     return result
+
+
+def expected_source_fingerprint(source, env, abi):
+    # Reuse production's identity algorithm with ABI observed in the real worker;
+    # the driver never imports Torch or queries a device.
+    spec = importlib.util.spec_from_file_location(
+        '_profile_expected_semantics', source / 'vllm_fl/compile_semantics.py')
+    semantics = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(semantics)
+    config = types.SimpleNamespace(model_config=types.SimpleNamespace(
+        hf_config=types.SimpleNamespace(**semantics._GEOMETRY)))
+    return semantics.build_fingerprint(config, 'iluvatar', package_root=source / 'vllm_fl',
+                                      environ=env, abi=abi)
+
+
+def runtime_fingerprint(logs, source, env, abi):
+    if (set(abi) != {'torch', 'cxx11_abi'} or not isinstance(abi['torch'], str)
+            or type(abi['cxx11_abi']) is not bool):
+        raise RuntimeError('Missing actual worker Torch ABI')
+    expected = expected_source_fingerprint(source, env, abi)
+    marker = 'BIV150_COMPILE_SEMANTICS '
+    actual = [json.loads(line.split(marker, 1)[1])
+              for line in logs.splitlines() if marker in line]
+    if not actual or any(value != expected for value in actual):
+        raise RuntimeError('Loaded source/default environment/native fingerprint mismatch')
+    return dict(verified=True, expected=expected, actual=actual, worker_abi=abi)
 
 
 def environment_evidence(env):
@@ -215,17 +259,22 @@ if os.environ.get("BIV150_PROFILE_DIR") and not os.environ.get("BIV150_PROFILE_B
             import biv150_profile_service
             biv150_profile_service.install()
             package = sys.modules["vllm_fl"]
+            torch = sys.modules["torch"]
             record = {"pid": os.getpid(), "python": sys.executable,
                       "bootstrap_kind": "worker_init",
                       "instrumentation": biv150_profile_service.__file__,
                       "vllm_fl_origin": getattr(package, "__file__", None),
                       "worker_origin": module.__file__,
+                      "torch_abi": {"torch": str(torch.__version__),
+                                    "cxx11_abi": bool(torch._C._GLIBCXX_USE_CXX11_ABI)},
                       "native_library": os.environ.get("BIV150_NATIVE_W8A8_LIBRARY")}
             target = Path(os.environ["BIV150_PROFILE_DIR"]) / ("bootstrap-%d.json" % os.getpid())
             temporary = target.with_name(target.name + ".tmp")
             temporary.write_text(json.dumps(record, indent=2))
             temporary.replace(target)
-            return original_init(self, *args, **kwargs)
+            result = original_init(self, *args, **kwargs)
+            biv150_profile_service.bind_worker(self)
+            return result
 
         initialize_worker._biv150_deferred_install = True
         module.WorkerFL.__init__ = initialize_worker
@@ -323,7 +372,7 @@ def validate_result(value, input_len, output_len, count):
         raise RuntimeError('Workload integrity failure: ' + json.dumps(differences))
 
 
-def validate_profile_windows(folder, previous):
+def validate_profile_windows(folder, previous, *, required_route='q32'):
     paths = sorted(set(folder.glob('worker-*-window-*.json')) - previous)
     errors, records = [], []
     if not paths:
@@ -332,6 +381,10 @@ def validate_profile_windows(folder, previous):
         try:
             value = json.loads(path.read_text())
             scope = value.get('scope_diagnostics', {})
+            routes = biv150_profile_routes.validate(
+                value.get('production_routes_before', {}),
+                value.get('production_routes_after', {}), required_route)
+            errors.extend(f'{path.name}: {error}' for error in routes['errors'])
             if value.get('errors') != []:
                 errors.append(f'{path.name}: graph probe errors: {value.get("errors")}')
             if scope.get('errors') != [] or scope.get('error_total') != 0 or scope.get('callback_disabled') is not False:
@@ -355,6 +408,7 @@ def validate_profile_windows(folder, previous):
                     if observation.get('variant') == 'full' and not observation.get('kernels'):
                         errors.append(label + ': no per-kernel graph event records')
             records.append(dict(path=str(path), pid=value.get('pid'), epoch=value.get('epoch'),
+                                production_routes=routes,
                                 samples=len(samples), scheduled_steps=len(value.get('scheduled_steps', []))))
         except Exception as error:
             errors.append(f'{path.name}: cannot validate: {error!r}')
@@ -445,11 +499,22 @@ class Driver:
                 if not bootstrap_records:
                     raise RuntimeError('Service ready without instrumentation bootstrap evidence')
                 for record in bootstrap_records:
-                    origin = json.loads(record.read_text())['vllm_fl_origin']
+                    bootstrap_record = json.loads(record.read_text())
+                    origin = bootstrap_record['vllm_fl_origin']
                     if origin is None or not Path(origin).resolve().is_relative_to(self.args.source):
                         raise RuntimeError(f'Unexpected vllm_fl import origin: {origin}')
+                    for key, relative in (('instrumentation', 'tools/biv150_profile_service.py'),
+                                          ('worker_origin', 'vllm_fl/worker/worker.py')):
+                        if Path(bootstrap_record[key]).resolve() != self.args.source / relative:
+                            raise RuntimeError('Unexpected worker/instrumentation origin: ' + key)
                 manifest = json.loads((self.args.out / 'manifest.json').read_text())
-                manifest['installations'] = installed_runtime((self.args.out / 'server.log').read_text())
+                logs = (self.args.out / 'server.log').read_text()
+                route = production_route(self.args.source)
+                manifest['installations'] = installed_runtime(logs, required_route=route)
+                manifest['runtime_fingerprints'] = [runtime_fingerprint(
+                    logs, self.args.source, self.service_env,
+                    json.loads(record.read_text()).get('torch_abi', {}))
+                    for record in bootstrap_records]
                 atomic_json(self.args.out / 'manifest.json', manifest)
                 atomic_json(self.args.out / 'models.json', models)
                 self.update('service_ready')
@@ -514,7 +579,8 @@ class Driver:
                     if profile:
                         self.stop_profile()
                 if profile:
-                    validation = validate_profile_windows(self.args.out / 'observations', previous_windows)
+                    validation = validate_profile_windows(self.args.out / 'observations', previous_windows,
+                                                          required_route=production_route(self.args.source))
                     atomic_json(self.args.out / f'{name}-profile-validation.json', validation)
                     diagnostics[str(length)] = result
                     atomic_json(self.args.out / 'diagnostic_results.json', dict(
@@ -586,6 +652,8 @@ def arguments(argv=None):
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--library', type=Path, required=True)
     parser.add_argument('--commit', required=True)
+    parser.add_argument('--production-baseline-commit', default=MAIN,
+                        help='Explicit freshly synchronized team commit; production must be identical')
     parser.add_argument('--tuning-snapshot', type=Path, required=True)
     parser.add_argument('--workload', choices=('4096', '16384', 'both'), default='4096')
     parser.add_argument('--startup-timeout', type=int, default=1200)
@@ -595,8 +663,10 @@ def arguments(argv=None):
     args.source = args.source.resolve()
     args.out = args.out.resolve()
     args.library = args.library.resolve()
-    if len(args.commit) != 40 or any(c not in '0123456789abcdef' for c in args.commit):
-        parser.error('--commit must be the full lowercase 40-character HEAD')
+    for name in ('commit', 'production_baseline_commit'):
+        value = getattr(args, name)
+        if len(value) != 40 or any(c not in '0123456789abcdef' for c in value):
+            parser.error('--' + name.replace('_', '-') + ' must be a full lowercase 40-character SHA')
     if min(args.startup_timeout, args.service_stop_timeout, args.collector_flush_timeout) <= 0:
         parser.error('timeouts must be positive')
     return args
