@@ -40,6 +40,9 @@ def control_command(queue, candidate, out):
     assert command[command.index("--stable-small-o") + 1] == "1"
     assert command[command.index("--commit") + 1] == candidate["commit"]
     command[command.index("--out-lowering") + 1] = "0"
+    if '--large-linear' in command:
+        assert command[command.index('--large-linear')+1] in ('0','1')
+        command[command.index('--large-linear')+1]='0'
     command[command.index("--out") + 1] = str(out)
     return command
 
@@ -65,7 +68,11 @@ def main(args):
             time.sleep(5)
         queue = json.loads(args.candidate_queue.read_text())
         candidate = json.loads((args.candidate_out / "state.json").read_text())
-        assert queue["phase"] == "completed", queue
+        assert queue["phase"] in ("completed","direct_launch"), queue
+        if queue['phase']=='direct_launch':
+            assert any((owner['pid'],owner['start_ticks']) ==
+                       (queue['child']['pid'],queue['child']['start_ticks'])
+                       for owner in upstream),'Direct launch must wait its exact driver identity'
         assert candidate["complete"] and candidate["cleanup_complete"], candidate
         assert candidate["precision_passed"] and candidate["semantic_passed"]
         assert candidate["post_score_semantic_passed"]
