@@ -9,7 +9,8 @@ import random
 import struct
 
 from biv150_v8_bf16p_reference import bfloat16, closed, quantize_values, streaming
-from biv150_v8_bf16p_validation import (consumption_gate, mapped_byte_offsets,
+from biv150_v8_bf16p_validation import (attribute_coordinate, consumption_gate, mapped_byte_offsets,
+                                       numeric_timing_policy,
                                        reference_append_bytes, validate_codec_vector,
                                        validate_writer_bytes)
 
@@ -232,12 +233,52 @@ def benchmark_contract_check():
     eager = next(i for i, node in enumerate(for_loop.body) if calls(node, 'run'))
     assert replay < writer < eager
     assert any(calls(node, 'index_fill_') for node in for_loop.body[:replay])
+    policy = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
+              and isinstance(node.func, ast.Name) and node.func.id == 'numeric_timing_policy']
+    assert len(policy) == 1 and ast.unparse(policy[0].args[-1]) == 'args.numeric_diagnostic'
     return dict(reference_calls_from_expected_cpu=True, mapped_cache_poison_before_replay=True,
-                graph_writer_validated_before_eager=True)
+                graph_writer_validated_before_eager=True, explicit_numeric_diagnostic_policy=True)
+
+
+def numeric_diagnostic_check():
+    hard = dict.fromkeys(('finite', 'codec', 'slot_mapping', 'unmapped_bytes', 'graph_eager'), True)
+    assert numeric_timing_policy(True, hard)['timing_rounds'] == 3
+    decision = numeric_timing_policy(False, hard, diagnostic=True)
+    assert decision['timing_rounds'] == 1 and not decision['numeric_passed']
+    assert not decision['component_checks_passed'] and decision['precision_gate'] is False
+    rejected = []
+    for diagnostic in (False, True):
+        for fault in hard:
+            bad = dict(hard); bad[fault] = False
+            try:
+                numeric_timing_policy(False, bad, diagnostic=diagnostic)
+            except AssertionError:
+                rejected.append((diagnostic, fault))
+            else:
+                raise AssertionError(('Diagnostic bypassed hard fault', diagnostic, fault))
+    try:
+        numeric_timing_policy(False, hard)
+    except AssertionError:
+        rejected.append((False, 'numeric'))
+    else:
+        raise AssertionError('Default mode timed failed numerics')
+    trace = dict(coordinate=[0, 0, 0], scores=[i*.037 for i in range(17)],
+                 canonical_codes=[2]+[i%7-3 for i in range(16)],
+                 validated_actual_codes=[1]+[i%7-3 for i in range(16)],
+                 canonical_scales=[1.]*17, validated_actual_scales=[1.]*17,
+                 segments=2, actual_output=.25)
+    attributed = attribute_coordinate(trace)
+    assert attributed['contributions']['validated_codec_minus_canonical'] != 0
+    assert attributed['contributions']['bf16_weighted_p_minus_validated_codec'] != 0
+    assert not attributed['acceptance_tolerance_changed']
+    return dict(numeric_failure_retained_in_diagnostic=True, diagnostic_timing_pairs=1,
+                rejected_fault_modes=rejected, default_numeric_failure_rejected=True,
+                cpu_codec_and_weighted_p_effects_separated=True, gpu_executed=False)
 
 
 if __name__ == "__main__":
     print(json.dumps(dict(source=source_check(), layout=layout_check(), algebra=algebra_check(),
                           validation_falsification=falsification_check(),
                           benchmark_contract=benchmark_contract_check(),
+                          numeric_diagnostic=numeric_diagnostic_check(),
                           precision_gate=False, official_score=False), indent=2))

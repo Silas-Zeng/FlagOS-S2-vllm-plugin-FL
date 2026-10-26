@@ -2,7 +2,7 @@
 import math
 import struct
 
-from biv150_v8_bf16p_reference import bfloat16, float32, quantize_values
+from biv150_v8_bf16p_reference import bfloat16, closed, float32, quantize_values, streaming
 
 
 def _bits(value):
@@ -87,6 +87,45 @@ def consumption_gate(actual, original_bf16, limit=0.02):
     return dict(finite=finite, relative_rmse=relative_rmse,
                 max_abs=max(abs(a-b) for a, b in zip(actual, original_bf16)),
                 relative_rmse_limit=limit, passed=finite and relative_rmse <= limit)
+
+
+def numeric_timing_policy(numeric_passed, hard_checks, diagnostic=False):
+    """Diagnostics may retain failed numeric gates; structural faults stay fatal."""
+    required = {'finite', 'codec', 'slot_mapping', 'unmapped_bytes', 'graph_eager'}
+    assert set(hard_checks) == required
+    assert all(value is True for value in hard_checks.values()), ('Hard validation failure', hard_checks)
+    assert numeric_passed or diagnostic, 'Numeric precision gate failed; timing disabled'
+    return dict(numeric_passed=bool(numeric_passed), hard_checks_passed=True,
+                component_checks_passed=bool(numeric_passed), diagnostic_only=bool(diagnostic),
+                timing_rounds=1 if diagnostic else 3, precision_gate=False)
+
+
+def attribute_coordinate(trace):
+    """CPU explanatory model, never an acceptance oracle or a relaxed tolerance.
+
+    Separate validated codec differences, BF16(P*scale), output BF16 rounding,
+    and the remaining device/model difference at one saved output coordinate.
+    The streaming model uses FP64 scores/recurrence, not GPU FP32 QK/exp/FMA.
+    """
+    scores = trace['scores']
+    canonical_values = [[code] for code in trace['canonical_codes']]
+    actual_values = [[code] for code in trace['validated_actual_codes']]
+    canonical = closed(scores, canonical_values, trace['canonical_scales'], dimensions=1)[0]
+    validated_codec = closed(scores, actual_values, trace['validated_actual_scales'], dimensions=1)[0]
+    weighted_p = streaming(scores, actual_values, trace['validated_actual_scales'], trace['segments'],
+                           round_weighted_p=True, dimensions=1)[0]
+    rounded_output = bfloat16(weighted_p)
+    actual = trace['actual_output']
+    contributions = dict(validated_codec_minus_canonical=validated_codec-canonical,
+                         bf16_weighted_p_minus_validated_codec=weighted_p-validated_codec,
+                         final_bf16_output_rounding=rounded_output-weighted_p,
+                         device_minus_cpu_model_residual=actual-rounded_output)
+    assert math.isclose(math.fsum(contributions.values()), actual-canonical, rel_tol=1e-12, abs_tol=1e-12)
+    return dict(coordinate=trace.get('coordinate'), actual=actual, canonical_fp64=canonical,
+                validated_codec_fp64=validated_codec, bf16_weighted_p_fp64_recurrence=weighted_p,
+                bf16_weighted_p_plus_bf16_output=rounded_output,
+                actual_minus_canonical=actual-canonical, contributions=contributions,
+                acceptance_tolerance_changed=False, gpu_fp32_qk_exp_accumulation_emulated=False)
 
 
 def _bf16_bytes(values):

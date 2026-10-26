@@ -9,7 +9,8 @@ import subprocess
 from types import SimpleNamespace
 import traceback
 
-from biv150_v8_bf16p_validation import consumption_gate, mapped_byte_offsets, validate_codec_vector
+from biv150_v8_bf16p_validation import (consumption_gate, mapped_byte_offsets,
+                                       numeric_timing_policy, validate_codec_vector)
 
 CASES = {'steady4k': (64, 4096, False), 'steady16k': (32, 16384, False),
          'ragged': (8, 257, True), 'ragged-long': (8, 257, True)}
@@ -26,6 +27,8 @@ def main(args):
                               allocation_bytes_per_page=16384, payload_bytes_per_page=12416,
                               hypothetical_aligned_compact_bytes_per_page=12544, precision_gate=False,
                               component_consumption_relative_rmse_limit=0.02,
+                              numeric_diagnostic=args.numeric_diagnostic,
+                              timing_rounds=1 if args.numeric_diagnostic else 3,
                               oracle_from_frozen_cpu_bf16=True, graph_writer_poison_check=True,
                               model_accuracy='not tested', throughput='not tested')))
         return
@@ -48,6 +51,8 @@ def main(args):
                   model_accuracy_tested=False, precision_gate=False, capacity_reclaimed=False,
                   probability_dtype='bfloat16', pv_dtype='bfloat16', candidate_warps=args.warps,
                   component_consumption_relative_rmse_limit=0.02,
+                  numeric_diagnostic=args.numeric_diagnostic, diagnostic_only=args.numeric_diagnostic,
+                  numeric_passed=False, hard_checks_passed=False,
                   oracle_from_frozen_cpu_bf16=True, graph_writer_poison_check=True,
                   source_commit=subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip(),
                   operator_sha256=hashlib.sha256(kernel_path.read_bytes()).hexdigest(),
@@ -61,9 +66,23 @@ def main(args):
     def compare(a, b):
         a, b = a.double(), b.double()
         error = (a-b).abs()
-        return dict(finite=bool(torch.isfinite(a).all() and torch.isfinite(b).all()),
+        tolerance = .005 + .005*b.abs()
+        bad = error > tolerance
+        coordinates = bad.nonzero().tolist()
+        flat = int(error.argmax())
+        maximum_coordinate = []
+        for size in reversed(error.shape):
+            maximum_coordinate.insert(0, flat % size)
+            flat //= size
+        failures = [dict(coordinate=coordinate, actual=float(a[tuple(coordinate)]),
+                         oracle=float(b[tuple(coordinate)]), error=float(error[tuple(coordinate)]),
+                         tolerance=float(tolerance[tuple(coordinate)])) for coordinate in coordinates[:64]]
+        finite = bool(torch.isfinite(a).all() and torch.isfinite(b).all())
+        return dict(finite=finite,
                     max_abs=float(error.max()), mse=float((error*error).mean()),
-                    tol_005_violations=int((error > .005 + .005*b.abs()).sum()))
+                    tol_005_violations=int(bad.sum()), passed=finite and not bool(bad.any()),
+                    max_error_coordinate=maximum_coordinate, failed_coordinates=failures,
+                    failure_coordinates_truncated=len(coordinates)>64)
 
     def cpu_encode(values):
         # CPU-only, independent FP32 maxabs/127 (not the GPU scale/codec).
@@ -104,7 +123,7 @@ def main(args):
         checks = [dict(row=index, **consumption_gate(a.reshape(-1).double().tolist(),
                                                     b.reshape(-1).double().tolist()))
                   for index, (a, b) in enumerate(zip(actual, original))]
-        assert all(check['passed'] for check in checks), ('V8 consumption precision gate', checks)
+        assert all(check['finite'] for check in checks), ('Nonfinite V8 consumption result', checks)
         return checks
 
     def resources(compiled):
@@ -212,7 +231,7 @@ def main(args):
                 actual = actual_scales.cpu().reshape(-1).tolist()
                 checked = [validate_codec_vector(v, code, scale) for v, code, scale in zip(originals, codes, actual)]
                 assert len(checked) == len(originals) == len(actual)
-                return dict(vectors=len(checked), max_scale_ulps=max(x['scale_ulps'] for x in checked),
+                return dict(passed=True, vectors=len(checked), max_scale_ulps=max(x['scale_ulps'] for x in checked),
                             half_boundary_code_differences=sum(x['half_boundary_code_differences'] for x in checked),
                             max_half_tie_distance_fp32_ulps=max(x['max_half_tie_distance_fp32_ulps'] for x in checked),
                             half_boundary_examples=[example for x in checked for example in x['half_boundary_examples']][:8])
@@ -242,6 +261,83 @@ def main(args):
                 return dict(**detail, target_writer_checked=True, unmapped_bytes_unchanged=True,
                             unmapped_bytes_checked=current.numel()-allowed.numel())
 
+            def save_numeric_evidence(pattern, indices, outputs, oracles, checks, consumption,
+                                      independent_consumption, numeric_passed):
+                # All hard checks have passed before this function. Actual device
+                # codes/scales are explanatory evidence, NEVER acceptance inputs.
+                artifact = dict(source_commit=result['source_commit'], case=name, pattern=pattern,
+                    cpu_fixture=fixture_path.name, selected_rows=indices, slot_mapping=host_slots,
+                    baseline_output=outputs[False], candidate_output=outputs[True],
+                    independent_bf16_oracle=oracles[False], independent_v8_oracle=oracles[True],
+                    pointwise_checks=checks, consumption_checks=consumption,
+                    independent_consumption_checks=independent_consumption,
+                    numeric_passed=numeric_passed, precision_gate=False,
+                    validated_page_ids=check_pages, validated_codes=encoded_v[check_pages].cpu(),
+                    validated_scales=scales[check_pages].cpu(), failed_sequence_inputs={})
+                coordinates = []
+                failed_rows = {x['row'] for x in consumption if not x['passed']}
+                failed_rows.update(indices[x['row']] for x in independent_consumption if not x['passed'])
+                for encode in (False, True):
+                    for failure in checks[encode]['failed_coordinates']:
+                        local, head, dim = failure['coordinate']
+                        failed_rows.add(indices[local])
+                        coordinates.append((indices[local], head, dim))
+                if not numeric_passed:
+                    # Keep the maximum error even if its magnitude-dependent
+                    # tolerance means a different coordinate is the violation.
+                    local, head, dim = checks[True]['max_error_coordinate']
+                    coordinates.insert(0, (indices[local], head, dim))
+                    failed_rows.add(indices[local])
+                    for seq in sorted(failed_rows):
+                        error = (outputs[True][seq].double()-outputs[False][seq].double()).abs()
+                        flat = int(error.argmax())
+                        coordinates.append((seq, flat//128, flat%128))
+                traces = []
+                wanted = list(dict.fromkeys(coordinates))[:8]
+                for seq in sorted(failed_rows):
+                    size = host_lengths[seq]
+                    if not size:
+                        continue
+                    ids = host_table[seq, :(size+15)//16].long()
+                    cpu_k = expected_cpu['k'][ids].reshape(-1, 2, 128)[:size]
+                    cpu_v = expected_cpu['v'][ids].reshape(-1, 2, 128)[:size]
+                    canonical_codes, canonical_scales = cpu_encode(cpu_v)
+                    actual_codes = encoded_v[ids].reshape(-1, 2, 128)[:size].cpu()
+                    actual_scales = scales[ids].reshape(-1, 2)[:size].cpu()
+                    # A failed-row snapshot is called validated only after its
+                    # COMPLETE codec vectors and K agree with independent CPU inputs.
+                    codec = codec_check(cpu_v, actual_codes, actual_scales)
+                    actual_k = quant['k'][ids].reshape(-1, 2, 128)[:size].cpu()
+                    assert torch.equal(actual_k, cpu_k), 'Failure snapshot K differs from CPU inputs'
+                    cpu_q = expected_cpu['q'][seq]
+                    scores = torch.einsum('ghd,tgd->ght', cpu_q.double().reshape(2, 8, 128),
+                                          cpu_k.double()).mul(128**-.5)
+                    artifact['failed_sequence_inputs'][seq] = dict(query=cpu_q, page_ids=ids,
+                        frozen_original_key=frozen_key[ids], frozen_original_value=frozen_value[ids],
+                        expected_bf16_key=cpu_k, expected_bf16_value=cpu_v,
+                        canonical_codes=canonical_codes, canonical_scales=canonical_scales,
+                        validated_actual_codes=actual_codes, validated_actual_scales=actual_scales,
+                        codec_check=codec, scores_fp64=scores, segments=segments)
+                    for row_idx, head, dim in wanted:
+                        if row_idx != seq:
+                            continue
+                        group, within = divmod(head, 8)
+                        traces.append(dict(coordinate=[seq, head, dim], segments=segments,
+                            scores=scores[group, within].tolist(),
+                            canonical_codes=canonical_codes[:, group, dim].tolist(),
+                            canonical_scales=canonical_scales[:, group].tolist(),
+                            validated_actual_codes=actual_codes[:, group, dim].tolist(),
+                            validated_actual_scales=actual_scales[:, group].tolist(),
+                            actual_output=float(outputs[True][seq, head, dim]),
+                            baseline_output=float(outputs[False][seq, head, dim])))
+                evidence_path = args.out/f'{name}-pattern{pattern}-numeric-evidence.pt'
+                torch.save(artifact, evidence_path)
+                trace_path = args.out/f'{name}-pattern{pattern}-failure-coordinates.json'
+                trace_path.write_text(json.dumps(dict(source_commit=result['source_commit'],
+                    numeric_passed=numeric_passed, precision_gate=False, coordinates=traces), indent=2)+'\n')
+                return dict(outputs_and_oracles=evidence_path.name, cpu_attribution_traces=trace_path.name,
+                            failed_rows=sorted(failed_rows), traced_coordinates=len(traces))
+
             row = dict(name=name, batch=batch, length=length, segments=segments,
                        key_stride=list(key.stride()), baseline_v_stride=list(value.stride()),
                        candidate_v_stride=list(encoded_v.stride()), table_stride=list(table.stride()),
@@ -253,7 +349,9 @@ def main(args):
                        v_scale_stride=list(scales.stride()), v_scale_byte_offset=12288,
                        cpu_fixture=fixture_path.name, codec_checked_page_ids=check_pages,
                        codec_coverage='full' if mixed else 'sampled_pages_and_all_writer_targets',
-                       numeric=[], rounds=[], completed=False)
+                       numeric_diagnostic=args.numeric_diagnostic, diagnostic_only=args.numeric_diagnostic,
+                       numeric_passed=False, hard_checks_passed=False,
+                       numeric=[], numeric_evidence=[], rounds=[], completed=False)
             result['cases'].append(row); save()
             row['initial_codec'] = codec_pages()
             assert torch.equal(quant['k'], key) and torch.equal(padding, padding_before)
@@ -296,10 +394,13 @@ def main(args):
                 torch.save(fixture, fixture_path)
                 indices, bf16_oracle = reference(expected_cpu)
                 originals, decoded = None, None
+                outputs, oracles, checks = {}, {False: bf16_oracle}, {}
+                independent_consumption = []
                 for encode in (False, True):
                     # Poison mapped K/V/scale bytes before REPLAY. No eager call
                     # can prepopulate the new token and hide a missing graph writer.
                     before = cache_bytes[encode].clone()
+                    assert tuple(slots.cpu().tolist()) == host_slots, 'Device slot mapping changed'
                     cache_bytes[encode].index_fill_(0, allowed_bytes[encode], -91)
                     for field in ('out', 'scratch', 'maxima', 'sums'):
                         c[field].fill_(float('nan'))
@@ -319,26 +420,53 @@ def main(args):
                     assert torch.equal(eager, replay), 'Changed-input graph/eager mismatch'
                     _, oracle = reference(expected_cpu, quantized=encode)
                     check = compare(replay[indices], oracle)
-                    assert check['finite'] and check['tol_005_violations'] == 0, (name, encode, check)
+                    assert check['finite'], ('Nonfinite output/oracle; diagnostic mode forbidden', name, encode, check)
+                    outputs[encode], oracles[encode], checks[encode] = replay, oracle, check
                     record = dict(pattern=pattern, quantized=encode, cpu=check, changed_graph_equal=True,
+                                  selected_rows=indices,
                                   graph_writer=replay_writer, eager_writer=eager_writer)
                     if encode:
                         decoded = replay
-                        record['independent_bf16_consumption_gate'] = consume_rows(replay[indices], bf16_oracle)
+                        independent_consumption = consume_rows(replay[indices], bf16_oracle)
+                        record['independent_bf16_consumption_gate'] = independent_consumption
                     else:
                         originals = replay
                     row['numeric'].append(record); save()
                 # A hard per-sequence 2% relative-RMS gate covers EVERY output,
                 # while the independent FP64 BF16 gate covers all ragged rows
                 # and sampled normal-range steady rows. This is not model105.
+                consumption = consume_rows(decoded, originals)
                 row['numeric'].append(dict(pattern=pattern,
-                    all_rows_bf16_consumption_gate=consume_rows(decoded, originals),
+                    all_rows_bf16_consumption_gate=consumption,
                     quantization_error=compare(decoded, originals), model_accuracy_claim=False))
                 row['last_codec'] = codec_pages()
                 assert torch.equal(c['k'], quant['k']), 'K differs between candidates'
                 assert torch.equal(padding, padding_before), 'V encoding touched allocation padding'
+                pattern_passed = all(check['passed'] for check in checks.values()) and all(
+                    check['passed'] for check in [*consumption, *independent_consumption])
+                row['numeric_evidence'].append(save_numeric_evidence(pattern, indices, outputs, oracles,
+                    checks, consumption, independent_consumption, pattern_passed))
                 save()
-            for index, order in enumerate(((False, True), (True, False), (False, True))):
+            numeric_passed = all(record['cpu']['passed'] for record in row['numeric'] if 'cpu' in record)
+            for record in row['numeric']:
+                for label in ('all_rows_bf16_consumption_gate', 'independent_bf16_consumption_gate'):
+                    numeric_passed = numeric_passed and all(check['passed'] for check in record.get(label, []))
+            hard_checks = dict(
+                finite=all(record['cpu']['finite'] for record in row['numeric'] if 'cpu' in record),
+                codec=row['initial_codec']['passed'] and row['last_codec']['passed'],
+                slot_mapping=tuple(slots.cpu().tolist()) == host_slots,
+                unmapped_bytes=all(record[label]['unmapped_bytes_unchanged'] for record in row['numeric']
+                    if 'cpu' in record for label in ('graph_writer', 'eager_writer')),
+                graph_eager=all(record['changed_graph_equal'] for record in row['numeric'] if 'cpu' in record))
+            row.update(numeric_passed=bool(numeric_passed), hard_checks=hard_checks,
+                       hard_checks_passed=all(hard_checks.values()), component_checks_passed=bool(numeric_passed))
+            save()
+            # This is the ONLY gate that permits finite numeric failures to reach
+            # timing. It cannot bypass a hard guard and never changes precision_gate.
+            policy = numeric_timing_policy(numeric_passed, hard_checks, args.numeric_diagnostic)
+            row.update(policy)
+            orders = ((False, True),) if args.numeric_diagnostic else ((False, True), (True, False), (False, True))
+            for index, order in enumerate(orders):
                 timings = {}
                 for encode in order:
                     timings['v8_bf16p' if encode else 'baseline'] = bench.graph_time(lambda e=encode: run(e))[0]
@@ -346,17 +474,20 @@ def main(args):
                                           speedup=timings['baseline']/timings['v8_bf16p']))
                 save()
             row['speedup_median'] = statistics.median(v['speedup'] for v in row['rounds'])
-            row['attention_only_ms'] = {str(encode): bench.graph_time(lambda e=encode: run(e, writer=False))[0]
-                                        for encode in (False, True)}
-            row['component_checks_passed'] = True
+            row['attention_only_ms'] = (None if args.numeric_diagnostic else
+                {str(encode): bench.graph_time(lambda e=encode: run(e, writer=False))[0] for encode in (False, True)})
             row['completed'] = True; save()
-            print(json.dumps(dict(case=name, speedup=row['speedup_median'], component_checks_passed=True,
+            print(json.dumps(dict(case=name, speedup=row['speedup_median'], numeric_passed=numeric_passed,
+                                  hard_checks_passed=True, component_checks_passed=numeric_passed,
+                                  diagnostic_only=args.numeric_diagnostic,
                                   precision_gate=False, official_score=False)), flush=True)
             del graphs, c, quant, packed, key, value, encoded_storage, raw_bytes, encoded_v, scales
             del frozen_key, frozen_value, expected_cpu, fixture, cache_bytes, padding, padding_before
             del before, allowed_bytes, slots, new_key, new_value, candidate, stream
             torch.cuda.empty_cache()
         result['completed'] = True
+        result['numeric_passed'] = all(row['numeric_passed'] for row in result['cases'])
+        result['hard_checks_passed'] = all(row['hard_checks_passed'] for row in result['cases'])
     except Exception as error:
         result['errors'].append(dict(error=repr(error), traceback=traceback.format_exc()))
         raise
@@ -370,6 +501,8 @@ if __name__ == '__main__':
     p.add_argument('--out', type=Path)
     p.add_argument('--case', action='append', choices=sorted(CASES))
     p.add_argument('--warps', type=int, choices=(1, 2), default=1)
+    p.add_argument('--numeric-diagnostic', action='store_true',
+                   help='Retain finite numeric gate failures and run one diagnostic timing pair; all hard guards remain fatal')
     a = p.parse_args()
     if a.run_gpu and a.out is None:
         p.error('--out is required for GPU work')

@@ -51,7 +51,61 @@
   "benchmark_contract": {
     "reference_calls_from_expected_cpu": true,
     "mapped_cache_poison_before_replay": true,
-    "graph_writer_validated_before_eager": true
+    "graph_writer_validated_before_eager": true,
+    "explicit_numeric_diagnostic_policy": true
+  },
+  "numeric_diagnostic": {
+    "numeric_failure_retained_in_diagnostic": true,
+    "diagnostic_timing_pairs": 1,
+    "rejected_fault_modes": [
+      [
+        false,
+        "finite"
+      ],
+      [
+        false,
+        "codec"
+      ],
+      [
+        false,
+        "slot_mapping"
+      ],
+      [
+        false,
+        "unmapped_bytes"
+      ],
+      [
+        false,
+        "graph_eager"
+      ],
+      [
+        true,
+        "finite"
+      ],
+      [
+        true,
+        "codec"
+      ],
+      [
+        true,
+        "slot_mapping"
+      ],
+      [
+        true,
+        "unmapped_bytes"
+      ],
+      [
+        true,
+        "graph_eager"
+      ],
+      [
+        false,
+        "numeric"
+      ]
+    ],
+    "default_numeric_failure_rejected": true,
+    "cpu_codec_and_weighted_p_effects_separated": true,
+    "gpu_executed": false
   },
   "precision_gate": false,
   "official_score": false

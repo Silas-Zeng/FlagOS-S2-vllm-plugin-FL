@@ -1,0 +1,29 @@
+{
+  "source": "machine owner report to root; raw artifacts not verified locally",
+  "source_commit": "b8a4d1d07214307d26580b318ed5ad4749f688cd",
+  "result_directory": "R/cjj-v8-bf16p-ragged-v2-20261027",
+  "pid": 602604,
+  "start_ticks": 340521337,
+  "completed": false,
+  "numeric_passed": false,
+  "precision_gate": false,
+  "official_score": false,
+  "timing_performed": false,
+  "initial_codec_vectors_passed": 4352,
+  "half_boundary_differences": 465,
+  "half_boundary_distance_fp32_ulps_less_than": 1,
+  "writer_and_graph_checks_passed_until_consumer_guard": true,
+  "consumer_pointwise": {
+    "finite": true,
+    "tol_005_violations": 1,
+    "max_abs": 0.01033457,
+    "mse": 1.0744e-06
+  },
+  "candidate_resources": {
+    "n_regs": 143,
+    "n_spills": 0,
+    "shared": 4096,
+    "use_sme": 79
+  },
+  "attribution": "unknown from aggregate metrics; coordinates and outputs were not saved by b8a4d1d"
+}
