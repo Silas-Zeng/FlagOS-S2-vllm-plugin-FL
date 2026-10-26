@@ -1,0 +1,45 @@
+{
+  "utc": "2026-10-26T18:05:51.458567+00:00",
+  "gpu_idle": true,
+  "port9031_closed": true,
+  "compute_order": {
+    "baseline": {
+      "first_selected": [
+        {
+          "pid": 546430,
+          "N": 62,
+          "M": 2048,
+          "Dprefix": 2,
+          "Dall": 61,
+          "outside": 59,
+          "sampler_rows": 62,
+          "original_model_forward_returned": true,
+          "runtime_mode": "NONE",
+          "inverse_logits_order": "original_request_rows",
+          "token_bitwise_equivalence_claimed": false
+        }
+      ],
+      "scope_rejected": []
+    },
+    "candidate": {
+      "first_selected": [
+        {
+          "pid": 556855,
+          "N": 62,
+          "M": 2048,
+          "Dprefix": 2,
+          "Dall": 61,
+          "outside": 59,
+          "sampler_rows": 62,
+          "original_model_forward_returned": true,
+          "runtime_mode": "NONE",
+          "inverse_logits_order": "original_request_rows",
+          "token_bitwise_equivalence_claimed": false
+        }
+      ],
+      "scope_rejected": []
+    }
+  },
+  "candidate_production_unchanged_since_1a0": true,
+  "paired_audit": "/workspace/experiments/minicpm-s2/exports/prefill-w16-pair-v1-final-independent-20261027.json"
+}

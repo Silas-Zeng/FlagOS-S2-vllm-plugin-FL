@@ -1,0 +1,1372 @@
+{
+  "candidate": {
+    "begin_instance_local": "2026-10-25T18:35:12",
+    "end_instance_local": "2026-10-25T18:39:42",
+    "new_mm_variant_count": 23,
+    "new_mm_variants": [
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:36.303732",
+        "relative_path": "triton-cache/FJQZY7CYZCAVRVT5CNBHUSV2VIGFR4ZU6YLBMI5CXITBGY5TMCOQ/mm_kernel.json",
+        "metadata": {
+          "hash": "2a619c7c58c88158d67d13427a4abaaa0c58f334f6161623a2ba261363b3609d",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 98304,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:37.251723",
+        "relative_path": "triton-cache/KQNICVNHQXPY5N65SUKSLSKDC6KEHOTFOJYJVIHRBLSLRS7VTI6Q/mm_kernel.json",
+        "metadata": {
+          "hash": "541a8155a785df8eb7dd951525c943179443ba6572709aa0f10ae4b8cbf59a3d",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 98304,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:37.619719",
+        "relative_path": "triton-cache/VUC3JPMFVJ2OOKQ65XPQNBWXMDEYQYRCKAHOFUITFUPR3JNZAD4Q/mm_kernel.json",
+        "metadata": {
+          "hash": "ad05b4bd85aa74e72a1eeddf0686d760c9886222500ee2d1132d1f1da5b900f9",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 98304,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:38.007715",
+        "relative_path": "triton-cache/65P7B6DNBJV2NCA3T3XKRFUBQLK4ZP4AAYYJPWSDRLHQHFNE6S3Q/mm_kernel.json",
+        "metadata": {
+          "hash": "f75ff0f86d0a6ba6881b9eeea8968182d5ccbf80063097da438acf0395a4f4b7",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 49152,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:38.499710",
+        "relative_path": "triton-cache/KNRYT67IBX7I4VYZZJCGOHEOJDJIP3SR4QI52347YWSO5WLVUFWQ/mm_kernel.json",
+        "metadata": {
+          "hash": "536389fbe80dfe8e5719ca44671c8e48d287ee51e411dd6f9fc5a4eed975a16d",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 98304,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:39.091705",
+        "relative_path": "triton-cache/TGKFCB2IZWDNVE5EOONPGNXCMZST4IVNV7MNO5ZDZ63W7PWL6E6A/mm_kernel.json",
+        "metadata": {
+          "hash": "9994510748cd86da93a4739af336e266653e22adafd8d77723cfb76fbecbf13c",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 49152,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:39.419702",
+        "relative_path": "triton-cache/TUI5M2B2ANRYAZ7QGHR4WMEAND6AZ3U47LCDPOWVOUGG74UZXVUA/mm_kernel.json",
+        "metadata": {
+          "hash": "9d11d6683a03638067f031e3cb308068fc0cee9cfac437bad5750c6ff299bd68",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 49152,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:39.739698",
+        "relative_path": "triton-cache/XQ6XPRTYQNO3K345IPO2RNQXAGSU7452BHNR3GYXF7T7XCOAF65A/mm_kernel.json",
+        "metadata": {
+          "hash": "bc3d77c678835db56f9d43dda8b61701a54ff3ba09db1d9b172fe7fb89c02fba",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 24576,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:40.167694",
+        "relative_path": "triton-cache/PXC7TA46BU63QYIP5E5YA6DUDO6KJP5VRTWS27DV3RTQOT44IKJQ/mm_kernel.json",
+        "metadata": {
+          "hash": "7dc5f9839e0d3db8610fe93b8078741bbca4bfb58ced2d7c75dc67074f9c4293",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 24576,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:40.563690",
+        "relative_path": "triton-cache/RFG2FDCOCRLDXTLMWHZELA5QTASU4AWPACA33TXVFAEECJIW6BFQ/mm_kernel.json",
+        "metadata": {
+          "hash": "894da28c4e14563bcd6cb1f24583b098254e02cf0081bdcef52808412516f04b",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 81920,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:41.147685",
+        "relative_path": "triton-cache/XIEJ4XXGEHS2WT7MFPXY3QUOSPJ35OTTWZT7J5PGB6DWLITCU5WA/mm_kernel.json",
+        "metadata": {
+          "hash": "ba089e5ee621e5ab4fec2bef8dc28e93d3beba73b667f4f5e60f8765a262a76c",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 81920,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:41.447682",
+        "relative_path": "triton-cache/E55S2GT7LH5VAPKI54EIFEGVS57QSGIXLFUCMSJM4AB5QZMID42Q/mm_kernel.json",
+        "metadata": {
+          "hash": "277b2d1a7f59fb503d48ef088290d5977f091917596826492ce003d865881f35",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 81920,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:41.735679",
+        "relative_path": "triton-cache/FZOFZMZXP5GANGC6S5ZTUDTKDXML7JZKBRURMG3HHWERYA5IVT2A/mm_kernel.json",
+        "metadata": {
+          "hash": "2e5c5cb3377f4c06985e97733a0e6a1dd8bfa72a0c69161b673d891c03a8acf4",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 40960,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:42.083676",
+        "relative_path": "triton-cache/BKDBAMDH3MDLXXRJ5K7XP6PSPKN7CLNB3MVQUAZRXA2RUMHM7A5Q/mm_kernel.json",
+        "metadata": {
+          "hash": "0a86103067db06bbde29eabf77f9f27a9bf12da1db2b0a0331b8351a30ecf83b",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 81920,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:43.419663",
+        "relative_path": "triton-cache/AXHWSZYBJXDTNIT2KXQ3ZNMD6O35DCKTFOAAMGIGW6A4QFULKBJA/mm_kernel.json",
+        "metadata": {
+          "hash": "05cf6967014dc736a27a55e1bcb583f3b7d189532b80061906b781c8168b5052",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 131072,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:45.123646",
+        "relative_path": "triton-cache/VGGKSUNDIIV6ES53UZ66HHFWYXOJXXZD3SW4CUGF72Z6DAO4VN6Q/mm_kernel.json",
+        "metadata": {
+          "hash": "a98ca951a3422be24bbba67de39cb6c5dc9bdf23dcadc150c5feb3e181dcab7d",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 131072,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:45.627641",
+        "relative_path": "triton-cache/U5CDNYJ3533WFLGHHENNIMZJ4EDLD6UTMZSLBHV2WB4RVFOMARJQ/mm_kernel.json",
+        "metadata": {
+          "hash": "a74436e13beef762acc7391ad43329e106b1fa936664b09ebab0791a95cc0453",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 131072,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:46.191636",
+        "relative_path": "triton-cache/PRKRWLXVUC2NJEJYLSHSTW2IGSANSF3ALJ3O5XGBC2QLPSLJD7YQ/mm_kernel.json",
+        "metadata": {
+          "hash": "7c551b2ef5a0b4d491385c8f29db483480d917605a76eedcc116a0b7c9691ff1",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 65536,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:46.943629",
+        "relative_path": "triton-cache/AZMXEZSY3WR7ETLQEEY6PLIAHKPKWRODDWWSWL4MDFV64PKEPEHA/mm_kernel.json",
+        "metadata": {
+          "hash": "0659726658dda3f24d702131e7ad003a9eab45c31dad2b2f8c196bee3d44790e",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 131072,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:47.891619",
+        "relative_path": "triton-cache/6EW2TJJ2GAKV2XSGGH46W4PVSFZAYBZFHFAKARBH7NVOTFV74FBQ/mm_kernel.json",
+        "metadata": {
+          "hash": "f12da9a53a30155d5e4631f9eb71f591720c07253940a04427fb6ae996bfe143",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 65536,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:48.359615",
+        "relative_path": "triton-cache/6WYUZ4YAFJ4UN6PVNZ6C6UMKPXVMVVAKRHXLWXMK4GK7UFPEVZJA/mm_kernel.json",
+        "metadata": {
+          "hash": "f5b14cf3002a7946f9f56e7c2f518a7deacad40a89eebb5d8ae195fa15e4ae52",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 16,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 32768,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:48.999609",
+        "relative_path": "triton-cache/7X2MPZGKBZNDQ7Y2AZKODS6NDPVAO6JFGG7F2EH4YML2564SIENQ/mm_kernel.json",
+        "metadata": {
+          "hash": "fdf4c7e4ca0e5a387f1a0654e1cbcd1bea07792531be5d10fcc317aefb92411b",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 2,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 65536,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      },
+      {
+        "timestamp_instance_local": "2026-10-25T18:37:49.707602",
+        "relative_path": "triton-cache/VCBJEE623SQFWOKSZNEHO2ZYSF67XI5NAWNXKZZLT5DAQRF7BLFQ/mm_kernel.json",
+        "metadata": {
+          "hash": "a8829213dadca05b3952cb48776b38917dfba3ad059b75672b9f460844bf0acb",
+          "target": {
+            "backend": "corex",
+            "arch": 71,
+            "warp_size": 64
+          },
+          "num_warps": 8,
+          "num_ctas": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 0,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "corex",
+          "sanitize_overflow": true,
+          "arch": "sm71",
+          "instrumentation_mode": "",
+          "use_sme": 7,
+          "triton_version": "3.6.0",
+          "tensordesc_meta": [],
+          "shared": 32768,
+          "tmem_size": null,
+          "global_scratch_size": 0,
+          "global_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "profile_scratch_align": 1,
+          "name": "mm_kernel"
+        }
+      }
+    ]
+  },
+  "control": {
+    "begin_instance_local": "2026-10-25T19:05:00",
+    "end_instance_local": "2026-10-25T19:09:01",
+    "new_mm_variant_count": 0,
+    "new_mm_variants": []
+  }
+}

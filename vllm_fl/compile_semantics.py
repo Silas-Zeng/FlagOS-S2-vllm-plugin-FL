@@ -63,6 +63,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
     env = os.environ if environ is None else environ
     features = {key: env.get(key, "1") == "1" for key in _FEATURES}
+    features["VLLM_FL_BIV150_PREFILL_Q32"] = (
+        features["VLLM_FL_BIV150_Q_FRAGMENT"]
+        and features["VLLM_FL_BIV150_PREFILL_NORMALIZE"]
+        and env.get("VLLM_FL_BIV150_PREFILL_Q32", "1") == "1")
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
@@ -81,6 +85,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     facts = {"schema": 1, "source": source, "features": features, "dispatch": dispatch,
              "external_config": external_config, "abi": _runtime_abi() if abi is None else abi,
              "gqa_target_programs": int(env.get("VLLM_FL_BIV150_GQA_TARGET_PROGRAMS", "256"))}
+    facts["small_out_lowering"] = (features["VLLM_FL_BIV150_STABLE_SMALL_O"]
+        and env.get("VLLM_FL_BIV150_SMALL_OUT_LOWERING","1") == "1")
+    facts['large_linear'] = (facts['small_out_lowering']
+        and env.get('VLLM_FL_BIV150_LARGE_LINEAR','1') == '1')
     if features["VLLM_FL_BIV150_NATIVE_W8A8"]:
         library = native_library_path(package_root=package, environ=env)
         # wheel 可以不携带构建源码；实际加载的 SO 始终必须存在并按内容哈希。
