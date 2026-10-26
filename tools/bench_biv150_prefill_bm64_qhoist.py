@@ -88,14 +88,19 @@ def adapted_manager(original, rows=64, warps=8, kv_tile=64, stages=1):
 
 
 class Tap:
-    def __init__(self, target):
+    def __init__(self, target, maxnreg=None):
         self.target = target
+        self.maxnreg = maxnreg
         self.grid = self.kwargs = self.compiled = None
 
     def __getitem__(self, grid):
         def invoke(*args, **kwargs):
             if args:
                 raise RuntimeError('Unexpected positional kernel arguments')
+            if self.maxnreg is not None:
+                if 'maxnreg' in kwargs:
+                    raise RuntimeError('Conflicting register constraint')
+                kwargs = dict(kwargs, maxnreg=self.maxnreg)
             self.grid, self.kwargs = grid, kwargs.copy()
             self.compiled = self.target[grid](**kwargs)
             return self.compiled
@@ -133,7 +138,25 @@ def selected_configuration(tap, manager):
         raise RuntimeError('Selected kernel does not match comparison configuration')
     if tap.compiled is None or tap.compiled.hash not in manager.optimized:
         raise RuntimeError('Q-hoist was not selected')
+    occupancy = {}
+    try:
+        import ctypes
+        import ctypes.util
+        lib = ctypes.CDLL(ctypes.util.find_library('cuda') or 'libcuda.so.1')
+        query = lib.cuOccupancyMaxActiveBlocksPerMultiprocessor
+        query.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_void_p,
+                          ctypes.c_int, ctypes.c_size_t]
+        blocks = ctypes.c_int()
+        threads = manager.num_warps * tap.compiled.metadata.warp_size
+        rc = query(ctypes.byref(blocks), ctypes.c_void_p(tap.compiled.function),
+                   threads, tap.compiled.metadata.shared)
+        occupancy = dict(returncode=rc, active_blocks=blocks.value if rc == 0 else None,
+                         threads=threads, dynamic_shared=tap.compiled.metadata.shared,
+                         limitation='driver reported capacity, not measured active residency')
+    except Exception as error:
+        occupancy = dict(error=repr(error))
     return dict(expected, grid=list(tap.grid), hash=tap.compiled.hash,
+                requested_maxnreg=tap.kwargs.get('maxnreg'), driver_occupancy=occupancy,
                 loaded_resources=importlib.import_module(
                     'vllm_fl.patches.biv150_q_fragment_service')._resources(tap.compiled))
 
@@ -199,7 +222,7 @@ def main(args):
     candidate, candidate_manager = candidate_function(attention, backend, qmodule,args.bm,args.warps,args.kv_tile,args.stages)
     taps = {'baseline':baseline_tap}
     for label, manager in [('candidate',candidate_manager)]:
-        tap = Tap(manager.wrapper)
+        tap = Tap(manager.wrapper,args.maxnreg)
         manager.holder[manager.kernel_key] = tap
         taps[label] = tap
     result = dict(completed=False, official_score=False, service_installed=False,
@@ -207,6 +230,7 @@ def main(args):
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   baseline_mode=args.baseline, baseline_config=[baseline_manager.block_m,baseline_manager.num_warps,baseline_manager.tile_size,baseline_manager.num_stages],
                   production_transform_unchanged=args.baseline=='q32',
+                  candidate_maxnreg=args.maxnreg,
                   adapted_manager_sha256=adapted_sha, candidate_tile=[args.bm,args.bm//8], candidate_warps=args.warps, candidate_kv_tile=args.kv_tile, candidate_stages=args.stages, installations=installations, cases=[], errors=[])
     def save():
         temp=args.out/'result.tmp';temp.write_text(json.dumps(result,indent=2)+'\n');temp.replace(args.out/'result.json')
@@ -313,6 +337,8 @@ if __name__=='__main__':
     parser.add_argument('--warps',type=int,choices=[4,8,16],default=16)
     parser.add_argument('--kv-tile',type=int,choices=[64,128],default=64)
     parser.add_argument('--stages',type=int,choices=[1,2],default=2)
+    parser.add_argument('--maxnreg',type=int,choices=[128],default=None,
+                        help='One bounded resource-cliff probe; only candidate compile options change')
     parser.add_argument('--out',type=Path)
     parser.add_argument('--case',action='append',choices=CASES)
     args=parser.parse_args()
