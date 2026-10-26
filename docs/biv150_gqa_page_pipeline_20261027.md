@@ -13,3 +13,35 @@ CPU source inverse check and syntax pass without Torch import. No GPU result, mo
 Frozen71789d0 completes both stages2 cases numerically exact to baseline but only0.543789x4K/0.586337x16K. Loaded104regs/0spill/shared10240 versus baseline93/0/8192. The bounded stages1 for-loop control is also slower:0.573780x/0.617465x. Actual stages2 TTGIR has an already-defined Q_78 before the loop, plus an identical readonly Q_133 local_load inside; original while uses only the outside read. This is an observed extra operation, not proof of the entire performance cause.
 
 The follow-up --reuse-query variant requires unique8x128 BF16 Q allocation, exactly two identical typed descriptor loads with established dominance, no unknown descriptor uses/writes, and every duplicate-result use inside that one loop. It substitutes the existing dominating SSA and removes only the redundant load, with an exact byte inverse. Explicit synchronization and arithmetic operations are retained. Cold compile saves actual before/after artifacts, checks unchanged ABI/constants/attributes, and reuses the production block-M8 LLVM cyclic-CFG proof to require no Q reads in cycles before any candidate launch. Unknown IR fails rather than silently reporting fallback timings. CPU checks include actual captured IR and unsafe write/type/pointer/loop/scope mutations; GPU compatibility and benefit remain pending.
+
+## Final bounded device verdict: close without merging
+
+All four variants completed both packed-layout cases with numerical checks passing.
+Speedups are warmed alternating producer-plus-reducer component medians against
+the unchanged main2412 kernel, not model throughput:
+
+| Variant | 4K/B64 | 16K/B32 |
+| --- | ---: | ---: |
+| stages2, original generated for-loop | 0.543789 | 0.586337 |
+| stages1, original generated for-loop | 0.573780 | 0.617465 |
+| stages2, duplicate readonly Q load removed | 0.877409 | 0.880106 |
+| stages1, duplicate readonly Q load removed | 1.000187 | 0.999919 |
+
+The Q reuse variants preserve ABI and pass the actual LLVM cyclic-CFG proof:
+zero Q reads in loops. Thus the intended reuse actually lowers, but stages2
+still loses about12%; stages1 merely recovers baseline performance. Its loaded
+resources are93 registers,0 spills,8192B shared, equal to baseline. Recovering
+from a compiler regression is not an improvement over the shipping kernel.
+
+Frozen sources are71789d0 and9392312. No full-model105 or fixed-workload
+throughput qualification was run for these nonprofitable components. Production
+vllm_fl/csrc are unchanged; no experimental service installation or merge.
+Do not generalize this result to every future manual-prefetch/dataflow design.
+
+All164 original generated sources, proof JSON, results and compiled artifacts
+are retained in final/gqa-page-pipeline-final-evidence-20261027.tar.gz under
+docs/evidence/gqa-page-pipeline-20261027. Archive SHA256:
+2d59bec06682f66e20203a25adc33cd5f31f482177f102c5dae7d2e744ca7b39.
+The companion final/manifest.json lists every original SHA; local replay
+verified all164. All owned probe processes are terminal and the GPU is idle.
+Close this implementation, retain its branch/evidence, and do not merge it.
