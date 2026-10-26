@@ -47,6 +47,7 @@ def main():
         )
         return namespace['_Policy'](original, manager), original, candidate, {
             'query_ptr': query, 'num_seqs': 1, 'BLOCK_M': 128, 'BLOCK_Q': 16,
+            'num_warps': 8, 'num_stages': 1, 'TILE_SIZE': 64,
         }
 
     checks = []
@@ -54,7 +55,8 @@ def main():
         policy, old, new, kwargs = setup()
         assert policy[(125, 2)](**kwargs) is compiled
         assert new.calls[0][0] == (63, 2) and new.calls[0][2]['BLOCK_M'] == 256
-        assert kwargs['BLOCK_M'] == 128 and not old.calls
+        assert new.calls[0][2]['num_warps'] == 16
+        assert kwargs['BLOCK_M'] == 128 and kwargs['num_warps'] == 8 and not old.calls
         checks.append('selected grid and constants; original arguments unchanged')
         for change in ({'num_seqs': 2}, {'eligible': False}, {'ir_override': 'foreign'}):
             policy, old, new, kwargs = setup();kwargs.update(change)

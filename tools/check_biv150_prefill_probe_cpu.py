@@ -29,7 +29,7 @@ def main():
     original = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(original)
     reports = []
-    for rows, warps, tile, stages in ((256, 16, 64, 1), (256, 16, 128, 1),
+    for rows, warps, tile, stages in ((128, 8, 64, 1), (256, 16, 64, 1), (256, 16, 128, 1),
                                       (128, 8, 64, 2), (256, 8, 64, 2),
                                       (512, 16, 64, 1)):
         module, source_sha = adapted_manager(original, rows, warps, tile, stages)
@@ -45,10 +45,13 @@ def main():
                       query_start_len_ptr=Tensor((2,), (1,), 4, "torch.int32"),
                       seq_lens_ptr=Tensor((1,), (1,), 5, "torch.int32"),
                       block_tables_ptr=Tensor((1, 8192), (8192, 1), 6, "torch.int32"))
-        assert module._eligible(values, rows)
-        assert not module._eligible(dict(values, num_stages=3-stages), rows)
-        assert not module._eligible(dict(values, USE_SINKS=True), rows)
-        assert not module._eligible(dict(values, output_ptr=values["query_ptr"]), rows)
+        config = dict(num_warps=warps, num_stages=stages, tile_size=tile)
+        assert module._eligible(values, rows, **config)
+        assert not module._eligible(dict(values, num_stages=3-stages), rows, **config)
+        assert not module._eligible(dict(values, num_warps=4 if warps!=4 else 8), rows, **config)
+        assert not module._eligible(dict(values, TILE_SIZE=128 if tile==64 else 64), rows, **config)
+        assert not module._eligible(dict(values, USE_SINKS=True), rows, **config)
+        assert not module._eligible(dict(values, output_ptr=values["query_ptr"]), rows, **config)
 
         # Reach the real Manager's preparation branch only for matching options.
         # Deliberately stop before any IR transformation or device work.
@@ -64,6 +67,7 @@ def main():
         manager.async_mode = SimpleNamespace(get=lambda: None)
         manager.candidate = object()
         manager.block_m, manager.fallback_compiles = rows, 0
+        manager.num_warps, manager.num_stages, manager.tile_size = warps, stages, tile
         manager.original_compile = lambda *args, **kwargs: normal
         manager._record = lambda *args: None
         src = SimpleNamespace(fn=manager.candidate)

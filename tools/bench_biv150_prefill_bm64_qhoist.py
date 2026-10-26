@@ -20,6 +20,9 @@ import types
 from pathlib import Path
 
 CASES = {
+    'fresh1024': ([1024], [1024]),
+    'fresh2048': ([2048], [2048]),
+    'minimum16k': ([1024], [16384]),
     'chunk4k': ([2048], [4096]),
     'chunk16k': ([2048], [16384]),
     'suffix4k': ([1985], [4096]),
@@ -67,6 +70,9 @@ def adapted_manager(original, rows=64, warps=8, kv_tile=64, stages=1):
     if parameterized:
         del edits['"BLOCK_M": 128,']
         del edits['"BLOCK_Q": 16,']
+    if 'num_warps' in inspect.signature(original.Manager).parameters:
+        for key in ('"num_warps": 8,', '"num_stages": 1,', '"TILE_SIZE": 64,', '!= (8, 1)'):
+            del edits[key]
     for old, new in edits.items():
         if source.count(old) != 1:
             raise RuntimeError('Audited manager anchor changed: ' + old)
@@ -118,6 +124,8 @@ def candidate_function(attention, backend, qmodule, rows=64, warps=8, kv_tile=64
         launch_metadata=raw.launch_metadata,
     )
     extra = {'block_m': rows} if 'block_m' in inspect.signature(qmodule.Manager).parameters else {}
+    if 'num_warps' in inspect.signature(qmodule.Manager).parameters:
+        extra.update(num_warps=warps, num_stages=stages, tile_size=kv_tile)
     manager = qmodule.Manager(attention, backend, namespace, 'kernel_unified_attention', raw, clone, **extra)
     manager.install()
     return function, manager

@@ -1,4 +1,8 @@
-# Prefill tile/pipeline component exploration — no GPU result yet
+# Prefill tile/pipeline component exploration
+
+Current status: BM256/K64/w16/stage1 won the completed component comparison below.
+A shipping-default service candidate is being integrated and remains unqualified
+for model accuracy/throughput until the full acceptance completes.
 
 The existing PR46 Q32 lineage remains experimental. This branch now includes its strict-binding corrections and current team main34942f7, including the BF16 small-row correction. The only merge conflict was EXPECTED_RUNNER: it now hashes the actual combined runner268804cb; removing only the Q32 installer exactly reconstructs the team runnercbbbabce. All local strict module pins and inverse Q-fragment source reconstruction pass. Q32 controller CPU gates pass. Old partial/confounded model results remain unchanged in their original evidence directories.
 

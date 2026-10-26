@@ -91,7 +91,7 @@ def _freeze(value):
     raise ValueError("unknown specialization/options object")
 
 
-def _eligible(values, block_m=128):
+def _eligible(values, block_m=128, *, num_warps=8, num_stages=1, tile_size=64):
     """Descriptor-only checks. No D2H, .item(), RNG or metadata mutation."""
     exact = {
         "IS_3D": False,
@@ -102,15 +102,15 @@ def _eligible(values, block_m=128):
         "BLOCK_M": block_m,
         "BLOCK_Q": block_m // 8,
         "BLOCK_SIZE": 16,
-        "TILE_SIZE": 64,
+        "TILE_SIZE": tile_size,
         "NUM_SEGMENTS_PER_SEQ": 1,
         "KV_QUANT_MODE": 0,
         "USE_CAUSAL": True,
         "SLIDING_WINDOW": 0,
         "CHUNK_LOOKBACK": -1,
         "CHUNK_SIZE": -1,
-        "num_warps": 8,
-        "num_stages": 1,
+        "num_warps": num_warps,
+        "num_stages": num_stages,
     }
     if any(values.get(name) != expected for name, expected in exact.items()):
         return False
@@ -346,7 +346,8 @@ class _Launch:
                 selected = (
                     not args
                     and "ir_override" not in kwargs
-                    and _eligible(kwargs, m.block_m)
+                    and _eligible(kwargs, m.block_m, num_warps=m.num_warps,
+                                  num_stages=m.num_stages, tile_size=m.tile_size)
                     and m.async_mode.get() is None
                     and not m.raw.pre_run_hooks
                     and not m.candidate.pre_run_hooks
@@ -391,8 +392,10 @@ class _Launch:
 class Manager:
     MAX_RECORDS = 8
 
-    def __init__(self, attention, backend, holder, kernel_key, raw, candidate, block_m=128):
+    def __init__(self, attention, backend, holder, kernel_key, raw, candidate,
+                 block_m=128, *, num_warps=8, num_stages=1, tile_size=64):
         self.block_m = block_m
+        self.num_warps, self.num_stages, self.tile_size = num_warps, num_stages, tile_size
         self.attention, self.backend, self.raw, self.candidate = (
             attention,
             backend,
@@ -485,7 +488,8 @@ class Manager:
             if (
                 src.fn is not self.candidate
                 or options.get("ir_override") is not None
-                or (options.get("num_warps"), options.get("num_stages")) != (8, 1)
+                or (options.get("num_warps"), options.get("num_stages"))
+                    != (self.num_warps, self.num_stages)
             ):
                 self.fallback_compiles += 1
                 self._record(record, normal)

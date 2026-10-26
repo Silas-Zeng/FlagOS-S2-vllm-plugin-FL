@@ -1,4 +1,4 @@
-"""Opt-in wider Q tile for large single-sequence prefill after prefix splitting."""
+"""Wider Q tile for large single-sequence prefill after prefix splitting."""
 import importlib
 import os
 
@@ -55,7 +55,7 @@ class _Policy:
                 except Exception:
                     eligible = False
             if eligible:
-                selected = dict(kwargs, BLOCK_M=256, BLOCK_Q=32)
+                selected = dict(kwargs, BLOCK_M=256, BLOCK_Q=32, num_warps=16)
                 selected_grid = (kwargs['query_ptr'].shape[0] // 32 + 1, 2)
                 try:
                     compiled = m.wrapper[selected_grid](**selected)
@@ -64,6 +64,7 @@ class _Policy:
                         print('BIV150_PREFILL_Q32_SELECTED', {
                             'hash': compiled.hash, 'rows': kwargs['query_ptr'].shape[0],
                             'num_sequences': 1, 'block_m': 256, 'block_q': 32,
+                            'num_warps': 16, 'num_stages': 1, 'tile_size': 64,
                         }, flush=True)
                     return compiled
                 except _UnavailableBeforeLaunch as error:
@@ -76,7 +77,7 @@ class _Policy:
 
 def install():
     global _MANAGER
-    if os.environ.get('VLLM_FL_BIV150_PREFILL_Q32', '0') != '1':
+    if os.environ.get('VLLM_FL_BIV150_PREFILL_Q32', '1') != '1':
         return {'installed': False, 'reason': 'disabled'}
     if _MANAGER is not None:
         return {'installed': True, 'reason': 'already installed'}
@@ -93,10 +94,12 @@ def install():
     )
     private = {base.kernel_key: base.original_kernel}
     manager = _VerifiedManager(base.attention, base.backend, private,
-                               base.kernel_key, raw, candidate, block_m=256)
+                               base.kernel_key, raw, candidate, block_m=256,
+                               num_warps=16)
     manager.install()
     base.holder[base.kernel_key] = _Policy(base.wrapper, manager)
     _MANAGER = manager
     return {'installed': True, 'block_m': 256, 'block_q': 32,
+            'num_warps': 16, 'num_stages': 1, 'tile_size': 64,
             'minimum_query_rows': 1024, 'num_sequences': 1,
             'fallback': 'existing verified BM128 Q fragment'}

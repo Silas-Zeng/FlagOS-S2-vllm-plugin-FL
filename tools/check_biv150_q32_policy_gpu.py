@@ -10,6 +10,8 @@ import subprocess
 import traceback
 
 CASES = {
+    'fresh_minimum1024': ([1024], [1024]),
+    'minimum16k': ([1024], [16384]),
     'suffix4k': ([1985], [4096]),
     'suffix16k': ([2017], [16384]),
     'small_fallback': ([256], [4096]),
@@ -38,14 +40,15 @@ def main(args):
     torch.set_num_threads(4)
     function,base,states=fixture.install_baseline()
     original=base.holder[base.kernel_key]
-    os.environ['VLLM_FL_BIV150_PREFILL_Q32']='1'
+    os.environ.pop('VLLM_FL_BIV150_PREFILL_Q32', None)
     module=importlib.import_module('vllm_fl.patches.biv150_prefill_q32')
     installed=module.install()
-    assert installed['installed'],installed
+    assert installed['installed'] and installed['num_warps']==16,installed
     policy=base.holder[base.kernel_key]
     manager=module._MANAGER
     result=dict(completed=False,official_score=False,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-                script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),installed=installed,cases=[],errors=[])
+                script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),installed=installed,
+                feature_env_absent='VLLM_FL_BIV150_PREFILL_Q32' not in os.environ,cases=[],errors=[])
     def save():
         temp=args.out/'result.tmp';temp.write_text(json.dumps(result,indent=2)+'\n');temp.replace(args.out/'result.json')
     save()
@@ -92,6 +95,10 @@ def main(args):
             print(json.dumps({'case':name,'passed':True}),flush=True)
         assert not policy.disabled
         result['candidate_proof']=manager.snapshot()
+        selected=[r for r in result['candidate_proof']['compile_records'] if r['mode']=='selected']
+        assert selected and all(r['candidate_resources']['metadata']['num_warps']==16
+                                and r['candidate_resources']['metadata']['num_stages']==1
+                                and r['mechanism']['mechanism_pass'] for r in selected)
         result['completed']=True
     except Exception as error:
         result['errors'].append(dict(error=repr(error),traceback=traceback.format_exc()))

@@ -24,7 +24,7 @@ SOURCES = {
     "vllm_fl.patches.biv150_mixed_decode": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
     "vllm_fl.patches.biv150_gqa_decode": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
     "vllm_fl.patches.biv150_prefill_normalized": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
-    "vllm_fl.patches.biv150_q_fragment_service": "e73104bd60d3d21d46fb78b15592b6ffb9baa0c0f3c68eb6f3faa774fa8f6b27",
+    "vllm_fl.patches.biv150_q_fragment_service": "38e44e6b0272116a1c76561119e9742337caed4dfaf5ab891fc57df4f2c16a82",
     "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
     "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }
