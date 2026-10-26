@@ -10,6 +10,7 @@ import importlib
 import inspect
 import json
 import re
+import shutil
 import socket
 import statistics
 import subprocess
@@ -226,6 +227,17 @@ def main(args):
         result['errors'].append(dict(error=repr(error),traceback=traceback.format_exc()))
         raise
     finally:
+        # Keep failure resources and transformed IR before TemporaryDirectory
+        # cleanup, including configurations rejected before a timed case ends.
+        result['terminal_manager_proofs'] = {}
+        for label, manager in [('baseline', baseline_manager), ('candidate', candidate_manager)]:
+            try:
+                result['terminal_manager_proofs'][label] = manager.snapshot()
+                shutil.copytree(manager.artifact_dir, args.out/'compiler-ir'/label,
+                                dirs_exist_ok=True)
+            except Exception as diagnostic_error:
+                result.setdefault('diagnostic_copy_errors', []).append(
+                    dict(route=label, error=repr(diagnostic_error)))
         save()
 
 
