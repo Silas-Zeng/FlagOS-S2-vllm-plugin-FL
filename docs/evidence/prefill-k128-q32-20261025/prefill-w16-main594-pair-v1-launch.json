@@ -1,0 +1,50 @@
+{
+  "utc": "2026-10-26T15:47:25.813304+00:00",
+  "pid": 546274,
+  "start_ticks": 337719739,
+  "sid": 546274,
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "/workspace/experiments/minicpm-s2/exports/run_biv150_latest_main_pair.py",
+    "--tool",
+    "/workspace/experiments/minicpm-s2/exports/run_biv150_small_out_acceptance.py",
+    "--out",
+    "/workspace/experiments/minicpm-s2/prefill-w16-main594-pair-v1-20261026",
+    "--baseline-source",
+    "/workspace/experiments/minicpm-s2/code/main594-qualified-20261026",
+    "--candidate-source",
+    "/workspace/experiments/minicpm-s2/code/prefill-service-w16-v2-20261026",
+    "--baseline-commit",
+    "594ae2a9d17aadc4587ad54ade2b34e17f4af990",
+    "--candidate-commit",
+    "d207eeb7df463d6149b1823fa22ed8ebc8b03d59",
+    "--baseline-out-lowering",
+    "1",
+    "--baseline-large-linear",
+    "1",
+    "--baseline-production-defaults",
+    "--library",
+    "/workspace/experiments/minicpm-s2/code/baseline-profiler-v2-20261025/build-native-w8a8/biv150_native_w8a8.so",
+    "--tuning-snapshot",
+    "/workspace/experiments/minicpm-s2/exports/small-bf16-fullwarm-tuning-snapshot-v6-20261025",
+    "--fixtures",
+    "/workspace/experiments/minicpm-s2/exports/native-mixed-fixtures-20261025"
+  ],
+  "baseline_production_defaults": true,
+  "candidate_production_defaults": true,
+  "tool_proof": {
+    "head": "a65aa43c57db9615b568bfce2a23570273240dbc",
+    "main": "594ae2a9d17aadc4587ad54ade2b34e17f4af990",
+    "cleanup_ast_equal": true,
+    "fingerprint_ast_equal": true,
+    "production_equal_1a0": true,
+    "run_biv150_small_out_acceptance.py": "10d11ba60ff85bf2781628d48a664420fee9a4c4ed6e033dbcd996484eb09cc9",
+    "run_biv150_latest_main_pair.py": "99eda2ee325f2aed84e213d80a75796d511b53ad36b1d07c8565976ab13b12ea"
+  },
+  "preflight": {
+    "path": "/workspace/experiments/minicpm-s2/exports/prefill-w16-preflight-v2-evidence-20261026.tar.gz",
+    "bytes": 59821,
+    "sha256": "e6347024f8bb4ba15022a28f027c863c2da0e687ac66bba8497dd7c6a1994b7f"
+  }
+}

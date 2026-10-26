@@ -1,0 +1,96 @@
+{
+  "utc": "2026-10-26T17:02:19.622506+00:00",
+  "candidate_commit": "d207eeb7df463d6149b1823fa22ed8ebc8b03d59",
+  "candidate_phase": "accuracy",
+  "actual_source": "/workspace/experiments/minicpm-s2/code/prefill-service-w16-v2-20261026",
+  "loaded_source_fingerprint_verified": true,
+  "production_defaults": true,
+  "manual_feature_env_absent": true,
+  "installations": [
+    {
+      "installed": true,
+      "block_m": 256,
+      "block_q": 32,
+      "num_warps": 16,
+      "num_stages": 1,
+      "tile_size": 64,
+      "minimum_query_rows": 1024,
+      "num_sequences": 1,
+      "fallback": "existing verified BM128 Q fragment"
+    }
+  ],
+  "actual_selected_kernel_proofs": [
+    {
+      "selection": {
+        "hash": "9ed319192da32eb73ac0932b793abc52b9fbfdfff4f3d69bf226e12cd0b0c87b",
+        "rows": 2047,
+        "num_sequences": 1,
+        "block_m": 256,
+        "block_q": 32,
+        "num_warps": 16,
+        "num_stages": 1,
+        "tile_size": 64
+      },
+      "resources": {
+        "compiled_type": "CompiledKernel",
+        "hash": "9ed319192da32eb73ac0932b793abc52b9fbfdfff4f3d69bf226e12cd0b0c87b",
+        "n_regs": null,
+        "n_spills": null,
+        "metadata": {
+          "num_warps": 16,
+          "num_stages": 1,
+          "shared": 65536,
+          "use_sme": 114691,
+          "warp_size": 64
+        },
+        "asm_sha256": {
+          "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+          "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+          "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+          "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+          "asm": "231339851666a2ebfe20dbdc71f5df590bddac9629973299758b74fd6ea35d4f",
+          "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+        }
+      },
+      "mechanism": {
+        "ttgir_q_load_outside_loop": true,
+        "llvm_q_memory_reads_in_loop": 0,
+        "llvm_q_memory_reads_total": 32,
+        "q_read_blocks": [
+          ".lr.ph73",
+          "230",
+          "239",
+          "243",
+          "247",
+          "251",
+          "255",
+          "259",
+          "263",
+          "267",
+          "271",
+          "275",
+          "279",
+          "283",
+          "287",
+          "291",
+          "295"
+        ],
+        "q_debug_nodes": 3,
+        "barrier_calls": 3,
+        "mechanism_pass": true,
+        "limits": "barrier presence/count is recorded, not a complete synchronization/occupancy proof"
+      }
+    }
+  ],
+  "no_q32_fallback_observed_so_far": true,
+  "kv_tokens_baseline": 548320,
+  "kv_tokens_candidate": 548320,
+  "fixed_cli_and_initial_tuning_snapshot_equal": true,
+  "model_precision_and_throughput_not_complete": true,
+  "source_fingerprint": {
+    "schema": 1,
+    "sha256": "74b1413eec50ddfa479def5d5507bd5a850f82fdce1b2bc168b4ef313447d00b",
+    "native_enabled": true
+  },
+  "log_sha256_at_observation": "76d0e52b52964fa1e115287430c40b96d8a898d1b33e70774d86664f3515ea20"
+}

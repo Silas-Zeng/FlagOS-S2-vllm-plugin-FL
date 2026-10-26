@@ -1,0 +1,24 @@
+{
+  "local_cpu_archive_replay_passed": true,
+  "all125_original_files_sha256_verified": true,
+  "archive_sha256": "b4a3c7a1ef50672972725f2b4390ca88ca86df37fcf6fb9f8760a61d2ea8036a",
+  "archive_bytes": 1891661,
+  "archive_members": 126,
+  "baseline_precision": 101.0,
+  "candidate_precision": 103.0,
+  "comparison": {
+    "4096": {
+      "baseline_tps": 5778.243627140731,
+      "candidate_tps": 5830.358319647462,
+      "observed_relative_change": 0.009019123434315768,
+      "higher": true
+    },
+    "16384": {
+      "baseline_tps": 4187.31786930508,
+      "candidate_tps": 4488.869340301553,
+      "observed_relative_change": 0.07201542381269421,
+      "higher": true
+    }
+  },
+  "gpu_test_not_rerun": true
+}

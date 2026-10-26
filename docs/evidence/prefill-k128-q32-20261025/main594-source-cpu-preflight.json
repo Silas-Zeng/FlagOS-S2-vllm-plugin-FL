@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "gpu_executed": false,
+  "main": "594ae2a9d17aadc4587ad54ade2b34e17f4af990",
+  "conflict_resolution": "Keep latest stride normalization source and merged parameterized Q-fragment source; recompute only exact file pins.",
+  "runner_remove_only_optional_hook_reconstructs_main": true,
+  "native_and_output_provider_files_equal_main": true,
+  "local_package_source_pins_match": true,
+  "Q32_default": "0",
+  "component_baseline": "BM128/K64/w8/stage1",
+  "bounded_next": [
+    "BM256/K64/w16/stage1",
+    "BM512/K64/w16/stage1"
+  ],
+  "limitation": "CPU/source proof only; actual lowering/resources/numerical/Graph/speed pending."
+}

@@ -1,0 +1,24 @@
+{
+  "backend_compiler_sha256": "a97f067023873acf2e348c28f61494e59170ca84c3ee2314f20e491d3e833dfd",
+  "backend_path": "/usr/local/lib/python3.12/site-packages/triton/spec/iluvatar/triton/compiler/compiler.py",
+  "compiled_kernel_constructor_initializes_handles": false,
+  "resource_check_method": "CompiledKernel._init_handles",
+  "resource_check": "metadata.shared > max_shared_mem(device)",
+  "trigger_methods": [
+    "run",
+    "launch_metadata when hook enabled",
+    "__getitem__"
+  ],
+  "observed_gpu_autotuner_shared_limit_bytes": 131072,
+  "limit_scope": "observed per-kernel launch limit, not a per-SM occupancy proof",
+  "q64_candidate": {
+    "block_m": 512,
+    "block_q": 64,
+    "num_warps": 16,
+    "num_stages": 1,
+    "kv_tile": 64
+  },
+  "q_allocation_bytes": 131072,
+  "resource_estimate_only": true,
+  "gpu_q64_executed": false
+}

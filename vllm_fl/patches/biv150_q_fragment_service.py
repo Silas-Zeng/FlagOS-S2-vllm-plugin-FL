@@ -27,7 +27,7 @@ EXPECTED_KV_INTERFACE = (
 )
 EXPECTED_GQA = "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1"
 EXPECTED_NORMALIZATION = (
-    "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42"
+    "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1"
 )
 _ENABLE_ENV = "VLLM_FL_BIV150_Q_FRAGMENT"
 _INSTALLED_ATTR = "_biv150_q_fragment_service_installed"
@@ -37,11 +37,11 @@ def _sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def transform_ir(raw):
+def transform_ir(raw, block_m=128):
     text = raw.decode("utf-8")
     lines = text.splitlines(keepends=True)
     allocations = re.findall(
-        r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16",
+        rf"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<{block_m}x128xbf16",
         text,
     )
     if len(allocations) != 1:
@@ -91,7 +91,7 @@ def _freeze(value):
     raise ValueError("unknown specialization/options object")
 
 
-def _eligible(values):
+def _eligible(values, block_m=128, *, num_warps=8, num_stages=1, tile_size=64):
     """Descriptor-only checks. No D2H, .item(), RNG or metadata mutation."""
     exact = {
         "IS_3D": False,
@@ -99,18 +99,18 @@ def _eligible(values):
         "HEAD_SIZE_PADDED": 128,
         "num_query_heads": 16,
         "num_queries_per_kv": 8,
-        "BLOCK_M": 128,
-        "BLOCK_Q": 16,
+        "BLOCK_M": block_m,
+        "BLOCK_Q": block_m // 8,
         "BLOCK_SIZE": 16,
-        "TILE_SIZE": 64,
+        "TILE_SIZE": tile_size,
         "NUM_SEGMENTS_PER_SEQ": 1,
         "KV_QUANT_MODE": 0,
         "USE_CAUSAL": True,
         "SLIDING_WINDOW": 0,
         "CHUNK_LOOKBACK": -1,
         "CHUNK_SIZE": -1,
-        "num_warps": 8,
-        "num_stages": 1,
+        "num_warps": num_warps,
+        "num_stages": num_stages,
     }
     if any(values.get(name) != expected for name, expected in exact.items()):
         return False
@@ -211,9 +211,9 @@ def _q_debug_lines(source):
     return result
 
 
-def lowered_proof(ttgir, llir, q_source_lines):
+def lowered_proof(ttgir, llir, q_source_lines, block_m=128):
     alloc = re.findall(
-        r"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<128x128xbf16", ttgir
+        rf"(%[A-Za-z0-9_]+) = ttg.local_alloc .*tensor<{block_m}x128xbf16", ttgir
     )
     if len(alloc) != 1:
         raise RuntimeError("cannot identify actual Q allocation")
@@ -346,7 +346,8 @@ class _Launch:
                 selected = (
                     not args
                     and "ir_override" not in kwargs
-                    and _eligible(kwargs)
+                    and _eligible(kwargs, m.block_m, num_warps=m.num_warps,
+                                  num_stages=m.num_stages, tile_size=m.tile_size)
                     and m.async_mode.get() is None
                     and not m.raw.pre_run_hooks
                     and not m.candidate.pre_run_hooks
@@ -391,7 +392,10 @@ class _Launch:
 class Manager:
     MAX_RECORDS = 8
 
-    def __init__(self, attention, backend, holder, kernel_key, raw, candidate):
+    def __init__(self, attention, backend, holder, kernel_key, raw, candidate,
+                 block_m=128, *, num_warps=8, num_stages=1, tile_size=64):
+        self.block_m = block_m
+        self.num_warps, self.num_stages, self.tile_size = num_warps, num_stages, tile_size
         self.attention, self.backend, self.raw, self.candidate = (
             attention,
             backend,
@@ -484,12 +488,13 @@ class Manager:
             if (
                 src.fn is not self.candidate
                 or options.get("ir_override") is not None
-                or (options.get("num_warps"), options.get("num_stages")) != (8, 1)
+                or (options.get("num_warps"), options.get("num_stages"))
+                    != (self.num_warps, self.num_stages)
             ):
                 self.fallback_compiles += 1
                 self._record(record, normal)
                 return normal
-            changed = transform_ir(normal.asm["ttgir"].encode())
+            changed = transform_ir(normal.asm["ttgir"].encode(), self.block_m)
             sha = _sha(changed)
             path = self.artifact_dir / ("q-fragment-" + sha + ".ttgir")
             if path.exists():
@@ -516,6 +521,7 @@ class Manager:
                 compiled.asm["ttgir"],
                 compiled.asm["llir"],
                 q_source_lines,
+                self.block_m,
             )
             if not proof["mechanism_pass"]:
                 record.update(
@@ -643,7 +649,7 @@ def _audited_kernel_binding(attention, backend):
     fn = getattr(kernel, "fn", None)
     if (
         not inspect.isfunction(fn)
-        or fn.__code__.co_name != "kernel_biv150_prefill_normalized"
+        or fn.__code__.co_name != "kernel_biv150_prefill_stride"
         or not fn.__code__.co_filename.startswith("<biv150-prefill-normalized-")
         or inspect.getsource(fn).count("L = tl.zeros([BLOCK_M], dtype=tl.float32)") != 1
     ):
