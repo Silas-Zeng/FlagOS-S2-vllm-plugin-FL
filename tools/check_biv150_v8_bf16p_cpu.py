@@ -9,6 +9,9 @@ import random
 import struct
 
 from biv150_v8_bf16p_reference import bfloat16, closed, quantize_values, streaming
+from biv150_v8_bf16p_validation import (consumption_gate, mapped_byte_offsets,
+                                       reference_append_bytes, validate_codec_vector,
+                                       validate_writer_bytes)
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_SHA = "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1"
@@ -122,6 +125,119 @@ def algebra_check():
                 gpu_numerics_tested=False, model_accuracy_tested=False)
 
 
+def falsification_check():
+    """The shared validation gates must reject plausible self-consistent faults."""
+    rejected = []
+
+    def reject(label, action):
+        try:
+            action()
+        except AssertionError:
+            rejected.append(label)
+        else:
+            raise AssertionError('Fault escaped: '+label)
+
+    # Includes a valid, independently derived half tie at |ratio|=1.5.
+    tie_values = [127.0, 1.5, -1.5]+[0.0]*125
+    codes, scale = quantize_values(tie_values)
+    adjusted = codes[:]
+    adjusted[1], adjusted[2] = 1, -1
+    tie = validate_codec_vector(tie_values, adjusted, scale)
+    assert tie['half_boundary_code_differences'] == 2
+    wrong = codes[:]; wrong[0] = 126
+    reject('one_code_error_away_from_half_tie', lambda: validate_codec_vector(tie_values, wrong, scale))
+    reject('huge_scale_zero_codes', lambda: validate_codec_vector(tie_values, [0]*128, 1e20))
+    reject('wrong_scale_with_self_consistent_codes',
+           lambda: validate_codec_vector(tie_values, [round(v/2) for v in tie_values], 2.0))
+    assert validate_codec_vector([0.0]*128, [0]*128, 1.0)['scale_ulps'] == 0
+    tiny = [2**-133, -2**-133]+[0.0]*126
+    tiny_codes, tiny_scale = quantize_values(tiny)
+    assert tiny_scale == 2**-126
+    validate_codec_vector(tiny, tiny_codes, tiny_scale)
+    reject('zero_vector_wrong_scale', lambda: validate_codec_vector([0.0]*128, [0]*128, 2.0))
+    reject('missing_min_normal_clamp', lambda: validate_codec_vector(tiny, tiny_codes, 2**-133))
+
+    pages, slots = 3, (-1, 17, 46, 48)
+    old_keys = [[[bfloat16((d+head+token)/32) for d in range(128)] for head in range(2)] for token in range(4)]
+    old_values = [[[bfloat16((d-64)*(head+1)/64) for d in range(128)] for head in range(2)] for token in range(4)]
+    new_keys = [[[bfloat16(-v-.25) for v in head] for head in token] for token in old_keys]
+    new_values = [[[bfloat16(v*1.5+.5) for v in head] for head in token] for token in old_values]
+    for encode in (False, True):
+        before = bytearray([0x59])*(pages*16384)
+        warm = reference_append_bytes(before, slots, old_keys, old_values, encode)
+        correct = reference_append_bytes(warm, slots, new_keys, new_values, encode)
+        valid = validate_writer_bytes(warm, correct, slots, new_keys, new_values, encode)
+        assert valid['unmapped_bytes_unchanged']
+        poisoned = bytearray(warm)
+        for index in mapped_byte_offsets(slots, pages, encode):
+            poisoned[index] = 0xA5
+        reject('omitted_graph_writer_'+str(encode),
+               lambda: validate_writer_bytes(warm, poisoned, slots, new_keys, new_values, encode))
+        reject('stale_graph_token_'+str(encode),
+               lambda: validate_writer_bytes(warm, warm, slots, new_keys, new_values, encode))
+        key_only = bytearray(warm)
+        value_only = bytearray(correct)
+        for slot in (17, 46):
+            page, column = divmod(slot, 16)
+            begin = page*16384+column*512
+            key_only[begin:begin+512] = correct[begin:begin+512]
+            value_only[begin:begin+512] = warm[begin:begin+512]
+        reject('graph_writer_only_K_'+str(encode),
+               lambda: validate_writer_bytes(warm, key_only, slots, new_keys, new_values, encode))
+        reject('graph_writer_only_V_'+str(encode),
+               lambda: validate_writer_bytes(warm, value_only, slots, new_keys, new_values, encode))
+        clobbered = bytearray(correct)
+        clobbered[16383] ^= 1
+        reject('unmapped_padding_write_'+str(encode),
+               lambda: validate_writer_bytes(warm, clobbered, slots, new_keys, new_values, encode))
+        # Invalid slots are present in the same map; no bytes may map to them.
+        assert len(mapped_byte_offsets(slots, pages, encode)) == 2*(776 if encode else 1024)
+        if encode:
+            bad_codec = bytearray(correct)
+            for slot in (17, 46):
+                page, column = divmod(slot, 16)
+                bad_codec[page*16384+8192+column*256:page*16384+8192+(column+1)*256] = bytes(256)
+                for head in range(2):
+                    struct.pack_into('<f', bad_codec, page*16384+12288+column*8+head*4, 1e20)
+            reject('self_consistent_bad_codec_in_graph',
+                   lambda: validate_writer_bytes(warm, bad_codec, slots, new_keys, new_values, True))
+    assert consumption_gate([1.005, -.995], [1., -1.])['passed']
+    assert consumption_gate([0., 0.], [0., 0.])['passed']
+    assert not consumption_gate([0., 0.], [1., -1.])['passed']
+    assert not consumption_gate([1.05, -1.05], [1., -1.])['passed']
+    assert not consumption_gate([.001, 0.], [0., 0.])['passed']
+    return dict(rejected_mutants=rejected, permitted_half_tie_differences=2,
+                zero_and_min_normal_scale_checked=True, consumption_gate_limit=0.02,
+                zero_code_consumption_rejected=True, gpu_executed=False)
+
+
+def benchmark_contract_check():
+    """Prove writer validation precedes eager and oracle calls use CPU inputs."""
+    tree = ast.parse((ROOT/'tools/bench_biv150_v8_bf16p.py').read_text())
+    refs = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name) and node.func.id == 'reference']
+    assert refs and all(isinstance(node.args[0], ast.Name) and node.args[0].id == 'expected_cpu' for node in refs)
+    reference = next(node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name == 'reference')
+    assert not ({'quant', 'encoded_v', 'new_key', 'new_value'} &
+                {node.id for node in ast.walk(reference) if isinstance(node, ast.Name)})
+    for_loop = next(node for node in ast.walk(tree) if isinstance(node, ast.For)
+                    and isinstance(node.target, ast.Name) and node.target.id == 'encode'
+                    and any(isinstance(sub, ast.Call) and isinstance(sub.func, ast.Attribute)
+                            and sub.func.attr == 'replay' for sub in ast.walk(node)))
+    calls = lambda statement, name: any(isinstance(node, ast.Call) and
+            ((isinstance(node.func, ast.Attribute) and node.func.attr == name) or
+             (isinstance(node.func, ast.Name) and node.func.id == name)) for node in ast.walk(statement))
+    replay = next(i for i, node in enumerate(for_loop.body) if calls(node, 'replay'))
+    writer = next(i for i, node in enumerate(for_loop.body) if calls(node, 'check_writer'))
+    eager = next(i for i, node in enumerate(for_loop.body) if calls(node, 'run'))
+    assert replay < writer < eager
+    assert any(calls(node, 'index_fill_') for node in for_loop.body[:replay])
+    return dict(reference_calls_from_expected_cpu=True, mapped_cache_poison_before_replay=True,
+                graph_writer_validated_before_eager=True)
+
+
 if __name__ == "__main__":
     print(json.dumps(dict(source=source_check(), layout=layout_check(), algebra=algebra_check(),
+                          validation_falsification=falsification_check(),
+                          benchmark_contract=benchmark_contract_check(),
                           precision_gate=False, official_score=False), indent=2))
