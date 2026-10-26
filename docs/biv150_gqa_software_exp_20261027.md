@@ -60,6 +60,41 @@ python3 tools/biv150_software_exp2.py --source . \
   --out /tmp/gqa-software-exp-cpu-result.json
 ```
 
+## Coordinated GPU component command (not run)
+
+Use the designated Python environment and the frozen PR commit on an idle
+BI-V150. The harness refuses a live port9031 service, a non-idle ixsmi report,
+a changed SDK JIT hash, dirty tracked source, production-source differences, or
+a baseline kernel hash unlike the current model's packed allocation. It does
+not stop anything. Run the two scopes serially with distinct new output paths:
+
+```bash
+python3 tools/bench_biv150_gqa_software_exp.py --source "$PWD" \
+  --commit FROZEN_PR_COMMIT --exp-scope probability \
+  --out /tmp/gqa-software-exp-probability
+python3 tools/bench_biv150_gqa_software_exp.py --source "$PWD" \
+  --commit FROZEN_PR_COMMIT --exp-scope both \
+  --out /tmp/gqa-software-exp-both
+```
+
+The primitive checks over 33,000 actual-domain inputs precede attention timing;
+normal-domain relative error must be <=2e-6, integers exact, tails zero and invalid
+positive/NaN inputs visibly NaN. The GQA cases are packed 4K/B64 and 16K/B32,
+with physical block-table stride8192 and narrowed segment scratch. The original
+model baseline hashes are asserted for both. The harness records code artifacts,
+registers, spills, launch metadata and three alternating graph-timed main+reduce
+pairs per shape. Numerical checks include uniform exactness, random Q at scales
+1 and 8, ragged/zero lengths, a CPU-double dense reference, changed-input CUDA
+graph replay and side-stream determinism. Failed numerical checks skip timing.
+Approximate random-output comparisons use reported relative RMSE thresholds;
+they are component screening criteria, not the model precision gate.
+
+`probability` retains native rescale exp2 and replaces probability exp2 only;
+`both` replaces all four audited full/tail call sites. No runtime select computes
+native and software exponentials together. The final helper `where` only handles
+the declared numerical domain and flush tail. Compiler codegen and BI-V150
+resources must still establish whether the FMA path is beneficial.
+
 Device primitive checks, packed model-shape GQA correctness/resources/timing,
 CUDA graph and side-stream behavior are pending. Root coordinates all GPU runs
 serially. Even if component tests pass, BF16 math changes still require complete
