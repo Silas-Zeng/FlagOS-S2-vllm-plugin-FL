@@ -1,6 +1,6 @@
 # 当前主线 profiling 准备：源码身份和窗口内真实选路
 
-当前团队 main 为 `241220723a09061c182764f8f738e5ec01190367`，已实际 fetch 并合入此独立分支。生产 `vllm_fl/`、`csrc/` 与该版本逐字相同。这是 CJJ1008 本人独立分支 codex/cjj-profile-current-20261027 的诊断准备，承接共享PR62的019ce53/901b4a8工具改动；不更新原PR62。当前尚未启动新GPU profiling。旧 `0bf9` trace 不能作为当前热点证据。
+当前团队 main 为 `241220723a09061c182764f8f738e5ec01190367`。本轮实际尝试fetch超时；随后通过本人CJJ1008的原始GitHub API复核main完整SHA，使用本地已有同SHA对象新建此独立分支，不将失败fetch写成成功同步。生产 `vllm_fl/`、`csrc/` 与该版本逐字相同。这是 CJJ1008 本人独立分支 codex/cjj-profile-current-20261027 的诊断准备，承接共享PR62的019ce53/901b4a8工具改动；不更新原PR62。当前尚未启动新GPU profiling。旧 `0bf9` trace 不能作为当前热点证据。
 
 main2412→K128 完整配对已结束并完成独立审计及owned cleanup：main4K5778.4583/16K4480.9883，candidate4K5698.2074(-1.3888%)/16K4515.4556(+0.7692%)，精度分别102/105及101/105，前后原始语义通过。当前没有可确认的双档端到端收益，保持PR47所在main2412。审计时原候选driver/server/Engine均消失，controller为terminal zombie，9031关闭、ixsmi确认空闲；启动前仍必须重复检查。不得因两臂之间空档或旧状态文件推断任务终止。
 
@@ -8,7 +8,7 @@ main2412→K128 完整配对已结束并完成独立审计及owned cleanup：mai
 
 新增约束：
 
-- driver 默认为 main2412，支持显式完整 `--production-baseline-commit`。启动前核对受测 HEAD、干净生产源码和该基线逐字一致。若团队主线前进（包括 PR63 合入），先 fetch、同步并重新检查生产基线，不能把本文件的旧 SHA 当成最新。
+- driver 默认为 main2412，支持显式完整 `--production-baseline-commit`。启动前核对受测 HEAD、干净生产源码和该基线逐字一致。若团队主线前进，先 fetch、同步并重新检查生产基线，不能把本文件的旧 SHA 当成最新。
 - 用真实 worker 报告的 Torch/C++ ABI，加生产 `build_fingerprint` 算法、实际默认环境、源码字节和 native SO 内容，核对所有 `BIV150_COMPILE_SEMANTICS`。driver 不导入 Torch。worker 和插桩文件的实际导入路径必须属于指定源码。
 - main2412 要求八项安装成功，含 Q32 和 small-out lowering/large-linear；未来生产代码包含 K128 时再要求 K128。没有手工打开 Q32/K128 或关闭已验收 provider。
 - 每个实际 profiler 窗口开始/结束只读取已有 Python 对象与计数器，记录 Q-fragment、Q32、可选 K128 的 manager 身份、active/binding/disabled、选择/回退/编译计数、已选 kernel hash，以及自然 C3 的 selected 计数。没有新增逐调用 hook、pre_run_hook、张量读取、设备查询或窗口边界以外的同步。
