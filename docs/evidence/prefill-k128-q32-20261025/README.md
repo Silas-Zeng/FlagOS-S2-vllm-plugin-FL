@@ -177,3 +177,25 @@ is unscored. Selected-config fingerprints changed over the complete score comman
 do not call this completely compilation-free steady state. 16K and the candidate
 are pending. Compare the candidate against this matched main, not an older peak.
 No service, benchmark, cache policy or production file changed during recovery.
+
+## Completed-pair CPU audit prepared, 2026-10-27 00:46 CST
+
+Published tool tools/audit_biv150_prefill_pair.py is available on the personal
+instance as R/exports/audit_biv150_prefill_pair-v1-20261027.py, SHA256
+bf12b10669c6a3670b5f27db183852c2838f9b12bd42cbce3efce147349570c8.
+It reads existing files only and never merges or starts GPU work.
+It requires complete cleanup, independently scored105/105, three short plus one
+full workload warmup per length, exact request/token geometry, source/default/
+native-library/driver/CLI parity, actual w16 installation AND post-launch selection
+joined to compiler proof, and no Q32 preparation fallback. It reports TTFT and
+observed throughput changes, retaining cache-change caveats.
+Fresh team-main synchronization and the final merge judgment remain external.
+
+CPU validation parsed actual archived GPU selection/compiler records (both JSON
+and Python-literal event formats), matched their hashes and metadata, and did not
+fabricate missing model-install evidence from component logs. The real still-active
+pair was rejected as incomplete, as required; target proof is adjacent JSON.
+No end-to-end candidate qualification is implied. After the controller finishes,
+run this tool with baseline594ae2a9d17aadc4587ad54ade2b34e17f4af990 and
+candidated207eeb7df463d6149b1823fa22ed8ebc8b03d59. Preserve the active
+exports/run_biv150_latest_main_pair.py and run_biv150_small_out_acceptance.py.
