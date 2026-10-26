@@ -52,3 +52,5 @@ stage2随机/全uniform与baseline数值全等；K128随机有舍入差异，但
 Controller568657/start338951699/SID568657已经实际存活，baseline driver568661、server568665，原件launch相邻JSON可审查。baseline期望package fingerprint74b1413...，candidate4b7cab4bd0a11c827d2dd7a780fb2d85075d5128415e7f8a97ab1a6054ccaae8（Native=True）。harness10d11ba...与controller99eda2ee...按SHA固定，未改全局包。配对仍在运行，无完整精度/吞吐结论、不合并。CPU独立审计`tools/audit_biv150_k128_pair.py`专门验证新main真实Q32对照和实际K128/maxnreg/资源/IR/自然C3、105题/预热/TTFT/固定token/初始post语义等；旧w16审计要求baseline没有Q32，不能原样套此新pair。
 
 03:40基线完成精度：独立重读全部105唯一prediction/review/report，无错误或漏题，**102/105=0.9714285714**、通过。对应独立JSON已共享。本轮baseline实际KV为548416tokens（上轮548320不能直接套），实际加载fp74b验证通过，真实Q32 w16/K64选中。随后进入吞吐：4K三短和完整warm已完成，完整warm5871.7426tok/s为**未计分暖场**；正式得分及candidate仍须等原件，不能把暖场当历史最好或配对收益。
+
+03:50基线正式4K完成：**5778.458274320222 total tok/s**、mean TTFT **3285.4543949870276ms**、256/256成功/0失败，input1048576/output262144严格匹配。真实C3首选N62/M2048/Dprefix2/Dall61/outside59、无SCOPE_REJECTED，Q32选中。原计分命令区间selected-config changed=True、8条新kernel metadata，保留此范围含client preflight的局限，不将其称为纯计时区间编译成本或完全无编译扰动。独立partial JSON已共享；16K及candidate尚未完成，不能给出新优化端到端收益。
