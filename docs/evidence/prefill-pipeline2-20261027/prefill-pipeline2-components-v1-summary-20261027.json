@@ -1,0 +1,1585 @@
+{
+  "utc": "2026-10-26T19:02:53.463047+00:00",
+  "official_score": false,
+  "baseline_commit": "241220723a09061c182764f8f738e5ec01190367",
+  "jobs": [
+    {
+      "root": "prefill-pipeline2-main2412-s2-v1-20261027",
+      "source_commit": "8e66af0481a12afdbad0e15c2d9b957ef2c8f750",
+      "baseline_config": [
+        256,
+        16,
+        64,
+        1
+      ],
+      "candidate_maxnreg": null,
+      "cases": [
+        {
+          "name": "chunk4k",
+          "speedup": 0.8458718465772469,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.4464201927185059,
+              "candidate_ms": 1.7127726078033447,
+              "speedup": 0.8444904981132086
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 1.7124614715576172,
+              "baseline_ms": 1.448971152305603,
+              "speedup": 0.8461335781106075
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.4494959115982056,
+              "candidate_ms": 1.7136117219924927,
+              "speedup": 0.8458718465772469
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "f1231a0a8fdf11a905f4a3fcb6d858586133becf222cc65552136bf606b8c1eb",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "f1231a0a8fdf11a905f4a3fcb6d858586133becf222cc65552136bf606b8c1eb",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "231339851666a2ebfe20dbdc71f5df590bddac9629973299758b74fd6ea35d4f",
+                "cubin": "419c406bf01a36f6fca32abc810544521ec1c7774a36f4485c2715b82d2d7c97"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 2,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "e4a586c9594f8ad419ebb902ca65172dff73bb84076c1d8f7858f90d17cb6b16",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "e4a586c9594f8ad419ebb902ca65172dff73bb84076c1d8f7858f90d17cb6b16",
+              "n_regs": 111,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 2,
+                "shared": 81920,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "b6e09596f9c430a5bb0af81d4611c2ac1f6badb9e73771877282038368b9170d",
+                "llir": "079fdf271ede90caab8980f5dbceace4bd14c572ec9cc33d6d9f739f225e16a3",
+                "asm": "5945a2ab124deb317548b2edcaeda3f9fffc65748694397d48189cdff256243f",
+                "cubin": "28aac3ee94e6c62647ba45abdb327c2be58f03eae54facc5789f69110f7d882e"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            true
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        },
+        {
+          "name": "chunk16k",
+          "speedup": 0.8123606084266288,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.563764572143555,
+              "candidate_ms": 8.082022666931152,
+              "speedup": 0.81214379650285
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 8.081610679626465,
+              "baseline_ms": 6.57692289352417,
+              "speedup": 0.8138133788236577
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.565642356872559,
+              "candidate_ms": 8.08217716217041,
+              "speedup": 0.8123606084266288
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "f1231a0a8fdf11a905f4a3fcb6d858586133becf222cc65552136bf606b8c1eb",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "f1231a0a8fdf11a905f4a3fcb6d858586133becf222cc65552136bf606b8c1eb",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "231339851666a2ebfe20dbdc71f5df590bddac9629973299758b74fd6ea35d4f",
+                "cubin": "419c406bf01a36f6fca32abc810544521ec1c7774a36f4485c2715b82d2d7c97"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 2,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "e4a586c9594f8ad419ebb902ca65172dff73bb84076c1d8f7858f90d17cb6b16",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "e4a586c9594f8ad419ebb902ca65172dff73bb84076c1d8f7858f90d17cb6b16",
+              "n_regs": 111,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 2,
+                "shared": 81920,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "b6e09596f9c430a5bb0af81d4611c2ac1f6badb9e73771877282038368b9170d",
+                "llir": "079fdf271ede90caab8980f5dbceace4bd14c572ec9cc33d6d9f739f225e16a3",
+                "asm": "5945a2ab124deb317548b2edcaeda3f9fffc65748694397d48189cdff256243f",
+                "cubin": "28aac3ee94e6c62647ba45abdb327c2be58f03eae54facc5789f69110f7d882e"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            true
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "prefill-pipeline2-main2412-k128-v1-20261027",
+      "source_commit": "8e66af0481a12afdbad0e15c2d9b957ef2c8f750",
+      "baseline_config": [
+        256,
+        16,
+        64,
+        1
+      ],
+      "candidate_maxnreg": null,
+      "cases": [
+        {
+          "name": "chunk4k",
+          "speedup": 0.8256330507104398,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.4488435983657837,
+              "candidate_ms": 1.7565935850143433,
+              "speedup": 0.8248029656523841
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 1.7562754154205322,
+              "baseline_ms": 1.450039029121399,
+              "speedup": 0.8256330507104398
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.4499551057815552,
+              "candidate_ms": 1.7550066709518433,
+              "speedup": 0.8261821050487286
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "57ab69427033ae7a0a0494c888bf94b1ba2d39ddb5e17e36a62506e4b47e68e1",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "57ab69427033ae7a0a0494c888bf94b1ba2d39ddb5e17e36a62506e4b47e68e1",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "79734cb5da88f073b9ec42757831f6a9327a01562c09dc75b2de871a8500850e",
+                "cubin": "ee7ca22def039eca1dd0b5e48ca4589be7a55279cf44d624d55da5a3106ad41c"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "f1c6746803212aa69d309b582e36ce6002f19d49081b926f2a320ff5cd60b7b8",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "f1c6746803212aa69d309b582e36ce6002f19d49081b926f2a320ff5cd60b7b8",
+              "n_regs": 131,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "291a9aeae9b567a9224ebc77a9e5ec74c430c951dea610a1138e25de89966b7c",
+                "llir": "e61cb9c6bf5c3a13e0279fc1e2b932a9a9ba31cdbfd3a198ea614e453880d6ec",
+                "asm": "edb0729e2ca30c8a12807a96582e7d7e59c5fed40891ff3668643e75a76b97f1",
+                "cubin": "322dfb75596e1ea84282068a165e27fd31536ee7c9fc237e60df641150ffda99"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        },
+        {
+          "name": "chunk16k",
+          "speedup": 0.7952410025071811,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.561342716217041,
+              "candidate_ms": 8.250760078430176,
+              "speedup": 0.7952410025071811
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 8.251396179199219,
+              "baseline_ms": 6.566582202911377,
+              "speedup": 0.7958146791527165
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.560293674468994,
+              "candidate_ms": 8.250325202941895,
+              "speedup": 0.7951557681786567
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "57ab69427033ae7a0a0494c888bf94b1ba2d39ddb5e17e36a62506e4b47e68e1",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "57ab69427033ae7a0a0494c888bf94b1ba2d39ddb5e17e36a62506e4b47e68e1",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "79734cb5da88f073b9ec42757831f6a9327a01562c09dc75b2de871a8500850e",
+                "cubin": "ee7ca22def039eca1dd0b5e48ca4589be7a55279cf44d624d55da5a3106ad41c"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "f1c6746803212aa69d309b582e36ce6002f19d49081b926f2a320ff5cd60b7b8",
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "f1c6746803212aa69d309b582e36ce6002f19d49081b926f2a320ff5cd60b7b8",
+              "n_regs": 131,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "291a9aeae9b567a9224ebc77a9e5ec74c430c951dea610a1138e25de89966b7c",
+                "llir": "e61cb9c6bf5c3a13e0279fc1e2b932a9a9ba31cdbfd3a198ea614e453880d6ec",
+                "asm": "edb0729e2ca30c8a12807a96582e7d7e59c5fed40891ff3668643e75a76b97f1",
+                "cubin": "322dfb75596e1ea84282068a165e27fd31536ee7c9fc237e60df641150ffda99"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "prefill-pipeline2-main2412-k128-cap128-v1-20261027",
+      "source_commit": "f036d427d56e99ae94fa23140819a65fc3cf99d0",
+      "baseline_config": [
+        256,
+        16,
+        64,
+        1
+      ],
+      "candidate_maxnreg": 128,
+      "cases": [
+        {
+          "name": "chunk4k",
+          "speedup": 1.0499013989575414,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.4468061923980713,
+              "candidate_ms": 1.3728102445602417,
+              "speedup": 1.0539010749162445
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 1.3795289993286133,
+              "baseline_ms": 1.44772207736969,
+              "speedup": 1.0494321453729967
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.4511700868606567,
+              "candidate_ms": 1.3821965456008911,
+              "speedup": 1.0499013989575414
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "f7da9f62db335793a8655fe9334e3ceb48a40763aaffb83753e5f9171a153563",
+            "requested_maxnreg": null,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "f7da9f62db335793a8655fe9334e3ceb48a40763aaffb83753e5f9171a153563",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "b495c909920b06b67fc73700c408b8715a31b1c77df4a6e53a810f756b71b15e",
+                "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "dfcef83709a64d1195a8d07dcb8a42f5e6273c5a42bcddbc690d3a402a728e1c",
+            "requested_maxnreg": 128,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "dfcef83709a64d1195a8d07dcb8a42f5e6273c5a42bcddbc690d3a402a728e1c",
+              "n_regs": 127,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "1ba2c87870fa4d5a8699d5279976096dcdd167569d3ca313caf3b26c04484269",
+                "llir": "a3761e9696a61699b7b73408c627d60277ab922535f16a0dcc67f7cbb5a0d6e0",
+                "asm": "3c22d6f6ec4de61265cbcb52943227ad092e67ba8aa76da5e5671c2b45c3f5fa",
+                "cubin": "7750b69c81e14936c78772fda359679c2d0f8cc0f727db7c7c363dde30ec1bba"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        },
+        {
+          "name": "chunk16k",
+          "speedup": 1.0297196941780447,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.5641703605651855,
+              "candidate_ms": 6.371497631072998,
+              "speedup": 1.030239786726522
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 6.365055084228516,
+              "baseline_ms": 6.553213596343994,
+              "speedup": 1.0295611757676226
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.553033351898193,
+              "candidate_ms": 6.363900184631348,
+              "speedup": 1.0297196941780447
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "f7da9f62db335793a8655fe9334e3ceb48a40763aaffb83753e5f9171a153563",
+            "requested_maxnreg": null,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "f7da9f62db335793a8655fe9334e3ceb48a40763aaffb83753e5f9171a153563",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "b495c909920b06b67fc73700c408b8715a31b1c77df4a6e53a810f756b71b15e",
+                "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "dfcef83709a64d1195a8d07dcb8a42f5e6273c5a42bcddbc690d3a402a728e1c",
+            "requested_maxnreg": 128,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "dfcef83709a64d1195a8d07dcb8a42f5e6273c5a42bcddbc690d3a402a728e1c",
+              "n_regs": 127,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "1ba2c87870fa4d5a8699d5279976096dcdd167569d3ca313caf3b26c04484269",
+                "llir": "a3761e9696a61699b7b73408c627d60277ab922535f16a0dcc67f7cbb5a0d6e0",
+                "asm": "3c22d6f6ec4de61265cbcb52943227ad092e67ba8aa76da5e5671c2b45c3f5fa",
+                "cubin": "7750b69c81e14936c78772fda359679c2d0f8cc0f727db7c7c363dde30ec1bba"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "prefill-pipeline2-main2412-k128-cap128-boundary-v1-20261027",
+      "source_commit": "f036d427d56e99ae94fa23140819a65fc3cf99d0",
+      "baseline_config": [
+        256,
+        16,
+        64,
+        1
+      ],
+      "candidate_maxnreg": 128,
+      "cases": [
+        {
+          "name": "fresh1024",
+          "speedup": 1.080773853033227,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 0.18708112835884094,
+              "candidate_ms": 0.17304934561252594,
+              "speedup": 1.0810854424016922
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 0.17305497825145721,
+              "baseline_ms": 0.1870332956314087,
+              "speedup": 1.080773853033227
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 0.18710030615329742,
+              "candidate_ms": 0.1735176146030426,
+              "speedup": 1.0782784594021075
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              33,
+              2
+            ],
+            "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+            "requested_maxnreg": null,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "b495c909920b06b67fc73700c408b8715a31b1c77df4a6e53a810f756b71b15e",
+                "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              33,
+              2
+            ],
+            "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+            "requested_maxnreg": 128,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+              "n_regs": 127,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "1ba2c87870fa4d5a8699d5279976096dcdd167569d3ca313caf3b26c04484269",
+                "llir": "a3761e9696a61699b7b73408c627d60277ab922535f16a0dcc67f7cbb5a0d6e0",
+                "asm": "65886e8302234036a4ea14c2471c95330107348dfe1d128d7bb78f62102bbe72",
+                "cubin": "dad32cb4b6150e6fbca6409183a7bcd261f05b6b6c0f04d83770e63bcd6ed6ef"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 1,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 1,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        },
+        {
+          "name": "fresh2048",
+          "speedup": 1.0511139809506873,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 0.5396221876144409,
+              "candidate_ms": 0.5140796303749084,
+              "speedup": 1.0496859936288563
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 0.5148024559020996,
+              "baseline_ms": 0.5411160588264465,
+              "speedup": 1.0511139809506873
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 0.5409696698188782,
+              "candidate_ms": 0.5139826536178589,
+              "speedup": 1.052505694523076
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+            "requested_maxnreg": null,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "b495c909920b06b67fc73700c408b8715a31b1c77df4a6e53a810f756b71b15e",
+                "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              65,
+              2
+            ],
+            "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+            "requested_maxnreg": 128,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+              "n_regs": 127,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "1ba2c87870fa4d5a8699d5279976096dcdd167569d3ca313caf3b26c04484269",
+                "llir": "a3761e9696a61699b7b73408c627d60277ab922535f16a0dcc67f7cbb5a0d6e0",
+                "asm": "65886e8302234036a4ea14c2471c95330107348dfe1d128d7bb78f62102bbe72",
+                "cubin": "dad32cb4b6150e6fbca6409183a7bcd261f05b6b6c0f04d83770e63bcd6ed6ef"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        },
+        {
+          "name": "minimum16k",
+          "speedup": 1.0411726939707115,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 3.6000757217407227,
+              "candidate_ms": 3.460130453109741,
+              "speedup": 1.0404450845213675
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 3.4602770805358887,
+              "baseline_ms": 3.60274600982666,
+              "speedup": 1.0411726939707115
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 3.604306221008301,
+              "candidate_ms": 3.4599673748016357,
+              "speedup": 1.041716822897771
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              33,
+              2
+            ],
+            "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+            "requested_maxnreg": null,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "b495c909920b06b67fc73700c408b8715a31b1c77df4a6e53a810f756b71b15e",
+                "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              33,
+              2
+            ],
+            "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+            "requested_maxnreg": 128,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+              "n_regs": 127,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "1ba2c87870fa4d5a8699d5279976096dcdd167569d3ca313caf3b26c04484269",
+                "llir": "a3761e9696a61699b7b73408c627d60277ab922535f16a0dcc67f7cbb5a0d6e0",
+                "asm": "65886e8302234036a4ea14c2471c95330107348dfe1d128d7bb78f62102bbe72",
+                "cubin": "dad32cb4b6150e6fbca6409183a7bcd261f05b6b6c0f04d83770e63bcd6ed6ef"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        },
+        {
+          "name": "suffix4k",
+          "speedup": 1.0499458379633417,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.454612135887146,
+              "candidate_ms": 1.3824416399002075,
+              "speedup": 1.0522050941637928
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 1.380934238433838,
+              "baseline_ms": 1.4498291015625,
+              "speedup": 1.0498900390845534
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 1.4503237009048462,
+              "candidate_ms": 1.3813319206237793,
+              "speedup": 1.0499458379633417
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              63,
+              2
+            ],
+            "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+            "requested_maxnreg": null,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "b495c909920b06b67fc73700c408b8715a31b1c77df4a6e53a810f756b71b15e",
+                "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              63,
+              2
+            ],
+            "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+            "requested_maxnreg": 128,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+              "n_regs": 127,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "1ba2c87870fa4d5a8699d5279976096dcdd167569d3ca313caf3b26c04484269",
+                "llir": "a3761e9696a61699b7b73408c627d60277ab922535f16a0dcc67f7cbb5a0d6e0",
+                "asm": "65886e8302234036a4ea14c2471c95330107348dfe1d128d7bb78f62102bbe72",
+                "cubin": "dad32cb4b6150e6fbca6409183a7bcd261f05b6b6c0f04d83770e63bcd6ed6ef"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        },
+        {
+          "name": "suffix16k",
+          "speedup": 1.0310146800954372,
+          "rounds": [
+            {
+              "index": 0,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.573376655578613,
+              "candidate_ms": 6.377993583679199,
+              "speedup": 1.0306339398646283
+            },
+            {
+              "index": 1,
+              "order": [
+                "candidate",
+                "baseline"
+              ],
+              "candidate_ms": 6.375075340270996,
+              "baseline_ms": 6.5772881507873535,
+              "speedup": 1.0317192816905223
+            },
+            {
+              "index": 2,
+              "order": [
+                "baseline",
+                "candidate"
+              ],
+              "baseline_ms": 6.573480606079102,
+              "candidate_ms": 6.375739097595215,
+              "speedup": 1.0310146800954372
+            }
+          ],
+          "baseline": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 64,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              64,
+              2
+            ],
+            "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+            "requested_maxnreg": null,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "6a264e2fe83450e189102efc02c377ef8fc9af7ca2ae781d176a286f2fadf3c2",
+              "n_regs": 113,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+                "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+                "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+                "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+                "asm": "b495c909920b06b67fc73700c408b8715a31b1c77df4a6e53a810f756b71b15e",
+                "cubin": "66cf06b318fbbacef4a9cd5122fba9c0f61fe531e6834d7ab20664277dc812b5"
+              }
+            }
+          },
+          "candidate": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "num_warps": 16,
+            "TILE_SIZE": 128,
+            "num_stages": 1,
+            "IS_3D": false,
+            "grid": [
+              64,
+              2
+            ],
+            "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+            "requested_maxnreg": 128,
+            "driver_occupancy": {
+              "returncode": 0,
+              "active_blocks": 2,
+              "threads": 1024,
+              "dynamic_shared": 65536,
+              "limitation": "driver reported capacity, not measured active residency"
+            },
+            "loaded_resources": {
+              "compiled_type": "CompiledKernel",
+              "hash": "b77f790aae7b0006ade46b5b6e7c8b095547cb96c247c777aed5b3f8222873ca",
+              "n_regs": 127,
+              "n_spills": 0,
+              "metadata": {
+                "num_warps": 16,
+                "num_stages": 1,
+                "shared": 65536,
+                "use_sme": 114691,
+                "warp_size": 64
+              },
+              "asm_sha256": {
+                "source": "b6d38462afe673bb0135539519b384d2b800736d15c969f79688a538cd902492",
+                "ttir": "56d581aebab8b0b933713b4eb29602c7dced4107b26b1783a11d7d46014a7c77",
+                "ttgir": "1ba2c87870fa4d5a8699d5279976096dcdd167569d3ca313caf3b26c04484269",
+                "llir": "a3761e9696a61699b7b73408c627d60277ab922535f16a0dcc67f7cbb5a0d6e0",
+                "asm": "65886e8302234036a4ea14c2471c95330107348dfe1d128d7bb78f62102bbe72",
+                "cubin": "dad32cb4b6150e6fbca6409183a7bcd261f05b6b6c0f04d83770e63bcd6ed6ef"
+              }
+            }
+          },
+          "direct_equal": [
+            true,
+            false
+          ],
+          "cpu_reference_guard": [
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            },
+            {
+              "passed": true,
+              "finite": true,
+              "existing_baseline_violations": 0,
+              "baseline_exceptions_over_one_bf16_ulp": 0,
+              "candidate_oracle_violations": 0,
+              "new_or_worsened_violations": 0,
+              "limit": "per-element maximum of original tolerance and observed baseline error"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "archive": {
+    "name": "prefill-pipeline2-components-v1-20261027.tar.gz",
+    "sha256": "7caecdc17997fe529469bb5c7364f978ac6e417efccaa4764027e4cf48e7ef33",
+    "bytes": 443625,
+    "members": 50
+  }
+}

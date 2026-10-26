@@ -1,0 +1,188 @@
+{
+  "utc": "2026-10-26T21:03:08.607943+00:00",
+  "partial_only": true,
+  "candidate_score": {
+    "date": "20261027-045905",
+    "endpoint_type": "vllm",
+    "backend": "vllm",
+    "label": "score-4096",
+    "model_id": "minicpm",
+    "tokenizer_id": "/workspace/MiniCPM5-2B",
+    "num_prompts": 256,
+    "request_rate": "inf",
+    "burstiness": 1.0,
+    "max_concurrency": 64,
+    "duration": 230.0232157278806,
+    "completed": 256,
+    "failed": 0,
+    "total_input_tokens": 1048576,
+    "total_output_tokens": 262144,
+    "request_throughput": 1.1129311412759753,
+    "request_goodput": null,
+    "output_throughput": 1139.6414886665987,
+    "total_token_throughput": 5698.207443332993,
+    "max_output_tokens_per_s": 1911.0,
+    "max_concurrent_requests": 68,
+    "rtfx": 0.0,
+    "mean_ttft_ms": 3284.5796922447335,
+    "median_ttft_ms": 1003.330868203193,
+    "std_ttft_ms": 4753.206392748162,
+    "p99_ttft_ms": 18923.879923019555,
+    "mean_tpot_ms": 52.6365308822328,
+    "median_tpot_ms": 53.56252988511815,
+    "std_tpot_ms": 5.0055211899128516,
+    "p99_tpot_ms": 58.3595575892229,
+    "mean_itl_ms": 52.63653157279621,
+    "median_itl_ms": 36.470737075433135,
+    "std_itl_ms": 93.66688011227048,
+    "p99_itl_ms": 187.14027928654104
+  },
+  "baseline_score": {
+    "date": "20261027-035048",
+    "endpoint_type": "vllm",
+    "backend": "vllm",
+    "label": "score-4096",
+    "model_id": "minicpm",
+    "tokenizer_id": "/workspace/MiniCPM5-2B",
+    "num_prompts": 256,
+    "request_rate": "inf",
+    "burstiness": 1.0,
+    "max_concurrency": 64,
+    "duration": 226.82866913219914,
+    "completed": 256,
+    "failed": 0,
+    "total_input_tokens": 1048576,
+    "total_output_tokens": 262144,
+    "request_throughput": 1.1286051317031682,
+    "request_goodput": null,
+    "output_throughput": 1155.6916548640443,
+    "total_token_throughput": 5778.458274320222,
+    "max_output_tokens_per_s": 1910.0,
+    "max_concurrent_requests": 68,
+    "rtfx": 0.0,
+    "mean_ttft_ms": 3285.4543949870276,
+    "median_ttft_ms": 1010.4878074489534,
+    "std_ttft_ms": 4782.655076843265,
+    "p99_ttft_ms": 19052.39035536069,
+    "mean_tpot_ms": 51.854778944567414,
+    "median_tpot_ms": 53.71945553672257,
+    "std_tpot_ms": 5.424728318937751,
+    "p99_tpot_ms": 58.0984880278781,
+    "mean_itl_ms": 51.854779637188074,
+    "median_itl_ms": 36.47452709265053,
+    "std_itl_ms": 81.9921719004698,
+    "p99_itl_ms": 190.25228123180568
+  },
+  "observed_relative_change": -0.013887931205433857,
+  "working_ttft_pass": true,
+  "raw": {
+    "path": "/workspace/experiments/minicpm-s2/prefill-k128-main2412-pair-v1-20261027/candidate/score-4096/score-4096-infqps-concurrency64-minicpm-20261027-045905.json",
+    "sha256": "8594c985d51983dcfe625802d8484eb84b5ee75d74e119be3ad7ee807431112d"
+  },
+  "selected_config": {
+    "before": {
+      "TunedConfig_iluvatar_triton_3_2.db": "dc9b06205fe18bdbed909dc99268057728c55465269dc40daeabcdeda53507fc",
+      "TunedConfig_iluvatar_triton_3_6.db": "5fc154f1aac8bdf3176de9108d4716f88df0caee11036f93833930eb0b317ad1"
+    },
+    "after": {
+      "TunedConfig_iluvatar_triton_3_2.db": "dc9b06205fe18bdbed909dc99268057728c55465269dc40daeabcdeda53507fc",
+      "TunedConfig_iluvatar_triton_3_6.db": "62d9596f8dd6d85533e676c9b2728d84798cec166547e123c9612acc28baf055"
+    },
+    "changed": true,
+    "scope": "Complete benchmark command including client preflight; not isolated timed scoring cost."
+  },
+  "new_metadata": [
+    {
+      "path": "ABTSACG3WDPZ6S5NF3ZV7BOQE5WCA523YF6OXBN2RFPQVPZSZZ3Q/_index_linearized_jit_function.json",
+      "sha256": "a235b8495687901a402222e887b6872a1b45346c15423718c243515cb618f76a",
+      "mtime_ns": 1793048236463073116
+    },
+    {
+      "path": "F7S4QVRUN4WQPFDQ5GO5I2DONPO3KYNRKW4SQH5KQR7X3DSYAFHQ/kernel_biv150_prefill_stride.json",
+      "sha256": "4d6f6c1651177070f043597b45b740a6cbd25fc6e3cf9f654893fbc50f4c2205",
+      "mtime_ns": 1793048249950942509
+    },
+    {
+      "path": "FSEMW35474YWBRZNH7PNDC3TFSPJNDQQRODOTGFHTKJ7W2JXXKYQ/kernel_biv150_prefill_stride.json",
+      "sha256": "56af7a062ca2c00d005c3488584ebbaa355a140a0504ed97bc948123277f5f10",
+      "mtime_ns": 1793048248590955678
+    },
+    {
+      "path": "G72TZWRVNJA7U5D427YMBNW3ORP3NC23IKSHMHMSUMLDHQB4SHSA/_index_linearized_jit_function.json",
+      "sha256": "652ce1ad8d029864008d1ce99dc74b80e5aa75bbec033bca15207bd971345d1a",
+      "mtime_ns": 1793048231031125714
+    },
+    {
+      "path": "OBLKPNJDZGOJUXSSCRGVWXOARU6WDAM7VUJ7PHP5ZLY3NAQKZB3A/_index_linearized_jit_function.json",
+      "sha256": "d35dc6b2567c30a41538080e519838116998c361080825e9617f97827d01b30d",
+      "mtime_ns": 1793048192671497162
+    },
+    {
+      "path": "P3ELL72DFXO65IMHSTSOJ6N2OND3FMUNRINU55MTSS2EPR2QCKNQ/_index_linearized_jit_function.json",
+      "sha256": "f91b2caefbdf3285222322a6b7fcb67a898e4fb97ce1d1d96ecfe723653c8978",
+      "mtime_ns": 1793048253210910942
+    },
+    {
+      "path": "W2KMUMMGSNL6NY7WMFFFYO6LENAUSYD2GQLNEV77YIU6YI3EQ47Q/_index_linearized_jit_function.json",
+      "sha256": "a5cbeff841e4645ad684f208d56437fa95f20eb6161e90dd087d442fdedfd2d2",
+      "mtime_ns": 1793048173331684435
+    },
+    {
+      "path": "XC5WCRUFIIS23BQJ65TSBYBA6T3KIXL3PJ4SDPUC6HGGM7RCLNUQ/_index_linearized_jit_function.json",
+      "sha256": "d732e66fff349e0bea667a74947652100bc86ca735bda5e4666571b7dddb0ae7",
+      "mtime_ns": 1793048309186368914
+    }
+  ],
+  "actual_k128": {
+    "installations": [
+      {
+        "installed": true,
+        "block_m": 256,
+        "block_q": 32,
+        "num_warps": 16,
+        "num_stages": 1,
+        "tile_size": 128,
+        "maxnreg": 128,
+        "minimum_query_rows": 1024,
+        "num_sequences": 1,
+        "fallback": "current verified Q32 K64"
+      }
+    ],
+    "selections": [
+      {
+        "hash": "fd19164f12367399cc2d1cd657b9e23474d3b7b48729230d2b164ea41896b155",
+        "rows": 2047,
+        "num_sequences": 1,
+        "block_m": 256,
+        "block_q": 32,
+        "num_warps": 16,
+        "num_stages": 1,
+        "tile_size": 128,
+        "maxnreg": 128,
+        "n_regs": 127,
+        "n_spills": 0,
+        "shared": 65536
+      }
+    ]
+  },
+  "natural_c3": [
+    {
+      "pid": 579418,
+      "N": 63,
+      "M": 2048,
+      "Dprefix": 1,
+      "Dall": 62,
+      "outside": 61,
+      "sampler_rows": 63,
+      "original_model_forward_returned": true,
+      "runtime_mode": "NONE",
+      "inverse_logits_order": "original_request_rows",
+      "token_bitwise_equivalence_claimed": false
+    }
+  ],
+  "limitations": [
+    "Single scored round; not a confidence interval.",
+    "Config interval includes client preflight.",
+    "16K/post-score semantics/cleanup and fresh-main merge review remain pending."
+  ]
+}
