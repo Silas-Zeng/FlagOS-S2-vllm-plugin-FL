@@ -27,7 +27,7 @@ EXPECTED_KV_INTERFACE = (
 )
 EXPECTED_GQA = "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1"
 EXPECTED_NORMALIZATION = (
-    "24a421fa25e0ce7e21b54deb760a5bc893d3899a86ced4849bd3f3bfab50ed42"
+    "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1"
 )
 _ENABLE_ENV = "VLLM_FL_BIV150_Q_FRAGMENT"
 _INSTALLED_ATTR = "_biv150_q_fragment_service_installed"
@@ -643,7 +643,7 @@ def _audited_kernel_binding(attention, backend):
     fn = getattr(kernel, "fn", None)
     if (
         not inspect.isfunction(fn)
-        or fn.__code__.co_name != "kernel_biv150_prefill_normalized"
+        or fn.__code__.co_name != "kernel_biv150_prefill_stride"
         or not fn.__code__.co_filename.startswith("<biv150-prefill-normalized-")
         or inspect.getsource(fn).count("L = tl.zeros([BLOCK_M], dtype=tl.float32)") != 1
     ):
