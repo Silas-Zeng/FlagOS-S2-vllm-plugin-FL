@@ -68,7 +68,11 @@ including invalid CTAs, and valid reversed work costs are nonincreasing.
 A separate complete permutation/involution check covers every grid size 1..2049.
 Actual parent descriptor gates reject 3D, multiple sequences, short queries,
 changed geometry, aliasing and mismatched grids. Modified SDK text is rejected.
-No Torch or Triton is imported by this CPU checker.
+The CPU controller check also executes the unchanged main `_Policy` plus the
+actual experiment Tap using fake launchers: both routes receive identical
+selected grids/kwargs, the baseline does not recurse through its temporary Tap,
+and excluded scopes retain the parent's original fallback. No Torch or Triton
+is imported by this CPU checker.
 
 Reproduce against the original audited SDK **files**, without importing them:
 
@@ -81,6 +85,38 @@ python3 tools/check_biv150_prefill_reverse_cpu.py --source "$PWD" \
 
 The stored [CPU result](evidence/prefill-reverse-20261027/cpu-result.json) records
 source/helper AST hashes, scope checks and per-fixture ownership/work summaries.
+
+## Coordinated component command (not executed)
+
+```bash
+python3 tools/bench_biv150_prefill_reverse.py --source "$PWD" \
+  --commit FROZEN_PR_COMMIT --run-gpu \
+  --out /tmp/prefill-reverse-component
+```
+
+The default matrix includes all twelve cases. `--case chunk4k --case chunk16k`
+selects a smaller diagnostic; partial coverage does not pass the full matrix.
+The harness refuses a live port9031 service, a busy GPU, dirty tracked sources,
+a changed production tree, or imports from another plugin checkout. It installs
+the existing in-process fixture baseline and main default Q32 policy. Both
+routes traverse that same policy object; only its private kernel-launch target
+changes temporarily. The candidate uses the original main Q-hoist verified
+manager and rejects a raw JIT source unlike the CPU-audited normalized source.
+
+Uniform and random inputs must be bit-identical to current Q32 output, pass the
+existing CPU-double reference guard, preserve input bytes/output canaries and
+match changed-input graph replay and side-stream results. Both routes must
+compile identical ABI/constants/attrs and receive identical launch descriptors.
+Q-hoist proof is required before graph capture. Graphs replay the warmed private
+JITs with the captured parent-selected arguments; this tests component graph
+behavior and is not the production wrapper's capture fallback path.
+
+The harness records loaded registers/spills, shared memory, use_sme, warp count,
+all code artifacts and Q-hoist manager snapshots. Current prefill w16 resources
+are 65536B shared memory, warp_size64 and use_sme114691 (the GQA use_sme14 setting
+is unrelated). Changed metadata or registers/spills stop this scheduling-only
+experiment before timing. Passing cases run three alternating graph-timing
+pairs. Failure evidence is saved and the original parent policy target restored.
 
 Device numerical identity, actual codegen/Q-hoist retention, resources, graphs,
 streams and alternating timings remain pending. Root coordinates GPU work

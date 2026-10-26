@@ -146,6 +146,60 @@ def scope_check(root):
                 rejected_grids=3,uses_actual_parent_descriptor_gate=True)
 
 
+def controller_check(root):
+    # Exercise the actual unchanged parent _Policy and harness Tap with fake
+    # launchers. This catches recursion or a changed selected-grid binding
+    # without importing Torch, Triton, or performing device work.
+    from bench_biv150_prefill_reverse import Tap
+    fragment=load_python(root/'vllm_fl/patches/biv150_q_fragment_service.py','_reverse_controller_fragment')
+    tree=ast.parse((root/'vllm_fl/patches/biv150_prefill_q32.py').read_text())
+    classes=[node for node in tree.body if isinstance(node,ast.ClassDef)]
+    namespace={'qfragment':SimpleNamespace(Manager=object,_eligible=fragment._eligible)}
+    exec(compile(ast.Module(body=classes,type_ignores=[]),'<actual-main-q32-policy>','exec'),namespace)
+    class Launch:
+        def __init__(self,label):self.label,self.calls=label,[]
+        def __getitem__(self,grid):
+            def invoke(*args,**kwargs):
+                self.calls.append((tuple(grid),kwargs.copy()))
+                return SimpleNamespace(hash=self.label)
+            return invoke
+    base_launch,candidate_launch,fallback=Launch('baseline'),Launch('candidate'),Launch('fallback')
+    baseline_view=SimpleNamespace(wrapper=base_launch,optimized={'baseline':{}})
+    reverse_view=SimpleNamespace(wrapper=candidate_launch,optimized={'candidate':{}})
+    taps={'baseline':Tap(baseline_view,fragment),'candidate':Tap(reverse_view,fragment)}
+    parent=SimpleNamespace(async_mode=SimpleNamespace(get=lambda:None),
+        raw=SimpleNamespace(pre_run_hooks=[]),candidate=SimpleNamespace(pre_run_hooks=[]),
+        device=None,wrapper=taps['baseline'],optimized={},
+        attention=SimpleNamespace(torch=SimpleNamespace(cuda=SimpleNamespace(
+            is_current_stream_capturing=lambda:False))))
+    policy=namespace['_Policy'](fallback,parent)
+    values=dict(IS_3D=False,HEAD_SIZE=128,HEAD_SIZE_PADDED=128,num_query_heads=16,
+        num_queries_per_kv=8,BLOCK_M=128,BLOCK_Q=16,BLOCK_SIZE=16,TILE_SIZE=64,
+        NUM_SEGMENTS_PER_SEQ=1,KV_QUANT_MODE=0,USE_CAUSAL=True,SLIDING_WINDOW=0,
+        CHUNK_LOOKBACK=-1,CHUNK_SIZE=-1,num_warps=8,num_stages=1,num_seqs=1,
+        query_ptr=Tensor((2017,16,128),(2048,128,1),1),
+        output_ptr=Tensor((2017,16,128),(2048,128,1),2),
+        key_cache_ptr=Tensor((1024,16,2,128),(8192,256,128,1),3),
+        value_cache_ptr=Tensor((1024,16,2,128),(8192,256,128,1),3),
+        query_start_len_ptr=Tensor((2,),(1,),4,'torch.int32'),
+        seq_lens_ptr=Tensor((1,),(1,),5,'torch.int32'),
+        block_tables_ptr=Tensor((1,8192),(8192,1),6,'torch.int32'))
+    before=values.copy()
+    for label,tap in taps.items():
+        parent.wrapper=tap
+        assert policy[(127,2)](**values).hash==label
+        assert tap.grid==(64,2) and tap.kwargs['BLOCK_M']==256 and tap.kwargs['num_warps']==16
+    assert values==before and not fallback.calls
+    assert taps['baseline'].kwargs==taps['candidate'].kwargs
+    for change in ({'IS_3D':True},{'num_seqs':2},{'ir_override':'foreign'},
+                   {'query_ptr':Tensor((1023,16,128),(2048,128,1),1)}):
+        assert policy[(127,2)](**dict(values,**change)).hash=='fallback'
+    assert len(base_launch.calls)==len(candidate_launch.calls)==1
+    return dict(actual_parent_policy_and_tap_executed=True,same_selected_grid_and_kwargs=True,
+        caller_kwargs_unchanged=True,unsupported_scope_uses_parent_fallback=True,
+        baseline_does_not_recurse=True,device_executed=False)
+
+
 def main(args):
     baseline,candidate,proof=source_factory(args.sdk_source.read_text(),args.source)
     helpers,helper_proof=helper_namespace(args.helpers_source)
@@ -165,8 +219,10 @@ def main(args):
     result=dict(passed=True,cpu_only=True,gpu_executed=False,torch_imported='torch' in sys.modules,
         official_score=False,precision_gate=False,production_unchanged=True,
         source_transform=proof,helper_ast_sha256=helper_proof,scope_checks=scope_check(args.source),
+        controller_checks=controller_check(args.source),
         complete_grid_sizes_checked=grids, rejects_changed_sdk=rejects_changed_sdk,cases=records,
         limitation='Scalar actual-SDK AST plus ownership proof; device codegen, resources, scheduling and performance untested.')
+    assert 'torch' not in sys.modules and 'triton' not in sys.modules
     data=json.dumps(result,indent=2)+'\n'
     if args.out:args.out.write_text(data)
     print(data,end='')
