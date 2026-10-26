@@ -9,3 +9,18 @@ Whole-module normalized generated Triton math yields13common unique bodies,0excl
 Actual startup capacity is candidate547632/control548320tokens:688tokens, equivalent to28.21875MiB at42layers x2K/V x2heads x128dim x2bytes. The visible-buffer model does not establish the cause: native workspaces, device binaries, allocator reservations/fragmentation and CUDA Graph pools are excluded. Do not change safety margins or claim a capacity win from this analysis. WorkerFL.determine_available_memory separately budgets non-torch increase, forward torch peak, weights and graph estimate. Targeted runtime budget evidence is needed if the matched16K result confirms a regression.
 
 CPU tests independently check alias byte-counts, symbolic rows, invalid view bounds and fail-closed unknown allocation handling. Generated code is parsed, never imported or executed. This audit is not performance acceptance. PR58candidate has102/105,5760.27/4049.28 and pre/post-warm semantics; its exact-source full105 control has103/105 and is still doing throughput. Both formal workloads/TTFT/post-warm checks and final cleanup/control comparisons must complete before any merge decision.
+
+## Sampler/head profile row contract (CPU source audit)
+
+Main349profile_run calls _dummy_run(max_num_tokens,is_profile=True), then
+passes last_hidden_states to _dummy_sampler_run. _dummy_run returns one
+hidden row per scheduled request, selected with cumulative scheduled lengths
+minus1. Its ordinary profile sampler row count is min(num_tokens,max_num_seqs),
+not automatically2048. Actual current numeric row count and live peaks have
+not been measured here. For illustration only, a256-row BF16 vocabulary temp
+is63.75MiB; treating it as a2048-row510MiB temp would overstate this term8x.
+Do not claim a1GiB logits cast or capacity gain from max_batched_tokens alone.
+No profile coverage, max_num_seqs or service setting was reduced. Hidden
+BLAS/sampler workspaces and overlapping live tensors still need actual peak
+measurement before a head memory intervention. Old v2 linear_kernel4.51s of
+555.89s is a diagnostic prioritization clue only, not current head attribution.
