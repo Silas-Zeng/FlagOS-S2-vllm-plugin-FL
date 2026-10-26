@@ -259,3 +259,36 @@ The candidate naturally emitted existing COMPUTE_ORDER_FIRST_SELECTED with
 N62/M2048/Dprefix2/Dall61/outside59, matching the baseline's observed geometry;
 no SCOPE_REJECTED or Q32_FALLBACK was observed. Existing framework routing was
 therefore not silently disabled by this operator integration.
+
+## Complete paired acceptance qualified, 2026-10-27 02:06 CST
+
+The original controller completed both arms and owned cleanup. Independent full
+CPU audit on the personal instance passes; GPU idle/port9031 closed confirmed.
+An independent local replay verifies all125 original-file SHA256 values in the
+126-member raw archive and repeats the full precision/default/path/token/warmup/
+TTFT/comparison audit successfully.
+
+| Score | Main594 | Default candidate | Observed change |
+|---|---:|---:|---:|
+| 4K total tok/s | 5778.243627140731 | 5830.358319647462 | +0.901912% |
+| 16K total tok/s | 4187.31786930508 | 4488.869340301553 | +7.201542% |
+| Full105 precision | 101/105 | 103/105 | Both pass |
+
+Candidate meanTTFT3354.6388174800086ms /111118.65830591705ms passes both limits.
+All256/128requests and exact tokens, both initial/post-score semantics, actual
+defaultw16 install+postlaunch+compiler proof, original C3 path and cleanup pass.
+Both have548320KV tokens. 4K both configchanged+4index;16K both unchanged+0new
+metadata. Treat percentages as one paired observation, not a stable effect estimate.
+The competition CLI/benchmark, installed dependencies and nativeSO5c are unchanged.
+
+Raw prefill-w16-pair-v1-final-evidence-20261027.tar.gz:1891661bytes,
+SHA256 b4a3c7a1ef50672972725f2b4390ca88ca86df37fcf6fb9f8760a61d2ea8036a.
+It contains complete105 raw predictions/reviews/reports, all benchmark commands/
+warmups/scored results, source/default/compile evidence, initial/post semantics,
+controller states and owned cleanup. Private compiler caches are excluded.
+Final-independent, final-summary, cleanup-coverage and local-replay JSON are adjacent.
+A fresh actual Git fetch succeeded using a DNS-observed GitHub address with normal
+TLS verification; latest main remains594ae2a, matching the frozen control.
+Production remains byte-identical to tested1a0/d207. Merge is authorized by the
+user after these gates; no further performance load is needed for this unchanged
+production source. The unbounded optimization goal remains active after this PR.
