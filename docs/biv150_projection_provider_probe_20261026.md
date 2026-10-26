@@ -410,3 +410,33 @@ with precision/TTFT satisfied; otherwise continue profile-guided optimization.
 No further user approval is needed for a qualified merge, but no result has yet
 been established for this new pair. PR62profiling preparation is shared/Draft,
 not an extra live GPU job.
+
+### Read-only selected-config audit alongside the frozen pair
+
+The frozen87acceptance already records new kernel metadata; to retain selected-
+config state without changing its in-flight source, a separateCPU-only observer
+started05:34:32UTC:531460/start334042404/SID531460. Source
+observe_biv150_pair_cache.py SHA3cf24ae69ca571403a19f7019c718e28d6346b61d920def962c9729e765a1976.
+It imports only the frozen stdlib noise helper(asserts noTorch), reads private DBs
+read-only during unscored full warmup at>=5s spacing, and after result JSON exists.
+After a score command is detected no periodic DB reads are scheduled. A read
+started before command creation can overlap client startup; times are retained.
+Before snapshot must finish beforecommand.jsonmtime. It can precede final warmup
+changes, so a changed digest is conservative wider-interval evidence, not isolated
+scoring/tuning cost or kernel causality. No device calls, source/parameter changes,
+service restart or extra GPU test. Own JSON/log/launch underexports/latest-main-pair-v1-cache-audit*.
+
+At06:00:22UTC controller522884/driver522888/observer531460 remained live with exact
+ticks. Baseline full105report.9714,105unique/no failed predictions;4K scored
+5588.222434518669tok/s,TTFT3468.8149666089885ms,256/256/no failures.16Kpending.
+The conservative4Kaudit found changed selected-config state; do not conclude from
+that alone it changed inside the measured score rather than final warmup. Candidate
+is not started yet and5930old diagnostic is not its matched performance evidence.
+
+The implementation includes a real supplied-output linear API and compiler-owned
+buffer integration, not only an implementation preference switch. It removes the
+SDK wrapper's output allocation on eligible calls and preserves unsupported and
+original dispatcher fallbacks. The existing FlagGems5.3.5registration includes
+mm.out and the Iluvatar implementation launches its MM kernel into caller output;
+these source facts are not an additional unmeasured model-speed claim. This scope
+is relevant to the rule forbidding switching operators without operator work.
