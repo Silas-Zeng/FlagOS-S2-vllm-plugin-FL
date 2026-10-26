@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "team_baseline": "6971ef48615af97a1637405c71f96dd89969563e",
+  "prior_measured_source": "a48cc8b68cbb68e421ead6e2d9e6fda0156c2354",
+  "operator_math_function_asts_unchanged": {
+    "vllm_fl/patches/biv150_stable_small_o.py:_linear": "3fec3ee0dd523fb8177eea94f8154d17290bcc07a5383a7d57f37b12833b014e",
+    "vllm_fl/patches/biv150_stable_small_o.py:_small_o_kernel": "22060e0b7dd9c4d37cf849134eb3cf1097abac9ef9fd3f642851c35cbec76b61",
+    "vllm_fl/patches/biv150_stable_small_o.py:_small_o_into": "b95cb0cfd9171a69a2d5858510731d8a30ce13bcb25c8842311446d60e4bc780",
+    "vllm_fl/patches/biv150_stable_small_o.py:_register": "84e44af49831c6cb632e4720d672b31fd233cd2a24c8b61c12b33ce96d71ddc8",
+    "vllm_fl/patches/biv150_small_out_lowering.py:small_linear_out": "bc200cad7e507b4fcff81dd2f82520aa6deaca4461567de3054ddd70122bbc46",
+    "vllm_fl/patches/biv150_provided_linear.py:initialize": "9aab630751ef43ee7f6891b625953b11171f5985743d9b65af32635e9cd0c65c",
+    "vllm_fl/patches/biv150_provided_linear.py:linear_into": "9addca06349226d3457fd2c8275b92f1609622970c0ee7bbafce95bb878c4862"
+  },
+  "team_prefill_files_exact": true,
+  "default_candidate_not_yet_model_qualified": true,
+  "cpu": [
+    {
+      "command": [
+        "python3",
+        "tools/check_biv150_large_linear_cpu.py"
+      ],
+      "result": {
+        "passed": true,
+        "gpu_executed": false,
+        "routing_cases": 228,
+        "promoted_sdk_functions_exact": true,
+        "inert_import": true,
+        "active_cache_identity": true,
+        "tiny_protection_retained": true,
+        "live_change_rejected": true
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_biv150_small_out_lowering_cpu.py"
+      ],
+      "result": {
+        "passed": true,
+        "gpu_executed": false,
+        "output_callback_cases": 40,
+        "symbolic_M_layout_cases": 4,
+        "unsupported_compiler_fallbacks": 4,
+        "output_buffer_identity_preserved": true,
+        "kernel_math_ast_unchanged": true,
+        "default_enabled_equivalent": true,
+        "active_cache_identity_separated": true,
+        "remaining": "Actual Torch compile, streams/changed Graphs, generated out calls, model105 and warmed4K/16K"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_biv150_provided_linear_cpu.py",
+        "--provider-file",
+        "vllm_fl/patches/biv150_provided_linear.py"
+      ],
+      "result": {
+        "passed": true,
+        "gpu_executed": false,
+        "valid_descriptor_launch_cases": 44,
+        "tiny_rows_rejected": true,
+        "autograd_rejected": true,
+        "provided_output_identity": true,
+        "limitation": "CPU ABI mocks only; actual SDK selection, numerical/Graph correctness and performance pending."
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "tools/check_biv150_noise_mature_cpu.py",
+        "."
+      ],
+      "result": {
+        "passed": true,
+        "cleanup_ast_preserved": true,
+        "cache_bytes_and_group_rebase": true,
+        "completed_matching_seed_required": true,
+        "symlink_and_escape_rejected": true,
+        "wal_snapshot_preserved": true,
+        "torch_imported": false
+      }
+    }
+  ]
+}
