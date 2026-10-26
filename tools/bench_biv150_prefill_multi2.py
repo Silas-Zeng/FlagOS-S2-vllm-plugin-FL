@@ -21,19 +21,76 @@ CASES.update({
     'double16k-ragged-tail': ([1994,39], [16383,39]),
     'double16k-ragged-tail-reverse': ([39,1994], [39,16383]),
 })
+SCOPE_CASES = {
+    'scope-below1023-balanced-fresh': ([511,512], [511,512]),
+    'scope-below1023-q1-first': ([1,1022], [16383,1022]),
+    'scope-at1024-balanced-fresh': ([512,512], [512,512]),
+    'scope-at1024-q1-first': ([1,1023], [16383,1023]),
+    'scope-at1024-q1-last': ([1023,1], [1023,16383]),
+    'scope-at1024-q2-first': ([2,1022], [17,4095]),
+    'scope-at1024-q2-last': ([1022,2], [4095,17]),
+    'scope-above1025-balanced-long': ([512,513], [4095,16383]),
+    'scope-above1025-q1-first': ([1,1024], [1,16383]),
+    'scope-above1025-q1-last': ([1024,1], [16383,1]),
+    'scope-grid1026-balanced': ([513,513], [513,513]),
+    'scope-grid1026-q1-first': ([1,1025], [16383,1025]),
+    'scope-grid1026-q1-last': ([1025,1], [1025,16383]),
+    'scope-balanced2048-fresh': ([1024,1024], [1024,1024]),
+    'scope-balanced2048-long': ([1024,1024], [16384,16383]),
+    'scope-empty-first': ([0,1024], [0,1024]),
+    'scope-empty-last': ([1024,0], [1024,0]),
+    'scope-maxkv131071-q1': ([1,1023], [131071,1023]),
+}
+CASES.update(SCOPE_CASES)
+
+
+def descriptor_scope(num_sequences,query_rows):
+    """The proposed policy's complete descriptor-only size condition."""
+    return (type(num_sequences) is int and type(query_rows) is int
+            and num_sequences==2 and query_rows>=1024)
+
+
+def launch_grid(query_rows,num_sequences,block_q):
+    # The extra programs are per sequence. Q32's single-sequence +1 is invalid
+    # for this policy; e.g. 513+513 has 34 nonempty BQ32 tiles, not 33.
+    return (query_rows//block_q+num_sequences,2)
+
+
+class ComponentScopePolicy:
+    """Private diagnostic selector; no serving registration or tensor reads."""
+    def __init__(self,baseline,candidate):
+        self.baseline,self.candidate=baseline,candidate
+        self.selected_calls=self.fallback_calls=0
+
+    def __call__(self,**kwargs):
+        if descriptor_scope(kwargs['seqused_k'].shape[0],kwargs['q'].shape[0]):
+            self.selected_calls+=1
+            return self.candidate(**kwargs)
+        self.fallback_calls+=1
+        return self.baseline(**kwargs)
+
+    def snapshot(self):
+        return dict(selected_calls=self.selected_calls,fallback_calls=self.fallback_calls,
+                    condition='num_sequences == 2 and total_query_rows >= 1024',
+                    host_reads_from_device=False,production_installed=False)
 
 def validate_case(qlens,klens):
-    if (len(qlens)!=2 or len(klens)!=2 or min(qlens)<=1 or max(qlens)<1024
+    if (len(qlens)!=2 or len(klens)!=2
             or any(type(x) is not int for x in (*qlens,*klens))
-            or sum(qlens)<1024 or any(k<q for k,q in zip(klens,qlens))):
-        raise ValueError('Two non-decode sequences with a >=1024-row query are required')
+            or min(qlens)<0 or sum(qlens)<=0
+            or any(k<q for k,q in zip(klens,qlens))):
+        raise ValueError('Two nonnegative query lengths with positive total and KV>=Q are required')
 
 
 def case_contract(qlens,klens):
     validate_case(qlens,klens)
     return dict(total_query_rows=sum(qlens),num_sequences=2,
-        first_visible_kv=[k-q+1 for q,k in zip(qlens,klens)],
-        last_visible_kv=list(klens),last_page_valid_tokens=[(k-1)%16+1 for k in klens],
+        private_policy_selects_wide=descriptor_scope(2,sum(qlens)),
+        expected_baseline_grid=launch_grid(sum(qlens),2,16),
+        expected_wide_grid=launch_grid(sum(qlens),2,32),
+        first_visible_kv=[k-q+1 if q else None for q,k in zip(qlens,klens)],
+        last_visible_kv=[k if q else None for q,k in zip(qlens,klens)],
+        last_page_valid_tokens=[(k-1)%16+1 if k else 0 for k in klens],
         nonempty_query_tiles_per_kv_head={str(bq):sum((q+bq-1)//bq for q in qlens)
                                           for bq in (16,32)},
         limitation='Logical query tiles only; not actual launch grids, timing or service frequency.')
@@ -74,6 +131,9 @@ def kernel_configuration(tap, manager):
         raise RuntimeError('Selected kernel does not match comparison configuration')
     if not manager.active or tap.compiled is None or tap.compiled.hash not in manager.optimized:
         raise RuntimeError('Q-hoist was not selected')
+    expected_grid=launch_grid(tap.kwargs['query_ptr'].shape[0],tap.kwargs['num_seqs'],manager.block_m//8)
+    if tuple(tap.grid)!=expected_grid:
+        raise RuntimeError('Launch grid lost a per-sequence tail program')
     occupancy = {}
     try:
         import ctypes
@@ -91,7 +151,7 @@ def kernel_configuration(tap, manager):
                          limitation='driver reported capacity, not measured active residency')
     except Exception as error:
         occupancy = dict(error=repr(error))
-    return dict(expected, grid=list(tap.grid), hash=tap.compiled.hash,
+    return dict(expected, grid=list(tap.grid), expected_grid=list(expected_grid),hash=tap.compiled.hash,
                 requested_maxnreg=tap.kwargs.get('maxnreg'), driver_occupancy=occupancy,
                 loaded_resources=importlib.import_module(
                     'vllm_fl.patches.biv150_q_fragment_service')._resources(tap.compiled))
@@ -187,12 +247,14 @@ def selected_configuration(tap,manager):
 
 
 def main(args):
-    chosen=args.case or list(DEFAULT_CASES)
+    chosen=args.case or list(SCOPE_CASES if args.suite=='scope' else
+                            CASES if args.suite=='all' else DEFAULT_CASES)
     for name in chosen:validate_case(*CASES[name])
     if not args.run_gpu:
         print(json.dumps(dict(gpu_executed=False,baseline='actual current policy fallback',
             cases={name:CASES[name] for name in chosen},candidate=[args.bm,args.warps,args.kv_tile,args.stages],
             case_contracts={name:case_contract(*CASES[name]) for name in chosen},
+            private_policy='num_sequences == 2 and total_query_rows >= 1024',
             precision_gate=False,production_changed=False)))
         return
     require_idle_probe_host()
@@ -210,6 +272,7 @@ def main(args):
     attention = importlib.import_module('vllm.v1.attention.ops.triton_unified_attention')
     backend = importlib.import_module('vllm.v1.attention.backends.triton_attn')
     candidate, candidate_manager = candidate_function(attention, backend, qmodule,args.bm,args.warps,args.kv_tile,args.stages)
+    policy=ComponentScopePolicy(baseline,candidate)
     taps = {'baseline':baseline_tap}
     for label, manager in [('candidate',candidate_manager)]:
         tap = Tap(manager.wrapper,args.maxnreg)
@@ -221,7 +284,7 @@ def main(args):
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   baseline_mode='current-multi2', baseline_config=[baseline_manager.block_m,baseline_manager.num_warps,baseline_manager.tile_size,baseline_manager.num_stages],
                   production_transform_unchanged=True,
-                  query_case_provenance='Representative orderings from aggregate logs; KV lengths chosen, not a captured step.',
+                  query_case_provenance='Representative Q combinations derive from aggregate logs; scope/tail cases are designed; KV lengths chosen, not captured steps.',
                   protocol_source_commit='032d6d317289cfd156ff8227904f6de264deab3d',
                   candidate_maxnreg=args.maxnreg,
                   adapted_manager_sha256=adapted_sha, candidate_tile=[args.bm,args.bm//8], candidate_warps=args.warps, candidate_kv_tile=args.kv_tile, candidate_stages=args.stages, installations=installations, cases=[], errors=[])
@@ -231,7 +294,13 @@ def main(args):
     try:
         for name in chosen:
             qlens, klens = CASES[name]
+            eligible=descriptor_scope(len(qlens),sum(qlens))
+            wide_calls_before=candidate_manager.selected_calls
+            candidate_route=(candidate_manager,taps['candidate']) if eligible else (baseline_manager,baseline_tap)
+            routes={'baseline':(baseline_manager,baseline_tap),'candidate':candidate_route}
             row=dict(name=name, qlens=qlens, klens=klens,
+                     private_policy_selects_wide=eligible,
+                     candidate_route='private BM256/w16' if eligible else 'unchanged current BM128 fallback',
                      case_contract=case_contract(qlens,klens),checks=[], rounds=[], completed=False)
             result['cases'].append(row);save()
             host=fixture.cpu_inputs(qlens,klens,20261025,0)
@@ -254,7 +323,7 @@ def main(args):
                     out.fill_(float('nan'));call(baseline)
                 stream.synchronize();expected=out.cpu().clone()
                 with torch.cuda.stream(stream):
-                    out.fill_(float('nan'));call(candidate)
+                    out.fill_(float('nan'));call(policy)
                 stream.synchronize();actual=out.cpu().clone()
                 indices,reference=fixture.reference(host,qlens,klens,pattern==0,False)
                 check=dict(pattern=pattern,
@@ -270,8 +339,9 @@ def main(args):
                                     reference_rows=indices,reference=reference),
                                args.out/(name+'-failure.pt'))
                     raise RuntimeError(name+': numerical gate failed')
-                for label,manager in [('baseline',baseline_manager),('candidate',candidate_manager)]:
-                    tap=taps[label]
+                if not eligible and not check['direct']['numeric_equal']:
+                    raise RuntimeError('Below-threshold policy fallback changed output')
+                for label,(manager,tap) in routes.items():
                     row[label+'_selection'] = selected_configuration(tap,manager)
                     save()
                     if label not in graphs:
@@ -299,7 +369,11 @@ def main(args):
                 timed['speedup']=timed['baseline_ms']/timed['candidate_ms'];row['rounds'].append(timed)
             row['median_speedup']=statistics.median(r['speedup'] for r in row['rounds'])
             row['baseline_proof']=baseline_manager.snapshot()
-            row['candidate_proof']=candidate_manager.snapshot()
+            row['candidate_proof']=candidate_route[0].snapshot()
+            row['private_policy']=policy.snapshot()
+            row['wide_manager_selected_calls_delta']=candidate_manager.selected_calls-wide_calls_before
+            if not eligible and row['wide_manager_selected_calls_delta']!=0:
+                raise RuntimeError('Below-threshold query reached the wide manager')
             row['completed']=True;save()
             print(json.dumps(dict(case=name,median_speedup=row['median_speedup'],rounds=row['rounds'])),flush=True)
         result['completed']=True
@@ -311,6 +385,7 @@ def main(args):
         # Keep failure resources and transformed IR before TemporaryDirectory
         # cleanup, including configurations rejected before a timed case ends.
         result['terminal_manager_proofs'] = {}
+        result['terminal_private_policy']=policy.snapshot()
         for label, manager in [('baseline', baseline_manager), ('candidate', candidate_manager)]:
             try:
                 result['terminal_manager_proofs'][label] = manager.snapshot()
@@ -336,7 +411,9 @@ if __name__=='__main__':
     parser.add_argument('--stages',type=int,choices=[1],default=1)
     parser.add_argument('--maxnreg',type=int,choices=[128],default=None)
     parser.add_argument('--out',type=Path)
-    parser.add_argument('--case',action='append',choices=CASES)
+    selection=parser.add_mutually_exclusive_group()
+    selection.add_argument('--case',action='append',choices=CASES)
+    selection.add_argument('--suite',choices=['representative','scope','all'])
     args=parser.parse_args()
     if args.run_gpu and args.out is None:parser.error('--out required for GPU execution')
     main(args)

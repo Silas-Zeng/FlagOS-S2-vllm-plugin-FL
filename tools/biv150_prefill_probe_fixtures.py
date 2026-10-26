@@ -72,6 +72,10 @@ def reference(cpu, qlens, klens, uniform, all_rows):
     positions, outputs = [], []
     starts = cumulative(qlens)
     for seq, (qlen, kvlen) in enumerate(zip(qlens, klens)):
+        if qlen == 0:
+            # A descriptor-only two-sequence policy can see an empty query row.
+            # It contributes no output rows or causal reference positions.
+            continue
         ids = cpu["table"][seq, :(kvlen + 15) // 16].long()
         pages = cpu["packed"][ids]
         keys = pages[:, 0].reshape(-1, 2, 128)[:kvlen].double()
