@@ -3,6 +3,7 @@ import argparse
 import ast
 import datetime
 import hashlib
+import importlib.util
 import json
 import os
 import shutil
@@ -13,6 +14,7 @@ import socket
 import subprocess
 import time
 import traceback
+from types import SimpleNamespace
 
 
 
@@ -39,6 +41,17 @@ def cache_inventory(root):
                 path=str(path.relative_to(root)), sha256=sha(path),
                 mtime_ns=path.stat().st_mtime_ns)
     return result
+
+
+def expected_source_fingerprint(source, env):
+    import torch
+    path = source / 'vllm_fl/compile_semantics.py'
+    spec = importlib.util.spec_from_file_location('_acceptance_expected_semantics', path)
+    semantics = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(semantics)
+    config = SimpleNamespace(model_config=SimpleNamespace(hf_config=SimpleNamespace(**semantics._GEOMETRY)))
+    return semantics.build_fingerprint(config, 'iluvatar', package_root=source/'vllm_fl', environ=env,
+        abi={'torch': str(torch.__version__), 'cxx11_abi': bool(torch._C._GLIBCXX_USE_CXX11_ABI)})
 
 
 def throughput(out, *, full_workload_warmup=False):
@@ -116,12 +129,17 @@ def main(args):
                VLLM_FL_BIV150_SMALL_OUT_LOWERING=args.out_lowering,
                VLLM_FL_BIV150_LARGE_LINEAR=args.large_linear,
                VLLM_FL_BIV150_SMALL_OUT_RECORD_SELECTION=args.out_lowering)
+    production_defaults = bool(getattr(args, 'production_defaults', False))
+    if production_defaults:
+        assert args.out_lowering == args.large_linear == args.stable_small_o == '1'
+        env.pop('VLLM_FL_BIV150_SMALL_OUT_LOWERING')
+        env.pop('VLLM_FL_BIV150_LARGE_LINEAR')
     command = ["/usr/local/bin/vllm", "serve", "/workspace/MiniCPM5-2B", "--port", "9031",
                "--compilation-config", '{"cudagraph_mode":"FULL_DECODE_ONLY"}',
                "--served-model-name", "minicpm", "--gpu-memory-utilization", "0.85", "--max-model-len", "131072"]
     manifest = dict(command=command, source=str(source), commit=args.commit,
-                    native_mode=args.native_mode, out_lowering=args.out_lowering, large_linear=args.large_linear,provider_probe=args.provider_probe, post_score_semantic_check=args.post_score_semantic_check, stable_small_o=args.stable_small_o, run_accuracy=args.run_accuracy, run_throughput=args.run_throughput, full_workload_warmup=args.full_workload_warmup, driver_sha256=sha(__file__),
-                    diagnostic_sha256=sha(Path(__file__).with_name("biv150_peer_mixed_diagnostic.py")),
+                    native_mode=args.native_mode, out_lowering=args.out_lowering, large_linear=args.large_linear,production_defaults=production_defaults,provider_probe=args.provider_probe, post_score_semantic_check=args.post_score_semantic_check, stable_small_o=args.stable_small_o, run_accuracy=args.run_accuracy, run_throughput=args.run_throughput, full_workload_warmup=args.full_workload_warmup, driver_sha256=sha(__file__),
+                    diagnostic_sha256=sha(source / "tools/biv150_peer_mixed_diagnostic.py"),
                     gate_library_sha256=sha(args.gate_library), tuning_snapshot=records,
                     env={k: v for k, v in env.items() if k.startswith(("VLLM_", "BIV150_", "TRITON_", "TORCHINDUCTOR_", "FLAGGEMS_"))})
     (args.out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
@@ -164,6 +182,13 @@ def main(args):
         else:
             raise TimeoutError("Service startup timeout")
         logs = log_path.read_text()
+        actual_fingerprints = [json.loads(line.split('BIV150_COMPILE_SEMANTICS ', 1)[1])
+                               for line in logs.splitlines() if 'BIV150_COMPILE_SEMANTICS ' in line]
+        expected_fingerprint = expected_source_fingerprint(source, env)
+        assert actual_fingerprints and all(x == expected_fingerprint for x in actual_fingerprints), {
+            'expected_source': expected_fingerprint, 'loaded': actual_fingerprints}
+        manifest['loaded_source_fingerprint_verified'] = True
+        manifest['expected_source_fingerprint'] = expected_fingerprint
         installations = {}
         for marker in ("BIV150_NATIVE_W8A8_INSTALL",
                        "BIV150_Q_FRAGMENT_INSTALL", "BIV150_PREFILL_NORMALIZATION_INSTALL",
@@ -329,6 +354,7 @@ if __name__ == "__main__":
     parser.add_argument("--out-lowering",choices=("0","1"),required=True)
     parser.add_argument('--large-linear',choices=('0','1'),default='0')
     parser.add_argument('--provider-probe',action='store_true')
+    parser.add_argument('--production-defaults',action='store_true')
     parser.add_argument("--post-score-semantic-check",action="store_true")
     parser.add_argument("--diagnostic-after-semantic-failure",action="store_true")
     parser.add_argument("--source", type=Path, required=True)

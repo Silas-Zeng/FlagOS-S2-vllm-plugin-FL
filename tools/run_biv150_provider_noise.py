@@ -56,8 +56,12 @@ def derive(text,source_sha,*,restore_cache=False):
     assert text.count(anchor)==1
     changed=text.replace(anchor,'for length,count in [(4096,256)]:')
     marker='sha(Path(__file__).with_name("biv150_peer_mixed_diagnostic.py"))'
-    assert changed.count(marker)==1
-    changed=changed.replace(marker,'sha(source / "tools/biv150_peer_mixed_diagnostic.py")')
+    actual='sha(source / "tools/biv150_peer_mixed_diagnostic.py")'
+    if marker in changed:
+        assert changed.count(marker)==1
+        changed=changed.replace(marker,actual)
+    else:
+        assert changed.count(actual)==1
     if restore_cache:
         anchor='    (args.out / "idle.txt").write_text(idle)'
         assert changed.count(anchor)==1

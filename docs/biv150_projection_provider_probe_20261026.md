@@ -355,3 +355,37 @@ final-summary and independent-verdict retain both rounds, fixed DB fingerprints,
 all2799artifact digests/rebased groups, protocol, timing bounds, launch, CPU
 contracts and semantic/cleanup proof. Production remains frozena48for all these
 measurements, not a qualification of newmain6971ef4or a promoted default.
+
+## Latest-main shipping candidate: new qualification required before merge
+
+User explicitly requested merging the best PR only if it beats the freshly
+synchronized team repository, otherwise continue optimizing from profile evidence.
+The noise calibration is finished; do not append more A/A rounds. Latestfetch
+confirmedmain6971ef48615af97a1637405c71f96dd89969563e. Mergee8572fed6fb288d0540b59292585b598d1fae61c
+integrates that team main into this private feature branch, retaining PR60's
+three prefill files and all history. This does not merge the feature into main.
+
+The new proposed shipping defaults enable output lowering and row-selected large
+linear on BI-V15016SM; other hardware retains the original stable-op fallback.
+Explicit disable remains supported. Default-unset and explicit1compile identities
+match; inactive dependent flags stay irrelevant. M1–8 kernel math, SDK helper
+function AST and launch ABI are unchanged. CPU checks pass228route cases,40out
+callbacks,4symbolic layouts/4unsupported cases and44providedABI cases, including
+hardware-scope rejection and live-policy mutation refusal. These do not replace
+the new default-unset real-service qualification or fresh latest-main comparison.
+
+The acceptance driver can now omit both feature env vars for the candidate and
+verify the loaded package's exact compile-semantics fingerprint against the
+requested source/ABI/SO/config. A serial pair will use untouched main697as control,
+the new merged shipping candidate, identical native5c/immutable initialDB/fixtures,
+full105and3short+1fullwarm then one official4K/16K score per arm, pre/post semantics
+and owned cleanup. Candidate uses --production-defaults, not manual feature-enable
+flags. Script records observations only; the agent must inspect relative gains,
+precision/TTFT, residual compilation/tuning and final latest-main state before
+autonomously merging under the user's existing authorization. If not better,
+retain evidence and iterate; never divide the5930diagnostic by a colder control.
+
+Fresh-main profiling preparation is shared separately as DraftPR62, production
+equivalent to697and CPU-only so far. It will not compete for GPU while the user's
+higher-priority best-candidate comparison runs. Existing profile evidence remains
+available for follow-up; no new profiler GPU job has been started.

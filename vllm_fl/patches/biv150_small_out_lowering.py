@@ -60,18 +60,21 @@ def small_linear_out(x, weight, *, out):
 
 def install():
     global _CHOICE, _INSTALLED, _RECORD_SELECTION, _LARGE_LINEAR, _PROVIDED_LINEAR, _PROVENANCE
-    requested = os.environ.get('VLLM_FL_BIV150_LARGE_LINEAR','0') == '1'
+    requested = os.environ.get('VLLM_FL_BIV150_LARGE_LINEAR','1') == '1'
     if _INSTALLED:
         if requested != _LARGE_LINEAR:
             raise RuntimeError('Large linear policy changed after installation')
         return {'installed':True,'reason':'already installed','allocation':'Inductor out buffer',
                 'large_linear':_LARGE_LINEAR,'provider_provenance':_PROVENANCE}
+    import torch
+    properties = torch.cuda.get_device_properties(torch.cuda.current_device())
+    if 'BI-V150' not in properties.name or properties.multi_processor_count != 16:
+        return {'installed':False,'reason':'BI-V150 16SM required'}
     if requested:
         from vllm_fl.patches import biv150_provided_linear as provided
         provenance = provided.initialize()
     else:
         provided = None;provenance = None
-    import torch
     import sympy
     from torch._inductor import ir
     from torch._inductor.lowering import fallback_handler, lowerings, register_lowering

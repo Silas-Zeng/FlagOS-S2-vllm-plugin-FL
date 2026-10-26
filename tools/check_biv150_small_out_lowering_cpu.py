@@ -3,6 +3,7 @@ import ast
 import contextlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -27,7 +28,8 @@ def main():
         def copy_(self,value):calls.append('copy');return self
     def gemm(x,w,*,out):calls.append('original_mm_out');return out
     def functional(x,w):calls.append('original_functional');return Tensor((*x.shape[:-1],w.shape[0]),x.dtype)
-    torch.mm=gemm;torch.nn=SimpleNamespace(functional=SimpleNamespace(linear=functional));torch.cuda=SimpleNamespace(device=lambda x:contextlib.nullcontext());sys.modules['torch']=torch
+    props=SimpleNamespace(name='Iluvatar BI-V150',multi_processor_count=16)
+    torch.mm=gemm;torch.nn=SimpleNamespace(functional=SimpleNamespace(linear=functional));torch.cuda=SimpleNamespace(device=lambda x:contextlib.nullcontext(),current_device=lambda:0,get_device_properties=lambda d:props);sys.modules['torch']=torch
     small=ModuleType('vllm_fl.patches.biv150_stable_small_o')
     def into(x,w,out):calls.append('unchanged_small_kernel');return out
     small._small_o_into=into;sys.modules[small.__name__]=small
@@ -61,6 +63,11 @@ def main():
         def __init__(self,kernel,**kw):assert kernel is operator.small_linear_out and kw['has_out_variant'] and kw['op_overload'] is target
         def bind(self,inputs,layout):return SimpleNamespace(output_node=lambda:('out_ir',inputs,layout))
     select=ModuleType('torch._inductor.select_algorithm');select.ExternKernelChoice=Choice;sys.modules[select.__name__]=select
+    # Isolate the output-lowering contract; large-provider ABI has its own check.
+    os.environ['VLLM_FL_BIV150_LARGE_LINEAR']='0'
+    props.name='Iluvatar C500';assert operator.install()['installed'] is False
+    props.name='Iluvatar BI-V150';props.multi_processor_count=32;assert operator.install()['installed'] is False
+    props.multi_processor_count=16
     assert operator.install()['installed'];assert operator.install()['reason']=='already installed'
     class Node:
         def __init__(self,shape,dtype=None,device=cuda):self.shape=shape;self.dtype=torch.bfloat16 if dtype is None else dtype;self.device=device;self.realized=0
@@ -80,12 +87,12 @@ def main():
     with tempfile.TemporaryDirectory() as directory:
         library=Path(directory)/'no-load.so';library.write_bytes(b'fingerprint fixture only')
         def fingerprint(extra):return semantics.build_fingerprint(config,'iluvatar',package_root=ROOT/'vllm_fl',environ={'BIV150_NATIVE_W8A8_LIBRARY':str(library),**extra},abi={})
-        key='VLLM_FL_BIV150_SMALL_OUT_LOWERING';assert fingerprint({})==fingerprint({key:'0'});assert fingerprint({})!=fingerprint({key:'1'});assert fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0'})==fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0',key:'1'})
+        key='VLLM_FL_BIV150_SMALL_OUT_LOWERING';assert fingerprint({})==fingerprint({key:'1'});assert fingerprint({})!=fingerprint({key:'0'});assert fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0'})==fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0',key:'1'})
     def finals(text):
         return [ast.dump(item,include_attributes=False) for n in ast.walk(ast.parse(text)) if isinstance(n,ast.Try) and n.finalbody for item in n.finalbody]
     current=(ROOT/'tools/run_biv150_small_out_acceptance.py').read_text()
     original=subprocess.check_output(['git','-C',str(ROOT),'show',BASE+':tools/run_biv150_small_bf16_acceptance.py'],text=True)
     assert finals(current)==finals(original),'owned cleanup changed'
-    print(json.dumps({'passed':True,'gpu_executed':False,'output_callback_cases':tested,'symbolic_M_layout_cases':4,'unsupported_compiler_fallbacks':4,'output_buffer_identity_preserved':True,'kernel_math_ast_unchanged':True,'default_disabled_equivalent':True,'active_cache_identity_separated':True,'remaining':'Actual Torch compile, streams/changed Graphs, generated out calls, model105 and warmed4K/16K'},indent=2))
+    print(json.dumps({'passed':True,'gpu_executed':False,'output_callback_cases':tested,'symbolic_M_layout_cases':4,'unsupported_compiler_fallbacks':4,'output_buffer_identity_preserved':True,'kernel_math_ast_unchanged':True,'default_enabled_equivalent':True,'active_cache_identity_separated':True,'remaining':'Actual Torch compile, streams/changed Graphs, generated out calls, model105 and warmed4K/16K'},indent=2))
 
 if __name__=='__main__':main()

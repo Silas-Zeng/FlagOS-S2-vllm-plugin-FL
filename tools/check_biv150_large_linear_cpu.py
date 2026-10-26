@@ -59,8 +59,9 @@ def main():
         lib=Path(d)/'fixture.so';lib.write_bytes(b'not loaded')
         def key(extra):return semantics.build_fingerprint(config,'iluvatar',package_root=ROOT/'vllm_fl',environ={'BIV150_NATIVE_W8A8_LIBRARY':str(lib),**extra},abi={})
         large='VLLM_FL_BIV150_LARGE_LINEAR';out='VLLM_FL_BIV150_SMALL_OUT_LOWERING'
-        assert key({})==key({large:'0'})==key({large:'1'})
-        assert key({out:'1'})==key({out:'1',large:'0'})!=key({out:'1',large:'1'})
+        assert key({})==key({large:'1'})==key({out:'1',large:'1'})
+        assert key({large:'0'})==key({out:'1',large:'0'})!=key({})
+        assert key({out:'0'})==key({out:'0',large:'0'})==key({out:'0',large:'1'})
         assert key({out:'1',large:'1'})==key({out:'1',large:'1','VLLM_FL_BIV150_SMALL_OUT_RECORD_SELECTION':'1'})
         assert key({'VLLM_FL_BIV150_STABLE_SMALL_O':'0'})==key({'VLLM_FL_BIV150_STABLE_SMALL_O':'0',out:'1',large:'1'})
     print(json.dumps(dict(passed=True,gpu_executed=False,routing_cases=count,promoted_sdk_functions_exact=True,inert_import=True,active_cache_identity=True,tiny_protection_retained=True,live_change_rejected=True)))
