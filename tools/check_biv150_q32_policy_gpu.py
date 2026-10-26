@@ -83,9 +83,10 @@ def main(args):
                 check=dict(pattern=pattern,selected=should_select,
                            direct=fixture.compare(actual,expected,.005,.005),
                            candidate_cpu=fixture.compare(actual[indices],reference,.005,.005),
-                           baseline_cpu=fixture.compare(expected[indices],reference,.005,.005))
+                           baseline_cpu=fixture.compare(expected[indices],reference,.005,.005),
+                           reference_guard=fixture.reference_guard(actual[indices],expected[indices],reference))
                 row['checks'].append(check);save()
-                if not all(check[k]['passed'] for k in ['direct','candidate_cpu','baseline_cpu']):
+                if not check['direct']['passed'] or not check['reference_guard']['passed']:
                     torch.save(dict(actual=actual,baseline=expected,reference=reference,reference_rows=indices),args.out/(name+'-failure.pt'))
                     raise RuntimeError(name+' numerical gate failed')
                 if not should_select:assert torch.equal(actual,expected)

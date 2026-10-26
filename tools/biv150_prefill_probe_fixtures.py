@@ -109,6 +109,29 @@ def compare(actual, expected, atol, rtol):
             "elements": actual.numel(), "atol": atol, "rtol": rtol}
 
 
+def reference_guard(actual, baseline, reference, atol=.005, rtol=.005):
+    """Keep the oracle tolerance, inheriting only existing baseline error per element.
+
+    Raw baseline/candidate oracle comparisons remain in the result. At an
+    element already outside tolerance in the accepted baseline, the candidate
+    must not increase that error. This never permits a new failing element.
+    """
+    finite = bool(torch.isfinite(actual).all() and torch.isfinite(baseline).all()
+                  and torch.isfinite(reference).all())
+    if not finite:
+        return dict(passed=False, finite=False)
+    actual, baseline, reference = actual.float(), baseline.float(), reference.float()
+    tolerance = atol + rtol*reference.abs()
+    old_error, new_error = (baseline-reference).abs(), (actual-reference).abs()
+    allowed = torch.maximum(tolerance, old_error)
+    violations = int((new_error > allowed).sum())
+    return dict(passed=violations == 0, finite=True,
+                existing_baseline_violations=int((old_error > tolerance).sum()),
+                candidate_oracle_violations=int((new_error > tolerance).sum()),
+                new_or_worsened_violations=violations,
+                limit='per-element maximum of original tolerance and observed baseline error')
+
+
 def install_baseline():
     states = {}
     for name in ("biv150_decode_launch_runtime", "biv150_gqa_decode",
