@@ -1,0 +1,104 @@
+{
+  "cpu_only": true,
+  "gpu_executed": false,
+  "torch_imported": false,
+  "official_score": false,
+  "precision_gate": false,
+  "production_unchanged": true,
+  "samples_requested": 32768,
+  "tested_normal_inputs": 98688,
+  "tested_flushed_inputs": 8,
+  "max_relative_error": 3.303807942468856e-07,
+  "max_relative_error_at": -58.939453125,
+  "max_absolute_error": 1.7227062238581226e-07,
+  "max_absolute_error_at": -0.939453125,
+  "exact_zero_one": true,
+  "exact_integer_powers": true,
+  "positive_and_nan_fail_visible": true,
+  "rejects_modified_domain": true,
+  "taylor4_reduced_interval_max_relative_error": 0.0023866936839245234,
+  "derivation": {
+    "nodes": [
+      "-0.01703708685546585662512840013555131618304758049579772479882846184478839301007224182621913",
+      "-0.146446609406726237799577818947575480357582031155762981705830065502316880384473240287403118",
+      "-0.370590477448739618825550581187975835825465549340034743092998396342471512625599001538816012",
+      "-0.62940952255126038117444941881202416417453445065996525690700160365752848737440099846118399",
+      "-0.85355339059327376220042218105242451964241796884423701829416993449768311961552675971259688",
+      "-0.98296291314453414337487159986444868381695241950420227520117153815521160698992775817378087"
+    ],
+    "coefficients_unrounded": [
+      "1",
+      "0.693143134641112974717483273121721223163516923166387066177258971992296772414365455356518232",
+      "0.240178956277628278560973959103315308772465897430015929460795511052028007005893919464624302",
+      "0.0552981196763344575258366369435393229740677526342149195686609955922306101171167355448617061",
+      "0.00920918035719838690101324043511707004516763876175383018061683905748314513762390450008154046",
+      "0.000946877029110153807684317185476963374991025909173732022965069183804289152828838461552920796"
+    ],
+    "coefficients_fp32": [
+      1.0,
+      0.6931431293487549,
+      0.24017895758152008,
+      0.05529811978340149,
+      0.009209180250763893,
+      0.000946877000387758
+    ],
+    "polynomial_degree": 5,
+    "fma_operations": 5,
+    "node_absolute_perturbation_allowance": "1E-80",
+    "interpolation_absolute_bound": 7.521255074893364e-08,
+    "c0_constraint_shift": 5.611325697868037e-08,
+    "coefficient_rounding_absolute_bound": 6.8384738152070615e-09,
+    "horner_fma_absolute_bound": 5.956819235225772e-07,
+    "reduced_interval_absolute_bound": 7.338462050653982e-07,
+    "normal_domain_relative_bound": 1.4676924101307964e-06,
+    "assumptions": [
+      "binary32 round-to-nearest-even FMA; no reassociation",
+      "finite x in [-126,0]; RZ int conversion and exact range reduction",
+      "90-digit algebraic Chebyshev nodes within 1e-80 of exact nodes",
+      "subnormal inputs may flush; extra absolute effect <=2^-149",
+      "x<-126 flushes explicitly with absolute error <2^-126; relative error is 1"
+    ]
+  },
+  "source_transforms": {
+    "probability": {
+      "original_source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+      "generated_source_sha256": "b03346cabe36e14e87694cfca42b5d8f25f4d5d1553a6348a13fb562ee3cdc0d",
+      "exact_byte_inverse": true,
+      "scope": "probability",
+      "exp2_domain": "[-inf,0]",
+      "replaced_full_and_tail_call_sites": 2,
+      "original_while_page16_qhoist_layout_and_reducer": true,
+      "fp32_running_sums_preserved": true,
+      "positive_conditional_rescale_compatible": false,
+      "polynomial_coefficients": [
+        1.0,
+        0.6931431293487549,
+        0.24017895758152008,
+        0.05529811978340149,
+        0.009209180250763893,
+        0.000946877000387758
+      ],
+      "explicit_flush_below": -126
+    },
+    "both": {
+      "original_source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+      "generated_source_sha256": "549ad5b7aaac12de0986d7846fc97c7a27a753de42204a00462d968ef4ed541b",
+      "exact_byte_inverse": true,
+      "scope": "both",
+      "exp2_domain": "[-inf,0]",
+      "replaced_full_and_tail_call_sites": 4,
+      "original_while_page16_qhoist_layout_and_reducer": true,
+      "fp32_running_sums_preserved": true,
+      "positive_conditional_rescale_compatible": false,
+      "polynomial_coefficients": [
+        1.0,
+        0.6931431293487549,
+        0.24017895758152008,
+        0.05529811978340149,
+        0.009209180250763893,
+        0.000946877000387758
+      ],
+      "explicit_flush_below": -126
+    }
+  }
+}
