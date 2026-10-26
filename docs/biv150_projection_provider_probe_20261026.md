@@ -389,3 +389,24 @@ Fresh-main profiling preparation is shared separately as DraftPR62, production
 equivalent to697and CPU-only so far. It will not compete for GPU while the user's
 higher-priority best-candidate comparison runs. Existing profile evidence remains
 available for follow-up; no new profiler GPU job has been started.
+
+Latest-main pair is now ACTUALLY running: controller522884/start333889688/SID522884,
+launched2026-10-26T05:09:05UTC, outputlatest-main-pair-v1-20261026. Baseline driver
+522888/start333889706,server522892/start333889729. At05:11:21controller/driver
+identities matched/live, baseline wasmixed_diagnostic and loaded source fingerprint
+verified=True. A fresh connected main-ref read05:09and successful localHTTP1.1
+fetch both confirmed6971ef4; a priorHTTP2fetch failed, not a stopped model job.
+RemoteHTTPSfetch had no credentials, so verified Gitbundle997d88dcab83b0ebf664465d53eac01bdb0fe4db64cbeeebd46e578107a68d1d
+(2610404B)provided the exact published commits; both worktrees clean, originala48
+HEAD unchanged, disk~38GBfree. Source preflight, target CPU and actual launch JSON
+are retained. Runtime candidate remains frozen87fcd605f741b656d95cc0cb7e89758ab157def1;
+later documentation commits must not be mistaken for a running-code update.
+
+PR59now targets actual main directly and contains the output-lowering dependency;
+do not merge PR58standalone first. Keep both preserved until combined qualification.
+User's latest explicit instruction is to complete this work, pull latest repository
+before merging the best PR, merge autonomously only when throughput exceeds it
+with precision/TTFT satisfied; otherwise continue profile-guided optimization.
+No further user approval is needed for a qualified merge, but no result has yet
+been established for this new pair. PR62profiling preparation is shared/Draft,
+not an extra live GPU job.
