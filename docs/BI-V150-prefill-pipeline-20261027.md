@@ -60,3 +60,5 @@ Controller568657/start338951699/SID568657已经实际存活，baseline driver568
 基线独立审计和原件archive已共享：941710B、62members、SHA`74dfc21fffc38ff3441b9a5678b25b9077106fae3feea8a213ba5ba7f6c1e7ea`。本机重验61个原文件SHA，独立重算105题、两档score/预热/TTFT、实际Q32/C3，逐项核对固定服务和正式benchmark完整命令。`tools/audit_biv150_peer_semantics.py`重新从原始SSE、decode/prefill response和固定SHA请求fixture验证前后两次语义/HTTP时间重叠，与state一致；它不发HTTP或使用GPU。修改decode内容、fixture payload、结果标志和重叠时间四个负例均拒绝。两条请求的语义诊断不能替代105题精度或证明模型步重叠。基线state中`acceptance_passed=false`为此harness保留待配对判断的状态，不能改写成已通过整个候选验收。
 
 04:19已观测同一controller568657自然转入candidate，driver579266、server579270均实际存活；候选仍为冻结b0d，当前本地新增的审计/证据文件不改变其生产代码。当前没有候选完整结果，无新增端到端收益或合并结论；后续仍须完整独立配对审计、进程清理及fresh团队main核对。
+
+04:48:16候选完整105题结束，独立重读全部prediction/review/report为 **101/105=.9619047619**，达到.95门槛；baseline为102/105，单题test/precalculus/263.json由对变错。独立JSON SHA c5b008083ba16f48f66785920b9a6d6128f0d53d61590fd121089d89c88f07f4。尚未拿精度通过当作吞吐验收。04:53实际服务K128自然首选rows2047、BM256/Q32/w16/K128/stage1/maxnreg128、127regs/0spill/65536B shared，Q-hoist证明匹配；自然C3 N63/M2048/Dprefix1/Dall62/outside61、无scope拒绝。4K三短预热已完，完整warm/正式分数继续。
