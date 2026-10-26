@@ -186,3 +186,34 @@ or current-model timeline can distinguish entry/overlap costs from tuning/
 compiled-kernel changes. No such cost attribution is measured yet. Do not
 repeat a large configuration scan or discard the whole output-planning win
 on this one combined variant. Raw partial score/new-metadata JSON is shared.
+
+## Complete integrated candidate; quantify noise before attribution
+
+Runtimea48completed103/105 with all initial/post-score semantics, request/token,
+working throughput/TTFT and owned cleanup gates. Scored4K5603.546050/TTFT
+3456.967684ms;16K4174.742799/120888.913239ms. The16K observation exceeds earlier
+4049–4111separate observations, while4K is below prior5760. No matched gain or
+causal attribution is established yet.16Kscore has0new metadata. Full performance
+archive77514bytes SHA1505161f9304c594264dd718e5e285b2567e783ba34c17fda582fd2e78b581fe
+and final-summary retain all warmups/commands/probes/generation/cleanup. Candidate
+driver491667isZ,Engine491819gone. Serial same-source control started automatically;
+CPUwaiter496536/start332536002,control driver502095/start332901041 and server
+502099/start332901063 were verified live; output projection-integrated-control-v1-20261026.
+
+User now prioritizes checking whether small differences are noise. Suspend new
+operator micro-optimizations until this is screened. After the existing control
+cleans, a single same-config4K A/A service will reuse the qualified a48runtime,
+flags and fixed copied final tuning DB, with fresh private Triton cache,3short+
+1complete unscored warmup then3predeclared identical full4K repetitions. Full105
+is not rerun because production code/flags are unchanged. No sampler/frame/CLI
+parameter changes. New/changed metadata or logical non-benchmark tuning-table
+changes mark cold/confounded rounds; only a mature suffix of>=2samples describes
+steady spread. All raw rounds retained; no best-score picking. Report range/CV,
+not a confidence interval. This checks within-process4K variation only; it does
+not prove cross-process or16K noise. If a1–3%difference is within observed spread,
+it stays unconfirmed and does not justify detailed operator work or merging.
+Otherwise use minimal further repeat/cross-process evidence as needed before
+attributing a small effect. The A/A runner derives only the4K workload check
+and diagnostic path from the qualified owned harness; cleanup AST and serving
+command stay exact. It uses original benchmark helper/seed0/256requests/64concurrency/
+4096input/1024output unchanged. No A/A GPU job has been launched yet.
