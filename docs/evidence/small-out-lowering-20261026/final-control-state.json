@@ -1,0 +1,252 @@
+{
+  "complete": true,
+  "cleanup_complete": true,
+  "acceptance_passed": false,
+  "precision_passed": true,
+  "diagnostic_only": true,
+  "phase": "completed",
+  "commit": "61d198e300f0889a109d43cc9eec2e7b87455984",
+  "native_mode": "on",
+  "updated": "2026-10-26T00:13:47.687091+00:00",
+  "owner": {
+    "pid": 475428,
+    "start_ticks": 331734936,
+    "sid": 475428,
+    "state": "R"
+  },
+  "driver": {
+    "pid": 475424,
+    "start_ticks": 331734914,
+    "sid": 475424,
+    "state": "R"
+  },
+  "diagnostic": {
+    "completed": true,
+    "all_correct": true,
+    "decode_correct": true,
+    "prefill_correct": true,
+    "decode_visible": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n60\n61\n62\n63\n64\n65\n66\n67\n68\n69\n70\n71\n72\n73\n74\n75\n76\n77\n78\n79\n80\n81\n82\n83\n84\n85\n86\n87\n88\n89\n90\n91\n92\n93\n94\n95\n96\n97\n98\n99\n100\n101\n102\n103\n104\n105\n106\n107\n108\n109\n110\n111\n112\n113\n114\n115\n116\n117\n118\n119\n120\n121\n122\n123\n124\n125\n126\n127\n128",
+    "prefill_visible": "85",
+    "prefill_usage": {
+      "prompt_tokens": 4652,
+      "total_tokens": 4713,
+      "completion_tokens": 61,
+      "prompt_tokens_details": null
+    },
+    "prefill_started": 3317485.043841846,
+    "prefill_finished": 3317493.23967447,
+    "decode_started": 3317479.495923989,
+    "decode_finished": 3317495.455160142,
+    "http_overlap": true,
+    "limitation": "Exact peer requests once; semantic diagnostic only, not105-question accuracy or model-step overlap proof."
+  },
+  "semantic_passed": true,
+  "accuracy": {
+    "score": 0.981,
+    "metric_count": 105,
+    "predictions": 105,
+    "unique_questions": 105,
+    "failed_predictions": [],
+    "report": "/workspace/experiments/minicpm-s2/small-out-lowering-control-v1-20261026/math500-level3/20261026_071229/reports/minicpm/math_500.json"
+  },
+  "official_accuracy_evaluated": true,
+  "scores": {
+    "4096": {
+      "date": "20261026-074347",
+      "endpoint_type": "vllm",
+      "backend": "vllm",
+      "label": "score-4096",
+      "model_id": "minicpm",
+      "tokenizer_id": "/workspace/MiniCPM5-2B",
+      "num_prompts": 256,
+      "request_rate": "inf",
+      "burstiness": 1.0,
+      "max_concurrency": 64,
+      "duration": 233.04695334518328,
+      "completed": 256,
+      "failed": 0,
+      "total_input_tokens": 1048576,
+      "total_output_tokens": 262144,
+      "request_throughput": 1.0984910822705296,
+      "request_goodput": null,
+      "output_throughput": 1124.8548682450223,
+      "total_token_throughput": 5624.274341225111,
+      "max_output_tokens_per_s": 1792.0,
+      "max_concurrent_requests": 68,
+      "rtfx": 0.0,
+      "mean_ttft_ms": 3504.8805789010657,
+      "median_ttft_ms": 1219.35032797046,
+      "std_ttft_ms": 4912.9603182311885,
+      "p99_ttft_ms": 19724.56564882304,
+      "mean_tpot_ms": 53.13883593756848,
+      "median_tpot_ms": 55.40465203228562,
+      "std_tpot_ms": 4.8862945873411405,
+      "p99_tpot_ms": 57.24504384799849,
+      "mean_itl_ms": 53.138836615900395,
+      "median_itl_ms": 38.3598399348557,
+      "std_itl_ms": 65.09962451896028,
+      "p99_itl_ms": 192.8885235032067
+    },
+    "16384": {
+      "date": "20261026-081337",
+      "endpoint_type": "vllm",
+      "backend": "vllm",
+      "label": "score-16384",
+      "model_id": "minicpm",
+      "tokenizer_id": "/workspace/MiniCPM5-2B",
+      "num_prompts": 128,
+      "request_rate": "inf",
+      "burstiness": 1.0,
+      "max_concurrency": 64,
+      "duration": 542.0335298939608,
+      "completed": 128,
+      "failed": 0,
+      "total_input_tokens": 2097152,
+      "total_output_tokens": 131072,
+      "request_throughput": 0.23614775275072175,
+      "request_goodput": null,
+      "output_throughput": 241.81529881673907,
+      "total_token_throughput": 4110.860079884565,
+      "max_output_tokens_per_s": 578.0,
+      "max_concurrent_requests": 65,
+      "rtfx": 0.0,
+      "mean_ttft_ms": 122303.84930139917,
+      "median_ttft_ms": 138265.25776577182,
+      "std_ttft_ms": 52424.47062766383,
+      "p99_ttft_ms": 212035.8403513022,
+      "mean_tpot_ms": 116.55674180899449,
+      "median_tpot_ms": 123.36168117991458,
+      "std_tpot_ms": 17.894431405413318,
+      "p99_tpot_ms": 140.52441823497898,
+      "mean_itl_ms": 116.55674253512154,
+      "median_itl_ms": 57.64917121268809,
+      "std_itl_ms": 176.82353985968223,
+      "p99_itl_ms": 498.576675648801
+    }
+  },
+  "working_gates": {
+    "4096": {
+      "requests_ok": true,
+      "throughput_ok": true,
+      "ttft_ok": true,
+      "passed": true,
+      "baseline_total_tokens_per_s": 4809.36,
+      "throughput_floor": 4761.2663999999995,
+      "working_mean_ttft_limit_ms": 4770.3209,
+      "goal_20_percent": false
+    },
+    "16384": {
+      "requests_ok": true,
+      "throughput_ok": true,
+      "ttft_ok": true,
+      "passed": true,
+      "baseline_total_tokens_per_s": 3364.03,
+      "throughput_floor": 3330.3897,
+      "working_mean_ttft_limit_ms": 156938.85,
+      "goal_20_percent": true
+    }
+  },
+  "matched_validated_control_required": true,
+  "post_score_diagnostic": {
+    "completed": true,
+    "all_correct": true,
+    "decode_correct": true,
+    "prefill_correct": true,
+    "decode_visible": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n60\n61\n62\n63\n64\n65\n66\n67\n68\n69\n70\n71\n72\n73\n74\n75\n76\n77\n78\n79\n80\n81\n82\n83\n84\n85\n86\n87\n88\n89\n90\n91\n92\n93\n94\n95\n96\n97\n98\n99\n100\n101\n102\n103\n104\n105\n106\n107\n108\n109\n110\n111\n112\n113\n114\n115\n116\n117\n118\n119\n120\n121\n122\n123\n124\n125\n126\n127\n128",
+    "prefill_visible": "85",
+    "prefill_usage": {
+      "prompt_tokens": 4652,
+      "total_tokens": 4713,
+      "completion_tokens": 61,
+      "prompt_tokens_details": null
+    },
+    "prefill_started": 3321171.762797047,
+    "prefill_finished": 3321172.910335636,
+    "decode_started": 3321171.642135615,
+    "decode_finished": 3321175.116335009,
+    "http_overlap": true,
+    "limitation": "Exact peer requests once; semantic diagnostic only, not105-question accuracy or model-step overlap proof."
+  },
+  "initial_semantic_passed": true,
+  "post_score_semantic_passed": true,
+  "diagnostic_scores_only": false,
+  "work_completed": true,
+  "official_throughput_claim": false,
+  "accuracy_skipped_due_mixed_failure": false,
+  "owned_service_members": [
+    {
+      "pid": 475428,
+      "start_ticks": 331734936,
+      "sid": 475428,
+      "state": "R"
+    },
+    {
+      "pid": 475575,
+      "start_ticks": 331736729,
+      "sid": 475428,
+      "state": "S"
+    },
+    {
+      "pid": 475576,
+      "start_ticks": 331736730,
+      "sid": 475428,
+      "state": "R"
+    },
+    {
+      "pid": 475904,
+      "start_ticks": 331738452,
+      "sid": 475428,
+      "state": "R"
+    },
+    {
+      "pid": 475930,
+      "start_ticks": 331738472,
+      "sid": 475428,
+      "state": "S"
+    },
+    {
+      "pid": 475995,
+      "start_ticks": 331738566,
+      "sid": 475428,
+      "state": "S"
+    },
+    {
+      "pid": 475996,
+      "start_ticks": 331738566,
+      "sid": 475428,
+      "state": "R"
+    },
+    {
+      "pid": 476292,
+      "start_ticks": 331739169,
+      "sid": 475428,
+      "state": "S"
+    },
+    {
+      "pid": 476293,
+      "start_ticks": 331739169,
+      "sid": 475428,
+      "state": "R"
+    },
+    {
+      "pid": 476994,
+      "start_ticks": 331742175,
+      "sid": 475428,
+      "state": "S"
+    },
+    {
+      "pid": 479043,
+      "start_ticks": 331747018,
+      "sid": 475428,
+      "state": "S"
+    },
+    {
+      "pid": 479044,
+      "start_ticks": 331747018,
+      "sid": 475428,
+      "state": "R"
+    }
+  ],
+  "cleanup_remaining": [],
+  "port_9031_closed": true
+}

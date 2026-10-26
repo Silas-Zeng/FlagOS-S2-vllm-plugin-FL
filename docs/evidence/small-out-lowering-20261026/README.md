@@ -43,3 +43,11 @@ Frozen61d completed102/105, both working request/throughput/TTFT gates, initial 
 Full performance/commands/warmups/semantics/controller/cleanup archive60839bytes SHA256d13a2c3662b0b8dc0d43950a5f63826b1abcc085a78878a7f0a75fc9c68ba3ef. Formal105 raw data are in the separately hashed924150byte archive above. Candidate scored4K adds4index/0MM metadata;16K metadata counts remain to be inspected. A mid16K metrics snapshot has11 cumulative preemptions, but includes previous workloads; it is not a per-score count or proof of the capacity effect.
 
 The exact-source full105 control started only after all candidate owners exited/cleanup passed. Queue474606/start331601392, driver475424/start331734914, server475428/start331734936, Engine475576 (starttime rechecked at observation). Outputsmall-out-lowering-control-v1-20261026, currently accuracy. Default remains disabled, no deployment/merge or matched speedup is claimed.
+
+## Complete same-source matched result: retain Draft and recover16K
+
+Control61d/out-lowering0 completed103/105(.9810),105unique/no failed, initial+post-score mixed checks, both request/token/working-TTFT gates and owned cleanup.4K5624.274341225111/TTFT3504.8805789010657ms;16K4110.860079884565/122303.84930139917ms. Candidate61d/out1 is4K+2.4179461%,16K-1.4980996%. Its TTFTs are higher than control but both remain under competition working limits. Retain this4K win; do not merge the16K regression or enable production by default. PR59 is a dependent component provider exploration, not an accepted fix.
+
+Control3short+1full warmups precede one score per workload. Its16K fullwarm3727.964459 versus score4110.860080 shows residual work was present in the unscored warmup; do not count warmup as a formal score or rewrite it away. Scored4K has4index/0MM new metadata;16K0. Metadata absence is not a complete wall-time/autotuning-cost bound. Source/library/initialDB/flags/CLI/load and full105 parity are recorded in both manifests. No statistical confidence interval is inferred from one scored round.
+
+Complete control archive (including formal105 raw files)867035bytes SHA256507765fd0e7995c194367826b6ee8077771b78ccaa3a7b31ce2720c276478096. Final state/manifests/scores and matched-comparison.json are extracted beside it. Original candidate evidence remains unchanged.
