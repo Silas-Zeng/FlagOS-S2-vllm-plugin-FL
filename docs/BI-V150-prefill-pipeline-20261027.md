@@ -50,3 +50,5 @@ stage2随机/全uniform与baseline数值全等；K128随机有舍入差异，但
 03:12:45北京时间正式配对已启动：`R/prefill-k128-main2412-pair-v1-20261027`（R=/workspace/experiments/minicpm-s2）。此前再次Git fetch与GitHub实时main核对均为`2412207`；baseline为`R/code/main-w16-qualified-20261027@2412207`，candidate为`R/code/prefill-k128-service-v2-20261027@b0d34e6`。双方生产defaults、固定CLI、同snapshot/nativeSO5c、完整精度/3短+1完整warm/每档1次正式score，baseline out/large显式传1并使用`--baseline-production-defaults`，不能套旧controller默认0/0削弱主线。
 
 Controller568657/start338951699/SID568657已经实际存活，baseline driver568661、server568665，原件launch相邻JSON可审查。baseline期望package fingerprint74b1413...，candidate4b7cab4bd0a11c827d2dd7a780fb2d85075d5128415e7f8a97ab1a6054ccaae8（Native=True）。harness10d11ba...与controller99eda2ee...按SHA固定，未改全局包。配对仍在运行，无完整精度/吞吐结论、不合并。CPU独立审计`tools/audit_biv150_k128_pair.py`专门验证新main真实Q32对照和实际K128/maxnreg/资源/IR/自然C3、105题/预热/TTFT/固定token/初始post语义等；旧w16审计要求baseline没有Q32，不能原样套此新pair。
+
+03:40基线完成精度：独立重读全部105唯一prediction/review/report，无错误或漏题，**102/105=0.9714285714**、通过。对应独立JSON已共享。本轮baseline实际KV为548416tokens（上轮548320不能直接套），实际加载fp74b验证通过，真实Q32 w16/K64选中。随后进入吞吐：4K三短和完整warm已完成，完整warm5871.7426tok/s为**未计分暖场**；正式得分及candidate仍须等原件，不能把暖场当历史最好或配对收益。
