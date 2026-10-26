@@ -130,3 +130,18 @@ Control remains deferred on a near99precision result for later diagnostic
 review; candidate itself still measures throughput per the established rule.
 Production defaults remain off, PR stays Draft, no main merge is authorized
 by component results alone.
+
+At09:28:32Shanghai the exact model driver491667/server491671/Engine491819
+and CPU waiter496536 were verified live with matching start ticks. Initial
+mixed semantics pass (4652-token long arithmetic returns85, concurrent count
+1..128 correct, HTTP overlap). Separate post-ready1739-token/one-output probe
+positively selects supplied linear on all4geometries, with recorded call
+counters up to32forO/QKV/down and8for edge gate. This is actual service use,
+not startup installation metadata. KV capacity is548320tokens, equal to the
+previous native-on control; original PR58out-only was547632. This observation
+does not isolate which memory-budget term changed or prove16K throughput.
+Full105 is currently running; scores and final/post-warm semantic results are
+still pending. Exact selected paths/identities/probe response/installations
+and private cache source are in projection-integrated-model-v3-initial-positive.json.
+The actual CPU-only control waiter496536/start332536002 waits for driver
+491667/start332519497; state exports/projection-integrated-control-v1-state.json.
