@@ -243,3 +243,19 @@ completed, full4K warmup is active. The existing compute-order path has now emit
 FIRST_SELECTED, with no SCOPE_REJECTED or Q32_FALLBACK in the observed log.
 Candidate scored4K/16K, post-score semantics/cleanup and final merge judgment
 remain pending. No extra GPU workload or benchmark-parameter change was made.
+
+## Candidate scored4K passed, 2026-10-27 01:32 CST
+
+Candidate5830.358319647462tok/s versus main5778.243627140731, observed
++0.9019123434%. MeanTTFT3354.6388174800086ms versus3502.0497929726844,
+observed-4.2092769723%. All256requests succeed, exact1048576input and262144output
+tokens, max-concurrency64. Precision103/105 was independently verified.
+Both4K command intervals changed selected configs and recorded four new index
+metadata files. Keep that caveat; this is not a stable-effect or compile-cost
+estimate. Candidate16K and post-score semantics/cleanup remain pending.
+See prefill-w16-pair-v1-candidate-4k-partial-20261027.json.
+
+The candidate naturally emitted existing COMPUTE_ORDER_FIRST_SELECTED with
+N62/M2048/Dprefix2/Dall61/outside59, matching the baseline's observed geometry;
+no SCOPE_REJECTED or Q32_FALLBACK was observed. Existing framework routing was
+therefore not silently disabled by this operator integration.
