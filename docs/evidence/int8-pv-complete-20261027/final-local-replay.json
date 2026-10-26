@@ -1,0 +1,478 @@
+{
+  "component_only": true,
+  "model_accuracy_tested": false,
+  "official_score": false,
+  "source_commit": "23773771f78e3c4bd0f1cb4a0da8ffea0667050f",
+  "archive_sha256": "4a79d52559bbcc5420f8e893fd8fffbcccdc961ac4a6e047b56faa4559284375",
+  "all55_original_file_hashes_rechecked": true,
+  "signed_primitive_checks": 18,
+  "native_integer_mad_opcode_verified": true,
+  "records": [
+    {
+      "variant": "complete-w1",
+      "name": "ragged",
+      "speedup": 0.6604474183892068,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.011368269100785255,
+            "int8_pv": 0.01721298135817051
+          },
+          "speedup": 0.6604474183892068
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 0.01715865358710289,
+            "baseline": 0.011415865272283554
+          },
+          "speedup": 0.6653124159382856
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.011394230648875237,
+            "int8_pv": 0.01727692224085331
+          },
+          "speedup": 0.6595058130164088
+        }
+      ],
+      "candidate_resources": {
+        "hash": "fc0c0ba60c3fca256a263e3fb394341f0b17484f6dafaa1a41992b8c2c179faa",
+        "n_regs": 185,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 79,
+        "asm_sha256": {
+          "ttgir": "a3dd6c7f8e2ff632564bc7346d48addc39394be28750753ac399981bd29a4e39",
+          "llir": "5dab31e2aad3814f32d0e6f11110a9bc2d107816f60dfa965a0011ac548e6e2e",
+          "asm": "f56f8a822766cae95263dfc0c9007d681c13332886a0a11054071040e1af9dec",
+          "cubin": "7fb7f5444f7b7ed157ef0c74c5469ac6d7a4b68d2f06679e82b8c34b23a78bda"
+        }
+      }
+    },
+    {
+      "variant": "complete-w1",
+      "name": "ragged-long",
+      "speedup": 0.6673245228893606,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.015747595578432083,
+            "int8_pv": 0.023673558607697487
+          },
+          "speedup": 0.6651976510752268
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 0.023445673286914825,
+            "baseline": 0.01573701947927475
+          },
+          "speedup": 0.6712120947304029
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.0157687496393919,
+            "int8_pv": 0.0236298069357872
+          },
+          "speedup": 0.6673245228893606
+        }
+      ],
+      "candidate_resources": {
+        "hash": "fc0c0ba60c3fca256a263e3fb394341f0b17484f6dafaa1a41992b8c2c179faa",
+        "n_regs": 185,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 79,
+        "asm_sha256": {
+          "ttgir": "a3dd6c7f8e2ff632564bc7346d48addc39394be28750753ac399981bd29a4e39",
+          "llir": "5dab31e2aad3814f32d0e6f11110a9bc2d107816f60dfa965a0011ac548e6e2e",
+          "asm": "f56f8a822766cae95263dfc0c9007d681c13332886a0a11054071040e1af9dec",
+          "cubin": "7fb7f5444f7b7ed157ef0c74c5469ac6d7a4b68d2f06679e82b8c34b23a78bda"
+        }
+      }
+    },
+    {
+      "variant": "complete-w1",
+      "name": "steady4k",
+      "speedup": 0.4008931390194552,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.5277023911476135,
+            "int8_pv": 1.316316843032837
+          },
+          "speedup": 0.4008931390194552
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 1.3163729906082153,
+            "baseline": 0.5276437401771545
+          },
+          "speedup": 0.40083148464886287
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.5279625058174133,
+            "int8_pv": 1.3165956735610962
+          },
+          "speedup": 0.4010058033909477
+        }
+      ],
+      "candidate_resources": {
+        "hash": "358b4e35291d23d4dc2afdb2317e2429e75306d7c38407c3c3e9c9d9b968f2a6",
+        "n_regs": 185,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 78,
+        "asm_sha256": {
+          "ttgir": "54e99cbfe61b8f98f4aebe2e1321889661df925ed96093c21e6fb896632ce900",
+          "llir": "c68abe6f25ce36cdd898e00b6e94e3a806cecfee1164237651e06ff9ab60df97",
+          "asm": "c1db859c6a905cb72e1c699fdba81cf3bf7babc27ec441e160bbb6b348f8e8ce",
+          "cubin": "417b63d8d85ae9d02669127f9f3404028714af941d915364b89e5421ad132d8b"
+        }
+      }
+    },
+    {
+      "variant": "complete-w1",
+      "name": "steady16k",
+      "speedup": 0.39575962226015315,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 1.0309875011444092,
+            "int8_pv": 2.605435609817505
+          },
+          "speedup": 0.3957063829401732
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 2.6057279109954834,
+            "baseline": 1.0312418937683105
+          },
+          "speedup": 0.39575962226015315
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 1.0311241149902344,
+            "int8_pv": 2.604222536087036
+          },
+          "speedup": 0.395943165648027
+        }
+      ],
+      "candidate_resources": {
+        "hash": "7e704498a20c5b69e643cf1cc9fdf1b662154b6c750fa7af84460c86ff621daf",
+        "n_regs": 185,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 78,
+        "asm_sha256": {
+          "ttgir": "6e67c0b7e4b9e3f92eccacf689b2f943d9317e989a9fd794df2e3b41b91cbb3e",
+          "llir": "c38282c01f2a9007ead173553c6e3cf098c850ae818b87db1430cf05575d8654",
+          "asm": "a63f0473c45f5ab9edbbb3737899331a9394625b1082ab3175428e51b65159c6",
+          "cubin": "eb37d3703af51a2d68922efe7efe66e6d5e332010379e8ebc6baf1bc0c2196b4"
+        }
+      }
+    },
+    {
+      "variant": "complete-w2",
+      "name": "ragged",
+      "speedup": 0.7020785686992318,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.01140000019222498,
+            "int8_pv": 0.016237499192357063
+          },
+          "speedup": 0.7020785686992318
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 0.016248557716608047,
+            "baseline": 0.011368269100785255
+          },
+          "speedup": 0.6996478886963284
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.01139711495488882,
+            "int8_pv": 0.016218269243836403
+          },
+          "speedup": 0.7027331205036064
+        }
+      ],
+      "candidate_resources": {
+        "hash": "80059d1c45e29a60124561b97b02965d6bc2d81dd125af70fba259b7a0e7b289",
+        "n_regs": 153,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 2,
+        "num_stages": 1,
+        "use_sme": 79,
+        "asm_sha256": {
+          "ttgir": "316f882bfbbeed45eefe38fa7287b1c09317f082cb7f3fb2ee4484ce04138625",
+          "llir": "c2864d682af3a6181b10c26c2467d08e446344e1e3b335b8cbebf55a678d10e3",
+          "asm": "7727ff2d93834a1dc786af4e1214642e85e1d3c0859cc16cd6e659232d4ae11d",
+          "cubin": "89111b71d00a2663c9c34be6f62b51b3cebf19bd89f093feeb11d0122dd03bc9"
+        }
+      }
+    },
+    {
+      "variant": "complete-w2",
+      "name": "ragged-long",
+      "speedup": 0.6050908390323528,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.015771634876728058,
+            "int8_pv": 0.026064904406666756
+          },
+          "speedup": 0.6050908390323528
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 0.026081731542944908,
+            "baseline": 0.015741826966404915
+          },
+          "speedup": 0.6035575874433486
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.01578221097588539,
+            "int8_pv": 0.026054326444864273
+          },
+          "speedup": 0.6057424285860331
+        }
+      ],
+      "candidate_resources": {
+        "hash": "80059d1c45e29a60124561b97b02965d6bc2d81dd125af70fba259b7a0e7b289",
+        "n_regs": 153,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 2,
+        "num_stages": 1,
+        "use_sme": 79,
+        "asm_sha256": {
+          "ttgir": "316f882bfbbeed45eefe38fa7287b1c09317f082cb7f3fb2ee4484ce04138625",
+          "llir": "c2864d682af3a6181b10c26c2467d08e446344e1e3b335b8cbebf55a678d10e3",
+          "asm": "7727ff2d93834a1dc786af4e1214642e85e1d3c0859cc16cd6e659232d4ae11d",
+          "cubin": "89111b71d00a2663c9c34be6f62b51b3cebf19bd89f093feeb11d0122dd03bc9"
+        }
+      }
+    },
+    {
+      "variant": "complete-w2",
+      "name": "steady4k",
+      "speedup": 0.5178471581835438,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.5276702046394348,
+            "int8_pv": 1.0195475816726685
+          },
+          "speedup": 0.5175532894440686
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 1.0192177295684814,
+            "baseline": 0.5280827283859253
+          },
+          "speedup": 0.5181255320288689
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.5278475880622864,
+            "int8_pv": 1.019311547279358
+          },
+          "speedup": 0.5178471581835438
+        }
+      ],
+      "candidate_resources": {
+        "hash": "9aa273f8ee4893ef258e0425aff0b845f07c1fe37b905b3e8c6568cc887aedd4",
+        "n_regs": 153,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 2,
+        "num_stages": 1,
+        "use_sme": 78,
+        "asm_sha256": {
+          "ttgir": "565305fc8a6e704684ca920548ebad5adc97ba31055c52fd860cbf6d5d53c61c",
+          "llir": "801f894af96d43fffce7ec1bebc79b178a3464817fbc28d44005d0e012ef2162",
+          "asm": "a30e1e2aecf86d3474ac0ce4c81dc406e3f1461108bc4a3c90e398a0db88e26b",
+          "cubin": "bbb24636db28074ae3002c63bebeb91c502987ad640f7961be987af24af225f7"
+        }
+      }
+    },
+    {
+      "variant": "complete-w2",
+      "name": "steady16k",
+      "speedup": 0.5123132553185037,
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 1.0311509370803833,
+            "int8_pv": 2.012568712234497
+          },
+          "speedup": 0.5123556432195182
+        },
+        {
+          "index": 1,
+          "order": [
+            true,
+            false
+          ],
+          "milliseconds": {
+            "int8_pv": 2.0128471851348877,
+            "baseline": 1.0311241149902344
+          },
+          "speedup": 0.5122714345158474
+        },
+        {
+          "index": 2,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 1.031083583831787,
+            "int8_pv": 2.012603759765625
+          },
+          "speedup": 0.5123132553185037
+        }
+      ],
+      "candidate_resources": {
+        "hash": "5f6cf4f9c8cbf73a66e34d87c96d8839408f90eff4f2926658e8023d3b336f23",
+        "n_regs": 153,
+        "n_spills": 0,
+        "shared": 12288,
+        "num_warps": 2,
+        "num_stages": 1,
+        "use_sme": 78,
+        "asm_sha256": {
+          "ttgir": "c33d7707043a32d38049c528ea662381859284843bcb982f1d603e4b16a2cfd6",
+          "llir": "3ed69b1e387d70265784f2151433f6475123b3474c7ccf9a0c93e8f9718196f2",
+          "asm": "9dc3a267c2cf1d983d3ce9cf9a20a5d701af5f61034c7134dba5e745bb5d6f81",
+          "cubin": "078a1ba101a2911fda41c5660268159d9d048d1445b44831c0397c3afe75e9ad"
+        }
+      }
+    }
+  ],
+  "local_replay_directory": "/var/folders/79/h30gfg3s2_1_fgjfjpp_d9cr0000gn/T/flagos-int8-pv-final-replay-gkfkj5u5",
+  "conclusion": "Current direct INT8P x V K32 implementation is slower for both1/2warp; close this implementation without model service tests. No physical capacity reclaimed."
+}
