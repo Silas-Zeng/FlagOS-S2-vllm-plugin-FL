@@ -494,3 +494,38 @@ Prepared INT8-PV(PR55) directly changes arithmetic and embeds scales in unused V
 bytes; its device support/speed/model integration are untested, not another claimed
 win. Its old doc's queue/source wording is historical; noGPUjob is queued. These
 are follow-up priorities from existing evidence, not extra tests during this pair.
+
+### Completed matched qualification against team main697
+
+07:20:33UTC the serial controller completed; both services/owned children exited,
+port9031closed and GPUidle independently rechecked. Both full105102correct,
+105unique successful binary reviews, zero per-question score changes. Initial and
+post-score mixed semantics, actual loaded-source identity, exact requests/tokens,
+TTFT and all working gates passed. Shipping87default activation was tested.
+
+|Case|main697 total tok/s|candidate87 total tok/s|Observed change|Candidate mean TTFT ms|
+|---|---:|---:|---:|---:|
+|4K|5588.222434519|5623.287905121|+0.62749%|3413.361058074|
+|16K|4108.862492356|4188.039586289|+1.92698%|120461.128024770|
+
+These are single-pair observations.4Kbaseline added4index metadata;candidate
+added6index plus2prefill metadata, with conservative selected-config changes in
+both warm-tail/score intervals. Their costs are not isolated and4Kis not a stable
+effect-size estimate.16Kboth added0metadata and selected-config state unchanged.
+The earlier349-context same-policy pair was also positive in both workloads;
+combined with actual component/Graph checks and this full latest-main acceptance,
+retain the implementation under the user's merge condition rather than starting
+another A/Acalibration. Continue profiling-guided original prefill work afterward.
+
+Actual gitfetch succeeded before merge and origin/main remained697; the clean
+primary main checkout was fast-forwarded to it. Production diff is4files/186lines,
+with no native C++ or PR60prefill changes. Subsequent evidence-only commits have
+exactly the tested87production and actual driver/controller contents. Final merge
+must still check the remote main and expected PR head. CI on this fork skips its
+13jobs by workflow condition; these are not additional passing target tests.
+
+Final raw archive latest-main-pair-v1-final-evidence-20261026.tar.gz1817902B,
+SHA9c426c8c80095f6eb9734f0b0109fee268bae021a05214b29fee727a585b5aba,
+with final-summary.json in the evidence directory. It retains both105reviews,
+commands/warmups/scores/metadata/semantics/cleanup/source manifests and the external
+read-only audit. Private caches excluded. Archive and SHAverified after download.
