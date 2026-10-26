@@ -1,4 +1,4 @@
-"""Compare BM128/Q16 and BM64/Q8 with verified Q-fragment hoisting.
+"""Compare bounded query tiles/pipelines with verified Q-fragment hoisting.
 
 Only diagnostic private JIT caches are changed. No installed or serving source
 is edited. Both graphs use the warmed, proved compiled kernels, not the
@@ -232,7 +232,7 @@ def main(args):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-gpu',action='store_true')
-    parser.add_argument('--bm',type=int,choices=[64,128,256],default=64)
+    parser.add_argument('--bm',type=int,choices=[64,128,256,512],default=64)
     parser.add_argument('--warps',type=int,choices=[4,8,16],default=8)
     parser.add_argument('--kv-tile',type=int,choices=[64,128],default=64)
     parser.add_argument('--stages',type=int,choices=[1,2],default=1)

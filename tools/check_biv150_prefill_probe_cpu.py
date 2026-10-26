@@ -30,7 +30,8 @@ def main():
     spec.loader.exec_module(original)
     reports = []
     for rows, warps, tile, stages in ((256, 16, 64, 1), (256, 16, 128, 1),
-                                      (128, 8, 64, 2), (256, 8, 64, 2)):
+                                      (128, 8, 64, 2), (256, 8, 64, 2),
+                                      (512, 16, 64, 1)):
         module, source_sha = adapted_manager(original, rows, warps, tile, stages)
         values = dict(IS_3D=False, HEAD_SIZE=128, HEAD_SIZE_PADDED=128, num_query_heads=16,
                       num_queries_per_kv=8, BLOCK_M=rows, BLOCK_Q=rows // 8, BLOCK_SIZE=16,
