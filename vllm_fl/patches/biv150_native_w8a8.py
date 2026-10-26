@@ -60,7 +60,8 @@ def quantize_weight(weight):
 
 
 def install():
-    if os.environ.get("VLLM_FL_BIV150_NATIVE_W8A8", "1") != "1":
+    # 并发 prefill/decode 已出现异常，默认隔离此路径；保留显式启用供诊断。
+    if os.environ.get("VLLM_FL_BIV150_NATIVE_W8A8", "0") != "1":
         return {"installed": False}
     if not _eligible_model():
         return {
