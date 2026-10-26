@@ -123,10 +123,16 @@ def reference_guard(actual, baseline, reference, atol=.005, rtol=.005):
     actual, baseline, reference = actual.float(), baseline.float(), reference.float()
     tolerance = atol + rtol*reference.abs()
     old_error, new_error = (baseline-reference).abs(), (actual-reference).abs()
+    # Inherit only a BF16 rounding-sized baseline exception, never arbitrary
+    # baseline corruption or a broadly enlarged global tolerance.
+    _, exponent = torch.frexp(reference.abs())
+    one_ulp = torch.ldexp(torch.ones_like(reference), exponent-8).clamp_min(2.0**-133)
+    invalid_baseline = int(((old_error > tolerance) & (old_error > one_ulp)).sum())
     allowed = torch.maximum(tolerance, old_error)
     violations = int((new_error > allowed).sum())
-    return dict(passed=violations == 0, finite=True,
+    return dict(passed=violations == 0 and invalid_baseline == 0, finite=True,
                 existing_baseline_violations=int((old_error > tolerance).sum()),
+                baseline_exceptions_over_one_bf16_ulp=invalid_baseline,
                 candidate_oracle_violations=int((new_error > tolerance).sum()),
                 new_or_worsened_violations=violations,
                 limit='per-element maximum of original tolerance and observed baseline error')

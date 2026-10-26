@@ -14,10 +14,12 @@ def main():
     assert not fixture.reference_guard(torch.tensor([2.015625,.01]), baseline, reference)['passed']
     assert not fixture.reference_guard(torch.tensor([float('nan'),0.]), baseline, reference)['passed']
     assert not fixture.reference_guard(torch.tensor([2.,.006]), reference, reference)['passed']
+    bad_baseline = torch.tensor([2.03125,0.], dtype=torch.bfloat16)
+    assert not fixture.reference_guard(bad_baseline,bad_baseline,reference)['passed']
     print(json.dumps({'passed':True,'gpu_executed':False,'checks':[
         'identical one-ULP baseline exception retained', 'worsened existing error rejected',
         'new error at another element rejected', 'nonfinite rejected',
-        'original tolerance enforced on accurate baseline']}))
+        'original tolerance enforced on accurate baseline', 'baseline error over one BF16 ULP rejected']}))
 
 
 if __name__ == '__main__':
