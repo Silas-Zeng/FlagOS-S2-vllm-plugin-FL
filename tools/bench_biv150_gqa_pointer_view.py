@@ -82,6 +82,12 @@ def main(args):
     props = torch.cuda.get_device_properties(0)
     assert 'BI-V150' in props.name and props.multi_processor_count == 16
     module = load_module(source / 'vllm_fl/patches/biv150_gqa_decode.py', 'pointer_view_frozen_gqa')
+    # The pinned frontend computes SME only AFTER a per-JITFunction cache miss.
+    # Rank is absent from that cache key. Preserve the original source but use
+    # an independent JITFunction so a baseline launch cannot mask this probe.
+    candidate_module = load_module(source / 'vllm_fl/patches/biv150_gqa_decode.py',
+                                   'pointer_view_candidate_gqa')
+    assert candidate_module._gqa_decode_attention is not module._gqa_decode_attention
     result = dict(component_only=True, official_score=False, production_unchanged=True,
                   source_commit=args.commit, production_baseline=MAIN, sdk_jit_sha256=JIT_SHA,
                   kernel_source_sha256=hashlib.sha256((source / 'vllm_fl/patches/biv150_gqa_decode.py').read_bytes()).hexdigest(),
@@ -102,7 +108,7 @@ def main(args):
             for key in ('scratch', 'maxima', 'sums'):
                 c[key] = c[key].narrow(2, 0, segments)
             proxy = SimpleNamespace(LOG2E=module.LOG2E,
-                                    _gqa_decode_attention=PointerKernel(module._gqa_decode_attention, k, v))
+                                    _gqa_decode_attention=PointerKernel(candidate_module._gqa_decode_attention, k, v))
             def run(selected):
                 kernel = main_call(selected, c, segments)
                 reduce_call(module, c, segments, 4)
@@ -116,7 +122,7 @@ def main(args):
             if batch == 64:
                 assert old.hash == MODEL_4K_HASH, 'Fixture differs from actual current model kernel'
             assert row['baseline']['metadata']['use_sme'] == 14
-            assert row['candidate']['metadata']['use_sme'] == 62
+            assert row['candidate']['metadata']['use_sme'] == 62, row['candidate']['metadata']
             row['uniform_exact'] = bool(torch.equal(c['out'], gold))
             row['numeric_checks'] = []
             for ragged in (False, True):
