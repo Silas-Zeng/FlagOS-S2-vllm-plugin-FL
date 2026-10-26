@@ -123,3 +123,35 @@ Their owned cleanup and expected-source ASTs match main594.
 Do not overwrite those active exports scripts while the controller is running.
 This Draft has no new end-to-end qualification yet. Merge requires fresh-main
 throughput superiority plus precision/TTFT, actual default w16 selection and semantics.
+
+## Post-launch resource audit and observation gap, 2026-10-27 CST
+
+The earlier resource summary copied candidate_resources before CUDA handle load;
+its null register/spill values remain visible. It omitted loaded_resources already
+recorded after successful launch. CPU-only reanalysis of the unchanged archives,
+with candidate hash/metadata/all assembly hashes cross-checked, now recovers:
+
+| Configuration | shared bytes | loaded n_regs | loaded n_spills |
+|---|---:|---:|---:|
+| Baseline BM128/w8 | 32768 | 114 | 0 |
+| Selected BM256/w16 | 65536 | 113 | 0 |
+| BM512/w16 | 131072 | 201 | 0 |
+
+The actual service-controller and fresh Graph records independently report the
+same 113/0 for BM256. These driver fields do not establish occupancy, register-file
+capacity or absence of all local-memory traffic. They reinforce retaining BM256
+over the slower BM512; no kernel retest or production change was needed.
+See prefill-loaded-resources-20261027.json and the adjacent original summary,
+which now distinguishes pre-load null fields from post-launch counts.
+Reproduce with tools/summarize_biv150_prefill_loaded_resources.py on the two archives.
+
+The model pair was last verified live at 15:55:03 UTC with exact /proc start ticks:
+controller546274, driver546278, service546282; baseline phase accuracy, mixed
+semantics passed. Loaded package identity/defaults verified and KV548320.
+SSH attempts from 15:56 through 15:58 returned Permission denied (publickey);
+verbose handshake reached the Go SSH endpoint at43.99.48.148 and offered the
+same explicit Ed25519 key. This is an observation gap, NOT evidence the model
+process terminated. Do not restart or schedule another GPU workload until checking
+the same controller/start ticks and owned state after access returns.
+The user was asked to verify reservation/login information; no teammate instance
+was accessed. The full model comparison and merge gate remain incomplete.
