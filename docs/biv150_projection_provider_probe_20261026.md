@@ -81,3 +81,25 @@ production policy/default has yet been selected, implemented or merged.
 Archive32707bytes SHA256
 749b38d23eb5ad966d1af790328cf675d28f6b5eb7e6b2fee2837819e617767e
 and parsed summary/launch are retained beside the first full raw artifact.
+
+## Opt-in integration under validation
+
+VLLM_FL_BIV150_LARGE_LINEAR=1 is effective only with existing small-row
+protection and compiler-output lowering enabled. The scoped callback retains
+M1–8 own BF16, M9–127 MM, M128–2048 supplied-output pinned linear, and original
+MM above2048. Unsupported descriptors/aliases/autograd retain MM. This is a
+general operator geometry/row policy; no request or benchmark identity is read.
+Default remains0. All promoted helper function ASTs exactly equal the measured
+component helper;44ABI CPU and228routing/fallback/cache cases pass. Active
+policy joins the compilation identity; unused/off flags canonicalize equally,
+logging stays identity-neutral, and live installed-policy changes are rejected.
+
+Expanded GPU compile oracle covers127/128/129,2047/2048/2049 and intermediate
+bounds/real tails, preserving independent FP64, two streams and changed-input
+poisoned Graph. It verifies actual callback provider counts, not installer
+status alone. Service harness has a separate post-ready1739-token one-output
+request and verifies all four actual projection selections from only its new
+log segment. Both arms will use the same diagnostic; official105/CLI/fixed
+benchmark counts and three short+one full warmup/single score are unchanged.
+The owned cleanup finally block still matches main exactly. No GPU compile or
+service acceptance for this new integration has completed yet; do not merge.

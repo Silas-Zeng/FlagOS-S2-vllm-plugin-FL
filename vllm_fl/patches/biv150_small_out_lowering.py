@@ -10,6 +10,10 @@ _INSTALLED = False
 _CHOICE = None
 _RECORD_SELECTION = False
 _SELECTED = set()
+_PROVIDER_CALLS = {}
+_LARGE_LINEAR = False
+_PROVIDED_LINEAR = None
+_PROVENANCE = None
 _GEOMETRIES = ((2048,2048),(12288,2048),(2560,2048),(2048,6144))
 
 
@@ -35,13 +39,38 @@ def small_linear_out(x, weight, *, out):
                     print('BIV150_SMALL_OUT_SELECTED',{'rows':key[0],'output_columns':key[1],
                           'input_columns':key[2],'allocation':'compiler output buffer'},flush=True)
             return _small_o_into(x, weight, out)
+        use_linear = (_LARGE_LINEAR and 128 <= x.shape[0] <= 2048
+            and weight.stride(0) == weight.shape[1]
+            and out.stride(1) == 1 and out.stride(0) >= out.shape[1]
+            and not x.requires_grad and not weight.requires_grad and not out.requires_grad
+            and out.untyped_storage().data_ptr() not in
+                (x.untyped_storage().data_ptr(), weight.untyped_storage().data_ptr()))
+        if _RECORD_SELECTION and not torch.cuda.is_current_stream_capturing():
+            key=(x.shape[0],weight.shape[0],weight.shape[1],bool(use_linear))
+            count=_PROVIDER_CALLS.get(key,0)+1;_PROVIDER_CALLS[key]=count
+            if count & (count-1) == 0:
+                print('BIV150_SMALL_OUT_PROVIDER_SELECTED',{'rows':key[0],
+                      'output_columns':key[1],'input_columns':key[2],
+                      'provider':'provided_linear' if use_linear else 'mm_out',
+                      'call_count':count},flush=True)
+        if use_linear:
+            return _PROVIDED_LINEAR(x, weight, out)
         return torch.mm(x, weight.t(), out=out)
 
 
 def install():
-    global _CHOICE, _INSTALLED, _RECORD_SELECTION
+    global _CHOICE, _INSTALLED, _RECORD_SELECTION, _LARGE_LINEAR, _PROVIDED_LINEAR, _PROVENANCE
+    requested = os.environ.get('VLLM_FL_BIV150_LARGE_LINEAR','0') == '1'
     if _INSTALLED:
-        return {'installed':True,'reason':'already installed','allocation':'Inductor out buffer'}
+        if requested != _LARGE_LINEAR:
+            raise RuntimeError('Large linear policy changed after installation')
+        return {'installed':True,'reason':'already installed','allocation':'Inductor out buffer',
+                'large_linear':_LARGE_LINEAR,'provider_provenance':_PROVENANCE}
+    if requested:
+        from vllm_fl.patches import biv150_provided_linear as provided
+        provenance = provided.initialize()
+    else:
+        provided = None;provenance = None
     import torch
     import sympy
     from torch._inductor import ir
@@ -69,9 +98,13 @@ def install():
         return choice.bind([x,weight],layout).output_node()
 
     _RECORD_SELECTION = os.environ.get("VLLM_FL_BIV150_SMALL_OUT_RECORD_SELECTION","0")=="1"
+    _LARGE_LINEAR = requested
+    _PROVIDED_LINEAR = provided.linear_into if provided is not None else None
+    _PROVENANCE = provenance
     _CHOICE = choice
     _INSTALLED = True
     return {'installed':True,'allocation':'Inductor out buffer',
             'small_rows':'unchanged masked BF16 kernel M1-8',
-            'larger_rows':'original torch.mm out dispatch',
+            'larger_rows':'provided linear M128-2048 when eligible; otherwise original MM' if requested else 'original torch.mm out dispatch',
+            'large_linear':requested,'provider_provenance':provenance,
             'unsupported':'previous functional-op fallback'}

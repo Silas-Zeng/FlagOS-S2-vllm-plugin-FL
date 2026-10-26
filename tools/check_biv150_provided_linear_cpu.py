@@ -1,5 +1,7 @@
 """Scope and exact pinned launch ABI checks, without any device import."""
 import contextlib
+import argparse
+import importlib.util
 import json
 import sys
 from types import SimpleNamespace
@@ -47,4 +49,9 @@ def main():
                          limitation='CPU ABI mocks only; actual SDK selection, numerical/Graph correctness and performance pending.')))
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--provider-file');args=parser.parse_args()
+    if args.provider_file:
+        spec=importlib.util.spec_from_file_location('tested_provided_linear',args.provider_file)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    main()

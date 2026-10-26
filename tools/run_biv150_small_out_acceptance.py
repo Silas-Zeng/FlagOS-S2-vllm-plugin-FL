@@ -68,6 +68,7 @@ def throughput(out, *, full_workload_warmup=False):
 def main(args):
     global benchmark
     assert args.out_lowering=="0" or args.stable_small_o=="1"
+    assert args.large_linear=='0' or (args.out_lowering==args.stable_small_o=='1' and args.provider_probe)
     source = args.source.resolve()
     sys.path.insert(0, str(source / "tools"))
     from run_biv150_gate_team_acceptance import get_json, accuracy, benchmark, performance_gates
@@ -113,12 +114,13 @@ def main(args):
                VLLM_FL_BIV150_NATIVE_W8A8="1" if args.native_mode == "on" else "0",
                VLLM_FL_BIV150_STABLE_SMALL_O=args.stable_small_o,
                VLLM_FL_BIV150_SMALL_OUT_LOWERING=args.out_lowering,
+               VLLM_FL_BIV150_LARGE_LINEAR=args.large_linear,
                VLLM_FL_BIV150_SMALL_OUT_RECORD_SELECTION=args.out_lowering)
     command = ["/usr/local/bin/vllm", "serve", "/workspace/MiniCPM5-2B", "--port", "9031",
                "--compilation-config", '{"cudagraph_mode":"FULL_DECODE_ONLY"}',
                "--served-model-name", "minicpm", "--gpu-memory-utilization", "0.85", "--max-model-len", "131072"]
     manifest = dict(command=command, source=str(source), commit=args.commit,
-                    native_mode=args.native_mode, out_lowering=args.out_lowering, post_score_semantic_check=args.post_score_semantic_check, stable_small_o=args.stable_small_o, run_accuracy=args.run_accuracy, run_throughput=args.run_throughput, full_workload_warmup=args.full_workload_warmup, driver_sha256=sha(__file__),
+                    native_mode=args.native_mode, out_lowering=args.out_lowering, large_linear=args.large_linear,provider_probe=args.provider_probe, post_score_semantic_check=args.post_score_semantic_check, stable_small_o=args.stable_small_o, run_accuracy=args.run_accuracy, run_throughput=args.run_throughput, full_workload_warmup=args.full_workload_warmup, driver_sha256=sha(__file__),
                     diagnostic_sha256=sha(Path(__file__).with_name("biv150_peer_mixed_diagnostic.py")),
                     gate_library_sha256=sha(args.gate_library), tuning_snapshot=records,
                     env={k: v for k, v in env.items() if k.startswith(("VLLM_", "BIV150_", "TRITON_", "TORCHINDUCTOR_", "FLAGGEMS_"))})
@@ -177,6 +179,7 @@ def main(args):
         assert bool(out_installs) is (args.out_lowering=='1')
         if out_installs:
             assert out_installs[-1]['installed']
+            assert out_installs[-1]['large_linear']==(args.large_linear=='1')
             installations['BIV150_SMALL_OUT_LOWERING_INSTALL']=out_installs[-1]
         manifest["installations"] = installations
         manifest["kv_cache_lines"] = [line for line in logs.splitlines() if "GPU KV cache size" in line]
@@ -196,6 +199,32 @@ def main(args):
         (args.out / "manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
         passed = summary["all_correct"] and summary["http_overlap"]
         save("mixed_completed", diagnostic=summary, semantic_passed=passed)
+        if args.provider_probe:
+            # A separate post-ready diagnostic, excluded from official scoring.
+            # Exact input token count is chosen to avoid startup profile2048 and
+            # decode capture sizes<=512, making new runtime selection observable.
+            import urllib.request
+            from transformers import AutoTokenizer
+            tokenizer=AutoTokenizer.from_pretrained('/workspace/MiniCPM5-2B')
+            ids=tokenizer.encode('A short sentence for projection diagnostics. '*1000,add_special_tokens=False)[:1739]
+            assert len(ids)==1739
+            offset=len(log_path.read_text())
+            payload=dict(model='minicpm',prompt=ids,max_tokens=1,temperature=0,ignore_eos=True)
+            request=urllib.request.Request('http://127.0.0.1:9031/v1/completions',data=json.dumps(payload).encode(),headers={'Content-Type':'application/json'})
+            with urllib.request.urlopen(request,timeout=600) as response:probe=json.load(response)
+            assert probe['usage']['prompt_tokens']==1739 and probe['usage']['completion_tokens']==1,probe
+            marker='BIV150_SMALL_OUT_PROVIDER_SELECTED '
+            events=[ast.literal_eval(line.split(marker,1)[1]) for line in log_path.read_text()[offset:].splitlines() if marker in line]
+            if args.out_lowering=='1':
+                expected_provider='provided_linear' if args.large_linear=='1' else 'mm_out'
+                geometries={(e['output_columns'],e['input_columns']) for e in events if e['rows']==1739 and e['provider']==expected_provider}
+                assert geometries=={(2048,2048),(2560,2048),(12288,2048),(2048,6144)},events
+            else:
+                assert not events,events
+            proof=dict(request=payload,response=probe,post_ready_events=events,large_linear=args.large_linear,official_benchmark=False)
+            (args.out/'post-ready-provider-probe.json').write_text(json.dumps(proof,indent=2)+'\n')
+            manifest['post_ready_provider_probe']=proof
+            (args.out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
         if args.run_accuracy:
             save("accuracy")
             try:
@@ -298,6 +327,8 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out-lowering",choices=("0","1"),required=True)
+    parser.add_argument('--large-linear',choices=('0','1'),default='0')
+    parser.add_argument('--provider-probe',action='store_true')
     parser.add_argument("--post-score-semantic-check",action="store_true")
     parser.add_argument("--diagnostic-after-semantic-failure",action="store_true")
     parser.add_argument("--source", type=Path, required=True)
