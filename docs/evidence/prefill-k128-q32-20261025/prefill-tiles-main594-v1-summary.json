@@ -1,0 +1,341 @@
+{
+  "utc": "2026-10-26T14:56:07.509787+00:00",
+  "source_commit": "fcc193786fc0146dc0b7d9e0f0ed5d3a652ecdfa",
+  "baseline_main": "594ae2a9d17aadc4587ad54ade2b34e17f4af990",
+  "official_score": false,
+  "service_installed": false,
+  "cases": {
+    "256": {
+      "chunk4k": {
+        "speedup": 1.2229259739038667,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.772641897201538,
+            "candidate_ms": 1.4454500675201416,
+            "speedup": 1.226359828702168
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 1.449497938156128,
+            "baseline_ms": 1.7708826065063477,
+            "speedup": 1.2217213697861795
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.7706961631774902,
+            "candidate_ms": 1.4479176998138428,
+            "speedup": 1.2229259739038667
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      },
+      "chunk16k": {
+        "speedup": 1.2695542811805913,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.332085609436035,
+            "candidate_ms": 6.563000679016113,
+            "speedup": 1.2695542811805913
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 6.5676069259643555,
+            "baseline_ms": 8.324015617370605,
+            "speedup": 1.2674351116328948
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.342957496643066,
+            "candidate_ms": 6.568631172180176,
+            "speedup": 1.2701211680110178
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      },
+      "suffix4k": {
+        "speedup": 1.2207493290268352,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.772150993347168,
+            "candidate_ms": 1.4506163597106934,
+            "speedup": 1.2216538035601643
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 1.455531358718872,
+            "baseline_ms": 1.770026445388794,
+            "speedup": 1.2160689186021618
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.771144986152649,
+            "candidate_ms": 1.4508670568466187,
+            "speedup": 1.2207493290268352
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      },
+      "suffix16k": {
+        "speedup": 1.2662359947380006,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.317717552185059,
+            "candidate_ms": 6.575250148773193,
+            "speedup": 1.265003971557945
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 6.570602893829346,
+            "baseline_ms": 8.319933891296387,
+            "speedup": 1.2662359947380006
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.319967269897461,
+            "candidate_ms": 6.556698322296143,
+            "speedup": 1.2689263499595975
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      }
+    },
+    "512": {
+      "chunk4k": {
+        "speedup": 1.1267644055367683,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.7745264768600464,
+            "candidate_ms": 1.5738818645477295,
+            "speedup": 1.1274839089463515
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 1.5736198425292969,
+            "baseline_ms": 1.7730988264083862,
+            "speedup": 1.1267644055367683
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.7725293636322021,
+            "candidate_ms": 1.5738569498062134,
+            "speedup": 1.1262328281172256
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      },
+      "chunk16k": {
+        "speedup": 1.1946964839260261,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.322793006896973,
+            "candidate_ms": 6.966449737548828,
+            "speedup": 1.1946964839260261
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 6.966438293457031,
+            "baseline_ms": 8.318902015686035,
+            "speedup": 1.194139912715405
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.326226234436035,
+            "candidate_ms": 6.967724323272705,
+            "speedup": 1.1949706745179105
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      },
+      "suffix4k": {
+        "speedup": 1.1009080057784901,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.7567920684814453,
+            "candidate_ms": 1.5961817502975464,
+            "speedup": 1.1006215727964308
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 1.595923900604248,
+            "baseline_ms": 1.7569653987884521,
+            "speedup": 1.1009080057784901
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 1.757132649421692,
+            "candidate_ms": 1.5926599502563477,
+            "speedup": 1.1032691875870122
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      },
+      "suffix16k": {
+        "speedup": 1.1877950066218883,
+        "rounds": [
+          {
+            "index": 0,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.31001091003418,
+            "candidate_ms": 6.997259140014648,
+            "speedup": 1.1876094258839731
+          },
+          {
+            "index": 1,
+            "order": [
+              "candidate",
+              "baseline"
+            ],
+            "candidate_ms": 6.996706485748291,
+            "baseline_ms": 8.31755542755127,
+            "speedup": 1.1887815280651601
+          },
+          {
+            "index": 2,
+            "order": [
+              "baseline",
+              "candidate"
+            ],
+            "baseline_ms": 8.310310363769531,
+            "candidate_ms": 6.996417999267578,
+            "speedup": 1.1877950066218883
+          }
+        ],
+        "numeric_and_changed_graph_passed": true,
+        "resources": {
+          "baseline": [],
+          "candidate": []
+        }
+      }
+    }
+  },
+  "selected": "BM256/K64/w16/stage1",
+  "precision_or_model_throughput_tested": false,
+  "limitation": "Interleaved warmed component Graph timings only; no model gain. Register/spill snapshots were captured before handle load and can be null; do not infer occupancy from shared bytes. Services and benchmark parameters unchanged.",
+  "archive": {
+    "path": "/workspace/experiments/minicpm-s2/exports/prefill-tiles-main594-v1-evidence-20261026.tar.gz",
+    "bytes": 117084,
+    "sha256": "e54a8c4ec96649da500ab86e490b59bef8d1dc8e701eca174608505cb4a7bc1a"
+  }
+}

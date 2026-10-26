@@ -31,3 +31,36 @@ acceptance and its serial matched control. After those finish, compare the
 bounded prefill candidates against actual main BM128/K64/w8/stage1, including
 real2017/1985tails, independent CPU FP64 and changed-input Graph checks before
 timing. Component timing is not a whole-model speedup.
+
+## Actual main594 component results,2026-10-26
+
+PR59is now merged as594ae2a9d17aadc4587ad54ade2b34e17f4af990.
+This Draft incorporated it throughc854f91;fcc193786fc0146dc0b7d9e0f0ed5d3a652ecdfa
+adds only failure/IR evidence retention. TargetPython3.12CPU gates and actual
+source/closure off/on checks passed before exclusive component runs.
+
+|Case|BM256/K64/w16/s1 speedup|BM512/K64/w16/s1 speedup|
+|---|---:|---:|
+|Q2048/KV4096|1.222926x|1.126764x|
+|Q2048/KV16384|1.269554x|1.194696x|
+|Q1985/KV4096|1.220749x|1.100908x|
+|Q2017/KV16384|1.266236x|1.187795x|
+
+Reference is the actual mainBM128/K64/w8/s1Q-hoist path. Both configurations pass
+all2patterns/full-output baseline comparisons/independent FP64/random and uniform
+causal reference/nondefault-stream changed-input poisoned Graph checks before
+interleaved warmedAB/BA/ABtiming. Both finished and GPUidle confirmed. SelectBM256.
+No model throughput/accuracy qualification is implied. Actual shared metadata is
+64KiB/128KiB; register/spill snapshots precede handle loading and can be null, so
+no occupancy attribution. TransformedIR and lowering proof are retained.
+
+Rawprefill-tiles-main594-v1-evidence-20261026.tar.gz117084B,
+SHAe54a8c4ec96649da500ab86e490b59bef8d1dc8e701eca174608505cb4a7bc1a,
+plus summary in this folder. Both source commits, launches, CPU/stack checks,
+rounds, correctness gates and compilerIR are included; private caches excluded.
+
+Next integrate256/w16 through the actual service controller. Existing optional
+Q32controller is still256/w8and OFF; turning it on alone would not test this win.
+Preserve default main manager behavior, explicitly audit the selected launch
+configuration and fallback-before-launch, then cover fresh/minimumQcausal
+boundaries before complete105and fixed-parameter4K/16Kmodel acceptance.
