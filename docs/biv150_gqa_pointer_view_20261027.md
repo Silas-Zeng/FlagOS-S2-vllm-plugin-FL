@@ -1,0 +1,9 @@
+# GQA zero-copy pointer rank probe
+
+Current main2412207 reproduces the existing GQA hotspot: current4K graph samples sum22.696683ms versus prior22.691785ms; MM6.109044ms versus6.109190ms. These are instrumented graph intervals, not whole-workload fractions. Current GQA hash remains641478e6ddcd3d9c11192fbd0c6d4d472bf8ad3e3bb2fd9fa27b09f18e4dc9ff. Raw current-window and source contracts are shared in PR67.
+
+The probe passes zero-copy[pages,32,128] views of existing packed[pages,16,2,128] K/V only at the producer pointer ABI. The same allocation, pointer, page stride, dtype, values, kernel source and reducer are retained. The pinned frontend66a168a derives SME eligibility from contiguous-last-width or noncontiguous penultimate-width divisibility. Combining the real16×2 axes may naturally change14→62. No compiler flag is forced. Actual metadata, TTIR/TTGIR/LLVM/assembly/cubin and loaded resources are retained; eligibility alone proves no hardware improvement.
+
+First falsifier: current packed4K/B64 and16K/B32 producer+reducer, actual8192 table pitch and narrowed scratch. Gate4K baseline to the current-model641478 hash. Check uniform/ragged/zero lengths, independent CPU FP64 samples, changed-input poisoned Graph and side stream, then three alternating warmed timing pairs. Finite near-precision failures still receive diagnostic timings and remain ineligible for integration. This component does not install a model path or establish full105/TTFT acceptance. Physical K/V planar layout and framework allocation changes are outside this first probe.
+
+Local validation: syntax/help without Torch import, clean production diff against main2412. GPU execution is pending verified completion of the owned profiler collector. No concurrent GPU queue.
