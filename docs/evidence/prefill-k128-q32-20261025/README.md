@@ -199,3 +199,32 @@ No end-to-end candidate qualification is implied. After the controller finishes,
 run this tool with baseline594ae2a9d17aadc4587ad54ade2b34e17f4af990 and
 candidated207eeb7df463d6149b1823fa22ed8ebc8b03d59. Preserve the active
 exports/run_biv150_latest_main_pair.py and run_biv150_small_out_acceptance.py.
+
+## Complete matched baseline and actual candidate path, 2026-10-27 01:02 CST
+
+The main594 arm completed all workloads, both semantic checks and owned cleanup.
+Independent CPU arm audit also passes on the actual complete model files.
+
+| Main594 score | total tok/s | mean TTFT ms | requests |
+|---|---:|---:|---:|
+| 4K | 5778.243627140731 | 3502.0497929726844 | 256/256 |
+| 16K | 4187.31786930508 | 120478.06613695138 | 128/128 |
+
+Precision101/105, exact input/output token totals, no failed requests and TTFT
+working limits pass. 4K has changed selected configs over the command interval
+and four new index metadata files. 16K has unchanged selected configs and zero
+new metadata. The unscored16K fullwarm3760.478274 remains a warmup.
+See prefill-w16-pair-v1-baseline-final-summary-20261027.json.
+
+The same controller automatically started candidate driver556703/start338126553,
+service556707/start338126577 (EngineCore556855). It is running complete105 accuracy.
+The actual default-ON service selected BM256/Q32/w16/K64/stage1 at2047rows:
+hash9ed319192da32eb73ac0932b793abc52b9fbfdfff4f3d69bf226e12cd0b0c87b.
+Matching actual compiler metadata reports shared65536 and verifies zero loop Q
+memory reads. Installation, post-launch selected hash and compiler proof are joined
+in prefill-w16-pair-v1-candidate-live-path-20261027.json. No Q32 fallback observed
+at that snapshot. Loaded source fingerprint74b1413eec50ddfa479def5d5507bd5a850f82fdce1b2bc168b4ef313447d00b
+was independently verified by the serving harness. Manual enable variables are
+absent. Both source-default provider paths, fixed CLI and initial snapshot match;
+both have548320KV tokens. This confirms real service integration only.
+Candidate full precision/4K/16K and post-score semantics remain pending.
