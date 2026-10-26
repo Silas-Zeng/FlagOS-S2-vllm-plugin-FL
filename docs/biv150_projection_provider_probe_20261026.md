@@ -467,3 +467,30 @@ plus latest-main-pair-v1-baseline-final-summary.json. Raw105reviews/reports,
 commands/warmups/scores/metadata/initial+postsemantics/cleanup/source manifest
 retained; private kernel/DB caches excluded. Candidate still pending, so no
 candidate improvement, qualification or merge is claimed.
+
+### Shipping-default candidate precision finished
+
+06:39:45UTC candidate entered throughput automatically;06:43:26UTC independent
+raw-review count confirms102/105(.9714285714),105unique binary successful reviews,
+with no per-question score changes against the same-pair main697control. Both
+feature environment variables remain absent,production_defaults=True,and loaded
+source fingerprint verified. Independent count shared as
+latest-main-pair-v1-candidate-independent-accuracy.json. This qualifies precision
+for the exact87shipping policy; throughput/post-score checks and comparison remain
+pending. No additional accuracy run or GPU experiment was dispatched.
+
+Self-review of all four production files against697found no changes to PR60's
+prefill stack or native C++ math. The provided-output path retains the pinned SDK
+14argument ABI, row guard, no-alias/gradient/stride checks and unsupported fallback;
+the actual driver/controller and production source still match frozen87exactly.
+
+While this sole qualification runs, the prior profile/negative records were
+rechecked for follow-up priority: native paged-prefill reference measured2.20x/
+2.40x component headroom, but is closed as a direct replacement and had ragged
+numerical failures; it is not an installation/merge candidate. Original prefill
+tile/lifetime work(PR47,CPU-only) remains the larger hotspot lead. BF16 multi-page
+GQA has already lost across all108passing numerical cases; do not repeat it.
+Prepared INT8-PV(PR55) directly changes arithmetic and embeds scales in unused V
+bytes; its device support/speed/model integration are untested, not another claimed
+win. Its old doc's queue/source wording is historical; noGPUjob is queued. These
+are follow-up priorities from existing evidence, not extra tests during this pair.
