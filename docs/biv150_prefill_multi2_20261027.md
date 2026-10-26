@@ -1,5 +1,10 @@
 # 双序列预填充组件与通用 scope 边界
 
+最新状态：主任务已授权在本人独立候选分支加入默认启用的最小真实服务集成，
+显式0可关闭；团队 main 不变。实现、严格 pin/cache 与验收入口见
+[服务候选记录](biv150_prefill_multi2_service_20261027.md)。下文“生产不变/尚未接入”
+说明的是254b7a0/e936576组件冻结版本；root 的 e936576 边界 worktree 保持隔离。
+
 基于实际 fetch 的团队 main `241220723a09061c182764f8f738e5ec01190367`，本人独立分支 `codex/cjj-prefill-multi2-20261027`、Draft PR66（CJJ1008）。生产 `vllm_fl/`、`csrc/` 不变。本次扩展只做本地 CPU 源码和方案工作；GPU 调度由主任务串行负责。
 
 主任务已报告冻结 `254b7a09e81b6efe85033ed01d0819c52c62f1e6` 四个代表组件均完成、`errors=[]`，4K big/small-first 为 1.203091964x/1.218231016x，16K 为 1.077525666x/1.105188212x；实际 owner PID602039/start340447575 已为 Z。该结果来自主任务串行 GPU 执行，原件路径为 `/workspace/experiments/minicpm-s2/cjj-prefill-multi2-k64-v2-20261027`，本次没有 SSH 取回或独立归档这些原件。它支持继续通用边界验证，不能作为模型精度或正式吞吐通过；`precision_gate=false`。下文历史八例 CPU 记录对应 `254b7a0`，当前扩展检查为 26 例。
