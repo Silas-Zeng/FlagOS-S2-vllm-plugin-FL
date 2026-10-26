@@ -1,0 +1,264 @@
+{
+  "schema": "flagos-terminal-component-evidence-v1",
+  "experiment": "cjj-gqa-software-exp-prob-v1-20261027",
+  "draft_pr": 72,
+  "source_commit": "40e14f37081edaa88527b7ef6ac6a31c68c8e940",
+  "production_baseline": "241220723a09061c182764f8f738e5ec01190367",
+  "scope": "probability",
+  "original_run_directory": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027",
+  "owner_pid": 602351,
+  "owner_start_ticks": 340484724,
+  "observed_terminal_process_state": "Z",
+  "gpu_work_started_for_archiving": false,
+  "official_score": false,
+  "precision_gate": false,
+  "raw_pass_flags_preserved_without_promotion": true,
+  "numerical_caveat": "Original GPU FP64 RMS reports zero despite nonzero max_abs; raw passed flags do not establish full-output numerical equivalence. CPU reference and graph records retained unchanged; no rerun or historical metric repair.",
+  "final_decision": "Close this degree5 five-FMA probability-only component because both observed median speedups are below one. Does not reject other SFU/FA4 designs.",
+  "excluded": [
+    "__pycache__",
+    "*.pyc"
+  ],
+  "files": [
+    {
+      "path": "input.bundle",
+      "origin": "/workspace/experiments/minicpm-s2/exports/cjj-gqa-software-exp-prob-v1-20261027.bundle",
+      "bytes": 15844,
+      "sha256": "7c618c311c4cb13d1cebb4ed755a53345be94078c682a79f51df6d04b9ff991a"
+    },
+    {
+      "path": "owner.json",
+      "origin": "/workspace/experiments/minicpm-s2/exports/cjj-gqa-software-exp-prob-v1-20261027-owner.json",
+      "bytes": 1061,
+      "sha256": "712973750419d103cabb834ff169fc6b77278f0a195244b9b78e9f09e7517afc"
+    },
+    {
+      "path": "raw/b32-baseline.asm",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-baseline.asm",
+      "bytes": 95374,
+      "sha256": "347b03e85baa58caacf3a888d19465f7a1142ce738c30c86b148fd0406605b32"
+    },
+    {
+      "path": "raw/b32-baseline.cubin",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-baseline.cubin",
+      "bytes": 16136,
+      "sha256": "a1c51d18e95054685b36f54a4ac2b494e649ab955655d62eb9d0e6852507bad0"
+    },
+    {
+      "path": "raw/b32-baseline.llir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-baseline.llir",
+      "bytes": 129050,
+      "sha256": "7d5b283d5e9a0c71501f149f5aad009d864f43cb558e94e40b2aae6fb6c8c618"
+    },
+    {
+      "path": "raw/b32-baseline.source",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-baseline.source",
+      "bytes": 74981,
+      "sha256": "2ccb76ef3732add4dd1cd2946061cc5ac45926b1713072b5f8ae31882a92e40a"
+    },
+    {
+      "path": "raw/b32-baseline.ttgir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-baseline.ttgir",
+      "bytes": 59274,
+      "sha256": "2a292fc5baa539bf73602410e888627c12d417454f771f2dc0bcf04c941e1296"
+    },
+    {
+      "path": "raw/b32-baseline.ttir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-baseline.ttir",
+      "bytes": 51282,
+      "sha256": "942f2df1276798ba6e21d9d15215aa1ac0191f11dbd851470e4a7abf81290f94"
+    },
+    {
+      "path": "raw/b32-candidate.asm",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-candidate.asm",
+      "bytes": 106293,
+      "sha256": "c4ad61b970c5ca8bb3d56dfb1b4ee09087870ac53340ff0682b6b23f6337503c"
+    },
+    {
+      "path": "raw/b32-candidate.cubin",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-candidate.cubin",
+      "bytes": 16992,
+      "sha256": "26bd94b27b910358c36d25ba4f644d5df6814eccde6cf02fccec2fc0443b3ed1"
+    },
+    {
+      "path": "raw/b32-candidate.llir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-candidate.llir",
+      "bytes": 136923,
+      "sha256": "29262826b00516849919e8a43d629822e28aebc6d361737d08fb2f0ca65ccb81"
+    },
+    {
+      "path": "raw/b32-candidate.source",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-candidate.source",
+      "bytes": 81202,
+      "sha256": "27202103caffc39d08ccb9f482c8e4874b2ac5a0b0afe318276459c60b8d6ef8"
+    },
+    {
+      "path": "raw/b32-candidate.ttgir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-candidate.ttgir",
+      "bytes": 65911,
+      "sha256": "5910cafb612ba410291e5fad3025a690631179a1861e1ca844091ca73a66738c"
+    },
+    {
+      "path": "raw/b32-candidate.ttir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b32-candidate.ttir",
+      "bytes": 57485,
+      "sha256": "3ffcf8adb48e086125aa412281dda0e7660e7abd71bf746fabf5416b6a4bd372"
+    },
+    {
+      "path": "raw/b64-baseline.asm",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-baseline.asm",
+      "bytes": 95374,
+      "sha256": "9fde575669e44072e92d570384521c1a520cdf3e3093e2d5312d659a23cd726a"
+    },
+    {
+      "path": "raw/b64-baseline.cubin",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-baseline.cubin",
+      "bytes": 16136,
+      "sha256": "a8de3b167ac3ddd12bc1873403ad74e3331d5a655d74325da1a80d36fbee1f15"
+    },
+    {
+      "path": "raw/b64-baseline.llir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-baseline.llir",
+      "bytes": 129050,
+      "sha256": "68a779a355d27c48dc05a295ef1cab6f370edf8226881f2e0a95c157cdaf573a"
+    },
+    {
+      "path": "raw/b64-baseline.source",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-baseline.source",
+      "bytes": 74981,
+      "sha256": "524c758726dfb4b9588c43b8363b249f9159981d2841994b378b583e3c65c324"
+    },
+    {
+      "path": "raw/b64-baseline.ttgir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-baseline.ttgir",
+      "bytes": 59274,
+      "sha256": "c6ec7458c08332e94519108a67d6c1be1e7efb97a4471a6017ab7f865a80e78c"
+    },
+    {
+      "path": "raw/b64-baseline.ttir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-baseline.ttir",
+      "bytes": 51282,
+      "sha256": "380aa213c64109e94ac5077a9af5149a037f6fbc24fb4e717327e52af6b27e0a"
+    },
+    {
+      "path": "raw/b64-candidate.asm",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-candidate.asm",
+      "bytes": 106293,
+      "sha256": "bbbb6a8d1737c305ba2a388f7afdfea97d5f36644f4930e3810a6fe23f5ef0c8"
+    },
+    {
+      "path": "raw/b64-candidate.cubin",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-candidate.cubin",
+      "bytes": 16992,
+      "sha256": "2323f4771f2a8a2294a9ccdb399ebbec31a40857e68ae3506215d924a0535fdf"
+    },
+    {
+      "path": "raw/b64-candidate.llir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-candidate.llir",
+      "bytes": 136923,
+      "sha256": "473df3bb4bdd67e586e06ba699e3900466a68722c32c722404339a3ea7d115e0"
+    },
+    {
+      "path": "raw/b64-candidate.source",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-candidate.source",
+      "bytes": 81202,
+      "sha256": "a55e33b4c83ecb97c78bc2f1401f5c8e0c9dba804e2bf2f5cf6ed15d8361753b"
+    },
+    {
+      "path": "raw/b64-candidate.ttgir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-candidate.ttgir",
+      "bytes": 65911,
+      "sha256": "a8e360840cff6776442f54f84659c544819d014ccd1c59f661cb15740562bb72"
+    },
+    {
+      "path": "raw/b64-candidate.ttir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/b64-candidate.ttir",
+      "bytes": 57485,
+      "sha256": "e32bd71c7f3ed9c14205723419da23102b76f2d61ecc3760b37a985d401e7bf8"
+    },
+    {
+      "path": "raw/generated-gqa-software-exp.py",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/generated-gqa-software-exp.py",
+      "bytes": 6637,
+      "sha256": "b03346cabe36e14e87694cfca42b5d8f25f4d5d1553a6348a13fb562ee3cdc0d"
+    },
+    {
+      "path": "raw/primitive.asm",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/primitive.asm",
+      "bytes": 15081,
+      "sha256": "e50beb0667357ece73b846be7e837caeff0bda71350b1ca223e979f6bbadbb16"
+    },
+    {
+      "path": "raw/primitive.cubin",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/primitive.cubin",
+      "bytes": 3696,
+      "sha256": "29c7e2b237c4566afb01a009a6c7ebd08f250d3b3d366667b9fc540c26da1bf4"
+    },
+    {
+      "path": "raw/primitive.llir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/primitive.llir",
+      "bytes": 7909,
+      "sha256": "f40f37998e7edfec70ff67f06a82cd18b4f85c42854731be1d658461479d660d"
+    },
+    {
+      "path": "raw/primitive.source",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/primitive.source",
+      "bytes": 12596,
+      "sha256": "16daef5bbd9639b29f6835d39b22cb4e728b25d0b5a0111df358aa0d753f0622"
+    },
+    {
+      "path": "raw/primitive.ttgir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/primitive.ttgir",
+      "bytes": 9357,
+      "sha256": "53824ed96d6ffef6c3dad4acc82ff311b1438b821a947842be08b74e52b32408"
+    },
+    {
+      "path": "raw/primitive.ttir",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/primitive.ttir",
+      "bytes": 8621,
+      "sha256": "b2c78596aacb63ebfff31515ff97cb268f306f9c754760f9799ad9765b6a30dc"
+    },
+    {
+      "path": "raw/result.json",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/result.json",
+      "bytes": 26478,
+      "sha256": "cc748c5a5a67c025f9ec5a1cf6e842956e6d5e7538fd4397ea53b85ca1793fe7"
+    },
+    {
+      "path": "raw/source-transform-proof.json",
+      "origin": "/workspace/experiments/minicpm-s2/cjj-gqa-software-exp-prob-v1-20261027/source-transform-proof.json",
+      "bytes": 675,
+      "sha256": "d637ddfe1b1989b65a446eef6819360ae0c0173f691db42a39087c81e0894fea"
+    },
+    {
+      "path": "run.log",
+      "origin": "/workspace/experiments/minicpm-s2/exports/cjj-gqa-software-exp-prob-v1-20261027.log",
+      "bytes": 15756,
+      "sha256": "c79ba7460bcc39fb61c4fd59c5e9d05892e633c7fbab8889286c0f41e690ec0e"
+    },
+    {
+      "path": "source/tools/bench_biv150_gqa_software_exp.py",
+      "origin": "/workspace/experiments/minicpm-s2/code/cjj-gqa-software-exp-prob-v1-20261027/tools/bench_biv150_gqa_software_exp.py",
+      "bytes": 13906,
+      "sha256": "c9ca6ed37b1ce70faddec1ce1dc75b9edc2a9075d17ce7b8e40c1a61f92a48d9"
+    },
+    {
+      "path": "source/tools/biv150_benchmark_utils.py",
+      "origin": "/workspace/experiments/minicpm-s2/code/cjj-gqa-software-exp-prob-v1-20261027/tools/biv150_benchmark_utils.py",
+      "bytes": 4930,
+      "sha256": "ff0cd964aad34e6d19609fa4e1d76e7d46b4f98c98a4d925e33d658efd4e2879"
+    },
+    {
+      "path": "source/tools/biv150_software_exp2.py",
+      "origin": "/workspace/experiments/minicpm-s2/code/cjj-gqa-software-exp-prob-v1-20261027/tools/biv150_software_exp2.py",
+      "bytes": 12412,
+      "sha256": "c4e3d2294b39443085695fbb6ac6dd9738f3a27b77bb3d6081297bd3bebbe6ca"
+    },
+    {
+      "path": "source/vllm_fl/patches/biv150_gqa_decode.py",
+      "origin": "/workspace/experiments/minicpm-s2/code/cjj-gqa-software-exp-prob-v1-20261027/vllm_fl/patches/biv150_gqa_decode.py",
+      "bytes": 23801,
+      "sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1"
+    }
+  ]
+}

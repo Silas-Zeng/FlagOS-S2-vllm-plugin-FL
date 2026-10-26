@@ -1,0 +1,175 @@
+{
+  "status": "closed_no_observed_component_gain",
+  "source_commit": "40e14f37081edaa88527b7ef6ac6a31c68c8e940",
+  "draft_pr": 72,
+  "scope": "degree5 five-FMA probability-only exp2 on original nonpositive GQA domain",
+  "production_baseline": "241220723a09061c182764f8f738e5ec01190367",
+  "precision_gate": false,
+  "official_score": false,
+  "full_105_model_precision_run": false,
+  "official_service_throughput_or_ttft_run": false,
+  "both_scope_run": false,
+  "original_component_numeric_passed": true,
+  "component_numeric_equivalence_qualified": false,
+  "numeric_caveat": "GPU FP64 RMSE=0 contradicts max_abs>0. Original passed flags are retained as historical data and do not establish full-output numerical equivalence. Device FP64 statistics are unvalidated; root cause unproven. No archived full outputs permit a host-side recomputation.",
+  "cpu_reference_and_original_graph_evidence_preserved": true,
+  "numerical_kernel_changed_for_archiving": false,
+  "gpu_work_started_for_archiving": false,
+  "primitive": {
+    "inputs": 33159,
+    "max_relative_error": 3.303807943390251e-07,
+    "max_absolute_error": 1.6229518762234107e-07,
+    "exact_integer_powers": true,
+    "passed": true
+  },
+  "contradictory_metrics": [
+    {
+      "batch": 64,
+      "kv": 4096,
+      "amplitude": 1,
+      "ragged": false,
+      "raw_gpu_relative_rmse": 0.0,
+      "raw_gpu_max_abs": 0.00048828125
+    },
+    {
+      "batch": 64,
+      "kv": 4096,
+      "amplitude": 1,
+      "ragged": true,
+      "raw_gpu_relative_rmse": 0.0,
+      "raw_gpu_max_abs": 0.000244140625
+    },
+    {
+      "batch": 32,
+      "kv": 16384,
+      "amplitude": 1,
+      "ragged": false,
+      "raw_gpu_relative_rmse": 0.0,
+      "raw_gpu_max_abs": 0.000244140625
+    },
+    {
+      "batch": 32,
+      "kv": 16384,
+      "amplitude": 1,
+      "ragged": true,
+      "raw_gpu_relative_rmse": 0.0,
+      "raw_gpu_max_abs": 0.0001220703125
+    }
+  ],
+  "records": [
+    {
+      "batch": 64,
+      "kv": 4096,
+      "segments": 2,
+      "original_record_passed": true,
+      "uniform_exact_original": true,
+      "side_stream_exact_original": true,
+      "sampled_cpu_reference_checks": 12,
+      "sampled_cpu_reference_checks_passed": true,
+      "max_sampled_cpu_candidate_relative_rmse": 0.0023394641594149833,
+      "original_changed_input_graph_records": 4,
+      "changed_input_graph_numeric_qualified": false,
+      "timings": [
+        {
+          "baseline_ms": 0.5258004665374756,
+          "candidate_ms": 0.5281077027320862,
+          "speedup": 0.9956311256535846
+        },
+        {
+          "candidate_ms": 0.5282115936279297,
+          "baseline_ms": 0.5253293514251709,
+          "speedup": 0.9945433946593966
+        },
+        {
+          "baseline_ms": 0.5256163477897644,
+          "candidate_ms": 0.528107225894928,
+          "speedup": 0.9952833856780836
+        }
+      ],
+      "median_speedup": 0.9952833856780836,
+      "candidate_latency_change_percent": 0.4738966197755712,
+      "baseline_resources": {
+        "hash": "641478e6ddcd3d9c11192fbd0c6d4d472bf8ad3e3bb2fd9fa27b09f18e4dc9ff",
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      },
+      "candidate_resources": {
+        "hash": "4d17379a9892b9bf396ea63485dcf5fe19ff2e0bef8189ca32804f87269d6222",
+        "n_regs": 94,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      }
+    },
+    {
+      "batch": 32,
+      "kv": 16384,
+      "segments": 4,
+      "original_record_passed": true,
+      "uniform_exact_original": true,
+      "side_stream_exact_original": true,
+      "sampled_cpu_reference_checks": 12,
+      "sampled_cpu_reference_checks_passed": true,
+      "max_sampled_cpu_candidate_relative_rmse": 0.002329610485353141,
+      "original_changed_input_graph_records": 4,
+      "changed_input_graph_numeric_qualified": false,
+      "timings": [
+        {
+          "baseline_ms": 1.0290135145187378,
+          "candidate_ms": 1.0355442762374878,
+          "speedup": 0.9936934017515131
+        },
+        {
+          "candidate_ms": 1.035310983657837,
+          "baseline_ms": 1.0287562608718872,
+          "speedup": 0.9936688368138514
+        },
+        {
+          "baseline_ms": 1.0288851261138916,
+          "candidate_ms": 1.035326361656189,
+          "speedup": 0.9937785457988402
+        }
+      ],
+      "median_speedup": 0.9936934017515131,
+      "candidate_latency_change_percent": 0.6346623855377098,
+      "baseline_resources": {
+        "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      },
+      "candidate_resources": {
+        "hash": "f9edd909079997f45ef4a631bb2361ed32d381cd694c2a4c4dd527a619330874",
+        "n_regs": 94,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      }
+    }
+  ],
+  "final_decision": "Stop this exact candidate after no observed gain in either measured component shape; leave broader SFU/FA4 and other emulation designs unevaluated.",
+  "future_statistics_requirement": "Move comparison tensors to CPU before float64 RMS; record host max_abs and enforce RMS==0 iff max_abs==0. Do not reinterpret or repair the historical JSON."
+}
