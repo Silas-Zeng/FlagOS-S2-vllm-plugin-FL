@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "gpu_executed": false,
+  "synthetic_cpu_fixtures": true,
+  "cases": [
+    {
+      "k128_present": false,
+      "bm128_fallback_calls": 4,
+      "q32_preserved": true,
+      "k128_preserved": false
+    },
+    {
+      "k128_present": true,
+      "bm128_fallback_calls": 4,
+      "q32_preserved": true,
+      "k128_preserved": true
+    }
+  ],
+  "rejected": [
+    "disabled K128",
+    "broken parent chain",
+    "different missing dependency"
+  ],
+  "query_cases": {
+    "double4k-big-first": [
+      [
+        1945,
+        88
+      ],
+      [
+        4096,
+        4096
+      ]
+    ],
+    "double4k-small-first": [
+      [
+        88,
+        1945
+      ],
+      [
+        4096,
+        4096
+      ]
+    ],
+    "double16k-big-first": [
+      [
+        1994,
+        39
+      ],
+      [
+        16384,
+        16384
+      ]
+    ],
+    "double16k-small-first": [
+      [
+        39,
+        1994
+      ],
+      [
+        16384,
+        16384
+      ]
+    ]
+  },
+  "limitation": "Routing and scope only; no real install, C3, numerical, resource or speed proof."
+}
