@@ -308,3 +308,11 @@ symlink/path escapes and an open committed WAL. Host and targetPython3.12 pass
 without importingTorch. v1exported scripts remain untouched. Planned:3short+1full
 warmup then only2predeclared full4K repetitions, no repeated105. This reduces cold
 state before asking whether a mature suffix exists; no claim until actual run.
+
+V2actually launched2026-10-26T04:06:03UTC,driver520737/start333511462/SID520737,
+outprojection-provider-noise4k-v2-20261026. Before launch all v1owners were terminal,
+port9031closed and GPUidle. At04:06:44driver identity matched/live, server520743/
+start333511672/SID520743waswaiting_service; restore proof copied2799files,
+kernel_artifact_bytes_unchanged=True and tuning_database_merged=False. Exact launch
+is retained inprovider-noise-v2-launch.json. This is actual service execution,
+not merely a prepared plan; scores remain pending. Preserve v1export scripts.
