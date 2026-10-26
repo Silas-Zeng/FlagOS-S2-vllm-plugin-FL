@@ -316,3 +316,42 @@ start333511672/SID520743waswaiting_service; restore proof copied2799files,
 kernel_artifact_bytes_unchanged=True and tuning_database_merged=False. Exact launch
 is retained inprovider-noise-v2-launch.json. This is actual service execution,
 not merely a prepared plan; scores remain pending. Preserve v1export scripts.
+
+## V2 completed: high observed repeatability; stop single-small-effect attribution
+
+Both predeclared4K repeats completed256/256 with exact input/output, initial and
+post-score semantics and owned cleanup. Driver520737is terminal. Scores:
+5929.994192060145tok/s,TTFT3387.341098910838ms;5929.876635567654tok/s,
+TTFT3345.8427866553393ms. Mean5929.9354138139,observed range/mean0.00198242%,
+sample CV0.00140179%. The full unscored warmup5927.641721463032is retained.
+Selected-config fingerprints are unchanged in both scored rounds. Each still
+adds1index metadata and0changed metadata, so the predeclared strict zero-new-
+metadata mature suffix remains empty. Do not relabel these as perfectly mature,
+claim0.002%as a general noise ceiling, select a best round or claim a new model
+gain by dividing these by the earlier colder5484control.
+
+The installed official benchmark source SHA256b09e85eed6f5f7a9075b40a19fc1dd8e94a1c449665c2c6510f349e0409e77b7
+matches the retainedOct21source audit. It performs a test request before the
+timed main run. We therefore checked timing conservatively: command.json mtime
+B<=true start; result JSON mtimeR>=true end; official measured durationD gives
+intersection(R-D,B+D)that must be inside the measured interval, assuming no
+wall-clock step. Both new-index metadata timestamps lie in this intersection,
+not merely in a known preflight. This proves residual measured-window kernel
+materialization, not its duration or performance cost. All bounds are preserved.
+
+Decision: same-source v1showed2.53%state drift, while v2did not reproduce1–3%
+random-looking throughput variation. Evidence favors maturation/cache effects
+being mixed into earlier small single observations. The two observations are
+not a population variance estimate and do not transfer to16K or new processes/
+source/flags/CLI. Stop chasing/merging the prior1–3%single effects as operator
+causes; preserve candidate code and all raw results. No more calibration rounds
+will be appended to obtain a preferred number. Next work returns to measured
+whole-model bottlenecks on the actual latest team baseline, with explicit state
+parity before any future performance promotion. PR58wording now likewise treats
+its+2.42%/-1.50%as observations rather than established stable outcomes.
+
+V2full raw454563B SHA25645d0c514ad8b71f8701e15b05d91db4e23e06170d36995c73abade04cb00b654,
+final-summary and independent-verdict retain both rounds, fixed DB fingerprints,
+all2799artifact digests/rebased groups, protocol, timing bounds, launch, CPU
+contracts and semantic/cleanup proof. Production remains frozena48for all these
+measurements, not a qualification of newmain6971ef4or a promoted default.
