@@ -103,3 +103,30 @@ log segment. Both arms will use the same diagnostic; official105/CLI/fixed
 benchmark counts and three short+one full warmup/single score are unchanged.
 The owned cleanup finally block still matches main exactly. No GPU compile or
 service acceptance for this new integration has completed yet; do not merge.
+
+## Integrated compiler validation completed; service acceptance dispatched
+
+Frozen a48cc8b68cbb68e421ead6e2d9e6fda0156c2354 passes108real-weight/row
+cases and1728independent FP64/stream/changed-poisoned Graph checks, including
+127/128/129,2047/2048/2049, intermediate bounds and real prefill tails. All
+expected runtime providers were positively selected;8actual generated out
+modules were retained. GPU child489843/start332486039 endedZ with
+complete=True/passed=True/errors=[] and GPU release verified. Raw23907bytes
+SHA3e8ccecc8f82c29d8e2a95f31772b0298aa69656d571db41640f6bb78b70a440
+is shared with parsed summary. TargetPython228routing/44ABI and original
+lowering CPU contracts also pass. Existing own tiny CUDA math AST is unchanged.
+
+Actual model driver491667/start332519497 launched2026-10-26T01:20:43UTC
+on the same frozena48source, with native-on, small protection1, output lowering1,
+large-linear1, post-ready provider probe, full105, unchanged official serving
+and benchmark arguments, three short+one full warmup and one scored round
+per4K/16K, plus post-score semantics. Output
+/workspace/experiments/minicpm-s2/projection-integrated-model-v3-20261026.
+No model precision or throughput result is yet available for the integrated
+policy. A separate CPU waiter will run the exact same source/initial cache/
+SO/probe/full105/warmups with only both experimental flags disabled after
+candidate complete+cleanup, precision/semantics/working gates and GPU idle.
+Control remains deferred on a near99precision result for later diagnostic
+review; candidate itself still measures throughput per the established rule.
+Production defaults remain off, PR stays Draft, no main merge is authorized
+by component results alone.
