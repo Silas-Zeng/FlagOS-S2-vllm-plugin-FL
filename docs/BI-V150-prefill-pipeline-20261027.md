@@ -62,3 +62,5 @@ Controller568657/start338951699/SID568657已经实际存活，baseline driver568
 04:19已观测同一controller568657自然转入candidate，driver579266、server579270均实际存活；候选仍为冻结b0d，当前本地新增的审计/证据文件不改变其生产代码。当前没有候选完整结果，无新增端到端收益或合并结论；后续仍须完整独立配对审计、进程清理及fresh团队main核对。
 
 04:48:16候选完整105题结束，独立重读全部prediction/review/report为 **101/105=.9619047619**，达到.95门槛；baseline为102/105，单题test/precalculus/263.json由对变错。独立JSON SHA c5b008083ba16f48f66785920b9a6d6128f0d53d61590fd121089d89c88f07f4。尚未拿精度通过当作吞吐验收。04:53实际服务K128自然首选rows2047、BM256/Q32/w16/K128/stage1/maxnreg128、127regs/0spill/65536B shared，Q-hoist证明匹配；自然C3 N63/M2048/Dprefix1/Dall62/outside61、无scope拒绝。4K三短预热已完，完整warm/正式分数继续。
+
+候选正式4K：**5698.207443332993 total tok/s**、meanTTFT3284.5796922447335ms、duration230.0232157278806s、256/256/0failed/固定token严格匹配；相对本轮基线5778.458274320222为 **-1.3887931%**，TTFT门槛通过。candidate fullwarm5895.4612为未计分，不能替代此负结果。命令区间changed=True、8newmetadata，含client preflight，不能据此推算实际计时区间编译成本。当前没有新4K收益，也没有满足合并的完整双档结论，继续原16K任务。资源预算检查位于cold _Manager._compile，loaded资源哈希只每kernel第一次记录；没有发现每步重复资源校验，未为此修改活动源码。
