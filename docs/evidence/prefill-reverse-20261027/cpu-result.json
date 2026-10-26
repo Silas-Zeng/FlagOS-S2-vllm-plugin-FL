@@ -1,0 +1,298 @@
+{
+  "passed": true,
+  "cpu_only": true,
+  "gpu_executed": false,
+  "torch_imported": false,
+  "official_score": false,
+  "precision_gate": false,
+  "production_unchanged": true,
+  "source_transform": {
+    "sdk_source_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "normalization_source_sha256": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+    "normalized_source_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "reversed_source_sha256": "38198704c37479e4b5c26778d7dd1da2a894409d1c81ff2626e1d988facca104",
+    "exact_byte_inverse": true,
+    "source_line_count_preserved": true,
+    "source_edit": "q_block_global_idx = tl.num_programs(0) - 1 - tl.program_id(0)",
+    "grid_unchanged": true,
+    "parent_dispatch_unchanged": true,
+    "block_m": 256,
+    "block_q": 32,
+    "tile_size": 64,
+    "num_warps": 16,
+    "num_stages": 1,
+    "minimum_query_rows": 1024,
+    "num_sequences": 1,
+    "is_3d": false,
+    "floating_math_and_output_address_expressions_unchanged": true
+  },
+  "helper_ast_sha256": {
+    "cdiv_fn": "2a221268206c53b7554d9c762b00da7a89884e6833291aedc25bc6e21f0d398f",
+    "resolve_seq_and_query_len": "e39654a8f7ea737f405c74915e35f329aad616ec66dddab7e8653a04b1fe572e",
+    "find_seq_idx": "fce092e76ac079ce23961baea112b82a9c55b9ed59d03fba45de0f7a5481ae46",
+    "compute_tile_loop_bounds": "33d667668ecdb2394f08d74ee87e2bc40dc6bcd2a82d9cb30918b47fa8f1c1be"
+  },
+  "scope_checks": {
+    "matching_scope": true,
+    "rejected_descriptor_changes": 10,
+    "rejected_grids": 3,
+    "uses_actual_parent_descriptor_gate": true
+  },
+  "complete_grid_sizes_checked": 2049,
+  "rejects_changed_sdk": true,
+  "cases": [
+    {
+      "case": "fresh1024",
+      "query_rows": 1024,
+      "kv_rows": 1024,
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 16,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 272
+    },
+    {
+      "case": "fresh1025",
+      "query_rows": 1025,
+      "kv_rows": 1025,
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 33,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16400,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 17,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 289
+    },
+    {
+      "case": "fresh2048",
+      "query_rows": 2048,
+      "kv_rows": 2048,
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 32,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 1056
+    },
+    {
+      "case": "fresh4096",
+      "query_rows": 4096,
+      "kv_rows": 4096,
+      "grid": [
+        129,
+        2
+      ],
+      "valid_query_ctas": 128,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 65536,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 4160
+    },
+    {
+      "case": "fresh16384",
+      "query_rows": 16384,
+      "kv_rows": 16384,
+      "grid": [
+        513,
+        2
+      ],
+      "valid_query_ctas": 512,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 262144,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 256,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 65792
+    },
+    {
+      "case": "minimum4k",
+      "query_rows": 1024,
+      "kv_rows": 4096,
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 49,
+      "total_kv_tiles_per_head": 1808
+    },
+    {
+      "case": "minimum16k",
+      "query_rows": 1024,
+      "kv_rows": 16384,
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 256,
+      "last_valid_kv_tiles": 241,
+      "total_kv_tiles_per_head": 7952
+    },
+    {
+      "case": "partial4k",
+      "query_rows": 1025,
+      "kv_rows": 4096,
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 33,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16400,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 49,
+      "total_kv_tiles_per_head": 1872
+    },
+    {
+      "case": "chunk4k",
+      "query_rows": 2048,
+      "kv_rows": 4096,
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 33,
+      "total_kv_tiles_per_head": 3104
+    },
+    {
+      "case": "chunk16k",
+      "query_rows": 2048,
+      "kv_rows": 16384,
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 256,
+      "last_valid_kv_tiles": 225,
+      "total_kv_tiles_per_head": 15392
+    },
+    {
+      "case": "suffix4k",
+      "query_rows": 1985,
+      "kv_rows": 4096,
+      "grid": [
+        63,
+        2
+      ],
+      "valid_query_ctas": 63,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 31760,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 34,
+      "total_kv_tiles_per_head": 3102
+    },
+    {
+      "case": "suffix16k",
+      "query_rows": 2017,
+      "kv_rows": 16384,
+      "grid": [
+        64,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32272,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_is_longest_first": true,
+      "first_valid_kv_tiles": 256,
+      "last_valid_kv_tiles": 225,
+      "total_kv_tiles_per_head": 15423
+    }
+  ],
+  "limitation": "Scalar actual-SDK AST plus ownership proof; device codegen, resources, scheduling and performance untested."
+}
