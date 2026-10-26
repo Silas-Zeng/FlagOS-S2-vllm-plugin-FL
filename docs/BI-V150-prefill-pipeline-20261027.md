@@ -41,4 +41,12 @@ stage2随机/全uniform与baseline数值全等；K128随机有舍入差异，但
 
 7形状×2输入图案均通过原数值/CPU oracle/changed-input Graph，随机图案含允许范围内舍入差异。全部三轮交错计时原件与两项负结果在`docs/evidence/prefill-pipeline2-20261027/`；archive443625B/50members/SHA7caecdc17997fe529469bb5c7364f978ac6e417efccaa4764027e4cf48e7ef33。本地逐一重验49原文件SHA及11个case计时比例/门槛；未冒称模型吞吐。
 
-已实现默认实际服务候选：仅Q32适用的单序列>=1024行，K128/w16/maxnreg128；沿用严格Q-hoist，cold时先load函数并检查regs<=128/0spill/shared<=65536，再允许launch。未知编译/资源条件在launch前回当前Q32 K64；设备执行错误传播且不重试。独立child flag缓存语义在Q32/parent关闭时折叠，runner只增4行installer并更新严格source pin，compute-order主体不变。CPU策略故障、cache/原路保持、runner逆变换及严格compute-order函数相等检查通过。实际策略12形状与后续完整服务资格仍待验证。
+已实现默认实际服务候选：仅Q32适用的单序列>=1024行，K128/w16/maxnreg128；沿用严格Q-hoist，cold时先load函数并检查regs<=128/0spill/shared<=65536，再允许launch。未知编译/资源条件在launch前回当前Q32 K64；设备执行错误传播且不重试。独立child flag缓存语义在Q32/parent关闭时折叠，runner只增4行installer并更新严格source pin，compute-order主体不变。CPU策略故障、cache/原路保持、runner逆变换及严格compute-order函数相等检查通过。
+
+## 实际默认策略预验证和模型配对
+
+冻结候选`b0d34e6e9213e8026ea65989f3917995cf8fd640`在个人实例实际策略16形状×2图案全部通过（13适用形状26selected、3回退形状6patterns，0compile fallback）；实际2047行与4097/16385部分KV页均覆盖，输入字节不变。真实C3闭包检查通过，feature env未手工启用。archive12159B/6members/SHAe30a46ecd8b7225ac02af33672a9d4d9b7d9c2a61cec3457fe861603d07c2c15。本地重读完整结果及真实GPU log解码、错误register记录拒绝验证通过；这仍不是105题/吞吐资格。
+
+03:12:45北京时间正式配对已启动：`R/prefill-k128-main2412-pair-v1-20261027`（R=/workspace/experiments/minicpm-s2）。此前再次Git fetch与GitHub实时main核对均为`2412207`；baseline为`R/code/main-w16-qualified-20261027@2412207`，candidate为`R/code/prefill-k128-service-v2-20261027@b0d34e6`。双方生产defaults、固定CLI、同snapshot/nativeSO5c、完整精度/3短+1完整warm/每档1次正式score，baseline out/large显式传1并使用`--baseline-production-defaults`，不能套旧controller默认0/0削弱主线。
+
+Controller568657/start338951699/SID568657已经实际存活，baseline driver568661、server568665，原件launch相邻JSON可审查。baseline期望package fingerprint74b1413...，candidate4b7cab4bd0a11c827d2dd7a780fb2d85075d5128415e7f8a97ab1a6054ccaae8（Native=True）。harness10d11ba...与controller99eda2ee...按SHA固定，未改全局包。配对仍在运行，无完整精度/吞吐结论、不合并。CPU独立审计`tools/audit_biv150_k128_pair.py`专门验证新main真实Q32对照和实际K128/maxnreg/资源/IR/自然C3、105题/预热/TTFT/固定token/初始post语义等；旧w16审计要求baseline没有Q32，不能原样套此新pair。

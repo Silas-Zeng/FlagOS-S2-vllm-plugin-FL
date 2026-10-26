@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-26T19:12:45.408607+00:00",
+  "controller_pid": 568657,
+  "start_ticks": "338951699",
+  "sid": 568657,
+  "command": [
+    "/usr/local/bin/python",
+    "/workspace/experiments/minicpm-s2/exports/run_biv150_latest_main_pair.py",
+    "--tool",
+    "/workspace/experiments/minicpm-s2/exports/run_biv150_small_out_acceptance.py",
+    "--out",
+    "/workspace/experiments/minicpm-s2/prefill-k128-main2412-pair-v1-20261027",
+    "--baseline-source",
+    "/workspace/experiments/minicpm-s2/code/main-w16-qualified-20261027",
+    "--baseline-commit",
+    "241220723a09061c182764f8f738e5ec01190367",
+    "--candidate-source",
+    "/workspace/experiments/minicpm-s2/code/prefill-k128-service-v2-20261027",
+    "--candidate-commit",
+    "b0d34e6e9213e8026ea65989f3917995cf8fd640",
+    "--library",
+    "/workspace/experiments/minicpm-s2/code/baseline-profiler-v2-20261025/build-native-w8a8/biv150_native_w8a8.so",
+    "--tuning-snapshot",
+    "/workspace/experiments/minicpm-s2/exports/small-bf16-fullwarm-tuning-snapshot-v6-20261025",
+    "--fixtures",
+    "/workspace/experiments/minicpm-s2/exports/native-mixed-fixtures-20261025",
+    "--baseline-out-lowering",
+    "1",
+    "--baseline-large-linear",
+    "1",
+    "--baseline-production-defaults"
+  ],
+  "source_fingerprints": {
+    "baseline": "74b1413eec50ddfa479def5d5507bd5a850f82fdce1b2bc168b4ef313447d00b",
+    "candidate": "4b7cab4bd0a11c827d2dd7a780fb2d85075d5128415e7f8a97ab1a6054ccaae8"
+  },
+  "official_cli_unchanged": true,
+  "fully_warmed_single_score_per_length": true,
+  "shared_source_installed": false,
+  "independent_cleanup": true
+}
