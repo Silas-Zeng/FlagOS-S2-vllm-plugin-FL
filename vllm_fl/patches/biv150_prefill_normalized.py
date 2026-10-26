@@ -1,10 +1,12 @@
 """Audited in-memory prefill normalization clone; serving registration is separate."""
 
+import ast
 import functools
 import hashlib
 import importlib
 import inspect
 import linecache
+import re
 import types
 from pathlib import Path
 
@@ -12,6 +14,34 @@ _AUDITED = {
     "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
     "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }
+
+
+_STRIDES = ('block_table_stride', 'query_stride_0', 'query_stride_1',
+    'output_stride_0', 'output_stride_1', 'stride_k_cache_0', 'stride_k_cache_1',
+    'stride_k_cache_2', 'stride_v_cache_0', 'stride_v_cache_1', 'stride_v_cache_2')
+
+
+def _specialize_strides(source):
+    header, body = source.split('\n):\n', 1)
+    original_header, original_body = header, body
+    for name in _STRIDES:
+        old = name + ': tl.int64'
+        if header.count(old) != 1:
+            raise ValueError('未识别唯一stride签名：' + name)
+        header = header.replace(old, name + ': tl.constexpr', 1)
+        body = re.sub(r'\b' + name + r'\b', name + '_i64', body)
+    aliases = ''.join('    ' + name + '_i64 = tl.full((), ' + name + ', tl.int64)\n' for name in _STRIDES)
+    header = header.replace('def kernel_biv150_prefill_normalized(', 'def kernel_biv150_prefill_stride(', 1)
+    candidate = header + '\n):\n' + aliases + body
+    restored_header = header.replace('def kernel_biv150_prefill_stride(', 'def kernel_biv150_prefill_normalized(', 1)
+    restored_body = body
+    for name in _STRIDES:
+        restored_header = restored_header.replace(name + ': tl.constexpr', name + ': tl.int64', 1)
+        restored_body = re.sub(r'\b' + name + r'_i64\b', name, restored_body)
+    if (restored_header, restored_body) != (original_header, original_body):
+        raise AssertionError('stride变换不能逐字逆回')
+    ast.parse(candidate)
+    return candidate
 
 
 def make_normalized(attention):
@@ -33,6 +63,7 @@ def make_normalized(attention):
     source = source.replace(
         "def kernel_unified_attention(", "def kernel_biv150_prefill_normalized(", 1
     )
+    source = _specialize_strides(source)
     digest = hashlib.sha256(source.encode()).hexdigest()
     filename = "<biv150-prefill-normalized-" + digest + ".py>"
     # Standard inspect/linecache support lets Triton read the exact pinned clone
@@ -46,7 +77,7 @@ def make_normalized(attention):
     namespace = dict(vars(attention))
     namespace["__name__"] = __name__
     exec(compile(source, filename, "exec"), namespace)
-    normalized_kernel = namespace["kernel_biv150_prefill_normalized"]
+    normalized_kernel = namespace["kernel_biv150_prefill_stride"]
     raw = inspect.unwrap(attention.unified_attention)
     if raw.__name__ != "unified_attention":
         raise RuntimeError("Unexpected attention wrapper")
