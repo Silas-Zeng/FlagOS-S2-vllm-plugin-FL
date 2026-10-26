@@ -1,0 +1,149 @@
+{
+  "source_commit": "7f6bbdd9e89a32e791a82c5588e348e2941202c1",
+  "production_baseline": "241220723a09061c182764f8f738e5ec01190367",
+  "final_decision": "close_this_GQA_threshold8_implementation_without_merge",
+  "diagnostic_completed": true,
+  "passed": false,
+  "precision_gate": false,
+  "official_score": false,
+  "model_accuracy_tested": false,
+  "service_throughput_tested": false,
+  "model105_run": false,
+  "numerical_guard_relaxed": false,
+  "performance_or_numerical_source_changed": false,
+  "process_exit_zero_is_not_a_pass": true,
+  "terminal_process": {
+    "pid": 601797,
+    "start_ticks": 340415344,
+    "state": "Z",
+    "wait_status": 0,
+    "proc_stat": "601797 (python) Z 1 601797 601797 0 -1 4227332 249288 37367 0 6 1013 107 89 23 20 0 1 0 340415344 0 0 18446744073709551615 0 0 0 0 0 0 0 4096 1098926597 0 0 0 17 111 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "active_gpu_work": false
+  },
+  "records": [
+    {
+      "batch": 64,
+      "kv": 4096,
+      "segments": 2,
+      "passed": false,
+      "median_speedup": 0.9928053674350166,
+      "candidate_latency_change_percent": 0.7246770415405113,
+      "baseline_median_ms": 0.5255860090255737,
+      "candidate_median_ms": 0.5294355750083923,
+      "unchanged_original_allclose_gate": {
+        "rtol": 0.01,
+        "atol": 0.0002
+      },
+      "direct_allclose_passed": 0,
+      "direct_allclose_total": 2,
+      "changed_graph_baseline_allclose_passed": 0,
+      "changed_graph_total": 2,
+      "changed_graph_eager_equal": true,
+      "cpu_fp64_sample_checks_passed": 6,
+      "cpu_fp64_sample_checks_total": 6,
+      "cpu_fp64_relative_rmse_baseline": [
+        0.002339937126334736,
+        0.00223707928169625,
+        0.0022162656316243776,
+        0.0,
+        0.0,
+        0.002284105743947286
+      ],
+      "cpu_fp64_relative_rmse_candidate": [
+        0.0024558699911776866,
+        0.0023410887040460323,
+        0.0023619999292513083,
+        0.0,
+        0.0,
+        0.002428258410296113
+      ],
+      "candidate_resources": {
+        "hash": "3706dda66cf8b6e487c189ea846dd5542b54b820693399bce64283239a4405d3",
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      },
+      "baseline_kernel_hash": "641478e6ddcd3d9c11192fbd0c6d4d472bf8ad3e3bb2fd9fa27b09f18e4dc9ff"
+    },
+    {
+      "batch": 32,
+      "kv": 16384,
+      "segments": 4,
+      "passed": false,
+      "median_speedup": 0.9936323724935521,
+      "candidate_latency_change_percent": 0.6408434027233012,
+      "baseline_median_ms": 1.0294312238693237,
+      "candidate_median_ms": 1.0359591245651245,
+      "unchanged_original_allclose_gate": {
+        "rtol": 0.01,
+        "atol": 0.0002
+      },
+      "direct_allclose_passed": 1,
+      "direct_allclose_total": 2,
+      "changed_graph_baseline_allclose_passed": 1,
+      "changed_graph_total": 2,
+      "changed_graph_eager_equal": true,
+      "cpu_fp64_sample_checks_passed": 6,
+      "cpu_fp64_sample_checks_total": 6,
+      "cpu_fp64_relative_rmse_baseline": [
+        0.0023210735725157634,
+        0.002249535731931794,
+        0.0022838716175197274,
+        0.0,
+        0.0,
+        0.0023258800188895212
+      ],
+      "cpu_fp64_relative_rmse_candidate": [
+        0.0022991734559913825,
+        0.002293664873795413,
+        0.002338268080554692,
+        0.0,
+        0.0,
+        0.0024161664058191617
+      ],
+      "candidate_resources": {
+        "hash": "5adf6b1a9b720d1b0598ba9dafec44bb0091d5a1c6217cd2d7491f4d24f9ac30",
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      },
+      "baseline_kernel_hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9"
+    }
+  ],
+  "raw_result_sha256": "d22c4801340eee3ad8dbddfd2cfd8a4750f86bc90e73f19154024248248667d7",
+  "archive_sha256": "18972458191dd8125ee2a3cc427703f98efeffb7cd0c61c095f914ef895a36d5",
+  "manifest_sha256": "2b7f94243f50c625acd58f389cdceb424ced116b0be7ab7363575160f8d81a62",
+  "all_manifest_file_hashes_rechecked": true,
+  "all24_resource_file_hashes_rechecked": true,
+  "mathematical_review": {
+    "real_arithmetic_normalization_conjugacy": true,
+    "initial_negative_infinite_anchor_requires_first_rescale": true,
+    "no_correction_preserves_old_anchor_units": true,
+    "correction_scales_sum_and_accumulator_together": true,
+    "stored_partial_maxima_match_anchor_in_natural_log_units": true,
+    "ideal_probability_upper_bound": 256,
+    "ideal_denominator_upper_bound_at131072": 33554432,
+    "bf16_probability_rounding_and_fp32_fusion_not_invariant": true,
+    "sampled_fp64_checks_do_not_override_failed_all_output_guard": true,
+    "mechanism_hit_frequency_not_recorded": true
+  },
+  "limitations": [
+    "Only this threshold8 PAGE16 GQA implementation was tested; threshold0 and prefill were not.",
+    "Full-output baseline allclose guard failed; CPU FP64 samples and graph/eager equality do not replace it.",
+    "No full-model accuracy, service throughput or TTFT validation was run.",
+    "No failing-element tensor dump was recorded; numerical root cause is not established.",
+    "This closure does not reject the entire conditional-rescale family or a future prefill implementation."
+  ]
+}

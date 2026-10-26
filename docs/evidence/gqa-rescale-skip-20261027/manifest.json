@@ -1,0 +1,389 @@
+{
+  "schema": "flagos-completed-component-evidence-v1",
+  "captured_at_utc": "2026-10-26T23:21:35.261662+00:00",
+  "source_commit": "7f6bbdd9e89a32e791a82c5588e348e2941202c1",
+  "source_tracked_clean": true,
+  "production_baseline": "241220723a09061c182764f8f738e5ec01190367",
+  "diagnostic_only": true,
+  "official_score": false,
+  "precision_gate": false,
+  "model_accuracy_tested": false,
+  "terminal_process": {
+    "pid": 601797,
+    "start_ticks": 340415344,
+    "state": "Z",
+    "wait_status": 0,
+    "proc_stat": "601797 (python) Z 1 601797 601797 0 -1 4227332 249288 37367 0 6 1013 107 89 23 20 0 1 0 340415344 0 0 18446744073709551615 0 0 0 0 0 0 0 4096 1098926597 0 0 0 17 111 0 0 0 0 0 0 0 0 0 0 0 0 0",
+    "active_gpu_work": false
+  },
+  "resource_files_verified": [
+    {
+      "batch": 64,
+      "route": "baseline",
+      "kind": "source",
+      "path": "run/b64-baseline.source",
+      "sha256": "44abd24c5a06bef904b1078fff9c33b0be6a55892f77bba8e9b17f3d2597952f"
+    },
+    {
+      "batch": 64,
+      "route": "baseline",
+      "kind": "ttir",
+      "path": "run/b64-baseline.ttir",
+      "sha256": "4b979934d2eeb768018ccf65c8c017827ff7c61f861b5d9ef71571725051a2f3"
+    },
+    {
+      "batch": 64,
+      "route": "baseline",
+      "kind": "ttgir",
+      "path": "run/b64-baseline.ttgir",
+      "sha256": "1e8eeae1b10fa63ac77965049653a892e7750d7714a9f3a858eaf67022fbee0d"
+    },
+    {
+      "batch": 64,
+      "route": "baseline",
+      "kind": "llir",
+      "path": "run/b64-baseline.llir",
+      "sha256": "3a119e10cc0775ac13ffff48c9528b3348c44c32ee38b6a2b0cc2c0302f4f720"
+    },
+    {
+      "batch": 64,
+      "route": "baseline",
+      "kind": "asm",
+      "path": "run/b64-baseline.asm",
+      "sha256": "6fb2835fefcf28e9513fd566c154cbacd97ba0a2b3ad2f28eb25cac434e565c6"
+    },
+    {
+      "batch": 64,
+      "route": "baseline",
+      "kind": "cubin",
+      "path": "run/b64-baseline.cubin",
+      "sha256": "114d98cda21fa16c9a5f1cf0950613983c9eca1644a5595868690b857393c63c"
+    },
+    {
+      "batch": 64,
+      "route": "candidate",
+      "kind": "source",
+      "path": "run/b64-candidate.source",
+      "sha256": "a82c18208c116e02b2a2f280e4f729faee0544a23d01657294c4150ade837f10"
+    },
+    {
+      "batch": 64,
+      "route": "candidate",
+      "kind": "ttir",
+      "path": "run/b64-candidate.ttir",
+      "sha256": "9d0b8bf56b83c16b0e634b92c3c295d01bfd5506a1686b466ae7e1a3de25f75e"
+    },
+    {
+      "batch": 64,
+      "route": "candidate",
+      "kind": "ttgir",
+      "path": "run/b64-candidate.ttgir",
+      "sha256": "390510ffd12b61e266632c21928c47c737012c4a9dbfbafb6a015fe26f572263"
+    },
+    {
+      "batch": 64,
+      "route": "candidate",
+      "kind": "llir",
+      "path": "run/b64-candidate.llir",
+      "sha256": "f4b0619804ef3bfedaf7a3d3993707594639fbd2184adea2a24d5e502f24605b"
+    },
+    {
+      "batch": 64,
+      "route": "candidate",
+      "kind": "asm",
+      "path": "run/b64-candidate.asm",
+      "sha256": "7775a9970ae3889083762721e4d0a58c7e145e5678baf5292d67def57498f48a"
+    },
+    {
+      "batch": 64,
+      "route": "candidate",
+      "kind": "cubin",
+      "path": "run/b64-candidate.cubin",
+      "sha256": "96466b1cee9cb162c82d098ea766bf00c8644068619718539133bd9ed5b05f5d"
+    },
+    {
+      "batch": 32,
+      "route": "baseline",
+      "kind": "source",
+      "path": "run/b32-baseline.source",
+      "sha256": "7e6e36e002b5f771e2ef3e7f9970af18fd8004b0af6edc397e59e25a89cfdb90"
+    },
+    {
+      "batch": 32,
+      "route": "baseline",
+      "kind": "ttir",
+      "path": "run/b32-baseline.ttir",
+      "sha256": "cc4b9c7de1ea2acb5c07f8de8db1846b10449af219a028538e6bb1ddae6c37d1"
+    },
+    {
+      "batch": 32,
+      "route": "baseline",
+      "kind": "ttgir",
+      "path": "run/b32-baseline.ttgir",
+      "sha256": "fb85bd28f9ab392c7350e6a2971b7aadbefa3328cf49ffdcdbbf8d6f0f706982"
+    },
+    {
+      "batch": 32,
+      "route": "baseline",
+      "kind": "llir",
+      "path": "run/b32-baseline.llir",
+      "sha256": "b14102209859d25bb8e79a9bc0d306e8d95a97a0c96b7576ed7a7a5d25e6af34"
+    },
+    {
+      "batch": 32,
+      "route": "baseline",
+      "kind": "asm",
+      "path": "run/b32-baseline.asm",
+      "sha256": "b662946aad7e72e50336f048c4e2ea38f5b4559a06e5fda2d292e27b90dab6dd"
+    },
+    {
+      "batch": 32,
+      "route": "baseline",
+      "kind": "cubin",
+      "path": "run/b32-baseline.cubin",
+      "sha256": "b9569a0eca5291955c5fc4d2af3df57daf588c23580d5c71a7da5241b724e2ed"
+    },
+    {
+      "batch": 32,
+      "route": "candidate",
+      "kind": "source",
+      "path": "run/b32-candidate.source",
+      "sha256": "a89894bc0763d0218cf0965151527d616d14874a142b1ce00c470db94c26486d"
+    },
+    {
+      "batch": 32,
+      "route": "candidate",
+      "kind": "ttir",
+      "path": "run/b32-candidate.ttir",
+      "sha256": "b2651853f20f1bca321340fcb68b937760b157965a58a900f557d46f6951a5ca"
+    },
+    {
+      "batch": 32,
+      "route": "candidate",
+      "kind": "ttgir",
+      "path": "run/b32-candidate.ttgir",
+      "sha256": "a41bc5519d42a0f058ddb995183353d11652435cfd3ca0d114ffc66ea76b5aa8"
+    },
+    {
+      "batch": 32,
+      "route": "candidate",
+      "kind": "llir",
+      "path": "run/b32-candidate.llir",
+      "sha256": "ff31c53ab73167dc0ef76524134f7a22016f9998fb3d56e6d52b8fcf3f557a09"
+    },
+    {
+      "batch": 32,
+      "route": "candidate",
+      "kind": "asm",
+      "path": "run/b32-candidate.asm",
+      "sha256": "149d7c37511d91dc8098538f701e1542a2fe5b7ea621a867fcaa7f4ef8ee7659"
+    },
+    {
+      "batch": 32,
+      "route": "candidate",
+      "kind": "cubin",
+      "path": "run/b32-candidate.cubin",
+      "sha256": "e008dfcf39e3cf2f6ca1c2389f5c78eb63208f6b2963db47686079f0c84fb4f8"
+    }
+  ],
+  "files": [
+    {
+      "path": "frozen-source/tools/bench_biv150_gqa_rescale_skip.py",
+      "remote_path": "/workspace/experiments/minicpm-s2/code/cjj-gqa-rescale-v1-20261027/tools/bench_biv150_gqa_rescale_skip.py",
+      "bytes": 10440,
+      "sha256": "e41d71a073ea7a6c17379f3afa329e5f0c4bc29f10f3ee12d8553eb8946e4e2e"
+    },
+    {
+      "path": "frozen-source/tools/biv150_benchmark_utils.py",
+      "remote_path": "/workspace/experiments/minicpm-s2/code/cjj-gqa-rescale-v1-20261027/tools/biv150_benchmark_utils.py",
+      "bytes": 4930,
+      "sha256": "ff0cd964aad34e6d19609fa4e1d76e7d46b4f98c98a4d925e33d658efd4e2879"
+    },
+    {
+      "path": "frozen-source/tools/biv150_rescale_factory.py",
+      "remote_path": "/workspace/experiments/minicpm-s2/code/cjj-gqa-rescale-v1-20261027/tools/biv150_rescale_factory.py",
+      "bytes": 3039,
+      "sha256": "500ae0f7d597fa3f877391653e000b426bd1d2b34c78c9e5ce0f44c11b741fd3"
+    },
+    {
+      "path": "frozen-source/vllm_fl/patches/biv150_gqa_decode.py",
+      "remote_path": "/workspace/experiments/minicpm-s2/code/cjj-gqa-rescale-v1-20261027/vllm_fl/patches/biv150_gqa_decode.py",
+      "bytes": 23801,
+      "sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1"
+    },
+    {
+      "path": "owner/owner.json",
+      "remote_path": "/workspace/experiments/minicpm-s2/exports/gqa-rescale-t8-v1-20261027-owner.json",
+      "bytes": 909,
+      "sha256": "5e895508fc137e31e64aa4c1191196dd68de85e82e2e9ca11262c21f81539aa3"
+    },
+    {
+      "path": "owner/owner.log",
+      "remote_path": "/workspace/experiments/minicpm-s2/exports/gqa-rescale-t8-v1-20261027.log",
+      "bytes": 7895,
+      "sha256": "30402274eeda0a6aa0aafb347dcd353d5363017e12e785d5ff6908057cc69840"
+    },
+    {
+      "path": "run/b32-baseline.asm",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-baseline.asm",
+      "bytes": 95353,
+      "sha256": "b662946aad7e72e50336f048c4e2ea38f5b4559a06e5fda2d292e27b90dab6dd"
+    },
+    {
+      "path": "run/b32-baseline.cubin",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-baseline.cubin",
+      "bytes": 16128,
+      "sha256": "b9569a0eca5291955c5fc4d2af3df57daf588c23580d5c71a7da5241b724e2ed"
+    },
+    {
+      "path": "run/b32-baseline.llir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-baseline.llir",
+      "bytes": 129040,
+      "sha256": "b14102209859d25bb8e79a9bc0d306e8d95a97a0c96b7576ed7a7a5d25e6af34"
+    },
+    {
+      "path": "run/b32-baseline.source",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-baseline.source",
+      "bytes": 73431,
+      "sha256": "7e6e36e002b5f771e2ef3e7f9970af18fd8004b0af6edc397e59e25a89cfdb90"
+    },
+    {
+      "path": "run/b32-baseline.ttgir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-baseline.ttgir",
+      "bytes": 57904,
+      "sha256": "fb85bd28f9ab392c7350e6a2971b7aadbefa3328cf49ffdcdbbf8d6f0f706982"
+    },
+    {
+      "path": "run/b32-baseline.ttir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-baseline.ttir",
+      "bytes": 49832,
+      "sha256": "cc4b9c7de1ea2acb5c07f8de8db1846b10449af219a028538e6bb1ddae6c37d1"
+    },
+    {
+      "path": "run/b32-candidate.asm",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-candidate.asm",
+      "bytes": 103002,
+      "sha256": "149d7c37511d91dc8098538f701e1542a2fe5b7ea621a867fcaa7f4ef8ee7659"
+    },
+    {
+      "path": "run/b32-candidate.cubin",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-candidate.cubin",
+      "bytes": 16432,
+      "sha256": "e008dfcf39e3cf2f6ca1c2389f5c78eb63208f6b2963db47686079f0c84fb4f8"
+    },
+    {
+      "path": "run/b32-candidate.llir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-candidate.llir",
+      "bytes": 136313,
+      "sha256": "ff31c53ab73167dc0ef76524134f7a22016f9998fb3d56e6d52b8fcf3f557a09"
+    },
+    {
+      "path": "run/b32-candidate.source",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-candidate.source",
+      "bytes": 76438,
+      "sha256": "a89894bc0763d0218cf0965151527d616d14874a142b1ce00c470db94c26486d"
+    },
+    {
+      "path": "run/b32-candidate.ttgir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-candidate.ttgir",
+      "bytes": 61703,
+      "sha256": "a41bc5519d42a0f058ddb995183353d11652435cfd3ca0d114ffc66ea76b5aa8"
+    },
+    {
+      "path": "run/b32-candidate.ttir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b32-candidate.ttir",
+      "bytes": 52845,
+      "sha256": "b2651853f20f1bca321340fcb68b937760b157965a58a900f557d46f6951a5ca"
+    },
+    {
+      "path": "run/b64-baseline.asm",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-baseline.asm",
+      "bytes": 95353,
+      "sha256": "6fb2835fefcf28e9513fd566c154cbacd97ba0a2b3ad2f28eb25cac434e565c6"
+    },
+    {
+      "path": "run/b64-baseline.cubin",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-baseline.cubin",
+      "bytes": 16128,
+      "sha256": "114d98cda21fa16c9a5f1cf0950613983c9eca1644a5595868690b857393c63c"
+    },
+    {
+      "path": "run/b64-baseline.llir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-baseline.llir",
+      "bytes": 129040,
+      "sha256": "3a119e10cc0775ac13ffff48c9528b3348c44c32ee38b6a2b0cc2c0302f4f720"
+    },
+    {
+      "path": "run/b64-baseline.source",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-baseline.source",
+      "bytes": 73431,
+      "sha256": "44abd24c5a06bef904b1078fff9c33b0be6a55892f77bba8e9b17f3d2597952f"
+    },
+    {
+      "path": "run/b64-baseline.ttgir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-baseline.ttgir",
+      "bytes": 57904,
+      "sha256": "1e8eeae1b10fa63ac77965049653a892e7750d7714a9f3a858eaf67022fbee0d"
+    },
+    {
+      "path": "run/b64-baseline.ttir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-baseline.ttir",
+      "bytes": 49832,
+      "sha256": "4b979934d2eeb768018ccf65c8c017827ff7c61f861b5d9ef71571725051a2f3"
+    },
+    {
+      "path": "run/b64-candidate.asm",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-candidate.asm",
+      "bytes": 103002,
+      "sha256": "7775a9970ae3889083762721e4d0a58c7e145e5678baf5292d67def57498f48a"
+    },
+    {
+      "path": "run/b64-candidate.cubin",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-candidate.cubin",
+      "bytes": 16432,
+      "sha256": "96466b1cee9cb162c82d098ea766bf00c8644068619718539133bd9ed5b05f5d"
+    },
+    {
+      "path": "run/b64-candidate.llir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-candidate.llir",
+      "bytes": 136313,
+      "sha256": "f4b0619804ef3bfedaf7a3d3993707594639fbd2184adea2a24d5e502f24605b"
+    },
+    {
+      "path": "run/b64-candidate.source",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-candidate.source",
+      "bytes": 76438,
+      "sha256": "a82c18208c116e02b2a2f280e4f729faee0544a23d01657294c4150ade837f10"
+    },
+    {
+      "path": "run/b64-candidate.ttgir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-candidate.ttgir",
+      "bytes": 61703,
+      "sha256": "390510ffd12b61e266632c21928c47c737012c4a9dbfbafb6a015fe26f572263"
+    },
+    {
+      "path": "run/b64-candidate.ttir",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/b64-candidate.ttir",
+      "bytes": 52845,
+      "sha256": "9d0b8bf56b83c16b0e634b92c3c295d01bfd5506a1686b466ae7e1a3de25f75e"
+    },
+    {
+      "path": "run/generated-gqa-rescale-skip.py",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/generated-gqa-rescale-skip.py",
+      "bytes": 6347,
+      "sha256": "d354032c663c922c1b0032f84599c0ec2769b82abc63b5d3e6c8a3db97d08ab8"
+    },
+    {
+      "path": "run/result.json",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/result.json",
+      "bytes": 12847,
+      "sha256": "d22c4801340eee3ad8dbddfd2cfd8a4750f86bc90e73f19154024248248667d7"
+    },
+    {
+      "path": "run/source-transform-proof.json",
+      "remote_path": "/workspace/experiments/minicpm-s2/gqa-rescale-t8-v1-20261027/source-transform-proof.json",
+      "bytes": 486,
+      "sha256": "e28758381374f2630543d8cf57e625c7bde9d67e6dbd82124ac8b8edc2f6c384"
+    }
+  ]
+}
