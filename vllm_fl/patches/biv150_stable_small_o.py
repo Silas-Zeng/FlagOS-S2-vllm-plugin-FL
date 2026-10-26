@@ -9,6 +9,8 @@ _DEFINITION = None
 _IMPLEMENTATION = None
 _INSTALLED = False
 _OBSERVED_ROWS = set()
+_WIDE_DOWN_ENABLED = False
+_WIDE_DOWN_OBSERVED_ROWS = set()
 
 
 @triton.jit(do_not_specialize=['M'])
@@ -39,7 +41,55 @@ def _small_o_into(x, weight, output):
     return output
 
 
+@triton.jit
+def _wide_down_kernel(X, W, Y, M: tl.constexpr, N: tl.constexpr, K: tl.constexpr,
+              BM: tl.constexpr, BN: tl.constexpr, BK: tl.constexpr):
+    # Shape-specific contiguous X[M,6144], W[2048,6144], Y[M,2048].
+    # Keep output tile mapping row-major; do not repeat the old GROUP_M test.
+    pid = tl.program_id(0)
+    pm = pid // (N // BN)
+    pn = pid % (N // BN)
+    rows = pm * BM + tl.arange(0, BM)
+    cols = pn * BN + tl.arange(0, BN)
+    inner = tl.arange(0, BK)
+    # Match the original modulo-row, unmasked-load and pointer-phi pattern.
+    read_rows = rows % M
+    xp = X + read_rows[:, None] * K + inner[None, :]
+    wp = W + cols[None, :] * K + inner[:, None]
+    accumulator = tl.zeros((BM, BN), tl.float32)
+    for block in range(K // BK):
+        x = tl.load(xp)
+        w = tl.load(wp)
+        accumulator = tl.dot(x, w, accumulator)
+        xp += BK
+        wp += BK
+    tl.store(Y + rows[:, None] * N + cols[None, :],
+             accumulator.to(tl.bfloat16), mask=rows[:, None] < M)
+
+def _wide_down_into(x, weight):
+    output = torch.empty((x.shape[0], 2048), device=x.device, dtype=x.dtype)
+    _wide_down_kernel[(triton.cdiv(x.shape[0],256)*8,)](
+        x, weight, output, M=x.shape[0], N=2048, K=6144,
+        BM=256, BN=256, BK=32, num_warps=16, num_stages=2)
+    if x.shape[0] not in _WIDE_DOWN_OBSERVED_ROWS and not torch.cuda.is_current_stream_capturing():
+        _WIDE_DOWN_OBSERVED_ROWS.add(x.shape[0])
+        print('BIV150_WIDE_DOWN_SELECTED', {
+            'rows': x.shape[0], 'N': 2048, 'K': 6144,
+            'BM': 256, 'BN': 256, 'BK': 32, 'warps': 16, 'stages': 2,
+            'input_stride': tuple(x.stride()), 'weight_stride': tuple(weight.stride()),
+        }, flush=True)
+    return output
+
+
 def _linear(x, weight):
+    # 只启用受测的两个大M down形状；其余路径保留原PR51行为。
+    if (_WIDE_DOWN_ENABLED and x.ndim == weight.ndim == 2
+            and x.shape[0] in (2030, 2048) and x.shape[1] == 6144
+            and tuple(weight.shape) == (2048, 6144)
+            and x.dtype == weight.dtype == torch.bfloat16
+            and x.device == weight.device and x.device.type == 'cuda'
+            and tuple(x.stride()) == (6144, 1) and tuple(weight.stride()) == (6144, 1)):
+        return _wide_down_into(x, weight)
     if not (x.ndim==weight.ndim==2 and x.shape[1]==weight.shape[1]
             and tuple(weight.shape) in ((2048,2048),(12288,2048),(2560,2048),(2048,6144))
             and x.dtype==weight.dtype==torch.bfloat16
@@ -75,7 +125,7 @@ def _register():
 
 
 def install():
-    global _INSTALLED
+    global _INSTALLED, _WIDE_DOWN_ENABLED
     if os.environ.get('VLLM_FL_BIV150_STABLE_SMALL_O','1')!='1':
         return {'installed':False,'reason':'disabled'}
     if _INSTALLED:return {'installed':True,'reason':'already installed'}
@@ -89,6 +139,8 @@ def install():
     if envs.VLLM_BATCH_INVARIANT or dispatch_unquantized_gemm() is not default_unquantized_gemm:
         return {'installed':False,'reason':'unsupported original GEMM dispatch'}
     from vllm.model_executor.layers.linear import UnquantizedLinearMethod
+    _WIDE_DOWN_ENABLED = ('BI-V150' in torch.cuda.get_device_name()
+        and torch.cuda.get_device_properties(torch.cuda.current_device()).multi_processor_count == 16)
     _register()
     previous=UnquantizedLinearMethod.apply
     def apply(self,layer,x,bias=None):
@@ -105,6 +157,10 @@ def install():
         return output.reshape(*x.shape[:-1],layer.weight.shape[0])
     UnquantizedLinearMethod.apply=apply
     _INSTALLED=True
+    print('BIV150_WIDE_DOWN_INSTALL', {
+        'installed': _WIDE_DOWN_ENABLED,
+        'scope': 'BI-V150 16SM BF16 down M2030/2048 N2048 K6144 contiguous only',
+    }, flush=True)
     return {'installed':True,'scope':'BF16 TP1 QKV/O/down and uncompressed edge-gate projections M1-8',
             'block_m':16,'block_n':64,'block_k':128,'warps':4,'stages':1,
             'larger_rows':'original default_unquantized_gemm F.linear route inside the opaque operation'}
