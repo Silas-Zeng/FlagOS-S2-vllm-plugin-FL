@@ -51,3 +51,33 @@ The first job has exited and GPU release was verified. Subsequent GPU work is
 serial on the personal instance, never the teammate instance. Any chosen
 policy still needs actual service selection, full105, sufficient warmup, both
 fixed benchmarks/TTFT and post-warm correctness before a production merge.
+
+## Completed crossover,2026-10-26 09:01 Shanghai
+
+Frozen f3087151e40ef3c859d89b0cfd740a30e1db490a completed4groups,324cases,
+2592FP64/default+side/changed-poisoned Graph checks,36full-working-set timings;
+complete=True,passed=True,errors=[]. Child487639/start332341967 was verifiedZ
+and GPU idle. No subsequent GPU job is queued.
+
+|Rows|O linear speedup vs MM|QKV|Down|Edge gate|
+|---:|---:|---:|---:|---:|
+|64|0.720|0.832|0.659|0.913|
+|128|1.168|1.419|1.029|1.256|
+|256|1.626|1.428|1.713|1.215|
+|512|1.421|1.085|1.793|1.380|
+|1024|1.746|1.275|2.009|1.206|
+|1739|1.178|1.076|1.240|1.193|
+|1798|1.250|1.081|1.294|1.186|
+|1985|1.252|1.139|1.283|1.212|
+|2017|1.249|1.067|1.286|1.211|
+
+All sampled128+ endpoints favor linear;64anchor still favors MM and agrees
+with the first job. A general row policy retaining tiny1–8 protection and MM
+for small rows is now supported for integration exploration. Threshold and
+untested boundaries still need actual compiler/output alias validation; do
+not present interpolated row performance or model gains as measured. No
+production policy/default has yet been selected, implemented or merged.
+
+Archive32707bytes SHA256
+749b38d23eb5ad966d1af790328cf675d28f6b5eb7e6b2fee2837819e617767e
+and parsed summary/launch are retained beside the first full raw artifact.
