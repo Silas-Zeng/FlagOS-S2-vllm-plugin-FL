@@ -12,11 +12,40 @@ CASES = {
     'double16k-big-first': ([1994,39], [16384,16384]),
     'double16k-small-first': ([39,1994], [16384,16384]),
 }
+DEFAULT_CASES = tuple(CASES)
+# Optional scope checks: unequal KV prefixes, fresh prefill and partial pages.
+# These are designed boundary fixtures, never captured service steps.
+CASES.update({
+    'double4k-ragged-tail': ([1945,88], [1945,4095]),
+    'double4k-ragged-tail-reverse': ([88,1945], [4095,1945]),
+    'double16k-ragged-tail': ([1994,39], [16383,39]),
+    'double16k-ragged-tail-reverse': ([39,1994], [39,16383]),
+})
 
 def validate_case(qlens,klens):
     if (len(qlens)!=2 or len(klens)!=2 or min(qlens)<=1 or max(qlens)<1024
+            or any(type(x) is not int for x in (*qlens,*klens))
             or sum(qlens)<1024 or any(k<q for k,q in zip(klens,qlens))):
         raise ValueError('Two non-decode sequences with a >=1024-row query are required')
+
+
+def case_contract(qlens,klens):
+    validate_case(qlens,klens)
+    return dict(total_query_rows=sum(qlens),num_sequences=2,
+        first_visible_kv=[k-q+1 for q,k in zip(qlens,klens)],
+        last_visible_kv=list(klens),last_page_valid_tokens=[(k-1)%16+1 for k in klens],
+        nonempty_query_tiles_per_kv_head={str(bq):sum((q+bq-1)//bq for q in qlens)
+                                          for bq in (16,32)},
+        limitation='Logical query tiles only; not actual launch grids, timing or service frequency.')
+
+
+def require_idle_probe_host():
+    with socket.socket() as sock:
+        if sock.connect_ex(('127.0.0.1',9031)) == 0:
+            raise RuntimeError('Service running on port 9031')
+    report=subprocess.check_output(['/usr/local/corex/bin/ixsmi'],text=True)
+    if 'No running processes found' not in report:
+        raise RuntimeError('GPU busy or unrecognized process report')
 
 class Tap:
     def __init__(self, target, maxnreg=None):
@@ -40,10 +69,10 @@ class Tap:
 def kernel_configuration(tap, manager):
     expected = dict(BLOCK_M=manager.block_m, BLOCK_Q=manager.block_m // 8,
                     num_warps=manager.num_warps, TILE_SIZE=manager.tile_size,
-                    num_stages=manager.num_stages, IS_3D=False)
+                    num_stages=manager.num_stages, IS_3D=False,num_seqs=2)
     if tap.kwargs is None or any(tap.kwargs.get(k) != v for k, v in expected.items()):
         raise RuntimeError('Selected kernel does not match comparison configuration')
-    if tap.compiled is None or tap.compiled.hash not in manager.optimized:
+    if not manager.active or tap.compiled is None or tap.compiled.hash not in manager.optimized:
         raise RuntimeError('Q-hoist was not selected')
     occupancy = {}
     try:
@@ -158,16 +187,15 @@ def selected_configuration(tap,manager):
 
 
 def main(args):
-    chosen=args.case or list(CASES)
+    chosen=args.case or list(DEFAULT_CASES)
     for name in chosen:validate_case(*CASES[name])
     if not args.run_gpu:
         print(json.dumps(dict(gpu_executed=False,baseline='actual current policy fallback',
             cases={name:CASES[name] for name in chosen},candidate=[args.bm,args.warps,args.kv_tile,args.stages],
-            production_changed=False)))
+            case_contracts={name:case_contract(*CASES[name]) for name in chosen},
+            precision_gate=False,production_changed=False)))
         return
-    with socket.socket() as sock:
-        assert sock.connect_ex(('127.0.0.1',9031)) != 0, 'Service running'
-    assert 'No running processes found' in subprocess.check_output(['/usr/local/corex/bin/ixsmi'],text=True), 'GPU busy'
+    require_idle_probe_host()
     args.out.mkdir(parents=True, exist_ok=False)
     import torch
     package=importlib.import_module('vllm_fl')
@@ -187,7 +215,8 @@ def main(args):
         tap = Tap(manager.wrapper,args.maxnreg)
         manager.holder[manager.kernel_key] = tap
         taps[label] = tap
-    result = dict(completed=False, official_score=False, service_installed=False,
+    result = dict(completed=False, official_score=False, precision_gate=False,
+                  service_accuracy_validated=False, service_installed=False,
                   source_commit=subprocess.check_output(['git','-C',str(Path(__file__).resolve().parents[1]),'rev-parse','HEAD'],text=True).strip(),
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   baseline_mode='current-multi2', baseline_config=[baseline_manager.block_m,baseline_manager.num_warps,baseline_manager.tile_size,baseline_manager.num_stages],
@@ -202,7 +231,8 @@ def main(args):
     try:
         for name in chosen:
             qlens, klens = CASES[name]
-            row=dict(name=name, qlens=qlens, klens=klens, checks=[], rounds=[], completed=False)
+            row=dict(name=name, qlens=qlens, klens=klens,
+                     case_contract=case_contract(qlens,klens),checks=[], rounds=[], completed=False)
             result['cases'].append(row);save()
             host=fixture.cpu_inputs(qlens,klens,20261025,0)
             stream=torch.cuda.Stream()
@@ -228,13 +258,17 @@ def main(args):
                 stream.synchronize();actual=out.cpu().clone()
                 indices,reference=fixture.reference(host,qlens,klens,pattern==0,False)
                 check=dict(pattern=pattern,
+                           cpu_input_sha256={key:fixture.digest(value) for key,value in host.items()},
                            direct=fixture.compare(actual,expected,.005,.005),
                            candidate_cpu=fixture.compare(actual[indices],reference,.005,.005),
                            baseline_cpu=fixture.compare(expected[indices],reference,.005,.005),
                            reference_guard=fixture.reference_guard(actual[indices],expected[indices],reference),graphs=[])
                 row['checks'].append(check);save()
                 if not check['direct']['passed'] or not check['reference_guard']['passed']:
-                    torch.save(dict(input_q=host['q'],actual=actual,baseline=expected,reference_rows=indices,reference=reference),args.out/(name+'-failure.pt'))
+                    torch.save(dict(cpu_inputs=host,qlens=qlens,klens=klens,seed=20261025,
+                                    pattern=pattern,actual=actual,baseline=expected,
+                                    reference_rows=indices,reference=reference),
+                               args.out/(name+'-failure.pt'))
                     raise RuntimeError(name+': numerical gate failed')
                 for label,manager in [('baseline',baseline_manager),('candidate',candidate_manager)]:
                     tap=taps[label]

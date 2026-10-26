@@ -2,6 +2,7 @@
   "passed": true,
   "gpu_executed": false,
   "synthetic_cpu_fixtures": true,
+  "precision_gate": false,
   "cases": [
     {
       "k128_present": false,
@@ -61,7 +62,238 @@
         16384,
         16384
       ]
+    ],
+    "double4k-ragged-tail": [
+      [
+        1945,
+        88
+      ],
+      [
+        1945,
+        4095
+      ]
+    ],
+    "double4k-ragged-tail-reverse": [
+      [
+        88,
+        1945
+      ],
+      [
+        4095,
+        1945
+      ]
+    ],
+    "double16k-ragged-tail": [
+      [
+        1994,
+        39
+      ],
+      [
+        16383,
+        39
+      ]
+    ],
+    "double16k-ragged-tail-reverse": [
+      [
+        39,
+        1994
+      ],
+      [
+        39,
+        16383
+      ]
     ]
   },
-  "limitation": "Routing and scope only; no real install, C3, numerical, resource or speed proof."
+  "default_gpu_cases": [
+    "double4k-big-first",
+    "double4k-small-first",
+    "double16k-big-first",
+    "double16k-small-first"
+  ],
+  "real_source_scope": {
+    "actual_descriptor_source": true,
+    "actual_q32_policy_source": true,
+    "two_sequence_natural_fallbacks": 8,
+    "single_sequence_q32_preserved": true,
+    "tensor_metadata_is_fake": true,
+    "target_compiler_executed": false
+  },
+  "preflight": {
+    "service_busy_rejected": true,
+    "gpu_busy_rejected": true,
+    "unknown_gpu_report_rejected": true,
+    "idle_allowed": true,
+    "real_host_inspected": false
+  },
+  "case_contracts": {
+    "double4k-big-first": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        2152,
+        4009
+      ],
+      "last_visible_kv": [
+        4096,
+        4096
+      ],
+      "last_page_valid_tokens": [
+        16,
+        16
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 64
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    },
+    "double4k-small-first": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        4009,
+        2152
+      ],
+      "last_visible_kv": [
+        4096,
+        4096
+      ],
+      "last_page_valid_tokens": [
+        16,
+        16
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 64
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    },
+    "double16k-big-first": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        14391,
+        16346
+      ],
+      "last_visible_kv": [
+        16384,
+        16384
+      ],
+      "last_page_valid_tokens": [
+        16,
+        16
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 65
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    },
+    "double16k-small-first": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        16346,
+        14391
+      ],
+      "last_visible_kv": [
+        16384,
+        16384
+      ],
+      "last_page_valid_tokens": [
+        16,
+        16
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 65
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    },
+    "double4k-ragged-tail": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        1,
+        4008
+      ],
+      "last_visible_kv": [
+        1945,
+        4095
+      ],
+      "last_page_valid_tokens": [
+        9,
+        15
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 64
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    },
+    "double4k-ragged-tail-reverse": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        4008,
+        1
+      ],
+      "last_visible_kv": [
+        4095,
+        1945
+      ],
+      "last_page_valid_tokens": [
+        15,
+        9
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 64
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    },
+    "double16k-ragged-tail": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        14390,
+        1
+      ],
+      "last_visible_kv": [
+        16383,
+        39
+      ],
+      "last_page_valid_tokens": [
+        15,
+        7
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 65
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    },
+    "double16k-ragged-tail-reverse": {
+      "total_query_rows": 2033,
+      "num_sequences": 2,
+      "first_visible_kv": [
+        1,
+        14390
+      ],
+      "last_visible_kv": [
+        39,
+        16383
+      ],
+      "last_page_valid_tokens": [
+        7,
+        15
+      ],
+      "nonempty_query_tiles_per_kv_head": {
+        "16": 128,
+        "32": 65
+      },
+      "limitation": "Logical query tiles only; not actual launch grids, timing or service frequency."
+    }
+  },
+  "limitation": "Real source with fake tensor metadata plus simulated policy chain; no real install, C3, numerical, resource or speed proof."
 }
