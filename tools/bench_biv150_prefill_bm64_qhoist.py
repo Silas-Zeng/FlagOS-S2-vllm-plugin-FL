@@ -1,8 +1,10 @@
 """Compare bounded query tiles/pipelines with verified Q-fragment hoisting.
 
-Only diagnostic private JIT caches are changed. No installed or serving source
-is edited. Both graphs use the warmed, proved compiled kernels, not the
-production wrapper's deliberately unoptimized Graph-capture fallback.
+The default control follows the known current Q32 or K128 serving policy.
+Use --baseline bm128 only to reproduce older experiments. Only diagnostic
+private JIT caches are changed. No installed or serving source is edited.
+Graphs time the warmed, proved kernels, bypassing capture fallback deliberately;
+these are component measurements, never official service scores.
 """
 import argparse
 import hashlib
@@ -86,18 +88,89 @@ def adapted_manager(original, rows=64, warps=8, kv_tile=64, stages=1):
 
 
 class Tap:
-    def __init__(self, target):
+    def __init__(self, target, maxnreg=None):
         self.target = target
+        self.maxnreg = maxnreg
         self.grid = self.kwargs = self.compiled = None
 
     def __getitem__(self, grid):
         def invoke(*args, **kwargs):
             if args:
                 raise RuntimeError('Unexpected positional kernel arguments')
+            if self.maxnreg is not None:
+                if 'maxnreg' in kwargs:
+                    raise RuntimeError('Conflicting register constraint')
+                kwargs = dict(kwargs, maxnreg=self.maxnreg)
             self.grid, self.kwargs = grid, kwargs.copy()
             self.compiled = self.target[grid](**kwargs)
             return self.compiled
         return invoke
+
+
+def comparison_baseline(fixture, mode):
+    function, manager, states = fixture.install_baseline()
+    if mode in ('q32','current'):
+        module = importlib.import_module('vllm_fl.patches.biv150_prefill_q32')
+        states['biv150_prefill_q32'] = module.install()
+        if not states['biv150_prefill_q32'].get('installed'):
+            raise RuntimeError('Current Q32 baseline installation failed')
+        expected=(256,16,64,1)
+        if mode=='current':
+            name='vllm_fl.patches.biv150_prefill_k128'
+            try:
+                newer=importlib.import_module(name)
+            except ModuleNotFoundError as error:
+                if error.name!=name:raise
+            else:
+                states['biv150_prefill_k128']=newer.install()
+                if not states['biv150_prefill_k128'].get('installed'):
+                    raise RuntimeError('Current K128 source requires the actual default K128 control')
+                module,expected=newer,(256,16,128,1)
+        policy = manager.holder[manager.kernel_key]
+        private = module._MANAGER
+        if (type(policy) is not module._Policy or policy.manager is not private
+                or (private.block_m, private.num_warps, private.tile_size,
+                    private.num_stages) != expected):
+            raise RuntimeError('Current serving policy/configuration changed')
+        # Policy reads its private manager.wrapper at every eligible invocation.
+        # Replacing the outer holder here would silently bypass that policy.
+        tap = Tap(private.wrapper)
+        private.wrapper = tap
+        return function, private, states, tap
+    tap = Tap(manager.wrapper)
+    manager.holder[manager.kernel_key] = tap
+    return function, manager, states, tap
+
+
+def selected_configuration(tap, manager):
+    expected = dict(BLOCK_M=manager.block_m, BLOCK_Q=manager.block_m // 8,
+                    num_warps=manager.num_warps, TILE_SIZE=manager.tile_size,
+                    num_stages=manager.num_stages, IS_3D=False)
+    if tap.kwargs is None or any(tap.kwargs.get(k) != v for k, v in expected.items()):
+        raise RuntimeError('Selected kernel does not match comparison configuration')
+    if tap.compiled is None or tap.compiled.hash not in manager.optimized:
+        raise RuntimeError('Q-hoist was not selected')
+    occupancy = {}
+    try:
+        import ctypes
+        import ctypes.util
+        lib = ctypes.CDLL(ctypes.util.find_library('cuda') or 'libcuda.so.1')
+        query = lib.cuOccupancyMaxActiveBlocksPerMultiprocessor
+        query.argtypes = [ctypes.POINTER(ctypes.c_int), ctypes.c_void_p,
+                          ctypes.c_int, ctypes.c_size_t]
+        blocks = ctypes.c_int()
+        threads = manager.num_warps * tap.compiled.metadata.warp_size
+        rc = query(ctypes.byref(blocks), ctypes.c_void_p(tap.compiled.function),
+                   threads, tap.compiled.metadata.shared)
+        occupancy = dict(returncode=rc, active_blocks=blocks.value if rc == 0 else None,
+                         threads=threads, dynamic_shared=tap.compiled.metadata.shared,
+                         limitation='driver reported capacity, not measured active residency')
+    except Exception as error:
+        occupancy = dict(error=repr(error))
+    return dict(expected, grid=list(tap.grid), hash=tap.compiled.hash,
+                requested_maxnreg=tap.kwargs.get('maxnreg'), driver_occupancy=occupancy,
+                loaded_resources=importlib.import_module(
+                    'vllm_fl.patches.biv150_q_fragment_service')._resources(tap.compiled))
 
 
 def candidate_function(attention, backend, qmodule, rows=64, warps=8, kv_tile=64, stages=1):
@@ -132,31 +205,55 @@ def candidate_function(attention, backend, qmodule, rows=64, warps=8, kv_tile=64
 
 
 def main(args):
+    if args.early_q and (args.bm,args.warps,args.kv_tile,args.stages)!=(256,16,64,2):
+        raise RuntimeError('Early-Q probe is restricted to captured BM256/w16/K64/stage2')
     if not args.run_gpu:
-        print(json.dumps({'cases': CASES, 'tiles': [[128,16],[args.bm,args.bm//8]], 'warps':args.warps, 'stages':args.stages}))
+        print(json.dumps({'cases': CASES, 'baseline':args.baseline,
+                          'baseline_config':'resolve and assert actual Q32/K128 policy at target' if args.baseline=='current' else [256,32,16,64,1] if args.baseline=='q32' else [128,16,8,64,1],
+                          'candidate_config':[args.bm,args.bm//8,args.warps,args.kv_tile,args.stages],
+                          'early_q':args.early_q,'candidate_maxnreg':args.maxnreg}))
         return
+    if args.baseline in ('q32','current') and any(len(CASES[name][0]) != 1 or min(CASES[name][0]) < 1024
+                                     for name in args.case or ['chunk4k','chunk16k']):
+        raise RuntimeError('Current Q32 comparison requires its actual single-sequence >=1024-row scope')
     with socket.socket() as sock:
         assert sock.connect_ex(('127.0.0.1',9031)) != 0, 'Service running'
     assert 'No running processes found' in subprocess.check_output(['/usr/local/corex/bin/ixsmi'],text=True), 'GPU busy'
     args.out.mkdir(parents=True, exist_ok=False)
     import torch
+    package=importlib.import_module('vllm_fl')
+    if Path(package.__file__).resolve()!=Path(__file__).resolve().parents[1]/'vllm_fl/__init__.py':
+        raise RuntimeError('Actual loaded package is outside this diagnostic worktree')
     import biv150_prefill_probe_fixtures as fixture
     fixture.torch = torch
     torch.set_num_threads(4)
-    baseline, baseline_manager, installations = fixture.install_baseline()
+    baseline, baseline_manager, installations, baseline_tap = comparison_baseline(fixture,args.baseline)
     qoriginal = importlib.import_module('vllm_fl.patches.biv150_q_fragment_service')
-    qmodule, adapted_sha = adapted_manager(qoriginal,args.bm,args.warps,args.kv_tile,args.stages)
+    if args.early_q:
+        from biv150_prefill_early_q_ir import private_manager_module
+        qmodule,adapted_sha=private_manager_module(qoriginal)
+    elif args.baseline in ('q32','current'):
+        # First test the same exact inverse/lowered guards as production, without
+        # quietly introducing a second transform while changing the pipeline.
+        qmodule, adapted_sha = qoriginal, None
+    else:
+        qmodule, adapted_sha = adapted_manager(qoriginal,args.bm,args.warps,args.kv_tile,args.stages)
     attention = importlib.import_module('vllm.v1.attention.ops.triton_unified_attention')
     backend = importlib.import_module('vllm.v1.attention.backends.triton_attn')
     candidate, candidate_manager = candidate_function(attention, backend, qmodule,args.bm,args.warps,args.kv_tile,args.stages)
-    taps = {}
-    for label, manager in [('baseline',baseline_manager),('candidate',candidate_manager)]:
-        tap = Tap(manager.wrapper)
+    taps = {'baseline':baseline_tap}
+    for label, manager in [('candidate',candidate_manager)]:
+        tap = Tap(manager.wrapper,args.maxnreg)
         manager.holder[manager.kernel_key] = tap
         taps[label] = tap
     result = dict(completed=False, official_score=False, service_installed=False,
                   source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
                   script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  baseline_mode=args.baseline, baseline_config=[baseline_manager.block_m,baseline_manager.num_warps,baseline_manager.tile_size,baseline_manager.num_stages],
+                  production_transform_unchanged=not args.early_q and args.baseline in ('q32','current'),
+                  early_q=args.early_q,
+                  early_q_helper_sha256=hashlib.sha256((Path(__file__).parent/'biv150_prefill_early_q_ir.py').read_bytes()).hexdigest() if args.early_q else None,
+                  candidate_maxnreg=args.maxnreg,
                   adapted_manager_sha256=adapted_sha, candidate_tile=[args.bm,args.bm//8], candidate_warps=args.warps, candidate_kv_tile=args.kv_tile, candidate_stages=args.stages, installations=installations, cases=[], errors=[])
     def save():
         temp=args.out/'result.tmp';temp.write_text(json.dumps(result,indent=2)+'\n');temp.replace(args.out/'result.json')
@@ -200,8 +297,8 @@ def main(args):
                     raise RuntimeError(name+': numerical gate failed')
                 for label,manager in [('baseline',baseline_manager),('candidate',candidate_manager)]:
                     tap=taps[label]
-                    if tap.compiled.hash not in manager.optimized:
-                        raise RuntimeError(label+': Q-hoist was not selected')
+                    row[label+'_selection'] = selected_configuration(tap,manager)
+                    save()
                     if label not in graphs:
                         with torch.cuda.stream(stream):
                             for _ in range(3):manager.candidate[tap.grid](**tap.kwargs)
@@ -236,6 +333,7 @@ def main(args):
         result['errors'].append(dict(error=repr(error),traceback=traceback.format_exc()))
         raise
     finally:
+        if args.early_q:result['early_q_transform_records']=qmodule.early_q_records
         # Keep failure resources and transformed IR before TemporaryDirectory
         # cleanup, including configurations rejected before a timed case ends.
         result['terminal_manager_proofs'] = {}
@@ -244,6 +342,11 @@ def main(args):
                 result['terminal_manager_proofs'][label] = manager.snapshot()
                 shutil.copytree(manager.artifact_dir, args.out/'compiler-ir'/label,
                                 dirs_exist_ok=True)
+                compiled = taps[label].compiled
+                if compiled is not None:
+                    for name in ('ttgir','llir'):
+                        (args.out/'compiler-ir'/label/('actual.'+name)).write_text(compiled.asm[name])
+                    result['terminal_manager_proofs'][label]['actual_loaded_resources'] = qoriginal._resources(compiled)
             except Exception as diagnostic_error:
                 result.setdefault('diagnostic_copy_errors', []).append(
                     dict(route=label, error=repr(diagnostic_error)))
@@ -253,10 +356,14 @@ def main(args):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-gpu',action='store_true')
-    parser.add_argument('--bm',type=int,choices=[64,128,256,512],default=64)
-    parser.add_argument('--warps',type=int,choices=[4,8,16],default=8)
+    parser.add_argument('--baseline',choices=['current','q32','bm128'],default='current')
+    parser.add_argument('--early-q',action='store_true',help='Private candidate-only Q read before K prefetch; unvalidated IR hypothesis')
+    parser.add_argument('--bm',type=int,choices=[64,128,256,512],default=256)
+    parser.add_argument('--warps',type=int,choices=[4,8,16],default=16)
     parser.add_argument('--kv-tile',type=int,choices=[64,128],default=64)
-    parser.add_argument('--stages',type=int,choices=[1,2],default=1)
+    parser.add_argument('--stages',type=int,choices=[1,2],default=2)
+    parser.add_argument('--maxnreg',type=int,choices=[128],default=None,
+                        help='One bounded resource-cliff probe; only candidate compile options change')
     parser.add_argument('--out',type=Path)
     parser.add_argument('--case',action='append',choices=CASES)
     args=parser.parse_args()
