@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay immutable recorded codec/full4K evidence on CPU; never launch a kernel."""
+"""Replay immutable recorded codec/full4K/full16K evidence on CPU; never launch a kernel."""
 import argparse
 import hashlib
 import io
@@ -160,7 +160,8 @@ def run(arrays=False):
         else:
             assert not result['passed'] and not result['precision_gate'] and result['numeric_diagnostic']
             record, = result['records']
-            assert (record['batch'], record['kv'], record['segments']) == (64, 4096, 2)
+            expected_geometry = {'inline-full4k-v1': (64, 4096, 2), 'inline-full16k-v1': (32, 16384, 4)}
+            assert (record['batch'], record['kv'], record['segments']) == expected_geometry[entry['label']]
             assert len(record['hard_checks']) == 9 and all(v is True for v in record['hard_checks'].values())
             assert record['numeric_passed'] == {'inline': False, 'preq': False}
             assert record['timing_policy'] == dict(allowed=True, numeric_passed=False, diagnostic_only=True, timing_rounds=1, precision_gate=False)

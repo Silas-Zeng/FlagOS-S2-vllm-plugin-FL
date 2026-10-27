@@ -1,4 +1,4 @@
-# K-only I8 codec and first full4K component evidence
+# K-only I8 codec and first full4K/full16K component evidence
 
 Runtime source is frozen at `f28783e15eaf8593305c3e6a057b76bb2f7189cc`, with the decoder kernel/support boundary still `ae00f58629ad85850fec1b8b8d2da28757af5f8b`. This evidence-only change leaves all f287 runtime, driver, numerical gates, and production files byte-for-byte unchanged. The original results and logs retain their original status.
 
@@ -46,11 +46,28 @@ The explicitly requested diagnostic performs one alternating timing round after 
 | Original reducer, separately timed | 0.0077649038 |
 | Initial encoder, separately timed | 1.7508586645 |
 
-The complete-step diagnostic ratio is **1.26250181×**. Separate stage measurements are not summed to reconstruct the complete closure. Initial encoding is recorded separately and is not service-free. PreQ has numerical evidence in this run, but no complete-step timing measurement. This is a single component diagnostic with `precision_gate=false`, not model accuracy, official service throughput, TTFT, or a measured service gain. Keep PR79 Draft; do not merge or discard this candidate solely from the conservative component error proxy. All prefill/generic readers, the production writer ABI and metadata lifecycle, real prefill/initialization costs, and full model acceptance remain future work. The parallel 16K run is not included in this archive.
+The complete-step diagnostic ratio is **1.26250181×**. Separate stage measurements are not summed to reconstruct the complete closure. Initial encoding is recorded separately and is not service-free. PreQ has numerical evidence in this run, but no complete-step timing measurement. This is a single component diagnostic with `precision_gate=false`, not model accuracy, official service throughput, TTFT, or a measured service gain. Keep PR79 Draft; do not merge or discard this candidate solely from the conservative component error proxy. All prefill/generic readers, the production writer ABI and metadata lifecycle, real prefill/initialization costs, and full model acceptance remain future work.
+
+## Full16K component, subsequent evidence-only update
+
+`cjj-konly-inline-full16k-v1-20261027`, owner PID `625590`, start ticks `343262174`, was terminal with the same owner identity. It uses the same f287 runtime with B32, KV16384 and the actual four-segment policy. Original status remains `completed=true`, `passed=false`, `precision_gate=false`, `errors=[]`. All nine hard gates, changed-input Graph, side stream and post-timing poisoned complete step pass. Inline/preQ output bits independently match for all three controls; scratch/maxima/sums equality is preserved as the original recorded device assertion. Both actual producer IRs independently replay, and actual post-launch resources match the corresponding full4K values above.
+
+For the three original full-length 16K rows:
+
+| Comparison | Relative RMS error range |
+| --- | ---: |
+| BF16 device baseline vs original BF16 FP64 | 0.002230–0.002294 |
+| Candidate vs quantized-operand FP64 | 0.002191–0.002263 |
+| Quantized-operand FP64 vs original BF16 FP64 | 0.008806–0.009718 |
+| Candidate vs original BF16 FP64 | 0.009076–0.009954 |
+
+All metrics for 21 selected rows independently recompute exactly from the NPZ witnesses. The same reference-regeneration boundary applies: saved FP64 references are SHA-verified but not regenerated from an absent cold-cache dump. Quantized-reference error alone exceeds the original 0.005 limit, while candidate-vs-quantized implementation error is similar in scale to baseline-vs-original. This supports the same bounded quantization explanation, not a proof of implementation equivalence or model accuracy. Neither numerical gate nor primary runtime changes.
+
+The one-round complete-step diagnostic records **1.0318504572ms baseline vs 0.8284283876ms inline**, ratio **1.245551785×**. Separate stage costs are baseline/candidate append 0.0026682692/0.0032115385ms, baseline/candidate producer 1.0306370258/0.8224605322ms, reducer 0.0058230767ms, and initial encoder 3.4984474182ms. These separate stages are not the complete closure and initial encoding is not free. PreQ is numerically exercised, not complete-step timed. Retain Draft for all-reader work and real model evaluation; this remains diagnostic component evidence with `precision_gate=false`, not service +20% or formal acceptance.
 
 ## Immutable archive and CPU replay
 
-`docs/evidence/konly-i8-qk-20261027/numeric-device-v1-provenance.json` enumerates every archive SHA/size, original download manifest SHA/size, owner, and omission. All 85 prefix and 222 full4K downloaded files were verified before packaging. Only two `__pycache__/*.pyc` files per run are excluded; their original paths/sizes/SHAs remain in both the untouched original manifest and explicit exclusion lists. All actual source, TTIR, TTGIR, LLVM, ASM, cubin, NPZ, result, owner and log files remain present. Each independent tar.gz is at most 2 MiB. No archive is extracted or imported by the checker.
+`docs/evidence/konly-i8-qk-20261027/numeric-device-v1-provenance.json` enumerates every archive SHA/size, original download manifest SHA/size, owner, and omission. All 85 prefix, 222 full4K and 222 full16K downloaded files were verified before packaging (1,396,602 / 8,634,643 / 7,844,259 bytes respectively). Only two `__pycache__/*.pyc` files per run are excluded; their original paths/sizes/SHAs remain in both the untouched original manifest and explicit exclusion lists. The original root download directories are unchanged. All actual source, TTIR, TTGIR, LLVM, ASM, cubin, NPZ, result, owner and log files remain present. Each independent tar.gz is at most 2 MiB. No archive is extracted or imported by the checker.
 
 `numeric-runtime-f287-part1.tar.gz` additionally preserves the exact f287 local Python import closure, explicitly loaded support/probe/input modules, and original main GQA source. Its source manifest records every byte hash. The evidence checker verifies these archived files still match the current worktree; it never executes them.
 

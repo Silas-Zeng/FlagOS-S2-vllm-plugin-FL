@@ -1,0 +1,507 @@
+{
+  "cpu_replay_passed": true,
+  "executed_gpu": false,
+  "source_commit": "f28783e15eaf8593305c3e6a057b76bb2f7189cc",
+  "frozen_runtime_changed": false,
+  "numpy_opt_in": false,
+  "recordings": [
+    {
+      "label": "codec-prefix-v1",
+      "original_raw_files": 85,
+      "archived_raw_files": 83,
+      "original_raw_bytes": 1396602,
+      "omitted_pycache_files": 2,
+      "recorded_passed": true
+    },
+    {
+      "label": "inline-full4k-v1",
+      "original_raw_files": 222,
+      "archived_raw_files": 220,
+      "original_raw_bytes": 8634643,
+      "omitted_pycache_files": 2,
+      "recorded_passed": false,
+      "hard_checks": {
+        "finite": true,
+        "baseline_reference": true,
+        "codec": true,
+        "cache_bytes": true,
+        "sources_unchanged": true,
+        "scratch_canaries": true,
+        "graph_eager": true,
+        "side_eager": true,
+        "actual_ir": true
+      },
+      "actual_ir": {
+        "inline": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 1170,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1171,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1900,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1901,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 5,
+            "ml_mov_v2s_b32": 29,
+            "ml_mov_s2v_b32": 26,
+            "ml_xor_b32": 36,
+            "ml_lsa_blkload_x4": 2,
+            "ml_mov_b32": 91,
+            "ml_shl_b32": 24,
+            "ml_and_b32": 61,
+            "ml_max_u32": 8,
+            "ml_slb_shuffle_rtn_b32": 88,
+            "ml_max_i32": 48,
+            "ml_cmp_eq_u32": 6,
+            "ml_mul_f32": 102,
+            "ml_fma_f32": 52,
+            "ml_cmp_class_f32": 24,
+            "ml_csel_b32": 82,
+            "ml_max_f32": 44,
+            "ml_cmp_ne_u32": 24,
+            "ml_rcp_f32": 8,
+            "ml_abs_f32": 16,
+            "ml_floor_f32": 16,
+            "ml_sub_f32": 40,
+            "ml_cmp_gt_f32": 16,
+            "ml_cmp_eq_f32": 16,
+            "ml_bfe2_b32": 3,
+            "ml_add_i32": 26,
+            "ml_cvt_i32_f32": 32,
+            "ml_cvt_f32_i32": 20,
+            "ml_add_f32": 32,
+            "ml_cmp_lt_f32": 16,
+            "ml_min_f32": 16,
+            "ml_mul_u64_u32": 16,
+            "ml_anyop3_b32": 6,
+            "ml_byte_permute_b32": 86,
+            "ml_slb_store_b32x1": 20,
+            "ml_or_b32": 2,
+            "ml_slb_load_b8": 32,
+            "ml_srl_b32": 5,
+            "ml_slb_store_b32x4": 2,
+            "ml_slb_load_b32x2": 1,
+            "ml_addo_u32": 49,
+            "ml_addc_i32": 49,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_exp_f32": 8,
+            "ml_cvt_bf16_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 16,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        },
+        "preq": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 586,
+              "source_line": 110
+            },
+            {
+              "llir_line": 587,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1322,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1323,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 11,
+            "ml_mov_v2s_b32": 3,
+            "ml_bfe2_b32": 2,
+            "ml_mul_u64_u32": 16,
+            "ml_and_b32": 26,
+            "ml_anyop3_b32": 8,
+            "ml_add_i32": 27,
+            "ml_cmp_eq_u32": 7,
+            "ml_shl_b32": 16,
+            "ml_mov_b32": 90,
+            "ml_csel_b32": 19,
+            "ml_slb_store_b8": 16,
+            "ml_srl_b32": 18,
+            "ml_xor_b32": 27,
+            "ml_or_b32": 3,
+            "ml_slb_load_b8": 32,
+            "ml_byte_permute_b32": 74,
+            "ml_addo_u32": 50,
+            "ml_addc_i32": 50,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x1": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_cvt_f32_i32": 4,
+            "ml_mul_f32": 78,
+            "ml_slb_shuffle_rtn_b32": 40,
+            "ml_max_f32": 20,
+            "ml_sub_f32": 8,
+            "ml_exp_f32": 8,
+            "ml_add_f32": 16,
+            "ml_cvt_bf16_f32": 4,
+            "ml_fma_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 32,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        }
+      },
+      "resources": {
+        "baseline": {
+          "n_regs": 93,
+          "n_spills": 0,
+          "shared": 8192
+        },
+        "inline": {
+          "n_regs": 144,
+          "n_spills": 0,
+          "shared": 6144
+        },
+        "preq": {
+          "n_regs": 145,
+          "n_spills": 0,
+          "shared": 6144
+        }
+      },
+      "diagnostic_timing": [
+        {
+          "baseline": {
+            "complete_step_ms": 0.5277451872825623,
+            "min_ms": 0.5266605615615845,
+            "max_ms": 0.5290125012397766
+          },
+          "inline": {
+            "complete_step_ms": 0.41801539063453674,
+            "min_ms": 0.41416633129119873,
+            "max_ms": 0.4195740222930908
+          },
+          "baseline_over_candidate": 1.262501809996657
+        }
+      ],
+      "stage_ms": {
+        "baseline_append": 0.0027509615756571293,
+        "candidate_append": 0.0032894231844693422,
+        "baseline_producer": 0.5319432616233826,
+        "candidate_producer": 0.4165014326572418,
+        "original_reducer": 0.007764903828501701,
+        "initial_encoder_separate": 1.7508586645126343
+      },
+      "precision_gate": false
+    },
+    {
+      "label": "inline-full16k-v1",
+      "original_raw_files": 222,
+      "archived_raw_files": 220,
+      "original_raw_bytes": 7844259,
+      "omitted_pycache_files": 2,
+      "recorded_passed": false,
+      "hard_checks": {
+        "finite": true,
+        "baseline_reference": true,
+        "codec": true,
+        "cache_bytes": true,
+        "sources_unchanged": true,
+        "scratch_canaries": true,
+        "graph_eager": true,
+        "side_eager": true,
+        "actual_ir": true
+      },
+      "actual_ir": {
+        "inline": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 1170,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1171,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1900,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1901,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 5,
+            "ml_mov_v2s_b32": 29,
+            "ml_mov_s2v_b32": 26,
+            "ml_xor_b32": 36,
+            "ml_lsa_blkload_x4": 2,
+            "ml_mov_b32": 91,
+            "ml_shl_b32": 24,
+            "ml_and_b32": 61,
+            "ml_max_u32": 8,
+            "ml_slb_shuffle_rtn_b32": 88,
+            "ml_max_i32": 48,
+            "ml_cmp_eq_u32": 6,
+            "ml_mul_f32": 102,
+            "ml_fma_f32": 52,
+            "ml_cmp_class_f32": 24,
+            "ml_csel_b32": 82,
+            "ml_max_f32": 44,
+            "ml_cmp_ne_u32": 24,
+            "ml_rcp_f32": 8,
+            "ml_abs_f32": 16,
+            "ml_floor_f32": 16,
+            "ml_sub_f32": 40,
+            "ml_cmp_gt_f32": 16,
+            "ml_cmp_eq_f32": 16,
+            "ml_bfe2_b32": 3,
+            "ml_add_i32": 26,
+            "ml_cvt_i32_f32": 32,
+            "ml_cvt_f32_i32": 20,
+            "ml_add_f32": 32,
+            "ml_cmp_lt_f32": 16,
+            "ml_min_f32": 16,
+            "ml_mul_u64_u32": 16,
+            "ml_anyop3_b32": 6,
+            "ml_byte_permute_b32": 86,
+            "ml_slb_store_b32x1": 20,
+            "ml_or_b32": 2,
+            "ml_slb_load_b8": 32,
+            "ml_srl_b32": 5,
+            "ml_slb_store_b32x4": 2,
+            "ml_slb_load_b32x2": 1,
+            "ml_addo_u32": 49,
+            "ml_addc_i32": 49,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_exp_f32": 8,
+            "ml_cvt_bf16_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 16,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        },
+        "preq": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 586,
+              "source_line": 110
+            },
+            {
+              "llir_line": 587,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1322,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1323,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 11,
+            "ml_mov_v2s_b32": 3,
+            "ml_bfe2_b32": 2,
+            "ml_mul_u64_u32": 16,
+            "ml_and_b32": 26,
+            "ml_anyop3_b32": 8,
+            "ml_add_i32": 27,
+            "ml_cmp_eq_u32": 7,
+            "ml_shl_b32": 16,
+            "ml_mov_b32": 90,
+            "ml_csel_b32": 19,
+            "ml_slb_store_b8": 16,
+            "ml_srl_b32": 18,
+            "ml_xor_b32": 27,
+            "ml_or_b32": 3,
+            "ml_slb_load_b8": 32,
+            "ml_byte_permute_b32": 74,
+            "ml_addo_u32": 50,
+            "ml_addc_i32": 50,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x1": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_cvt_f32_i32": 4,
+            "ml_mul_f32": 78,
+            "ml_slb_shuffle_rtn_b32": 40,
+            "ml_max_f32": 20,
+            "ml_sub_f32": 8,
+            "ml_exp_f32": 8,
+            "ml_add_f32": 16,
+            "ml_cvt_bf16_f32": 4,
+            "ml_fma_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 32,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        }
+      },
+      "resources": {
+        "baseline": {
+          "n_regs": 93,
+          "n_spills": 0,
+          "shared": 8192
+        },
+        "inline": {
+          "n_regs": 144,
+          "n_spills": 0,
+          "shared": 6144
+        },
+        "preq": {
+          "n_regs": 145,
+          "n_spills": 0,
+          "shared": 6144
+        }
+      },
+      "diagnostic_timing": [
+        {
+          "baseline": {
+            "complete_step_ms": 1.0318504571914673,
+            "min_ms": 1.0309312343597412,
+            "max_ms": 1.0329375267028809
+          },
+          "inline": {
+            "complete_step_ms": 0.8284283876419067,
+            "min_ms": 0.8254177570343018,
+            "max_ms": 0.8330783247947693
+          },
+          "baseline_over_candidate": 1.245551785264861
+        }
+      ],
+      "stage_ms": {
+        "baseline_append": 0.0026682692114263773,
+        "candidate_append": 0.003211538540199399,
+        "baseline_producer": 1.0306370258331299,
+        "candidate_producer": 0.8224605321884155,
+        "original_reducer": 0.005823076702654362,
+        "initial_encoder_separate": 3.4984474182128906
+      },
+      "precision_gate": false
+    }
+  ],
+  "full_decoder_precision_passed": false,
+  "diagnostic_only": true,
+  "service_verified": false,
+  "capacity_reclaimed": false
+}

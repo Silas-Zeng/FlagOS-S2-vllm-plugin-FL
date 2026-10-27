@@ -96,6 +96,49 @@
           "members": 55
         }
       ]
+    },
+    {
+      "label": "inline-full16k-v1",
+      "original_raw_files": 222,
+      "original_raw_bytes": 7844259,
+      "archived_raw_files": 220,
+      "archived_raw_bytes": 7824127,
+      "original_download_manifest": {
+        "bytes": 90825,
+        "sha256": "0502fa4f9d0f0e64957120ed17c6c15d9355d2b7f802b79616b148fc9488b127"
+      },
+      "original_owner": {
+        "pid": 625590,
+        "start_ticks": 343262174,
+        "same_start": true,
+        "state": "Z"
+      },
+      "omitted_pycache": [
+        {
+          "relative": "out/__pycache__/generated-inline.cpython-312.pyc",
+          "bytes": 10041,
+          "sha256": "9d5779697ee0ec9d9a55d5b85d6200985bf200faff44147984ae383be2d48dc6"
+        },
+        {
+          "relative": "out/__pycache__/generated-preq.cpython-312.pyc",
+          "bytes": 10091,
+          "sha256": "ee062b2bed2502b4dd2768fb7ef6a4fbf63833cc383a5c6d6179640806ad5621"
+        }
+      ],
+      "archives": [
+        {
+          "file": "inline-full16k-v1-part1.tar.gz",
+          "bytes": 1822159,
+          "sha256": "04cf29a96aa61f1c4f99157564b59c4261239a956a7f5f917040aae8ebc630d1",
+          "members": 60
+        },
+        {
+          "file": "inline-full16k-v1-part2.tar.gz",
+          "bytes": 624724,
+          "sha256": "6fff1d84b7a029090dc736fc546b23d443e00f4e200144efcd4ad3dbd62805f3",
+          "members": 161
+        }
+      ]
     }
   ],
   "runtime_source": {
@@ -123,6 +166,11 @@
       "file": "inline-full4k-v1-independent-cpu-review.json",
       "bytes": 34993,
       "sha256": "6291efc5541c2f8eaf3076e56ffc1d29eb41b6979b7639a4ce5fc1f6cb5342f0"
+    },
+    {
+      "file": "inline-full16k-v1-independent-cpu-review.json",
+      "bytes": 35013,
+      "sha256": "3fc62ca91cb4f00893d418117a1e684202930ae55c6d36af41f42c5071d6f749"
     }
   ],
   "archived_replay_reports": [
@@ -135,6 +183,19 @@
       "file": "numeric-device-v1-arrays-replay.json",
       "bytes": 36275,
       "sha256": "0529f55c4e01c12dbe20558c09bb013c7e2439ff707fb7cacd1605d3dd1795ce"
+    },
+    {
+      "file": "numeric-device-full16k-stdlib-replay.json",
+      "bytes": 15961,
+      "sha256": "7eba54ccee483758d54007c87ae6c650909f3819ae3de74b24db9bce9be6e606"
+    },
+    {
+      "file": "numeric-device-full16k-arrays-replay.json",
+      "bytes": 71309,
+      "sha256": "cb6425257e955037aebb159113b1a566275d9d87a2c143a228c4aaee32d384f0"
     }
-  ]
+  ],
+  "full16k_completed": true,
+  "full16k_passed": false,
+  "full16k_precision_gate": false
 }
