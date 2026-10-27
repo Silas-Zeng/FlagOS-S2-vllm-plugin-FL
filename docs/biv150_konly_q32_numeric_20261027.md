@@ -33,8 +33,10 @@ initialization is GPU work outside numerical checking, not zero-launch compile.
 
 Actual2048-row Tensor descriptors are allocated and all three roles warm up
 before any encoder/reader launch. They must match reviewed kernel hashes, typed
-ABI, source and TTGIR/LLVM/ASM/cubin bytes. Unknown changed specialization stops
-with actual IR retained. The hoisted actual positive auditor also reruns. Handle
+ABI/options, source and TTIR/TTGIR/LLVM/ASM/cubin bytes. Every warmup first exports
+all actual files and record, then saves the full expected record and a separate
+expected/actual difference JSON. Unknown changed specialization stops with those
+actual bytes retained; nothing is replaced to match the proof. The hoisted actual positive auditor also reruns. Handle
 initialization records known positive register/warp fields and known zero spills.
 No resource decline is interpreted as performance.
 
@@ -59,7 +61,8 @@ There is no timing under either mode.
 
 Each pattern saves original CPU BF16 inputs/metadata, independently computed
 encoded bytes/codes/scales, actual encoded bytes, full three outputs and both
-selected-row references as a PT artifact with SHA. These are future Root-run
+selected-row references as a losslessly gzip-compressed PT artifact with SHA.
+No input, output or reference is truncated to fit a collector limit. These are future Root-run
 artifacts; CPU preparation does not produce or load device tensors. The BF16
 control is canonical unhoisted SDK code, not accepted service main. All service,
 performance, full-validation and competition precision gates remain false.

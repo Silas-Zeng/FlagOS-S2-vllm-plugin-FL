@@ -51,6 +51,9 @@ def run():
         elif field=='typed_ABI': mutant[field]={}
         else: mutant['files']['asm']['sha256']='unproven'
         reject(lambda mutant=mutant:runner.bind_record(mutant,old,'unhoisted'))
+    mutant=copy.deepcopy(old);mutant['files']['ttir']['sha256']='unproven'
+    assert 'ttir' in runner.differences(mutant,old)
+    reject(lambda:runner.bind_record(mutant,old,'unhoisted'))
     assert not any(name in sys.modules for name in ('torch','triton','numpy'))
     return dict(cpu_only=True,geometry=numeric.plan(),mechanism_replayed=True,
                 finite_baseline_failure_not_bypassable=True,unknown_ABI_or_IR_refused=True,

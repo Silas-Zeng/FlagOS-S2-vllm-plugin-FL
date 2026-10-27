@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Default CPU; explicit Root-only first eager Q32 comparison. No timing/service hook."""
 import argparse
+import gzip
 import json
 import os
 from pathlib import Path
@@ -30,14 +31,18 @@ def preflight():
                 performance_verified=False,service_verified=False,capacity_reclaimed=False),payload,files,summary
 
 
+def differences(record,expected):
+    changed={key:dict(expected=expected[key],actual=record[key]) for key in
+             ('hash','typed_ABI','actual_options','jit_version','jit_do_not_specialize') if record[key]!=expected[key]}
+    for ext in ('source','ttir','ttgir','llir','asm','cubin'):
+        before=expected['files'].get(ext,{}).get('sha256');after=record['files'].get(ext,{}).get('sha256')
+        if before is None or before!=after: changed[ext]=dict(expected=before,actual=after)
+    return changed
+
+
 def bind_record(record,expected,role):
-    if record['hash']!=expected['hash'] or record['typed_ABI']!=expected['typed_ABI']:
-        raise ValueError(role+': unknown actual specialization/ABI; retained IR needs review before any reader launch')
-    if record['files']['source']['sha256']!=expected['files']['source']['sha256']:
-        raise ValueError(role+': generated JIT source differs')
-    for ext in ('ttgir','llir','asm','cubin'):
-        if record['files'][ext]['sha256']!=expected['files'][ext]['sha256']:
-            raise ValueError(role+': actual '+ext+' differs from the reviewed compile')
+    changed=differences(record,expected)
+    if changed: raise ValueError(role+': unknown actual specialization/ABI/options/IR; retained diff='+json.dumps(changed,sort_keys=True))
 
 
 def run(args,payload):
@@ -94,6 +99,9 @@ def run(args,payload):
             kw=descriptors.kwargs(p,current,role!='baseline');calls[role]=(current,kw,d)
             kernel=functions[role].warmup(grid=p['grid'],**kw,**options[role]);compiled[role]=kernel
             record=parent.preserve(kernel,args.out,role,options[role],p['grid'],kw,current,d)
+            parent.save(args.out/'ir'/role/'expected-reviewed-record.json',expected[role])
+            parent.save(args.out/'ir'/role/'binding-difference.json',dict(differences=differences(record,expected[role]),
+                        actual_geometry=p,actual_tensor_descriptors=d,expected_geometry_is_original4096=True))
             bind_record(record,expected[role],role)
             if role=='hoisted': actual.audit(*(kernel.asm[e] for e in ('ttgir','llir','asm')))
             kernel._init_handles();resources=parent.observed_resources(kernel);resources['handles_explicitly_initialized']=True
@@ -102,6 +110,10 @@ def run(args,payload):
             record['loaded_resources']=resources;parent.save(args.out/'ir'/role/'record.json',record)
             actual_records[role]=record
         result['actual_records']=actual_records;result['actual_binding_verified']=True;save()
+        def save_artifact(path,value):
+            # Lossless outer compression; all CPU inputs/raw bytes/references and
+            # all three independently read full outputs remain in the artifact.
+            with gzip.open(path,'wb',compresslevel=3) as stream: torch.save(value,stream)
         def host_bytes(tensor): return tensor.detach().cpu().contiguous().view(-1).view(torch.uint8).numpy().tobytes()
         def fingerprints():
             return {name:actual.old.sha(host_bytes(value)) for name,value in dict(q=t['q'],packed=owners[0],encoded=owners[1],
@@ -112,7 +124,7 @@ def run(args,payload):
             reference=numeric.references(cpu,codes,scales,torch,np)
             artifact=dict(original_CPU=cpu,expected_encoded_bytes=torch.from_numpy(np.frombuffer(raw,dtype=np.uint8).copy()),
                           expected_codes=codes,expected_scales=scales,reference=reference,outputs={})
-            artifact_path=args.out/('pattern-'+str(pattern)+'.pt');torch.save(artifact,artifact_path)
+            artifact_path=args.out/('pattern-'+str(pattern)+'.pt.gz');save_artifact(artifact_path,artifact)
             owners[0].copy_(cpu['packed']);owners[1].fill_(0xa5)
             for name,source in [('q','q'),('table','table'),('lengths','lengths'),('cu_q','cu_q'),('k_descale','k_scale'),('v_descale','v_scale')]:
                 t[name].copy_(cpu[source])
@@ -121,7 +133,7 @@ def run(args,payload):
             support.encode_initial[(p['pages']*32,)](t['baseline_k'],t['baseline_v'],t['k'],t['kscale'],t['v'],p['pages'])
             result['encoder_launches']+=1;torch.cuda.synchronize()
             actual_raw=host_bytes(owners[1]);artifact['actual_encoded_bytes']=torch.from_numpy(np.frombuffer(actual_raw,dtype=np.uint8).copy())
-            torch.save(artifact,artifact_path)
+            save_artifact(artifact_path,artifact)
             codec_passed=actual_raw==raw
             if not codec_passed: raise ValueError('Full CPU-independent encoded cache/scale/value/gap bytes differ')
             before=fingerprints()
@@ -140,7 +152,7 @@ def run(args,payload):
                 torch.cuda.synchronize();outputs[role]=current['out'].cpu()
                 canary=canary and bool((guarded[role][0]==71).all() and (guarded[role][-1]==71).all())
                 readonly=readonly and fingerprints()==before
-                artifact['outputs'][role]=outputs[role];torch.save(artifact,artifact_path)
+                artifact['outputs'][role]=outputs[role];save_artifact(artifact_path,artifact)
                 if not canary or not readonly: raise ValueError('Output canary/read-only input guard failed')
             check=numeric.gates(outputs['baseline'][reference['rows']].double().reshape(-1).tolist(),
                 outputs['hoisted'][reference['rows']].double().reshape(-1).tolist(),
@@ -150,7 +162,7 @@ def run(args,payload):
                 read_only_inputs=readonly,actual_IR=True,
                 hoisted_unhoisted_bitwise=host_bytes(outputs['hoisted'])==host_bytes(outputs['unhoisted']))
             item=dict(pattern=pattern,hard_checks=hard,numeric_checks=check,codec_CPU=codec,
-                      artifact=dict(path=str(artifact_path),bytes=artifact_path.stat().st_size,sha256=actual.old.sha(artifact_path.read_bytes())))
+                      artifact=dict(path=str(artifact_path),format='lossless gzip(torch.save)',bytes=artifact_path.stat().st_size,sha256=actual.old.sha(artifact_path.read_bytes())))
             result['records'].append(item);save()
             item['policy']=numeric.policy(hard,check['candidate_numeric_passed'],args.numeric_diagnostic);save()
         admission.check('complete',token)
