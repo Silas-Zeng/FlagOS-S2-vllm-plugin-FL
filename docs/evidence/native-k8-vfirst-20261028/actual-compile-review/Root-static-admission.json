@@ -1,0 +1,18 @@
+{
+  "actual_SO_IR_sha256": "00b6ca237353fee77387cb85e16fb870c592f430155dc80be1797bb073b4799c",
+  "actual_SO_SASS_sha256": "1fb96f2490c41503a2b25b81db2503879e424e1c246a8791ee5c4a02dd92d518",
+  "actual_SO_review_sha256": "a6b7a8f71a0901a3fb01900cd52e5e1c7c9c3479ac1837065effd9ea12de2643",
+  "actual_V_issue_before_K_packing": true,
+  "actual_wait_barrier_tail_preserved": true,
+  "compile_summary_sha256": "5b502cf54be5e25430fc2a6d9017c8314976ceaf9af8d322e7377737a88ecac9",
+  "notes": "Root CJJ1008 reviewed actual b144 SO decoded SASS/IR and independent PC+word ELF binding: S2full696-727, S2tail855-961, S4full2039-2070, S4tail2198-2304. Four actual machine CFG paths issue V before K loads/stores, preserving K barrier/original V wait/tail clear and unchanged I8QK/BF16PV/math/codec; static admission only. Numeric, performance, model, service and capacity remain unqualified.",
+  "numeric_qualified": false,
+  "original_I8_QK_BF16_PV_and_codec_preserved": true,
+  "performance_qualified": false,
+  "qk_ASM_sha256": "8f8a177c8d674c94483ca4eccda81125b968ff4e5ec3e3ab075927c2c44eb09e",
+  "qk_LLVM_sha256": "52b5af90dad2b2ef6f9a3f4aa265058561120caf77d68ca6a777c118c3c5563d",
+  "reviewer": "CJJ1008",
+  "variant_CUDA_sha256": "5fd2cdd49f016659d7d08bc9ef7f1365ad8ab021812da7c55499ab8fe3f3f845",
+  "variant_library_sha256": "b144a39345bee54169eb6e3d5f14d8db68b16a1dfe657b44d21cb89c236dfe17",
+  "version": 1
+}
