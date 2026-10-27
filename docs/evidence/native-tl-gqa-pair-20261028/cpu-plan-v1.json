@@ -1,0 +1,49 @@
+{
+  "main": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+  "cases": {
+    "4k": [
+      64,
+      4096,
+      2
+    ],
+    "16k": [
+      32,
+      16384,
+      4
+    ]
+  },
+  "arena_pages": 34276,
+  "page_bytes": 16384,
+  "physical_bytes": 561577984,
+  "table_stride": 8192,
+  "permutation_seed": 20261028,
+  "arms": [
+    "native-b3-BF16",
+    "exact-b3-Triton-GQA"
+  ],
+  "ABBA_order": [
+    "native",
+    "triton",
+    "triton",
+    "native"
+  ],
+  "complete_step": [
+    "same_BF16_append",
+    "producer",
+    "same_b3_reducer_warps4"
+  ],
+  "initial_pack_copy_separate": true,
+  "K8_in_pair": false,
+  "old_K8_timing_comparable": false,
+  "source_pins": {
+    "vllm_fl/patches/biv150_gqa_decode.py": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "vllm_fl/patches/biv150_native_gqa.py": "86f8ca199ce632ccb3bbc251bb5c632e57da3373d8b87bd5f53334ef818a26c4",
+    "tools/biv150_benchmark_utils.py": "ff0cd964aad34e6d19609fa4e1d76e7d46b4f98c98a4d925e33d658efd4e2879",
+    "csrc/iluvatar/native_gqa_s2.cpp": "f6bf9611184de7688a0460fe3b810bf0479e21a5dccdbbda77a7d69dadca7a9e",
+    "csrc/iluvatar/native_gqa_s2.cu": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+    "tools/kernels/biv150_pair_append_support.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018"
+  },
+  "default_CPU": true,
+  "GPU_executed": false,
+  "model_extrapolation": false
+}
