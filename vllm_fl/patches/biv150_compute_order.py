@@ -11,7 +11,7 @@ import types
 from pathlib import Path
 
 # Current team runner plus the opt-in Q32 installer; input/order code is unchanged.
-EXPECTED_RUNNER = "1827df9d5d50506229b834dba8d2d9534cc808bb2420f28064de9cab3ac7ef2d"
+EXPECTED_RUNNER = "b0e59a974b723593c167aae54da339a424cc13402db4c9763b954c932902ae66"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",

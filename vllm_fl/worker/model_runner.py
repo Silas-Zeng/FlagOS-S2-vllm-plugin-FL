@@ -7764,7 +7764,7 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     print("BIV150_STABLE_SMALL_O_INSTALL", _install_stable_small_o(), flush=True)
 
 # Decode-only accuracy diagnostic; all stock BF16 cache paths remain unchanged.
-if os.environ.get("VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC", "0") == "1":
+if __import__("os").environ.get("VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC", "0") == "1":
     if getattr(current_platform, "vendor_name", None) != "iluvatar":
         raise RuntimeError("Stock QK8 diagnostic requires the audited iluvatar target")
     from vllm_fl.patches.biv150_stock_qk8_diagnostic import install as _install_stock_qk8_diagnostic
