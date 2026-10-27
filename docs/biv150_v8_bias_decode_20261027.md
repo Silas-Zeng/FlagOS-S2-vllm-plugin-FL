@@ -6,8 +6,9 @@ This independent branch/worktree does not reuse closed PR73 or modify PR75.
 Its reference is the exact frozen4a V8 kernel, SHA256
 `a7fc539dccbd2e2910538665abf42d0dd6204939d39f1ebeb7a6cac1f992c3ca`, retained as
 [an inert text fixture](../tools/fixtures/biv150_v8_bf16p_4a.py.txt). No production
-source changes, serving registration, GPU runner, runtime installation, SSH,
-JIT or device work is included.
+source changes or serving registration are included. The initial standalone
+factory had no GPU runner; the later opt-in private driver is described below.
+No runtime installation, SSH, JIT or device work was performed.
 
 ## Scope and exact arithmetic
 
@@ -91,7 +92,7 @@ mapping; a changed store pattern requires its own correctness evidence. No paire
 store optimization is bundled. The old kernel already had eight packed-word V
 loads per path: uint32 arithmetic here does not establish fewer LDG operations.
 
-The full writer+producer+reducer consumer is **not connected** in this Draft.
+At the initial934ed20 CPU freeze, the full writer+producer+reducer consumer was not connected. A subsequent private source-only driver now wires the pinned original framework; see [private probe readiness](biv150_v8_bias_private_probe_20261027.md). It has not run on the device.
 Any later wiring must retain all frozen4a baseline independent numerics, codec,
 slot/unmapped bytes, changed-input Graph/eager, finite and original precision
 gates; no new tolerance is introduced. Real-shape/narrowed descriptors and actual
