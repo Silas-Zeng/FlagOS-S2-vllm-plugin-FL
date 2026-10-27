@@ -116,8 +116,12 @@ def references(query_codes, query_scales, packed, page, head, valid):
     FP32 target order is RN32(RN32(INT32 * sQ) * sK). Invalid columns store raw
     integer zero and score -inf; the zero-length primitive has no softmax.
     """
-    if len(query_codes) != 8 or len(query_scales) != 8 or not 0 <= valid <= 16:
+    if (len(query_codes) != 8 or len(query_scales) != 8 or isinstance(valid, bool)
+            or not isinstance(valid, int) or not 0 <= valid <= 16):
         raise ValueError('logical M8 / N16 metadata required')
+    indices(page, 0, head)
+    if not packed or len(packed) % PAGE_BYTES or page >= len(packed) // PAGE_BYTES:
+        raise ValueError('physical page outside packed allocation')
     if any(len(row) != 128 or any(isinstance(c, bool) or not isinstance(c, int) or abs(c) > 127 for c in row)
            for row in query_codes):
         raise ValueError('signed I8 [-127,127] rows required')

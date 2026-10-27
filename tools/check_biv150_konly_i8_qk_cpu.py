@@ -10,12 +10,14 @@ import random
 import struct
 import sys
 
-from biv150_konly_i8_qk_reference import (PAGE_BYTES, bf16, decode_key, encode_pages,
-                                        f32, indices, quantize, references, round_ratio_even)
+from biv150_konly_i8_qk_reference import (PAGE_BYTES, bf16, bf16_bits, decode_key, encode_pages,
+                                        indices, quantize, references, round_ratio_even)
+from biv150_konly_i8_qk_ir import audit_artifacts
 
 
 ROOT = Path(__file__).resolve().parents[1]
 KERNEL = ROOT / 'tools/kernels/biv150_konly_i8_qk.py'
+CASES = 36
 
 
 def fixture(pattern=0):
@@ -29,9 +31,35 @@ def fixture(pattern=0):
         queries[0] = [0.0] * 128
         keys[1][15][1] = [bf16((-1)**d * 127) for d in range(128)]
     elif pattern == 2:
-        queries[0] = [bf16((-1)**d * 127) for d in range(128)]
+        queries[0] = [127.0] * 128
+        queries[1] = [-127.0] * 128
+        keys[1][15][1] = [127.0] * 128
         keys[0][0][0] = [0.0] * 128
+        values[0][0][0][:3] = [-0.0, 2.0**-133, struct.unpack('<f',struct.pack('<I',0x7f7f0000))[0]]
     return keys, values, queries
+
+
+def host_case(pattern):
+    keys, values, query = fixture(pattern)
+    packed = encode_pages(keys, values)
+    qcodes, qscales, pages, heads, tails, expected = [], [], [], [], [], []
+    for case in range(CASES):
+        page = (case + pattern) % 3
+        head = (case % 2 + pattern) % 2
+        tail = (case // 2 + 3 * pattern) % 17
+        if case == 34:
+            page, head, tail = 1, 1, 16
+        elif case == 35:
+            page, head, tail = 2, 0, 0
+        rows = query[case % 8:] + query[:case % 8]
+        encoded = [quantize(row) for row in rows]
+        qc, qs = [r[0] for r in encoded], [r[1] for r in encoded]
+        qcodes.extend(v for row in qc for v in row)
+        qscales.extend(qs)
+        pages.append(page); heads.append(head); tails.append(tail)
+        expected.append(references(qc, qs, packed, page, head, tail))
+    return dict(packed=packed, qcodes=qcodes, qscales=qscales, pages=pages, heads=heads,
+                tails=tails, expected=expected)
 
 
 def run_checks():
@@ -73,8 +101,7 @@ def run_checks():
                     for dim in range(128):
                         _, _, vo = indices(page, slot, head, dim)
                         bits = struct.unpack_from('<H', packed, vo)[0]
-                        actual = struct.unpack('<f', struct.pack('<I', bits << 16))[0]
-                        assert actual == values[page][slot][head][dim]
+                        assert bits == bf16_bits(values[page][slot][head][dim])
         qs = [quantize(row) for row in query]
         for page in (2, 0, 1):
             for head in (1, 0):
@@ -93,11 +120,59 @@ def run_checks():
         try: indices(*args)
         except ValueError: negatives += 1
         else: raise AssertionError('bad address accepted')
+    good_codes = [[0]*128 for _ in range(8)]
+    good_scales = [1.0]*8
+    invalid = [dict(valid=1.5), dict(valid=True), dict(valid=-1), dict(valid=17),
+               dict(page=3), dict(head=2), dict(query_scales=[0.0]*8),
+               dict(query_scales=[math.nan]*8), dict(query_codes=[[-128]*128]*8)]
+    for change in invalid:
+        call = dict(query_codes=good_codes,query_scales=good_scales,packed=packed,page=0,head=0,valid=16)
+        call.update(change)
+        try: references(**call)
+        except ValueError: negatives += 1
+        else: raise AssertionError('bad primitive metadata accepted')
+    for payload in ('zero_scale','nan_scale','bad_code','poison'):
+        damaged = bytearray(packed)
+        ko,so,_ = indices(0,0,0)
+        if payload == 'bad_code': damaged[ko] = 128
+        elif payload == 'poison': damaged[:] = bytes([0xa5])*len(damaged)
+        else: struct.pack_into('<f',damaged,so,0.0 if payload == 'zero_scale' else math.nan)
+        try: references(good_codes,good_scales,damaged,0,0,1)
+        except ValueError: negatives += 1
+        else: raise AssertionError('invalid/poisoned cache payload accepted')
+    overflow = bytearray(packed)
+    ko,so,_ = indices(0,0,0)
+    overflow[ko:ko+128] = bytes([127])*128
+    struct.pack_into('<f',overflow,so,1.0)
+    try: references([[127]*128]*8,[2.0**127]*8,overflow,0,0,1)
+    except ValueError: negatives += 1
+    else: raise AssertionError('FP32 score overflow was accepted')
+    gpu_fixtures = [host_case(p) for p in range(3)]
+    assert all(gpu_fixtures[0][key] != gpu_fixtures[1][key] for key in
+               ('packed','qcodes','qscales','pages','heads','tails'))
+    raw_extrema = [v for e in gpu_fixtures[2]['expected'] for row in e['integer'] for v in row]
+    assert max(raw_extrema) == 128*127**2 and min(raw_extrema) == -128*127**2
+    assert not audit_artifacts({})['passed']
+    evidence = ROOT / 'docs/evidence/konly-i8-qk-20261027'
+    provenance = json.loads((evidence/'reference-provenance.json').read_text())
+    for item in provenance['files']:
+        raw = (evidence/item['file']).read_bytes()
+        assert len(raw) == item['bytes'] and hashlib.sha256(raw).hexdigest() == item['sha256']
+    old_ir = {kind:(evidence/('pr55-reference-primitive.'+kind+'.txt')).read_text()
+              for kind in ('ttgir','llir','asm')}
+    rejected = audit_artifacts(old_ir)
+    assert not rejected['passed']
+    assert not rejected['flags']['logical_m8_k128_n16_signed_i8_i32']
+    assert not rejected['flags']['exactly_four_i8_machine_mmas']
     ko, so, vo = indices(2**30+3, 15, 1, 127)
     assert max(ko, so, vo) > 2**32 and max(ko, so, vo) < 2**63
     assert not any(name == 'torch' or name == 'triton' or name.startswith(('torch.', 'triton.')) for name in sys.modules)
     return dict(passed=True, cpu_only=True, gpu_executed=False, kernel_sha256=hashlib.sha256(source.encode()).hexdigest(),
                 quantization_rounding_cases=rounding, page_head_tail_reference_cases=cases, rejection_cases=negatives,
+                prepared_gpu_fixture_cases=3*CASES, changed_input_and_metadata_proof=True,
+                exact_integer_extrema=[min(raw_extrema),max(raw_extrema)],
+                missing_actual_ir_rejected=True, positive_actual_ir_not_available=True,
+                actual_pr55_wrong_geometry_ir_rejected=True,
                 source_destination_separate=True, active_page_payload_bytes=12416, allocated_page_bytes=16384,
                 capacity_reclaimed=False, device_native_path_verified=False, performance_verified=False, service_verified=False)
 
