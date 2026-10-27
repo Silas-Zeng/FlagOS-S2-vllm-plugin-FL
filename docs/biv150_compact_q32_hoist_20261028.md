@@ -50,3 +50,32 @@ CPU evidence covers12288 physical addresses including all dimensions/tails/last 
 The separate source-only subprocess uses -I -S, loads the exact original94db helper, and invokes its unmodified expected_fingerprint, including the original spec_from_file_location loader with no parent package. Compact ON with hoist OFF and ON both generate fingerprints without GPU/framework imports; a finder actively rejects torch/triton/vllm/vllm_fl/numpy imports. Explicit CPU ABI and disabled native-library flags avoid claiming actual loaded-library admission. No normal-package/fakeJIT same-process test substitutes for this gate.
 
 There is no fresh compact Q32 TTGIR/native/resource/numeric/Graph/105/service/performance qualification yet. Inherited encoded proof is not relabelled compact. Next Root-only gates are actual fresh compact specialization and operand/synchronization evidence, bitwise original-vs-hoisted compact output with full guards, changed-input/stream behavior, then appropriate service/model and matched full-cost performance. A failed/unknown native grammar must retain unhoisted execution, never relax its auditor.
+
+## Root-only future component frontend (CPU prepared; device not run)
+
+The separate tools/probe_biv150_compact_q32_hoist.py defaults to a stdlib plan. It does not activate service or a writer/encoder. The personal reservation has ended; no device execution is scheduled or performed by this preparation.
+
+After renewal, Root may serially execute these explicit modes from an exact clean frozen checkout, using fresh absolute output directories outside the checkout:
+
+```sh
+python3 -B tools/probe_biv150_compact_q32_hoist.py --compile-only \
+  --commit EXACT_THIS_FRONTEND_HEAD --out ABS_FRESH_COMPILE_OUT
+python3 -B tools/probe_biv150_compact_q32_hoist.py --gpu \
+  --commit SAME_EXACT_HEAD --compile-receipt ABS_FRESH_COMPILE_OUT \
+  --out ABS_FRESH_NUMERIC_OUT --numeric-diagnostic
+```
+
+No throughput is measured. Compile-only enters the real CUDA context/allocator and init_handles, but performs zero attention/writer/encoder launches and no input initialization. It separately preserves fresh unhoisted artifacts before structural admission, then uses the actual compact adapter/proposal/native audit/loaded register-spill-shared guards. Unknown proof stops before any reader. All actual TTIR/TTGIR/LLVM/CoreX assembly/cubin and typed metadata are retained; loaded resources are not occupancy. Numeric mode requires the original complete compile receipt and hashes, then freshly prepares and audits its own actual compact objects again. No old encoded hash/overlay is a licence. Bounded failure salvage saves existing compiler-cache objects without another compile, launch, retry or init_handles.
+
+The fixed test is one sequence/Q1024 and KV1057/1056/1058 in states A/B/C,139 scattered physical pages, nonzero256B layer offset, table pitch8192 and32 full output guard rows on both sides. Both arms share complete independent full-D128 counter BF16 inputs and CPU RN32/RNE encoded bytes. References compute every1024x16x128 final value using blocked independent INT64 QK then FP64 scale/global-softmax/PV; original BF16 reference stays separate. Full output/guard/cache/read-only snapshots are NPZ arrays readable without Torch; canaries are indexed only after copying the entire buffer to CPU. Every hard gate retains the old quantized pointwise atol/rtol .005. Original-BF16 RRMSE .005 is a separate proxy; explicit numeric-diagnostic can preserve its failure while continuing, never override a hard failure or qualify official105.
+
+Q32 statically requires IS_3D=False and does not expose partial/max/sum arrays. These three are explicitly not_exposed_by_2D_Q32; no diagnostic kernel or substituted raw3D result is added. Eager A/B and distinct side-stream C compare unhoisted Q32 with freshly hoisted Q32 bitwise. The actual capture facade bypasses Q32 to unhoisted compact normalized2D128 for both arm labels. Graph A/capture replay and changed-input B are checked with full guards/references; GraphB precedes fresh eagerB, which uses the same normalized2D128 object. No cross-tile bitwise comparison is required. Every Graph record states actual normalized path/hoist_verified=false; Graph does not qualify hoisted Q32 capture. Changed-output counterexamples are required for B and C. GPU-input contents change while the registered owner/roles/epoch remain current.
+
+CPU replay:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -B -W error tools/check_biv150_compact_q32_probe_cpu.py --oracle
+python3 -B tools/probe_biv150_compact_q32_hoist.py
+```
+
+The oracle option uses NumPy only on CPU for a tiny all-D128 scalar cross-check, not Torch. Default CLI/receipt/hard-policy/format checks use stdlib. CPU preparation does not verify full1024 device values, compilation, native layout, resources, changed Graph, side streams, mixed workloads,42-layer capacity, model quality or performance. All those gates remain pending. Large final/reference arrays may require a collector budget above128MiB; preserve complete files and do not replace them with samples to fit a cap. A failed run must retain its raw arrays/IR/error and cannot be silently retried or relaxed.
