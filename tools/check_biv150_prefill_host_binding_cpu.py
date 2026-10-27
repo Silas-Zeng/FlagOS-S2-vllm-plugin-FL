@@ -9,15 +9,18 @@ from enum import Enum
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 import tarfile
+import tempfile
 from types import SimpleNamespace
 
 from biv150_prefill_host_component import prepare_source, PACKING
 import biv150_prefill_host_component as host_protocol
-from biv150_prefill_host_binding import CpuContract, LocalSdkBinding, verify_target_sources, target_source_directory
+from biv150_prefill_host_binding import (CpuContract, LocalSdkBinding, verify_target_sources,
+    target_source_directory, NATIVE_ENV, native_runtime_identity)
 from check_biv150_prefill_host_component_cpu import Entry, values
 
 MAIN = "56f1838192abc940b3fb9accef490022ac125000"
@@ -241,6 +244,63 @@ def local_binding(root,prepared):
         real_framework_imported=False,device_verified=False)
 
 
+def native_contract(source):
+    pins={
+        "tools/build_biv150_native_w8a8.py":"b5bd4b92d23400ac81ed9bab3b5dbd76dd794d1db1391742c709a739ca50e673",
+        "csrc/iluvatar/native_w8a8.cpp":"b37c84064474fe904334d7c06f473712077230f0d319df53032372b8b8111bcb",
+        "vllm_fl/patches/biv150_native_w8a8.py":"78a9af84ef73c295e85698bed215c60c7547a584f32635c31186dace5e0ac708",
+        "vllm_fl/compile_semantics.py":"5d6fba4064980fc16991e4f42fbd19f50a9c8e8758db2d0c42dd440e244a7c0f",
+        "vllm_fl/__init__.py":"e043b7893bfac27aee4f96cf7201cd6227053a261498e121245c3e63f2f2ebff"}
+    raw={name:(source/name).read_bytes()for name in pins}
+    assert all(hashlib.sha256(raw[n]).hexdigest()==pin for n,pin in pins.items())
+    cpp=raw["csrc/iluvatar/native_w8a8.cpp"].decode()
+    assert "TORCH_LIBRARY(biv150_native, m)"in cpp and "TORCH_LIBRARY_IMPL(biv150_native, CUDA, m)"in cpp
+    build=ast.parse(raw["tools/build_biv150_native_w8a8.py"])
+    call=next(n for n in ast.walk(build)if isinstance(n,ast.Call)and isinstance(n.func,ast.Name)and n.func.id=="load")
+    assert next(k.value.value for k in call.keywords if k.arg=="is_python_module")is False
+    package=ast.parse(raw["vllm_fl/__init__.py"])
+    patch=next(n for n in package.body if isinstance(n,ast.FunctionDef)and n.name=="_patch_custom_ops")
+    optional=[n for n in ast.walk(patch)if isinstance(n,ast.Try)and any(isinstance(x,ast.Import)
+        and any(a.name=="vllm_fl._C"for a in x.names)for x in n.body)]
+    assert len(optional)==1 and optional[0].handlers
+    loader=next(n for n in ast.parse(raw["vllm_fl/patches/biv150_native_w8a8.py"]).body
+        if isinstance(n,ast.FunctionDef)and n.name=="load_library")
+    assert any(isinstance(n,ast.Call)and ast.unparse(n.func)=="torch.ops.load_library"for n in ast.walk(loader))
+    pathfn=next(n for n in ast.parse(raw["vllm_fl/compile_semantics.py"]).body
+        if isinstance(n,ast.FunctionDef)and n.name=="native_library_path")
+    ns=dict(Path=Path,os=os,__file__=str(source/"vllm_fl/compile_semantics.py"))
+    exec(compile(ast.fix_missing_locations(Unannotated().visit(ast.Module(body=[copy.deepcopy(pathfn)],type_ignores=[]))),"<real-native-path>","exec"),ns)
+    with tempfile.TemporaryDirectory(prefix="biv150-native-contract-cpu-")as temporary:
+        library=Path(temporary)/"biv150_native_w8a8.so";library.write_bytes(b"CPU contract W8 marker, not an executable")
+        extension=Path(temporary)/"optional_C.so";extension.write_bytes(b"CPU optional extension marker, distinct")
+        assert ns["native_library_path"](environ={NATIVE_ENV:str(library)})==library.resolve()
+        assert ns["native_library_path"](environ={"VLLM_FL_BIV150_NATIVE_LIB":str(library)})!=library.resolve()
+        calls=[];fake_ops=SimpleNamespace(loaded_libraries=set(),biv150_native=SimpleNamespace())
+        def load(path):calls.append(path);fake_ops.loaded_libraries.add(path)
+        fake_ops.load_library=load
+        fake_torch=SimpleNamespace(ops=fake_ops,library=SimpleNamespace(register_fake=lambda name:lambda fn:fn))
+        ls=dict(_LOADED=False,torch=fake_torch,native_library_path=lambda:library)
+        exec(compile(ast.fix_missing_locations(Unannotated().visit(ast.Module(body=[copy.deepcopy(loader)],type_ignores=[]))),"<real-loader-mock-only>","exec"),ls)
+        ls["load_library"]();ls["load_library"]();assert calls==[str(library)]and ls["_LOADED"]is True
+        empty=SimpleNamespace(ops=SimpleNamespace(loaded_libraries=set()))
+        unloaded=native_runtime_identity(empty,library,modules={},maps_text="")
+        assert unloaded["native_w8_loaded"]is False and not unloaded["optional_python_C"]["present"]
+        mapped="0000-1000 r-xp 0000 00:00 1 "+str(library)+"\n"
+        loaded=native_runtime_identity(fake_torch,library,maps_text=mapped,modules={
+            "vllm_fl._C":SimpleNamespace(__file__=str(extension)),
+            "vllm_fl.patches.biv150_native_w8a8":SimpleNamespace(_LOADED=True)})
+        assert loaded["native_w8_loaded"]and loaded["optional_python_C"]["sha256"]!=loaded["identity_file"]["sha256"]
+    bench=ast.parse((source/"tools/bench_biv150_prefill_host_binding.py").read_text())
+    assert not any(isinstance(n,ast.Call)and ast.unparse(n.func)=="importlib.import_module"
+        and n.args and isinstance(n.args[0],ast.Constant)and n.args[0].value=="vllm_fl._C"for n in ast.walk(bench))
+    assert not any(isinstance(n,ast.Call)and ast.unparse(n.func)=="torch.ops.load_library"for n in ast.walk(bench))
+    return dict(source_pins=pins,native_W8_is_TORCH_LIBRARY_not_Python_extension=True,
+        build_is_python_module=False,real_loader_AST_mock_checked_no_real_load=True,
+        recognized_environment=NATIVE_ENV,unrecognized_VLLM_FL_alias_not_used=True,
+        pure_attention_allows_unloaded_W8_and_absent_optional_C=True,
+        optional_C_recorded_separately_with_own_hash=True,real_torch_or_library_imported=False)
+
+
 def run_cpu(source,sdk,helpers,target):
     for name,pin in [("biv150_prefill_host_component.py","3cf4023500b32bf743f4c546fb60008d4d91c007f07dcc49ac9da7b79932a8bc"),
                      ("check_biv150_prefill_host_component_cpu.py","1310110d16eef94e0ab76b2a1822f50edea1759d6f9c75414b2c4f92769d1a35")]:
@@ -252,7 +312,8 @@ def run_cpu(source,sdk,helpers,target):
         host_binding_device_verified=False,typed_abi_device_verified=False,
         host_binding_Q_hoist_device_verified=False,performance_verified=False,
         model_precision_gate=False,official_score=False,source=prepared.proof,
-        target_source_chain=chain,local_binding=local_binding(source,prepared))
+        target_source_chain=chain,local_binding=local_binding(source,prepared),
+        native_admission=native_contract(source))
     report["tool_sha256"]={name:hashlib.sha256((source/"tools"/name).read_bytes()).hexdigest()
         for name in ("biv150_prefill_host_binding.py","check_biv150_prefill_host_binding_cpu.py",
                      "bench_biv150_prefill_host_binding.py")}

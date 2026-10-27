@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 import hashlib
 import json
 from pathlib import Path
+import sys
 import tarfile
 import tempfile
 
@@ -17,6 +18,40 @@ TARGET_PINS = {
     "model_executor/layers/attention/attention.py": "3414faca4cc04c699dbb880ba1761230e1ed97035f2934604cad9a5490f4dba1",
     "forward_context.py": "1c6fa51e9a02a120fed5e7357afb1190516cbdfefd1c644dfcd860603f1527c5",
 }
+NATIVE_ENV = "BIV150_NATIVE_W8A8_LIBRARY"
+
+
+def native_runtime_identity(torch, library, *, modules=None, maps_text=None):
+    """Observe an identity file/optional extension; never import/load either SO."""
+    library=Path(library).resolve();modules=sys.modules if modules is None else modules
+    loaded=vars(torch.ops).get("loaded_libraries")
+    known=isinstance(loaded,(set,frozenset,list,tuple))and all(isinstance(p,str)for p in loaded)
+    ops_loaded=(library in {Path(p).resolve()for p in loaded})if known else None
+    if maps_text is None:
+        try:maps_text=Path("/proc/self/maps").read_text()
+        except OSError:pass
+    mapped=None
+    if maps_text is not None:
+        paths=[]
+        for line in maps_text.splitlines():
+            fields=line.split(None,5)
+            if len(fields)==6 and fields[5].startswith("/"):
+                paths.append(Path(fields[5].removesuffix(" (deleted)").replace("\\040"," ")).resolve())
+        mapped=library in paths
+    loader=modules.get("vllm_fl.patches.biv150_native_w8a8")
+    optional=modules.get("vllm_fl._C");filename=vars(optional).get("__file__")if optional is not None else None
+    optional_path=Path(filename).resolve()if isinstance(filename,str)else None
+    optional_sha=(hashlib.sha256(optional_path.read_bytes()).hexdigest()
+                  if optional_path is not None and optional_path.is_file()else None)
+    return dict(identity_file=dict(path=str(library),sha256=hashlib.sha256(library.read_bytes()).hexdigest(),
+        role="biv150_native Torch Library W8 identity; not Python vllm_fl._C"),
+        native_w8_required_by_attention=False,load_requested_by_diagnostic=False,
+        native_w8_loaded=(mapped if mapped is not None else True if ops_loaded else None),
+        mapped_in_process=mapped,listed_in_torch_ops_loaded_libraries=ops_loaded,
+        native_loader_module_present=loader is not None,
+        native_loader_loaded_flag=vars(loader).get("_LOADED")if loader is not None else None,
+        optional_python_C=dict(present=optional is not None,path=str(optional_path)if optional_path else None,
+            sha256=optional_sha,used_as_W8_identity=False,required_by_diagnostic=False))
 
 
 @contextmanager

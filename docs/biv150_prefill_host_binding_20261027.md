@@ -77,18 +77,44 @@ python3 -B tools/bench_biv150_prefill_host_binding.py \
   --out /tmp/cjj-host-binding-new-cpu-output
 ```
 
-The output directory must not exist. The archive and original target directory
-produce byte-identical [CPU JSON](evidence/prefill-reverse-20261027/host-binding-v1/cpu.json),
-SHA256 `c36dba6d966ae116d8c0f5ff0781479540e993e10972c7d173f90afff712f49c`.
-The [manifest](evidence/prefill-reverse-20261027/host-binding-v1/manifest.json)
-preserves hashes and every unverified device/model gate. No Torch/Triton import
-or JIT occurs in this branch.
+The output directory must not exist. The initial source/scope
+[v1 CPU JSON](evidence/prefill-reverse-20261027/host-binding-v1/cpu.json), SHA256
+`c36dba6d966ae116d8c0f5ff0781479540e993e10972c7d173f90afff712f49c`, is retained
+unchanged. It did not exercise the erroneous native GPU admission corrected below.
+The current [v2 CPU evidence](evidence/prefill-reverse-20261027/host-binding-native-v2/cpu.json)
+adds the actual native source contract; archive/directory replay remains identical.
+No Torch/Triton import, library load or JIT occurs in this branch.
+
+## Native identity correction before any GPU run
+
+The initial3af diagnostic incorrectly forced `import vllm_fl._C` and equated its
+file with the accepted5c SO. That admission was wrong and was caught before GPU
+execution. The5c file is `biv150_native_w8a8.so`: native_w8a8.cpp163/171 registers
+`TORCH_LIBRARY/IMPL(biv150_native,...)`, and the build script explicitly sets
+`is_python_module=False`. The existing W8 patch loads it through
+`torch.ops.load_library`, then registers fake schemas. The separate package `_C`
+import at __init__.py111 is optional and catches ImportError/OSError.
+
+`--native-library` now means an identity file only: verify its5c disk SHA and set
+the **actually recognized** `BIV150_NATIVE_W8A8_LIBRARY` environment variable.
+`compile_semantics.native_library_path()` must resolve to that same path. The
+similarly named `VLLM_FL_BIV150_NATIVE_LIB` is not read by main56f. The pure-attention
+diagnostic does not call the W8 loader, force an optional extension import, rename
+the library or install a fake module. No5c-as-`_C` materialization is required.
+
+Before/after records distinguish the W8 identity file, whether its path is mapped
+in `/proc/self/maps`, its presence in `torch.ops.loaded_libraries`, and the existing
+W8 loader's `_LOADED` flag. Unavailable evidence is unknown. If optional Python
+`vllm_fl._C` was naturally imported, its real path/hash is recorded independently;
+it is never used as the5c identity. CPU tests use marker files and isolated stub
+arguments only, execute the real resolver/loader AST, and import/load no Torch/SO.
 
 ## Explicit future GPU entry: prepared, not executed
 
 After root verifies instance identity and schedules an idle device, the same
 entry requires `--run-gpu`, exact `--commit`, a new output directory and the accepted
-native library SHA5cbb8853. It rejects a live9031 service, busy GPU, dirty/wrong source,
+W8 identity-file SHA5cbb8853 (loading that operator is unnecessary for attention).
+It rejects a live9031 service, busy GPU, dirty/wrong source,
 production differences from main56f, wrong imported package/target sources/native
 library or disabled M2/Q32. It uses a private Triton cache and never edits installed
 packages. Existing accepted parent setup is in-memory in the diagnostic process.

@@ -21,7 +21,7 @@ import traceback
 from types import SimpleNamespace
 
 from biv150_prefill_host_binding import (CpuContract, LocalSdkBinding,
-    make_private_reverse_manager, TARGET_PINS)
+    make_private_reverse_manager, TARGET_PINS, NATIVE_ENV, native_runtime_identity)
 from biv150_prefill_host_component import PACKING
 from check_biv150_prefill_host_binding_cpu import run_cpu
 
@@ -54,6 +54,8 @@ def gpu(a,prepared,cpu):
     assert os.environ.get("VLLM_FL_BIV150_PREFILL_Q32","1")=="1"
     assert os.environ.get("VLLM_FL_BIV150_PREFILL_MULTI2","1")=="1"
     assert hashlib.sha256(a.native_library.read_bytes()).hexdigest()==NATIVE
+    # This is a TORCH_LIBRARY SO used for cache identity, not a Python _C module.
+    os.environ[NATIVE_ENV]=str(a.native_library.resolve())
     a.out.mkdir(parents=False,exist_ok=False)
     os.environ["TRITON_CACHE_DIR"]=str((a.out/"private-triton-cache").resolve())
     sys.dont_write_bytecode=True
@@ -68,8 +70,10 @@ def gpu(a,prepared,cpu):
     from bench_biv150_prefill_reverse import Tap,descriptors,resources
     from biv150_resource_records import compare_resource_records
     assert Path(vllm_fl.__file__).resolve()==source/"vllm_fl/__init__.py"
-    native=importlib.import_module("vllm_fl._C")
-    assert Path(native.__file__).resolve()==a.native_library.resolve()
+    semantics=importlib.import_module("vllm_fl.compile_semantics")
+    assert semantics.native_library_path()==a.native_library.resolve()
+    native_before=native_runtime_identity(torch,a.native_library)
+    assert native_before["identity_file"]["sha256"]==NATIVE
     for module,pin in [("vllm.model_executor.layers.attention.attention",TARGET_PINS["model_executor/layers/attention/attention.py"]),
                        ("vllm.forward_context",TARGET_PINS["forward_context.py"])]:
         loaded=importlib.import_module(module)
@@ -102,6 +106,8 @@ def gpu(a,prepared,cpu):
     result=dict(completed=False,component_only=True,official_score=False,model_precision_gate=False,
         service_installed=False,source_commit=a.commit,production_parent=MAIN,native_sha256=NATIVE,
         cpu_preflight=cpu,source=prepared.proof,parent_M2_retained=True,
+        native_identity_environment=dict(name=NATIVE_ENV,value=str(a.native_library.resolve())),
+        native_runtime_before=native_before,
         baseline_installations=dict(states,q32=q32_state,multi2=m2_state),
         private_triton_cache=os.environ["TRITON_CACHE_DIR"],
         baseline_arm_has_no_new_tap=True,timing_includes_component_host_overhead=True,
@@ -308,6 +314,9 @@ def gpu(a,prepared,cpu):
         result["direct_parent_sdk_calls"]=binding.direct_parent_calls
         result["scoped_sdk_calls"]=binding.scoped_calls
         result["manager_proofs"]={"parent":parent.snapshot(),"reverse":reverse.snapshot()}
+        result["native_runtime_after"]=native_runtime_identity(torch,a.native_library)
+        if result["native_runtime_after"]["identity_file"]["sha256"]!=NATIVE:
+            result["errors"].append(dict(type="NativeIdentityChanged",message="W8 identity file changed"))
         result["saved_override_ir"]=[]
         artifact_error=None
         try:
