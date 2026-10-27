@@ -1,0 +1,53 @@
+{
+  "CPU_only": true,
+  "GPU_executed": false,
+  "Graph_before_new_eager_enforced": true,
+  "JIT_executed": false,
+  "actual_Graph_verified": false,
+  "actual_side_verified": false,
+  "changed_table_is_unique_rotation": true,
+  "complete_CPU_guarded_output_used": true,
+  "eager_hard_precondition_faults": [
+    "commit",
+    "completed",
+    "errors",
+    "reader_launches",
+    "actual_binding_verified",
+    "loaded_resources_verified",
+    "precision_gate",
+    "missing_guard",
+    "device_query_ptr",
+    "device_block_tables_ptr",
+    "device_seq_lens_ptr",
+    "new_eager_before_graph",
+    "duplicate_mode",
+    "foreign_native_PID",
+    "scale_double_offset",
+    "V_full_base",
+    "I8_stride_in_BF16_units",
+    "wrong_scale_storage",
+    "wrong_BM"
+  ],
+  "original_numeric_resource_readonly_canary_gates_unchanged": true,
+  "performance_measured": false,
+  "precision_gate": false,
+  "private_hooks_restored": true,
+  "query_rows": 2048,
+  "runtime_KV_lengths": [
+    6144,
+    6143
+  ],
+  "source_contract": {
+    "CPU_reference_runtime_length_only": true,
+    "frozen_eager_commit": "f04aa70773a714169c439d6771c54fe8ee72f12f",
+    "kernel_codec_gates_resource_guard_unchanged": true,
+    "no_host_source_rewrite": true,
+    "private_scoped_kernel_wrapper": true,
+    "source_pins": {
+      "bench_biv150_konly_2d128_numeric.py": "b6371f8da0769c4a4c14b182a86b2f8578d05b0776037a37577ff1d8ec5ced62",
+      "biv150_konly_2d128_numeric_admission.py": "22f534bf0db43aa873244f1287c954a4eb56385ce99e7526dda0dadd9c2fbdcb",
+      "biv150_konly_2d128_numeric_contract.py": "0acecf155cfc0f192c17be44e9cbfba4de35a5f31f64363cdfa5e72c57ad94c7",
+      "biv150_prefill_probe_fixtures.py": "289afc781f17e80465626eef045cd4bfb3db5ed7c516ce662d8e75c06a698132"
+    }
+  }
+}
