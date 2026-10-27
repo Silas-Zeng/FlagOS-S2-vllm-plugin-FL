@@ -1,0 +1,40 @@
+{
+  "CPU_only": true,
+  "actual_target_or_live_epoch_verified": false,
+  "canonical_fixture": [
+    32,
+    4,
+    2560,
+    1
+  ],
+  "counter_cache_all_bytes_remapped": true,
+  "default_plan_equal": true,
+  "fake_compiler_artifacts_only_test_admission_control": true,
+  "missing_device_admission_rejected_before_framework": true,
+  "nonzero_layer_offset": 128,
+  "numeric_device_pending": true,
+  "rejected": [
+    "missing_live_lease",
+    "copied_receipt_is_not_lease",
+    "stale_live_lease",
+    "double_V_offset",
+    "double_scale_offset",
+    "foreign_cache_storage",
+    "old_cache_stride",
+    "old_format",
+    "source_alias_cache",
+    "output_alias_other_input",
+    "GPU_readback_mismatch",
+    "failed_readback_invalidates_lease",
+    "closed_epoch",
+    "unreviewed_actual_SO",
+    "bool_review_version",
+    "resource_vgpr_None",
+    "resource_sgpr_True",
+    "resource_vgpr_spills_None",
+    "resource_sgpr_spills_False",
+    "resource_shared_bytes_4096",
+    "different_actual_SASS",
+    "tampered_compiled_SO"
+  ]
+}
