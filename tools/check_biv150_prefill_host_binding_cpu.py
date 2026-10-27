@@ -2,12 +2,15 @@
 """Verify ACTUAL target context/custom-op source and local SDK component on CPU."""
 import argparse
 import ast
+import asyncio
+import __future__
 import copy
 from contextlib import contextmanager, redirect_stdout
 from dataclasses import dataclass, replace
 from enum import Enum
 import hashlib
 import io
+import inspect
 import json
 import os
 from pathlib import Path
@@ -47,16 +50,103 @@ class Descriptor:
 
 
 class Unannotated(ast.NodeTransformer):
+    def visit_arg(self, node):
+        # ast.arguments.vararg/kwarg are separate from args/kwonlyargs.
+        node.annotation=None
+        node.type_comment=None
+        return self.generic_visit(node)
+
     def visit_AnnAssign(self, node):
         return ast.copy_location(ast.Assign(targets=[node.target],value=self.visit(node.value)),node) if node.value else None
 
     def visit_FunctionDef(self, node):
+        if getattr(node,"type_params",[]):
+            raise ValueError("CPU bridge does not support generic type parameters")
         node.returns=None
-        for arg in node.args.posonlyargs+node.args.args+node.args.kwonlyargs:
-            arg.annotation=None
+        node.type_comment=None
         node.decorator_list=[]
         if node.name=="override_forward_context":node.decorator_list=[ast.Name(id="contextmanager",ctx=ast.Load())]
         return self.generic_visit(node)
+
+    visit_AsyncFunctionDef=visit_FunctionDef
+
+
+def compile_unannotated(nodes,name):
+    """Selected CPU AST only: do not inherit omitted source/host future flags."""
+    if any(isinstance(n,ast.ImportFrom)and n.module=="__future__"for n in nodes):
+        raise ValueError("CPU bridge expects selected nodes, not future imports")
+    module=Unannotated().visit(ast.Module(body=copy.deepcopy(nodes),type_ignores=[]))
+    for node in ast.walk(module):
+        if isinstance(node,ast.arg):assert node.annotation is None
+        if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)):assert node.returns is None
+        assert not isinstance(node,ast.AnnAssign)
+    code=compile(ast.fix_missing_locations(module),name,"exec",flags=0,dont_inherit=True)
+    assert not code.co_flags&__future__.annotations.compiler_flag
+    return code
+
+
+def annotation_contract():
+    # Every annotation identifier is deliberately absent; evaluating even one
+    # raises on3.12, or when __annotations__ is read with3.14 lazy semantics.
+    source='''from __future__ import annotations
+def probe(a: MissingPos, /, b: MissingArg=marker, *rest: MissingVararg,
+          required: MissingKwonly, optional: MissingDefault=marker,
+          **extras: MissingKwarg) -> MissingReturn:
+    local: MissingLocal = a
+    unused: MissingOnly
+    return local, b, rest, required, optional, extras
+def fixed(a: MissingPos, /, b: MissingArg, *, required: MissingKwonly) -> MissingReturn:
+    return a, b, required
+async def async_probe(*args: MissingAsyncVararg, **kwargs: MissingAsyncKwarg) -> MissingAsyncReturn:
+    return args, kwargs
+def nested(a: MissingOuter):
+    def inner(*args: MissingNestedVararg, **kwargs: MissingNestedKwarg) -> MissingNestedReturn:
+        return a, args, kwargs
+    return inner
+'''
+    marker=object();original={"marker":marker};bridged={"marker":marker}
+    exec(compile(source,"<future-annotated-reference>","exec",dont_inherit=True),original)
+    nodes=[n for n in ast.parse(source).body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))]
+    exec(compile_unannotated(nodes,"<annotation-free-cpu-bridge>"),bridged)
+    for name in("probe","fixed","async_probe","nested"):
+        fn=original[name];expected=inspect.signature(fn)
+        expected=expected.replace(parameters=[p.replace(annotation=inspect.Parameter.empty)for p in expected.parameters.values()],
+            return_annotation=inspect.Signature.empty)
+        assert inspect.signature(bridged[name])==expected
+        assert bridged[name].__annotations__=={}
+        assert not bridged[name].__code__.co_flags&__future__.annotations.compiler_flag
+    a,b,c,d=object(),object(),object(),object()
+    def identical(x,y):
+        if isinstance(x,tuple):assert len(x)==len(y);[identical(i,j)for i,j in zip(x,y)]
+        elif isinstance(x,dict):assert x.keys()==y.keys();[identical(x[k],y[k])for k in x]
+        else:assert x is y
+    valid=[("probe",(a,),dict(required=b)),("probe",(a,b,c,d),dict(required=c,optional=d,extra=a)),
+           ("probe",(a,),dict(required=b,a=c)),("fixed",(a,b),dict(required=c)),
+           ("fixed",(a,),dict(b=b,required=c))]
+    for name,args,kwargs in valid:identical(original[name](*args,**kwargs),bridged[name](*args,**kwargs))
+    rejected=[("probe",(),dict(required=a)),("probe",(a,),{}),("probe",(a,b),dict(b=c,required=d)),
+              ("fixed",(a,b,c),dict(required=d)),("fixed",(a,b),dict(required=c,extra=d)),
+              ("fixed",(),dict(a=a,b=b,required=c)),("fixed",(a,b),{}),("fixed",(a,b),dict(b=c,required=d))]
+    for name,args,kwargs in rejected:
+        errors=[]
+        for ns in(original,bridged):
+            try:ns[name](*args,**kwargs)
+            except TypeError as error:errors.append(str(error))
+            else:raise AssertionError("Invalid Python call admitted")
+        assert errors[0]==errors[1]
+    identical(asyncio.run(original["async_probe"](a,b,key=c)),asyncio.run(bridged["async_probe"](a,b,key=c)))
+    left,right=original["nested"](a),bridged["nested"](a)
+    identical(left(b,key=c),right(b,key=c));assert right.__annotations__=={}
+    for unsupported in(ast.parse("from __future__ import annotations").body,
+                        ast.parse("def generic[T](value: T): return value").body):
+        try:compile_unannotated(unsupported,"<unsupported-cpu-bridge>")
+        except ValueError:pass
+        else:raise AssertionError("Unsupported source scope admitted")
+    return dict(all_arg_kinds_annotation_free=True,unknown_typing_names_injected=False,
+        signature_defaults_and_parameter_kinds_preserved=True,valid_calls=len(valid),
+        identical_TypeError_rejections=len(rejected),async_vararg_kwarg_checked=True,
+        nested_annotations_removed=True,source_future_import_not_inherited=True,
+        partial_scope_future_and_generic_rejections=2,lazy_annotations_explicitly_inspected=True)
 
 
 def source_chain(target,source):
@@ -86,11 +176,10 @@ def source_chain(target,source):
     assert any(isinstance(n,ast.Call)and ast.unparse(n.func)=="torch.ops.vllm.unified_attention_with_output"for n in ast.walk(forward))
     selected=[ctx[n]for n in ("get_forward_context","create_forward_context","override_forward_context")]
     selected += [funcs[n]for n in ("get_attention_context","unified_attention_with_output")]
-    module=Unannotated().visit(ast.Module(body=copy.deepcopy(selected),type_ignores=[]))
     namespace=dict(_forward_context=None,contextmanager=contextmanager,
         CUDAGraphMode=Mode,ForwardContext=lambda **kw:SimpleNamespace(**kw),
         _resolve_layer_name=lambda x:x)
-    exec(compile(ast.fix_missing_locations(module),"<actual-target-context-custom-op>","exec"),namespace)
+    exec(compile_unannotated(selected,"<actual-target-context-custom-op>"),namespace)
     seen=[]
     class Impl:
         def forward(self,layer,q,k,v,cache,metadata,**kw):seen.append(metadata)
@@ -108,7 +197,11 @@ def source_chain(target,source):
     cls=next(n for n in ast.parse(wrapper).body if isinstance(n,ast.ClassDef)and n.name=="BreakableCUDAGraphWrapper")
     call=next(n for n in cls.body if isinstance(n,ast.FunctionDef)and n.name=="__call__")
     ws=dict(CUDAGraphMode=Mode,get_forward_context=namespace["get_forward_context"],is_forward_context_available=lambda:True)
-    exec(compile(ast.fix_missing_locations(Unannotated().visit(ast.Module(body=[copy.deepcopy(call)],type_ignores=[]))),"<actual-target-NONE-wrapper>","exec"),ws)
+    assert call.args.vararg.annotation is not None and call.args.kwarg.annotation is not None
+    assert any(isinstance(n,ast.ImportFrom)and n.module=="__future__"and any(a.name=="annotations"for a in n.names)
+        for n in ast.parse(wrapper).body)
+    exec(compile_unannotated([call],"<actual-target-NONE-wrapper>"),ws)
+    assert ws["__call__"].__annotations__=={}
     runnable=lambda:namespace["unified_attention_with_output"](object(),object(),object(),object(),"layer")
     invoke=lambda:ws["__call__"](SimpleNamespace(runnable=runnable))
     with namespace["override_forward_context"](f1):
@@ -125,14 +218,14 @@ def source_chain(target,source):
                      ("biv150_mixed_decode.py","a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42")]:
         assert hashlib.sha256((source/"vllm_fl/patches"/path).read_bytes()).hexdigest()==pin
     runner_fn=next(n for n in ast.walk(ast.parse(runner))if isinstance(n,ast.FunctionDef)and n.name=="_is_uniform_decode")
-    rs={};exec(compile(ast.fix_missing_locations(Unannotated().visit(ast.Module(body=[copy.deepcopy(runner_fn)],type_ignores=[]))),"<actual-runner-uniform>","exec"),rs)
+    rs={};exec(compile_unannotated([runner_fn],"<actual-runner-uniform>"),rs)
     with tarfile.open(source/"docs/evidence/prefill-reverse-20261027/refined-first-falsifier/host-route-sources-v1.tar.gz")as archive:
         dispatcher=archive.extractfile("sdk/cudagraph_dispatcher.py").read()
     assert hashlib.sha256(dispatcher).hexdigest()=="51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63"
     dc=next(n for n in ast.parse(dispatcher).body if isinstance(n,ast.ClassDef)and n.name=="CudagraphDispatcher")
     df=[n for n in dc.body if isinstance(n,ast.FunctionDef)and n.name in("dispatch","_create_padded_batch_descriptor")]
     ds=dict(CUDAGraphMode=Mode,BatchDescriptor=Descriptor,replace=replace)
-    exec(compile(ast.fix_missing_locations(Unannotated().visit(ast.Module(body=copy.deepcopy(df),type_ignores=[]))),"<actual-target-dispatcher>","exec"),ds)
+    exec(compile_unannotated(df,"<actual-target-dispatcher>"),ds)
     obj=SimpleNamespace(keys_initialized=True,cudagraph_mode=Mode.FULL_DECODE_ONLY,
         compilation_config=SimpleNamespace(max_cudagraph_capture_size=2048),
         vllm_config=SimpleNamespace(scheduler_config=SimpleNamespace(max_num_seqs=64)),
@@ -148,6 +241,8 @@ def source_chain(target,source):
         actual_function_ast_reads_current_metadata_each_call=True,nested_context_restored=True,
         current_metadata_sequence=[4096,16384,4096,16384],outer_hook_needed=False,
         actual_NONE_wrapper_AST_executed=True,actual_dispatcher_nonuniform_NONE_AST_executed=True,
+        actual_wrapper_vararg_kwarg_annotations_removed=True,actual_wrapper_future_annotations_present=True,
+        selected_AST_future_flags_not_inherited=True,
         actual_runner_uniform_predicate_AST_executed=True,
         capture_source_preconditions=dict(ordinary_prefill_max_query_gt_one=True,
             fixed_service_FULL_DECODE_ONLY=True,full_keys_uniform_true=True,piecewise_keys_empty=True,
@@ -166,7 +261,7 @@ def local_binding(root,prepared):
         assert hashlib.sha256(raw).hexdigest()==pin
         classes=[n for n in ast.parse(raw).body if isinstance(n,ast.ClassDef)]
         ns={"qfragment":SimpleNamespace(Manager=object,_eligible=prepared.descriptor_guard)}
-        exec(compile(ast.Module(body=classes,type_ignores=[]),"<actual-parent-policy>","exec"),ns)
+        exec(compile_unannotated(classes,"<actual-parent-policy>"),ns)
         policies.append(ns["_Policy"])
     capture=[False];parent,reverse,multi2,generic=[Entry(x)for x in ("q32","reverse","multi2","generic")]
     def manager(entry):
@@ -269,7 +364,7 @@ def native_contract(source):
     pathfn=next(n for n in ast.parse(raw["vllm_fl/compile_semantics.py"]).body
         if isinstance(n,ast.FunctionDef)and n.name=="native_library_path")
     ns=dict(Path=Path,os=os,__file__=str(source/"vllm_fl/compile_semantics.py"))
-    exec(compile(ast.fix_missing_locations(Unannotated().visit(ast.Module(body=[copy.deepcopy(pathfn)],type_ignores=[]))),"<real-native-path>","exec"),ns)
+    exec(compile_unannotated([pathfn],"<real-native-path>"),ns)
     with tempfile.TemporaryDirectory(prefix="biv150-native-contract-cpu-")as temporary:
         library=Path(temporary)/"biv150_native_w8a8.so";library.write_bytes(b"CPU contract W8 marker, not an executable")
         extension=Path(temporary)/"optional_C.so";extension.write_bytes(b"CPU optional extension marker, distinct")
@@ -280,7 +375,7 @@ def native_contract(source):
         fake_ops.load_library=load
         fake_torch=SimpleNamespace(ops=fake_ops,library=SimpleNamespace(register_fake=lambda name:lambda fn:fn))
         ls=dict(_LOADED=False,torch=fake_torch,native_library_path=lambda:library)
-        exec(compile(ast.fix_missing_locations(Unannotated().visit(ast.Module(body=[copy.deepcopy(loader)],type_ignores=[]))),"<real-loader-mock-only>","exec"),ls)
+        exec(compile_unannotated([loader],"<real-loader-mock-only>"),ls)
         ls["load_library"]();ls["load_library"]();assert calls==[str(library)]and ls["_LOADED"]is True
         empty=SimpleNamespace(ops=SimpleNamespace(loaded_libraries=set()))
         unloaded=native_runtime_identity(empty,library,modules={},maps_text="")
@@ -313,7 +408,7 @@ def run_cpu(source,sdk,helpers,target):
         host_binding_Q_hoist_device_verified=False,performance_verified=False,
         model_precision_gate=False,official_score=False,source=prepared.proof,
         target_source_chain=chain,local_binding=local_binding(source,prepared),
-        native_admission=native_contract(source))
+        native_admission=native_contract(source),annotation_bridge=annotation_contract())
     report["tool_sha256"]={name:hashlib.sha256((source/"tools"/name).read_bytes()).hexdigest()
         for name in ("biv150_prefill_host_binding.py","check_biv150_prefill_host_binding_cpu.py",
                      "bench_biv150_prefill_host_binding.py")}

@@ -231,3 +231,50 @@ python3 tools/audit_biv150_prefill_resource_phases_cpu.py \
   --result docs/evidence/prefill-reverse-20261027/first-falsifier/result.json \
   --out /tmp/prefill-resource-phase-audit.json
 ```
+
+## CPU AST bridge correction after the 1b4 preflight failure
+
+The first host-binding attempt at frozen `1b4eae8fb922c9e5cf6537d9845b43023ebf3577`
+stopped in `run_cpu -> source_chain -> exec(actual NONE wrapper)` on target
+Python3.12: `NameError: name 'Any' is not defined` at wrapper line310. It never
+entered `gpu()` and produced no GPU, resource, numerical or performance data.
+Owner624317/start342842999 is recorded same-start Z. The two original files
+(2923B), original manifest and traceback are retained unchanged in
+`host-binding-annotation-v3/pre-gpu-v1-raw.tar.gz`: 1430B, SHA256
+`8220b1350510f6a43cc2372e6c78be9cd5b10e1523fb2b10dbbd20c5110795ff`.
+
+The actual wrapper has `from __future__ import annotations`, but the CPU bridge
+extracts its method without that module import. The old transformer removed
+ordinary/keyword-only argument annotations while missing `*args: Any` and
+`**kwargs: Any`. Python3.14 lazy annotations hid this missing-name dependency.
+The fix is confined to the CPU checker: `visit_arg` removes every argument kind;
+return, local, nested and async annotations are also removed. Partial-AST
+compilation sets `flags=0, dont_inherit=True` and checks the future flag is absent.
+Unsupported future-import or generic-type-parameter scopes reject explicitly.
+No typing names, actual metadata or framework modules are fabricated.
+
+Five valid calls preserve signatures, parameter kinds, defaults and object
+identity, including positional-only names forwarded through `**kwargs`. Eight
+invalid calls retain the original TypeError text; async/nested star-argument
+calls also match. Tests inspect `__annotations__` explicitly, so lazy3.14 cannot
+hide a leaked annotation. The local macOS CPython3.12.15 reproduces the original
+failure and passes the fixed default CPU entry; local3.14 also passes. Both new
+CPU reports are byte-identical, SHA256
+`22b439563b2599a309f6c20ae441a149c589a10e53b2fda727b02c69bd675477`.
+The original local3.12 reproduction trace and provenance are committed beside
+the report. Old 140/fca/67/e4/1b4 evidence remains unchanged.
+
+Binding, benchmark, kernel factory and production bytes are unchanged from1b4;
+all existing numerical, SDK/source, typed-ABI, Q-hoist and resource gates remain
+required. This is CPU bridge compatibility work, not host-component/device or
+model acceptance. The actual Linux target preflight remains for root, before
+any GPU attempt; default invocation below imports no Torch/Triton or GPU driver:
+
+```bash
+/usr/local/bin/python -B tools/bench_biv150_prefill_host_binding.py \
+  --source "$PWD" \
+  --sdk-source /usr/local/lib/python3.12/site-packages/vllm/v1/attention/ops/triton_unified_attention.py \
+  --helpers-source /usr/local/lib/python3.12/site-packages/vllm/v1/attention/ops/triton_attention_helpers.py \
+  --target-sources docs/evidence/prefill-reverse-20261027/host-binding-v1/actual-target-sources.tar.gz \
+  --out /tmp/NEW_TARGET_CPU_PREFLIGHT_DIRECTORY
+```
