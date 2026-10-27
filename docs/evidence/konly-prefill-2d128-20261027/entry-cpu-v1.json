@@ -1,0 +1,95 @@
+{
+  "JIT_executed": false,
+  "actual_I8_operand_hoist_verified": false,
+  "compiled_typed_cache_pointers_verified": false,
+  "cpu_only": true,
+  "kernel_launches": 0,
+  "loaded_resources_verified": false,
+  "mechanism_status": "unknown_not_audited_for_BM128",
+  "numerical_verified": false,
+  "performance_measured": false,
+  "plan": {
+    "Graph_verified": false,
+    "compile_only": true,
+    "config": {
+      "BLOCK_M": 128,
+      "BLOCK_Q": 16,
+      "IS_3D": false,
+      "TILE_SIZE": 64
+    },
+    "context": 4096,
+    "context16k_tested": false,
+    "current_main_policy_selected": false,
+    "forced_component_profile": true,
+    "formal_batch_tokens_changed": false,
+    "grid": [
+      129,
+      2
+    ],
+    "initialized_tensor_elements": 0,
+    "kernel_launches": 0,
+    "klens": [
+      6144
+    ],
+    "metadata_values_initialized": false,
+    "pages": 773,
+    "patterns": [
+      0,
+      1
+    ],
+    "profile": "normalized2d128",
+    "qlens": [
+      2048
+    ],
+    "requested_options": {
+      "num_stages": 1,
+      "num_warps": 8
+    },
+    "seed": 20261025,
+    "segments": 1,
+    "sequences": 1,
+    "side_stream_verified": false,
+    "table_pitch": 8192,
+    "table_shape": [
+      1,
+      8192
+    ],
+    "timing_enabled": false,
+    "total": 2048
+  },
+  "precision_gate": false,
+  "service_installed": false,
+  "source_proof": {
+    "JIT_executed": false,
+    "actual_I8_operand_hoist_verified": false,
+    "canonical_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "capacity_reclaimed": false,
+    "codec": "cjj-konly-rn32-rne-v2",
+    "dependency_commit": "ae00f58629ad85850fec1b8b8d2da28757af5f8b",
+    "exact_AST_inverse": true,
+    "exact_byte_inverse": true,
+    "factory_imports_no_framework": true,
+    "generated_sha256": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740",
+    "kernel_launches": 0,
+    "main": "56f1838192abc940b3fb9accef490022ac125000",
+    "original_BF16_Q_V_PV_and_softmax_preserved": true,
+    "performance_verified": false,
+    "precision_gate": false,
+    "private_binding_only": true,
+    "profile": "normalized2d128",
+    "service_installed": false,
+    "source_Q_quantization_outside_KV_loop": true,
+    "source_generation_only": true,
+    "source_sha256": {
+      "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+      "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+      "codec-support-ae00.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+      "helpers.py": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+      "normalizer.py": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+      "sdk.py": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+    },
+    "unknown_format_fallback": "reject"
+  },
+  "torch_imported": false,
+  "triton_imported": false
+}

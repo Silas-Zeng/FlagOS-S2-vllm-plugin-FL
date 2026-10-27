@@ -1,0 +1,760 @@
+{
+  "JIT_executed": false,
+  "actual_I8_operand_hoist_verified": false,
+  "actual_codegen_artifacts": false,
+  "actual_compiled_pointer_types_verified": false,
+  "borrowed80": {
+    "docs/evidence/konly-prefill-reader-20261027/cpu.json": {
+      "bytes": 10403,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "a2eb6a95fe22c7aa02b6db89ffcb27ca80859823888861b871f49248ea309eff"
+    },
+    "docs/evidence/konly-prefill-reader-20261027/source-inputs.json": {
+      "bytes": 1132,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "9aca2341d5e7f8206673d136e8aabed7f89bbab1da279db5cca0c19f0bc1a340"
+    },
+    "docs/evidence/konly-prefill-reader-20261027/source-inputs.tar.gz": {
+      "bytes": 21018,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "9c5b271774ea17e9434a5e1f305345555a537af31ac74126f2a73a2e80e55733"
+    },
+    "tools/bench_biv150_konly_prefill_compile.py": {
+      "bytes": 13358,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "a9f0a6462717017e8180363cfa3c78dc3a246091cc03abb507bbec771eaf56be"
+    },
+    "tools/biv150_konly_decode_quant_reference.py": {
+      "bytes": 1452,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18"
+    },
+    "tools/biv150_konly_i8_qk_reference.py": {
+      "bytes": 6398,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3"
+    },
+    "tools/biv150_konly_prefill_compile_contract.py": {
+      "bytes": 7919,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "4d3b256bb270963cd5848aafc255fdbd6d0a946d44df9570c6e3ae7ba94c4fd4"
+    },
+    "tools/biv150_konly_prefill_factory.py": {
+      "bytes": 10446,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "85e8e78c24d36316dbff2373e16b97d81695791bfb92399d46b2f10f22308f01"
+    },
+    "tools/biv150_konly_prefill_reference.py": {
+      "bytes": 10550,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "4ffcebd6fc666d839d01a0399b624d5d03e1b80f75a4e7917255cbf1ecb916c0"
+    },
+    "tools/biv150_konly_q32_numeric_contract.py": {
+      "bytes": 7124,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "sha256": "9c75e7a81c0d77fba0690d25db355cb4dfd669b9aed963930697b7951e6c46e8"
+    }
+  },
+  "cpu_only": true,
+  "dependencies": [
+    79,
+    80,
+    82,
+    86
+  ],
+  "descriptor_proof": {
+    "CPU_metadata_contract": true,
+    "actual_tensor_binding_verified": false,
+    "both_cache_controls_nonalias": true,
+    "capacity_reclaimed": false,
+    "fallback": "reject",
+    "grid": [
+      129,
+      2
+    ],
+    "profile": "normalized2d128"
+  },
+  "descriptors": {
+    "baseline_k": {
+      "device": "cuda:0",
+      "dtype": "bfloat16",
+      "is_contiguous": false,
+      "shape": [
+        773,
+        16,
+        2,
+        128
+      ],
+      "storage": "allocation2",
+      "storage_bytes": 12664832,
+      "storage_offset": 0,
+      "stride": [
+        8192,
+        256,
+        128,
+        1
+      ]
+    },
+    "baseline_v": {
+      "device": "cuda:0",
+      "dtype": "bfloat16",
+      "is_contiguous": false,
+      "shape": [
+        773,
+        16,
+        2,
+        128
+      ],
+      "storage": "allocation2",
+      "storage_bytes": 12664832,
+      "storage_offset": 4096,
+      "stride": [
+        8192,
+        256,
+        128,
+        1
+      ]
+    },
+    "cu_q": {
+      "device": "cuda:0",
+      "dtype": "int32",
+      "is_contiguous": true,
+      "shape": [
+        2
+      ],
+      "storage": "allocation6",
+      "storage_bytes": 8,
+      "storage_offset": 0,
+      "stride": [
+        1
+      ]
+    },
+    "k": {
+      "device": "cuda:0",
+      "dtype": "int8",
+      "is_contiguous": false,
+      "shape": [
+        773,
+        16,
+        2,
+        128
+      ],
+      "storage": "allocation3",
+      "storage_bytes": 12664832,
+      "storage_offset": 0,
+      "stride": [
+        16384,
+        256,
+        128,
+        1
+      ]
+    },
+    "k_descale": {
+      "device": "cuda:0",
+      "dtype": "float32",
+      "is_contiguous": true,
+      "shape": [],
+      "storage": "allocation7",
+      "storage_bytes": 4,
+      "storage_offset": 0,
+      "stride": []
+    },
+    "kscale": {
+      "device": "cuda:0",
+      "dtype": "float32",
+      "is_contiguous": true,
+      "shape": [
+        3166208
+      ],
+      "storage": "allocation3",
+      "storage_bytes": 12664832,
+      "storage_offset": 0,
+      "stride": [
+        1
+      ]
+    },
+    "lengths": {
+      "device": "cuda:0",
+      "dtype": "int32",
+      "is_contiguous": true,
+      "shape": [
+        1
+      ],
+      "storage": "allocation5",
+      "storage_bytes": 4,
+      "storage_offset": 0,
+      "stride": [
+        1
+      ]
+    },
+    "out": {
+      "device": "cuda:0",
+      "dtype": "bfloat16",
+      "is_contiguous": true,
+      "shape": [
+        2048,
+        16,
+        128
+      ],
+      "storage": "allocation1",
+      "storage_bytes": 8388608,
+      "storage_offset": 0,
+      "stride": [
+        2048,
+        128,
+        1
+      ]
+    },
+    "q": {
+      "device": "cuda:0",
+      "dtype": "bfloat16",
+      "is_contiguous": true,
+      "shape": [
+        2048,
+        16,
+        128
+      ],
+      "storage": "allocation0",
+      "storage_bytes": 8388608,
+      "storage_offset": 0,
+      "stride": [
+        2048,
+        128,
+        1
+      ]
+    },
+    "table": {
+      "device": "cuda:0",
+      "dtype": "int32",
+      "is_contiguous": true,
+      "shape": [
+        1,
+        8192
+      ],
+      "storage": "allocation4",
+      "storage_bytes": 32768,
+      "storage_offset": 0,
+      "stride": [
+        8192,
+        1
+      ]
+    },
+    "v": {
+      "device": "cuda:0",
+      "dtype": "bfloat16",
+      "is_contiguous": false,
+      "shape": [
+        773,
+        16,
+        2,
+        128
+      ],
+      "storage": "allocation3",
+      "storage_bytes": 12664832,
+      "storage_offset": 4096,
+      "stride": [
+        8192,
+        256,
+        128,
+        1
+      ]
+    },
+    "v_descale": {
+      "device": "cuda:0",
+      "dtype": "float32",
+      "is_contiguous": true,
+      "shape": [],
+      "storage": "allocation8",
+      "storage_bytes": 4,
+      "storage_offset": 0,
+      "stride": []
+    }
+  },
+  "empty_allocations": [
+    {
+      "bytes": 8388608,
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2048,
+        16,
+        128
+      ]
+    },
+    {
+      "bytes": 8388608,
+      "dtype": "torch.bfloat16",
+      "shape": [
+        2048,
+        16,
+        128
+      ]
+    },
+    {
+      "bytes": 12664832,
+      "dtype": "torch.bfloat16",
+      "shape": [
+        773,
+        2,
+        16,
+        2,
+        128
+      ]
+    },
+    {
+      "bytes": 12664832,
+      "dtype": "torch.uint8",
+      "shape": [
+        12664832
+      ]
+    },
+    {
+      "bytes": 32768,
+      "dtype": "torch.int32",
+      "shape": [
+        1,
+        8192
+      ]
+    },
+    {
+      "bytes": 4,
+      "dtype": "torch.int32",
+      "shape": [
+        1
+      ]
+    },
+    {
+      "bytes": 8,
+      "dtype": "torch.int32",
+      "shape": [
+        2
+      ]
+    },
+    {
+      "bytes": 4,
+      "dtype": "torch.float32",
+      "shape": []
+    },
+    {
+      "bytes": 4,
+      "dtype": "torch.float32",
+      "shape": []
+    }
+  ],
+  "expected_candidate_cache_types": {
+    "key_cache_ptr": "*i8",
+    "key_code_scale_ptr": "*fp32",
+    "value_cache_ptr": "*bf16"
+  },
+  "kernel_launches": 0,
+  "loaded_resources_verified": false,
+  "main": "dac1b8fb48e7983e48283032efeee9b592c5fbe5",
+  "mechanism_status": "unknown_not_audited_for_BM128",
+  "numeric_verified": false,
+  "passed": true,
+  "performance_measured": false,
+  "plan": {
+    "Graph_verified": false,
+    "compile_only": true,
+    "config": {
+      "BLOCK_M": 128,
+      "BLOCK_Q": 16,
+      "IS_3D": false,
+      "TILE_SIZE": 64
+    },
+    "context": 4096,
+    "context16k_tested": false,
+    "current_main_policy_selected": false,
+    "forced_component_profile": true,
+    "formal_batch_tokens_changed": false,
+    "grid": [
+      129,
+      2
+    ],
+    "initialized_tensor_elements": 0,
+    "kernel_launches": 0,
+    "klens": [
+      6144
+    ],
+    "metadata_values_initialized": false,
+    "pages": 773,
+    "patterns": [
+      0,
+      1
+    ],
+    "profile": "normalized2d128",
+    "qlens": [
+      2048
+    ],
+    "requested_options": {
+      "num_stages": 1,
+      "num_warps": 8
+    },
+    "seed": 20261025,
+    "segments": 1,
+    "sequences": 1,
+    "side_stream_verified": false,
+    "table_pitch": 8192,
+    "table_shape": [
+      1,
+      8192
+    ],
+    "timing_enabled": false,
+    "total": 2048
+  },
+  "precision_gate": false,
+  "raw_ABI_plans": {
+    "baseline": {
+      "kwargs": [
+        "BLOCK_M",
+        "BLOCK_Q",
+        "BLOCK_SIZE",
+        "CHUNK_LOOKBACK",
+        "CHUNK_SIZE",
+        "HEAD_SIZE",
+        "HEAD_SIZE_PADDED",
+        "IS_3D",
+        "KV_QUANT_MODE",
+        "MAX_MM_RANGES",
+        "NUM_SEGMENTS_PER_SEQ",
+        "Q_IS_FP8",
+        "SLIDING_WINDOW",
+        "TILE_SIZE",
+        "USE_ALIBI_SLOPES",
+        "USE_ALIBI_SQRT",
+        "USE_CAUSAL",
+        "USE_FP8",
+        "USE_MM_PREFIX",
+        "USE_PER_SEQ_CAUSAL",
+        "USE_QQ_BIAS",
+        "USE_SINKS",
+        "USE_SOFTCAP",
+        "USE_TD",
+        "USE_TD_QO",
+        "alibi_slopes_ptr",
+        "block_table_stride",
+        "block_tables_ptr",
+        "k_scale",
+        "k_scale_cache_ptr",
+        "key_cache_ptr",
+        "mm_prefix_range_ptr",
+        "num_queries_per_kv",
+        "num_query_heads",
+        "num_seqs",
+        "out_scale",
+        "output_ptr",
+        "output_stride_0",
+        "output_stride_1",
+        "per_seq_causal_ptr",
+        "q_scale",
+        "qq_bias_ptr",
+        "qq_bias_stride_0",
+        "query_ptr",
+        "query_start_len_ptr",
+        "query_stride_0",
+        "query_stride_1",
+        "scale",
+        "segm_expsum_ptr",
+        "segm_max_ptr",
+        "segm_output_ptr",
+        "seq_lens_ptr",
+        "sink_ptr",
+        "softcap",
+        "stride_k_cache_0",
+        "stride_k_cache_1",
+        "stride_k_cache_2",
+        "stride_k_cache_3",
+        "stride_ks_blk",
+        "stride_ks_head",
+        "stride_ks_slot",
+        "stride_v_cache_0",
+        "stride_v_cache_1",
+        "stride_v_cache_2",
+        "stride_v_cache_3",
+        "stride_vs_blk",
+        "stride_vs_head",
+        "stride_vs_slot",
+        "v_scale",
+        "v_scale_cache_ptr",
+        "value_cache_ptr"
+      ],
+      "raw_parameter_names": [
+        "output_ptr",
+        "query_ptr",
+        "key_cache_ptr",
+        "value_cache_ptr",
+        "sink_ptr",
+        "block_tables_ptr",
+        "seq_lens_ptr",
+        "alibi_slopes_ptr",
+        "qq_bias_ptr",
+        "scale",
+        "q_scale",
+        "k_scale",
+        "v_scale",
+        "out_scale",
+        "softcap",
+        "num_query_heads",
+        "num_queries_per_kv",
+        "block_table_stride",
+        "query_stride_0",
+        "query_stride_1",
+        "output_stride_0",
+        "output_stride_1",
+        "qq_bias_stride_0",
+        "BLOCK_SIZE",
+        "TILE_SIZE",
+        "HEAD_SIZE",
+        "HEAD_SIZE_PADDED",
+        "USE_ALIBI_SLOPES",
+        "USE_ALIBI_SQRT",
+        "USE_QQ_BIAS",
+        "USE_SOFTCAP",
+        "USE_SINKS",
+        "SLIDING_WINDOW",
+        "USE_CAUSAL",
+        "USE_PER_SEQ_CAUSAL",
+        "per_seq_causal_ptr",
+        "USE_MM_PREFIX",
+        "MAX_MM_RANGES",
+        "mm_prefix_range_ptr",
+        "stride_k_cache_0",
+        "stride_k_cache_1",
+        "stride_k_cache_2",
+        "stride_k_cache_3",
+        "stride_v_cache_0",
+        "stride_v_cache_1",
+        "stride_v_cache_2",
+        "stride_v_cache_3",
+        "query_start_len_ptr",
+        "BLOCK_Q",
+        "num_seqs",
+        "BLOCK_M",
+        "NUM_SEGMENTS_PER_SEQ",
+        "USE_FP8",
+        "IS_3D",
+        "segm_output_ptr",
+        "segm_max_ptr",
+        "segm_expsum_ptr",
+        "k_scale_cache_ptr",
+        "v_scale_cache_ptr",
+        "stride_ks_blk",
+        "stride_ks_slot",
+        "stride_ks_head",
+        "stride_vs_blk",
+        "stride_vs_slot",
+        "stride_vs_head",
+        "KV_QUANT_MODE",
+        "FP8_MIN",
+        "FP8_MAX",
+        "CHUNK_LOOKBACK",
+        "CHUNK_SIZE",
+        "USE_TD",
+        "USE_TD_QO",
+        "Q_IS_FP8"
+      ],
+      "source_sha256": "96f85784e491439214b70c6322a3da7d37de7e4c020513986349658763f5bf64"
+    },
+    "candidate": {
+      "kwargs": [
+        "BLOCK_M",
+        "BLOCK_Q",
+        "BLOCK_SIZE",
+        "CHUNK_LOOKBACK",
+        "CHUNK_SIZE",
+        "HEAD_SIZE",
+        "HEAD_SIZE_PADDED",
+        "IS_3D",
+        "KV_QUANT_MODE",
+        "MAX_MM_RANGES",
+        "NUM_SEGMENTS_PER_SEQ",
+        "Q_IS_FP8",
+        "SLIDING_WINDOW",
+        "TILE_SIZE",
+        "USE_ALIBI_SLOPES",
+        "USE_ALIBI_SQRT",
+        "USE_CAUSAL",
+        "USE_FP8",
+        "USE_MM_PREFIX",
+        "USE_PER_SEQ_CAUSAL",
+        "USE_QQ_BIAS",
+        "USE_SINKS",
+        "USE_SOFTCAP",
+        "USE_TD",
+        "USE_TD_QO",
+        "alibi_slopes_ptr",
+        "block_table_stride",
+        "block_tables_ptr",
+        "k_scale",
+        "k_scale_cache_ptr",
+        "key_cache_ptr",
+        "key_code_scale_ptr",
+        "mm_prefix_range_ptr",
+        "num_queries_per_kv",
+        "num_query_heads",
+        "num_seqs",
+        "out_scale",
+        "output_ptr",
+        "output_stride_0",
+        "output_stride_1",
+        "per_seq_causal_ptr",
+        "q_scale",
+        "qq_bias_ptr",
+        "qq_bias_stride_0",
+        "query_ptr",
+        "query_start_len_ptr",
+        "query_stride_0",
+        "query_stride_1",
+        "scale",
+        "segm_expsum_ptr",
+        "segm_max_ptr",
+        "segm_output_ptr",
+        "seq_lens_ptr",
+        "sink_ptr",
+        "softcap",
+        "stride_k_cache_0",
+        "stride_k_cache_1",
+        "stride_k_cache_2",
+        "stride_k_cache_3",
+        "stride_ks_blk",
+        "stride_ks_head",
+        "stride_ks_slot",
+        "stride_v_cache_0",
+        "stride_v_cache_1",
+        "stride_v_cache_2",
+        "stride_v_cache_3",
+        "stride_vs_blk",
+        "stride_vs_head",
+        "stride_vs_slot",
+        "v_scale",
+        "v_scale_cache_ptr",
+        "value_cache_ptr"
+      ],
+      "raw_parameter_names": [
+        "output_ptr",
+        "query_ptr",
+        "key_cache_ptr",
+        "key_code_scale_ptr",
+        "value_cache_ptr",
+        "sink_ptr",
+        "block_tables_ptr",
+        "seq_lens_ptr",
+        "alibi_slopes_ptr",
+        "qq_bias_ptr",
+        "scale",
+        "q_scale",
+        "k_scale",
+        "v_scale",
+        "out_scale",
+        "softcap",
+        "num_query_heads",
+        "num_queries_per_kv",
+        "block_table_stride",
+        "query_stride_0",
+        "query_stride_1",
+        "output_stride_0",
+        "output_stride_1",
+        "qq_bias_stride_0",
+        "BLOCK_SIZE",
+        "TILE_SIZE",
+        "HEAD_SIZE",
+        "HEAD_SIZE_PADDED",
+        "USE_ALIBI_SLOPES",
+        "USE_ALIBI_SQRT",
+        "USE_QQ_BIAS",
+        "USE_SOFTCAP",
+        "USE_SINKS",
+        "SLIDING_WINDOW",
+        "USE_CAUSAL",
+        "USE_PER_SEQ_CAUSAL",
+        "per_seq_causal_ptr",
+        "USE_MM_PREFIX",
+        "MAX_MM_RANGES",
+        "mm_prefix_range_ptr",
+        "stride_k_cache_0",
+        "stride_k_cache_1",
+        "stride_k_cache_2",
+        "stride_k_cache_3",
+        "stride_v_cache_0",
+        "stride_v_cache_1",
+        "stride_v_cache_2",
+        "stride_v_cache_3",
+        "query_start_len_ptr",
+        "BLOCK_Q",
+        "num_seqs",
+        "BLOCK_M",
+        "NUM_SEGMENTS_PER_SEQ",
+        "USE_FP8",
+        "IS_3D",
+        "segm_output_ptr",
+        "segm_max_ptr",
+        "segm_expsum_ptr",
+        "k_scale_cache_ptr",
+        "v_scale_cache_ptr",
+        "stride_ks_blk",
+        "stride_ks_slot",
+        "stride_ks_head",
+        "stride_vs_blk",
+        "stride_vs_slot",
+        "stride_vs_head",
+        "KV_QUANT_MODE",
+        "FP8_MIN",
+        "FP8_MAX",
+        "CHUNK_LOOKBACK",
+        "CHUNK_SIZE",
+        "USE_TD",
+        "USE_TD_QO",
+        "Q_IS_FP8"
+      ],
+      "source_sha256": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740"
+    }
+  },
+  "rejected": [
+    "k-stride",
+    "v-storage_offset",
+    "kscale-storage_offset",
+    "kscale-shape",
+    "table-shape",
+    "k_descale-shape",
+    "baseline_v-storage_offset",
+    "out-storage",
+    "launch-subscript",
+    "direct-call",
+    "typed-key_cache_ptr",
+    "typed-key_code_scale_ptr",
+    "typed-value_cache_ptr",
+    "typed-missing-scale"
+  ],
+  "service_installed": false,
+  "source_proof": {
+    "JIT_executed": false,
+    "actual_I8_operand_hoist_verified": false,
+    "canonical_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "capacity_reclaimed": false,
+    "codec": "cjj-konly-rn32-rne-v2",
+    "dependency_commit": "ae00f58629ad85850fec1b8b8d2da28757af5f8b",
+    "exact_AST_inverse": true,
+    "exact_byte_inverse": true,
+    "factory_imports_no_framework": true,
+    "generated_sha256": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740",
+    "kernel_launches": 0,
+    "main": "56f1838192abc940b3fb9accef490022ac125000",
+    "original_BF16_Q_V_PV_and_softmax_preserved": true,
+    "performance_verified": false,
+    "precision_gate": false,
+    "private_binding_only": true,
+    "profile": "normalized2d128",
+    "service_installed": false,
+    "source_Q_quantization_outside_KV_loop": true,
+    "source_generation_only": true,
+    "source_sha256": {
+      "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+      "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+      "codec-support-ae00.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+      "helpers.py": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+      "normalizer.py": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+      "sdk.py": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+    },
+    "unknown_format_fallback": "reject"
+  },
+  "total_empty_bytes": 42139668
+}

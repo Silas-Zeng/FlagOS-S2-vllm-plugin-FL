@@ -1,0 +1,101 @@
+{
+  "CPU_only": true,
+  "GPU_executed": false,
+  "JIT_executed": false,
+  "Q_table_runtime_length_change_required": true,
+  "actual_Graph_verified": false,
+  "actual_side_verified": false,
+  "eager_before_Graph_for_changed_data_forbidden": true,
+  "eager_record_precondition_verified": false,
+  "performance_measured": false,
+  "precision_gate": false,
+  "preflight": {
+    "Graph_verified": false,
+    "actual_I8_operand_hoist_verified": false,
+    "actual_compile_mechanism_reviewed": true,
+    "baseline_is_current_main_policy": false,
+    "eager_numeric_passed": false,
+    "loaded_resources_verified": false,
+    "model_or_service_verified": false,
+    "original_compile_commit": "78ebd23bc0ae1517293dbbd07b4aef895dff7755",
+    "performance_measured": false,
+    "plan": {
+      "CPU_encoded_cache": true,
+      "Graph_verified": false,
+      "actual_I8_operand_hoist_verified": false,
+      "attention_launches_planned": 4,
+      "compile_only": false,
+      "config": {
+        "BLOCK_M": 128,
+        "BLOCK_Q": 16,
+        "IS_3D": false,
+        "TILE_SIZE": 64
+      },
+      "context": 4096,
+      "context16k_tested": false,
+      "current_main_policy_selected": false,
+      "encoder_launches_planned": 0,
+      "forced_component_profile": true,
+      "formal_batch_tokens_changed": false,
+      "grid": [
+        129,
+        2
+      ],
+      "klens": [
+        6144
+      ],
+      "metadata_initialization_required": true,
+      "pages": 773,
+      "patterns": [
+        0,
+        1
+      ],
+      "profile": "normalized2d128",
+      "qlens": [
+        2048
+      ],
+      "requested_options": {
+        "num_stages": 1,
+        "num_warps": 8
+      },
+      "seed": 20261025,
+      "segments": 1,
+      "sequences": 1,
+      "side_stream_verified": false,
+      "table_pitch": 8192,
+      "table_shape": [
+        1,
+        8192
+      ],
+      "timing_enabled": false,
+      "total": 2048
+    },
+    "precision_gate": false,
+    "side_stream_verified": false,
+    "source_root": "/workspace/experiments/minicpm-s2/cjj-konly-prefill-2d128-compile-v1-20261027/sources"
+  },
+  "requested_operations": {
+    "capture_calls": 2,
+    "eager_calls": 4,
+    "replays": 2,
+    "side_calls": 2
+  },
+  "runtime_KV_lengths": [
+    6144,
+    6143
+  ],
+  "source_contract": {
+    "CPU_reference_runtime_length_only": true,
+    "frozen_eager_commit": "f04aa70773a714169c439d6771c54fe8ee72f12f",
+    "kernel_codec_gates_resource_guard_unchanged": true,
+    "no_host_source_rewrite": true,
+    "private_scoped_kernel_wrapper": true,
+    "source_pins": {
+      "bench_biv150_konly_2d128_numeric.py": "b6371f8da0769c4a4c14b182a86b2f8578d05b0776037a37577ff1d8ec5ced62",
+      "biv150_konly_2d128_numeric_admission.py": "22f534bf0db43aa873244f1287c954a4eb56385ce99e7526dda0dadd9c2fbdcb",
+      "biv150_konly_2d128_numeric_contract.py": "0acecf155cfc0f192c17be44e9cbfba4de35a5f31f64363cdfa5e72c57ad94c7",
+      "biv150_prefill_probe_fixtures.py": "289afc781f17e80465626eef045cd4bfb3db5ed7c516ce662d8e75c06a698132"
+    }
+  },
+  "strict_f04_resource_and_numeric_gates_preserved": true
+}
