@@ -199,7 +199,7 @@ def run_gpu(args, generated, proof):
                     pages = length//16
                     ids = c['table'][:, :pages].reshape(-1).long()
                     progression = (torch.arange(pages, device='cuda')/128).expand(batch, pages).reshape(-1)
-                    c['k'][ids, :, 0, 0] = progression[:, None]
+                    c['k'][ids, :, 0, 0] = progression[:, None].to(c['k'].dtype)
                 _, gold_bits, gold = snapshot(base)
                 _, got_bits, got = snapshot(proxy)
                 exact = {key: torch.equal(gold_bits[key], got_bits[key]) for key in gold_bits}

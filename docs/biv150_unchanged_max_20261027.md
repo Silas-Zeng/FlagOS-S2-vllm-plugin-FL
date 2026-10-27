@@ -136,3 +136,16 @@ PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_unchanged_max_cpu.
 该命令stdlib-only、无SSH/JIT/GPU。设备仍须从新validator tag重跑完整组件的bitwise、
 CPU FP64 reference、poison、changed-input Graph/side与producer+reducer成本门；
 原数值门、输入/seed、资源未知标记和正式full105/吞吐/TTFT要求均不变。
+
+## b633 第二次运行的 fixture dtype 修正
+
+第二次实际运行的全部TTGIR/LLVM/ASM v2门已过；B64的original/ragged/zero_qk
+完成后，one_head_update fixture的advanced-index赋值因BF16目标/FP32 RHS不一致而报错。
+本修复仅给原`progression[:, None]`增加`.to(c['k'].dtype)`，不改progression公式、
+数据分布、kernel225c、IR validator或数值阈值。邻近tiny_v tensor已显式BF16，
+lengths tensor显式int32；其他cache copy使用原同dtype张量，标量赋值沿用原实现。
+
+原26文件932619B逐SHA核验，另包`v2-raw.tar.gz`（135939B）保留原result/log与
+全部实际IR；来源及SHA见`v2-fixture-failure-provenance.json`。原passed=false、
+timing_attempted=false及dtype错误文字不改；这次是fixture构造失败，完整组件
+数值/计时仍需新tag重跑。只复跑既有CPU检查及默认CLI，没有新增镜像测试或设备操作。

@@ -1,0 +1,24 @@
+{
+  "source_commit": "b633c1857a31606853c9a0a56d227cec9bc1fa10",
+  "kernel_sha256": "225c9cc1be483f7cee32eb8c61b87f97f238ea740ee1348c4f5a4023adf35313",
+  "raw_files": 26,
+  "raw_bytes": 932619,
+  "archive": {
+    "file": "v2-raw.tar.gz",
+    "bytes": 135939,
+    "sha256": "78ad9d2b3a759f137f7d6ba3e0c75f403b8d16c7740344e369a818f66e49cd76"
+  },
+  "manifest_sha256": "6621e2bcd4e32c734410a978b49cde481b692fc8dac94e6395ed2d7a0355fb88",
+  "result_sha256": "9eae7492d992b0495b77c148ff6e7488d9a636d3cfe3e144e66d0210c5728307",
+  "log_sha256": "f6b213cabf00390d821ae830e3f1057ba89ef1b3b3ee30665309d5ac21ce9f8f",
+  "original_error": "RuntimeError('Index put requires the source and destination dtypes match, got BFloat16 for the destination and Float for the source.')",
+  "original_passed": false,
+  "original_timing_attempted": false,
+  "actual_ir_v2_passed": true,
+  "numeric_modes_completed": [
+    "original",
+    "ragged",
+    "zero_qk"
+  ],
+  "fix_scope": "one_head_update fixture RHS explicit BF16 dtype; no formula/kernel/threshold change"
+}
