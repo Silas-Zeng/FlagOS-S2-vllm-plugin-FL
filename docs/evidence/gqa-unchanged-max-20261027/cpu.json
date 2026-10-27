@@ -38,6 +38,24 @@
         129
       ]
     },
+    "pv_call_spans": [
+      {
+        "start": 103,
+        "end": 105,
+        "argument_lines": [
+          104
+        ],
+        "call_ast_sha256": "5641748cb1b335d8481569f85b4c2d4008e9353683d78c45315397c6a163927a"
+      },
+      {
+        "start": 142,
+        "end": 144,
+        "argument_lines": [
+          143
+        ],
+        "call_ast_sha256": "5641748cb1b335d8481569f85b4c2d4008e9353683d78c45315397c6a163927a"
+      }
+    ],
     "original_new_max_probability_and_pv_dot_preserved": true,
     "corrected_sum_explicit_fma": true,
     "actual_ir_guard_pending": true,
@@ -64,7 +82,11 @@
     "asm-no-rescale-branch",
     "pv-c-not-phi",
     "changed-p-anchor",
-    "unconditional-alpha"
+    "unconditional-alpha",
+    "pv-qk-llvm-site",
+    "pv-qk-asm-site",
+    "pv-outside-ast-llvm-site",
+    "pv-outside-ast-asm-site"
   ],
   "structural_ir_parser_fixture_only": true,
   "actual_ir_negative_tests": [
@@ -77,6 +99,50 @@
       "sha256": "390510ffd12b61e266632c21928c47c737012c4a9dbfbafb6a015fe26f572263"
     }
   ],
+  "original_pv_parameter_debug_regressions": [
+    {
+      "source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+      "pv_call_spans": [
+        {
+          "start": 179,
+          "end": 181,
+          "argument_lines": [
+            180
+          ],
+          "call_ast_sha256": "5641748cb1b335d8481569f85b4c2d4008e9353683d78c45315397c6a163927a"
+        },
+        {
+          "start": 211,
+          "end": 213,
+          "argument_lines": [
+            212
+          ],
+          "call_ast_sha256": "5641748cb1b335d8481569f85b4c2d4008e9353683d78c45315397c6a163927a"
+        }
+      ],
+      "inventory": {
+        "llvm_counts": {
+          "179": 8,
+          "211": 8
+        },
+        "asm_counts": {
+          "179": 8,
+          "211": 8
+        },
+        "accepted_sites": [
+          180,
+          212
+        ],
+        "excluded_sites": [
+          174,
+          205
+        ]
+      },
+      "llir_sha256": "3a119e10cc0775ac13ffff48c9528b3348c44c32ee38b6a2b0cc2c0302f4f720",
+      "asm_sha256": "6fb2835fefcf28e9513fd566c154cbacd97ba0a2b3ad2f28eb25cac434e565c6"
+    }
+  ],
+  "kernel_bytes_unchanged_from_5328aa2": true,
   "default_cli_no_gpu_import": true,
   "tiny_device_primitive_pending": true,
   "gpu_executed": false,

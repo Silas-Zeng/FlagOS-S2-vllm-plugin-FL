@@ -10,8 +10,8 @@ import struct
 import subprocess
 import sys
 
-from biv150_unchanged_max_factory import MAIN, NEW, SOURCE_SHA, build, restore, skip_contract
-from biv150_unchanged_max_ir import audit_artifacts, audit_ttgir
+from biv150_unchanged_max_factory import MAIN, NEW, SOURCE_SHA, build, pv_call_spans, restore, skip_contract
+from biv150_unchanged_max_ir import audit_artifacts, audit_ttgir, pv_debug_inventory
 
 
 def reject(function):
@@ -22,13 +22,14 @@ def reject(function):
     raise AssertionError('Expected conservative rejection')
 
 
-def structural_fixture(proof):
+def structural_fixture(proof, pv_debug_sites=None):
     """Synthetic parser tests only; never claim these are compiled artifacts."""
     tt = []
     ll = ['define void @fixture() {', 'entry:']
     asm = []
     metadata = []
     number = 0
+    pv_debug_sites = pv_debug_sites or proof['source_lines']['pv']
 
     def debug(source):
         nonlocal number
@@ -73,7 +74,7 @@ def structural_fixture(proof):
             ll.append(f'  %f{i}_{j} = call float @llvm.fma.f32(float %x, float %a, float %p), '+debug(proof['source_lines']['running_sum_fma'][i]))
         ll.extend([f'  br label %no{i}', f'no{i}:'])
         for j in range(8):
-            ll.append(f'  %pv{i}_{j} = call <4 x float> @llvm.bi.matrix.mad.f32x4.bf16x4(<4 x bfloat> %p, <4 x bfloat> %v, <4 x float> %c), '+debug(proof['source_lines']['pv'][i]))
+            ll.append(f'  %pv{i}_{j} = call <4 x float> @llvm.bi.matrix.mad.f32x4.bf16x4(<4 x bfloat> %p, <4 x bfloat> %v, <4 x float> %c), '+debug(pv_debug_sites[i]))
         asm.extend([f'.loc 1 {proof["source_lines"]["branch"][i]} 1',
                     f'sl_cbr_tmskaz JOIN{i}', f'CORRECTION{i}:'])
         for key, count, op in [('alpha_exp', 2, 'ml_exp_f32'), ('accumulator_scale', 32, 'ml_mul_f32'),
@@ -81,7 +82,7 @@ def structural_fixture(proof):
             asm.append(f'.loc 1 {proof["source_lines"][key][i]} 1')
             asm.extend([op+' v0, v1, v2']*count)
         asm.extend([f'sl_jump JOIN{i}', f'JOIN{i}:',
-                    f'.loc 1 {proof["source_lines"]["pv"][i]} 1'])
+                    f'.loc 1 {pv_debug_sites[i]} 1'])
         asm.extend(['ml_matrix_mad_f32_bf16_m16n16k16 v0, v1, v2']*8)
     ll.extend(['  ret void', '}', *metadata])
     return dict(ttgir='\n'.join(tt), llir='\n'.join(ll), asm='\n'.join(asm))
@@ -96,6 +97,7 @@ def main():
     root = args.source.resolve()
     original = (root/'vllm_fl/patches/biv150_gqa_decode.py').read_text()
     source, proof = build(original)
+    assert proof['generated_sha256'] == '225c9cc1be483f7cee32eb8c61b87f97f238ea740ee1348c4f5a4023adf35313'
     assert hashlib.sha256(original.encode()).hexdigest() == SOURCE_SHA
     compile(source, '<generated-python-syntax-only>', 'exec')
     assert restore(source)
@@ -140,6 +142,8 @@ def main():
         reject(action); rejects.append(label)
     fixture = structural_fixture(proof)
     audit_artifacts(fixture, proof)
+    parameter_fixture = structural_fixture(proof, [s['argument_lines'][0] for s in proof['pv_call_spans']])
+    audit_artifacts(parameter_fixture, proof)
     diamond = dict(fixture, asm=fixture['asm'].replace('sl_cbr_tmskaz JOIN0', 'sl_cbr_tmskaz SKIP0').replace(
         'sl_jump JOIN0\nJOIN0:', 'sl_jump JOIN0\nSKIP0:\nml_add_f32 v0, v1, v2\nJOIN0:'))
     audit_artifacts(diamond, proof)
@@ -152,13 +156,39 @@ def main():
             ('changed-p-anchor', dict(fixture, ttgir=fixture['ttgir'].replace('arith.maxnumf %old_anchor0, %max_score0', 'arith.select %gate0, %old_anchor0, %max_score0'))),
             ('unconditional-alpha', dict(fixture, llir=fixture['llir'].replace('yes0:\n', '').replace('no0:\n', 'yes0:\nno0:\n')))]:
         reject(lambda changed=changed: audit_artifacts(changed, proof)); rejects.append(label)
+    wrong_qk = structural_fixture(proof, proof['source_lines']['qk'])
+    outside_call = structural_fixture(proof, [s['end']+1 for s in proof['pv_call_spans']])
+    for label, changed in [
+            ('pv-qk-llvm-site', dict(fixture, llir=wrong_qk['llir'])),
+            ('pv-qk-asm-site', dict(fixture, asm=wrong_qk['asm'])),
+            ('pv-outside-ast-llvm-site', dict(fixture, llir=outside_call['llir'])),
+            ('pv-outside-ast-asm-site', dict(fixture, asm=outside_call['asm']))]:
+        reject(lambda changed=changed: audit_artifacts(changed, proof)); rejects.append(label)
     actual_negative = []
+    primary_debug_regressions = []
     if args.existing_ir:
         for name in ('b64-baseline.ttgir', 'b64-candidate.ttgir'):
             p = args.existing_ir/name
             if p.exists():
                 reject(lambda p=p: audit_ttgir(p.read_text()))
                 actual_negative.append(dict(path=str(p), sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
+        llir_path, asm_path = args.existing_ir/'b64-baseline.llir', args.existing_ir/'b64-baseline.asm'
+        if llir_path.exists() and asm_path.exists():
+            baseline_ast = ast.parse(original)
+            spans = pv_call_spans(baseline_ast)
+            qk_ast = ast.dump(ast.parse('tl.dot(Q, K)', mode='eval').body, include_attributes=False)
+            qk_sites = sorted(n.lineno for n in ast.walk(baseline_ast) if isinstance(n, ast.Call)
+                              and ast.dump(n, include_attributes=False) == qk_ast)
+            baseline_proof = dict(source_lines=dict(pv=[s['start'] for s in spans], qk=qk_sites), pv_call_spans=spans)
+            inventory = pv_debug_inventory(llir_path.read_text(), asm_path.read_text(), baseline_proof)
+            expected = {s['start']: 8 for s in spans}
+            assert inventory['llvm_counts'] == inventory['asm_counts'] == expected
+            assert inventory['accepted_sites'] == sorted({s['argument_lines'][0] for s in spans})
+            assert inventory['excluded_sites'] == qk_sites
+            primary_debug_regressions.append(dict(
+                source_sha256=SOURCE_SHA, pv_call_spans=spans, inventory=inventory,
+                llir_sha256=hashlib.sha256(llir_path.read_bytes()).hexdigest(),
+                asm_sha256=hashlib.sha256(asm_path.read_bytes()).hexdigest()))
     output = subprocess.check_output([sys.executable, str(root/'tools/bench_biv150_unchanged_max.py'),
                                       '--source', str(root)], text=True)
     default = json.loads(output)
@@ -169,6 +199,8 @@ def main():
                   host_ieee_bit_patterns=ieee_checked, host_not_a_gpu_simulator=True,
                   firstpage_empty_tail_source_preserved=True, rejected=rejects,
                   structural_ir_parser_fixture_only=True, actual_ir_negative_tests=actual_negative,
+                  original_pv_parameter_debug_regressions=primary_debug_regressions,
+                  kernel_bytes_unchanged_from_5328aa2=True,
                   default_cli_no_gpu_import=True, tiny_device_primitive_pending=True,
                   gpu_executed=False, queued=False, precision_gate=False,
                   limitation='Source, predicate, and IEEE targets only; actual CFG/FMA/PV/FTZ/exactness/resources/performance unverified.')

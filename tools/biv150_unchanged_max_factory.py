@@ -72,6 +72,18 @@ def skip_contract(old, new):
     return all(math.isfinite(b) and a == b for a, b in zip(old, new))
 
 
+def pv_call_spans(tree):
+    """Exact original PV call AST, excluding QK and unrelated dot operations."""
+    expected = ast.dump(ast.parse('tl.dot(probability.to(V.dtype), V)', mode='eval').body,
+                        include_attributes=False)
+    calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call) and
+             ast.dump(node, include_attributes=False) == expected]
+    need(len(calls) == 2, 'Expected exactly the full/tail original PV dot AST')
+    return [dict(start=node.lineno, end=node.end_lineno,
+                 argument_lines=sorted({arg.lineno for arg in node.args}),
+                 call_ast_sha256=digest(expected)) for node in sorted(calls, key=lambda n: n.lineno)]
+
+
 def build(text):
     original = kernel_source(text)
     need(original.count(OLD) == 2, 'Original recurrence anchors changed')
@@ -84,6 +96,9 @@ def build(text):
     old_tree, new_tree = ast.parse(original), ast.parse(candidate)
     old_fn, new_fn = old_tree.body[0], new_tree.body[-1]
     need(ast.dump(old_fn.args) == ast.dump(new_fn.args), 'Raw parameter schema changed')
+    pv_spans = pv_call_spans(new_fn)
+    need([p['call_ast_sha256'] for p in pv_spans] ==
+         [p['call_ast_sha256'] for p in pv_call_spans(old_fn)], 'PV call AST changed')
     lines = dict(alpha_exp=[], probability_exp=[], running_sum_fma=[], pv=[],
                  accumulator_scale=[], branch=[], qk=[])
     for node in ast.walk(new_fn):
@@ -113,7 +128,7 @@ def build(text):
     need(all(len(v) == 2 for v in lines.values()), 'Full/tail source map incomplete')
     proof = dict(main=MAIN, source_sha256=SOURCE_SHA, kernel_sha256=KERNEL_SHA,
                  generated_sha256=digest(candidate), exact_source_inverse=True,
-                 same_raw_parameter_schema=True, source_lines=lines,
+                 same_raw_parameter_schema=True, source_lines=lines, pv_call_spans=pv_spans,
                  original_new_max_probability_and_pv_dot_preserved=True,
                  corrected_sum_explicit_fma=True, actual_ir_guard_pending=True,
                  ieee_identity_target_only=True, device_bitwise_equivalence_proven=False,

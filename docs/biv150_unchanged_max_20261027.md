@@ -61,3 +61,20 @@ post-launch资源逐字段记录known_equal/known_changed/unknown，None不作�
 
 只准备4K/B64与16K/B32，仍等root已有66终态及4a诊断后统一安排，不自动启动。
 full105、正式吞吐和TTFT均未验收，不能合并。
+
+## PV debug位点的CPU修正
+
+当前团队main已到56f1838；其GQA本体仍与2412逐字相同，SHA仍2596cc。本分支保持
+同一实际GQA算子baseline；未来服务集成再同步新的生产main。此修正只改工厂proof、
+审计和CPU检查，生成kernel字节及SHA225c9cc1完全不变。
+
+真实baseline的PV赋值位于179/211行，但LLVM/ASM debug site落在参数行180/212。
+旧审计只认赋值行，会保守地把PV计数成0。现在由原
+`tl.dot(probability.to(V.dtype), V)`的精确AST生成full/tail call span，接受该调用内
+的debug行；不接受其他dot、QK位点或调用范围外的相邻行。校正CFG、P/BF16P链、
+PV非zero条件C、原FMA、32mul及实际ASM diamond门均不变。
+
+CPU新增真实baseline LLIR+ASM位点回归：各识别16条PV MMA（full/tail各8），且
+明确排除16条QK MMA。另有参数行合成parser正例、错误QK和范围外下一行的LLVM/ASM
+拒绝，共16个拒绝检查。此定位回归不把原baseline认作条件rescale候选，也不是新
+candidate设备正例；原baseline/PR71完整机制负例仍保持拒绝。

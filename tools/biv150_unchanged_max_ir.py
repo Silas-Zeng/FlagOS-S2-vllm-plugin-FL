@@ -119,10 +119,54 @@ def source_location(text):
         r'^!(\d+) = !DILocation\(line: (\d+),', text, re.M)}
 
 
+def pv_source_sites(proof):
+    """Only the factory's exact PV AST call spans, never neighboring/QK sites."""
+    spans = proof.get('pv_call_spans', [])
+    starts = proof['source_lines']['pv']
+    need(len(spans) == 2 and {span['start'] for span in spans} == set(starts), 'Missing exact PV call spans')
+    owners = {}
+    for span in spans:
+        need(span['start'] <= span['end'] and span['argument_lines'] and
+             all(span['start'] <= line <= span['end'] for line in span['argument_lines']), 'Invalid PV AST span')
+        for line in range(span['start'], span['end']+1):
+            need(line not in owners, 'Overlapping PV call spans')
+            owners[line] = span['start']
+    need(not set(owners).intersection(proof['source_lines']['qk']), 'PV spans include QK')
+    return owners
+
+
+def pv_debug_inventory(llir, assembly, proof):
+    """Primary debug-site regression, not a mechanism or numerical acceptance."""
+    owners, locations = pv_source_sites(proof), source_location(llir)
+    llvm_counts, asm_counts, accepted, excluded = {}, {}, set(), set()
+    for line in llir.splitlines():
+        if 'call ' not in line or '@llvm.bi.matrix.mad.f32x4.bf16x4' not in line:
+            continue
+        hit = re.search(r'!dbg !(\d+)', line)
+        site = locations.get(int(hit[1])) if hit else None
+        if site in owners:
+            key = owners[site]
+            llvm_counts[key] = llvm_counts.get(key, 0)+1
+            accepted.add(site)
+        elif site is not None:
+            excluded.add(site)
+    file = site = None
+    for line in assembly.splitlines():
+        location = re.match(r'\s*\.loc\s+(\d+)\s+(\d+)', line)
+        if location:
+            file, site = map(int, location.groups())
+        if file == 1 and line.strip().startswith('ml_matrix_mad_f32_bf16_m16n16k16 ') and site in owners:
+            key = owners[site]
+            asm_counts[key] = asm_counts.get(key, 0)+1
+    return dict(llvm_counts=llvm_counts, asm_counts=asm_counts,
+                accepted_sites=sorted(accepted), excluded_sites=sorted(excluded))
+
+
 def audit_llir(text, proof):
     locations = source_location(text)
     blocks, dom = llvm_blocks(text)
     mapping = proof['source_lines']
+    pv_sites = pv_source_sites(proof)
 
     def source_line(line):
         hit = re.search(r'!dbg !(\d+)', line)
@@ -148,10 +192,11 @@ def audit_llir(text, proof):
                 kind = 'accumulator_mul'
             if 'call ' in line and re.search(r'@llvm\.(?:nvvm\.)?fma[.\w]*\(', line) and loc in mapping['running_sum_fma']:
                 kind = 'corrected_fma'
-            if 'call ' in line and '@llvm.bi.matrix.mad.f32x4.bf16x4' in line and loc in mapping['pv']:
+            if 'call ' in line and '@llvm.bi.matrix.mad.f32x4.bf16x4' in line and loc in pv_sites:
                 need('<4 x float> zeroinitializer' not in line, 'PV became a zero-C dot')
                 counts['pv_mma'] += 1
-                by_source['pv_mma'][loc] = by_source['pv_mma'].get(loc, 0)+1
+                owner = pv_sites[loc]
+                by_source['pv_mma'][owner] = by_source['pv_mma'].get(owner, 0)+1
             if kind:
                 need(any(yes in dom[block] and no not in dom[block] for _, yes, no, _ in gates),
                      'Rescale operation hoisted outside the correction branch')
@@ -167,6 +212,7 @@ def audit_llir(text, proof):
 
 def audit_asm(text, proof):
     mapping = proof['source_lines']
+    pv_sites = pv_source_sites(proof)
     counts = dict(alpha_exp=0, accumulator_mul=0, corrected_fma=0, pv_mma=0)
     operations = []
     gates = []
@@ -189,7 +235,7 @@ def audit_asm(text, proof):
             counts['accumulator_mul'] += 1
         if loc_line in mapping['running_sum_fma'] and op == 'ml_fma_f32':
             counts['corrected_fma'] += 1
-        if loc_line in mapping['pv'] and op == 'ml_matrix_mad_f32_bf16_m16n16k16':
+        if loc_line in pv_sites and op == 'ml_matrix_mad_f32_bf16_m16n16k16':
             counts['pv_mma'] += 1
     need(counts == dict(alpha_exp=4, accumulator_mul=64, corrected_fma=4, pv_mma=16),
          'Unrecognized actual ASM type/rounding/count: '+repr(counts))
