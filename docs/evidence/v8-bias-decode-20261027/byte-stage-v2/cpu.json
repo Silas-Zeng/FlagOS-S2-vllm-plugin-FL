@@ -1,0 +1,237 @@
+{
+  "report": {
+    "contract": "steady4k_owner622613_byte_stage_v2",
+    "diagnostic_mechanism_passed": true,
+    "v1_mechanism_passed": false,
+    "original_proof_sha256": "d27751146b16823166a2ed8f080c83255a7434b739fcc6c618ab58374cac93f2",
+    "original_completed": false,
+    "original_errors": [
+      "AssertionError('Unknown/unchanged decode mechanism: stop before further cases or device execution')"
+    ],
+    "original_source_commit": "a6980ddf1984422b93438d53429bddf36434ccde",
+    "allowed_cases": [
+      "steady4k"
+    ],
+    "compiled_files_verified": 60,
+    "ttgir_chain": [
+      {
+        "raw_load": "%V_130",
+        "byte_alloc": "%accumulator_131",
+        "byte_load": "%accumulator_132",
+        "bitcast": "%V_153",
+        "bias": "%V_154",
+        "bf16": "%accumulator_162",
+        "pv": "%accumulator_164"
+      },
+      {
+        "raw_load": "%V_142",
+        "byte_alloc": "%accumulator_143",
+        "byte_load": "%accumulator_144",
+        "bitcast": "%V_166",
+        "bias": "%V_167",
+        "bf16": "%accumulator_175",
+        "pv": "%accumulator_177"
+      }
+    ],
+    "llvm_byte_stage": {
+      "paths": [
+        {
+          "path": 0,
+          "unique_bytes": 2048,
+          "range": [
+            4096,
+            6143
+          ],
+          "pv_coordinate_matches": 2048,
+          "byte_reads": 32,
+          "pre_store_barrier": 435,
+          "post_store_barrier": 549
+        },
+        {
+          "path": 1,
+          "unique_bytes": 2048,
+          "range": [
+            4096,
+            6143
+          ],
+          "pv_coordinate_matches": 2048,
+          "byte_reads": 32,
+          "pre_store_barrier": 1339,
+          "post_store_barrier": 1564
+        }
+      ],
+      "barrier_lines": [
+        162,
+        435,
+        549,
+        1339,
+        1564
+      ],
+      "shared_banks_disjoint": true
+    },
+    "resources": {
+      "gqa_main": {
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "reducer": {
+        "n_regs": 11,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 1024,
+          "num_warps": 4,
+          "num_stages": 3,
+          "use_sme": 13,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "gqa_old": {
+        "n_regs": 143,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 4096,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 78,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "old_writer_False": {
+        "n_regs": 5,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 0,
+          "num_warps": 1,
+          "num_stages": 3,
+          "use_sme": 35,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "old_writer_True": {
+        "n_regs": 10,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 0,
+          "num_warps": 1,
+          "num_stages": 3,
+          "use_sme": 35,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "old_encoder": {
+        "n_regs": 9,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 0,
+          "num_warps": 1,
+          "num_stages": 3,
+          "use_sme": 4,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "gqa_A": {
+        "n_regs": 124,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 6144,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 78,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "A_writer_False": {
+        "n_regs": 5,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 0,
+          "num_warps": 1,
+          "num_stages": 3,
+          "use_sme": 35,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "A_writer_True": {
+        "n_regs": 10,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 0,
+          "num_warps": 1,
+          "num_stages": 3,
+          "use_sme": 35,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      },
+      "A_encoder": {
+        "n_regs": 9,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 0,
+          "num_warps": 1,
+          "num_stages": 3,
+          "use_sme": 4,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        }
+      }
+    },
+    "numerical_equivalence_tested": false,
+    "precision_gate": false,
+    "official_score": false
+  },
+  "rejected_faults": [
+    "SSA_shared_offset",
+    "SSA_tail_zero",
+    "SSA_bias",
+    "SSA_numeric_CVT",
+    "SSA_PV_fragment",
+    "SSA_barrier",
+    "wrong_v1_hash",
+    "missing_role_file",
+    "TTGIR_tail_zero",
+    "sidecar_original_source_root",
+    "sidecar_original_source_commit",
+    "sidecar_validator_commit",
+    "sidecar_validator_files",
+    "sidecar_validator_root",
+    "sidecar_other_case",
+    "sidecar_other_proof",
+    "existing_output_before_root_or_device_access",
+    "before_launch_asm",
+    "before_launch_cubin",
+    "before_launch_llir",
+    "before_launch_source",
+    "before_launch_ttgir",
+    "before_launch_ttir",
+    "unknown_resources_before_launch",
+    "failed_recheck_cannot_cache_six_file_acceptance",
+    "dual_root_old_commit",
+    "dual_root_old_dirty",
+    "dual_root_validator_dirty",
+    "dual_root_alias"
+  ],
+  "original_v1_bytes_unchanged": true,
+  "unchanged_run_body_ast_inverse": true,
+  "all_six_runtime_artifacts_required": true,
+  "original_remote_root_live_verified": false,
+  "jit_executed": false,
+  "gpu_executed": false,
+  "precision_gate": false,
+  "official_score": false
+}
