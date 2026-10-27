@@ -1,0 +1,139 @@
+{
+  "CPU_only": true,
+  "actual_compilation_or_IR_or_device": false,
+  "host_adapters": {
+    "compile": {
+      "adapter_run_sha256": "b533f11c8017579edd6797d8e8fc0cb562306aced5d89c8d79b1d03ee4c2106e",
+      "inverse_byte_exact": true,
+      "math_fixture_guards_Graph_side_timing_body_unchanged": true,
+      "parent_file": "compile_biv150_native_k8_qk.py",
+      "parent_run_sha256": "8c8842c393f2799e5c446b45e6e864a14f331671b38e8e47374adfd18fec7bbb",
+      "substitutions": [
+        {
+          "count": 1,
+          "new": "name='cjj_native_k8_vfirst_probe'",
+          "old": "name='cjj_native_k8_qk_probe'"
+        }
+      ]
+    },
+    "fullstep": {
+      "adapter_run_sha256": "1bf3aaf069f2a016dc9e5e14371cedb6b83b036618ac6e88b0358c02384182ea",
+      "inverse_byte_exact": true,
+      "math_fixture_guards_Graph_side_timing_body_unchanged": true,
+      "parent_file": "probe_biv150_native_k8_fullstep.py",
+      "parent_run_sha256": "3038f13b67e8c58280699ffaf71a76514b851d4ca5a691b90706ec54d0d84b77",
+      "substitutions": [
+        {
+          "count": 1,
+          "new": "f.sha(a.k8_library.read_bytes())==a.variant_sha256",
+          "old": "f.sha(a.k8_library.read_bytes())==f.LIBRARY_SHA"
+        },
+        {
+          "count": 1,
+          "new": "torch.ops.cjj_native_k8_vfirst_probe.produce",
+          "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+        },
+        {
+          "count": 1,
+          "new": "result=dict(variant_plan(a),actual_consumer=pre,",
+          "old": "result=dict(f.plan(),actual_consumer=pre,"
+        }
+      ]
+    },
+    "numeric": {
+      "adapter_run_sha256": "382d6ac44393c51731dd7dd96f46156cc6d9a36f85d39c8724be8cfdf437b994",
+      "inverse_byte_exact": true,
+      "math_fixture_guards_Graph_side_timing_body_unchanged": true,
+      "parent_file": "probe_biv150_native_k8_consumer_v2.py",
+      "parent_run_sha256": "4b28dd919f5abdfb042fc0ccd053a820c2c0991a2fd443e116c6d900fa1a7991",
+      "substitutions": [
+        {
+          "count": 2,
+          "new": "f.sha(args.library.read_bytes())==args.variant_sha256",
+          "old": "f.sha(args.library.read_bytes())==f.LIBRARY_SHA"
+        },
+        {
+          "count": 1,
+          "new": "torch.ops.cjj_native_k8_vfirst_probe.produce",
+          "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+        },
+        {
+          "count": 1,
+          "new": "result=dict(variant_plan(args),codec_precondition=receipt,",
+          "old": "result=dict(f.plan(),codec_precondition=receipt,"
+        }
+      ]
+    }
+  },
+  "precision_gate": false,
+  "rejected": [
+    "wait_count",
+    "P_round",
+    "scale_base",
+    "restore_original_issue_order",
+    "K_byte_layout",
+    "actual_schedule_unreviewed",
+    "no_Root_exclusive",
+    "different_actual_ASM",
+    "review_digest_mismatch",
+    "library_digest_mismatch"
+  ],
+  "source_proof": {
+    "K_shared_bytes": [
+      0,
+      2048
+    ],
+    "K_unique_aligned_uint32_words": 512,
+    "OverlapV": false,
+    "V_shared_bytes": [
+      4096,
+      8192
+    ],
+    "actual_schedule_verified": false,
+    "capacity_reclaimed": false,
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+        "variant_sha256": "3a01996014710326ab70509bfa95b127778b3e1e38cae93aaaef03347e8b6a86"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+        "variant_sha256": "2fe7bb088f36abd2ef2c0eee5cd62467ddbe0bd12d93ce4ea59908a2adb0a3ec"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "variant_sha256": "5fd2cdd49f016659d7d08bc9ef7f1365ad8ab021812da7c55499ab8fe3f3f845"
+      }
+    },
+    "main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "namespace": "cjj_native_k8_vfirst_probe",
+    "numeric_verified": false,
+    "parent_commit": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_inverse": {
+      "PV_online_and_partial_output_unchanged": true,
+      "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+      "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+      "codec_actual_IR_verified": false,
+      "device_compiled": false,
+      "inverse_byte_exact": true,
+      "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+      "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+      "reducer_source_not_modified": true
+    },
+    "performance_verified": false,
+    "precision_gate": false,
+    "service_installed": false,
+    "shared_bytes": 8192,
+    "source_issue_order": [
+      "V_SME",
+      "K_uint32_global_shared",
+      "barrier",
+      "V_wait8",
+      "barrier"
+    ],
+    "wait_tail_codec_QK_PV_math_unchanged": true
+  }
+}

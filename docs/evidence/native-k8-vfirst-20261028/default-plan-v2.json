@@ -1,0 +1,77 @@
+{
+  "actual_scheduling_verified": false,
+  "capacity_reclaimed": false,
+  "component": "private V-first K8 issue-order experiment",
+  "default_imports_framework": false,
+  "model_verified": false,
+  "numeric_verified": false,
+  "parent_library_is_not_variant_qualification": true,
+  "phases": [
+    "compile-only no launches",
+    "Root CPU actual LLVM/ASM review",
+    "fresh variant consumer",
+    "fresh variant vs b3 BF16 fullstep"
+  ],
+  "precision_gate": false,
+  "root_owned_exclusive_required": true,
+  "service_installed": false,
+  "source_proof": {
+    "K_shared_bytes": [
+      0,
+      2048
+    ],
+    "K_unique_aligned_uint32_words": 512,
+    "OverlapV": false,
+    "V_shared_bytes": [
+      4096,
+      8192
+    ],
+    "actual_schedule_verified": false,
+    "capacity_reclaimed": false,
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+        "variant_sha256": "3a01996014710326ab70509bfa95b127778b3e1e38cae93aaaef03347e8b6a86"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+        "variant_sha256": "2fe7bb088f36abd2ef2c0eee5cd62467ddbe0bd12d93ce4ea59908a2adb0a3ec"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "variant_sha256": "5fd2cdd49f016659d7d08bc9ef7f1365ad8ab021812da7c55499ab8fe3f3f845"
+      }
+    },
+    "main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "namespace": "cjj_native_k8_vfirst_probe",
+    "numeric_verified": false,
+    "parent_commit": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_inverse": {
+      "PV_online_and_partial_output_unchanged": true,
+      "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+      "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+      "codec_actual_IR_verified": false,
+      "device_compiled": false,
+      "inverse_byte_exact": true,
+      "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+      "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+      "reducer_source_not_modified": true
+    },
+    "performance_verified": false,
+    "precision_gate": false,
+    "service_installed": false,
+    "shared_bytes": 8192,
+    "source_issue_order": [
+      "V_SME",
+      "K_uint32_global_shared",
+      "barrier",
+      "V_wait8",
+      "barrier"
+    ],
+    "wait_tail_codec_QK_PV_math_unchanged": true
+  },
+  "timing_executed": false
+}
