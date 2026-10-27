@@ -1,5 +1,9 @@
 # PR66 独立终态审计入口
 
+完整终态使用 `tools/audit_biv150_multi2_pair_v2.py`，仅修正已验证grid的tuple/list表示。
+原CEA版保留作历史证据；最终v2审计通过及133原件见
+`docs/biv150_prefill_multi2_final_qualification_20261027.md`。
+
 本工具提交只包含 tools/docs，`vllm_fl/` 与 `csrc/` 必须逐字保持模型冻结
 `e08c79456f9b943dbc4d9d02d0a4e030b4eceac1`。运行中的模型 pair 不使用本工具新
 commit 作为模型版本。基线固定 main2412，正式 driver/controller 仍为已冻结 e08
@@ -8,7 +12,7 @@ commit 作为模型版本。基线固定 main2412，正式 driver/controller 仍
 等 root 确认 pair 终态及完整原件可读后，再执行纯 CPU 审计：
 
 ```bash
-python tools/audit_biv150_multi2_pair.py \
+python tools/audit_biv150_multi2_pair_v2.py \
   --root /workspace/experiments/minicpm-s2/cjj-multi2-main2412-pair-v1-20261027 \
   --baseline-commit 241220723a09061c182764f8f738e5ec01190367 \
   --candidate-commit e08c79456f9b943dbc4d9d02d0a4e030b4eceac1 \
@@ -62,11 +66,11 @@ baseline Q32，全部16类错误拒绝。此检查不是模型精度/吞吐证�
 | --- | --- |
 | root prepared manifest、SDK/C3 off/default-on audit | 待原件 |
 | e936 18组scope result/actual IR | 已逐SHA复验/归档，见completed evidence文档；含254b四例 |
-| main2412/e08两arm的105正确数与raw文件 | baseline独立audit102/105；candidate live verdict101/105，原reviews终态审计待做 |
-| 4K/16K唯一score TPS/TTFT/完整计数 | baseline5806.1431/4479.5676及TTFT/计数通过；candidate待终态 |
-| defaults、source fingerprint、native/snapshot、MULTI2/C3 proof | candidate live default/fingerprint/MULTI2编译hash已联结；C3实际事件仍待后续 |
-| raw initial/post mixed、owned cleanup | baseline-only原audit通过；模型原件未额外复制到组件包 |
-| 本auditor输出与脚本SHA、最终逐文件归档manifest | 待审计 |
+| main2412/e08两arm的105正确数与raw文件 | 最终原reviews重审102/105、101/105，均过 |
+| 4K/16K唯一score TPS/TTFT/完整计数 | candidate5827.8503/4517.1918，两arm TTFT/counts/working gates过 |
+| defaults、source fingerprint、native/snapshot、MULTI2/C3 proof | 两arm完整通过，baseline无MULTI2、candidate实际选择且C3正常 |
+| raw initial/post mixed、owned cleanup | 两arm完整通过，133原件已归档 |
+| 本auditor输出与脚本SHA、最终逐文件归档manifest | 冻结v2 SHA2c79015c；原成功JSON SHA136e9613；三包均<2MiB |
 
-当前只交付组件及baseline单臂证据，详见 `docs/biv150_multi2_completed_evidence_20261027.md`。
-没有candidate模型通过、pair验收或新的服务吞吐收益结论。
+当前已交付最终v2完整pair证据，详见 `docs/biv150_prefill_multi2_final_qualification_20261027.md`。
+单pair相对main观察+0.373865%/+0.839909%；不声明稳定效应或本改动20%提升，root审查后自行ready/merge。

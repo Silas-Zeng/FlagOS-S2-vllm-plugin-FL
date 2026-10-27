@@ -1,5 +1,8 @@
 # PR66 final auditor v2：仅修正合法grid表示
 
+后续root目标CPU完整v2审计已通过，本地133 raw重放一致；最终报告与原v2 JSON见
+`docs/biv150_prefill_multi2_final_qualification_20261027.md`。以下保留修复时的原因和范围。
+
 原CEA auditor对完整pair返回 `AuditError('Manifest selection events changed')`。
 失败原JSON逐字保留在
 `docs/evidence/prefill-multi2-20261027/completed-pair-independent-v1-failure.json`，

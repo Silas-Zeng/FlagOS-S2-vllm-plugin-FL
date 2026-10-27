@@ -1,5 +1,8 @@
 # PR66 已完成组件原件与 baseline 单臂证据
 
+后续完整pair已由冻结v2审计通过，最终结果与133原件归档见
+`docs/biv150_prefill_multi2_final_qualification_20261027.md`。本页保留早期快照边界及原件。
+
 证据快照为2026-10-27 01:18:32 UTC。此时原controller603821/start340686064
 仍为同一进程，baseline已完成，candidate处于accuracy；没有重启或补跑。
 本次只处理root已下载的本地原件，不SSH、不访问GPU、不改生产e08或9317终态auditor。
