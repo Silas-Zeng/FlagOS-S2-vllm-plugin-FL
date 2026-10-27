@@ -38,7 +38,8 @@ errors propagate without a fallback retry.
 
 CPU checks cover actual `_pick_segments`, exact source inverses, typed/ownership
 mutants and all per-lane O/M/L addresses for both supported N and scratch pitches.
-No Torch/Triton import, compiler, SSH or device operation was performed:
+During the original CPU preparation, no Torch/Triton import, compiler, SSH or
+device operation was performed. Root's later actual build/v1 boundary is below:
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_native_gqa_batch_cpu.py
@@ -58,27 +59,42 @@ python3 -B tools/bench_biv150_native_gqa_batch.py --run-device --root-owned-excl
 
 The last command requires Root's explicit `--root-owned-exclusive`: Root has
 verified the previous owned job terminal and schedules serially. `ixsmi` process
-visibility is not proof of exclusivity or idle state. Before CUDA it requires
-port9031 closed and used memory≤1024MiB. Empty/no-process PID output is recorded
-as unavailable; no hostPID is invented. No verified container→driver PID mapping
-is available, so any visible unowned PID (including a numerical match to the
-container PID) conservatively rejects. Full-table and query PID observations
-are combined. During the run, PID/start ticks stay fixed, memory above4096MiB
-or an unexplained phase increase>1024MiB rejects. Tiny initialization is outside
-numerics and recorded as real GPU work. These are additional refusal gates;
-namespace-hidden low-memory workloads cannot be ruled out by these observations.
-The actual exclusivity assertion comes from Root's external scheduling.
+visibility is not proof of exclusivity or idle state. Before CUDA, port9031 must
+be closed, used memory≤1024MiB, and there must be no visible PID. Process
+PID/start ticks and the closed port are checked throughout.
 
-CPU v2 admission replay (no ixsmi/device access):
+Admission v3 has one controlled association window immediately after the single
+tiny CUDA initialization. It records **zero or one unverified context-window PID
+candidates**. It never labels a candidate owned, never derives a hostPID mapping,
+and does not claim to exclude a race. All later observations must retain exactly
+that candidate set, including invisibility remaining invisible; a new/replaced/
+disappeared candidate rejects. A second startup window is forbidden. Memory
+above4096MiB or any phase growth>1024MiB, including tiny initialization, rejects.
+These are additional refusal gates; actual exclusivity remains Root's external
+serial scheduling assertion. There is no ignore-all flag and no process-kill API.
+
+CPU admission replay (no ixsmi/device access):
 
 ```sh
-python3 -B -W error tools/check_biv150_native_gqa_batch_admission_cpu.py
+python3 -B -W error tools/check_biv150_native_gqa_batch_admission_v3_cpu.py
 ```
 
-`admission-cpu-v2.json` covers invisible28554MiB rejection, invisible low memory
-recorded unavailable, visible foreign/ambiguous PID, query failure, stale owner,
-memory growth and run-cap counterexamples. The entire original numeric-loop AST
-is unchanged from dc9d451; its original CPU report remains byte-identical.
+`admission-cpu-v3.json` replays the actual v1 observations only and tests12 hard
+window/identity/port/memory transitions; it is not a new device result. Earlier
+`admission-cpu-v2.json` and dc9's original60-case CPU report remain intact. The
+entire numeric-loop AST and native factory/runtime/source/options are unchanged.
+
+Root's actual build/v1 evidence is retained in `v1-review/`:12 build files and3
+numeric files were independently SHA-verified. The built SO is
+`06c5228e1feb0b26cb71dfcf703d60693bd65926491fd7fa5f916d970f879a89`, and its
+emitted C++/CUDA match this factory byte-for-byte. Build kernel launches=0.
+Numeric v1 used d3b5172, owner706319/start347784497, and ended Z: pre68MiB/PIDs[]
+then post-tiny206MiB/query PID2554078/full-table[] triggered the original refusal.
+It executed one explicit tiny initialization and **zero attention launches**;
+`completed=false`, `passed=false`, `records=[]` remain original. The separate
+self-proc observation has pid/sched/NSpid/stat all706384 and supplies no globalPID
+mapping. Actual numeric/precision/performance/service qualification remains pending.
+
 The short numeric entry tests
 N48/56, max context193, dense/ragged lengths including zero and tails, both Q
 strides, read-only inputs, canaries, inactive scratch and full independent FP64
@@ -92,7 +108,8 @@ although partition math and runtime strides look generic, b3's static_assert
 explicitly permits only2/4 and must change before16 can even compile. That would
 need separate compile/empty-segment/numeric evidence. It is not silently covered.
 
-Actual compile, binding, numerical precision, real N48/56 frequency, performance,
+Actual compile now has the bounded Root receipt above; binding, numerical
+precision, real N48/56 frequency, performance,
 model/service coverage and benefit remain unknown/false. Prior N32/64 component
 speedups do not establish an N48/56 benefit or any model gain. Production BF16
 allocator provenance/hooking is deliberately deferred until this bounded

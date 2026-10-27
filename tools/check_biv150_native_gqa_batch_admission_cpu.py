@@ -4,7 +4,11 @@ import copy
 import json
 from pathlib import Path
 import subprocess
-from biv150_native_gqa_batch_admission import Admission,parse_observation
+from biv150_native_gqa_batch_admission import Admission as RealAdmission,parse_observation
+
+
+def Admission(*args,**kwargs):
+    return RealAdmission(*args,**kwargs,port_reader=lambda:dict(port9031_probe_code=111,port9031_closed=True))
 
 ROOT=Path(__file__).resolve().parents[1]
 OLD='dc9d451c977ee4f12cfb725def8742671373f4f2'

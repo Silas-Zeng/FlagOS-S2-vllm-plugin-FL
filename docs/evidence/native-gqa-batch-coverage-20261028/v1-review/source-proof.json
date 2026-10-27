@@ -1,0 +1,44 @@
+{
+  "main": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+  "integration_main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+  "namespace": "cjj_native_gqa_batch_s4_20261028",
+  "rows": [
+    48,
+    56
+  ],
+  "segments": 4,
+  "CUDA_inverse_byte_exact": true,
+  "CUDA_changes": "three private symbol renames only",
+  "CPP_inverse_exact_after_scope_and_extra_ABI_guards": true,
+  "source_sha256": {
+    "cpp": "f6bf9611184de7688a0460fe3b810bf0479e21a5dccdbbda77a7d69dadca7a9e",
+    "cuda": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94"
+  },
+  "native32_64_unchanged": true,
+  "N40_shipping_segments": 16,
+  "N40_new_coverage": false,
+  "S16_static_assert_still_rejects": true,
+  "service_activation": false,
+  "device_numeric_verified": false,
+  "performance_verified": false,
+  "frequency_known": false,
+  "generated": {
+    "batch.cpp": "40e1dbb436b8cf1c33977a7ffea6168b8456351fd234977c9df6933b930b4b42",
+    "batch.cu": "a6f1ebbcff514962e9c68a0aefb222fffe2baea3ba5c22095e2ccfb686f61127"
+  },
+  "cflags": [
+    "-O3",
+    "-std=c++17"
+  ],
+  "cuda_flags": [
+    "-O3",
+    "-std=c++17",
+    "-D__ILUVATAR__",
+    "-D__MR__",
+    "-DCOREX_NATIVE_GQA_V_OVERLAP=0",
+    "-x",
+    "ivcore",
+    "--cuda-gpu-arch=ivcore11",
+    "--cuda-path=/usr/local/corex"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "main": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+  "integration_main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+  "rows": [
+    48,
+    56
+  ],
+  "segments": 4,
+  "max_context": 193,
+  "patterns": [
+    "dense contiguous Q",
+    "ragged including zero/tail, padded Q stride2560"
+  ],
+  "arms": [
+    "new private native S4",
+    "byte-exact b3 TL GQA plus b3 reducer"
+  ],
+  "FP64_pointwise": "abs_error <= .005+.005*abs(reference)",
+  "FP64_relative_RMSE_max": 0.005,
+  "default_CPU": true,
+  "service_activation": false,
+  "GPU_executed": true,
+  "timing": null,
+  "writer": null,
+  "fullcost": null,
+  "Graph_verified": false,
+  "side_stream_verified": false,
+  "N40_coverage": false,
+  "actual_4k_16k_numeric_verified": false,
+  "performance_verified": false,
+  "completed": false,
+  "passed": false,
+  "errors": [
+    {
+      "type": "RuntimeError",
+      "message": "diagnostic admission: visible native PID has no verified ownership"
+    }
+  ],
+  "records": [],
+  "commit": "d3b51724115228e348c5f5d7aca6b386f87d61e2",
+  "library_sha256": "06c5228e1feb0b26cb71dfcf703d60693bd65926491fd7fa5f916d970f879a89",
+  "build_proof_sha256": "4ab59fd240b7d81c35ca07678f44ec41fe62c6cadc3bbeb7bad16f9b96b031ef",
+  "diagnostic_admission": {
+    "schema": "root-serial-memory-observation-v2",
+    "root_owned_exclusive_acknowledged": true,
+    "exclusivity_authority": "Root checked prior owned job terminal and dispatches serially; external assertion",
+    "exclusive_by_ixsmi": false,
+    "container_process_identity": {
+      "pid": 706319,
+      "start_ticks": 347784497,
+      "scope": "container process; not a driver host-PID mapping"
+    },
+    "driver_host_pid": null,
+    "driver_host_pid_mapping_verified": false,
+    "limits": {
+      "pre_cuda_max_used_mib": 1024,
+      "running_max_used_mib": 4096,
+      "max_running_phase_growth_mib": 1024
+    },
+    "tiny_initialization_outside_numerics": true,
+    "observations": [
+      {
+        "phase": "pre-CUDA",
+        "container_process_identity": {
+          "pid": 706319,
+          "start_ticks": 347784497,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 68,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [],
+        "native_query_pids": [],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "unavailable",
+        "no_visible_pid_is_idle_proof": false,
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "post-tiny-initialization",
+        "container_process_identity": {
+          "pid": 706319,
+          "start_ticks": 347784497,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 206,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2554078
+        ],
+        "native_query_pids": [
+          2554078
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unowned",
+        "no_visible_pid_is_idle_proof": false
+      }
+    ],
+    "port9031_probe_code": 111,
+    "port9031_closed": true,
+    "tiny_cuda_initializations": 1,
+    "errors": [
+      {
+        "phase": "post-tiny-initialization",
+        "type": "RuntimeError",
+        "message": "diagnostic admission: visible native PID has no verified ownership"
+      }
+    ]
+  }
+}
