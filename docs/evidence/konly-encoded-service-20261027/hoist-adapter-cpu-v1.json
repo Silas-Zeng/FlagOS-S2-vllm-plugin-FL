@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "CPU_only": true,
+  "JIT_executed": false,
+  "GPU_executed": false,
+  "actual_PR90_compile_archive_sha256": "aae141e17f58233df0ca18f92c998d18fb3052a2e0a53de5673b79bb68e1340e",
+  "actual_native_artifact_replay": true,
+  "protocol_mock_only": true,
+  "call_key_uses_actual_pinned_binder": true,
+  "address_changes_do_not_force_cold_audits_in_mock": true,
+  "exact_codec_slice_pin": true,
+  "prelaunch_rejections": [
+    "ABI-type",
+    "TTIR",
+    "native-ASM",
+    "unknown-registers",
+    "spills",
+    "incomplete-grid"
+  ],
+  "postlaunch_no_retry": true,
+  "generated_kernel_math_changed": false,
+  "adapter_service_numeric_verified": false,
+  "model_verified": false,
+  "performance_verified": false
+}

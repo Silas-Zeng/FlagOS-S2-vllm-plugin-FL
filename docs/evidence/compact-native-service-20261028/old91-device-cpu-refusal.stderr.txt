@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/private/tmp/flagos-cjj-compact-native-service-20261028/tools/check_biv150_konly_compact_device_cpu.py", line 101, in <module>
+    if __name__=='__main__':print(json.dumps(run(),indent=2))
+                                             ~~~^^
+  File "/private/tmp/flagos-cjj-compact-native-service-20261028/tools/check_biv150_konly_compact_device_cpu.py", line 14, in run
+    assert bootstrap_receipt({'vllm_fl':package},{})['package_imported']
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/flagos-cjj-compact-native-service-20261028/tools/biv150_konly_compact_device_contract.py", line 110, in bootstrap_receipt
+    data=actual.read_bytes();assert sha(data)==sha(blob(relative)),'bootstrap source hash mismatch: '+name
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: bootstrap source hash mismatch: vllm_fl

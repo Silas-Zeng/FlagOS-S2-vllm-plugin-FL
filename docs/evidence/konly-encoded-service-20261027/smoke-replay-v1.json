@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "source_commit": "359c3e11c9cf7551fbdda649bfb5a331b4822157",
+  "raw_files": 9,
+  "raw_bytes": 91327,
+  "source_hashes_checked": 245,
+  "original_controller_failed_state_preserved": true,
+  "independent_writer83_label_recovery": true,
+  "immutable_root_recovered_report_checked": true,
+  "selected": [
+    {
+      "profile": "writer83",
+      "hash": "67f02d003742727cbd0a71a7c3f60cb2d0790d6dc734c6d4a02a9485546c77a4",
+      "implementation_sha256": "afea84ba7725cff83b2a63032b82475e2cfb4046604c4a4f382b5b8de5b8d570",
+      "format": "cjj-konly-rn32-rne-v2",
+      "query_rows": null,
+      "sequences": null,
+      "I8_fragment_hoist_verified": false,
+      "host_event_not_Graph_replay_count": true
+    },
+    {
+      "profile": "normalized2d128",
+      "hash": "75b6d9147867e015b490b1abcc51f19fdf9a5e924f36210c5f1a03a76440dc1a",
+      "implementation_sha256": "afea84ba7725cff83b2a63032b82475e2cfb4046604c4a4f382b5b8de5b8d570",
+      "format": "cjj-konly-rn32-rne-v2",
+      "query_rows": 256,
+      "sequences": 256,
+      "I8_fragment_hoist_verified": false,
+      "host_event_not_Graph_replay_count": true
+    },
+    {
+      "profile": "decode",
+      "hash": "3aff67b8ff0beeeee375c682ed14f500af016236ec13828031e87671a3bc91d9",
+      "implementation_sha256": "afea84ba7725cff83b2a63032b82475e2cfb4046604c4a4f382b5b8de5b8d570",
+      "format": "cjj-konly-rn32-rne-v2",
+      "query_rows": 64,
+      "sequences": 64,
+      "I8_fragment_hoist_verified": false,
+      "host_event_not_Graph_replay_count": true
+    },
+    {
+      "profile": "q32",
+      "hash": "c0a523d9d0d4d5dde57b241df9d22c9c38fa71e480878d18e690b4eb002e24f7",
+      "implementation_sha256": "afea84ba7725cff83b2a63032b82475e2cfb4046604c4a4f382b5b8de5b8d570",
+      "format": "cjj-konly-rn32-rne-v2",
+      "query_rows": 2048,
+      "sequences": 1,
+      "I8_fragment_hoist_verified": false,
+      "host_event_not_Graph_replay_count": true
+    }
+  ],
+  "usage": [
+    {
+      "prompt_tokens": 18,
+      "total_tokens": 34,
+      "completion_tokens": 16,
+      "prompt_tokens_details": null
+    },
+    {
+      "prompt_tokens": 18,
+      "total_tokens": 34,
+      "completion_tokens": 16,
+      "prompt_tokens_details": null
+    },
+    {
+      "prompt_tokens": 5137,
+      "total_tokens": 5153,
+      "completion_tokens": 16,
+      "prompt_tokens_details": null
+    }
+  ],
+  "parent_installers_preserved": 9,
+  "source_hashes_and_initial_native_tuning_descriptors_verified": true,
+  "remote_after_recheck": "Root attestation only; raw remote-proof payload absent",
+  "GPU_rerun": false,
+  "host_capture_events_only": true,
+  "graph_replays_counted": false,
+  "model_precision_verified": false,
+  "throughput_measured": false
+}

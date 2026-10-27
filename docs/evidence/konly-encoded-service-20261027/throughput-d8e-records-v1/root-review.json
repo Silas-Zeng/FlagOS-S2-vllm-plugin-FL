@@ -1,0 +1,70 @@
+{
+  "CPU_only": true,
+  "original_files_verified": 64,
+  "source_files_verified": 251,
+  "source_commit": "d8ef055422d9d5c45049f85468b486b47b993406",
+  "actual_worker_fingerprints": 2,
+  "private_K8_writer_and_q32_reader_selected": true,
+  "stock_BF16_native_never_selected_in_this_log": true,
+  "host_capture_events": 12,
+  "request_frequency_proven": false,
+  "math_correct": 102,
+  "math_total": 105,
+  "same_source_math105_verified": true,
+  "original_performance_work_gates_passed": true,
+  "cases": {
+    "4096": {
+      "score": 5799.656645622314,
+      "TTFT_ms": 3520.5173397407634,
+      "TPOT_ms": 51.44960590883875,
+      "completed": 256,
+      "failed": 0,
+      "arithmetic": {
+        "result_arithmetic_verified": true,
+        "requested_input_length": 4096,
+        "recorded_input_tokens": 1048576,
+        "complete_ignore_eos_output": true,
+        "request_level_input_lengths_saved": false
+      },
+      "unscored_full_warm": 6467.850420202623,
+      "new_metadata": [
+        "6KA7V3RNVCMHCVCVWUXTTSQLMZFQBRFS3VAOCU5EEPZIC3POXDQA/_index_linearized_jit_function.json",
+        "A5UG4HT2OMSLGXHWXTIDZ3EWASZGE6HTV46SDNZWQT5TZPHJHIKA/_index_linearized_jit_function.json",
+        "ABTSACG3WDPZ6S5NF3ZV7BOQE5WCA523YF6OXBN2RFPQVPZSZZ3Q/_index_linearized_jit_function.json",
+        "BEUHURT4NMXVLXIKTL3J6S3GEBUEY225BJVB43A65UQ4EJLGGZMQ/_index_linearized_jit_function.json",
+        "KRO2Y7XF4Y3R2L24634GDDEDQALEROSRRIYFTP4NFKWLBL5APX2Q/_index_linearized_jit_function.json",
+        "W23DASXLMCW6N5RW6GQJOQA6BQLDWUK73G7B3MRAU7EAQM6JQCIA/_index_linearized_jit_function.json",
+        "W2KMUMMGSNL6NY7WMFFFYO6LENAUSYD2GQLNEV77YIU6YI3EQ47Q/_index_linearized_jit_function.json",
+        "XC5WCRUFIIS23BQJ65TSBYBA6T3KIXL3PJ4SDPUC6HGGM7RCLNUQ/_index_linearized_jit_function.json",
+        "ZH2WB5J4YS36UO7ZEG47XXFXAVIHAIRUMKB2PKFGYQ4RAAHKCTQA/_index_linearized_jit_function.json"
+      ],
+      "changed_metadata": [],
+      "selected_tuning_rows_changed": true,
+      "main_same_protocol_score": 5655.194479014881,
+      "relative_single_observation_percent": 2.554503954611964
+    },
+    "16384": {
+      "score": 4919.0285356861295,
+      "TTFT_ms": 102522.33713023088,
+      "TPOT_ms": 96.95783852653146,
+      "completed": 128,
+      "failed": 0,
+      "arithmetic": {
+        "result_arithmetic_verified": true,
+        "requested_input_length": 16384,
+        "recorded_input_tokens": 2097152,
+        "complete_ignore_eos_output": true,
+        "request_level_input_lengths_saved": false
+      },
+      "unscored_full_warm": 4360.725078505444,
+      "new_metadata": [],
+      "changed_metadata": [],
+      "selected_tuning_rows_changed": false,
+      "main_same_protocol_score": 4808.177815036476,
+      "relative_single_observation_percent": 2.305462171199091
+    }
+  },
+  "latest_main_win_qualified": false,
+  "reason": "4K fullwarm-to-score drop occurs in both candidate and main; low main single score is not a stable winner comparator. Keep Draft pending fair comparison/new native iteration.",
+  "native_new_K8_SO_qualified": false
+}

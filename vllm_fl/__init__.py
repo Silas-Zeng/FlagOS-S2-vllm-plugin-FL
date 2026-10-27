@@ -5,6 +5,11 @@ import os
 import logging
 import sys
 
+# Pending compact-native must reject before Torch or any worker is imported.
+if os.environ.get("VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE", "0") == "1":
+    from .compact_native_qualification import preflight as _compact_native_preflight
+    _compact_native_preflight()
+
 # torch.float4_e2m1fn_x2 exists only in CUDA builds of PyTorch 2.7+.
 # vllm.ir.tolerances references it at module level, so we inject a sentinel
 # before any vllm.ir import can happen.

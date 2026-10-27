@@ -1,0 +1,168 @@
+diff --git a/vllm_fl/compile_semantics.py b/vllm_fl/compile_semantics.py
+index d2ccba2..f2edb60 100644
+--- a/vllm_fl/compile_semantics.py
++++ b/vllm_fl/compile_semantics.py
+@@ -83,6 +83,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
+         features["VLLM_FL_BIV150_GQA_DECODE"]
+         and env.get("VLLM_FL_BIV150_NATIVE_GQA", "1") == "1")
+     features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] = env.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"
++    native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'
++    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8
++    if native_k8 and (not features['VLLM_FL_BIV150_KONLY_ENCODED_SERVICE'] or env.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','0')=='1'):
++        raise ValueError('NativeK8 requires only the owned16384 encoded format')
+     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
+              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
+              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
+@@ -128,6 +132,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
+                    "producer_boundary": "owned-encoded-before-stock-native",
+                    "q32_hoist_enabled": env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1",
+                    "implementation_sha256": _digest({path.name: _sha(path) for path in encoded_paths})}
++        if native_k8:
++            from .patches.biv150_konly_encoded_native import library_config
++            native_library = library_config(env)
++            encoded['native_decode'] = dict(enabled=True,library_sha256=native_library['sha256'],operator='cjj_native_k8_qk_probe::produce')
+         facts["konly_encoded"] = encoded
+     result = {"schema": 1, "sha256": _digest(facts),
+               "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
+diff --git a/vllm_fl/patches/biv150_compute_order.py b/vllm_fl/patches/biv150_compute_order.py
+index a958eb4..affef7a 100644
+--- a/vllm_fl/patches/biv150_compute_order.py
++++ b/vllm_fl/patches/biv150_compute_order.py
+@@ -11,7 +11,7 @@ import types
+ from pathlib import Path
+ 
+ # Current team runner plus the opt-in Q32 installer; input/order code is unchanged.
+-EXPECTED_RUNNER = "b4bf3ec5cb7b46392452c37e2ac91292d7c40522ad711ce3a8be3eb55a418d7d"
++EXPECTED_RUNNER = "6e86acf3ee8329468278b0f708465ddf503eb7937a5cf24cbe43dcefd71e5517"
+ _STATE = "_biv150_compute_order_buffers"
+ SOURCES = {
+     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
+diff --git a/vllm_fl/patches/biv150_konly_encoded_runtime.py b/vllm_fl/patches/biv150_konly_encoded_runtime.py
+index a8f8fc3..baa82d5 100644
+--- a/vllm_fl/patches/biv150_konly_encoded_runtime.py
++++ b/vllm_fl/patches/biv150_konly_encoded_runtime.py
+@@ -112,6 +112,7 @@ class Runtime:
+         self.shape_records = {}; self.kernel_records = {}; self.shape_overflow = 0
+         self.stats_path = None; self.final_export = None
+         self.q32_hoist = None
++        self.native_decode = None; self.native_decode_identity = None
+ 
+     @staticmethod
+     def typed(value):
+@@ -231,6 +232,7 @@ class Runtime:
+             dynamic_I8_hoist_verified=bool(self.q32_hoist and self.q32_hoist.by_hash), all_service_shapes_verified=False,
+             raw3d_enabled=self.raw3d_enabled, mixed_pair_enabled=self.mixed_pair_enabled,
+             multi2_enabled=self.multi2_enabled, capacity_reclaimed=False, precision_gate=False)
++        result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()
+         result['q32_hoist'] = dict(enabled=False) if self.q32_hoist is None else self.q32_hoist.stats()
+         return result
+ 
+@@ -359,6 +361,8 @@ class KernelFacade:
+                 views = entry.roles['decode79']
+                 selected.update(views, query_code_ptr=views['key_cache_ptr'], query_scale_ptr=views['key_scale_ptr'])
+                 profile = 'decode'; target_grid = grid
++                if runtime.native_decode is not None and runtime.native_decode.try_produce(runtime,entry,selected,target_grid):
++                    return None
+             else:
+                 views = entry.roles['prefill80']; selected.update(views)
+                 n = kwargs['num_seqs']; qrows = kwargs['query_ptr'].shape[0]
+diff --git a/vllm_fl/patches/biv150_konly_encoded_service.py b/vllm_fl/patches/biv150_konly_encoded_service.py
+index 383fe5b..e32ffca 100644
+--- a/vllm_fl/patches/biv150_konly_encoded_service.py
++++ b/vllm_fl/patches/biv150_konly_encoded_service.py
+@@ -110,6 +110,15 @@ def install(runner_class, *, environ=None):
+             implementation_digest=implementation_digest(), jit=inspect.getmodule(type(fn)),
+             device=triton.runtime.driver.active.get_current_device(), fn=fn)
+     runtime.q32_hoist_identity = runtime.q32_hoist
++    if env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE','0') == '1':
++        declared = provenance['native_decode']; path = package/'biv150_konly_encoded_native.py'
++        need(declared['physical_page_bytes']==16384 and declared['adapter']['path']=='vllm_fl/patches/'+path.name,
++             'native adapter format/source manifest')
++        need(hashlib.sha256(path.read_bytes()).hexdigest()==declared['adapter']['sha256'],'native adapter source SHA')
++        native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_native')
++        need(Path(native.__file__).resolve()==path.resolve() and native.LIBRARY_SHA==declared['library_sha256'],
++             'actual native module/library identity')
++        native.attach(runtime,env)
+     runtime.stats_path = env.get('VLLM_FL_BIV150_KONLY_ENCODED_STATS_PATH')
+     if runtime.stats_path is None and env.get('TRITON_CACHE_DIR'):
+         runtime.stats_path = str(Path(env['TRITON_CACHE_DIR']).parent/'konly-encoded-final-{pid}.json')
+@@ -177,6 +186,7 @@ def install(runner_class, *, environ=None):
+         implementation_sha256=runtime.installed_digest,final_stats_path=runtime.stats_path,
+         stock_native_gqa_parent_preserved=True, encoded_GQA_uses_stock_native=False,
+         producer_boundary='owned-encoded-private-before-stock-native',
++        native_decode_enabled=runtime.native_decode is not None,native_decode_library=None if runtime.native_decode is None else runtime.native_decode.library,
+         q32_hoist_enabled=runtime.q32_hoist is not None, q32_I8_fragment_hoist_verified=False, service_numeric_verified=False, precision_gate=False)
+ 
+ 
+@@ -201,6 +211,12 @@ def compute_order_receipt(attention, normalized_kernel):
+     need(state is not None and implementation_digest() == state.installed_digest, 'unregistered/stale encoded runtime')
+     need(state.facade_type.__getitem__.__code__ is state.facade_code, 'encoded dispatch code changed')
+     need(state.q32_hoist is getattr(state,'q32_hoist_identity',None), 'encoded Q32 adapter binding changed')
++    native = state.native_decode
++    need((native is None and state.native_decode_identity is None) or
++         state.native_decode_identity == (native,type(native).verify.__code__,type(native).validate.__code__,type(native).try_produce.__code__),
++         'encoded NativeK8 installed code/binding changed')
++    need(native is None or not any(n in vars(native) for n in ('verify','validate','try_produce')), 'native instance wrapper override')
++    native_receipt = dict(enabled=False) if native is None else native.verify(state)
+     boundary = getattr(state,'producer_binding',None)
+     need(type(boundary) is tuple and len(boundary)==5, 'new main producer boundary receipt absent')
+     gqa,producer,parent,native_parent,code = boundary
+@@ -220,6 +236,7 @@ def compute_order_receipt(attention, normalized_kernel):
+     need(all(e.observation.storage_id in state.registry.owned_storages for e in state.registry.entries.values()),
+          'cache ownership registry incomplete')
+     return dict(parent_raw=parents[id(attention.kernel_unified_attention)], parent_normalized=parents[id(normalized_kernel)],
++        native_decode_registered=native_receipt,
+         encoded_dispatch_registered=True, implementation_sha256=state.installed_digest,
+         producer_boundary_registered=True, stock_native_parent_preserved=True, encoded_GQA_uses_stock_native=False,
+         parent_fn_is_interface_only=True, encoded_math_device_certified=False)
+diff --git a/vllm_fl/patches/biv150_konly_encoded_sources.json b/vllm_fl/patches/biv150_konly_encoded_sources.json
+index a2483a7..a472e35 100644
+--- a/vllm_fl/patches/biv150_konly_encoded_sources.json
++++ b/vllm_fl/patches/biv150_konly_encoded_sources.json
+@@ -288,5 +288,28 @@
+   "service_activated": false,
+   "dynamic_I8_fragment_hoist_proved": false,
+   "all_service_profiles_device_verified": false,
+-  "specialized_mixed85_pair_not_installed": true
++  "specialized_mixed85_pair_not_installed": true,
++  "native_decode": {
++    "adapter": {
++      "path": "vllm_fl/patches/biv150_konly_encoded_native.py",
++      "sha256": "165d54a29d878b91532076b1a28c77ff5e43ff1b8772ab440b0fe7c54f2873b3"
++    },
++    "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
++    "physical_page_bytes": 16384,
++    "shape_segments": [
++      [
++        64,
++        2
++      ],
++      [
++        32,
++        4
++      ]
++    ],
++    "query_strides": [
++      2048,
++      2560
++    ],
++    "new_service_qualified": false
++  }
+ }
+diff --git a/vllm_fl/worker/model_runner.py b/vllm_fl/worker/model_runner.py
+index b8f8511..dc931ed 100644
+--- a/vllm_fl/worker/model_runner.py
++++ b/vllm_fl/worker/model_runner.py
+@@ -7785,6 +7785,12 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
+ 
+     print("BIV150_STABLE_SMALL_O_INSTALL", _install_stable_small_o(), flush=True)
+ 
++# NativeK8 may only refine the owned16KiB private decode producer.
++if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_NATIVE_DECODE", "0") == "1":
++    if (__import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") != "1"
++            or __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1"):
++        raise RuntimeError("NativeK8 requires only owned16384 encoded service")
++
+ # Private encoded-cache diagnostic: install once before allocation/capture; default off.
+ if (getattr(current_platform, "vendor_name", None) == "iluvatar"
+         and __import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"):

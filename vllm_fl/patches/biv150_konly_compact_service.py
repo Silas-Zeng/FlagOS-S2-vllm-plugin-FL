@@ -35,6 +35,12 @@ def install(runner_class, *, environ=None):
     """
     global _STATE
     env = os.environ if environ is None else environ
+    if env.get('VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE','0') == '1':
+        from importlib import util as _compact_native_util
+        path = Path(__file__).resolve().parents[1]/'compact_native_qualification.py'
+        spec = _compact_native_util.spec_from_file_location('_compact_native_install_preflight',path)
+        qualification = _compact_native_util.module_from_spec(spec); spec.loader.exec_module(qualification)
+        compact_native_config = qualification.preflight(env)
     if env.get(ENV, '0') != '1': return dict(installed=False, reason='disabled')
     need(env.get('VLLM_FL_BIV150_KONLY_ENCODED_SERVICE', '0') != '1', 'two cache formats enabled')
     need(env.get('VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST', '0') != '1', 'compact Q32 hoist unsupported')
@@ -100,6 +106,17 @@ def install(runner_class, *, environ=None):
     runtime.actual_target = [target.backend,target.arch,target.warp_size]
     runtime.verified_installed_sources = {**PINS, **host.verified_core_pins}
     runtime.q32_hoist_identity = runtime.q32_hoist
+    if env.get('VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE','0') == '1':
+        declared = provenance['native_decode']; path = package/'biv150_konly_compact_native.py'
+        need(declared['format'] == 'cjj-konly-compact12544-rn32-rne-v1'
+             and declared['adapter']['path'] == 'vllm_fl/patches/'+path.name,
+             'compact native adapter format/source manifest')
+        need(hashlib.sha256(path.read_bytes()).hexdigest() == declared['adapter']['sha256'],
+             'compact native adapter source SHA')
+        native = importlib.import_module('vllm_fl.patches.biv150_konly_compact_native')
+        need(Path(native.__file__).resolve() == path.resolve()
+             and native.LIBRARY_SHA == compact_native_config['sha256'], 'actual compact module/library identity')
+        need(native.attach(runtime,env) is True, 'compact native adapter was not attached')
     runtime.stats_path = env.get('VLLM_FL_BIV150_KONLY_COMPACT_STATS_PATH')
     if runtime.stats_path is None and env.get('TRITON_CACHE_DIR'):
         runtime.stats_path = str(Path(env['TRITON_CACHE_DIR']).parent/'konly-compact-final-{pid}.json')
@@ -193,6 +210,11 @@ def compute_order_receipt(attention, normalized_kernel):
     need(state is not None and implementation_digest() == state.installed_digest, 'unregistered/stale encoded runtime')
     need(state.facade_type.__getitem__.__code__ is state.facade_code, 'encoded dispatch code changed')
     need(state.q32_hoist is getattr(state,'q32_hoist_identity',None), 'encoded Q32 adapter binding changed')
+    native = state.native_decode
+    need((native is None and state.native_decode_identity is None) or
+         state.native_decode_identity == (native,type(native).verify.__code__,type(native).validate.__code__,type(native).try_produce.__code__),
+         'compact native adapter binding changed')
+    native_receipt = dict(enabled=False,qualification='pending') if native is None else native.verify(state)
     boundary = getattr(state,'producer_binding',None)
     need(type(boundary) is tuple and len(boundary)==5, 'new main producer boundary receipt absent')
     gqa,producer,parent,native_parent,code = boundary
@@ -216,6 +238,7 @@ def compute_order_receipt(attention, normalized_kernel):
          'cache ownership registry incomplete')
     return dict(parent_raw=parents[id(attention.kernel_unified_attention)], parent_normalized=parents[id(normalized_kernel)],
         encoded_dispatch_registered=True, implementation_sha256=state.installed_digest,
+        compact_native_registered=native_receipt,
         producer_boundary_registered=True, stock_native_parent_preserved=True, encoded_GQA_uses_stock_native=False,
         parent_fn_is_interface_only=True, encoded_math_device_certified=False)
 

@@ -37,11 +37,11 @@
     },
     "runtime": {
       "path": "vllm_fl/patches/biv150_konly_compact_runtime.py",
-      "sha256": "ddfb92304e13b0d1b1b79f86574b95c168c775594b497372dfeae1542a05c9be"
+      "sha256": "6df50fb62e8dc15665a76c3a5802596068f97a8a296bc1c78343011ccf4f71e9"
     },
     "identity": {
       "path": "vllm_fl/patches/biv150_konly_compact_identity.py",
-      "sha256": "da63b554bb49b1696ef7052f36c8943a4f0930d851f3b0d3a12c9f9493f3b9fc"
+      "sha256": "37cb42a4d5f8b045dbb6560b4a615c9c9dcb8bfc140a1c283b87b00a2d140bd3"
     },
     "spec": {
       "path": "vllm_fl/patches/biv150_konly_compact_spec.py",
@@ -57,7 +57,7 @@
     },
     "service": {
       "path": "vllm_fl/patches/biv150_konly_compact_service.py",
-      "sha256": "ac714f2b8f4f0a864266ddaa917aef8c4922d7948f055957e39b0d0736ee3179"
+      "sha256": "f24e1b11b56b3d79ce7643565a8b791bb5955c62c4cb3fcd60fef44939a1f558"
     }
   },
   "address_source_proofs": {
@@ -113,14 +113,31 @@
     }
   },
   "binding_files": {
-    "worker/model_runner.py": "3276d6d3524f4ee6e49a1f19443a3de88b9ffaa674007c5472a7fa855356ebc4",
-    "patches/biv150_compute_order.py": "a63df22d106adf3125f9301b127497a02aba97415f9dcf6f488669aef12aa3b2",
-    "compile_semantics.py": "f6fa39b0f8f2829c2559eeac96ae43db44a419aa5136e2e3d597c66b3bf254f0"
+    "worker/model_runner.py": "9ee00d1facb70e942871a5780d467df14c8ded2dbfd7efdadf0106187fd6051d",
+    "patches/biv150_compute_order.py": "6ef4028e3be91f8b3f88c7b1fe021843389508cd349435ca5fa337173e9bc70a",
+    "compile_semantics.py": "1b4b2efb57fb7dde4653a4bc7f8c47e5e20b6d10e88e556fe5a9988b4e02d585"
   },
   "q32_hoist_supported": false,
   "service_numeric_verified": false,
   "capacity_reclaimed": false,
   "actual_IR_verified": false,
   "performance_verified": false,
-  "precision_gate": false
+  "precision_gate": false,
+  "native_decode": {
+    "qualification_state": "pending",
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "operator": "cjj_native_k8_compact_probe::produce",
+    "adapter": {
+      "path": "vllm_fl/patches/biv150_konly_compact_native.py",
+      "sha256": "4fe9004d716d7d4711dd9e899f02f8c4af05b56d9baaa82d8b0213ad5023e4f7"
+    },
+    "qualification": {
+      "path": "vllm_fl/compact_native_qualification.py",
+      "sha256": "229a16351ee61e51e7cfe8ad15572e433eca013db7b83fe36a5bfb19d1a070ec"
+    },
+    "early_import_gate": {
+      "path": "vllm_fl/__init__.py",
+      "sha256": "6c67ead825c816b21db3c067b09fb4c223a3c0ae424768b22081584a78f62c19"
+    }
+  }
 }
