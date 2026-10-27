@@ -283,7 +283,7 @@ def live_roots():
     source_pins(OLD_ROOT)
     version=git(ROOT,'rev-parse','HEAD')
     validator_files={name:sha((ROOT/'tools'/name).read_bytes()) for name in
-        ('biv150_v8_bias_byte_stage.py','bench_biv150_v8_bias_byte_stage.py')}
+        ('biv150_v8_bias_byte_stage.py','bench_biv150_v8_bias_byte_stage.py','biv150_native_pid_admission.py')}
     for name,wanted in validator_files.items():
         committed=subprocess.check_output(['git','-C',str(ROOT),'show',version+':tools/'+name])
         assert sha(committed)==wanted, 'Validator bytes differ from recorded commit'

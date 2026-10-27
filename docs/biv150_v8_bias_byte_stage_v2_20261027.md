@@ -60,8 +60,10 @@ loaded from that root. Both old/A modules continue to load the original
 `/workspace/experiments/minicpm-s2/cjj-v8-bias-compile4k-v1-20261027/sources/`
 files, preserving debug paths and actual specialization hashes.
 
-The original v1 runner is reused with exactly one reversible host AST edit:
-its proof-validation call selects the explicit v2 sidecar contract. It receives
+The original v1 runner has three reversible host edits: explicit proof
+selection, whole-job native-PID admission, and injection of that phase callback.
+The frozen probe's single full-table busy assertion selects the native callback;
+its original assertion is independently restored by the inverse proof. It receives
 the unchanged failed original proof, never a fabricated successful v1 JSON.
 The entire numeric/bitwise/three-way full-cost body is otherwise AST-identical.
 An additional pre-launch wrapper requires all six runtime artifact hashes for
@@ -103,5 +105,8 @@ the unchanged-source result and the original failed proof SHA.
 Existing outputs are refused before root/device access; Python bytecode writes
 are disabled before old-root imports so the original cache files also remain.
 
-No new target JIT, GPU, SSH, queue, numeric/throughput/service result or capacity
-claim is made by this CPU implementation. Physical cache remains16KiB/page.
+No target JIT, GPU, SSH, queue or new numeric/throughput/service result was
+performed in this CPU implementation. Future explicit GPU runs do one recorded
+tiny CUDA initialization for admission, outside all numerics and timing; they
+do not claim zero GPU work. See the native-PID admission note. No capacity
+claim is made. Physical cache remains16KiB/page.

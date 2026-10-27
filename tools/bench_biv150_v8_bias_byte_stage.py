@@ -8,21 +8,45 @@ from pathlib import Path
 import sys
 
 import biv150_v8_bias_byte_stage as contract
+from biv150_native_pid_admission import NativeAdmission
 
 
 def adapted_run_tree(source_root):
     tree=ast.parse((source_root/'tools/bench_biv150_v8_bias.py').read_bytes())
     original=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='run_gpu')
-    changed=copy.deepcopy(original);count=0
+    changed=copy.deepcopy(original);counts=dict(proof=0,admission=0,namespace=0)
     for node in ast.walk(changed):
         if isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id=='validate_proof':
-            node.func.id='validated_byte_stage_original_proof';count+=1
-    assert count==1
+            node.func.id='validated_byte_stage_original_proof';counts['proof']+=1
+        elif isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id=='preflight':
+            node.func.id='begin_native_admission';counts['admission']+=1
+        elif isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='namespace' for t in node.targets):
+            node.value.keywords.append(ast.keyword(arg='require_native_admission',value=ast.Name(id='require_native_admission',ctx=ast.Load())))
+            counts['namespace']+=1
+    assert counts==dict(proof=1,admission=1,namespace=1)
     restored=copy.deepcopy(changed)
     for node in ast.walk(restored):
         if isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id=='validated_byte_stage_original_proof':node.func.id='validate_proof'
+        elif isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id=='begin_native_admission':node.func.id='preflight'
+        elif isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='namespace' for t in node.targets):
+            node.value.keywords=[k for k in node.value.keywords if k.arg!='require_native_admission']
     assert ast.dump(restored)==ast.dump(original), 'Numeric/bitwise/timing body changed'
     return ast.fix_missing_locations(ast.Module(body=[changed],type_ignores=[]))
+
+
+def native_phase_tree(original):
+    changed=copy.deepcopy(original)
+    matches=[n for n in ast.walk(changed) if isinstance(n,ast.Assert) and isinstance(n.msg,ast.Constant) and n.msg.value=='GPU busy']
+    assert len(matches)==1
+    busy=matches[0]
+    expected=ast.parse("assert 'No running processes found' in subprocess.check_output(['/usr/local/corex/bin/ixsmi'], text=True), 'GPU busy'").body[0]
+    assert ast.dump(busy)==ast.dump(expected), 'Unexpected frozen hardware guard'
+    busy.test=ast.parse('require_native_admission(args)',mode='eval').body
+    restored=copy.deepcopy(changed)
+    target=next(n for n in ast.walk(restored) if isinstance(n,ast.Assert) and isinstance(n.msg,ast.Constant) and n.msg.value=='GPU busy')
+    target.test=expected.test
+    assert ast.dump(restored)==ast.dump(original), 'Numeric/codec/Graph/bitwise/timing changed'
+    return ast.fix_missing_locations(changed)
 
 
 def all_files_proven(original,module):
@@ -70,12 +94,39 @@ def run(args):
         return original  # Never synthesize a successful v1 proof.
     old.validated_byte_stage_original_proof=validate_original
     old.Proven=all_files_proven(old.Proven,old)
+    admission=NativeAdmission(old.preflight,contract.live_roots)
+    token=None
+    def begin():
+        nonlocal token
+        # No baseline/helper import has initialized CUDA before this point.
+        assert 'torch' not in sys.modules and 'triton' not in sys.modules
+        token=admission.begin()
+    old.begin_native_admission=begin
+    old.require_native_admission=lambda phase:admission.check(phase,token)
+    original_factory=old.adapted_probe
+    def phase_factory():
+        tree,evidence=original_factory()
+        return native_phase_tree(tree),dict(evidence,native_pid_phase_admission=True,hardware_guard_ast_inverse=True)
+    old.adapted_probe=phase_factory
     exec(compile(adapted_run_tree(contract.OLD_ROOT),'a698_run_with_explicit_v2_contract','exec'),old.__dict__)
     args.ir_proof=contract.OLD_OUT/'compile-proof.json'
-    try:old.run_gpu(args)
+    receipt_path=args.out.with_name(args.out.name+'.admission.json')
+    assert not receipt_path.exists(), 'Admission receipt path must be new'
+    receipt_path.parent.mkdir(parents=True,exist_ok=True)
+    finished=False;runner_error=None
+    try:
+        old.run_gpu(args)
+        admission.complete()
+        finished=True
+    except Exception as error:
+        runner_error=repr(error);raise
     finally:
+        receipt=admission.receipt()
+        receipt.update(consumer_run_completed=finished,consumer_run_error=runner_error)
+        receipt_path.write_text(json.dumps(receipt,indent=2)+'\n')
         if args.out.exists():
             binding=dict(sidecar=sidecar,sidecar_sha256=contract.sha(args.sidecar.read_bytes()),
+                admission_receipt=receipt,admission_receipt_path=str(receipt_path),
                 original_v1_completed=False,original_v1_mechanism_passed=False,precision_gate=False,official_score=False)
             (args.out/'byte-stage-runtime-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
 
