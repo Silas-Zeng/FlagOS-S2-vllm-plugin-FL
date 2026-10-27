@@ -14,6 +14,10 @@ from biv150_prefill_reverse import (CASES, HELPER_SHA, source_factory, function_
 from check_biv150_prefill_probe_cpu import Tensor
 
 
+class CpuInt(int):
+    def to(self, dtype):return CpuInt(self)
+
+
 class Pointer:
     def __init__(self, values, offset=0):
         self.values, self.offset = values, offset
@@ -44,8 +48,10 @@ def helper_namespace(path):
         for arg in fn.args.posonlyargs+fn.args.args+fn.args.kwonlyargs:
             arg.annotation = None
     module = ast.fix_missing_locations(ast.Module(body=functions, type_ignores=[]))
-    tl = SimpleNamespace(load=lambda ptr: ptr.values[ptr.offset], minimum=min, maximum=max,
-                         constexpr=int, int32=int)
+    def load(ptr):
+        if not 0<=ptr.offset<len(ptr.values):raise IndexError('Actual helper loads outside metadata')
+        return CpuInt(ptr.values[ptr.offset])
+    tl = SimpleNamespace(load=load, minimum=min, maximum=max, constexpr=int, int32=int, int64=int)
     namespace = {'tl': tl}
     exec(compile(module, str(path), 'exec'), namespace)
     return namespace, {fn.name:hashlib.sha256(ast.dump(fn).encode()).hexdigest() for fn in functions}
@@ -60,39 +66,59 @@ def expression(kernel, target):
     return compile(ast.fix_missing_locations(expr), '<actual-sdk-'+target+'>', 'eval')
 
 
-def geometry_check(name, qlen, kvlen, baseline, candidate, helpers):
-    count = qlen//32+1  # exact current main Q32 policy grid
-    tl = SimpleNamespace(program_id=lambda axis: physical_id if axis==0 else head,
-                         num_programs=lambda axis: count)
-    baseline_id = expression(baseline, 'q_block_global_idx')
-    candidate_id = expression(candidate, 'q_block_global_idx')
-    expressions = {key:expression(baseline,key) for key in
-                   ('query_pos','query_offset_0','query_offset_1','query_offset','output_offset')}
-    mapped = []
+def route_mapping(candidate,count,qstart,qstop,kvlen):
+    fn=next(n for n in ast.parse(candidate).body if isinstance(n,ast.FunctionDef))
+    nodes=[copy.deepcopy(n) for n in fn.body if isinstance(n,ast.Assign)
+           and len(n.targets)==1 and isinstance(n.targets[0],ast.Name)
+           and (n.targets[0].id.startswith('route_') or n.targets[0].id=='q_block_global_idx')]
+    code=compile(ast.fix_missing_locations(ast.Module(body=nodes,type_ignores=[])),'<actual-route-prefix>','exec')
+    starts,lengths=Pointer([qstart,qstop]),Pointer([kvlen])
+    load_addresses=[]
+    def load(ptr):
+        assert 0<=ptr.offset<len(ptr.values)
+        load_addresses.append(('q' if ptr.values is starts.values else 'kv',ptr.offset))
+        return CpuInt(ptr.values[ptr.offset])
+    tl=SimpleNamespace(load=load,int64=int,where=lambda c,a,b:a if c else b,
+        program_id=lambda axis:physical_id,num_programs=lambda axis:count)
+    mapped,decisions=[],[]
     for physical_id in range(count):
-        assert eval(baseline_id, {'tl':tl}) == physical_id
-        mapped.append(eval(candidate_id, {'tl':tl}))
+        before=len(load_addresses)
+        env={'tl':tl,'query_start_len_ptr':starts,'seq_lens_ptr':lengths}
+        exec(code,env)
+        mapped.append(env['q_block_global_idx'])
+        decisions.append(bool(env.get('route_reverse',True)))
+        assert load_addresses[before:]==[('q',0),('q',1),('kv',0)]
+    assert len(set(decisions))==1,'Metadata condition depends on a CTA id'
+    expected=(qstart==0 and qstop-qstart>=1024 and kvlen>=qstop-qstart
+              and kvlen-(qstop-qstart)<=4*(qstop-qstart))
+    assert decisions[0]==expected
+    assert mapped==(list(reversed(range(count))) if expected else list(range(count)))
+    return mapped,expected
+
+
+def geometry_check(name,qlen,kvlen,baseline,candidate,helpers,qstart=0,capacity=None):
+    capacity=capacity if capacity is not None else qstart+qlen
+    assert 0<=qstart<32 and qstart+qlen<=capacity
+    count=capacity//32+1  # exact parent grid, including storage padding
+    mapped,reverse=route_mapping(candidate,count,qstart,qstart+qlen,kvlen)
     assert sorted(mapped)==list(range(count))
     assert [mapped[i] for i in mapped]==list(range(count))
-    assert mapped==list(reversed(range(count)))
-    seen = set()
-    records = []
-    invalid = []
+    expressions={key:expression(baseline,key) for key in
+                 ('query_pos','query_offset_0','query_offset_1','query_offset','output_offset')}
+    seen=set();records=[];invalid=[]
     for logical_id in range(count):
-        seq, local, start, n, length = helpers['resolve_seq_and_query_len'](
-            Pointer([0,qlen]), Pointer([kvlen]), logical_id, 1, 32)
-        assert (seq,local,start,n,length)==(0,logical_id,0,qlen,kvlen)
+        seq,local,start,n,length=helpers['resolve_seq_and_query_len'](
+            Pointer([qstart,qstart+qlen]),Pointer([kvlen]),logical_id,1,32)
+        assert (seq,local,start,n,length)==(0,logical_id,qstart,qlen,kvlen)
         if local*32>=n:
-            invalid.append(logical_id)
-            records.append((logical_id,0,0))
-            continue
-        lo,hi,prefix = helpers['compute_tile_loop_bounds'](
+            invalid.append(logical_id);records.append((logical_id,0,0));continue
+        lo,hi,prefix=helpers['compute_tile_loop_bounds'](
             length-n,length,n,local,0,0,64,256,32,8,0,False,False,True,False,-1,-1)
         assert lo==0 and 0<hi<=(kvlen+63)//64
         records.append((logical_id,hi-lo,prefix))
         for head in range(2):
             for offs_m in range(256):
-                env = dict(q_block_local_idx=local,BLOCK_Q=32,num_queries_per_kv=8,
+                env=dict(q_block_local_idx=local,BLOCK_Q=32,num_queries_per_kv=8,
                     cur_batch_in_all_start_index=start,kv_head_idx=head,offs_m=offs_m,
                     offs_d=0,query_stride_0_i64=2048,query_stride_1_i64=128,
                     output_stride_0_i64=2048,output_stride_1_i64=128)
@@ -100,7 +126,7 @@ def geometry_check(name, qlen, kvlen, baseline, candidate, helpers):
                     env[key]=eval(expressions[key],env)
                 token,query_head=env['query_offset_0'],env['query_offset_1']
                 if env['query_pos']>=n:continue
-                assert 0<=token<qlen and 0<=query_head<16
+                assert qstart<=token<qstart+qlen and 0<=query_head<16
                 assert env['query_offset']==env['output_offset']==token*2048+query_head*128
                 env['offs_d']=127
                 assert eval(expressions['output_offset'],env)==env['output_offset']+127
@@ -109,17 +135,60 @@ def geometry_check(name, qlen, kvlen, baseline, candidate, helpers):
     assert len(seen)==qlen*16
     candidate_records=[records[logical_id] for logical_id in mapped]
     assert sorted(candidate_records)==records
-    assert sorted(mapped.index(i) for i in invalid)==list(range(len(invalid)))
-    costs=[record[1] for record in records if record[1]]
-    reverse_costs=[record[1] for record in candidate_records if record[1]]
-    assert costs==sorted(costs) and reverse_costs==sorted(costs,reverse=True)
-    return dict(case=name,query_rows=qlen,kv_rows=kvlen,grid=[count,2],
+    costs=[r[1] for r in records if r[1]]
+    ordered=[r[1] for r in candidate_records if r[1]]
+    assert costs==sorted(costs)
+    assert ordered==(sorted(costs,reverse=True) if reverse else costs)
+    return dict(case=name,query_rows=qlen,kv_rows=kvlen,q_start=qstart,storage_query_rows=capacity,
+        prefix_rows=kvlen-qlen,selected_order='reverse' if reverse else 'forward',grid=[count,2],
         valid_query_ctas=len(costs),overspecified_query_ctas=len(invalid),
         full_launch_id_bijection=True,involution=True,includes_all_invalid_ctas=True,
+        immutable_metadata_condition_uniform=True,metadata_addresses_per_cta=[['q',0],['q',1],['kv',0]],
         exact_output_ownership=True,output_row_heads_checked=len(seen),
         every_program_preserves_original_logical_output_addresses=True,
-        valid_work_is_longest_first=True,first_valid_kv_tiles=reverse_costs[0],
-        last_valid_kv_tiles=reverse_costs[-1],total_kv_tiles_per_head=sum(costs))
+        valid_work_order_matches_route=True,first_valid_kv_tiles=ordered[0],
+        last_valid_kv_tiles=ordered[-1],total_kv_tiles_per_head=sum(costs))
+
+
+def c3_and_metadata_check(root,candidate,helpers):
+    path=root/'vllm_fl/patches/biv150_mixed_decode.py'
+    tree=ast.parse(path.read_text())
+    assignments=[n.value for n in ast.walk(tree) if isinstance(n,ast.Assign)
+                 and any(isinstance(t,ast.Name) and t.id=='suffix_cu' for t in n.targets)]
+    assert len(assignments)==1
+    code=compile(ast.Expression(assignments[0]),'<actual-C3-rebase>','eval')
+    class Starts(list):
+        def __getitem__(self,key):
+            value=super().__getitem__(key)
+            return Starts(value) if isinstance(key,slice) else value
+        def __sub__(self,offset):return Starts(x-offset for x in self)
+    for prefix in (1,31,63,100):
+        starts=Starts(list(range(prefix+1))+[prefix+2017])
+        result=eval(code,{'metadata':SimpleNamespace(query_start_loc=starts),
+                          'prefix':prefix,'count':prefix+1})
+        assert result==[0,2017]
+    # Source-level dependence proof: the decision prefix has no program-id or
+    # num-programs call. Immutable metadata makes the route CTA-uniform.
+    fn=next(n for n in ast.parse(candidate).body if isinstance(n,ast.FunctionDef))
+    decision_nodes=[n for n in fn.body if isinstance(n,ast.Assign)
+                    and isinstance(n.targets[0],ast.Name) and n.targets[0].id.startswith('route_')]
+    assert not any(isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute)
+                   and n.func.attr in ('program_id','num_programs')
+                   for statement in decision_nodes for n in ast.walk(statement))
+    # Larger nonzero starts are not safely supported by the existing helper
+    # for low launch IDs. Keep identity; do not turn this into a new fast path.
+    mapping,reverse=route_mapping(candidate,66,32,2080,4096)
+    assert not reverse and mapping==list(range(66))
+    try:helpers['resolve_seq_and_query_len'](Pointer([32,2080]),Pointer([4096]),0,1,32)
+    except IndexError:original_large_start_unsupported=True
+    else:raise AssertionError('Unexpected actual helper nonzero-start semantics')
+    return dict(c3_source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+        c3_suffix_expression=ast.unparse(assignments[0]),c3_rebase_prefixes=[1,31,63,100],
+        c3_single_suffix_starts_zero=True,decision_has_no_cta_id_dependency=True,
+        condition_uniform_if_metadata_immutable_for_launch=True,
+        larger_nonzero_start_keeps_identity=True,
+        original_helper_large_nonzero_start_unsupported=original_large_start_unsupported,
+        nonzero_start_is_not_new_numerical_support=True)
 
 
 def scope_check(root):
@@ -205,13 +274,20 @@ def main(args):
     helpers,helper_proof=helper_namespace(args.helpers_source)
     records=[geometry_check(name,qlens[0],klens[0],baseline,candidate,helpers)
              for name,(qlens,klens) in CASES.items()]
+    records += [geometry_check('padded_actual1023',1023,5115,baseline,candidate,helpers,capacity=2048),
+        geometry_check('padded_actual1024',1024,5120,baseline,candidate,helpers,capacity=2048),
+        geometry_check('padded_actual1025',1025,5125,baseline,candidate,helpers,capacity=2048),
+        geometry_check('nonzero_start1',1024,5120,baseline,candidate,helpers,qstart=1,capacity=2048),
+        geometry_check('nonzero_start31',1024,5120,baseline,candidate,helpers,qstart=31,capacity=2048)]
+    c3=c3_and_metadata_check(args.source,candidate,helpers)
     # Complete id-permutation proof for each grid length, including one and
     # every threshold/tile boundary through 2049 programs (65536 query rows).
     grids=0
     for count in range(1,2050):
-        mapped=[count-1-i for i in range(count)]
-        assert sorted(mapped)==list(range(count))
-        assert [mapped[j] for j in mapped]==list(range(count))
+        for reverse in (False,True):
+            mapped=[count-1-i if reverse else i for i in range(count)]
+            assert sorted(mapped)==list(range(count))
+            assert [mapped[j] for j in mapped]==list(range(count))
         grids+=1
     try:source_factory(args.sdk_source.read_text().replace(OLD,NEW,1),args.source)
     except ValueError:rejects_changed_sdk=True
@@ -219,8 +295,8 @@ def main(args):
     result=dict(passed=True,cpu_only=True,gpu_executed=False,torch_imported='torch' in sys.modules,
         official_score=False,precision_gate=False,production_unchanged=True,
         source_transform=proof,helper_ast_sha256=helper_proof,scope_checks=scope_check(args.source),
-        controller_checks=controller_check(args.source),
-        complete_grid_sizes_checked=grids, rejects_changed_sdk=rejects_changed_sdk,cases=records,
+        controller_checks=controller_check(args.source),c3_and_metadata_checks=c3,
+        complete_grid_sizes_checked=grids,route_outcomes_checked_per_grid=2, rejects_changed_sdk=rejects_changed_sdk,cases=records,
         limitation='Scalar actual-SDK AST plus ownership proof; device codegen, resources, scheduling and performance untested.')
     assert 'torch' not in sys.modules and 'triton' not in sys.modules
     data=json.dumps(result,indent=2)+'\n'

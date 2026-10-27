@@ -1,0 +1,1051 @@
+{
+  "passed": true,
+  "cpu_only": true,
+  "gpu_executed": false,
+  "torch_imported": false,
+  "official_score": false,
+  "precision_gate": false,
+  "production_unchanged": true,
+  "source_transform": {
+    "sdk_source_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "normalization_source_sha256": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+    "normalized_source_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "reversed_source_sha256": "572c3a765b8206d0debd7617999c0c1e26ade387abf72493b1bf0b53f42408a3",
+    "route_mode": "causal-skew",
+    "context_query_ratio": 4,
+    "exact_byte_inverse": true,
+    "source_line_count_preserved": false,
+    "source_line_delta": 6,
+    "q_debug_lines_baseline": [
+      185,
+      186,
+      187
+    ],
+    "q_debug_lines_candidate": [
+      191,
+      192,
+      193
+    ],
+    "q_debug_lookup": "main Manager inspects actual candidate.fn and original SDK file",
+    "source_edit": "route_q_start = tl.load(query_start_len_ptr).to(tl.int64)\n    route_q_stop = tl.load(query_start_len_ptr + 1).to(tl.int64)\n    route_kv_len = tl.load(seq_lens_ptr).to(tl.int64)\n    route_q_len = route_q_stop - route_q_start\n    route_context = route_kv_len - route_q_len\n    route_reverse = (route_q_start == 0) & (route_q_len >= 1024) & (route_context >= 0) & (route_context <= 4 * route_q_len)\n    q_block_global_idx = tl.where(route_reverse, tl.num_programs(0) - 1 - tl.program_id(0), tl.program_id(0))",
+    "grid_unchanged": true,
+    "parent_dispatch_unchanged": true,
+    "block_m": 256,
+    "block_q": 32,
+    "tile_size": 64,
+    "num_warps": 16,
+    "num_stages": 1,
+    "minimum_query_rows": 1024,
+    "minimum_actual_query_rows": 1024,
+    "num_sequences": 1,
+    "is_3d": false,
+    "metadata_loads": 3,
+    "metadata_uniform_for_launch": true,
+    "metadata_cse_device_verified": false,
+    "route_uses_actual_cu_difference": true,
+    "nonzero_cu_start_keeps_original_order": true,
+    "floating_math_and_output_address_expressions_unchanged": true
+  },
+  "helper_ast_sha256": {
+    "cdiv_fn": "2a221268206c53b7554d9c762b00da7a89884e6833291aedc25bc6e21f0d398f",
+    "resolve_seq_and_query_len": "e39654a8f7ea737f405c74915e35f329aad616ec66dddab7e8653a04b1fe572e",
+    "find_seq_idx": "fce092e76ac079ce23961baea112b82a9c55b9ed59d03fba45de0f7a5481ae46",
+    "compute_tile_loop_bounds": "33d667668ecdb2394f08d74ee87e2bc40dc6bcd2a82d9cb30918b47fa8f1c1be"
+  },
+  "scope_checks": {
+    "matching_scope": true,
+    "rejected_descriptor_changes": 10,
+    "rejected_grids": 3,
+    "uses_actual_parent_descriptor_gate": true
+  },
+  "controller_checks": {
+    "actual_parent_policy_and_tap_executed": true,
+    "same_selected_grid_and_kwargs": true,
+    "caller_kwargs_unchanged": true,
+    "unsupported_scope_uses_parent_fallback": true,
+    "baseline_does_not_recurse": true,
+    "device_executed": false
+  },
+  "c3_and_metadata_checks": {
+    "c3_source_sha256": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
+    "c3_suffix_expression": "metadata.query_start_loc[prefix:count + 1] - prefix",
+    "c3_rebase_prefixes": [
+      1,
+      31,
+      63,
+      100
+    ],
+    "c3_single_suffix_starts_zero": true,
+    "decision_has_no_cta_id_dependency": true,
+    "condition_uniform_if_metadata_immutable_for_launch": true,
+    "larger_nonzero_start_keeps_identity": true,
+    "original_helper_large_nonzero_start_unsupported": true,
+    "nonzero_start_is_not_new_numerical_support": true
+  },
+  "complete_grid_sizes_checked": 2049,
+  "route_outcomes_checked_per_grid": 2,
+  "rejects_changed_sdk": true,
+  "cases": [
+    {
+      "case": "fresh1024",
+      "query_rows": 1024,
+      "kv_rows": 1024,
+      "q_start": 0,
+      "storage_query_rows": 1024,
+      "prefix_rows": 0,
+      "selected_order": "reverse",
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 16,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 272
+    },
+    {
+      "case": "fresh1025",
+      "query_rows": 1025,
+      "kv_rows": 1025,
+      "q_start": 0,
+      "storage_query_rows": 1025,
+      "prefix_rows": 0,
+      "selected_order": "reverse",
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 33,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16400,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 17,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 289
+    },
+    {
+      "case": "fresh2048",
+      "query_rows": 2048,
+      "kv_rows": 2048,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 0,
+      "selected_order": "reverse",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 32,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 1056
+    },
+    {
+      "case": "fresh4096",
+      "query_rows": 4096,
+      "kv_rows": 4096,
+      "q_start": 0,
+      "storage_query_rows": 4096,
+      "prefix_rows": 0,
+      "selected_order": "reverse",
+      "grid": [
+        129,
+        2
+      ],
+      "valid_query_ctas": 128,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 65536,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 4160
+    },
+    {
+      "case": "fresh16384",
+      "query_rows": 16384,
+      "kv_rows": 16384,
+      "q_start": 0,
+      "storage_query_rows": 16384,
+      "prefix_rows": 0,
+      "selected_order": "reverse",
+      "grid": [
+        513,
+        2
+      ],
+      "valid_query_ctas": 512,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 262144,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 256,
+      "last_valid_kv_tiles": 1,
+      "total_kv_tiles_per_head": 65792
+    },
+    {
+      "case": "minimum4k",
+      "query_rows": 1024,
+      "kv_rows": 4096,
+      "q_start": 0,
+      "storage_query_rows": 1024,
+      "prefix_rows": 3072,
+      "selected_order": "reverse",
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 49,
+      "total_kv_tiles_per_head": 1808
+    },
+    {
+      "case": "minimum16k",
+      "query_rows": 1024,
+      "kv_rows": 16384,
+      "q_start": 0,
+      "storage_query_rows": 1024,
+      "prefix_rows": 15360,
+      "selected_order": "forward",
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 241,
+      "last_valid_kv_tiles": 256,
+      "total_kv_tiles_per_head": 7952
+    },
+    {
+      "case": "partial4k",
+      "query_rows": 1025,
+      "kv_rows": 4096,
+      "q_start": 0,
+      "storage_query_rows": 1025,
+      "prefix_rows": 3071,
+      "selected_order": "reverse",
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 33,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16400,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 49,
+      "total_kv_tiles_per_head": 1872
+    },
+    {
+      "case": "chunk4k",
+      "query_rows": 2048,
+      "kv_rows": 4096,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 2048,
+      "selected_order": "reverse",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 33,
+      "total_kv_tiles_per_head": 3104
+    },
+    {
+      "case": "chunk16k",
+      "query_rows": 2048,
+      "kv_rows": 16384,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 14336,
+      "selected_order": "forward",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 225,
+      "last_valid_kv_tiles": 256,
+      "total_kv_tiles_per_head": 15392
+    },
+    {
+      "case": "suffix4k",
+      "query_rows": 1985,
+      "kv_rows": 4096,
+      "q_start": 0,
+      "storage_query_rows": 1985,
+      "prefix_rows": 2111,
+      "selected_order": "reverse",
+      "grid": [
+        63,
+        2
+      ],
+      "valid_query_ctas": 63,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 31760,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 64,
+      "last_valid_kv_tiles": 34,
+      "total_kv_tiles_per_head": 3102
+    },
+    {
+      "case": "suffix16k",
+      "query_rows": 2017,
+      "kv_rows": 16384,
+      "q_start": 0,
+      "storage_query_rows": 2017,
+      "prefix_rows": 14367,
+      "selected_order": "forward",
+      "grid": [
+        64,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 0,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32272,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 225,
+      "last_valid_kv_tiles": 256,
+      "total_kv_tiles_per_head": 15423
+    },
+    {
+      "case": "q2048_prefix6144",
+      "query_rows": 2048,
+      "kv_rows": 8192,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 6144,
+      "selected_order": "reverse",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 128,
+      "last_valid_kv_tiles": 97,
+      "total_kv_tiles_per_head": 7200
+    },
+    {
+      "case": "q2048_prefix8191",
+      "query_rows": 2048,
+      "kv_rows": 10239,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 8191,
+      "selected_order": "reverse",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 160,
+      "last_valid_kv_tiles": 129,
+      "total_kv_tiles_per_head": 9248
+    },
+    {
+      "case": "q2048_prefix8192",
+      "query_rows": 2048,
+      "kv_rows": 10240,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 8192,
+      "selected_order": "reverse",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 160,
+      "last_valid_kv_tiles": 129,
+      "total_kv_tiles_per_head": 9248
+    },
+    {
+      "case": "q2048_prefix8193",
+      "query_rows": 2048,
+      "kv_rows": 10241,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 8193,
+      "selected_order": "forward",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 129,
+      "last_valid_kv_tiles": 161,
+      "total_kv_tiles_per_head": 9280
+    },
+    {
+      "case": "q2048_prefix10240",
+      "query_rows": 2048,
+      "kv_rows": 12288,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 10240,
+      "selected_order": "forward",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 64,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 32768,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 161,
+      "last_valid_kv_tiles": 192,
+      "total_kv_tiles_per_head": 11296
+    },
+    {
+      "case": "q1024_prefix4096",
+      "query_rows": 1024,
+      "kv_rows": 5120,
+      "q_start": 0,
+      "storage_query_rows": 1024,
+      "prefix_rows": 4096,
+      "selected_order": "reverse",
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 80,
+      "last_valid_kv_tiles": 65,
+      "total_kv_tiles_per_head": 2320
+    },
+    {
+      "case": "q1024_prefix4097",
+      "query_rows": 1024,
+      "kv_rows": 5121,
+      "q_start": 0,
+      "storage_query_rows": 1024,
+      "prefix_rows": 4097,
+      "selected_order": "forward",
+      "grid": [
+        33,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 1,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 65,
+      "last_valid_kv_tiles": 81,
+      "total_kv_tiles_per_head": 2336
+    },
+    {
+      "case": "padded_actual1023",
+      "query_rows": 1023,
+      "kv_rows": 5115,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 4092,
+      "selected_order": "forward",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 33,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16368,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 65,
+      "last_valid_kv_tiles": 80,
+      "total_kv_tiles_per_head": 2320
+    },
+    {
+      "case": "padded_actual1024",
+      "query_rows": 1024,
+      "kv_rows": 5120,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 4096,
+      "selected_order": "reverse",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 33,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 80,
+      "last_valid_kv_tiles": 65,
+      "total_kv_tiles_per_head": 2320
+    },
+    {
+      "case": "padded_actual1025",
+      "query_rows": 1025,
+      "kv_rows": 5125,
+      "q_start": 0,
+      "storage_query_rows": 2048,
+      "prefix_rows": 4100,
+      "selected_order": "reverse",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 33,
+      "overspecified_query_ctas": 32,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16400,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 81,
+      "last_valid_kv_tiles": 65,
+      "total_kv_tiles_per_head": 2417
+    },
+    {
+      "case": "nonzero_start1",
+      "query_rows": 1024,
+      "kv_rows": 5120,
+      "q_start": 1,
+      "storage_query_rows": 2048,
+      "prefix_rows": 4096,
+      "selected_order": "forward",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 33,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 65,
+      "last_valid_kv_tiles": 80,
+      "total_kv_tiles_per_head": 2320
+    },
+    {
+      "case": "nonzero_start31",
+      "query_rows": 1024,
+      "kv_rows": 5120,
+      "q_start": 31,
+      "storage_query_rows": 2048,
+      "prefix_rows": 4096,
+      "selected_order": "forward",
+      "grid": [
+        65,
+        2
+      ],
+      "valid_query_ctas": 32,
+      "overspecified_query_ctas": 33,
+      "full_launch_id_bijection": true,
+      "involution": true,
+      "includes_all_invalid_ctas": true,
+      "immutable_metadata_condition_uniform": true,
+      "metadata_addresses_per_cta": [
+        [
+          "q",
+          0
+        ],
+        [
+          "q",
+          1
+        ],
+        [
+          "kv",
+          0
+        ]
+      ],
+      "exact_output_ownership": true,
+      "output_row_heads_checked": 16384,
+      "every_program_preserves_original_logical_output_addresses": true,
+      "valid_work_order_matches_route": true,
+      "first_valid_kv_tiles": 65,
+      "last_valid_kv_tiles": 80,
+      "total_kv_tiles_per_head": 2320
+    }
+  ],
+  "limitation": "Scalar actual-SDK AST plus ownership proof; device codegen, resources, scheduling and performance untested."
+}
