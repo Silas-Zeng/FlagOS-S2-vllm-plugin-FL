@@ -1,0 +1,56 @@
+{
+  "address_bytes_checked": 37248,
+  "allocator_verified": false,
+  "backend_reshape_verified": false,
+  "budget_example": {
+    "legacy_pages": 65536,
+    "legacy_tokens": 1048576,
+    "measured_capacity": false,
+    "per_layer_budget_bytes": 1073741824,
+    "proposed_pages": 85598,
+    "proposed_tokens": 1369568,
+    "theoretical_page_capacity_ratio": 1.3061224489795917,
+    "theoretical_page_saving_fraction": 0.234375,
+    "throughput_prediction_allowed": false
+  },
+  "cpu_contract_passed": true,
+  "format_id": "cjj-k8-bf16-page12544-proposal-v1",
+  "framework_registry_verified": false,
+  "gpu_executed": false,
+  "lifecycle_verified": false,
+  "live_payload_bytes": 12416,
+  "measured_capacity": false,
+  "model_precision_verified": false,
+  "padding_bytes": 128,
+  "page_bytes": 12544,
+  "performance_measured": false,
+  "pinned_spec_property_and_merge_replayed": true,
+  "preserved_semantic_head_size": 128,
+  "raw_v_bf16_patterns": 65536,
+  "rejected_contracts": 10,
+  "repacked_pages": 32,
+  "service_activated": false,
+  "source_sha256": "7e3c220998267190a622e216b2b125306807cf8be3ec1e9a8e84fe6e7a293003",
+  "stock_private_spec_mix_rejected": true,
+  "typed_views": {
+    "code": {
+      "dtype": "int8",
+      "page_stride_elements": 12544,
+      "slot_stride_elements": 256,
+      "storage_offset_elements": 0
+    },
+    "scale_full": {
+      "dtype": "float32",
+      "internal_offset_elements": 1024,
+      "page_stride_elements": 3136,
+      "storage_offset_elements": 0
+    },
+    "value": {
+      "dtype": "bfloat16",
+      "page_stride_elements": 6272,
+      "slot_stride_elements": 256,
+      "storage_offset_elements": 2176
+    }
+  },
+  "zeroer_verified": false
+}
