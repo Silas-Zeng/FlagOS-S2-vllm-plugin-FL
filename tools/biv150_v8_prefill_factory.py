@@ -17,6 +17,7 @@ GUARDS = '''    tl.static_assert(KV_QUANT_MODE == 0, "Private V8 keeps mode NONE
     tl.static_assert(not USE_TD and not USE_TD_QO, "Private V8 pointer path only")
     tl.static_assert(not Q_IS_FP8 and not USE_FP8, "Private V8 uses BF16 Q/output")
     tl.static_assert(query_ptr.dtype.element_ty == tl.bfloat16, "BF16 Q required")
+    tl.static_assert(output_ptr.dtype.element_ty == tl.bfloat16, "BF16 output required")
     tl.static_assert(key_cache_ptr.dtype.element_ty == tl.bfloat16, "BF16 K required")
     tl.static_assert(value_cache_ptr.dtype.element_ty == tl.int8, "Real I8 Vcode view required")
     tl.static_assert(v_scale_cache_ptr.dtype.element_ty == tl.float32, "Real FP32 Vscale view required")
@@ -81,8 +82,10 @@ def normalized_source(sdk, normalizer):
 def restore(candidate):
     need(candidate.count(GUARDS) == candidate.count(VLOAD) == candidate.count(NEW_PV) == 1,
          'Private transform is missing or duplicated')
-    return candidate.replace(GUARDS, '', 1).replace(VLOAD, '', 1).replace(NEW_PV, OLD_PV, 1).replace(
+    restored = candidate.replace(GUARDS, '', 1).replace(VLOAD, '', 1).replace(NEW_PV, OLD_PV, 1).replace(
         'def ' + NAME + '(', 'def kernel_biv150_prefill_stride(', 1)
+    need(digest(restored) == NORMALIZED_SHA, 'Inverse contains an unaudited non-V edit')
+    return restored
 
 
 def build(attention_source, helper_source, normalization_source):
@@ -103,11 +106,12 @@ def build(attention_source, helper_source, normalization_source):
          ast.dump(ast.parse(normalized), include_attributes=False), 'Non-V AST changed')
     original_args = ast.parse(normalized).body[0].args
     candidate_args = ast.parse(candidate).body[0].args
-    need(ast.dump(original_args) == ast.dump(candidate_args), 'Raw kernel ABI changed')
+    need(ast.dump(original_args) == ast.dump(candidate_args), 'Raw parameter schema changed')
     return dict(source=candidate, normalized_source=normalized,
                 metadata=dict(format=FORMAT, sdk_sha256=SDK_SHA, helper_sha256=HELPER_SHA,
                               normalizer_sha256=NORMALIZER_SHA, normalized_sha256=NORMALIZED_SHA,
-                              candidate_sha256=digest(candidate), exact_inverse=True, same_raw_abi=True,
+                              candidate_sha256=digest(candidate), exact_inverse=True,
+                              same_raw_parameter_schema=True, compiled_typed_abi_verified=False,
                               kv_quant_mode=0, production_installed=False, gpu_executed=False))
 
 
@@ -162,6 +166,8 @@ def bind_private(raw, views, scale_handle, *, cache_format, rows, pages, num_seq
     validate_views(views, rows, pages)
     need(type(num_seqs) is int and num_seqs >= 0 and rows >= 0, 'Invalid sequence/row metadata')
     need(num_seqs > 0 or rows == 0, 'Queries without sequences')
+    need(type(max_query_len) is int and 0 <= max_query_len <= rows
+         and (max_query_len > 0 if rows else max_query_len == 0), 'Invalid maximum query metadata')
     need(sdk_selected_2d is True, 'Original dispatcher did not select 2D')
     need(raw.get('KV_QUANT_MODE') == 0 and raw.get('IS_3D') is False, 'Private path requires NONE/2D')
     for flag in ('USE_TD', 'USE_TD_QO', 'Q_IS_FP8', 'USE_FP8', 'USE_ALIBI_SLOPES', 'USE_ALIBI_SQRT',
@@ -184,7 +190,7 @@ def bind_private(raw, views, scale_handle, *, cache_format, rows, pages, num_seq
     bound = dict(raw, v_scale_cache_ptr=scale_handle,
                  stride_vs_blk=views['scales'].strides[0], stride_vs_slot=views['scales'].strides[1],
                  stride_vs_head=views['scales'].strides[2])
-    need(all(bound[k] == raw[k] for k in raw if k not in ('v_scale_cache_ptr', 'stride_vs_blk', 'stride_vs_slot', 'stride_vs_head')),
+    need(all(bound[k] is raw[k] for k in raw if k not in ('v_scale_cache_ptr', 'stride_vs_blk', 'stride_vs_slot', 'stride_vs_head')),
          'Private binding changed non-V arguments')
     return bound, dict(no_launch=rows == 0, cache_format=FORMAT, ordinary_bf16_fallback_allowed=False)
 
