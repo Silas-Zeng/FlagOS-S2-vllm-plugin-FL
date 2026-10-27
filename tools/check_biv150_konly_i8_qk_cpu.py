@@ -62,14 +62,34 @@ def host_case(pattern):
                 tails=tails, expected=expected)
 
 
-def run_checks():
-    source = KERNEL.read_text()
+def validate_dot_contract(source):
+    """I8 dot with an I32 acc must explicitly override tl.dot's F32 default."""
     tree = ast.parse(source)
     funcs = [n for n in tree.body if isinstance(n, ast.FunctionDef)]
-    assert len(funcs) == 1 and funcs[0].name == 'konly_i8_qk_probe'
+    if len(funcs) != 1 or funcs[0].name != 'konly_i8_qk_probe':
+        raise ValueError('unexpected primitive function')
     calls = [n for n in ast.walk(funcs[0]) if isinstance(n, ast.Call)]
     dots = [n for n in calls if isinstance(n.func, ast.Attribute) and n.func.attr == 'dot']
-    assert len(dots) == 1 and ast.unparse(dots[0]) == 'tl.dot(Q, K, zero)'
+    if len(dots) != 1 or ast.unparse(dots[0]) != 'tl.dot(Q, K, zero, out_dtype=tl.int32)':
+        raise ValueError('explicit signed-I8/I32 tl.dot output dtype required')
+    zero = [n.value for n in ast.walk(funcs[0]) if isinstance(n,ast.Assign)
+            and any(isinstance(t,ast.Name) and t.id == 'zero' for t in n.targets)]
+    if len(zero) != 1 or ast.unparse(zero[0]) != 'tl.zeros((8, 16), dtype=tl.int32)':
+        raise ValueError('I32 accumulator required')
+
+
+def run_checks():
+    source = KERNEL.read_text()
+    validate_dot_contract(source)
+    dtype_negatives = [source.replace(', out_dtype=tl.int32',''),
+                       source.replace('out_dtype=tl.int32','out_dtype=tl.float32'),
+                       source.replace('zero = tl.zeros((8, 16), dtype=tl.int32)',
+                                      'zero = tl.zeros((8, 16), dtype=tl.float32)')]
+    for bad_source in dtype_negatives:
+        assert bad_source != source
+        try: validate_dot_contract(bad_source)
+        except ValueError: pass
+        else: raise AssertionError('acc/output dtype mismatch accepted')
     assert 'page = tl.load(physical_pages + case).to(tl.int64)' in source
     assert 'head = tl.load(kv_heads + case).to(tl.int64)' in source
     assert 'tl.zeros((8, 16), dtype=tl.int32)' in source
@@ -173,6 +193,7 @@ def run_checks():
                 exact_integer_extrema=[min(raw_extrema),max(raw_extrema)],
                 missing_actual_ir_rejected=True, positive_actual_ir_not_available=True,
                 actual_pr55_wrong_geometry_ir_rejected=True,
+                explicit_i32_dot_dtype_contract=True, dtype_contract_negative_cases=len(dtype_negatives),
                 source_destination_separate=True, active_page_payload_bytes=12416, allocated_page_bytes=16384,
                 capacity_reclaimed=False, device_native_path_verified=False, performance_verified=False, service_verified=False)
 

@@ -28,7 +28,7 @@ def konly_i8_qk_probe(
     key_offset = page * 16384 + columns[None, :] * 256 + head * 128 + dims[:, None]
     K = tl.load(packed_code + key_offset, mask=columns[None, :] < valid, other=0)
     zero = tl.zeros((8, 16), dtype=tl.int32)
-    raw = tl.dot(Q, K, zero)
+    raw = tl.dot(Q, K, zero, out_dtype=tl.int32)
     qs = tl.load(query_scale + case * 8 + rows)
     scale_offset = page * 4096 + 1024 + columns * 2 + head
     ks = tl.load(packed_scale + scale_offset, mask=columns < valid, other=1.0)
