@@ -16,8 +16,10 @@ PYTHONDONTWRITEBYTECODE=1 python3 tools/bench_biv150_konly_q32_numeric.py --run-
   --source-root /workspace/experiments/minicpm-s2/cjj-konly-prefill-q32-compile-v1-20261027/sources
 ```
 
-The supplied source-root must be the retained original d6 source/debug root:
-baseline.py/candidate.py bytes are compared to the original archive. The fixed
+The supplied source-root must be the retained original d6 source/debug root.
+The corrected per-role binding uses d6 for baseline/unhoisted, and the original
+bb source root for hoisted (derived from each archived TTIR). Every file's bytes
+are compared to its original archive. The fixed
 override is read from its original compiled path
 `/workspace/experiments/minicpm-s2/cjj-konly-q32-hoist-compile-v1-20261027/fixed-q32-i8-operand-hoist.ttgir`.
 It must already exist and match ef347cd; neither original path is modified or
@@ -33,10 +35,14 @@ initialization is GPU work outside numerical checking, not zero-launch compile.
 
 Actual2048-row Tensor descriptors are allocated and all three roles warm up
 before any encoder/reader launch. They must match reviewed kernel hashes, typed
-ABI/options, source and TTIR/TTGIR/LLVM/ASM/cubin bytes. Every warmup first exports
+ABI/options, source and TTIR/TTGIR/LLVM/cubin bytes. All warmups first export
 all actual files and record, then saves the full expected record and a separate
 expected/actual difference JSON. Unknown changed specialization stops with those
-actual bytes retained; nothing is replaced to match the proof. The hoisted actual positive auditor also reruns. Handle
+actual bytes retained; nothing is replaced to match the proof. Printed ASM is
+also retained and compared. A bounded ASM-text difference requires exact cubin,
+exact preceding IR/ABI/options, the same instruction/control sequence and each
+role's strict actual audit; see the separate9f binding-refusal report. The
+hoisted actual positive auditor also reruns. Handle
 initialization records known positive register/warp fields and known zero spills.
 No resource decline is interpreted as performance.
 
