@@ -37,3 +37,7 @@ python tools/bench_biv150_konly_compact_device.py --run-gpu --case 16k --commit 
 ```
 
 A busy9031 or GPU-memory check refuses; it is not a replacement for Root's exclusive scheduling. Source HEAD/clean tree, exact8bab production, current pinned JIT/frontend and target ABI must match. Runtime errors write their real result/traceback and propagate. Output directories cannot be reused. No SSH/JIT/GPU work was performed by the author; all device/IR/numeric/Graph/side/resource/model/service/capacity/performance gates remain pending in this freeze.
+
+## Frontend correction v2 (no kernel/numerical changes)
+
+Root separate import probe showed normal platform bootstrap already loads the current-source `vllm_fl` and initializes CUDA. The354 candidate's package-absence assertion would incorrectly refuse; no91 GPU run was made with354. The preserved observation is labeled with its separate source path. The next tools revision allows normal platform bootstrap without disabling plugins, authenticates actual package/patch/private module paths and frozen-source SHA, requires all private cache/hoist flags off and both service `_STATE` values absent/None, and reuses canonical already-loaded modules. Five CPU rejection tests cover foreign paths, activation switches and active service state. The original complete numeric NPZ/checks are now saved before the unchanged final-FP64 assertion, so a failing first numeric record remains reviewable. CPU v2 is `cpu-bootstrap-v2.json`; the original v1 CPU report,354 source and absence of a354 device run remain explicit.

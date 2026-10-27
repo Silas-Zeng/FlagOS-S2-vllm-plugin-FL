@@ -91,3 +91,34 @@ def plan():
         kernel_math_changed=False,old_16KiB_or_hoist_qualification_used=False,
         compile_executed=False,GPU_executed=False,service_or_capacity_verified=False,
         following_scopes=['SDK raw3D','2D','Q32','multi2','actual service allocation/Graph/lifecycle/model/performance'])
+
+
+def bootstrap_receipt(modules=None,environ=None):
+    """Allow normal platform bootstrap; authenticate source and reject private activation."""
+    import os
+    modules=sys.modules if modules is None else modules
+    env=os.environ if environ is None else environ
+    switches=('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','VLLM_FL_BIV150_KONLY_ENCODED_SERVICE',
+              'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST')
+    assert all(env.get(k,'0')!='1' for k in switches),'private component/service switch active'
+    observed={}
+    names=[n for n in modules if n in ('vllm_fl','vllm_fl.patches') or n.startswith('vllm_fl.patches.biv150_konly_')]
+    for name in names:
+        m=modules[name];relative=name.replace('.','/')+('.py' if name not in ('vllm_fl','vllm_fl.patches') else '/__init__.py')
+        expected=(ROOT/relative).resolve();actual=Path(getattr(m,'__file__','')).resolve()
+        assert actual==expected,'bootstrap source path mismatch: '+name
+        data=actual.read_bytes();assert sha(data)==sha(blob(relative)),'bootstrap source hash mismatch: '+name
+        if name.endswith('_service'):
+            assert hasattr(m,'_STATE') and m._STATE is None,'private service already activated: '+name
+        observed[name]=dict(path=str(actual),sha256=sha(data))
+    return dict(platform_bootstrap_allowed=True,package_imported='vllm_fl' in modules,
+                source_modules=observed,private_switches={k:env.get(k,'0') for k in switches},private_service_activated=False)
+
+
+def owned_load(path,name):
+    """Reuse an authenticated existing module; preserve normal platform objects."""
+    if name in sys.modules:
+        m=sys.modules[name];assert Path(m.__file__).resolve()==path.resolve()
+        relative=str(path.resolve().relative_to(ROOT));assert sha(path.read_bytes())==sha(blob(relative))
+        return m
+    return load(path,name)

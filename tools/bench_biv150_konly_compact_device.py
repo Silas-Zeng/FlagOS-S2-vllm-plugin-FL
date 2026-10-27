@@ -11,7 +11,7 @@ import socket
 import subprocess
 import sys
 from types import SimpleNamespace as NS
-from biv150_konly_compact_device_contract import ROOT,BASE,MAIN,PARENT,FORMAT,CASES,PAGE,GUARD,sha,load,refs,packed,append,mapping,plan
+from biv150_konly_compact_device_contract import ROOT,BASE,MAIN,PARENT,FORMAT,CASES,PAGE,GUARD,sha,load,refs,packed,append,mapping,plan,bootstrap_receipt,owned_load
 
 
 def save(path,value):path.write_text(json.dumps(value,indent=2)+'\n')
@@ -122,9 +122,9 @@ def allocator_probe(torch):
     values=scope['_allocate_kv_cache_tensors'](NS(device='cuda:0',runner_only_attn_layers=set()),config)
     actual=values['component'];assert actual.untyped_storage().nbytes()==2*PAGE and actual.storage_offset()==0
     # Actual fixed class/reshape; registration and worker hooks are not activated.
-    identity=load(ROOT/'vllm_fl/patches/biv150_konly_compact_identity.py','vllm_fl.patches.biv150_konly_compact_identity')
+    identity=owned_load(ROOT/'vllm_fl/patches/biv150_konly_compact_identity.py','vllm_fl.patches.biv150_konly_compact_identity')
     identity.verify_package();identity.verify_core(('vllm.v1.kv_cache_interface',))
-    specmod=load(ROOT/'vllm_fl/patches/biv150_konly_compact_spec.py','vllm_fl.patches.biv150_konly_compact_spec')
+    specmod=owned_load(ROOT/'vllm_fl/patches/biv150_konly_compact_spec.py','vllm_fl.patches.biv150_konly_compact_spec')
     spec=specmod.CompactFullAttentionSpec(block_size=16,num_kv_heads=2,head_size=128,dtype=torch.bfloat16)
     import biv150_konly_compact_kv_bridge as bridge
     carrier=bridge.reshape_compact(actual,spec,(2,2,16,2,128),(0,1,2,3,4),2,None,torch=torch,spec_class=specmod.CompactFullAttentionSpec)
@@ -161,17 +161,17 @@ def run(args,proof):
         assert sha(mathsrc.read_bytes())=='474139317072193ad472f182967e09fa2b46c9b7a4115d4dc3bfba1960f25964'
         reference=refs();base=load(ROOT/'vllm_fl/patches/biv150_gqa_decode.py','cjj_compact_BF16_control')
         helper=load(ROOT/'tools/biv150_benchmark_utils.py','cjj_compact_calls')
-        # Preload exact dependency modules; importing vllm_fl/__init__ would activate
-        # unrelated patch machinery and is deliberately excluded in this component.
-        assert 'vllm_fl' not in sys.modules,'component must start without plugin activation'
-        load(ROOT/'vllm_fl/patches/biv150_konly_encoded_writer.py','vllm_fl.patches.biv150_konly_encoded_writer')
-        writer=load(ROOT/'vllm_fl/patches/biv150_konly_compact_writer.py','vllm_fl.patches.biv150_konly_compact_writer')
+        # The real platform bootstrap may already load this source package and
+        # initialize CUDA. Authenticate it without disabling/replacing plugins.
+        result['bootstrap_before_roles']=bootstrap_receipt();result['platform_cuda_initialized']=bool(torch.cuda.is_initialized());checkpoint()
+        owned_load(ROOT/'vllm_fl/patches/biv150_konly_encoded_writer.py','vllm_fl.patches.biv150_konly_encoded_writer')
+        writer=owned_load(ROOT/'vllm_fl/patches/biv150_konly_compact_writer.py','vllm_fl.patches.biv150_konly_compact_writer')
         own=load(ROOT/'vllm_fl/patches/biv150_konly_compact_decode.py','cjj_compact_decode')
         views=load(ROOT/'vllm_fl/patches/biv150_konly_compact_views.py','cjj_compact_views')
         probe=load(ROOT/'tools/kernels/biv150_compact_codec_probe.py','cjj_compact_codec_probe')
         result['imports']=dict(torch=torch.__file__,torch_version=str(torch.__version__),triton=triton.__file__,numpy=np.__file__,numpy_version=np.__version__)
         result['stage']='actual_byte_allocator_and_spec';checkpoint()
-        result['allocator']=allocator_probe(torch);assert 'vllm_fl' not in sys.modules
+        result['allocator']=allocator_probe(torch);result['bootstrap_after_allocator']=bootstrap_receipt();checkpoint()
         result['stage']='M1_M8_codec';checkpoint()
         vectors=reference['codec_vectors']();source=torch.tensor(vectors,dtype=torch.bfloat16);qc,qs,_=reference['quantize_cpu'](source,torch,np)
         codec=[]
@@ -294,13 +294,13 @@ def run(args,proof):
                 checks=[dict(row=a['row'],length=a['length'],integer_bound=a['integer_bound'],**reference['reference_gates'](
                     cases['baseline']['out'][a['row']].cpu().float().flatten().tolist(),cases['compact']['out'][a['row']].cpu().float().flatten().tolist(),
                     a['original'].flatten().tolist(),a['quantized'].flatten().tolist())) for a in answers]
-                assert all(v['baseline_hard_passed'] and v['quantized_operand']['finite'] and v['quantized_operand']['pointwise_passed'] for v in checks)
                 witness=args.out/(name+'-numeric-'+str(i)+'.npz')
                 np.savez_compressed(witness,**{label+'_'+k:v.numpy() for label,arrays in snapshot.items() for k,v in arrays.items()},
                     q_bits=bits(control['q']).numpy(),table=control['table'].numpy(),lengths=np.array(control['lengths']),slots=np.array(control['slots'],dtype=np.int64),
                     new_k_bits=bits(control['new_k']).numpy(),new_v_bits=bits(control['new_v']).numpy(),selected_rows=np.array(selected),
                     original_reference=np.stack([a['original'].numpy() for a in answers]),quantized_reference=np.stack([a['quantized'].numpy() for a in answers]))
                 record['numeric'].append(dict(iteration=i,checks=checks,witness=dict(path=witness.name,bytes=witness.stat().st_size,sha256=sha(witness.read_bytes()))));checkpoint()
+                assert all(v['baseline_hard_passed'] and v['quantized_operand']['finite'] and v['quantized_operand']['pointwise_passed'] for v in checks)
             for label,k in compiled.items():
                 loaded,strings=preserve(k,args.out,name+'-'+label+'-loaded','post_launch');record['resources'][label]=loaded
                 if label=='compact':
