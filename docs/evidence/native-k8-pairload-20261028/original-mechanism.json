@@ -1,0 +1,76 @@
+{
+  "boundary": "Standalone LLVM/ASM from the original compile collector; SO embedded image is verified equal to object image, not claimed byte-identical to this standalone ASM pipeline.",
+  "fact": "Full-page K has8 global dword reads and8 shared stores; lane/global/shared offsets are already in loop preheader.",
+  "fullstep_background": {
+    "completed": true,
+    "errors": [],
+    "qualification_transferred": false,
+    "records": [
+      {
+        "BF16_ms": 0.4164172112941742,
+        "K8_ms": 0.39536985754966736,
+        "case": "4k"
+      },
+      {
+        "BF16_ms": 0.8056746125221252,
+        "K8_ms": 0.7645680010318756,
+        "case": "16k"
+      }
+    ],
+    "summary_sha256": "a6309921e2a78bb2e9a790b3049e05fb2210a5aa0a7c64d1c02eb1354320e5af"
+  },
+  "history_scope": {
+    "excluded_variants": [
+      "PR96 V-first issue-order only",
+      "PR99 Q reload only",
+      "PR100 compact12544 address only"
+    ],
+    "fetch_status": "Attempted; failed to connect after75002ms. API independently confirmed known main4229; do not report fetch success.",
+    "known_local_all_ref_grep": "Native K8/packed/transpose/scatter/wordpair/vector/wide-load paths inspected; no same Native pair-copy experiment found.",
+    "research_documents": {
+      "\u5929\u6570BI-V150_\u5168\u6808\u4f18\u5316\u6269\u5c55\u8c03\u7814_2026-10-25.md": "6e9c813fd2eee225e3fd4a88a679e0b79b1d7db0fcefa102c154a05e77ea65e7",
+      "\u5929\u6570BI-V150_\u7b97\u5b50\u4f18\u5316\u8c03\u7814\u6e05\u5355_2026-10-24.md": "e77e4854390c94140b7016bcbe449b6b30b3ca1b0473201427067360f3018299"
+    },
+    "team_main_API": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b"
+  },
+  "idealized_issue_only_bound": "If f is old full-step time spent on the halved K-global-issue portion, speedup <=1/(1-f/2) assuming other costs/resources unchanged. f unmeasured; no percentage forecast.",
+  "no_HBM_byte_reduction": true,
+  "original_collector_manifest_sha256": "77c2066cbc6ab0d8da8e215e0c07d355665f8ce0e184536acd5f39a44ba718ea",
+  "original_library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "requested": "4 global8-byte copies,8 independent shared-word stores; actual vector lowering/latency/resources unknown.",
+  "standalone_actual_CoreX_compiler_artifacts": {
+    "out/biv150_native_k8_qk.ll": {
+      "bytes": 188066,
+      "excerpts": [
+        {
+          "first": 562,
+          "last": 614,
+          "text": "  %542 = ashr exact i32 %537, 4\n  %543 = sext i32 %542 to i64\n  %544 = getelementptr inbounds i32, ptr addrspace(1) %347, i64 %543\n  %545 = load i32, ptr addrspace(1) %544, align 4\n  %546 = sext i32 %545 to i64\n  %547 = shl nsw i64 %546, 14\n  %548 = getelementptr i8, ptr addrspace(1) %352, i64 %547\n  %549 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %402\n  %550 = getelementptr inbounds nuw i8, ptr addrspace(1) %549, i64 %404\n  %551 = load i32, ptr addrspace(1) %550, align 4\n  store i32 %551, ptr addrspace(3) %411, align 4\n  %552 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %416\n  %553 = getelementptr inbounds nuw i8, ptr addrspace(1) %552, i64 %418\n  %554 = load i32, ptr addrspace(1) %553, align 4\n  store i32 %554, ptr addrspace(3) %425, align 4\n  %555 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %430\n  %556 = getelementptr inbounds nuw i8, ptr addrspace(1) %555, i64 %432\n  %557 = load i32, ptr addrspace(1) %556, align 4\n  store i32 %557, ptr addrspace(3) %442, align 4\n  %558 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %447\n  %559 = getelementptr inbounds nuw i8, ptr addrspace(1) %558, i64 %449\n  %560 = load i32, ptr addrspace(1) %559, align 4\n  store i32 %560, ptr addrspace(3) %459, align 4\n  %561 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %464\n  %562 = getelementptr inbounds nuw i8, ptr addrspace(1) %561, i64 %466\n  %563 = load i32, ptr addrspace(1) %562, align 4\n  store i32 %563, ptr addrspace(3) %476, align 4\n  %564 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %481\n  %565 = getelementptr inbounds nuw i8, ptr addrspace(1) %564, i64 %483\n  %566 = load i32, ptr addrspace(1) %565, align 4\n  store i32 %566, ptr addrspace(3) %493, align 4\n  %567 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %498\n  %568 = getelementptr inbounds nuw i8, ptr addrspace(1) %567, i64 %500\n  %569 = load i32, ptr addrspace(1) %568, align 4\n  store i32 %569, ptr addrspace(3) %510, align 4\n  %570 = getelementptr inbounds nuw i8, ptr addrspace(1) %548, i64 %515\n  %571 = getelementptr inbounds nuw i8, ptr addrspace(1) %570, i64 %517\n  %572 = load i32, ptr addrspace(1) %571, align 4\n  store i32 %572, ptr addrspace(3) %527, align 4\n  tail call void @llvm.bi.sl.barrier()\n  %573 = getelementptr inbounds i8, ptr addrspace(1) %3, i64 %547\n  %574 = addrspacecast ptr addrspace(1) %573 to ptr\n  %575 = getelementptr inbounds nuw %struct.__ix_bfloat16, ptr %574, i64 %351\n  %576 = ptrtoint ptr %575 to i64\n  %577 = insertelement <2 x i64> poison, i64 %576, i64 0\n  %578 = bitcast <2 x i64> %577 to <4 x i32>\n  %579 = shufflevector <4 x i32> %578, <4 x i32> <i32 poison, i32 poison, i32 -1, i32 512>, <4 x i32> <i32 0, i32 1, i32 6, i32 7>\n  tail call void @llvm.bi.sme.load.16x1b64.rowxfb16(i32 add (i32 ptrtoint (ptr addrspacecast (ptr addrspace(3) @_ZZ34corex_native_k8_gqa_producer_draftILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_E5stage to ptr) to i32), i32 4096), <4 x i32> %579, i32 0, i32 0)\n  tail call void @llvm.bi.sme.load.16x1b64.rowxfb16(i32 add (i32 ptrtoint (ptr addrspacecast (ptr addrspace(3) @_ZZ34corex_native_k8_gqa_producer_draftILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_E5stage to ptr) to i32), i32 5120), <4 x i32> %579, i32 64, i32 0)\n  tail call void @llvm.bi.sme.load.16x1b64.rowxfb16(i32 add (i32 ptrtoint (ptr addrspacecast (ptr addrspace(3) @_ZZ34corex_native_k8_gqa_producer_draftILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_E5stage to ptr) to i32), i32 6144), <4 x i32> %579, i32 128, i32 0)\n  tail call void @llvm.bi.sme.load.16x1b64.rowxfb16(i32 add (i32 ptrtoint (ptr addrspacecast (ptr addrspace(3) @_ZZ34corex_native_k8_gqa_producer_draftILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_E5stage to ptr) to i32), i32 7168), <4 x i32> %579, i32 192, i32 0)\n  tail call void @llvm.bi.sl.waitcnt(i64 8)\n  tail call void @llvm.bi.sl.barrier()\n"
+        }
+      ],
+      "sha256": "734c9227aeb9ab601b47c579e9843a002b3e4eef6db23302537d44ebdca85b60"
+    },
+    "out/biv150_native_k8_qk.s": {
+      "bytes": 101164,
+      "excerpts": [
+        {
+          "first": 529,
+          "last": 657,
+          "text": "\tml_add_i32 v1, tid, 0x40\n\tml_add_i32 v2, tid, 0x80\n\tml_add_i32 v3, tid, 0xc0\n\tml_add_i32 v4, tid, 0x100\n\tml_add_i32 v5, tid, 0x140\n\tml_add_i32 v6, tid, 0x180\n\tml_add_i32 v7, tid, 0x1c0\n\tml_shl_b32 v0, v0, 0x1\n\tml_and_b32 v12, tid, 0x20\n\tml_shl_b32 v13, tid, 0x2\n\tml_xor_b32 v14, tid, 0x20\n\tml_srl_b32 v15, tid, 0x5\n\tml_shl_b32 v16, tid, 0x6\n\tml_srl_b32 v68, v1, 0x5\n\tml_shl_b32 v1, v1, 0x2\n\tml_srl_b32 v66, v2, 0x5\n\tml_shl_b32 v2, v2, 0x2\n\tml_srl_b32 v64, v3, 0x5\n\tml_shl_b32 v3, v3, 0x2\n\tml_srl_b32 v62, v4, 0x5\n\tml_shl_b32 v4, v4, 0x2\n\tml_srl_b32 v60, v5, 0x5\n\tml_shl_b32 v5, v5, 0x2\n\tml_srl_b32 v58, v6, 0x5\n\tml_shl_b32 v6, v6, 0x2\n\tml_srl_b32 v55, v7, 0x5\n\tml_shl_b32 v7, v7, 0x2\n\tsl_mull_u32 s50, s7, 0x80\n\tml_srl_b32 v12, v12, 0x1\n\tml_and_b32 v56, v16, 0x4c0\n\tml_and_b32 v13, v13, 0x30\n\tml_shl_b32 v15, v15, 0x2\n\tml_and_b32 v1, v1, 0x30\n\tml_shl_b32 v16, v68, 0x2\n\tml_anyop3_b32 v67, 48, v2, 16, 0x78\n\tml_anyop3_b32 v65, 48, v3, 16, 0x78\n\tml_anyop3_b32 v63, 48, v4, 32, 0x78\n\tml_anyop3_b32 v61, 48, v5, 32, 0x78\n\tml_andn2_b32 v59, 48, v6\n\tml_andn2_b32 v57, 48, v7\n\tml_shl_b32 v47, v14, 0x2\n\tsl_mull_u32 s42, s7, 0x100\n\tsl_mull_u32 s28, s7, 0x4\n\tml_anyop3_b32 v50, v0, v12, v19, 0xfffffffe\n\tml_anyop3_b32 v70, v15, v13, v56, 0xfffffffe\n\tml_anyop3_b32 v69, v16, v1, v56, 0xfffffffe\n\tml_mov_b32 v0, 0x0\n\tml_mov_b32 v1, 0x0\n\tml_mov_b32 v2, 0x0\n\tml_mov_b32 v3, 0x0\n\tml_mov_b32 v4, 0x0\n\tml_mov_b32 v5, 0x0\n\tml_mov_b32 v6, 0x0\n\tml_mov_b32 v7, 0x0\n\tml_mov_b32 v12, 0x0\n\tml_mov_b32 v13, 0x0\n\tml_mov_b32 v14, 0x0\n\tml_mov_b32 v15, 0x0\n\tml_mov_b32 v16, 0x0\n\tml_mov_b32 v17, 0x0\n\tml_mov_b32 v18, 0x0\n\tml_mov_b32 v19, 0x0\n\tml_mov_b32 v20, 0x0\n\tml_mov_b32 v21, 0x0\n\tml_mov_b32 v22, 0x0\n\tml_mov_b32 v23, 0x0\n\tml_mov_b32 v24, 0x0\n\tml_mov_b32 v25, 0x0\n\tml_mov_b32 v26, 0x0\n\tml_mov_b32 v27, 0x0\n\tml_mov_b32 v28, 0x0\n\tml_mov_b32 v29, 0x0\n\tml_mov_b32 v30, 0x0\n\tml_mov_b32 v31, 0x0\n\tml_mov_b32 v49, 0xff800000\n\tml_mov_b32 v46, 0x0\n\tml_mov_b32 v45, 0x0\n\tsl_cbr_wcrz BB0_12\n; %bb.6:\n\tsl_mov_b32 s51, s43\n\tsl_add_i64 s[52:53], s[30:31], s[50:51]\n\tml_mov_b32 v0, 0xc0\n\tml_shl_b32 v1, tid, 0x4\n\tml_anyop3_b32 v0, v0, v1, tid, 0xfffffff8\n\tml_shl_b32 v72, v0, 0x2\n\tml_xor_b32 v73, v72, 0x10\n\tml_xor_b32 v74, v72, 0x20\n\tml_xor_b32 v75, v72, 0x30\n\tml_xor_b32 v76, v50, 0x10\n\tml_and_b32 v0, tid, 0x20\n\tml_cmp_ne_u32 tcr, v0, 0x0\n\tml_srl_b32 v0, tid, 0x3\n\tml_and_b32 v0, v0, 0x4\n\tml_add_i32 v1, tid, 0xc0\n\tsl_mov_b64 s[6:7], tcr\n\tml_srl_b32 v1, v1, 0x3\n\tml_and_b32 v1, v1, 0xc\n\tml_add_i32 v2, tid, 0x140\n\tml_srl_b32 v2, v2, 0x3\n\tml_and_b32 v2, v2, 0xc\n\tml_add_i32 v3, tid, 0x1c0\n\tml_srl_b32 v3, v3, 0x3\n\tml_and_b32 v3, v3, 0xc\n\tml_srl_b32 v4, tid, 0x5\n\tml_shl_b32 v4, v4, 0x6\n\tml_and_b32 v5, tid, 0x1f\n\tml_or_b32 v77, v4, v5\n\tml_shl_b32 v4, v68, 0x6\n\tml_or_b32 v78, v4, v5\n\tml_shl_b32 v4, v66, 0x6\n\tml_or_b32 v79, v4, v5\n\tml_shl_b32 v4, v64, 0x6\n\tml_or_b32 v80, v4, v5\n\tml_shl_b32 v4, v62, 0x6\n\tml_or_b32 v81, v4, v5\n\tml_shl_b32 v4, v60, 0x6\n\tml_or_b32 v82, v4, v5\n\tml_shl_b32 v4, v58, 0x6\n\tml_or_b32 v83, v4, v5\n\tml_shl_b32 v4, v55, 0x6\n\tml_or_b32 v84, v4, v5\n\tml_mov_b32 v33, 0xff800000\n\tsl_mov_b32 s15, 0xfff00004\n\tml_anyop3_b32 v85, v0, v67, v56, 0xfffffffe\n\tml_anyop3_b32 v86, v1, v65, v56, 0xfffffffe\n\tml_anyop3_b32 v87, v0, v63, v56, 0xfffffffe\n\tml_anyop3_b32 v88, v2, v61, v56, 0xfffffffe\n\tml_anyop3_b32 v89, v0, v59, v56, 0xfffffffe\n\tml_anyop3_b32 v90, v3, v57, v56, 0xfffffffe\n"
+        },
+        {
+          "first": 759,
+          "last": 803,
+          "text": "BB0_8:                                  ; =>This Inner Loop Header: Depth=1\n\tsl_sra_b32 {s12, wcr}, s9, 0x4\n\tsl_sra_b32 {s13, wcr}, s12, 0x1f\n\tsl_shl_b64 {s[12:13], wcr}, s[12:13], 0x2\n\tsl_add_i64 s[12:13], s[48:49], s[12:13]\n\tsl_lsa_load_b32x1 s12, s[12:13], noreg, #0, ca\n\tsl_wait smcnt(0)\n\tsl_sra_b32 {s13, wcr}, s12, 0x1f\n\tsl_shl_b64 {s[44:45], wcr}, s[12:13], 0xe\n\tsl_add_i64 s[12:13], s[52:53], s[44:45]\n\tml_lsa_load_dword v32, s[12:15], unsigned v77, noreg, #0, ca|mie\n\tml_lsa_load_dword v48, s[12:15], unsigned v78, noreg, #0, ca|mie\n\tml_lsa_load_dword v49, s[12:15], unsigned v79, noreg, #0, ca|mie\n\tml_lsa_load_dword v92, s[12:15], unsigned v80, noreg, #0, ca|mie\n\tml_lsa_load_dword v93, s[12:15], unsigned v81, noreg, #0, ca|mie\n\tsl_wait vmcnt(4)\n\tml_slb_store_b32x1  v32, v70, noreg, #0, null\n\tsl_wait vmcnt(3)\n\tml_slb_store_b32x1  v48, v69, noreg, #0, null\n\tsl_wait vmcnt(2)\n\tml_slb_store_b32x1  v49, v85, noreg, #256, null\n\tsl_wait vmcnt(1)\n\tml_slb_store_b32x1  v92, v86, noreg, #256, null\n\tsl_wait vmcnt(0)\n\tml_slb_store_b32x1  v93, v87, noreg, #512, null\n\tml_lsa_load_dword v32, s[12:15], unsigned v82, noreg, #0, ca|mie\n\tml_lsa_load_dword v48, s[12:15], unsigned v83, noreg, #0, ca|mie\n\tml_lsa_load_dword v49, s[12:15], unsigned v84, noreg, #0, ca|mie\n\tsl_wait vmcnt(2)\n\tml_slb_store_b32x1  v32, v88, noreg, #512, null\n\tsl_wait vmcnt(1)\n\tml_slb_store_b32x1  v48, v89, noreg, #768, null\n\tsl_wait vmcnt(0)\n\tml_slb_store_b32x1  v49, v90, noreg, #768, null\n\tsl_wait lmcnt(0)\n\tsl_barrier \n\tsl_add_i64 s[12:13], s[34:35], s[44:45]\n\tsl_add_i64 s[36:37], s[12:13], s[42:43]\n\tsl_mov_b32 s54, s43\n\tsl_sme_load_16x1b64_rowxfb16 s[36:39], s[54:55], 0x0, 0x0, 0x0, 0x1\n\tsl_sme_load_16x1b64_rowxfb16 s[36:39], s[56:57], 0x0, 0x0, 0x0, 0x1\n\tsl_sme_load_16x1b64_rowxfb16 s[36:39], s[58:59], 0x0, 0x0, 0x0, 0x1\n\tsl_sme_load_16x1b64_rowxfb16 s[36:39], s[60:61], 0x0, 0x0, 0x0, 0x1\n\tsl_wait g2scnt(0)\n\tsl_barrier \n"
+        }
+      ],
+      "sha256": "ac8f5be3c5f277c7b68f6a64a8f8b3a2a28d77b136530b607b645befe487d03f"
+    }
+  },
+  "traffic": {
+    "K": 2048,
+    "V": 4096,
+    "scales": 64,
+    "total": 6208
+  }
+}
