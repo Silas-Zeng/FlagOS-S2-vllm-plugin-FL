@@ -1,0 +1,31 @@
+{
+  "main": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+  "integration_main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+  "rows": [
+    48,
+    56
+  ],
+  "segments": 4,
+  "max_context": 193,
+  "patterns": [
+    "dense contiguous Q",
+    "ragged including zero/tail, padded Q stride2560"
+  ],
+  "arms": [
+    "new private native S4",
+    "byte-exact b3 TL GQA plus b3 reducer"
+  ],
+  "FP64_pointwise": "abs_error <= .005+.005*abs(reference)",
+  "FP64_relative_RMSE_max": 0.005,
+  "default_CPU": true,
+  "service_activation": false,
+  "GPU_executed": false,
+  "timing": null,
+  "writer": null,
+  "fullcost": null,
+  "Graph_verified": false,
+  "side_stream_verified": false,
+  "N40_coverage": false,
+  "actual_4k_16k_numeric_verified": false,
+  "performance_verified": false
+}
