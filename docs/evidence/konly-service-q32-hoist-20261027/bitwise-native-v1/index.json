@@ -1,0 +1,909 @@
+{
+  "original_files": {
+    "download-manifest.json": {
+      "bytes": 15033,
+      "sha256": "69bce67263126e46e30577dcf99e5902405d4639ed3f05e46b90963006a62568"
+    },
+    "exports/cjj-konly-service-q32-bitwise-v1-20261027-owner.json": {
+      "bytes": 1311,
+      "sha256": "b934f7f33e27d7e32604a7dd07ce25f8ca8b99d08d2c2de08f1f055abe06f79d"
+    },
+    "exports/cjj-konly-service-q32-bitwise-v1-20261027.log": {
+      "bytes": 46187,
+      "sha256": "0033d10d24ac2e9563c5fff36747fff63d4e894ef871859a4da765c8a97daa2b"
+    },
+    "out/bitwise-summary.json": {
+      "bytes": 45399,
+      "sha256": "236e1fec0eda35f1ccca891384108eb9a3dd97cca8f461851fba22ec8cf178c6"
+    },
+    "out/pattern-0.pt.gz": {
+      "bytes": 8168292,
+      "sha256": "4902c1e1f35413a74eb1d119ed6ea8dc6871f83e23ab114bd46798d63c6e51b0"
+    },
+    "out/pattern-1.pt.gz": {
+      "bytes": 49218554,
+      "sha256": "aade77c8d57e072d6cb0c49c2d84c3eddcef5a7d5ae96919cb64f82fce9f42dd"
+    },
+    "out/prelaunch-ixsmi.txt": {
+      "bytes": 1284,
+      "sha256": "e2a50d57c81b1a7db3c709c7881b840ceb31dcf26602ce3be648e502dae9dfa5"
+    },
+    "out/proposed-hoist/actual.asm": {
+      "bytes": 304579,
+      "sha256": "a789c159b0d2bfc9e262dbaac76ea7d4f4e59eb4e42421f0e73bcff784eacbb0"
+    },
+    "out/proposed-hoist/actual.cubin": {
+      "bytes": 47840,
+      "sha256": "45d025aeb6cdf812910881b75065f8185cbb4cf3d57e435a52cbbbf825b6cb34"
+    },
+    "out/proposed-hoist/actual.jit_python_source.py": {
+      "bytes": 19850,
+      "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+    },
+    "out/proposed-hoist/actual.llir": {
+      "bytes": 217821,
+      "sha256": "8d5ba289b3712aace744c7b29c7b3f449613f5d9d02f08f6d9de0de2f007367a"
+    },
+    "out/proposed-hoist/actual.source": {
+      "bytes": 123814,
+      "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+    },
+    "out/proposed-hoist/actual.ttgir": {
+      "bytes": 88792,
+      "sha256": "b7e4fe65d131892ed59a9d492dd3b39e255d5ee305d4fe752c87be101127143a"
+    },
+    "out/proposed-hoist/actual.ttir": {
+      "bytes": 64231,
+      "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+    },
+    "out/proposed-hoist/record-loaded.json": {
+      "bytes": 16362,
+      "sha256": "b72244896d47c49f4f5d3b9097da2c81afd3217f67719c77aa8126058651b2e4"
+    },
+    "out/proposed-hoist/record.json": {
+      "bytes": 8612,
+      "sha256": "b8ddbd6b81e9b75f17239a040b515ba1dca91248ee74b6ae5296980a0282d2b7"
+    },
+    "out/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so": {
+      "bytes": 17928,
+      "sha256": "5a8523e462a7da8e016c9d6c1556fd90c1efec25a8ea8e5474e69545e3c73ec0"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/__grp__kernel_cjj_konly_q32.json": {
+      "bytes": 1423,
+      "sha256": "c471efbe5a380eb982294659403e108f5ecbfe8aad2c7f8cbba006d393bd3a41"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.asm": {
+      "bytes": 304579,
+      "sha256": "a789c159b0d2bfc9e262dbaac76ea7d4f4e59eb4e42421f0e73bcff784eacbb0"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.cubin": {
+      "bytes": 47840,
+      "sha256": "45d025aeb6cdf812910881b75065f8185cbb4cf3d57e435a52cbbbf825b6cb34"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.json": {
+      "bytes": 1199,
+      "sha256": "541587988bf4ef8cc49bbcd363280f0380548a15daa8905298b1532f1903d796"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.llir": {
+      "bytes": 217821,
+      "sha256": "8d5ba289b3712aace744c7b29c7b3f449613f5d9d02f08f6d9de0de2f007367a"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.source": {
+      "bytes": 123814,
+      "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.ttgir": {
+      "bytes": 88792,
+      "sha256": "b7e4fe65d131892ed59a9d492dd3b39e255d5ee305d4fe752c87be101127143a"
+    },
+    "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.ttir": {
+      "bytes": 64231,
+      "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+    },
+    "out/triton-cache/O5IHMNNPVIW4X4JYLMAB3H3SFEU2A25KXWVGKHUL7S4YKYXJRKDQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so": {
+      "bytes": 25776,
+      "sha256": "edcb8e385030ae99ded70d534fb45a236ab5c629b30a62a5d2a7677b0476803a"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/__grp__kernel_cjj_konly_q32.json": {
+      "bytes": 1423,
+      "sha256": "4157cf5dd13741731296c13650df8708990306adec28027aa8ba1905417b2be7"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.asm": {
+      "bytes": 304306,
+      "sha256": "d3ff0d04fc17ddb9c1effb4b8b7ee46cea57fcb0dde72593375b35860db31717"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.cubin": {
+      "bytes": 47824,
+      "sha256": "c0949d9af2ab62cd689565dc4f25c8ce2a6bc02a80ec3e99837cee51e15eb5bc"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.json": {
+      "bytes": 1091,
+      "sha256": "352b5dff8a203493859399b11b800a0333f2d320d70d98e26ab1e8dab93d0383"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.llir": {
+      "bytes": 217383,
+      "sha256": "65d2766b770698ef9510d9e60fc442e134bcd4002b372c31a9026ad535153ddf"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.source": {
+      "bytes": 123814,
+      "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttgir": {
+      "bytes": 88807,
+      "sha256": "a6cd3ad42d47c56ff6b9c0d4233e373567f490308fffbb94cef41bc862413447"
+    },
+    "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttir": {
+      "bytes": 64231,
+      "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+    },
+    "out/unhoisted/actual.asm": {
+      "bytes": 304306,
+      "sha256": "d3ff0d04fc17ddb9c1effb4b8b7ee46cea57fcb0dde72593375b35860db31717"
+    },
+    "out/unhoisted/actual.cubin": {
+      "bytes": 47824,
+      "sha256": "c0949d9af2ab62cd689565dc4f25c8ce2a6bc02a80ec3e99837cee51e15eb5bc"
+    },
+    "out/unhoisted/actual.jit_python_source.py": {
+      "bytes": 19850,
+      "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+    },
+    "out/unhoisted/actual.llir": {
+      "bytes": 217383,
+      "sha256": "65d2766b770698ef9510d9e60fc442e134bcd4002b372c31a9026ad535153ddf"
+    },
+    "out/unhoisted/actual.source": {
+      "bytes": 123814,
+      "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+    },
+    "out/unhoisted/actual.ttgir": {
+      "bytes": 88807,
+      "sha256": "a6cd3ad42d47c56ff6b9c0d4233e373567f490308fffbb94cef41bc862413447"
+    },
+    "out/unhoisted/actual.ttir": {
+      "bytes": 64231,
+      "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+    },
+    "out/unhoisted/record-loaded.json": {
+      "bytes": 9036,
+      "sha256": "d34c3d9c6059729512096c012bd869f91316465b16d0c7a32cdb43346449c5a2"
+    },
+    "out/unhoisted/record.json": {
+      "bytes": 8504,
+      "sha256": "8abfc5e2b8a29d0fa5de95ca25fd14cd8c43c72336db0e089a270f9029713f24"
+    }
+  },
+  "parts": [
+    {
+      "bytes": 500526,
+      "members": [
+        {
+          "bytes": 15033,
+          "member": "download-manifest.json",
+          "offset": 0,
+          "original": "download-manifest.json",
+          "sha256": "69bce67263126e46e30577dcf99e5902405d4639ed3f05e46b90963006a62568"
+        },
+        {
+          "bytes": 1311,
+          "member": "exports/cjj-konly-service-q32-bitwise-v1-20261027-owner.json",
+          "offset": 0,
+          "original": "exports/cjj-konly-service-q32-bitwise-v1-20261027-owner.json",
+          "sha256": "b934f7f33e27d7e32604a7dd07ce25f8ca8b99d08d2c2de08f1f055abe06f79d"
+        },
+        {
+          "bytes": 46187,
+          "member": "exports/cjj-konly-service-q32-bitwise-v1-20261027.log",
+          "offset": 0,
+          "original": "exports/cjj-konly-service-q32-bitwise-v1-20261027.log",
+          "sha256": "0033d10d24ac2e9563c5fff36747fff63d4e894ef871859a4da765c8a97daa2b"
+        },
+        {
+          "bytes": 45399,
+          "member": "out/bitwise-summary.json",
+          "offset": 0,
+          "original": "out/bitwise-summary.json",
+          "sha256": "236e1fec0eda35f1ccca891384108eb9a3dd97cca8f461851fba22ec8cf178c6"
+        },
+        {
+          "bytes": 1284,
+          "member": "out/prelaunch-ixsmi.txt",
+          "offset": 0,
+          "original": "out/prelaunch-ixsmi.txt",
+          "sha256": "e2a50d57c81b1a7db3c709c7881b840ceb31dcf26602ce3be648e502dae9dfa5"
+        },
+        {
+          "bytes": 304579,
+          "member": "out/proposed-hoist/actual.asm",
+          "offset": 0,
+          "original": "out/proposed-hoist/actual.asm",
+          "sha256": "a789c159b0d2bfc9e262dbaac76ea7d4f4e59eb4e42421f0e73bcff784eacbb0"
+        },
+        {
+          "bytes": 47840,
+          "member": "out/proposed-hoist/actual.cubin",
+          "offset": 0,
+          "original": "out/proposed-hoist/actual.cubin",
+          "sha256": "45d025aeb6cdf812910881b75065f8185cbb4cf3d57e435a52cbbbf825b6cb34"
+        },
+        {
+          "bytes": 19850,
+          "member": "out/proposed-hoist/actual.jit_python_source.py",
+          "offset": 0,
+          "original": "out/proposed-hoist/actual.jit_python_source.py",
+          "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+        },
+        {
+          "bytes": 217821,
+          "member": "out/proposed-hoist/actual.llir",
+          "offset": 0,
+          "original": "out/proposed-hoist/actual.llir",
+          "sha256": "8d5ba289b3712aace744c7b29c7b3f449613f5d9d02f08f6d9de0de2f007367a"
+        },
+        {
+          "bytes": 123814,
+          "member": "out/proposed-hoist/actual.source",
+          "offset": 0,
+          "original": "out/proposed-hoist/actual.source",
+          "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+        },
+        {
+          "bytes": 88792,
+          "member": "out/proposed-hoist/actual.ttgir",
+          "offset": 0,
+          "original": "out/proposed-hoist/actual.ttgir",
+          "sha256": "b7e4fe65d131892ed59a9d492dd3b39e255d5ee305d4fe752c87be101127143a"
+        },
+        {
+          "bytes": 64231,
+          "member": "out/proposed-hoist/actual.ttir",
+          "offset": 0,
+          "original": "out/proposed-hoist/actual.ttir",
+          "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+        },
+        {
+          "bytes": 16362,
+          "member": "out/proposed-hoist/record-loaded.json",
+          "offset": 0,
+          "original": "out/proposed-hoist/record-loaded.json",
+          "sha256": "b72244896d47c49f4f5d3b9097da2c81afd3217f67719c77aa8126058651b2e4"
+        },
+        {
+          "bytes": 8612,
+          "member": "out/proposed-hoist/record.json",
+          "offset": 0,
+          "original": "out/proposed-hoist/record.json",
+          "sha256": "b8ddbd6b81e9b75f17239a040b515ba1dca91248ee74b6ae5296980a0282d2b7"
+        },
+        {
+          "bytes": 17928,
+          "member": "out/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+          "offset": 0,
+          "original": "out/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "5a8523e462a7da8e016c9d6c1556fd90c1efec25a8ea8e5474e69545e3c73ec0"
+        },
+        {
+          "bytes": 1423,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/__grp__kernel_cjj_konly_q32.json",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/__grp__kernel_cjj_konly_q32.json",
+          "sha256": "c471efbe5a380eb982294659403e108f5ecbfe8aad2c7f8cbba006d393bd3a41"
+        },
+        {
+          "bytes": 304579,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.asm",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.asm",
+          "sha256": "a789c159b0d2bfc9e262dbaac76ea7d4f4e59eb4e42421f0e73bcff784eacbb0"
+        },
+        {
+          "bytes": 47840,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.cubin",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.cubin",
+          "sha256": "45d025aeb6cdf812910881b75065f8185cbb4cf3d57e435a52cbbbf825b6cb34"
+        },
+        {
+          "bytes": 1199,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.json",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.json",
+          "sha256": "541587988bf4ef8cc49bbcd363280f0380548a15daa8905298b1532f1903d796"
+        },
+        {
+          "bytes": 217821,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.llir",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.llir",
+          "sha256": "8d5ba289b3712aace744c7b29c7b3f449613f5d9d02f08f6d9de0de2f007367a"
+        },
+        {
+          "bytes": 123814,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.source",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.source",
+          "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+        },
+        {
+          "bytes": 88792,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.ttgir",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.ttgir",
+          "sha256": "b7e4fe65d131892ed59a9d492dd3b39e255d5ee305d4fe752c87be101127143a"
+        },
+        {
+          "bytes": 64231,
+          "member": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.ttir",
+          "offset": 0,
+          "original": "out/triton-cache/LF6PHPJ7P7NABSMGXCXTCTZX7ZMWCWRQW4J6G3OG4QFYASZ47UCQ/kernel_cjj_konly_q32.ttir",
+          "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+        },
+        {
+          "bytes": 25776,
+          "member": "out/triton-cache/O5IHMNNPVIW4X4JYLMAB3H3SFEU2A25KXWVGKHUL7S4YKYXJRKDQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+          "offset": 0,
+          "original": "out/triton-cache/O5IHMNNPVIW4X4JYLMAB3H3SFEU2A25KXWVGKHUL7S4YKYXJRKDQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+          "sha256": "edcb8e385030ae99ded70d534fb45a236ab5c629b30a62a5d2a7677b0476803a"
+        },
+        {
+          "bytes": 1423,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/__grp__kernel_cjj_konly_q32.json",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/__grp__kernel_cjj_konly_q32.json",
+          "sha256": "4157cf5dd13741731296c13650df8708990306adec28027aa8ba1905417b2be7"
+        },
+        {
+          "bytes": 304306,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.asm",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.asm",
+          "sha256": "d3ff0d04fc17ddb9c1effb4b8b7ee46cea57fcb0dde72593375b35860db31717"
+        },
+        {
+          "bytes": 47824,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.cubin",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.cubin",
+          "sha256": "c0949d9af2ab62cd689565dc4f25c8ce2a6bc02a80ec3e99837cee51e15eb5bc"
+        },
+        {
+          "bytes": 1091,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.json",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.json",
+          "sha256": "352b5dff8a203493859399b11b800a0333f2d320d70d98e26ab1e8dab93d0383"
+        },
+        {
+          "bytes": 217383,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.llir",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.llir",
+          "sha256": "65d2766b770698ef9510d9e60fc442e134bcd4002b372c31a9026ad535153ddf"
+        },
+        {
+          "bytes": 123814,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.source",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.source",
+          "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+        },
+        {
+          "bytes": 88807,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttgir",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttgir",
+          "sha256": "a6cd3ad42d47c56ff6b9c0d4233e373567f490308fffbb94cef41bc862413447"
+        },
+        {
+          "bytes": 64231,
+          "member": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttir",
+          "offset": 0,
+          "original": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttir",
+          "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+        },
+        {
+          "bytes": 304306,
+          "member": "out/unhoisted/actual.asm",
+          "offset": 0,
+          "original": "out/unhoisted/actual.asm",
+          "sha256": "d3ff0d04fc17ddb9c1effb4b8b7ee46cea57fcb0dde72593375b35860db31717"
+        },
+        {
+          "bytes": 47824,
+          "member": "out/unhoisted/actual.cubin",
+          "offset": 0,
+          "original": "out/unhoisted/actual.cubin",
+          "sha256": "c0949d9af2ab62cd689565dc4f25c8ce2a6bc02a80ec3e99837cee51e15eb5bc"
+        },
+        {
+          "bytes": 19850,
+          "member": "out/unhoisted/actual.jit_python_source.py",
+          "offset": 0,
+          "original": "out/unhoisted/actual.jit_python_source.py",
+          "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+        },
+        {
+          "bytes": 217383,
+          "member": "out/unhoisted/actual.llir",
+          "offset": 0,
+          "original": "out/unhoisted/actual.llir",
+          "sha256": "65d2766b770698ef9510d9e60fc442e134bcd4002b372c31a9026ad535153ddf"
+        },
+        {
+          "bytes": 123814,
+          "member": "out/unhoisted/actual.source",
+          "offset": 0,
+          "original": "out/unhoisted/actual.source",
+          "sha256": "5d7ceddcdb89f90c7aad4b73e9b6c32a1d62dc76504e49f8d214f90b3b1d848b"
+        },
+        {
+          "bytes": 88807,
+          "member": "out/unhoisted/actual.ttgir",
+          "offset": 0,
+          "original": "out/unhoisted/actual.ttgir",
+          "sha256": "a6cd3ad42d47c56ff6b9c0d4233e373567f490308fffbb94cef41bc862413447"
+        },
+        {
+          "bytes": 64231,
+          "member": "out/unhoisted/actual.ttir",
+          "offset": 0,
+          "original": "out/unhoisted/actual.ttir",
+          "sha256": "9dd847ccb237a38566a3a48f722696548e4f502a0fc4b5dbf98c4be5918a8bb2"
+        },
+        {
+          "bytes": 9036,
+          "member": "out/unhoisted/record-loaded.json",
+          "offset": 0,
+          "original": "out/unhoisted/record-loaded.json",
+          "sha256": "d34c3d9c6059729512096c012bd869f91316465b16d0c7a32cdb43346449c5a2"
+        },
+        {
+          "bytes": 8504,
+          "member": "out/unhoisted/record.json",
+          "offset": 0,
+          "original": "out/unhoisted/record.json",
+          "sha256": "8abfc5e2b8a29d0fa5de95ca25fd14cd8c43c72336db0e089a270f9029713f24"
+        }
+      ],
+      "name": "original-bitwise-part-000.tar.gz",
+      "sha256": "a074b390266ba2e12d58d6fe7ec053a2f81d4200ffba098cc63e30e7405e70c5"
+    },
+    {
+      "bytes": 1828864,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-004-offset-000000000.bin",
+          "offset": 0,
+          "original": "out/pattern-0.pt.gz",
+          "sha256": "a7e8b2e62a53e1e6202bcda4abe2fdfde07ff111e9c07962aff65aeb37b5d5ff"
+        }
+      ],
+      "name": "original-bitwise-part-001.tar.gz",
+      "sha256": "b38964aee9e2df6d026042d6a2c05df390cb7a74af2375404c3540d0a7ddb529"
+    },
+    {
+      "bytes": 1859768,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-004-offset-001900000.bin",
+          "offset": 1900000,
+          "original": "out/pattern-0.pt.gz",
+          "sha256": "424c7d97f767ea4dfdc3b5c428ed8387bf3af98828f9b473eefddcf277e00c67"
+        }
+      ],
+      "name": "original-bitwise-part-002.tar.gz",
+      "sha256": "04a5dc83aa6772fc8b60b7b10d199f9dd8e275b6f79554ba0b6ba95d25d3ac85"
+    },
+    {
+      "bytes": 1854134,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-004-offset-003800000.bin",
+          "offset": 3800000,
+          "original": "out/pattern-0.pt.gz",
+          "sha256": "12098fa8533815d1d48ac4888400afc52ead9a33ca8bb39d105ce2cc76f02f3a"
+        }
+      ],
+      "name": "original-bitwise-part-003.tar.gz",
+      "sha256": "13b8fea3ccb8ad19fb9a2fb91b21c09c28a218c938bcbae283e862b7bb252d13"
+    },
+    {
+      "bytes": 1878570,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-004-offset-005700000.bin",
+          "offset": 5700000,
+          "original": "out/pattern-0.pt.gz",
+          "sha256": "ed08766f0f9f5b14a8822074934b9749ed62d876caa500666722235133c9a1b2"
+        }
+      ],
+      "name": "original-bitwise-part-004.tar.gz",
+      "sha256": "d2991d7c487942786612c7e69a7b4318c44335d5caf23496b378e6edcbfccfe7"
+    },
+    {
+      "bytes": 136068,
+      "members": [
+        {
+          "bytes": 568292,
+          "member": "fragments/file-004-offset-007600000.bin",
+          "offset": 7600000,
+          "original": "out/pattern-0.pt.gz",
+          "sha256": "cf2e8c6f45b4f97a9adb142c91b9d5844396c23b4255a61e2767a1a8c2ffd9a1"
+        }
+      ],
+      "name": "original-bitwise-part-005.tar.gz",
+      "sha256": "d96cfd95b8bcc00c14320e3b963a43e5856f9807af2c49dbc4f683156e51d77f"
+    },
+    {
+      "bytes": 1900777,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-000000000.bin",
+          "offset": 0,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "1dfc4f75b6998d8b165cb439d4fb9a70be5451aabc46145155e2943306c88113"
+        }
+      ],
+      "name": "original-bitwise-part-006.tar.gz",
+      "sha256": "67c57bdf76a6f24d5d4f649acb4952e6d061a4ab6569de72f84641f1ce350ad2"
+    },
+    {
+      "bytes": 1900797,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-001900000.bin",
+          "offset": 1900000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "25811b40cb52a563913bf494f86e66fc2cd61f467b9af5648a5e30e0ec191fea"
+        }
+      ],
+      "name": "original-bitwise-part-007.tar.gz",
+      "sha256": "644e368d5ad7eb408ee472a6d821cec55ab44f8c810b7576d20fca697a508197"
+    },
+    {
+      "bytes": 1900785,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-003800000.bin",
+          "offset": 3800000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "78e17db2d92ba097f12298c4d10c028bb0861b68f3e472825b7027b0fb421988"
+        }
+      ],
+      "name": "original-bitwise-part-008.tar.gz",
+      "sha256": "aecfd06f247aa8f415d4dc57664cb3e5da670d48f02a8da7d2233a1f10ebe076"
+    },
+    {
+      "bytes": 1891972,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-005700000.bin",
+          "offset": 5700000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "dcab49cf3cbabcce3b1ec6fb03f043d7396107e6167303c023057faa5d2013cf"
+        }
+      ],
+      "name": "original-bitwise-part-009.tar.gz",
+      "sha256": "1419ab1020c5b9019e0a9012684bc6d3026aecd9032705b347e0307fd3701847"
+    },
+    {
+      "bytes": 1882540,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-007600000.bin",
+          "offset": 7600000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "9130abf1bca308fd7d5dab00785c6a39e48dbab955920d61e41550899c3a87fe"
+        }
+      ],
+      "name": "original-bitwise-part-010.tar.gz",
+      "sha256": "dc7c105e9ecf619bb7f03ba63408cabf7fd18b4889a119fc57175c380b42a293"
+    },
+    {
+      "bytes": 1886852,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-009500000.bin",
+          "offset": 9500000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "300ace6cd62bf3170e7a223e96970359fb9af88f49ccdebdd33939f82e8858ef"
+        }
+      ],
+      "name": "original-bitwise-part-011.tar.gz",
+      "sha256": "4f78981591c4dedcd2b03bbac3dc8df0959f2cabaffeeb590f273035671aaa29"
+    },
+    {
+      "bytes": 1885181,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-011400000.bin",
+          "offset": 11400000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "485de0a5ff78a62f58fed23ac170d6731b4371dc34f60a80b7ca48667c110479"
+        }
+      ],
+      "name": "original-bitwise-part-012.tar.gz",
+      "sha256": "90f82a34cfa6ce69e80344a04721da6b9d4235d2380e9cce408351f2fc947469"
+    },
+    {
+      "bytes": 1883110,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-013300000.bin",
+          "offset": 13300000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "2fa034555670fcc845f2967f51532f9cc3cca3666c9ef71da946c31a41d1255f"
+        }
+      ],
+      "name": "original-bitwise-part-013.tar.gz",
+      "sha256": "575e76099024705561eff6a9dae8f7e0cf2d6a147a2232ea3ed461c374fe8b61"
+    },
+    {
+      "bytes": 1884488,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-015200000.bin",
+          "offset": 15200000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "5461ad73a61f557021361e03691b4e6b641bea365e183b6694fcc3e973cd4df8"
+        }
+      ],
+      "name": "original-bitwise-part-014.tar.gz",
+      "sha256": "31cc0422a86191e063c4a3aebf09e4ca5abc4766b3a2113de281351ec7c3ed5e"
+    },
+    {
+      "bytes": 1883166,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-017100000.bin",
+          "offset": 17100000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "dc72a6d8380e54f48535bbe8c33062d191daec1b31b3416196cbdf5ac83715b7"
+        }
+      ],
+      "name": "original-bitwise-part-015.tar.gz",
+      "sha256": "21186413bdf0cd63ec7abf874c6b9644664e567db61caf5ccbc3a6798fd69ad0"
+    },
+    {
+      "bytes": 1887746,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-019000000.bin",
+          "offset": 19000000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "cdfcd5636a7a6aa54087bf7f459d0de630115299a0ecbf988508dc3b40bef64c"
+        }
+      ],
+      "name": "original-bitwise-part-016.tar.gz",
+      "sha256": "77a2b1f78434aa8619d2723e97664decbf49800f90db8557efa1592964782e1b"
+    },
+    {
+      "bytes": 1895787,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-020900000.bin",
+          "offset": 20900000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "6cb57dd2ea3a6fd79fa66a7b2b3b2f655335720f31d6fcd1493a28e04ea7b4aa"
+        }
+      ],
+      "name": "original-bitwise-part-017.tar.gz",
+      "sha256": "cb32f1132922674df21fdc3cd6724c5c1c9fdf4c4ff009cc7adb8f6294b2f932"
+    },
+    {
+      "bytes": 1900779,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-022800000.bin",
+          "offset": 22800000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "955cd902ee0ffd72a8a10861afe813c8a302c4e04c8ee3d747656ef81fe8124e"
+        }
+      ],
+      "name": "original-bitwise-part-018.tar.gz",
+      "sha256": "376a5f703929f480d780c2e36038109add6b7a542ac33895f09030a72a22cf3e"
+    },
+    {
+      "bytes": 1900790,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-024700000.bin",
+          "offset": 24700000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "f3e860f0de448b1ea23f70545912d438d2da72b6a031080fc1a5fc0e1ee36c6b"
+        }
+      ],
+      "name": "original-bitwise-part-019.tar.gz",
+      "sha256": "0e7f5507c398eca9e1547a15655a342a5c627070d533414c075e9eee02ac403c"
+    },
+    {
+      "bytes": 1900776,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-026600000.bin",
+          "offset": 26600000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "c2e842d12832e441937c1aaf90b35493da8cff226bdc0f99b0b6b37b8963f57d"
+        }
+      ],
+      "name": "original-bitwise-part-020.tar.gz",
+      "sha256": "71ace736dafbd6a2665f08cd82b830d615e7fd9e9e37bea737cc755b4989df1e"
+    },
+    {
+      "bytes": 1900774,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-028500000.bin",
+          "offset": 28500000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "dc28201f4d139f98df10768b628b92730d7ecad4be90b102d0033e89b582b033"
+        }
+      ],
+      "name": "original-bitwise-part-021.tar.gz",
+      "sha256": "428de2c284f2f7917b1dc0ecaf2a86be4dfc87c48e1b622d4c6783b899fbca73"
+    },
+    {
+      "bytes": 1900783,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-030400000.bin",
+          "offset": 30400000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "c80df2ab6666d1c17c3232c4dc82b6bf5e8db0b8fd8e1440b94898c60552fd50"
+        }
+      ],
+      "name": "original-bitwise-part-022.tar.gz",
+      "sha256": "b1981d45d483672294bdb07bc5155ff7a780cf6ef6776547384641433464de70"
+    },
+    {
+      "bytes": 1900769,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-032300000.bin",
+          "offset": 32300000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "ea0675aa8fac27d3a562ef08366de7c8344758a395f5627aa2dd877d92ff2fff"
+        }
+      ],
+      "name": "original-bitwise-part-023.tar.gz",
+      "sha256": "2343a2890d1e8d27ad042ad83f3d0f7f49d16a291e3ba3ab98a83bcf250ed2d9"
+    },
+    {
+      "bytes": 1827794,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-034200000.bin",
+          "offset": 34200000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "b70c831c0b9a389399a2bff0899e584efe1ad720f20a749f7268034c0673d67a"
+        }
+      ],
+      "name": "original-bitwise-part-024.tar.gz",
+      "sha256": "f636cdc9e9942c07fa6f60c6c4fd7e734e4231ccd580007637c47b42157709ed"
+    },
+    {
+      "bytes": 1900773,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-036100000.bin",
+          "offset": 36100000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "7888272cdffdd7122cb64cb9473ec5babac68decf04467303e0d3fad9ccc9f8c"
+        }
+      ],
+      "name": "original-bitwise-part-025.tar.gz",
+      "sha256": "67436664f6b700bac28a7f2e162d624fce96b56d3c06f9c373c202abc3e45876"
+    },
+    {
+      "bytes": 1900777,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-038000000.bin",
+          "offset": 38000000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "a932c4a7e7a52f1240039588caf9ff931967a406adaa8f4b7488e57515299699"
+        }
+      ],
+      "name": "original-bitwise-part-026.tar.gz",
+      "sha256": "72b58ff34b9a488273f3915da20ac7810598333004e13b919f6ca26ad607d4c8"
+    },
+    {
+      "bytes": 1900777,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-039900000.bin",
+          "offset": 39900000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "9a7a1022d5e1bf95238de0ecb4907c5298b49d079559846ded7c21faebae0a5d"
+        }
+      ],
+      "name": "original-bitwise-part-027.tar.gz",
+      "sha256": "7f187693f88cdce21dfc128a7690d1e76a9ea8e27f7bb52426f2534cc1effa92"
+    },
+    {
+      "bytes": 1900751,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-041800000.bin",
+          "offset": 41800000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "ed933644b609ec4069bd3d4d3b19cda3cd8efcb7178b73f8161d158d45b168dd"
+        }
+      ],
+      "name": "original-bitwise-part-028.tar.gz",
+      "sha256": "8f11878bfa4d505af42f29f30002392f8d506e0f43f7a446ce26ab25c4dd6a60"
+    },
+    {
+      "bytes": 1900779,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-043700000.bin",
+          "offset": 43700000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "8ffb8a0d5ad54daf45345eca747b6abecd897776dac21c228ba1e19af05e48ca"
+        }
+      ],
+      "name": "original-bitwise-part-029.tar.gz",
+      "sha256": "74a4f4a82c179d077b7a4e67cdfe096e7fa9b7c5353e08963a3e5b8bfd4ffc42"
+    },
+    {
+      "bytes": 1900791,
+      "members": [
+        {
+          "bytes": 1900000,
+          "member": "fragments/file-005-offset-045600000.bin",
+          "offset": 45600000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "824e46db8c29baf1801ef9d6139671fa94e5679c40b35fcd522ae3c1ef4d08c0"
+        }
+      ],
+      "name": "original-bitwise-part-030.tar.gz",
+      "sha256": "cf27eb91637e42ad24841a320c192856eb044f1cecf2122e34129b02c4284824"
+    },
+    {
+      "bytes": 1719266,
+      "members": [
+        {
+          "bytes": 1718554,
+          "member": "fragments/file-005-offset-047500000.bin",
+          "offset": 47500000,
+          "original": "out/pattern-1.pt.gz",
+          "sha256": "7a9520c8163686f8fa2d36bd826995ce45c76dcd1cc2104547b3113a97450d48"
+        }
+      ],
+      "name": "original-bitwise-part-031.tar.gz",
+      "sha256": "151fcb3b95718db35ec0d415b2114e22f1dde150c25abd8766b7df8654bbe18c"
+    }
+  ],
+  "raw_bytes": 60998965,
+  "raw_files": 42,
+  "schema": "cjj-service-q32-bitwise-originals-v1"
+}
