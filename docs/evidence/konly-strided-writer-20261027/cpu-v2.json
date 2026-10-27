@@ -1,0 +1,516 @@
+{
+  "base_main": "56f1838192abc940b3fb9accef490022ac125000",
+  "cases": [
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          0,
+          2
+        ],
+        "key_row_stride": 256,
+        "key_rows": 0,
+        "launch": false,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 0,
+        "slot_epoch": 0,
+        "value_row_stride": 256,
+        "value_rows": 0
+      },
+      "bytes": 49152,
+      "expected_sha256": "f6b3491cd4a3b260ac4d5d94e8d6ad7e8ec9082f52f0cd979b18cee912d14284",
+      "name": "empty",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          0,
+          2
+        ],
+        "key_row_stride": 256,
+        "key_rows": 0,
+        "launch": false,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 0,
+        "slot_epoch": 1,
+        "value_row_stride": 256,
+        "value_rows": 0
+      },
+      "bytes": 49152,
+      "expected_sha256": "f6b3491cd4a3b260ac4d5d94e8d6ad7e8ec9082f52f0cd979b18cee912d14284",
+      "name": "empty",
+      "phase": 1,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          1,
+          2
+        ],
+        "key_row_stride": 256,
+        "key_rows": 4,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 1,
+        "slot_epoch": 0,
+        "value_row_stride": 256,
+        "value_rows": 3
+      },
+      "bytes": 49152,
+      "expected_sha256": "21108a7c412139ec7d809aa78e8fea9a4ae3081e97e180c14cccfb2d19f4d264",
+      "name": "one_slot_extra_rows",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          1,
+          2
+        ],
+        "key_row_stride": 256,
+        "key_rows": 4,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 1,
+        "slot_epoch": 1,
+        "value_row_stride": 256,
+        "value_rows": 3
+      },
+      "bytes": 49152,
+      "expected_sha256": "81bab8765caa8374624fb8b32ff60599a3f76f26034e65bc96cd0f4346fa13af",
+      "name": "one_slot_extra_rows",
+      "phase": 1,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          17,
+          2
+        ],
+        "key_row_stride": 384,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 17,
+        "slot_epoch": 0,
+        "value_row_stride": 640,
+        "value_rows": 19
+      },
+      "bytes": 49152,
+      "expected_sha256": "c5398e6bab555f6aed5f5209a5f189ff689594abf39a5d255fd42aaceb496441",
+      "name": "tail17_k384_v640",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          17,
+          2
+        ],
+        "key_row_stride": 384,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 17,
+        "slot_epoch": 1,
+        "value_row_stride": 640,
+        "value_rows": 19
+      },
+      "bytes": 49152,
+      "expected_sha256": "af47f6771f53a84189c2b3ca01a52352b8b8139e980cc576a44ad41020cffd93",
+      "name": "tail17_k384_v640",
+      "phase": 1,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          15,
+          2
+        ],
+        "key_row_stride": 640,
+        "key_rows": 18,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 15,
+        "slot_epoch": 0,
+        "value_row_stride": 384,
+        "value_rows": 20
+      },
+      "bytes": 49152,
+      "expected_sha256": "546d4baa1f3661abda5dbdb4f94c1aff2434ad9d4a6d27a39d2a6bcbc27696ec",
+      "name": "tail15_k640_v384",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          15,
+          2
+        ],
+        "key_row_stride": 640,
+        "key_rows": 18,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 15,
+        "slot_epoch": 1,
+        "value_row_stride": 384,
+        "value_rows": 20
+      },
+      "bytes": 49152,
+      "expected_sha256": "37b31a33307eb3156b93fb43655e7312118549361a4e8bf3d7db71150654ad71",
+      "name": "tail15_k640_v384",
+      "phase": 1,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          18,
+          2
+        ],
+        "key_row_stride": 2560,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 18,
+        "slot_epoch": 0,
+        "value_row_stride": 256,
+        "value_rows": 21
+      },
+      "bytes": 49152,
+      "expected_sha256": "c5398e6bab555f6aed5f5209a5f189ff689594abf39a5d255fd42aaceb496441",
+      "name": "k2560_v256",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          18,
+          2
+        ],
+        "key_row_stride": 2560,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 18,
+        "slot_epoch": 1,
+        "value_row_stride": 256,
+        "value_rows": 21
+      },
+      "bytes": 49152,
+      "expected_sha256": "af47f6771f53a84189c2b3ca01a52352b8b8139e980cc576a44ad41020cffd93",
+      "name": "k2560_v256",
+      "phase": 1,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          16,
+          2
+        ],
+        "key_row_stride": 256,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 16,
+        "slot_epoch": 0,
+        "value_row_stride": 2560,
+        "value_rows": 19
+      },
+      "bytes": 49152,
+      "expected_sha256": "8362c11f6b89d50725a4364438b5a821c4d6cfa18bed000f2ca4b59667c111e3",
+      "name": "k256_v2560",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          16,
+          2
+        ],
+        "key_row_stride": 256,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 16,
+        "slot_epoch": 1,
+        "value_row_stride": 2560,
+        "value_rows": 19
+      },
+      "bytes": 49152,
+      "expected_sha256": "8fb14ac7464b94b6172eed5658015a334b8c23a7744b0770a6638d9ad90854e6",
+      "name": "k256_v2560",
+      "phase": 1,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          17,
+          2
+        ],
+        "key_row_stride": 2560,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 17,
+        "slot_epoch": 0,
+        "value_row_stride": 2560,
+        "value_rows": 20
+      },
+      "bytes": 49152,
+      "expected_sha256": "c5398e6bab555f6aed5f5209a5f189ff689594abf39a5d255fd42aaceb496441",
+      "name": "shared_qkv_2560",
+      "phase": 0,
+      "shared_readonly_sources": true
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          17,
+          2
+        ],
+        "key_row_stride": 2560,
+        "key_rows": 20,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 17,
+        "slot_epoch": 1,
+        "value_row_stride": 2560,
+        "value_rows": 20
+      },
+      "bytes": 49152,
+      "expected_sha256": "af47f6771f53a84189c2b3ca01a52352b8b8139e980cc576a44ad41020cffd93",
+      "name": "shared_qkv_2560",
+      "phase": 1,
+      "shared_readonly_sources": true
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          5,
+          2
+        ],
+        "key_row_stride": 384,
+        "key_rows": 8,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 5,
+        "slot_epoch": 0,
+        "value_row_stride": 640,
+        "value_rows": 9
+      },
+      "bytes": 49152,
+      "expected_sha256": "f6b3491cd4a3b260ac4d5d94e8d6ad7e8ec9082f52f0cd979b18cee912d14284",
+      "name": "negative_only",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 3,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          5,
+          2
+        ],
+        "key_row_stride": 384,
+        "key_rows": 8,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 5,
+        "slot_epoch": 1,
+        "value_row_stride": 640,
+        "value_rows": 9
+      },
+      "bytes": 49152,
+      "expected_sha256": "f6b3491cd4a3b260ac4d5d94e8d6ad7e8ec9082f52f0cd979b18cee912d14284",
+      "name": "negative_only",
+      "phase": 1,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 9,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          141,
+          2
+        ],
+        "key_row_stride": 384,
+        "key_rows": 144,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 141,
+        "slot_epoch": 0,
+        "value_row_stride": 640,
+        "value_rows": 145
+      },
+      "bytes": 147456,
+      "expected_sha256": "29a864cfecc6606ce727d03c93a2d174727187ff82cb93321f3e57704e8c464c",
+      "name": "codec141",
+      "phase": 0,
+      "shared_readonly_sources": false
+    },
+    {
+      "binding": {
+        "cache_pages": 9,
+        "format": "cjj-konly-rn32-rne-v2",
+        "grid": [
+          141,
+          2
+        ],
+        "key_row_stride": 384,
+        "key_rows": 144,
+        "launch": true,
+        "live_gpu_mapping_certified": false,
+        "requires_finite_valid_K_external": true,
+        "requires_gpu_slots_equal_snapshot": true,
+        "slot_count": 141,
+        "slot_epoch": 1,
+        "value_row_stride": 640,
+        "value_rows": 145
+      },
+      "bytes": 147456,
+      "expected_sha256": "b84f89b8d53c89cb328b0a4b7968e05065b78f03cf37a4fecdce1c06ea9cf691",
+      "name": "codec141",
+      "phase": 1,
+      "shared_readonly_sources": false
+    }
+  ],
+  "codec141_valid_head_rows": 282,
+  "cpu_only": true,
+  "dependencies": [
+    79,
+    80,
+    82
+  ],
+  "device_entry_executed": false,
+  "full_lifecycle_verified": false,
+  "kernel_sha256": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9",
+  "live_slot_provenance_closed": false,
+  "old_codec_code_scale_sha256": "be6129bb54bb510053344d8c65a84b9e8289eec26870b5226f80fd2c0a979a4d",
+  "old_codec_vectors": 141,
+  "passed": true,
+  "precision_gate": false,
+  "provenance": {
+    "archive_sha256": "278cc3be8228a1eff50a6af4a55d8e86564dff6b711850a4f9d3de1cfa5641ea",
+    "codec_function_sha256": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+    "files": {
+      "numeric-contract.py": {
+        "bytes": 3757,
+        "sha256": "1d55126084cfdbd08b550536ab0cd92104e7574e9af7149d671df103819f0ddf"
+      },
+      "primitive-reference.py": {
+        "bytes": 6398,
+        "sha256": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3"
+      },
+      "quant-reference.py": {
+        "bytes": 1452,
+        "sha256": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18"
+      },
+      "support.py": {
+        "bytes": 4007,
+        "sha256": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018"
+      }
+    }
+  },
+  "rejected": [
+    "Kshort",
+    "Vshort",
+    "rowpitch255",
+    "innerpad",
+    "wrongD",
+    "FP32source",
+    "storage_short",
+    "alias_cache",
+    "alias_slots",
+    "slotstride2",
+    "unknown_slots",
+    "stale_unknown_provenance",
+    "duplicate_slot",
+    "positive_oob",
+    "missing_slot_value",
+    "bool_slot",
+    "overflow_stride",
+    "shared_pitch",
+    "double_scale_offset",
+    "missing_V_base",
+    "bad_slot_mask"
+  ],
+  "service_installed": false
+}
