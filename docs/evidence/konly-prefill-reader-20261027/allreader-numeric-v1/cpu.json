@@ -1,0 +1,497 @@
+{
+  "Graph_verified": false,
+  "actual_I8_operand_hoist_verified": false,
+  "actual_binding_verified": false,
+  "actual_compile_originals": {
+    "multi2": {
+      "actual_roles": [
+        {
+          "hash": "a781537a785157c3f8452f9940db632bb6447648fe84b1f79d4807001c1102f2",
+          "matrix": {
+            "BF16": 64,
+            "I8_QK": 0
+          },
+          "role": "baseline"
+        },
+        {
+          "hash": "11a3be344b55d63f3a96655db85cd46227f2952c3397bbf3206bcdbb2d836364",
+          "matrix": {
+            "BF16": 32,
+            "I8_QK": 16
+          },
+          "role": "candidate"
+        }
+      ],
+      "source_root": "/workspace/experiments/minicpm-s2/cjj-konly-multi2-compile-v1-20261027/sources"
+    },
+    "raw3d": {
+      "actual_roles": [
+        {
+          "hash": "b3d1cf519756d213851cf4638f7b8abb7fdd6c3ba0bdc626b039ccd1134e0938",
+          "matrix": {
+            "BF16": 16,
+            "I8_QK": 0
+          },
+          "role": "baseline"
+        },
+        {
+          "hash": "83d2a42a966f7f9c6a5e33035b50af88134dbbd3791643380ffc68aa52a0c4ed",
+          "matrix": {
+            "BF16": 8,
+            "I8_QK": 4
+          },
+          "role": "candidate"
+        },
+        {
+          "hash": "1a0eb44a1463a96aa058ca3033400bcff0031e1dd394f1e7b7970f9bd717c6c2",
+          "matrix": {
+            "BF16": 0,
+            "I8_QK": 0
+          },
+          "role": "original_reducer"
+        }
+      ],
+      "source_root": "/workspace/experiments/minicpm-s2/cjj-konly-raw3d-compile-v1-20261027/sources"
+    }
+  },
+  "cases": {
+    "multi2": [
+      {
+        "partition": {
+          "exact_once": true,
+          "programs": 66,
+          "tokens": 2048
+        },
+        "plan": {
+          "capacity_reclaimed": false,
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "IS_3D": false,
+            "TILE_SIZE": 64
+          },
+          "fixture": "private numeric geometry; not a formal batchTokens change",
+          "formal_batch_tokens_changed": false,
+          "grid": [
+            66,
+            2
+          ],
+          "klens": [
+            4096,
+            33
+          ],
+          "pages": 523,
+          "profile": "multi2",
+          "qlens": [
+            2047,
+            1
+          ],
+          "raw3d_options": null,
+          "requested_options": {
+            "num_stages": 1,
+            "num_warps": 16
+          },
+          "segments": 1,
+          "sequences": 2,
+          "table_pitch": 8192,
+          "table_shape": [
+            2,
+            8192
+          ],
+          "total": 2048
+        }
+      },
+      {
+        "partition": {
+          "exact_once": true,
+          "programs": 66,
+          "tokens": 2048
+        },
+        "plan": {
+          "capacity_reclaimed": false,
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_Q": 32,
+            "IS_3D": false,
+            "TILE_SIZE": 64
+          },
+          "fixture": "private numeric geometry; not a formal batchTokens change",
+          "formal_batch_tokens_changed": false,
+          "grid": [
+            66,
+            2
+          ],
+          "klens": [
+            4095,
+            17
+          ],
+          "pages": 521,
+          "profile": "multi2",
+          "qlens": [
+            2046,
+            2
+          ],
+          "raw3d_options": null,
+          "requested_options": {
+            "num_stages": 1,
+            "num_warps": 16
+          },
+          "segments": 1,
+          "sequences": 2,
+          "table_pitch": 8192,
+          "table_shape": [
+            2,
+            8192
+          ],
+          "total": 2048
+        }
+      }
+    ],
+    "raw3d": [
+      {
+        "partition": {
+          "exact_once": true,
+          "programs": 96,
+          "tokens": 64
+        },
+        "plan": {
+          "capacity_reclaimed": false,
+          "config": {
+            "BLOCK_M": 16,
+            "BLOCK_Q": 2,
+            "IS_3D": true,
+            "TILE_SIZE": 16
+          },
+          "fixture": "private numeric geometry; not a formal batchTokens change",
+          "formal_batch_tokens_changed": false,
+          "grid": [
+            96,
+            2,
+            16
+          ],
+          "klens": [
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64,
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64,
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64,
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64,
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64,
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64,
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64,
+            15,
+            16,
+            17,
+            31,
+            32,
+            33,
+            63,
+            64
+          ],
+          "pages": 309,
+          "profile": "raw3d",
+          "qlens": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "raw3d_options": "SDK defaults; actual options recorded after compile",
+          "requested_options": {},
+          "segments": 16,
+          "sequences": 64,
+          "table_pitch": 8192,
+          "table_shape": [
+            64,
+            8192
+          ],
+          "total": 64
+        }
+      },
+      {
+        "partition": {
+          "exact_once": true,
+          "programs": 96,
+          "tokens": 64
+        },
+        "plan": {
+          "capacity_reclaimed": false,
+          "config": {
+            "BLOCK_M": 16,
+            "BLOCK_Q": 2,
+            "IS_3D": true,
+            "TILE_SIZE": 16
+          },
+          "fixture": "private numeric geometry; not a formal batchTokens change",
+          "formal_batch_tokens_changed": false,
+          "grid": [
+            96,
+            2,
+            16
+          ],
+          "klens": [
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65,
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65,
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65,
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65,
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65,
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65,
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65,
+            1,
+            2,
+            3,
+            16,
+            17,
+            32,
+            33,
+            65
+          ],
+          "pages": 261,
+          "profile": "raw3d",
+          "qlens": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "raw3d_options": "SDK defaults; actual options recorded after compile",
+          "requested_options": {},
+          "segments": 16,
+          "sequences": 64,
+          "table_pitch": 8192,
+          "table_shape": [
+            64,
+            8192
+          ],
+          "total": 64
+        }
+      }
+    ]
+  },
+  "cpu_only": true,
+  "default_framework_imports": false,
+  "hard_gate_missing_or_failed_refused": true,
+  "original_proxy_failure_explicit_diagnostic_only": true,
+  "precision_gate": false,
+  "raw3D_qlen2_verified": false,
+  "service_verified": false,
+  "source_ABI_options_IR_and_ASM_mutants_refused": true,
+  "strict_default": true,
+  "timing_attempted": false
+}

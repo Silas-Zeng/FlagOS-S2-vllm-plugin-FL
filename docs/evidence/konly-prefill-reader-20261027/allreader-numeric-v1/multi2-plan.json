@@ -1,0 +1,97 @@
+{
+  "Graph_verified": false,
+  "actual_I8_operand_hoist_verified": false,
+  "actual_binding_verified": false,
+  "cpu_only": true,
+  "fullcost_ms": null,
+  "original_kernel_hashes": {
+    "baseline": "a781537a785157c3f8452f9940db632bb6447648fe84b1f79d4807001c1102f2",
+    "candidate": "11a3be344b55d63f3a96655db85cd46227f2952c3397bbf3206bcdbb2d836364"
+  },
+  "original_source_root": "/workspace/experiments/minicpm-s2/cjj-konly-multi2-compile-v1-20261027/sources",
+  "performance_verified": false,
+  "plans": [
+    {
+      "capacity_reclaimed": false,
+      "config": {
+        "BLOCK_M": 256,
+        "BLOCK_Q": 32,
+        "IS_3D": false,
+        "TILE_SIZE": 64
+      },
+      "fixture": "private numeric geometry; not a formal batchTokens change",
+      "formal_batch_tokens_changed": false,
+      "grid": [
+        66,
+        2
+      ],
+      "klens": [
+        4096,
+        33
+      ],
+      "pages": 523,
+      "profile": "multi2",
+      "qlens": [
+        2047,
+        1
+      ],
+      "raw3d_options": null,
+      "requested_options": {
+        "num_stages": 1,
+        "num_warps": 16
+      },
+      "segments": 1,
+      "sequences": 2,
+      "table_pitch": 8192,
+      "table_shape": [
+        2,
+        8192
+      ],
+      "total": 2048
+    },
+    {
+      "capacity_reclaimed": false,
+      "config": {
+        "BLOCK_M": 256,
+        "BLOCK_Q": 32,
+        "IS_3D": false,
+        "TILE_SIZE": 64
+      },
+      "fixture": "private numeric geometry; not a formal batchTokens change",
+      "formal_batch_tokens_changed": false,
+      "grid": [
+        66,
+        2
+      ],
+      "klens": [
+        4095,
+        17
+      ],
+      "pages": 521,
+      "profile": "multi2",
+      "qlens": [
+        2046,
+        2
+      ],
+      "raw3d_options": null,
+      "requested_options": {
+        "num_stages": 1,
+        "num_warps": 16
+      },
+      "segments": 1,
+      "sequences": 2,
+      "table_pitch": 8192,
+      "table_shape": [
+        2,
+        8192
+      ],
+      "total": 2048
+    }
+  ],
+  "precision_gate": false,
+  "profile": "multi2",
+  "service_verified": false,
+  "side_stream_verified": false,
+  "timing_attempted": false,
+  "writer_ms": null
+}
