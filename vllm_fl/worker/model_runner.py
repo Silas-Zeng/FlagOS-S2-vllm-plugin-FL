@@ -19,6 +19,11 @@ from typing import TYPE_CHECKING, Any, NamedTuple, TypeAlias, cast
 
 import numpy as np
 import torch
+from vllm_fl.patches.biv150_lm_head_temperature import (
+    compute_logits as _biv150_head_compute_logits,
+    prepare_sampling as _biv150_head_prepare_sampling,
+    sample_scaled as _biv150_head_sample_scaled,
+)
 from vllm_fl.patches.biv150_cpu_metadata import try_cpu_metadata as _biv150_try_cpu_metadata
 from vllm_fl.patches.biv150_async_token_update import fused_sampled_token_update as _biv150_fused_sampled_token_update
 from vllm_fl.patches.biv150_compute_order import make_plan as _biv150_compute_order_plan
@@ -476,6 +481,7 @@ class ExecuteModelState(NamedTuple):
     ec_connector_output: ECConnectorOutput | None
     cudagraph_stats: CUDAGraphStat | None
     slot_mappings: dict[str, torch.Tensor] | list[dict[str, torch.Tensor]] | None
+    head_temperature_state: object | None
 
 
 class ModelRunnerFL(
@@ -3680,6 +3686,7 @@ class ModelRunnerFL(
         self,
         logits: torch.Tensor | None,
         spec_decode_metadata: SpecDecodeMetadata | None,
+        head_temperature_state=None,
     ) -> SamplerOutput:
         # Sample the next token and get logprobs if needed.
         sampling_metadata = self.input_batch.sampling_metadata
@@ -3687,6 +3694,10 @@ class ModelRunnerFL(
         # if async scheduling and required by current sampling params.
         self.input_batch.update_async_output_token_ids()
         if spec_decode_metadata is None:
+            if head_temperature_state is not None:
+                return _biv150_head_sample_scaled(
+                    self, logits, sampling_metadata, head_temperature_state
+                )
             return self.sampler(
                 logits=logits,
                 sampling_metadata=sampling_metadata,
@@ -4445,6 +4456,7 @@ class ModelRunnerFL(
         if compute_order is not None:
             compute_order.forward_returned()
 
+        head_temperature_state = None
         with record_function_or_nullcontext("gpu_model_runner: postprocess"):
             if self.use_aux_hidden_state_outputs:
                 # True when EAGLE 3 is used.
@@ -4472,7 +4484,9 @@ class ModelRunnerFL(
                     )
 
                 sample_hidden_states = hidden_states[logits_indices]
-                logits = self.model.compute_logits(sample_hidden_states)
+                logits, head_temperature_state = _biv150_head_compute_logits(
+                    self, sample_hidden_states, scheduler_output, spec_decode_metadata
+                )
             else:
                 # Rare case.
                 assert not self.is_pooling_model
@@ -4514,6 +4528,7 @@ class ModelRunnerFL(
             ec_connector_output,
             cudagraph_stats,
             slot_mappings,
+            head_temperature_state,
         )
         self.kv_connector_output = kv_connector_output
 
@@ -4566,9 +4581,14 @@ class ModelRunnerFL(
             ec_connector_output,
             cudagraph_stats,
             slot_mappings,
+            head_temperature_state,
         ) = self.execute_model_state
         # Clear ephemeral state.
         self.execute_model_state = None
+
+        logits, head_temperature_state = _biv150_head_prepare_sampling(
+            self, logits, head_temperature_state, scheduler_output, grammar_output
+        )
 
         # Apply structured output bitmasks if present.
         if grammar_output is not None:
@@ -4577,7 +4597,9 @@ class ModelRunnerFL(
             )
 
         with record_function_or_nullcontext("gpu_model_runner: sample"):
-            sampler_output = self._sample(logits, spec_decode_metadata)
+            sampler_output = self._sample(
+                logits, spec_decode_metadata, head_temperature_state
+            )
 
         self._update_states_after_model_execute(
             sampler_output.sampled_token_ids, scheduler_output
