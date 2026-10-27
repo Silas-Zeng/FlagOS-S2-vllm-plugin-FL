@@ -18,6 +18,7 @@ import sys
 import threading
 import time
 import traceback
+import tarfile
 
 sys.dont_write_bytecode=True
 import bench_biv150_prefill_host_binding as bench
@@ -25,6 +26,7 @@ from bench_biv150_prefill_host_binding import MAIN,NATIVE,save,run_cpu
 from biv150_prefill_host_binding import (CpuContract,LocalSdkBinding,make_private_reverse_manager,
     NATIVE_ENV,TARGET_PINS,native_runtime_identity)
 from biv150_prefill_host_component import PACKING
+from biv150_resource_records import resource_evidence,compare_resource_records
 
 
 def _bootstrap(a,prepared,cpu):
@@ -192,7 +194,13 @@ class Observer:
             scheduler_not_directly_measured_by_cProfile=True)
 
 
-def self_test():
+def loaded_resource_record(manager_record):
+    snapshot=dict(manager_record['loaded_resources'])
+    snapshot['post_launch_resource_evidence']=resource_evidence(snapshot,manager_record)
+    return snapshot
+
+
+def self_test(source):
     callbacks=list(gc.callbacks);trace=sys.gettrace();profile=sys.getprofile()
     enabled,threshold=gc.isenabled(),gc.get_threshold();o=Observer();o.start()
     try:sum(range(7))
@@ -207,7 +215,20 @@ def self_test():
         finally:failed.stop()
     except RuntimeError as error:assert error is marker
     assert gc.callbacks==callbacks and sys.gettrace()is trace and sys.getprofile()is profile
-    return dict(stdlib_observer_lifecycle_passed=True,error_lifecycle_passed=True,forced_GC=False,Torch_imported=False)
+    # Use the preserved actual5967 schema, not a guessed synthetic dictionary.
+    archive=source/'docs/evidence/prefill-reverse-20261027/host-binding-completed-v4/v4-raw.tar.gz'
+    with tarfile.open(archive)as saved:raw=saved.extractfile('out/result.json').read()
+    assert hashlib.sha256(raw).hexdigest()=='99f18a8abd926680221a8f32013f3ba65795e56f8843dca875e738d07740e417'
+    records=json.loads(raw)['manager_proofs'];left=records['parent']['compile_records'][0];right=records['reverse']['compile_records'][0]
+    assert compare_resource_records(loaded_resource_record(left),loaded_resource_record(right))['strict_allowed']
+    unknown=dict(left['candidate_resources']);unknown['post_launch_resource_evidence']=resource_evidence(unknown)
+    assert not compare_resource_records(unknown,unknown)['strict_allowed']
+    mismatched=dict(left,candidate_hash='wrong-binary')
+    try:loaded_resource_record(mismatched)
+    except ValueError:pass
+    else:raise AssertionError('Wrong pre/post manager binary accepted')
+    return dict(stdlib_observer_lifecycle_passed=True,error_lifecycle_passed=True,forced_GC=False,Torch_imported=False,
+        actual5967_loaded_resource_schema_passed=True,unknown_counts_rejected=True,mismatched_binary_rejected=True)
 
 
 def device(a,prepared,cpu,contract_proof):
@@ -243,7 +264,7 @@ def device(a,prepared,cpu,contract_proof):
             record=selected[0];proof=record['mechanism']
             assert proof['mechanism_pass']and proof['llvm_q_memory_reads_in_loop']==0 and proof['llvm_q_memory_reads_total']==32
             return record
-        def loaded(manager):return proof_record(manager)['loaded_resources']
+        def loaded(manager):return loaded_resource_record(proof_record(manager))
         for arm in('baseline','candidate'):
             boundary_before=len(binding.boundary.calls);reverse_before=reverse.snapshot()
             run=(lambda:binding.call(contract=contract(),**kw))if arm=='candidate'else(lambda:function(**kw))
@@ -322,7 +343,7 @@ def main():
     if not a.run_gpu:
         a.out.mkdir(parents=True,exist_ok=False);save(a.out/'plan.json',dict(cpu_only=True,actual_host_profiling_executed=False,
             stdlib_self_test_profile_executed=a.self_test,GPU_executed=False,
-            production_hook=False,performance_score=False,contract=proof,self_test=self_test()if a.self_test else None))
+            production_hook=False,performance_score=False,contract=proof,self_test=self_test(a.source)if a.self_test else None))
         save(a.out/'cpu.json',cpu);assert'torch'not in sys.modules and'triton'not in sys.modules
         print(json.dumps(dict(passed=True,cpu_only=True,actual_host_profile_executed=False)));return
     device(a,prepared,cpu,proof)

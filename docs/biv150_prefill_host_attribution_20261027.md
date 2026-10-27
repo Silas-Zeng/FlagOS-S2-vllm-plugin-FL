@@ -10,11 +10,12 @@ This entry collects missing CPU evidence without sweeping additional score round
 `tools/diagnose_biv150_prefill_host_overhead.py` defaults to CPU preflight/plan.
 It imports no Torch/Triton and executes no actual host profile by default.
 `--self-test` explicitly tests only the stdlib observer's success/error cleanup.
-Both3.12.15 and3.14 tests pass, with identical artifacts in
+The initial593 observer-only3.12.15 and3.14 tests passed, with artifacts in
 `evidence/prefill-reverse-20261027/host-attribution-v1/`: default-plan SHA
 1465a9090a67eb742c5375a39a12a4bbd15cf24e034a011f10fd81276e777530,
 self-test-plan SHA77637a4ac944c512461da541c41e11b17c084653556bbf86246558783ed8b841.
-The existing CPU report remains30dc23a4….
+The corrected resource-schema tests and current plan are recorded below. The
+existing CPU report remains30dc23a4….
 
 Explicit `--run-gpu` is solely for root's later serialized diagnostic. It runs
 one baseline/candidate block, each3 warm calls then2 profiled calls by default
@@ -35,6 +36,7 @@ PYTHONDONTWRITEBYTECODE=1 /usr/local/bin/python tools/diagnose_biv150_prefill_ho
   --sdk-source /usr/local/lib/python3.12/site-packages/vllm/v1/attention/ops/triton_unified_attention.py \
   --helpers-source /usr/local/lib/python3.12/site-packages/vllm/v1/attention/ops/triton_attention_helpers.py \
   --target-sources docs/evidence/prefill-reverse-20261027/host-binding-v1/actual-target-sources.tar.gz \
+  --self-test \
   --out /tmp/NEW_CPU_PLAN
 ```
 
@@ -92,3 +94,36 @@ guards cannot be removed merely because a profile identifies their cost.
 The goal remains retaining the kernel benefit through a valid real-service
 integration. A successful diagnostic is not model105, official throughput/TTFT,
 full-matrix, or new host-performance acceptance.
+
+## Initial593 diagnostic resource-schema refusal
+
+Root's first diagnostic owner627340/start344164972 ended same-start Z. It warmed
+the baseline, then safely rejected the resource check before any profiled arm:
+raw Manager.loaded_resources dictionaries lack the explicit
+post_launch_resource_evidence consumed by compare_resource_records. Actual counts
+113/0 alone must not imply an observed phase. The original diagnostic retains
+exactly its AssertionError, empty arms, parent_restored=true and
+diagnostic_checks_passed=false; it contains no profile/score result.
+
+All26 originals1272541B plus download manifest are preserved unchanged in
+`host-attribution-resource-v2/failed-v1-raw.tar.gz`, 178239B, SHA256
+`e6179bd686d1c2f463bbad67fc493d9bebe06031dce6df5cd462e5103f439d68`.
+Every file SHA and unpacked archive byte was independently verified. Source593
+and its old plans remain in history; the source on the target is not overwritten.
+
+The correction follows the original bench: resource_evidence(snapshot,
+manager_record) verifies pre/post/candidate hash, metadata and ASM identity and
+attaches its result as post_launch_resource_evidence. It uses the actual
+Manager-loaded phase, without inventing already_launched or weakening unknowns.
+The existing strict comparator is unchanged. CPU self-test now replays the exact
+preserved5967 parent/reverse records, then rejects unknown counts and a changed
+manager binary hash. The real archive is read only as JSON; no SO/cubin is loaded.
+
+Corrected3.12.15/3.14 self-test output matches byte-for-byte in
+`host-attribution-resource-v2/`: default-plan SHA
+`c2e4a7e42217527cb9baa59f178e4d67d2e0d971ee9b48b2e51f1ada8535fd5a`,
+self-test-plan SHA `2c4b6a5db9bf670c79a247e0ce80abdb13546191fd7fd959f763263d0c599210`.
+The self-test requires the committed host-binding-completed-v4/v4-raw.tar.gz.
+Bootstrap, timing placement, observer, scope/runtime guards and original benchmark
+are unchanged. Actual diagnostic execution remains for root; no device task is
+started or queued here.
