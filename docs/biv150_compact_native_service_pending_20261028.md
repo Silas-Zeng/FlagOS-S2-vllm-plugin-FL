@@ -78,3 +78,8 @@ No SSH, target compilation, GPU, queue, service start or new library load was
 performed. Actual new SO/SASS/IR/resources, compact consumer full O/M/L/final bits,
 real42-layer startup, all-reader numerics/Graph, model105, capacity and throughput
 remain unqualified. There is deliberately no new GPU launcher in this PR.
+
+
+Root independently replayed the full CPU entry with bundled Python3.12 on tested source10da126. Exit0; report `docs/evidence/compact-native-service-20261028/root-python312-cpu.json` SHA4100668a5f5c98ec61e08f6215f2969713958e87e375258e28270723def24f55. All structured fields match the original report except the preserved old91 rejection traceback renderer; both end with `AssertionError: bootstrap source hash mismatch: vllm_fl`. Original traceback and Root traceback remain intact, not normalized over the originals.
+
+Root also checked that encoded_native.py, encoded_runtime.py and encoded_service.py are byte-exact to parentc30cf4e, the stdlib preflight checks explicit pending before reading a missing SHA/path, and GPU sources remain exactly the two parents. This evidence-only commit does not enable the pending path, load an SO, claim a device run, borrow a model score or change any production file.
