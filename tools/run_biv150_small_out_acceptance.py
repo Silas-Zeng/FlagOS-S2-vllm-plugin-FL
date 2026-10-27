@@ -5,6 +5,7 @@ import datetime
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import shutil
 import sys
@@ -52,6 +53,35 @@ def expected_source_fingerprint(source, env):
     config = SimpleNamespace(model_config=SimpleNamespace(hf_config=SimpleNamespace(**semantics._GEOMETRY)))
     return semantics.build_fingerprint(config, 'iluvatar', package_root=source/'vllm_fl', environ=env,
         abi={'torch': str(torch.__version__), 'cxx11_abi': bool(torch._C._GLIBCXX_USE_CXX11_ABI)})
+
+
+def prefill_multi2_settings(source, mode):
+    """Feature selection only; the serving and benchmark arguments are fixed."""
+    if mode not in ('default','0','1'):
+        raise ValueError('Unknown multi2 mode')
+    available=(Path(source)/'vllm_fl/patches/biv150_prefill_multi2.py').is_file()
+    if mode=='1' and not available:
+        raise ValueError('Source does not provide the requested multi2 implementation')
+    return dict(available=available,expected_installed=available and mode!='0',
+                env={} if mode=='default' else {'VLLM_FL_BIV150_PREFILL_MULTI2':mode})
+
+
+def precision_state(verdict):
+    """Preserve the original full105 score; near misses get diagnostic timing."""
+    complete=(verdict['metric_count']==verdict['predictions']==verdict['unique_questions']==105
+              and not verdict['failed_predictions'])
+    score=verdict['score']
+    if not complete or not math.isfinite(score) or not .94<=score<=1:
+        raise RuntimeError('Incomplete, nonfinite or below-near-miss full105 verdict')
+    gate=score>=.95
+    return dict(accuracy=verdict,precision_passed=gate,precision_gate=gate,
+                near_miss_diagnostic=not gate,official_accuracy_evaluated=True)
+
+
+def require_runtime_scope(logs):
+    for marker in ('BIV150_COMPUTE_ORDER_SCOPE_REJECTED','BIV150_PREFILL_MULTI2_FALLBACK'):
+        if marker in logs:
+            raise RuntimeError('Hard runtime source/scope/prelaunch failure: '+marker)
 
 
 def throughput(out, *, full_workload_warmup=False):
@@ -112,7 +142,7 @@ def main(args):
         shutil.copy2(snapshot / name, target / name)
         assert sha(target / name) == record["sha256"]
     state = dict(complete=False, cleanup_complete=False, acceptance_passed=False,
-                 precision_passed=None, diagnostic_only=True, phase="starting",
+                 precision_passed=None, precision_gate=False, diagnostic_only=True, phase="starting",
                  commit=args.commit, native_mode=args.native_mode)
 
     def save(phase, **values):
@@ -140,10 +170,14 @@ def main(args):
         assert args.out_lowering == args.large_linear == args.stable_small_o == '1'
         env.pop('VLLM_FL_BIV150_SMALL_OUT_LOWERING')
         env.pop('VLLM_FL_BIV150_LARGE_LINEAR')
+    multi2_mode=getattr(args,'prefill_multi2','default')
+    multi2=prefill_multi2_settings(source,multi2_mode)
+    env.update(multi2['env'])
     command = ["/usr/local/bin/vllm", "serve", "/workspace/MiniCPM5-2B", "--port", "9031",
                "--compilation-config", '{"cudagraph_mode":"FULL_DECODE_ONLY"}',
                "--served-model-name", "minicpm", "--gpu-memory-utilization", "0.85", "--max-model-len", "131072"]
     manifest = dict(command=command, source=str(source), commit=args.commit,
+                    prefill_multi2_mode=multi2_mode,prefill_multi2_available=multi2['available'],
                     native_mode=args.native_mode, out_lowering=args.out_lowering, large_linear=args.large_linear,production_defaults=production_defaults,provider_probe=args.provider_probe, post_score_semantic_check=args.post_score_semantic_check, stable_small_o=args.stable_small_o, run_accuracy=args.run_accuracy, run_throughput=args.run_throughput, full_workload_warmup=args.full_workload_warmup, driver_sha256=sha(__file__),
                     diagnostic_sha256=sha(source / "tools/biv150_peer_mixed_diagnostic.py"),
                     gate_library_sha256=sha(args.gate_library), tuning_snapshot=records,
@@ -213,6 +247,18 @@ def main(args):
             assert out_installs[-1]['large_linear']==(args.large_linear=='1')
             installations['BIV150_SMALL_OUT_LOWERING_INSTALL']=out_installs[-1]
         manifest["installations"] = installations
+        if (source/'vllm_fl/patches/biv150_prefill_q32.py').is_file():
+            q32_installs=[ast.literal_eval(line.split('BIV150_PREFILL_Q32_INSTALL ',1)[1])
+                         for line in logs.splitlines() if 'BIV150_PREFILL_Q32_INSTALL ' in line]
+            assert q32_installs and q32_installs[-1].get('installed') is True,q32_installs
+            manifest['installations']['BIV150_PREFILL_Q32_INSTALL']=q32_installs[-1]
+        multi2_installs=[ast.literal_eval(line.split('BIV150_PREFILL_MULTI2_INSTALL ',1)[1])
+                        for line in logs.splitlines() if 'BIV150_PREFILL_MULTI2_INSTALL ' in line]
+        if multi2['available']:
+            assert multi2_installs and multi2_installs[-1].get('installed') is multi2['expected_installed'],multi2_installs
+            manifest['installations']['BIV150_PREFILL_MULTI2_INSTALL']=multi2_installs[-1]
+        else:
+            assert not multi2_installs
         manifest["kv_cache_lines"] = [line for line in logs.splitlines() if "GPU KV cache size" in line]
         (args.out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
         save("ready")
@@ -230,6 +276,8 @@ def main(args):
         (args.out / "manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
         passed = summary["all_correct"] and summary["http_overlap"]
         save("mixed_completed", diagnostic=summary, semantic_passed=passed)
+        assert passed or args.diagnostic_after_semantic_failure,'Mixed semantic gate failed before formal accuracy/scoring'
+        require_runtime_scope(log_path.read_text())
         if args.provider_probe:
             # A separate post-ready diagnostic, excluded from official scoring.
             # Exact input token count is chosen to avoid startup profile2048 and
@@ -267,7 +315,8 @@ def main(args):
                 if not (verdict["metric_count"]==verdict["predictions"]==verdict["unique_questions"]==105
                         and not verdict["failed_predictions"] and verdict["score"]>=.94):raise
             verdict=json.loads((args.out/"accuracy-verdict.json").read_text())
-            state.update(accuracy=verdict,precision_passed=verdict["score"]>=.95,official_accuracy_evaluated=True)
+            state.update(precision_state(verdict))
+        require_runtime_scope(log_path.read_text())
         if args.run_throughput:
             assert passed or args.diagnostic_after_semantic_failure, "Mixed semantic failure requires explicit diagnostic scoring"
             save("throughput")
@@ -294,8 +343,26 @@ def main(args):
                 if count:generated.append(dict(path=str(p.relative_to(args.out)),sha256=sha(p),out_call_sites=count))
             assert generated,'No actual compiler-owned out calls in model'
         manifest['generated_out_modules']=generated
+        final_logs=log_path.read_text()
+        if multi2['available']:
+            assert 'BIV150_COMPUTE_ORDER_SCOPE_REJECTED' not in final_logs,'Strict C3 identity/scope rejected'
+            assert 'BIV150_COMPUTE_ORDER_FIRST_SELECTED ' in final_logs,'No actual compute-order selection'
+            manifest['compute_order_preserved']=True
+        multi2_selected=[ast.literal_eval(line.split('BIV150_PREFILL_MULTI2_SELECTED ',1)[1])
+                         for line in final_logs.splitlines() if 'BIV150_PREFILL_MULTI2_SELECTED ' in line]
+        assert 'BIV150_PREFILL_MULTI2_FALLBACK' not in final_logs,'Multi2 preparation fell back; no candidate acceptance'
+        if multi2['expected_installed'] and args.run_throughput:
+            assert multi2_selected,'No actual two-sequence service selection was observed'
+        if not multi2['expected_installed']:
+            assert not multi2_selected
+        for event in multi2_selected:
+            assert event['num_sequences']==2 and event['rows']>=1024
+            assert tuple(event['grid'])==(event['rows']//32+2,2)
+            assert (event['block_m'],event['block_q'],event['num_warps'],event['tile_size'],event['num_stages'])==(256,32,16,64,1)
+        manifest['prefill_multi2_selected']=multi2_selected
         (args.out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-        state.update(diagnostic_scores_only=not passed)
+        state.update(diagnostic_scores_only=not (passed and state.get('precision_passed') is True),
+                     precision_gate=state.get('precision_passed') is True)
         save("workloads_completed", work_completed=True, diagnostic=summary,
              semantic_passed=passed, official_throughput_claim=False,
              accuracy_skipped_due_mixed_failure=False)
@@ -358,6 +425,7 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out-lowering",choices=("0","1"),required=True)
+    parser.add_argument('--prefill-multi2',choices=('default','0','1'),default='default')
     parser.add_argument('--large-linear',choices=('0','1'),default='0')
     parser.add_argument('--provider-probe',action='store_true')
     parser.add_argument('--production-defaults',action='store_true')

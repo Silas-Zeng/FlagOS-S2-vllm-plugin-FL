@@ -28,6 +28,8 @@ def command(a,label):
             '--tuning-snapshot',str(a.tuning_snapshot),'--fixtures',str(a.fixtures),
             '--provider-probe','--post-score-semantic-check','--run-accuracy','--run-throughput','--full-workload-warmup']
     if candidate or getattr(a,'baseline_production_defaults',False):result.append('--production-defaults')
+    multi2=getattr(a,'candidate_prefill_multi2' if candidate else 'baseline_prefill_multi2','default')
+    if multi2!='default':result.extend(['--prefill-multi2',multi2])
     return result
 
 
@@ -87,4 +89,6 @@ if __name__=='__main__':
     p.add_argument('--baseline-out-lowering',choices=['0','1'],default='0')
     p.add_argument('--baseline-large-linear',choices=['0','1'],default='0')
     p.add_argument('--baseline-production-defaults',action='store_true')
+    p.add_argument('--baseline-prefill-multi2',choices=['default','0','1'],default='default')
+    p.add_argument('--candidate-prefill-multi2',choices=['default','0','1'],default='default')
     main(p.parse_args())

@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "cpu_only": true,
+  "gpu_executed": false,
+  "synthetic_fixtures": true,
+  "precision_gate": false,
+  "minimal_valid_fixture_accepted": true,
+  "existing_baseline_q32_allowed": true,
+  "rejected": [
+    "precision99",
+    "forged-precision99",
+    "ttft",
+    "working-gate",
+    "count",
+    "grid",
+    "missing-selected",
+    "baseline-multi2",
+    "fingerprint",
+    "manual-env",
+    "cleanup",
+    "duplicate105",
+    "raw-sse",
+    "snapshot",
+    "serve-cli",
+    "comparison"
+  ],
+  "cli_valid_exits0_and_near99_exits1": true,
+  "model_evaluation_performed": false,
+  "model_source_frozen": "e08c79456f9b943dbc4d9d02d0a4e030b4eceac1",
+  "limitation": "Synthetic archive protocol/fault tests only; no real run, model precision or throughput claim."
+}
