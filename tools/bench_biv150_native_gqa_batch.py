@@ -11,6 +11,7 @@ import subprocess
 import sys
 from biv150_native_gqa_batch_factory import ROOT,MAIN,INTEGRATION,render,sha,CFLAGS,CUDAFLAGS,NAMESPACE
 from biv150_native_gqa_batch_runtime import ENV,PRIVATE,StockFixture,create_runtime
+from biv150_native_gqa_batch_admission import Admission
 
 
 def plan():
@@ -29,17 +30,6 @@ def module(path,name):
     sys.modules[name]=mod;spec.loader.exec_module(mod);return mod
 
 
-def native_pids():
-    p=subprocess.run(['/usr/local/corex/bin/ixsmi','-i','0','--query-compute-apps=pid','--format=csv,noheader,nounits'],
-                     capture_output=True,text=True,timeout=15,check=True)
-    lines=p.stdout.splitlines()
-    if not lines:return []
-    if any(not s.strip().isdigit() or int(s.strip())<=0 for s in lines):raise RuntimeError('unknown native PID query')
-    return [int(s.strip()) for s in lines]
-
-
-def start():return (os.getpid(),Path('/proc/self/stat').read_text().rsplit(')',1)[1].split()[19])
-
 
 def run(a):
     assert a.out and a.out.is_absolute() and not a.out.exists() and a.library and a.build_proof
@@ -57,20 +47,21 @@ def run(a):
         diagnostic_admission=dict(tiny_initialization_outside_numerics=True))
     checkpoint=lambda:save(a.out/'summary.json',result);checkpoint()
     try:
-        with socket.socket() as s:assert s.connect_ex(('127.0.0.1',9031))!=0,'service9031 busy'
-        assert not native_pids(),'native GPU workload present before any CUDA initialization'
-        identity=start();result['diagnostic_admission']['container_pid_start']=identity
+        with socket.socket() as s:port_code=s.connect_ex(('127.0.0.1',9031))
+        result['diagnostic_admission']['port9031_probe_code']=port_code
+        assert port_code!=0,'service9031 busy'
+        result['diagnostic_admission']['port9031_closed']=True
+        guard=Admission(a.root_owned_exclusive)
+        guard.report.update(result['diagnostic_admission'])
+        result['diagnostic_admission']=guard.report
+        guard.check('pre-CUDA')
         os.environ['TRITON_CACHE_DIR']=str(a.out/'triton-cache')
         import torch
         import numpy as np
         torch.set_num_threads(4);tiny=torch.zeros(1,device='cuda');torch.cuda.synchronize()
         result['GPU_executed']=True;result['diagnostic_admission']['tiny_cuda_initializations']=1
-        ids=native_pids();assert len(ids)==1,'tiny admission must create exactly one native PID'
-        native_pid=ids[0];result['diagnostic_admission']['native_host_pid']=native_pid
-        def admission():
-            now=native_pids();owner=start()
-            result['diagnostic_admission'].setdefault('observations',[]).append(dict(native_host_pids=now,container_pid_start=owner))
-            assert owner==identity and now==[native_pid],'native PID ownership transition'
+        guard.check('post-tiny-initialization')
+        def admission():guard.check()
         admission();checkpoint()
         from vllm.triton_utils import triton
         target=triton.runtime.driver.active.get_current_target();assert (target.backend,target.arch,target.warp_size)==('corex',71,64)

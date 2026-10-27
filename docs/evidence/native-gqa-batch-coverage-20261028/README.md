@@ -56,9 +56,30 @@ python3 -B tools/bench_biv150_native_gqa_batch.py --run-device --root-owned-excl
   --build-proof /ABS/NEW_BUILD/build-proof.json
 ```
 
-The last command requires empty native PID admission before CUDA, records tiny
-initialization outside numerics, binds the resulting singleton driver host PID
-rather than mistaking the container PID, and rechecks it throughout. It tests
+The last command requires Root's explicit `--root-owned-exclusive`: Root has
+verified the previous owned job terminal and schedules serially. `ixsmi` process
+visibility is not proof of exclusivity or idle state. Before CUDA it requires
+port9031 closed and used memory≤1024MiB. Empty/no-process PID output is recorded
+as unavailable; no hostPID is invented. No verified container→driver PID mapping
+is available, so any visible unowned PID (including a numerical match to the
+container PID) conservatively rejects. Full-table and query PID observations
+are combined. During the run, PID/start ticks stay fixed, memory above4096MiB
+or an unexplained phase increase>1024MiB rejects. Tiny initialization is outside
+numerics and recorded as real GPU work. These are additional refusal gates;
+namespace-hidden low-memory workloads cannot be ruled out by these observations.
+The actual exclusivity assertion comes from Root's external scheduling.
+
+CPU v2 admission replay (no ixsmi/device access):
+
+```sh
+python3 -B -W error tools/check_biv150_native_gqa_batch_admission_cpu.py
+```
+
+`admission-cpu-v2.json` covers invisible28554MiB rejection, invisible low memory
+recorded unavailable, visible foreign/ambiguous PID, query failure, stale owner,
+memory growth and run-cap counterexamples. The entire original numeric-loop AST
+is unchanged from dc9d451; its original CPU report remains byte-identical.
+The short numeric entry tests
 N48/56, max context193, dense/ragged lengths including zero and tails, both Q
 strides, read-only inputs, canaries, inactive scratch and full independent FP64
 output gates. Baseline TL runs first; both arms must pass the unchanged .005
