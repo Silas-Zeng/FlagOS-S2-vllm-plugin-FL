@@ -4,6 +4,7 @@ import argparse
 import ast
 import asyncio
 import __future__
+import builtins
 import copy
 from contextlib import contextmanager, redirect_stdout
 from dataclasses import dataclass, replace
@@ -18,7 +19,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
-from types import SimpleNamespace
+from types import SimpleNamespace, ModuleType
 
 from biv150_prefill_host_component import prepare_source, PACKING
 import biv150_prefill_host_component as host_protocol
@@ -254,16 +255,37 @@ def source_chain(target,source):
 
 
 def local_binding(root,prepared):
-    policies=[]
-    parent_fragment=SimpleNamespace(Manager=object,_eligible=prepared.descriptor_guard)
-    for filename,pin in [("biv150_prefill_q32.py","3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b"),
-                         ("biv150_prefill_multi2.py","fc3cdd066aacc6dfdc5029bb8aae9589f868b6800534511d2198f1f0d88da342")]:
-        raw=subprocess.check_output(["git","-C",str(root),"show",MAIN+":vllm_fl/patches/"+filename])
-        assert hashlib.sha256(raw).hexdigest()==pin
-        classes=[n for n in ast.parse(raw).body if isinstance(n,ast.ClassDef)]
-        ns={"qfragment":parent_fragment}
-        exec(compile_unannotated(classes,"<actual-parent-policy>"),ns)
-        policies.append(ns["_Policy"])
+    # Execute COMPLETE pinned parent module definitions. Only their package
+    # import is stubbed; stdlib imports and source future flags remain intact.
+    # The full source defines Managers but never instantiates/installs them.
+    parents={}
+    def parent_import(name,globals=None,locals=None,fromlist=(),level=0):
+        if name=='vllm_fl.patches':return SimpleNamespace(**parents)
+        return builtins.__import__(name,globals,locals,fromlist,level)
+    from biv150_prefill_parent_certificate import PINS
+    for module_name in('biv150_q_fragment_service','biv150_prefill_q32','biv150_prefill_multi2'):
+        path=(root/'vllm_fl/patches'/(module_name+'.py')).resolve();raw=path.read_bytes()
+        assert hashlib.sha256(raw).hexdigest()==PINS[module_name+'.py']
+        module=ModuleType('_cpu_parent_fixture_'+module_name);module.__file__=str(path)
+        module.__dict__['__builtins__']=dict(vars(builtins),__import__=parent_import)
+        exec(compile(raw,str(path),'exec',flags=0,dont_inherit=True,optimize=sys.flags.optimize),module.__dict__)
+        parents[module_name]=module
+    parent_fragment=parents['biv150_q_fragment_service']
+    policies=[parents[name]._Policy for name in('biv150_prefill_q32','biv150_prefill_multi2')]
+    # Reproduce the old false positive: both old fixture and old expectation
+    # compiled the same partial class, losing the real module symbol table.
+    from biv150_prefill_parent_certificate import child_code, ParentCertificate
+    partial_misses=[];partial_codes={}
+    for module_name in('biv150_prefill_q32','biv150_prefill_multi2','biv150_q_fragment_service'):
+        module=parents[module_name];path=Path(module.__file__);raw=path.read_bytes()
+        target='_eligible'if module_name.endswith('fragment_service')else'_Policy'
+        node=next(n for n in ast.parse(raw).body if isinstance(n,(ast.ClassDef,ast.FunctionDef))and n.name==target)
+        partial=compile(ast.Module(body=[copy.deepcopy(node)],type_ignores=[]),str(path),'exec',flags=0,dont_inherit=True)
+        partial_code=child_code(partial,target)
+        if target=='_Policy':partial_code=child_code(partial_code,'__getitem__')
+        actual=module._eligible if target=='_eligible'else module._Policy.__getitem__
+        assert partial_code!=actual.__code__;partial_misses.append(module_name);partial_codes[module_name]=partial_code
+    assert parent_fragment._eligible.__code__.co_flags&__future__.annotations.compiler_flag
     capture=[False];parent,reverse,multi2,generic=[Entry(x)for x in ("q32","reverse","multi2","generic")]
     def manager(entry):
         return SimpleNamespace(async_mode=SimpleNamespace(get=lambda:None),active=True,
@@ -289,6 +311,27 @@ def local_binding(root,prepared):
             query_start_len_ptr=kw["cu_seqlens_q"],seq_lens_ptr=kw["seqused_k"],block_tables_ptr=kw["block_table"])
         return chain[(kw["q"].shape[0]//16+raw["num_seqs"],2)](**raw)
     binding=LocalSdkBinding(function,prepared,qm,chain,reverse,lambda:capture[0],lambda:chain.base is qp,source_root=root)
+    # Retain strict diagnostics rather than clearing future/code/location data.
+    rejected_code_fields=[]
+    for module_name,field in [('biv150_prefill_q32','co_firstlineno'),('biv150_prefill_multi2','co_qualname'),
+            ('biv150_q_fragment_service','co_flags'),('biv150_prefill_q32','co_filename'),
+            ('biv150_prefill_multi2','nested_partial_module_code')]:
+        module=parents[module_name];fn=module._eligible if module_name.endswith('fragment_service')else module._Policy.__getitem__
+        saved=fn.__code__
+        if field=='nested_partial_module_code':fn.__code__=partial_codes[module_name]
+        else:
+            changed={'co_firstlineno':saved.co_firstlineno+1,'co_qualname':saved.co_qualname+'_changed',
+                'co_flags':saved.co_flags^__future__.annotations.compiler_flag,'co_filename':'<wrong-parent-path>'}[field]
+            fn.__code__=saved.replace(**{field:changed})
+        try:
+            try:ParentCertificate(root,chain,qm)
+            except ValueError as error:
+                assert module_name+'.py'in str(error)
+                assert (field in str(error)or(field=='co_filename'and'path differs'in str(error))
+                    or(field=='nested_partial_module_code'and'co_code'in str(error)))
+            else:raise AssertionError('Changed code field admitted: '+field)
+        finally:fn.__code__=saved
+        rejected_code_fields.append(module_name+'.'+field)
     contract=lambda:CpuContract(sdk["q"],sdk["cu_seqlens_q"],sdk["seqused_k"],(0,2048),True,PACKING,True)
     seen=[]
     with redirect_stdout(io.StringIO()):
@@ -301,8 +344,9 @@ def local_binding(root,prepared):
             # The cached private duplicate must not suppress the real parent's
             # per-call predicate. Profile the actual pinned function on CPU.
             guard_counts={128:0,256:0};guard_code=prepared.descriptor_guard.__code__
+            parent_guard_code=parent_fragment._eligible.__code__
             def profile(frame,event,arg):
-                if event=="call"and frame.f_code is guard_code:
+                if event=="call"and(frame.f_code is guard_code or frame.f_code is parent_guard_code):
                     guard_counts[frame.f_locals["block_m"]]+=1
             previous_profile=sys.getprofile();sys.setprofile(profile)
             try:
@@ -403,7 +447,7 @@ def local_binding(root,prepared):
     uncertified=LocalSdkBinding(function,prepared,qm,chain,reverse,lambda:capture[0],lambda:chain.base is qp)
     uncached_counts={128:0,256:0}
     def uncached_profile(frame,event,arg):
-        if event=='call'and frame.f_code is guard_code:uncached_counts[frame.f_locals['block_m']]+=1
+        if event=='call'and(frame.f_code is guard_code or frame.f_code is parent_guard_code):uncached_counts[frame.f_locals['block_m']]+=1
     with redirect_stdout(io.StringIO()),uncertified.candidate()as invoke:
         previous_profile=sys.getprofile();sys.setprofile(uncached_profile)
         try:
@@ -425,6 +469,8 @@ def local_binding(root,prepared):
         changed_parent_code_invalidates_certificate=True,foreign_direct_call_keeps_original_Call_identity=True,
         context_entry_and_exit_errors_propagate_restore=context_errors,
         uncertified_cache_disabled_full_guard_counts=uncached_counts,
+        complete_parent_modules_compiled_with_source_future_flags=True,partial_module_code_mismatch_reproduced=partial_misses,
+        strict_code_field_mutants_rejected=rejected_code_fields,
         boundary_records=binding.boundary.calls,outer_forward_context_hook_installed=False,
         real_framework_imported=False,device_verified=False)
 

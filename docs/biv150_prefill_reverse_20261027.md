@@ -332,8 +332,9 @@ direction worth investigating, but there is no demonstrated wall/service gain.
 This separately committed CPU adaptation retains the old381987 unconditional
 reverse kernel and the original M2/Q32/verified-Manager chain. It adds no service
 hook. Source installation checks pin main56f's M2, Q32 and descriptor files, then
-compile their selected Python definitions on CPU and require equality with the
-actual loaded function code. Qualification also checks the current policy links,
+compile their complete modules on CPU and extract the selected code without
+executing the reference modules, requiring equality with loaded function code.
+Qualification also checks the current policy links,
 predicate identity/code/defaults. Unknown or changed qualification fails closed.
 These source/hash/AST operations occur once at setup, never on the hot path.
 
@@ -373,9 +374,12 @@ Warmup counts, untapped baseline, repeats, AB/BA/AB order, event/wall ranges,
 numerical/reference/Graph/side/canary/typed-ABI/Q-hoist and resource gates are
 byte-identical. All new host work stays inside the same candidate call charge.
 
-Local CPython3.12.15 and3.14 default CPU entries pass with byte-identical report
+The initial0cc CPython3.12.15 and3.14 default CPU entries passed with byte-identical report
 `host-binding-qualified-v1/cpu.json`, SHA256
 `5e407f15822cedfe3567dd1952b1dd2d92838d03086d17a3abc35d61db86c0dd`.
+That fixture used partial classes and did not establish actual module-import
+code identity; the complete-module fixture and actual diagnosis below supersede
+that part of its proof. The original report is retained unchanged.
 CPU profiling of the actual pinned predicate sees two parent BM128 checks for
 two cache-hit SDK calls, and zero duplicate private BM256 checks; without a
 certificate it sees two of each. Five post-cache stride/dtype/alias/metadata
@@ -390,3 +394,61 @@ whether to run the unchanged bounded GPU component with this new source freeze.
 Actual typed ABI/Q-hoist/resources/numerical/Graph gates and wall/event ratios
 remain pending for this adaptation. Model105/service precision and official
 throughput/TTFT are unverified; no gain or merge acceptance is claimed.
+
+## 0cc parent-certificate failure and complete-module identity reconstruction
+
+The actual0cc attempt owner625949/start343310889 is recorded same-start Z. Target
+default CPU preflight passed, but LocalSdkBinding construction rejected loaded
+parent code before the attention case loop. There is no result.json, attention
+timing, numerical or new attention-resource record. Device discovery had occurred
+and created an opaque cuda_utils SO; this is not the earlier pre-GPU Any failure.
+All7 original files71633B plus download manifest remain unchanged in
+`host-binding-parent-certificate-v4/v3-failure-raw.tar.gz`, 16883B, SHA256
+`c179b1436e510b1fbd24f2df8d72e6c349515c925fc13c5f56e32b6a29b7c307`.
+The original pending manifest stays pending, and its original CPU report stays
+5e407f…; no synthetic result replaces the missing device result.
+
+Root's independent actual-loaded diagnosis is preserved as
+`target-loaded-diagnostic.json`, SHA256
+`5d14d6da6b0744fe95c25b4738d05dd5eacb1f65d08f7530303eeabd3e6a4027`.
+All three actual module files come from the original v3/0cc worktree and have
+the expected source SHA; there is no site-packages import mismatch. Actual code
+equals complete-module expected code for all three functions, while all three
+old partial-AST expected codes differ. On actual CPython3.12:
+
+- M2 and Q32 differ only in nested `invoke.co_code`: offset156 is full-module
+  LOAD_GLOBAL9(NULL+qfragment) versus partial LOAD_GLOBAL8(qfragment); offset166
+  is full LOAD_ATTR10(_eligible) versus partial LOAD_ATTR11(NULL|self+_eligible).
+  The partial class lost the module import symbol table and its call optimization.
+- Fragment `_eligible` and its generators lose source future.annotations in the
+  partial reconstruction: main flags16777219 versus3, generator16777267 versus51.
+  Filename/qualname/closure/optimization mismatch was not the cause.
+
+The correction compiles the entire pinned original byte string with flags0,
+dont_inherit=True and current sys.flags.optimize, matching SourceFileLoader.
+It only extracts `_Policy.__getitem__`/`_eligible` code from co_consts; it never
+executes the reference module. CodeType equality plus explicit recursive field
+comparison remain strict, including nested bytecode, flags, filename/qualname,
+closures, line/exception tables and constants. Loaded code/global source paths
+must resolve to the pinned source root. A mismatch names the module and exact
+field paths, aborting preflight without alternative compilation or fake approval.
+All dynamic qualification/intact, Router, fresh metadata, cache, timing and
+numerical/resource gates are unchanged.
+
+The revised CPU fixture executes complete pinned parent module definitions with
+only their package imports stubbed, preserving their real compiler context and
+future flags. It imports no Torch/Triton and never instantiates/installs Managers.
+It reproduces all three old partial mismatches; five code/location/future/nested
+import-call mutants reject. Local3.12.15 and3.14 strict default entries pass with
+identical CPU report SHA256
+`30dc23a450c62fa8fd9aaa80e8929a6067f565a58a682f044366f8d80576a397`.
+Existing live-parent profile, post-cache descriptor mutations, foreign-call
+identity, stale/nested/capture/M2/long and error-restoration checks still pass.
+
+`tools/diagnose_biv150_prefill_parent_code.py` defaults to stdlib compile-only;
+its explicit --loaded mode imports parent modules but calls no install, CUDA,
+JIT or launcher. Root used the standalone equivalent for the actual diagnosis.
+The actual code-identity issue is explained and corrected; new target default
+CPU and bounded device acceptance remain for root. The old kernel benefit and
+0cc host adaptation are retained. No new host/device performance, model105 or
+service/official-score result is claimed by this identity-tool correction.

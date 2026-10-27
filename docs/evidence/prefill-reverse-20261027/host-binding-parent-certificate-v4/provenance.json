@@ -1,0 +1,86 @@
+{
+  "original_source_commit": "0cc84adf22846fdf350c2e8e079f114fb6d811d4",
+  "original_owner": {
+    "pid": 625949,
+    "start_ticks": 343310889,
+    "same_start": true,
+    "state": "Z"
+  },
+  "raw_files": 7,
+  "raw_bytes": 71633,
+  "original_manifest_sha256": "a11186fd93e934318e3a20140629e9750194bf7ba8acfbbf967f626b95d92244",
+  "files": [
+    {
+      "relative": "exports/cjj-prefill-host-binding-v3-20261027-owner.json",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-prefill-host-binding-v3-20261027-owner.json",
+      "bytes": 1670,
+      "sha256": "0fbea1fe71a81b755b028a7b9ac3c78a567dee13c589728e0d17cd4794d2976d"
+    },
+    {
+      "relative": "exports/cjj-prefill-host-binding-v3-20261027.log",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-prefill-host-binding-v3-20261027.log",
+      "bytes": 3534,
+      "sha256": "5a670730b5a6f1c986f3eb45fffdbda9476c3966569638accd706f880a563354"
+    },
+    {
+      "relative": "out/baseline-normalized.py",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-prefill-host-binding-v3-20261027/baseline-normalized.py",
+      "bytes": 18472,
+      "sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744"
+    },
+    {
+      "relative": "out/cpu-preflight.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-prefill-host-binding-v3-20261027/cpu-preflight.json",
+      "bytes": 11207,
+      "sha256": "5e407f15822cedfe3567dd1952b1dd2d92838d03086d17a3abc35d61db86c0dd"
+    },
+    {
+      "relative": "out/manifest.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-prefill-host-binding-v3-20261027/manifest.json",
+      "bytes": 325,
+      "sha256": "fbb4473768d46bd76f5f483335f1161a31a9717d41f7a4dd6e1b1cfece4fc0b4"
+    },
+    {
+      "relative": "out/old-fca-unconditional.py",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-prefill-host-binding-v3-20261027/old-fca-unconditional.py",
+      "bytes": 18497,
+      "sha256": "38198704c37479e4b5c26778d7dd1da2a894409d1c81ff2626e1d988facca104"
+    },
+    {
+      "relative": "out/private-triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-prefill-host-binding-v3-20261027/private-triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 17928,
+      "sha256": "5a8523e462a7da8e016c9d6c1556fd90c1efec25a8ea8e5474e69545e3c73ec0"
+    }
+  ],
+  "archive": {
+    "path": "v3-failure-raw.tar.gz",
+    "bytes": 16883,
+    "sha256": "c179b1436e510b1fbd24f2df8d72e6c349515c925fc13c5f56e32b6a29b7c307"
+  },
+  "phase": "gpu setup -> LocalSdkBinding -> ParentCertificate before attention case loop",
+  "result_json_present": false,
+  "attention_timing_or_numerical_records_available": false,
+  "runtime_device_discovery_had_occurred": true,
+  "opaque_cuda_utils_SO_preserved_not_loaded_by_replay": true,
+  "original_pending_manifest_unchanged": true,
+  "CPU_default_preflight_was_passed_but_used_partial_module_fixture": true,
+  "model105_evaluated": false,
+  "service_evaluated": false,
+  "local_312_314_fixed_CPU_reports_byte_identical": true,
+  "cpu_report_sha256": "30dc23a450c62fa8fd9aaa80e8929a6067f565a58a682f044366f8d80576a397",
+  "target_loaded_signature_confirmation_pending": false,
+  "target_diagnostic_sha256": "5d14d6da6b0744fe95c25b4738d05dd5eacb1f65d08f7530303eeabd3e6a4027",
+  "target_actual_equals_full_module": [
+    true,
+    true,
+    true
+  ],
+  "target_actual_equals_old_partial": [
+    false,
+    false,
+    false
+  ],
+  "target_source_SHA_matches_all_three": true,
+  "target_import_paths_are_original_0cc_tree": true
+}
