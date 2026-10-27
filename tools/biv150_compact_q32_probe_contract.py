@@ -27,7 +27,8 @@ def sha(value):return hashlib.sha256(value.encode() if isinstance(value,str) els
 
 def plan():
     return dict(default='stdlib CPU plan; Root-only explicit --compile-only or --gpu',
-        format=FORMAT,query_rows=Q,lengths=list(LENGTHS),prefixes=[x-Q for x in LENGTHS],
+        root_owned_exclusive_required=True,ixsmi_exclusivity_proof=False,pre_CUDA_memory_cap_mib=1024,
+        empty_PID_visibility='unavailable, not idle proof',format=FORMAT,query_rows=Q,lengths=list(LENGTHS),prefixes=[x-Q for x in LENGTHS],
         sequences=1,pages=PAGES,page_bytes=12544,layer_offset_bytes=GUARD,grid=[Q//32+1,2],
         geometry=dict(BLOCK_M=256,BLOCK_Q=32,TILE_SIZE=64,num_warps=16,num_stages=1),
         input='full-D128 nonperiodic counter BF16; shared canonical A/B/C for both arms',

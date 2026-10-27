@@ -13,6 +13,7 @@ import sys
 import tempfile
 import biv150_compact_q32_probe_contract as c
 import probe_biv150_compact_q32_hoist as p
+from biv150_compact_q32_probe_admission import pre_cuda
 
 
 def rejects(fn):
@@ -29,6 +30,15 @@ def check(oracle):
         rejects(lambda:c.policy({**good,key:False},True,False))
     rejects(lambda:c.policy(good,False,False))
     assert c.policy(good,False,True)['precision_gate'] is False
+    low='128MiB / 32768MiB\nNo running processes found'
+    rejects(lambda:pre_cuda(False,low,'',True))
+    rejects(lambda:pre_cuda(True,'28554MiB / 32768MiB\nNo running processes found','',True))
+    rejects(lambda:pre_cuda(True,low,'1234',True))
+    rejects(lambda:pre_cuda(True,low+'\nProcesses:\n| 0 1234 process |','',True))
+    rejects(lambda:pre_cuda(True,low,'',False))
+    checked=pre_cuda(True,low,'',True)
+    assert checked['native_pid_visibility']=='unavailable' and not checked['exclusive_by_ixsmi']
+    assert checked['no_visible_pid_is_idle_proof'] is False
     identity=p.source_identity()
     assert identity['format']==c.FORMAT
     assert c.plan()['Graph_hoisted_qualification'] is False
@@ -70,6 +80,8 @@ def check(oracle):
     result=dict(passed=True,CPU_only=True,source_manifest_verified=True,default_plan_no_framework=True,
         hard_gate_rejections=len(good),compile_receipt_faults=len(faults)+1,missing_gpu_options_rejected=True,
         full_D128_counter_nonperiodic=True,Graph_path_label_normalized_only=True,
+        missing_Root_ack_empty_high_memory_visible_PID_port_open_rejected=True,
+        no_visible_PID_never_an_idle_or_exclusivity_proof=True,
         partial_max_sum='not_exposed_by_2D_Q32',no_device_or_compiler_run=True,
         actual_IR_resource_numeric_Graph_service_pending=True)
     if oracle:

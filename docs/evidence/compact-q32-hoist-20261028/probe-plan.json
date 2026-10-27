@@ -5,6 +5,7 @@
   "Graph_hoisted_qualification": false,
   "changed_Graph_replay_before_fresh_eager_B": true,
   "default": "stdlib CPU plan; Root-only explicit --compile-only or --gpu",
+  "empty_PID_visibility": "unavailable, not idle proof",
   "encoder_launches": 0,
   "format": "cjj-konly-compact12544-rn32-rne-v1",
   "full_output_cache_guards_readonly": true,
@@ -20,6 +21,7 @@
     2
   ],
   "input": "full-D128 nonperiodic counter BF16; shared canonical A/B/C for both arms",
+  "ixsmi_exclusivity_proof": false,
   "layer_offset_bytes": 256,
   "lengths": [
     1057,
@@ -35,6 +37,7 @@
   "performance_measured": false,
   "pointwise_atol": 0.005,
   "pointwise_rtol": 0.005,
+  "pre_CUDA_memory_cap_mib": 1024,
   "precision_gate": false,
   "prefixes": [
     33,
@@ -42,6 +45,7 @@
     34
   ],
   "query_rows": 1024,
+  "root_owned_exclusive_required": true,
   "sequences": 1,
   "service_verified": false,
   "side_actual_path": "Q32 unhoisted vs fresh hoisted",

@@ -58,9 +58,9 @@ The separate tools/probe_biv150_compact_q32_hoist.py defaults to a stdlib plan. 
 After renewal, Root may serially execute these explicit modes from an exact clean frozen checkout, using fresh absolute output directories outside the checkout:
 
 ```sh
-python3 -B tools/probe_biv150_compact_q32_hoist.py --compile-only \
+python3 -B tools/probe_biv150_compact_q32_hoist.py --compile-only --root-owned-exclusive \
   --commit EXACT_THIS_FRONTEND_HEAD --out ABS_FRESH_COMPILE_OUT
-python3 -B tools/probe_biv150_compact_q32_hoist.py --gpu \
+python3 -B tools/probe_biv150_compact_q32_hoist.py --gpu --root-owned-exclusive \
   --commit SAME_EXACT_HEAD --compile-receipt ABS_FRESH_COMPILE_OUT \
   --out ABS_FRESH_NUMERIC_OUT --numeric-diagnostic
 ```
@@ -79,3 +79,5 @@ python3 -B tools/probe_biv150_compact_q32_hoist.py
 ```
 
 The oracle option uses NumPy only on CPU for a tiny all-D128 scalar cross-check, not Torch. Default CLI/receipt/hard-policy/format checks use stdlib. CPU preparation does not verify full1024 device values, compilation, native layout, resources, changed Graph, side streams, mixed workloads,42-layer capacity, model quality or performance. All those gates remain pending. Large final/reference arrays may require a collector budget above128MiB; preserve complete files and do not replace them with samples to fit a cap. A failed run must retain its raw arrays/IR/error and cannot be silently retried or relaxed.
+
+Pre-CUDA admission requires explicit --root-owned-exclusive in both device modes. Root must first confirm the previous owned job terminal and serialize scheduling; this external assertion is the only exclusivity authority. The reused stdlib95 observation parser refuses visible preexisting PIDs, unknown observations, memory above1024MiB and a non-closed9031 port. Empty PID/full process tables mean visibility unavailable, never GPU-idle proof. No process-ID mapping or own-PID inference is added. Both raw full-table and PID-query observations are saved. CPU counterexamples cover missing Root acknowledgement, empty-table high-memory, visible PID (query/full table) and open port.

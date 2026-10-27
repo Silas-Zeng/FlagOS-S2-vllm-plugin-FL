@@ -2,6 +2,7 @@
 """Default stdlib plan; explicit Root-only compact Q32 compile/numeric falsifier."""
 import argparse
 import importlib
+import errno
 import json
 import os
 from pathlib import Path
@@ -11,6 +12,7 @@ import sys
 sys.dont_write_bytecode=True
 import biv150_compact_q32_probe_contract as c
 from biv150_compact_q32_probe_arguments import kwargs
+from biv150_compact_q32_probe_admission import pre_cuda
 
 
 def save(path,value):
@@ -34,6 +36,7 @@ def source_identity():
 
 
 def admit(args):
+    c.need(args.root_owned_exclusive is True,'Root explicit serial ownership acknowledgement required')
     c.need(args.commit and args.out and args.out.is_absolute() and not args.out.exists(),'exact commit/new absolute output required')
     c.need(not args.out.resolve().is_relative_to(c.ROOT),'output must be outside checkout')
     def git(*a):return subprocess.check_output(['git','-C',str(c.ROOT),*a],text=True).strip()
@@ -97,9 +100,16 @@ def run(args):
         installed=dict(sdk=base/'vllm/v1/attention/ops/triton_unified_attention.py',
             helpers=base/'vllm/v1/attention/ops/triton_attention_helpers.py',jit=base/'triton/spec/iluvatar/triton/runtime/jit.py')
         for name,path in installed.items():c.need(c.sha(path.read_bytes())==c.PINS[name],'installed source '+name)
-        smi=subprocess.check_output(['/usr/local/corex/bin/ixsmi'],text=True)
-        (args.out/'prelaunch-ixsmi.txt').write_text(smi);c.need('No running processes found' in smi,'GPU must be idle')
-        with socket.socket() as sock:c.need(sock.connect_ex(('127.0.0.1',9031))!=0,'service9031 must be closed')
+        smi=subprocess.run(['/usr/local/corex/bin/ixsmi','-i','0'],capture_output=True,text=True,check=False,timeout=15)
+        pid_query=subprocess.run(['/usr/local/corex/bin/ixsmi','-i','0','--query-compute-apps=pid','--format=csv,noheader,nounits'],capture_output=True,text=True,check=False,timeout=15)
+        (args.out/'prelaunch-ixsmi.txt').write_text(smi.stdout)
+        (args.out/'prelaunch-visible-pids.txt').write_text(pid_query.stdout)
+        (args.out/'prelaunch-ixsmi.stderr.txt').write_text(smi.stderr)
+        (args.out/'prelaunch-visible-pids.stderr.txt').write_text(pid_query.stderr)
+        c.need(smi.returncode==pid_query.returncode==0,'ixsmi observation query failed; exclusivity unavailable')
+        with socket.socket() as sock:port_code=sock.connect_ex(('127.0.0.1',9031))
+        result['pre_CUDA_admission']=pre_cuda(args.root_owned_exclusive,smi.stdout,pid_query.stdout,port_code==errno.ECONNREFUSED)
+        result['pre_CUDA_admission']['port_probe_code']=port_code;checkpoint()
         # No service activation, dependency installation or unrelated native SO.
         for key in ('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','VLLM_FL_BIV150_KONLY_ENCODED_SERVICE',
                     'VLLM_FL_BIV150_KONLY_NATIVE_DECODE','VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST'):
@@ -330,12 +340,14 @@ def run(args):
 def main():
     p=argparse.ArgumentParser(description=__doc__);mode=p.add_mutually_exclusive_group()
     mode.add_argument('--compile-only',action='store_true');mode.add_argument('--gpu',action='store_true')
+    p.add_argument('--root-owned-exclusive',action='store_true')
     p.add_argument('--commit');p.add_argument('--out',type=Path);p.add_argument('--compile-receipt',type=Path)
     p.add_argument('--numeric-diagnostic',action='store_true');a=p.parse_args()
     if not(a.gpu or a.compile_only):
-        c.need(not any((a.commit,a.out,a.compile_receipt,a.numeric_diagnostic)),'device options require explicit mode')
+        c.need(not any((a.commit,a.out,a.compile_receipt,a.numeric_diagnostic,a.root_owned_exclusive)),'device options require explicit mode')
         value=c.plan()
     else:
+        c.need(a.root_owned_exclusive,'Root explicit serial ownership acknowledgement required')
         c.need(not a.compile_only or not(a.compile_receipt or a.numeric_diagnostic),'compile mode cannot use numeric options')
         c.need(not a.gpu or a.compile_receipt is not None,'numeric mode requires completed fresh compile receipt')
         value=run(a)
