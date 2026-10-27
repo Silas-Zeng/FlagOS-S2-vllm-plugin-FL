@@ -1,0 +1,1445 @@
+{
+  "activation_allowed": false,
+  "actual_device_views_created": false,
+  "address_checks": 98304,
+  "all_reader_coverage_complete": false,
+  "compiled_typed_ABI_verified": false,
+  "cpu_only": true,
+  "dependencies": [
+    79,
+    80,
+    82,
+    83
+  ],
+  "encoded_payload_verified": false,
+  "encoded_registered": false,
+  "examples": [
+    {
+      "cache_kwargs": {
+        "k_stride_block": 16384,
+        "k_stride_head": 128,
+        "k_stride_slot": 256,
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967296,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967296,
+          "shape": [
+            4096
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            1
+          ]
+        },
+        "v_stride_block": 8192,
+        "v_stride_head": 128,
+        "v_stride_slot": 256,
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975488,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 4096,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 0,
+      "pages": 1,
+      "role": "decode79"
+    },
+    {
+      "cache_kwargs": {
+        "KV_QUANT_MODE": 0,
+        "k_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967296,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967296,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_code_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967296,
+          "shape": [
+            4096
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            1
+          ]
+        },
+        "stride_k_cache_0": 16384,
+        "stride_k_cache_1": 256,
+        "stride_k_cache_2": 128,
+        "stride_k_cache_3": 1,
+        "stride_ks_blk": 0,
+        "stride_ks_head": 0,
+        "stride_ks_slot": 0,
+        "stride_v_cache_0": 8192,
+        "stride_v_cache_1": 256,
+        "stride_v_cache_2": 128,
+        "stride_v_cache_3": 1,
+        "stride_vs_blk": 0,
+        "stride_vs_head": 0,
+        "stride_vs_slot": 0,
+        "v_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975488,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 4096,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975488,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 4096,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 0,
+      "pages": 1,
+      "role": "prefill80"
+    },
+    {
+      "cache_kwargs": {
+        "cache_pages": 1,
+        "code_full": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967296,
+          "shape": [
+            16384
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            1
+          ]
+        },
+        "scale_full": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967296,
+          "shape": [
+            4096
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            1
+          ]
+        },
+        "value_full": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294967296,
+          "shape": [
+            8192
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16640,
+          "storage_id": 1,
+          "storage_offset": 0,
+          "strides": [
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 0,
+      "pages": 1,
+      "role": "writer83"
+    },
+    {
+      "cache_kwargs": {
+        "k_stride_block": 16384,
+        "k_stride_head": 128,
+        "k_stride_slot": 256,
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967300,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 4,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967300,
+          "shape": [
+            4096
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 1,
+          "strides": [
+            1
+          ]
+        },
+        "v_stride_block": 8192,
+        "v_stride_head": 128,
+        "v_stride_slot": 256,
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975492,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 4098,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 4,
+      "pages": 1,
+      "role": "decode79"
+    },
+    {
+      "cache_kwargs": {
+        "KV_QUANT_MODE": 0,
+        "k_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967300,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 4,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967300,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 4,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_code_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967300,
+          "shape": [
+            4096
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 1,
+          "strides": [
+            1
+          ]
+        },
+        "stride_k_cache_0": 16384,
+        "stride_k_cache_1": 256,
+        "stride_k_cache_2": 128,
+        "stride_k_cache_3": 1,
+        "stride_ks_blk": 0,
+        "stride_ks_head": 0,
+        "stride_ks_slot": 0,
+        "stride_v_cache_0": 8192,
+        "stride_v_cache_1": 256,
+        "stride_v_cache_2": 128,
+        "stride_v_cache_3": 1,
+        "stride_vs_blk": 0,
+        "stride_vs_head": 0,
+        "stride_vs_slot": 0,
+        "v_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975492,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 4098,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975492,
+          "shape": [
+            1,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 4098,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 4,
+      "pages": 1,
+      "role": "prefill80"
+    },
+    {
+      "cache_kwargs": {
+        "cache_pages": 1,
+        "code_full": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967300,
+          "shape": [
+            16384
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 4,
+          "strides": [
+            1
+          ]
+        },
+        "scale_full": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967300,
+          "shape": [
+            4096
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 1,
+          "strides": [
+            1
+          ]
+        },
+        "value_full": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294967300,
+          "shape": [
+            8192
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 16644,
+          "storage_id": 1,
+          "storage_offset": 2,
+          "strides": [
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 4,
+      "pages": 1,
+      "role": "writer83"
+    },
+    {
+      "cache_kwargs": {
+        "k_stride_block": 16384,
+        "k_stride_head": 128,
+        "k_stride_slot": 256,
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967552,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 256,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967552,
+          "shape": [
+            12288
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 64,
+          "strides": [
+            1
+          ]
+        },
+        "v_stride_block": 8192,
+        "v_stride_head": 128,
+        "v_stride_slot": 256,
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975744,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 4224,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 256,
+      "pages": 3,
+      "role": "decode79"
+    },
+    {
+      "cache_kwargs": {
+        "KV_QUANT_MODE": 0,
+        "k_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967552,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 256,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967552,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 256,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_code_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967552,
+          "shape": [
+            12288
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 64,
+          "strides": [
+            1
+          ]
+        },
+        "stride_k_cache_0": 16384,
+        "stride_k_cache_1": 256,
+        "stride_k_cache_2": 128,
+        "stride_k_cache_3": 1,
+        "stride_ks_blk": 0,
+        "stride_ks_head": 0,
+        "stride_ks_slot": 0,
+        "stride_v_cache_0": 8192,
+        "stride_v_cache_1": 256,
+        "stride_v_cache_2": 128,
+        "stride_v_cache_3": 1,
+        "stride_vs_blk": 0,
+        "stride_vs_head": 0,
+        "stride_vs_slot": 0,
+        "v_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975744,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 4224,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294975744,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 4224,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 256,
+      "pages": 3,
+      "role": "prefill80"
+    },
+    {
+      "cache_kwargs": {
+        "cache_pages": 3,
+        "code_full": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294967552,
+          "shape": [
+            49152
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 256,
+          "strides": [
+            1
+          ]
+        },
+        "scale_full": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294967552,
+          "shape": [
+            12288
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 64,
+          "strides": [
+            1
+          ]
+        },
+        "value_full": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294967552,
+          "shape": [
+            24576
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 49664,
+          "storage_id": 1,
+          "storage_offset": 128,
+          "strides": [
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 256,
+      "pages": 3,
+      "role": "writer83"
+    },
+    {
+      "cache_kwargs": {
+        "k_stride_block": 16384,
+        "k_stride_head": 128,
+        "k_stride_slot": 256,
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294983680,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 16384,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294983680,
+          "shape": [
+            12288
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 4096,
+          "strides": [
+            1
+          ]
+        },
+        "v_stride_block": 8192,
+        "v_stride_head": 128,
+        "v_stride_slot": 256,
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294991872,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 12288,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 16384,
+      "pages": 3,
+      "role": "decode79"
+    },
+    {
+      "cache_kwargs": {
+        "KV_QUANT_MODE": 0,
+        "k_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294983680,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 16384,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294983680,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 16384,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_code_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294983680,
+          "shape": [
+            12288
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 4096,
+          "strides": [
+            1
+          ]
+        },
+        "stride_k_cache_0": 16384,
+        "stride_k_cache_1": 256,
+        "stride_k_cache_2": 128,
+        "stride_k_cache_3": 1,
+        "stride_ks_blk": 0,
+        "stride_ks_head": 0,
+        "stride_ks_slot": 0,
+        "stride_v_cache_0": 8192,
+        "stride_v_cache_1": 256,
+        "stride_v_cache_2": 128,
+        "stride_v_cache_3": 1,
+        "stride_vs_blk": 0,
+        "stride_vs_head": 0,
+        "stride_vs_slot": 0,
+        "v_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294991872,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 12288,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294991872,
+          "shape": [
+            3,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 12288,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 16384,
+      "pages": 3,
+      "role": "prefill80"
+    },
+    {
+      "cache_kwargs": {
+        "cache_pages": 3,
+        "code_full": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4294983680,
+          "shape": [
+            49152
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 16384,
+          "strides": [
+            1
+          ]
+        },
+        "scale_full": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4294983680,
+          "shape": [
+            12288
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 4096,
+          "strides": [
+            1
+          ]
+        },
+        "value_full": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4294983680,
+          "shape": [
+            24576
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 65792,
+          "storage_id": 1,
+          "storage_offset": 8192,
+          "strides": [
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 16384,
+      "pages": 3,
+      "role": "writer83"
+    },
+    {
+      "cache_kwargs": {
+        "k_stride_block": 16384,
+        "k_stride_head": 128,
+        "k_stride_slot": 256,
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4295032832,
+          "shape": [
+            17,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 65536,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4295032832,
+          "shape": [
+            69632
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 16384,
+          "strides": [
+            1
+          ]
+        },
+        "v_stride_block": 8192,
+        "v_stride_head": 128,
+        "v_stride_slot": 256,
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4295041024,
+          "shape": [
+            17,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 36864,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 65536,
+      "pages": 17,
+      "role": "decode79"
+    },
+    {
+      "cache_kwargs": {
+        "KV_QUANT_MODE": 0,
+        "k_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4295032832,
+          "shape": [
+            17,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 65536,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4295032832,
+          "shape": [
+            17,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 65536,
+          "strides": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "key_code_scale_ptr": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4295032832,
+          "shape": [
+            69632
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 16384,
+          "strides": [
+            1
+          ]
+        },
+        "stride_k_cache_0": 16384,
+        "stride_k_cache_1": 256,
+        "stride_k_cache_2": 128,
+        "stride_k_cache_3": 1,
+        "stride_ks_blk": 0,
+        "stride_ks_head": 0,
+        "stride_ks_slot": 0,
+        "stride_v_cache_0": 8192,
+        "stride_v_cache_1": 256,
+        "stride_v_cache_2": 128,
+        "stride_v_cache_3": 1,
+        "stride_vs_blk": 0,
+        "stride_vs_head": 0,
+        "stride_vs_slot": 0,
+        "v_scale_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4295041024,
+          "shape": [
+            17,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 36864,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "value_cache_ptr": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4295041024,
+          "shape": [
+            17,
+            16,
+            2,
+            128
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 36864,
+          "strides": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 65536,
+      "pages": 17,
+      "role": "prefill80"
+    },
+    {
+      "cache_kwargs": {
+        "cache_pages": 17,
+        "code_full": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "pointer": 4295032832,
+          "shape": [
+            278528
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 65536,
+          "strides": [
+            1
+          ]
+        },
+        "scale_full": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "pointer": 4295032832,
+          "shape": [
+            69632
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 16384,
+          "strides": [
+            1
+          ]
+        },
+        "value_full": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "pointer": 4295032832,
+          "shape": [
+            139264
+          ],
+          "storage_base": 4294967296,
+          "storage_bytes": 344320,
+          "storage_id": 1,
+          "storage_offset": 32768,
+          "strides": [
+            1
+          ]
+        }
+      },
+      "layer_byte_offset": 65536,
+      "pages": 17,
+      "role": "writer83"
+    }
+  ],
+  "freshness_graph_reallocation_verified": false,
+  "frozen_sources": {
+    "79-bench.py": {
+      "bytes": 10374,
+      "commit": "bf94ba4472d9fad428d9ed6a4e79fa7fabf6b30a",
+      "path": "tools/bench_biv150_konly_decode.py",
+      "sha256": "81ec3b597f54f52faee0466ea4df6cc614a80acd01d35cd9a5adadfcfffc25bf"
+    },
+    "79-factory.py": {
+      "bytes": 6889,
+      "commit": "bf94ba4472d9fad428d9ed6a4e79fa7fabf6b30a",
+      "path": "tools/biv150_konly_decode_factory.py",
+      "sha256": "65563eea07c2544b3d8e288da9f7057650927fbc62405090fc4e1ec07cd290de"
+    },
+    "80-binding.py": {
+      "bytes": 7919,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "path": "tools/biv150_konly_prefill_compile_contract.py",
+      "sha256": "4d3b256bb270963cd5848aafc255fdbd6d0a946d44df9570c6e3ae7ba94c4fd4"
+    },
+    "80-factory.py": {
+      "bytes": 10446,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "path": "tools/biv150_konly_prefill_factory.py",
+      "sha256": "85e8e78c24d36316dbff2373e16b97d81695791bfb92399d46b2f10f22308f01"
+    },
+    "80-sdk.py": {
+      "bytes": 41796,
+      "commit": "d2ceb3bd8301ba846792e3370803832dc64270ca",
+      "path": "source-inputs.tar.gz:sdk.py",
+      "sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+    },
+    "83-writer.py": {
+      "bytes": 2531,
+      "commit": "58bace0b73614d2785d55b70a8376b91cb5e893d",
+      "path": "tools/kernels/biv150_konly_strided_writer.py",
+      "sha256": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9"
+    },
+    "main-gqa.py": {
+      "bytes": 23801,
+      "commit": "dac1b8fb48e7983e48283032efeee9b592c5fbe5",
+      "path": "vllm_fl/patches/biv150_gqa_decode.py",
+      "sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1"
+    }
+  },
+  "large_lastpage_i64": true,
+  "main": "dac1b8fb48e7983e48283032efeee9b592c5fbe5",
+  "passed": true,
+  "raw_parameter_schemas": {
+    "decode79": [
+      "segm_output_ptr",
+      "segm_max_ptr",
+      "segm_expsum_ptr",
+      "query_ptr",
+      "query_code_ptr",
+      "query_scale_ptr",
+      "key_scale_ptr",
+      "key_cache_ptr",
+      "value_cache_ptr",
+      "seq_lens_ptr",
+      "block_table_ptr",
+      "softmax_scale_log2e",
+      "queries_per_kv",
+      "block_table_stride",
+      "query_stride_token",
+      "query_stride_head",
+      "k_stride_block",
+      "k_stride_slot",
+      "k_stride_head",
+      "v_stride_block",
+      "v_stride_slot",
+      "v_stride_head",
+      "segment_stride_token",
+      "segment_stride_head",
+      "segment_stride_segment",
+      "max_stride_token",
+      "max_stride_head",
+      "HEAD_SIZE",
+      "PAGE_SIZE",
+      "ROWS",
+      "SEGMENTS"
+    ],
+    "prefill80": [
+      "output_ptr",
+      "query_ptr",
+      "key_cache_ptr",
+      "key_code_scale_ptr",
+      "value_cache_ptr",
+      "sink_ptr",
+      "block_tables_ptr",
+      "seq_lens_ptr",
+      "alibi_slopes_ptr",
+      "qq_bias_ptr",
+      "scale",
+      "q_scale",
+      "k_scale",
+      "v_scale",
+      "out_scale",
+      "softcap",
+      "num_query_heads",
+      "num_queries_per_kv",
+      "block_table_stride",
+      "query_stride_0",
+      "query_stride_1",
+      "output_stride_0",
+      "output_stride_1",
+      "qq_bias_stride_0",
+      "BLOCK_SIZE",
+      "TILE_SIZE",
+      "HEAD_SIZE",
+      "HEAD_SIZE_PADDED",
+      "USE_ALIBI_SLOPES",
+      "USE_ALIBI_SQRT",
+      "USE_QQ_BIAS",
+      "USE_SOFTCAP",
+      "USE_SINKS",
+      "SLIDING_WINDOW",
+      "USE_CAUSAL",
+      "USE_PER_SEQ_CAUSAL",
+      "per_seq_causal_ptr",
+      "USE_MM_PREFIX",
+      "MAX_MM_RANGES",
+      "mm_prefix_range_ptr",
+      "stride_k_cache_0",
+      "stride_k_cache_1",
+      "stride_k_cache_2",
+      "stride_k_cache_3",
+      "stride_v_cache_0",
+      "stride_v_cache_1",
+      "stride_v_cache_2",
+      "stride_v_cache_3",
+      "query_start_len_ptr",
+      "BLOCK_Q",
+      "num_seqs",
+      "BLOCK_M",
+      "NUM_SEGMENTS_PER_SEQ",
+      "USE_FP8",
+      "IS_3D",
+      "segm_output_ptr",
+      "segm_max_ptr",
+      "segm_expsum_ptr",
+      "k_scale_cache_ptr",
+      "v_scale_cache_ptr",
+      "stride_ks_blk",
+      "stride_ks_slot",
+      "stride_ks_head",
+      "stride_vs_blk",
+      "stride_vs_slot",
+      "stride_vs_head",
+      "KV_QUANT_MODE",
+      "FP8_MIN",
+      "FP8_MAX",
+      "CHUNK_LOOKBACK",
+      "CHUNK_SIZE",
+      "USE_TD",
+      "USE_TD_QO",
+      "Q_IS_FP8"
+    ],
+    "writer83": [
+      "key_source",
+      "value_source",
+      "slots",
+      "code_full",
+      "scale_full",
+      "value_full",
+      "key_row_stride",
+      "value_row_stride",
+      "key_rows",
+      "value_rows",
+      "slot_count",
+      "cache_pages"
+    ]
+  },
+  "rejected": [
+    "HND",
+    "page-padding",
+    "odd-BF16-offset",
+    "wrong-pointer",
+    "short-storage",
+    "CPU-device",
+    "wrong-dtype",
+    "unknown-storage",
+    "bool-dimension",
+    "zero-pages",
+    "unknown-role",
+    "missing-format",
+    "live-cache-alias",
+    "same-address-other-storage",
+    "decode79-preoffset-scale",
+    "decode79-wrong-V-base",
+    "decode79-extra-field",
+    "decode79-foreign-storage",
+    "prefill80-preoffset-scale",
+    "prefill80-wrong-V-base",
+    "prefill80-extra-field",
+    "prefill80-foreign-storage",
+    "writer83-preoffset-scale",
+    "writer83-wrong-V-base",
+    "writer83-extra-field",
+    "writer83-foreign-storage",
+    "prefill-I8-stride-in-BF16-units",
+    "prefill-V-stride-in-byte-units",
+    "builtin-mode2"
+  ],
+  "service_installed": false,
+  "shared_readonly_qkv_allowed": true,
+  "source_archive_sha256": "8a68f9211c9c09fc17fdc124aef12e50fd2aba0c8a8f8b8d28054f78ad56230b"
+}
