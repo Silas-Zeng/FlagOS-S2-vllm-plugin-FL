@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "cpu_only": true,
+  "factory": {
+    "main": "56f1838192abc940b3fb9accef490022ac125000",
+    "source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+    "original_kernel_sha256": "b505e712ea21e10563ffb4a14f01a13a9c77fa32308095a80ebbc417b96e69ce",
+    "generated_sha256": "fb28165b3426bd81fe2e4a27952da9aa98625e0ce383200878b1930df0711e7d",
+    "codec": "cjj-konly-rn32-rne-v2",
+    "support_sha256": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+    "same_raw_parameter_schema": true,
+    "compiled_typed_abi_verified": false,
+    "exact_byte_inverse": true,
+    "stock_bf16_key_loads_unchanged": true,
+    "original_address_masks_and_v_pv_preserved": true,
+    "q_codec_position": "once_per_active_split_CTA_after_original_BF16_Q_load",
+    "k_codec_position": "after_each_original_BF16_K_load; transpose16x128_then_back",
+    "full_and_tail_sites": 2,
+    "logical_q_rows": 8,
+    "logical_k_rows": 16,
+    "head_size": 128,
+    "no_cache_store_added": true,
+    "cache_writer_allocator_fallback_changed": false,
+    "diagnostic_only": true,
+    "throughput_candidate": false,
+    "full_prefill_quantization_represented": false,
+    "actual_diagnostic_ir_verified": false,
+    "actual_m16_codec_verified": false,
+    "device_numeric_verified": false,
+    "service_installed": false,
+    "gpu_executed": false
+  },
+  "source_load_store_ast_calls_identical": true,
+  "same_raw_parameter_schema": true,
+  "score_tile_cases": 204,
+  "valid_integer_score_cells": 13056,
+  "invalid_tail_poison_not_observed": true,
+  "packed_v2_score_targets_exact": true,
+  "source_cache_unchanged": true,
+  "closed_attention_targets": [
+    {
+      "length": 0,
+      "original_and_quantized_fp64_finite": true
+    },
+    {
+      "length": 1,
+      "original_and_quantized_fp64_finite": true
+    },
+    {
+      "length": 15,
+      "original_and_quantized_fp64_finite": true
+    },
+    {
+      "length": 16,
+      "original_and_quantized_fp64_finite": true
+    },
+    {
+      "length": 17,
+      "original_and_quantized_fp64_finite": true
+    },
+    {
+      "length": 31,
+      "original_and_quantized_fp64_finite": true
+    },
+    {
+      "length": 33,
+      "original_and_quantized_fp64_finite": true
+    }
+  ],
+  "rejected_mutants": 15,
+  "v2_half_boundary_code": 64,
+  "tiny_cpu_fp32_target_zero": true,
+  "cpu_is_not_gpu_recurrence_or_FTZ_simulation": true,
+  "f287_runtime_and_production_unchanged": true,
+  "gpu_executed": false,
+  "device_numeric_verified": false,
+  "actual_m16_codec_verified": false,
+  "full_prefill_quantization_represented": false,
+  "throughput_candidate": false,
+  "service_installed": false
+}
