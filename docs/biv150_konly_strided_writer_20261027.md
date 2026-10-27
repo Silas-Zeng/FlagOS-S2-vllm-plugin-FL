@@ -127,3 +127,15 @@ the matching local object before creating this independent branch. No successful
 fetch or upstream change is claimed from that failed attempt.
 Before the device-entry freeze, the normal HTTP/1.1 fetch succeeded;
 FETCH_HEAD/origin/main remain56f. The branch already contains that team main.
+
+## Root device result and independent CPU archive
+
+The preparation statements above describe the historical58b freeze. Root has
+now executed that exact frozen component: requested writer gates passed,
+completed/passed=true, errors=[],9 cases/13 cache checks, including changed
+Graph/side and actual typed IR plus loaded9regs/0spill/0shared. The full raw
+archive, independent CPU byte replay, scope and saved-guard limitations are in
+[device-v1/README.md](evidence/konly-strided-writer-20261027/device-v1/README.md).
+The writer/kernel/bench and original CPU evidence are unchanged. This is still
+component_only; precision/model/service/performance/live-lifecycle gates remain
+false. No deployment or service fallback is authorized by these component results.
