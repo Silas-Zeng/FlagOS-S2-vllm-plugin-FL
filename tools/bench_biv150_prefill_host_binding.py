@@ -102,7 +102,7 @@ def gpu(a,prepared,cpu):
         and not reverse.raw.pre_run_hooks and not reverse.candidate.pre_run_hooks
         and parent.device in(None,0)and reverse.device in(None,0))
     binding=LocalSdkBinding(function,prepared,parent,chain,reverse.wrapper,
-        torch.cuda.is_current_stream_capturing,runtime_intact)
+        torch.cuda.is_current_stream_capturing,runtime_intact,source_root=source)
     result=dict(completed=False,component_only=True,official_score=False,model_precision_gate=False,
         service_installed=False,source_commit=a.commit,production_parent=MAIN,native_sha256=NATIVE,
         cpu_preflight=cpu,source=prepared.proof,parent_M2_retained=True,
@@ -313,6 +313,7 @@ def gpu(a,prepared,cpu):
         result["boundary_records"]=binding.boundary.calls;result["omitted_boundary_records"]=binding.boundary.omitted
         result["direct_parent_sdk_calls"]=binding.direct_parent_calls
         result["scoped_sdk_calls"]=binding.scoped_calls
+        result["host_adapter"]=binding.snapshot()
         result["manager_proofs"]={"parent":parent.snapshot(),"reverse":reverse.snapshot()}
         result["native_runtime_after"]=native_runtime_identity(torch,a.native_library)
         if result["native_runtime_after"]["identity_file"]["sha256"]!=NATIVE:

@@ -13,6 +13,7 @@ import tarfile
 import tempfile
 
 import biv150_prefill_host_component as host
+from biv150_prefill_parent_certificate import ParentCertificate
 
 TARGET_PINS = {
     "model_executor/layers/attention/attention.py": "3414faca4cc04c699dbb880ba1761230e1ed97035f2934604cad9a5490f4dba1",
@@ -108,6 +109,68 @@ class CpuContract:
     _lease: _Lease = field(default_factory=_Lease, init=False, repr=False)
 
 
+class QualifiedRouter(host.Router):
+    """Cache only a redundant check after the certified parent checked live ABI.
+
+    Router.select still checks fresh Q/U, one-shot stamps, grid, scalar types and
+    scope. Mutable tensor shape/stride/dtype/storage checks stay in the original
+    parent policy and original reverse Manager on EVERY call, without caching.
+    """
+    def __init__(self,prepared,scope,certificate):
+        super().__init__(prepared,scope)
+        self.certificate=certificate
+        self.qualifications={};self.cache_hits=self.cache_misses=0
+        if certificate is not None:self.fragment._eligible=self._qualified
+
+    def _qualified(self,values,block_m,*,num_warps,num_stages,tile_size):
+        if not self.certificate.intact():return False
+        # Router already rejected Tensor-valued constexprs before this point.
+        # These are exactly the static fields read by the pinned predicate.
+        mode=values['KV_QUANT_MODE']
+        mode_value=mode if type(mode)is int else mode.value
+        # The actual parent invoke code is checked at Boundary. Its unchanged
+        # live predicate already enforced every other constexpr before its
+        # fixed BM128->BM256/Q32/w16 edit; do not rescan those invariants here.
+        key=(block_m,num_warps,num_stages,tile_size,type(mode),mode_value)
+        if key in self.qualifications:
+            self.cache_hits+=1
+            return True
+        self.cache_misses+=1
+        eligible=self.prepared.descriptor_guard(values,block_m,num_warps=num_warps,
+            num_stages=num_stages,tile_size=tile_size)
+        if eligible and len(self.qualifications)<16:self.qualifications[key]=True
+        return eligible
+
+
+class _BoundaryLaunch:
+    """One small per-launch grid owner; no new function/closure cells."""
+    __slots__=('boundary','grid')
+
+    def __init__(self,boundary,grid):self.boundary,self.grid=boundary,grid
+
+    def __call__(self,*args,**kwargs):
+        b,grid=self.boundary,self.grid
+        frame=host._CURRENT.get()
+        stamp=frame.metadata.stamp if type(frame)is host._Frame else object()
+        original=host.Call(b.original,args,grid,kwargs,b.parent_chain,stamp)
+        certificate=b.router.certificate
+        if certificate is not None and sys._getframe(1).f_code is not certificate.selected_invoke_code:
+            # An arbitrary direct caller is outside the certified boundary.
+            # Consume the one-shot extent and keep the original Call identity.
+            if type(frame)is host._Frame:frame.taken=True
+            selected=original
+        else:selected=b.router.select(original)
+        route='reverse'if selected.entry is b.router.scope.reverse_entry else'parent'
+        result=selected.run()
+        b.last=dict(route=route,original=original,selected=selected,result=result)
+        if len(b.calls)<b.max_records:
+            b.calls.append(dict(route=route,grid=list(grid),rows=kwargs['query_ptr'].shape[0],
+                hash=getattr(result,'hash',None),payload_identity=(selected.args is args
+                and selected.kwargs is kwargs and selected.grid is grid),parent_call_identity=selected is original))
+        else:b.omitted+=1
+        return result
+
+
 class Boundary:
     def __init__(self, original, router, parent_chain):
         self.original, self.router, self.parent_chain = original, router, parent_chain
@@ -117,24 +180,7 @@ class Boundary:
         self.max_records = 512
 
     def __getitem__(self, grid):
-        def invoke(*args, **kwargs):
-            frame = host._CURRENT.get()
-            stamp = frame.metadata.stamp if type(frame) is host._Frame else object()
-            original = host.Call(self.original, args, grid, kwargs, self.parent_chain, stamp)
-            selected = self.router.select(original)
-            route = "reverse" if selected.entry is self.router.scope.reverse_entry else "parent"
-            # Execute outside any qualification catch: no retry on launch errors.
-            result = selected.run()
-            self.last = dict(route=route, original=original, selected=selected, result=result)
-            if len(self.calls) < self.max_records:
-                self.calls.append(dict(route=route, grid=list(grid), rows=kwargs["query_ptr"].shape[0],
-                    hash=getattr(result, "hash", None), payload_identity=(selected.args is args
-                    and selected.kwargs is kwargs and selected.grid is grid),
-                    parent_call_identity=(selected is original)))
-            else:
-                self.omitted += 1
-            return result
-        return invoke
+        return _BoundaryLaunch(self,grid)
 
 
 class LocalSdkBinding:
@@ -145,13 +191,16 @@ class LocalSdkBinding:
     boundary. The outer M2/Q32 object is retained. Long calls have no new tap.
     """
     def __init__(self, function, prepared, q32_manager, parent_chain,
-                 reverse_entry, capturing, intact):
+                 reverse_entry, capturing, intact, *, source_root=None):
         self.function, self.manager = function, q32_manager
         self.original = q32_manager.wrapper
-        self.parent_chain, self.capturing, self.intact = parent_chain, capturing, intact
-        self.router = host.Router(prepared, host.ComponentScope(host.BOUNDARY,
+        self.parent_chain, self.capturing = parent_chain, capturing
+        self.certificate=(ParentCertificate(source_root,parent_chain,q32_manager)
+                          if source_root is not None else None)
+        self.intact=(lambda:intact()and self.certificate.intact())if self.certificate is not None else intact
+        self.router = QualifiedRouter(prepared, host.ComponentScope(host.BOUNDARY,
             host.PACKING, "NONE", True, True, True, True,
-            parent_chain, self.original, reverse_entry))
+            parent_chain, self.original, reverse_entry),self.certificate)
         if not self.router.enabled:
             raise ValueError("Complete private component scope required")
         self.boundary = Boundary(self.original, self.router, parent_chain)
@@ -162,6 +211,7 @@ class LocalSdkBinding:
 
     def call(self, *args, contract=None, **kwargs):
         if not self.active or not self.intact():
+            self.router.invalidate()
             raise RuntimeError("Private component parent binding changed/not active")
         valid = type(contract) is CpuContract and not contract._lease.used
         if type(contract) is CpuContract:
@@ -198,14 +248,22 @@ class LocalSdkBinding:
             self.manager.wrapper=self.boundary
             self.restored=False
             self.scoped_calls += 1
+            # Same one-shot Frame semantics as cpu_metadata(), without its
+            # generator/contextmanager allocation on the admitted hot path.
+            token=None
             try:
+                metadata._lease.bound=True
+                token=host._CURRENT.set(host._Frame(metadata))
                 # Local to this explicit SDK call. No outer forward-context hook.
-                with host.cpu_metadata(metadata):result=self.function(*args,**kwargs)
+                result=self.function(*args,**kwargs)
             finally:
-                if self.manager.wrapper is self.boundary:
-                    self.manager.wrapper=self.original;self.restored=True
-                else:
-                    self.router.invalidate();self.restored=False
+                try:
+                    if token is not None:host._CURRENT.reset(token)
+                finally:
+                    if self.manager.wrapper is self.boundary:
+                        self.manager.wrapper=self.original;self.restored=True
+                    else:
+                        self.router.invalidate();self.restored=False
         if not self.intact():
             raise RuntimeError("Parent scope changed during component call; no retry")
         return result
@@ -230,6 +288,15 @@ class LocalSdkBinding:
         self.router.invalidate()
         if self.active or not self.restored or self.manager.wrapper is not self.original:
             raise RuntimeError("Private component scope did not restore")
+
+    def snapshot(self):
+        return dict(parent_certificate=(self.certificate.proof if self.certificate else None),
+            private_qualification_cache_entries=len(self.router.qualifications),
+            private_qualification_cache_hits=self.router.cache_hits,
+            private_qualification_cache_misses=self.router.cache_misses,
+            fresh_metadata_checked_each_call=True,live_parent_and_Manager_guards_unchanged=True,
+            per_call_audit_records_retained=True,per_call_audit_materialization_deferred=False,
+            timing_or_warmup_changed=False)
 
 
 def make_private_reverse_manager(attention, backend, parent_manager, q32module,

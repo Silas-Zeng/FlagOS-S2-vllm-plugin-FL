@@ -326,3 +326,67 @@ diagnostic records; those are concrete optimization targets, not a proven
 causal explanation of the late-round difference. The event result keeps this
 direction worth investigating, but there is no demonstrated wall/service gain.
 16K's small differences are not pursued as a stable effect.
+
+## Private host adaptation after the e684 screen
+
+This separately committed CPU adaptation retains the old381987 unconditional
+reverse kernel and the original M2/Q32/verified-Manager chain. It adds no service
+hook. Source installation checks pin main56f's M2, Q32 and descriptor files, then
+compile their selected Python definitions on CPU and require equality with the
+actual loaded function code. Qualification also checks the current policy links,
+predicate identity/code/defaults. Unknown or changed qualification fails closed.
+These source/hash/AST operations occur once at setup, never on the hot path.
+
+The unchanged Q32 policy validates all current Tensor descriptors and launch
+flags before applying its fixed BM128->BM256/Q32/w16 edit. The new boundary also
+requires the real caller frame's code to be that exact parent `invoke` code;
+an arbitrary direct caller retains its original Call identity. Only within that
+certified parent-selected boundary can a successful private duplicate descriptor
+qualification be reused for the fixed geometry/mode ABI. It caches neither Tensor
+metadata nor Q/U decisions. Mutable shape/stride/dtype/device/storage alias and
+metadata descriptors are still checked by the original parent on every call;
+the original reverse Manager also retains its live checks and Q-hoist compiler
+audit. Core Router.select bytes remain unchanged, including fresh Q/U, zero-start
+packing, one-shot lease/stamp, current query identity, exact grid/scalar types,
+scope and late-decision checks. No benchmark labels enter routing or caching.
+
+Without installation qualification, the original full private descriptor check
+runs on every call. The optimization is intentionally not a general direct
+launcher API. It requires serial coherent caller metadata and the pinned parent
+source. Parent method/predicate/code/default changes revoke the private scope
+before another launch; there is no automatic re-enable. The component remains
+uninstalled from production and cannot be activated by missing scope assertions.
+
+The per-launch Boundary closure becomes a small slots object owning that exact
+grid reference. The admitted metadata extent uses the same one-shot Frame and
+ContextVar set/reset directly, avoiding the generator/contextmanager allocation.
+Nested/unknown/capture/long calls retain their existing parent path. Both context
+entry and exit failures still restore the wrapper, propagate the same exception
+and never retry. All per-call audit dictionaries/last records remain generated
+inside the launch path; no reporting materialization or mandatory check is moved
+out of the charged interval.
+
+The benchmark changes only binding-constructor configuration and a final adapter
+snapshot. A CPU exact inverse reconstructs the entire e684 benchmark and checks
+SHA `cd1b4b3b8382d790d630d42cd661cbf28203547de0d607d52986171d3e0a3b58`.
+Warmup counts, untapped baseline, repeats, AB/BA/AB order, event/wall ranges,
+numerical/reference/Graph/side/canary/typed-ABI/Q-hoist and resource gates are
+byte-identical. All new host work stays inside the same candidate call charge.
+
+Local CPython3.12.15 and3.14 default CPU entries pass with byte-identical report
+`host-binding-qualified-v1/cpu.json`, SHA256
+`5e407f15822cedfe3567dd1952b1dd2d92838d03086d17a3abc35d61db86c0dd`.
+CPU profiling of the actual pinned predicate sees two parent BM128 checks for
+two cache-hit SDK calls, and zero duplicate private BM256 checks; without a
+certificate it sees two of each. Five post-cache stride/dtype/alias/metadata
+mutations still miss into the original parent. A valid padded row stride stays
+eligible. Foreign direct callers, changed code/defaults, stale contracts,
+nested/M2/capture/long scopes and context/launch errors are covered without Torch.
+
+This proves a bounded CPU protocol and removal of repeated work, not a host or
+device speedup. The late e684 wall residual has no measured phase attribution.
+Root must first repeat the default CPU entry on the actual target, then decide
+whether to run the unchanged bounded GPU component with this new source freeze.
+Actual typed ABI/Q-hoist/resources/numerical/Graph gates and wall/event ratios
+remain pending for this adaptation. Model105/service precision and official
+throughput/TTFT are unverified; no gain or merge acceptance is claimed.

@@ -255,12 +255,13 @@ def source_chain(target,source):
 
 def local_binding(root,prepared):
     policies=[]
+    parent_fragment=SimpleNamespace(Manager=object,_eligible=prepared.descriptor_guard)
     for filename,pin in [("biv150_prefill_q32.py","3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b"),
                          ("biv150_prefill_multi2.py","fc3cdd066aacc6dfdc5029bb8aae9589f868b6800534511d2198f1f0d88da342")]:
         raw=subprocess.check_output(["git","-C",str(root),"show",MAIN+":vllm_fl/patches/"+filename])
         assert hashlib.sha256(raw).hexdigest()==pin
         classes=[n for n in ast.parse(raw).body if isinstance(n,ast.ClassDef)]
-        ns={"qfragment":SimpleNamespace(Manager=object,_eligible=prepared.descriptor_guard)}
+        ns={"qfragment":parent_fragment}
         exec(compile_unannotated(classes,"<actual-parent-policy>"),ns)
         policies.append(ns["_Policy"])
     capture=[False];parent,reverse,multi2,generic=[Entry(x)for x in ("q32","reverse","multi2","generic")]
@@ -287,7 +288,7 @@ def local_binding(root,prepared):
         raw.update(query_ptr=kw["q"],key_cache_ptr=kw["k"],value_cache_ptr=kw["v"],output_ptr=kw["out"],
             query_start_len_ptr=kw["cu_seqlens_q"],seq_lens_ptr=kw["seqused_k"],block_tables_ptr=kw["block_table"])
         return chain[(kw["q"].shape[0]//16+raw["num_seqs"],2)](**raw)
-    binding=LocalSdkBinding(function,prepared,qm,chain,reverse,lambda:capture[0],lambda:chain.base is qp)
+    binding=LocalSdkBinding(function,prepared,qm,chain,reverse,lambda:capture[0],lambda:chain.base is qp,source_root=root)
     contract=lambda:CpuContract(sdk["q"],sdk["cu_seqlens_q"],sdk["seqused_k"],(0,2048),True,PACKING,True)
     seen=[]
     with redirect_stdout(io.StringIO()):
@@ -297,6 +298,40 @@ def local_binding(root,prepared):
                 sdk["max_seqlen_k"]=upper;got=invoke(contract=contract(),**sdk)
                 assert got.hash==label;seen.append(label)
             sdk["max_seqlen_k"]=4096
+            # The cached private duplicate must not suppress the real parent's
+            # per-call predicate. Profile the actual pinned function on CPU.
+            guard_counts={128:0,256:0};guard_code=prepared.descriptor_guard.__code__
+            def profile(frame,event,arg):
+                if event=="call"and frame.f_code is guard_code:
+                    guard_counts[frame.f_locals["block_m"]]+=1
+            previous_profile=sys.getprofile();sys.setprofile(profile)
+            try:
+                for _ in range(2):assert invoke(contract=contract(),**sdk).hash=="reverse"
+            finally:sys.setprofile(previous_profile)
+            assert guard_counts=={128:2,256:0}
+            # A foreign direct call must never borrow the cached parent proof.
+            # Its exact original Call object is retained even with valid ABI.
+            raw_direct=values();grid_direct=(65,2)
+            direct_metadata=host_protocol.CpuMetadata(object(),raw_direct['query_ptr'],2048,4096,
+                (0,2048),True,host_protocol.PROVENANCE,False)
+            with host_protocol.cpu_metadata(direct_metadata):
+                assert binding.boundary[grid_direct](**raw_direct).hash=='q32'
+            assert binding.boundary.last['selected']is binding.boundary.last['original']
+            assert binding.boundary.last['original'].grid is grid_direct
+            # Mutable Tensor descriptors/storage are deliberately NOT cached.
+            # Mutations must be rejected by the unchanged parent before a tap.
+            mutation_checks=[]
+            for key,field,value in [('q','strides',(2048,128,2)),('out','address',sdk['q'].address),
+                    ('out','dtype','torch.float32'),('block_table','strides',(8192,2)),
+                    ('seqused_k','shape',(2,))]:
+                tensor=sdk[key];old=getattr(tensor,field);before=(len(binding.boundary.calls),len(reverse.calls))
+                setattr(tensor,field,value)
+                try:assert invoke(contract=contract(),**sdk).hash=="generic"
+                finally:setattr(tensor,field,old)
+                assert before==(len(binding.boundary.calls),len(reverse.calls));mutation_checks.append(key+'.'+field)
+            old_stride=sdk['q'].strides;sdk['q'].strides=(4096,128,1)
+            try:assert invoke(contract=contract(),**sdk).hash=="reverse"
+            finally:sdk['q'].strides=old_stride
             previous_capture=binding.capturing
             def no_new_capture_query():raise AssertionError("Long bypass queried new capture/tap scope")
             binding.capturing=no_new_capture_query;sdk["max_seqlen_k"]=16384
@@ -327,7 +362,55 @@ def local_binding(root,prepared):
         except RuntimeError as got:assert got is error
         else:raise AssertionError("Launch error swallowed")
         assert qm.wrapper is parent and binding.restored;reverse.error=None
+        context_errors=[];real_current=host_protocol._CURRENT
+        for failure in('set','reset'):
+            marker=RuntimeError('CPU context '+failure+' error');before=len(reverse.calls)
+            class BrokenContext:
+                def get(self):return real_current.get()
+                def set(self,value):
+                    if failure=='set':raise marker
+                    return real_current.set(value)
+                def reset(self,token):
+                    real_current.reset(token)
+                    if failure=='reset':raise marker
+            with binding.candidate()as invoke:
+                host_protocol._CURRENT=BrokenContext()
+                try:
+                    try:invoke(contract=contract(),**sdk)
+                    except RuntimeError as error:assert error is marker
+                    else:raise AssertionError('Context error swallowed')
+                finally:host_protocol._CURRENT=real_current
+            assert qm.wrapper is parent and binding.restored and real_current.get()is None
+            assert len(reverse.calls)==before+(failure=='reset');context_errors.append(failure)
+        saved_code=policies[0].__getitem__.__code__
+        policies[0].__getitem__.__code__=(lambda self,grid:None).__code__
+        try:assert binding.certificate.intact()is False
+        finally:policies[0].__getitem__.__code__=saved_code
+        assert binding.certificate.intact()is True
+        # Changing loaded code/defaults revokes qualification before any entry.
+        before=len(reverse.calls);saved_defaults=parent_fragment._eligible.__kwdefaults__
+        with binding.candidate()as invoke:
+            parent_fragment._eligible.__kwdefaults__=dict(saved_defaults,tile_size=32)
+            try:
+                try:invoke(contract=contract(),**sdk)
+                except RuntimeError as error:assert 'parent binding changed'in str(error)
+                else:raise AssertionError('Changed parent defaults admitted')
+            finally:parent_fragment._eligible.__kwdefaults__=saved_defaults
+        assert len(reverse.calls)==before and not binding.router.enabled
     binding.close()
+    # Missing installation proof retains the full old duplicate check on every
+    # call. It must not silently activate the qualified cache.
+    uncertified=LocalSdkBinding(function,prepared,qm,chain,reverse,lambda:capture[0],lambda:chain.base is qp)
+    uncached_counts={128:0,256:0}
+    def uncached_profile(frame,event,arg):
+        if event=='call'and frame.f_code is guard_code:uncached_counts[frame.f_locals['block_m']]+=1
+    with redirect_stdout(io.StringIO()),uncertified.candidate()as invoke:
+        previous_profile=sys.getprofile();sys.setprofile(uncached_profile)
+        try:
+            for _ in range(2):assert invoke(contract=contract(),**sdk).hash=='reverse'
+        finally:sys.setprofile(previous_profile)
+    assert uncached_counts=={128:2,256:2}and not uncertified.router.qualifications
+    uncertified.close()
     return dict(reference_parent=MAIN,explicit_sdk_maxima_local_scope=True,
         sequence=seen,baseline_no_new_tap=True,current_M2_Q32_identity_preserved=True,
         sdk_capture_uses_original_generic_parent_not_Q32=True,capture_claimed_Q32=False,
@@ -335,6 +418,13 @@ def local_binding(root,prepared):
         nested_sdk_call_parent_then_outer_reverse=True,
         long_miss_has_no_new_frame_tap_or_capture_query=True,
         unchanged_M2_bypasses_single_sequence_boundary_grid=[34,2],
+        certified_parent=binding.snapshot(),actual_parent_guard_calls_profiled=guard_counts,
+        mutable_descriptor_misses_keep_original_entry=mutation_checks,
+        valid_padded_row_stride_keeps_parent_validation=True,
+        changed_parent_defaults_revoke_scope_before_launch=True,
+        changed_parent_code_invalidates_certificate=True,foreign_direct_call_keeps_original_Call_identity=True,
+        context_entry_and_exit_errors_propagate_restore=context_errors,
+        uncertified_cache_disabled_full_guard_counts=uncached_counts,
         boundary_records=binding.boundary.calls,outer_forward_context_hook_installed=False,
         real_framework_imported=False,device_verified=False)
 
@@ -396,6 +486,18 @@ def native_contract(source):
         optional_C_recorded_separately_with_own_hash=True,real_torch_or_library_imported=False)
 
 
+def adaptation_source_contract(source):
+    current=(source/'tools/bench_biv150_prefill_host_binding.py').read_text()
+    changed='torch.cuda.is_current_stream_capturing,runtime_intact,source_root=source)'
+    added='        result["host_adapter"]=binding.snapshot()\n'
+    assert current.count(changed)==current.count(added)==1
+    original=current.replace(changed,'torch.cuda.is_current_stream_capturing,runtime_intact)').replace(added,'')
+    assert hashlib.sha256(original.encode()).hexdigest()=='cd1b4b3b8382d790d630d42cd661cbf28203547de0d607d52986171d3e0a3b58'
+    return dict(benchmark_exact_inverse_to_e684=True,only_constructor_configuration_and_final_report_added=True,
+        numerical_Graph_side_resource_gates_byte_unchanged=True,baseline_timing_warmup_byte_unchanged=True,
+        production_service_hook_added=False,required_checks_not_deferred=True,host_performance_not_yet_verified=True)
+
+
 def run_cpu(source,sdk,helpers,target):
     for name,pin in [("biv150_prefill_host_component.py","3cf4023500b32bf743f4c546fb60008d4d91c007f07dcc49ac9da7b79932a8bc"),
                      ("check_biv150_prefill_host_component_cpu.py","1310110d16eef94e0ab76b2a1822f50edea1759d6f9c75414b2c4f92769d1a35")]:
@@ -408,10 +510,11 @@ def run_cpu(source,sdk,helpers,target):
         host_binding_Q_hoist_device_verified=False,performance_verified=False,
         model_precision_gate=False,official_score=False,source=prepared.proof,
         target_source_chain=chain,local_binding=local_binding(source,prepared),
-        native_admission=native_contract(source),annotation_bridge=annotation_contract())
+        native_admission=native_contract(source),annotation_bridge=annotation_contract(),
+        host_adaptation_source=adaptation_source_contract(source))
     report["tool_sha256"]={name:hashlib.sha256((source/"tools"/name).read_bytes()).hexdigest()
         for name in ("biv150_prefill_host_binding.py","check_biv150_prefill_host_binding_cpu.py",
-                     "bench_biv150_prefill_host_binding.py")}
+                     "bench_biv150_prefill_host_binding.py","biv150_prefill_parent_certificate.py")}
     assert "torch"not in sys.modules and "triton"not in sys.modules
     return report,prepared
 
