@@ -3,6 +3,8 @@
 import ast
 import copy
 import hashlib
+import contextlib
+import io
 import importlib.util
 import json
 import os
@@ -102,6 +104,21 @@ def run():
         mutant = copy.deepcopy(fixture); mutant['cases'][0][field] = False; negatives.append(mutant)
     for mutant in negatives:
         reject(lambda mutant=mutant: hook.certificate_contract(mutant))
+    # Dispatch counter unit only: no fake result is ever used as a device pass.
+    class Kernel:
+        def __getitem__(self, grid):
+            return lambda **kwargs: SimpleNamespace(hash='CPU-counter-unit-only')
+    gqa = SimpleNamespace(_state=dict(calls=10, fallbacks=5))
+    selected = hook.Selected(Kernel(), gqa)
+    with contextlib.redirect_stdout(io.StringIO()):
+        for _ in range(2):
+            gqa._state['calls'] += 1
+            selected[(1, 2, 16)](no_tensor_read=True)
+    gqa._state['fallbacks'] += 3
+    assert selected.snapshot()['selected_host_submissions'] == 2
+    assert selected.snapshot()['original_eligible_calls'] == 2
+    assert selected.snapshot()['original_fallback_calls'] == 3
+    assert selected.snapshot()['graph_replays_not_counted']
     runner = (ROOT / 'vllm_fl/worker/model_runner.py').read_text()
     assert original_runner(runner) == subprocess.check_output(['git', '-C', str(ROOT), 'show', MAIN + ':vllm_fl/worker/model_runner.py'], text=True)
     semantics = (ROOT / 'vllm_fl/compile_semantics.py').read_text()
@@ -126,6 +143,7 @@ def run():
                 synthetic_certificate_schema_only=True, negative_contracts=len(negatives),
                 runner_exact_inverse=True, unique_runner_pin_updated=True, semantics_exact_inverse=True,
                 cache_key_default_equals_off=True, cache_key_on_separate=True, native_default_preserved=True,
+                counter_unit_distinguishes_selected_and_generic_fallback=True,
                 device_micro_verified=False, service_installed=False, gpu_executed=False)
 
 

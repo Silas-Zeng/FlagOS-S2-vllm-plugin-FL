@@ -21,6 +21,30 @@ PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_compute_order_iden
 
 CPU tests prove source inverses, no-action off path, refusal without a micro certificate, schema negatives, unchanged native defaults and separated cache keys. A **synthetic schema fixture exists only in CPU unit memory** and is never written as device evidence. It cannot be used to claim the packaged kernel passed. Actual packaged compilation, numeric warm validation, live hook and model105 are still pending.
 
-The next explicit micro entry will cover B1/8/16/32/40/64 at KV129 (full/tail/empty/ragged controls) plus B1/KV4096, including main's B40→16-split exception and S16/8/4/2. It must first check M16 code/scale bits, then actual packaged ABI/IR and independent quantized-operand references with canaries/readonly stock cache. No author SSH/JIT/GPU work, deployment, dependency installation or new GPU queue is authorized by this draft.
+The prepared explicit micro entry covers B1/8/16/32/40/64 at KV129 (full/tail/empty/ragged controls) plus B1/KV4096, including main's B40→16-split exception and S16/8/4/2. It first checks M16 code/scale bits, then actual packaged ABI/IR and independent quantized-operand references with canaries/readonly stock cache. It has not been executed on device. No author SSH/JIT/GPU work, deployment, dependency installation or new GPU queue occurs in this draft.
 
 Keep the official service CLI and accuracy parameters unchanged: EvalScope math_500 Level3,105 questions, batch8, temperature1, top_p.95, max_tokens32768. The old normalization controller clears `VLLM_FL_BIV150_`/`BIV150_NATIVE_`; a future root diagnostic controller must explicitly set the diagnostic flags **after** that cleanup and retain main defaults/native5c and the same tuning snapshot. Do not reuse the old normalization feature environment. Model accuracy here leaves prefill attention BF16 and does not qualify final encoded-cache/all-reader K8 accuracy or service gain. Keep Draft; no deployment/merge yet.
+
+## Packaged micro entry
+
+`tools/bench_biv150_stock_service_micro.py` defaults to CPU plan JSON, without Torch/Triton/NumPy imports. Device flags require a frozen clean HEAD, fresh output, actual JIT hash, target corex71/warp64 and idle-device/service guards. `--compile-only` allocates empty buffers and uses `.warmup` for the packaged M16 probe, actual main producer, packaged candidate and original reducer; it never launches those kernels and never emits a usable certificate. Original pre-launch resource unknowns stay unknown.
+
+`--run-gpu` first requires exact M16 codes/scales for141 finite vectors. It then runs each listed shape on unmodified BF16 cache with four controls: original/full, changed Q/table/ragged tail, zero Q, and empty first row. Original input factory/seed, independent CPU INT64/quantized-operand FP64 and original-BF16 references, old precision limits, source/cache hashes, canaries, inactive poison, actual I8/PV/native C-chain IR and original one-warp/reducer4/split policy remain. The TTIR public16-parameter signature and LLVM18-parameter entry (including two backend pointers) must match the actual baseline ABI. The parser is CPU-replayed against exact PR79 target header lines and rejects six changed-type/name/order mutants; it does not infer native MMA component independence.
+
+Changed-Q/table/length poisoned Graph and side stream must match eager. There is no append writer/cache mutation test and no timing. A certificate is written only after all implementation/memory/IR/ABI/Graph hard gates pass for all seven cases; source hashes bind it to the actual packaged kernel, codec and hook. The old BF16 proxy remains separately reported and can remain false, in which case result `passed=false` even though `implementation_hard_gates_passed=true` and an explicitly diagnostic micro certificate is issued. This does not relax the proxy, claim model105 or qualify full-prefill quantization. An aborted/partial run emits no usable certificate.
+
+Six independent reference modules are copied byte-for-byte from frozen PR79 source5abf; selected host IO/artifact functions are exact extractions, recorded in `micro-dependency-provenance.json`. They are CPU/reference code, not new production kernels. No PR79 runtime is edited. Default CPU replay:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_stock_service_micro_cpu.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/bench_biv150_stock_service_micro.py
+```
+
+Future root-serialized commands only (replace FROZEN_HEAD with the delivered exact commit and use fresh directories):
+
+```sh
+python3 tools/bench_biv150_stock_service_micro.py --compile-only --commit FROZEN_HEAD --out FRESH_COMPILE_OUT
+python3 tools/bench_biv150_stock_service_micro.py --run-gpu --commit FROZEN_HEAD --out FRESH_NUMERIC_OUT
+```
+
+Only after root reviews the real `micro-certificate.json` may a future diagnostic controller set both the default-off flag and its certificate path after environment cleanup. The service kernel is not changed by the micro, and no service was launched by this author.

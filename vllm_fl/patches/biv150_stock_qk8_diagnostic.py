@@ -81,6 +81,15 @@ def prepare_candidate(gqa, check_target=True):
     path = Path(__file__).parent / 'biv150_stock_qk8_kernel.py'
     if Path(own.__file__).resolve() != path.resolve() or candidate.fn.__globals__ is not vars(own):
         raise RuntimeError('Diagnostic import does not resolve to this checkout')
+    codec = importlib.import_module('vllm_fl.patches.biv150_stock_qk8_codec')
+    codec_path = Path(__file__).parent / 'biv150_stock_qk8_codec.py'
+    helper = codec.quantize_bf16_rne
+    if Path(codec.__file__).resolve() != codec_path.resolve() or sha(Path(codec.__file__).read_bytes()) != CODEC_SHA:
+        raise RuntimeError('Actual imported codec is outside the audited checkout')
+    if own.quantize_bf16_rne is not helper or not inspect.isfunction(getattr(helper, 'fn', None)) or helper.fn.__globals__ is not vars(codec):
+        raise RuntimeError('Actual diagnostic helper binding changed')
+    if Path(helper.fn.__code__.co_filename).resolve() != codec_path.resolve():
+        raise RuntimeError('Codec function code does not belong to the audited source')
     if _argument_schema(original_source, '_gqa_decode_attention') != _argument_schema(path.read_text(), candidate.fn.__name__):
         raise RuntimeError('Raw source parameter schema changed')
     if raw.arg_names != candidate.arg_names or raw.constexprs != candidate.constexprs:
@@ -120,16 +129,27 @@ def _live_parent():
             cells = dict(zip(current.__code__.co_freevars, current.__closure__ or ()))
             if current.__code__.co_qualname != '_make_wrapper.<locals>.patched' or set(cells) != {'original'}:
                 raise RuntimeError('Unknown GQA wrapper closure')
+            if Path(current.__code__.co_filename).resolve() != Path(gqa.__file__).resolve():
+                raise RuntimeError('GQA wrapper code is outside the audited source')
             original = cells['original'].cell_contents
-            if getattr(current, '__wrapped__', None) is not original or original.__globals__ is not vars(attention):
+            if not inspect.isfunction(original) or getattr(current, '__wrapped__', None) is not original or original.__globals__ is not vars(attention):
                 raise RuntimeError('Original generic fallback binding changed')
+            if original.__code__.co_name != 'unified_attention' or Path(original.__code__.co_filename).resolve() != Path(attention.__file__).resolve():
+                raise RuntimeError('Generic fallback code changed')
             return gqa
         normalization = sys.modules.get('vllm_fl.patches.biv150_prefill_normalized')
         if normalization is None or not inspect.isfunction(current) or current.__globals__ is not vars(normalization):
             break
         if sha(Path(normalization.__file__).read_bytes()) != '957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1':
             raise RuntimeError('Unknown normalization source')
+        cells = dict(zip(current.__code__.co_freevars, current.__closure__ or ()))
+        if current.__code__.co_qualname != 'install.<locals>.wrapper' or set(cells) != {'normalized', 'original', 'signature'}:
+            raise RuntimeError('Unknown normalization wrapper closure')
+        if Path(current.__code__.co_filename).resolve() != Path(normalization.__file__).resolve():
+            raise RuntimeError('Normalization wrapper code changed')
         current = getattr(current, '__wrapped__', None)
+        if current is not cells['original'].cell_contents:
+            raise RuntimeError('Normalization original binding changed')
     raise RuntimeError('Audited GQA wrapper not found; no diagnostic binding changed')
 
 
