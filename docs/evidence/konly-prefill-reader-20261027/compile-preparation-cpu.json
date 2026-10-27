@@ -1,0 +1,695 @@
+{
+  "JIT_executed": false,
+  "accuracy_verified": false,
+  "actual_I8_operand_hoist_verified": false,
+  "actual_resources_known": false,
+  "capacity_reclaimed": false,
+  "cpu_only": true,
+  "device_compile_executed": false,
+  "framework_imported": false,
+  "kernel_launches": 0,
+  "passed": true,
+  "performance_verified": false,
+  "precision_gate": false,
+  "profiles": [
+    {
+      "descriptors": {
+        "baseline_k": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            517,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation2",
+          "storage_bytes": 8470528,
+          "storage_offset": 0,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "baseline_v": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            517,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation2",
+          "storage_bytes": 8470528,
+          "storage_offset": 4096,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "cu_q": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            2
+          ],
+          "storage": "allocation6",
+          "storage_bytes": 8,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "k": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "is_contiguous": false,
+          "shape": [
+            517,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 8470528,
+          "storage_offset": 0,
+          "stride": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "k_descale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [],
+          "storage": "allocation7",
+          "storage_bytes": 4,
+          "storage_offset": 0,
+          "stride": []
+        },
+        "kscale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [
+            2117632
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 8470528,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "lengths": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            1
+          ],
+          "storage": "allocation5",
+          "storage_bytes": 4,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "out": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": true,
+          "shape": [
+            4096,
+            16,
+            128
+          ],
+          "storage": "allocation1",
+          "storage_bytes": 16777216,
+          "storage_offset": 0,
+          "stride": [
+            2048,
+            128,
+            1
+          ]
+        },
+        "q": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": true,
+          "shape": [
+            4096,
+            16,
+            128
+          ],
+          "storage": "allocation0",
+          "storage_bytes": 16777216,
+          "storage_offset": 0,
+          "stride": [
+            2048,
+            128,
+            1
+          ]
+        },
+        "table": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            1,
+            8192
+          ],
+          "storage": "allocation4",
+          "storage_bytes": 32768,
+          "storage_offset": 0,
+          "stride": [
+            8192,
+            1
+          ]
+        },
+        "v": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            517,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 8470528,
+          "storage_offset": 4096,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "v_descale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [],
+          "storage": "allocation8",
+          "storage_bytes": 4,
+          "storage_offset": 0,
+          "stride": []
+        }
+      },
+      "empty_allocations": 9,
+      "grid": [
+        129,
+        2
+      ],
+      "no_tensor_values_initialized": true,
+      "profile": "q32",
+      "source_hash": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b"
+    },
+    {
+      "descriptors": {
+        "baseline_k": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            32773,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation2",
+          "storage_bytes": 536952832,
+          "storage_offset": 0,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "baseline_v": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            32773,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation2",
+          "storage_bytes": 536952832,
+          "storage_offset": 4096,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "cu_q": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            65
+          ],
+          "storage": "allocation6",
+          "storage_bytes": 260,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "k": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "is_contiguous": false,
+          "shape": [
+            32773,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 536952832,
+          "storage_offset": 0,
+          "stride": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "k_descale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [],
+          "storage": "allocation7",
+          "storage_bytes": 4,
+          "storage_offset": 0,
+          "stride": []
+        },
+        "kscale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [
+            134238208
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 536952832,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "lengths": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            64
+          ],
+          "storage": "allocation5",
+          "storage_bytes": 256,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "maxima": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [
+            64,
+            16,
+            16
+          ],
+          "storage": "allocation10",
+          "storage_bytes": 65536,
+          "storage_offset": 0,
+          "stride": [
+            256,
+            16,
+            1
+          ]
+        },
+        "out": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": true,
+          "shape": [
+            64,
+            16,
+            128
+          ],
+          "storage": "allocation1",
+          "storage_bytes": 262144,
+          "storage_offset": 0,
+          "stride": [
+            2048,
+            128,
+            1
+          ]
+        },
+        "q": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": true,
+          "shape": [
+            64,
+            16,
+            128
+          ],
+          "storage": "allocation0",
+          "storage_bytes": 262144,
+          "storage_offset": 0,
+          "stride": [
+            2048,
+            128,
+            1
+          ]
+        },
+        "scratch": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [
+            64,
+            16,
+            16,
+            128
+          ],
+          "storage": "allocation9",
+          "storage_bytes": 8388608,
+          "storage_offset": 0,
+          "stride": [
+            32768,
+            2048,
+            128,
+            1
+          ]
+        },
+        "sums": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [
+            64,
+            16,
+            16
+          ],
+          "storage": "allocation11",
+          "storage_bytes": 65536,
+          "storage_offset": 0,
+          "stride": [
+            256,
+            16,
+            1
+          ]
+        },
+        "table": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            64,
+            8192
+          ],
+          "storage": "allocation4",
+          "storage_bytes": 2097152,
+          "storage_offset": 0,
+          "stride": [
+            8192,
+            1
+          ]
+        },
+        "v": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            32773,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 536952832,
+          "storage_offset": 4096,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "v_descale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [],
+          "storage": "allocation8",
+          "storage_bytes": 4,
+          "storage_offset": 0,
+          "stride": []
+        }
+      },
+      "empty_allocations": 12,
+      "grid": [
+        96,
+        2,
+        16
+      ],
+      "no_tensor_values_initialized": true,
+      "profile": "raw3d",
+      "source_hash": "190975053927d8f326e47ab0769369b5535524ff4f32e25156f5d16ab717c39c"
+    },
+    {
+      "descriptors": {
+        "baseline_k": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            1029,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation2",
+          "storage_bytes": 16859136,
+          "storage_offset": 0,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "baseline_v": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            1029,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation2",
+          "storage_bytes": 16859136,
+          "storage_offset": 4096,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "cu_q": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            3
+          ],
+          "storage": "allocation6",
+          "storage_bytes": 12,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "k": {
+          "device": "cuda:0",
+          "dtype": "int8",
+          "is_contiguous": false,
+          "shape": [
+            1029,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 16859136,
+          "storage_offset": 0,
+          "stride": [
+            16384,
+            256,
+            128,
+            1
+          ]
+        },
+        "k_descale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [],
+          "storage": "allocation7",
+          "storage_bytes": 4,
+          "storage_offset": 0,
+          "stride": []
+        },
+        "kscale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [
+            4214784
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 16859136,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "lengths": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            2
+          ],
+          "storage": "allocation5",
+          "storage_bytes": 8,
+          "storage_offset": 0,
+          "stride": [
+            1
+          ]
+        },
+        "out": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": true,
+          "shape": [
+            4096,
+            16,
+            128
+          ],
+          "storage": "allocation1",
+          "storage_bytes": 16777216,
+          "storage_offset": 0,
+          "stride": [
+            2048,
+            128,
+            1
+          ]
+        },
+        "q": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": true,
+          "shape": [
+            4096,
+            16,
+            128
+          ],
+          "storage": "allocation0",
+          "storage_bytes": 16777216,
+          "storage_offset": 0,
+          "stride": [
+            2048,
+            128,
+            1
+          ]
+        },
+        "table": {
+          "device": "cuda:0",
+          "dtype": "int32",
+          "is_contiguous": true,
+          "shape": [
+            2,
+            8192
+          ],
+          "storage": "allocation4",
+          "storage_bytes": 65536,
+          "storage_offset": 0,
+          "stride": [
+            8192,
+            1
+          ]
+        },
+        "v": {
+          "device": "cuda:0",
+          "dtype": "bfloat16",
+          "is_contiguous": false,
+          "shape": [
+            1029,
+            16,
+            2,
+            128
+          ],
+          "storage": "allocation3",
+          "storage_bytes": 16859136,
+          "storage_offset": 4096,
+          "stride": [
+            8192,
+            256,
+            128,
+            1
+          ]
+        },
+        "v_descale": {
+          "device": "cuda:0",
+          "dtype": "float32",
+          "is_contiguous": true,
+          "shape": [],
+          "storage": "allocation8",
+          "storage_bytes": 4,
+          "storage_offset": 0,
+          "stride": []
+        }
+      },
+      "empty_allocations": 9,
+      "grid": [
+        130,
+        2
+      ],
+      "no_tensor_values_initialized": true,
+      "profile": "multi2",
+      "source_hash": "7046cf538bf06278982041d04b129c65c74bdb65531e528366fc62626c6adb19"
+    }
+  ],
+  "reader_source_commit": "24c741cc152fc7a53f0b8ce27c1e988898fc59ec",
+  "rejects": 31,
+  "runtime_binding_qualified": false,
+  "service_installed": false
+}
