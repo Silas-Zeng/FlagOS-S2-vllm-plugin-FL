@@ -21,3 +21,10 @@ PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_mixed_cpu.py
 ```
 
 `docs/evidence/konly-mixed-decode-20261027/dependency-provenance.json` records copied frozen inputs. `cpu-v1.json` records source inverses,10 geometries,4096 complete page coordinates,17 source/binding rejection cases and scalar goals. All GPU/service/precision/performance flags remain false. Future opt-in component work will compare both arms on the same metadata and cache values with unchanged original and quantized-operand numeric gates, output/scratch poison, readonly/cache canaries and changed-metadata Graph/side checks, preserving actual IR rather than claiming source-only execution proof.
+
+The next tool version adds a separate **compile-only** entry; full numeric entry is still being prepared. `bench_biv150_konly_mixed_decode.py` defaults to a stdlib CPU plan and evaluates the exact pinned main `_pick_segments`:4K64seq→2,16K32seq→4, plus the small tail. Explicit `--compile-only --case mixed4k --arm both --commit FROZEN_HEAD --out FRESH_OUT` refuses busy GPU/9031, checks clean exact source/zero production diffDAC, uses private caches and `.warmup` only (producer1warp/stage1, reducer4warps/stage1). It preserves actual sources/TTIR/TTGIR/LLVM/ASM/cubin before auditing real typed entries, original BF16/PV C chains and K8 I8/PV mechanisms. Prelaunch resources remain unknown; no primitive is launched or numerical/equivalence pass fabricated. Optional metadata CFG proof remains false pending actual IR review and numeric guards. The CPU entry checker uses explicitly synthetic17/20-runtime-parameter headers and8 dtype/name/stride mutants; none are represented as actual target artifacts.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_mixed_entry_cpu.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/bench_biv150_konly_mixed_decode.py
+```
