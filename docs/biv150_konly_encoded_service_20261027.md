@@ -1,8 +1,28 @@
 # Default-off private 16KiB encoded-cache service candidate
 
-Current integration base: authenticated API main **b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd**, merged normally into this own branch after2f3; older evidence below usedDAC1. The first normal fetch attempt timed out at20s low-speed; API and the already present Git object matched DAC. Parent subsequently fetched DAC successfully. No upstream SDK/dependency upgrade. This own branch is an **experimental service binding**. The root-owned three-request smoke below passed recovered startup/request checks; model precision and performance remain unverified.
+Current integration base: fetched and API-confirmed main **4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b**, merged normally after d8ef. This main adds PR94 tools/docs; its production tree is byte-identical to b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd. The tested **d8ef055422d9d5c45049f85468b486b47b993406** passed the original Math105 protocol with **102/105 (0.9714)**. Fresh-main throughput and TTFT remain pending; keep Draft. No upstream SDK/dependency upgrade. Historical DAC/smoke/component evidence below retains its original scope and source.
 
 `VLLM_FL_BIV150_KONLY_ENCODED_SERVICE` defaults0. Off executes no hook import/binding/device work. On installs once in a cold worker before KV allocation/capture. The official serve CLI stays unchanged. Author performed no SSH/JIT/GPU/service work.
+
+## d8ef Math105 qualification, independently replayed on CPU
+
+Root completed tag `cjj-encoded-d8e-math105-v1-20261028`, controller owner688948/start347274628, with the immutable d8ef source. The fixed service CLI used port9031, FULL_DECODE_ONLY, memory utilization0.85 and max model length131072. EvalScope used the original math_500 Level3 protocol: batch8, temperature1.0, top_p0.95, max_tokens32768. The original report counts105; recounting its105 original binary `sample_score.score.value.accuracy` values gives102, matching0.9714. This is a record replay, not a new model run or rejudging.
+
+All105 indices and question IDs are unique. All105 actual `model_output.choices[].stop_reason` values are `stop`; there are no request errors, empty final texts or empty extracted predictions. Final text is taken from the string content or the `type=text` blocks, separately from reasoning blocks, and matches each original scorer input. The maximum recorded output is32448 tokens. The three zero-score indices are18,42,87. Owned cleanup completed; the API's identity-checked SIGTERM exit returned0. This result qualifies the original protocol's model accuracy gate for **d8ef**, without qualifying throughput, TTFT, every service geometry or unsupported lifecycle modes.
+
+CPU replay verifies all38 original file SHA256 values (6,262,576 bytes),251 source hashes against Git d8ef, the executed controller and pinned original stdlib protocol helper, the actual package resolution, both worker on-fingerprints and implementation digest `1cfc33340e80030660e15b4475b777f6c0975a23bd256dfe7e10e151aa9f9fd5`. All9 parent installers remain installed, including large_linear. The stock BF16 NativeGQA parent is installed with aace library identity; encoded GQA correctly bypasses that BF16 implementation at the format-aware producer boundary. Its absence of stock-native SELECTED events is expected.
+
+The records contain a complete actual Q32 unhoisted/hoisted source, typed ABI, TTIR/TTGIR/LLVM/ASM/cubin and binding. The independent CPU replay regenerates the exact one-operation override, replays the native dominance/liveness/synchronization audit, checks all artifact hashes and matches the actually SELECTED hoisted hash `060558e9c69f65a539c4e008c650b1fe3a39e88e59fc1d69cd99dc63dea9c08c`. Actual recorded loaded resources are135→122 registers,0 spills,57344→33792 shared bytes. These host/capture events do not count Graph replay executions or close every runtime shape. The cold binding's original per-component numerical flags remain unchanged; the complete105 result is recorded separately.
+
+The deterministic1,105,567-byte archive and member SHA manifest are in `docs/evidence/konly-encoded-service-20261027/math105-d8e-records-v1/`. It contains every original record, including public Math benchmark predictions/reviews and actual kernel artifacts, plus the separate Root review and protocol helper. The three generated cache trees and the locally created, unmanifested pycache are excluded explicitly; no original record is omitted. There are no databases, model weights or credentials. Initial native5c/aace and tuning-v6 descriptors are verified; this local replay does not rehash remote binaries or databases.
+
+The regular4229 merge changes only tools/docs relative to d8ef. All13 private implementation/manifest files, including the9 generated modules, remain byte-identical, and all4 original CPU gates pass. `merge-qualification-cpu.json` records those file identities and gate outputs. The d8ef runtime, algorithm, routing, codec, thresholds and formal parameters are unchanged. Old2487 DAC timings6327/4905 are not results for d8ef or this merged head. The independently running d8ef throughput output remains untouched and pending.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_encoded_math105_evidence.py
+```
+
+The later sections describe earlier revisions and their evidence at that time; their open model flags do not override the source-specific d8ef result above.
 
 ## Actual seams and format
 
