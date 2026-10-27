@@ -161,3 +161,7 @@ and fixed-parameter service throughput. Keep the original precision gates.
 The theoretical1.30612× pages per unchanged byte budget is not measured service
 capacity, latency or throughput; neither a component gain nor this arithmetic
 establishes an end-to-end benefit.
+
+## New independent device-entry preparation (still CPU-only)
+
+The `device-v1/README.md` and `tools/bench_biv150_konly_compact_device.py` now provide an explicit Root-only Tensor/compile/numeric/Graph/side entry for the unchanged8bab writer and split GQA grids64/S2 and32/S4. This revision normally merges main4229, changes no production bytes, verifies embedded89 source against099f, and grants no old16KiB-page/hoist/model qualification. Default remains stdlib CPU; device results are pending.
