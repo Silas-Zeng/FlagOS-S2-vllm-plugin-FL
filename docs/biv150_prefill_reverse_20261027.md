@@ -1,9 +1,22 @@
 # Single-sequence prefill CTA routing by causal work skew
 
-Status: Draft, refined shape route has CPU proof only. `precision_gate=false`,
-`official_score=false`. Team baseline:
+Status: Draft, the refined route's two-component/13-state device screen completed;
+the full numerical matrix and service/model acceptance remain pending.
+`precision_gate=false`, `official_score=false`. Measured team baseline:
 `241220723a09061c182764f8f738e5ec01190367`.
 Production, SDK, dependencies, official launch parameters and benchmark are unchanged.
+
+The frozen refined source `140cecc07ba199d199eeb620debe3082195ffacb` completed
+strict-resource AB/BA/AB timing with median speedup **1.0345287859985568** at
+query2048/KV4096 and **0.9925539958554824** at query2048/KV16384. All13 dynamic
+metadata states passed their recorded guards. Both actual postlaunch binaries
+have113 registers/0 spills/shared65536 with unchanged B256/Q32/w16/K64/s1.
+The [raw archive and CPU audit](evidence/prefill-reverse-20261027/refined-first-falsifier/README.md)
+preserve all26 originals, recompute timing/guards/resource phases and replay the
+actual Manager's Q-hoist proof against saved actual IR. The useful short-context
+direction remains open; long-context residual cost is still about0.75%, so this
+screen does not satisfy the zero-loss goal. No service gain or model precision
+acceptance is claimed.
 
 The first unconditional-reversal falsifier at
 `fcaec8af5e5bb674c16920134c5101a22e853e92` passed its numerical and Q-hoist
@@ -123,18 +136,18 @@ python3 tools/check_biv150_prefill_reverse_cpu.py --source "$PWD" \
   --out /tmp/prefill-causal-skew-cpu-result.json
 ```
 
-## Prepared device validation entry (not executed)
+## Device validation entry and completed partial screen
 
 The dynamic gate keeps all pointers and the 65x2 grid fixed. It captures baseline,
 candidate and an exact generated route-ID probe once each, then updates only
 `cu_q` and `seqused_k` across thirteen states: short/long prefix, prefix8192±1,
 actual qlen1023/1024/1025, supported nonzero starts1/31, then back to short prefix.
 CPU checks confirm the probe and real candidate have identical route-prefix AST.
-The future device gate must verify both heads' complete logical-ID map and
+The device gate verifies both heads' complete logical-ID map and
 bit-exact direct/graph output, CPU-double reference guards, inactive output
 canaries, input bytes and descriptor/ABI identity. This precedes component timing.
 
-Root can first screen the two original components with the dynamic gate:
+The completed first screen used the two original components and the dynamic gate:
 
 ```bash
 python3 tools/bench_biv150_prefill_reverse.py --source "$PWD" \
@@ -160,12 +173,14 @@ run without stopping anything else. Component graphs replay warmed private JITs
 with the parent's actual arguments; this does not claim the serving wrapper's
 capture path has been integrated.
 
-Metadata-load CSE, Q-hoist retention, resources, route probes, refined throughput
-and full numerical matrix are still untested on device. Three extra source-level
-loads may not CSE through a dynamic sequence index; inspect the actual IR rather
-than assuming reuse. If overhead erases the useful shape's gain, keep the original
-positive observation and refine the mechanism instead of discarding it solely
-because another shape is negative. Root coordinates all GPU work serially.
+The partial screen establishes its recorded numerical/route guards, actual
+Q-hoist retention and observed resources. The full matrix, metadata-load CSE,
+service throughput and model precision remain unproven. Three extra source-level
+loads may not CSE through a dynamic sequence index; no reuse is inferred from
+equal resource counts. A [read-only host-routing feasibility study](biv150_prefill_host_route_feasibility_20261027.md)
+examines using existing CPU metadata to select unconditional reversal or the
+original Q32 binary. It implements no hook/kernel and starts no queue.
+Root coordinates all GPU work serially.
 Full model precision and unchanged official throughput/TTFT acceptance remain
 mandatory before integration.
 
@@ -200,7 +215,8 @@ attribute ABI or live handle was available to inspect locally. It never calls
 Direct driver `LOCAL_SIZE_BYTES` and `SHARED_SIZE_BYTES` remain explicitly unknown.
 Compiler shared metadata 65536B and SDK `n_spills=0` do not prove complete driver
 resource equivalence, occupancy, absence of all local-memory traffic, or CSE.
-The new route's actual counts and metadata-load reuse are still unmeasured.
+The refined route now has observed postlaunch113/0 counts in its completed
+partial screen. Metadata-load reuse remains unverified.
 
 ```bash
 python3 tools/audit_biv150_prefill_resource_phases_cpu.py \
