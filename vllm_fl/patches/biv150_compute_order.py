@@ -11,7 +11,7 @@ import types
 from pathlib import Path
 
 # Current team runner plus the opt-in Q32 installer; input/order code is unchanged.
-EXPECTED_RUNNER = "42cdf64d8af025ecd2762e586ca592daf3d760a69e204e01ce930729f74f2c6e"
+EXPECTED_RUNNER = "3276d6d3524f4ee6e49a1f19443a3de88b9ffaa674007c5472a7fa855356ebc4"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
@@ -91,7 +91,26 @@ def _main_stack(torch):
         or cells["signature"] != inspect.signature(previous)
     ):
         raise ValueError("normalized统一函数不是原generic的独立global克隆")
-    source = inspect.getsource(attention.kernel_unified_attention.fn)
+    raw_kernel = attention.kernel_unified_attention
+    normalized_kernel = clone.__globals__.get("kernel_unified_attention")
+    if os.environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1":
+        compact = sys.modules.get("vllm_fl.patches.biv150_konly_compact_service")
+        if compact is None:
+            raise ValueError("compact dispatch installed source is missing")
+        receipt = compact.compute_order_receipt(attention, normalized_kernel)
+        raw_kernel, normalized_kernel = receipt["parent_raw"], receipt["parent_normalized"]
+    elif os.environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1":
+        encoded = sys.modules.get("vllm_fl.patches.biv150_konly_encoded_service")
+        if encoded is None:
+            raise ValueError("encoded dispatch installed source is missing")
+        receipt = encoded.compute_order_receipt(attention, normalized_kernel)
+        if (not receipt.get("encoded_dispatch_registered") or not receipt.get("implementation_sha256")
+                or not receipt.get("producer_boundary_registered") or not receipt.get("stock_native_parent_preserved")):
+            raise ValueError("encoded dispatch identity receipt is incomplete")
+        # Parent .fn below proves only the preserved SDK interface/metadata chain.
+        # The separate receipt verifies actual private dispatch, never new numerics.
+        raw_kernel, normalized_kernel = receipt["parent_raw"], receipt["parent_normalized"]
+    source = inspect.getsource(raw_kernel.fn)
     old_mass = "L = tl.full([BLOCK_M], 1.0, dtype=tl.float32)"
     old_name = "def kernel_unified_attention("
     if source.count(old_mass) != 1 or source.count(old_name) != 1:
@@ -99,11 +118,11 @@ def _main_stack(torch):
     expected = source.replace(old_mass, "L = tl.zeros([BLOCK_M], dtype=tl.float32)")
     expected = expected.replace(old_name, "def kernel_biv150_prefill_normalized(", 1)
     expected = normalized._specialize_strides(expected)
-    kernel = clone.__globals__.get("kernel_unified_attention")
+    kernel = normalized_kernel
     fn = getattr(kernel, "fn", None)
     digest = hashlib.sha256(expected.encode()).hexdigest()
     if (
-        kernel is attention.kernel_unified_attention
+        kernel is raw_kernel
         or not isinstance(fn, types.FunctionType)
         or fn.__code__.co_filename != "<biv150-prefill-normalized-" + digest + ".py>"
         or fn.__code__.co_name != "kernel_biv150_prefill_stride"
@@ -161,7 +180,7 @@ def _cold(runner, torch):
         or config.model_config.is_encoder_decoder
         or platform.vendor_name != "iluvatar"
         or torch.cuda.current_device() != 0
-        or type(spec) is not spec_module.FullAttentionSpec
+        or not _compact_or_stock_spec(spec, spec_module)
         or (spec.block_size, spec.num_kv_heads, spec.head_size, spec.dtype)
         != (16, 2, 128, torch.bfloat16)
         or len(runner.kv_cache_config.kv_cache_groups) != 1
@@ -443,3 +462,12 @@ def make_plan(runner, output, scheduled, max_query_len):
             except Exception:
                 pass
         return None
+
+
+def _compact_or_stock_spec(spec, spec_module):
+    if os.environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") != "1":
+        return type(spec) is spec_module.FullAttentionSpec
+    compact = sys.modules.get("vllm_fl.patches.biv150_konly_compact_service")
+    if compact is None:
+        raise ValueError("compact spec receipt unavailable")
+    return compact.compact_spec_is_owned(spec)
