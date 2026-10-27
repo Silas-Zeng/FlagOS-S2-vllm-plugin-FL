@@ -34,6 +34,14 @@ def native_library_path(*, package_root=None, environ=None) -> Path:
                         str(package.parent / "build-native-w8a8/biv150_native_w8a8.so"))).resolve()
 
 
+def native_gqa_library_path(*, package_root=None, environ=None) -> Path:
+    """与GQA loader共用解析；只将实际库内容纳入身份，不使用部署路径。"""
+    env = os.environ if environ is None else environ
+    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
+    return Path(env.get("BIV150_NATIVE_GQA_LIBRARY",
+                        str(package.parent / "build-native-gqa/corex_native_gqa_s2_probe.so"))).resolve()
+
+
 def _sha(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -71,6 +79,9 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     features["VLLM_FL_BIV150_PREFILL_MULTI2"] = (
         features["VLLM_FL_BIV150_PREFILL_Q32"]
         and env.get("VLLM_FL_BIV150_PREFILL_MULTI2", "1") == "1")
+    features["VLLM_FL_BIV150_NATIVE_GQA"] = (
+        features["VLLM_FL_BIV150_GQA_DECODE"]
+        and env.get("VLLM_FL_BIV150_NATIVE_GQA", "1") == "1")
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
@@ -101,6 +112,13 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             path = package.parent / "csrc/iluvatar" / name
             native_sources[name] = _sha(path) if path.is_file() else None
         facts["native"] = {"library_sha256": _sha(library), "source": native_sources}
+    if features["VLLM_FL_BIV150_NATIVE_GQA"]:
+        library = native_gqa_library_path(package_root=package, environ=env)
+        sources = {}
+        for name in ("native_gqa_s2.cpp", "native_gqa_s2.cu"):
+            path = package.parent / "csrc/iluvatar" / name
+            sources[name] = _sha(path) if path.is_file() else None
+        facts["native_gqa"] = {"library_sha256": _sha(library), "source": sources}
     return {"schema": 1, "sha256": _digest(facts),
             "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
 
