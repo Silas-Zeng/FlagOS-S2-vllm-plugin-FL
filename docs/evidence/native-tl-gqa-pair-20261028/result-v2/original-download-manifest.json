@@ -1,0 +1,580 @@
+{
+  "utc": "2026-10-27T18:18:35.853869+00:00",
+  "tag": "cjj-b3-native-tl-pair-v2-20261028",
+  "read_only": true,
+  "model_rerun": false,
+  "original_owner": {
+    "pid": 688719,
+    "start_ticks": 347244779,
+    "same_start": true,
+    "state": "Z"
+  },
+  "raw_files": 94,
+  "raw_bytes": 15217427,
+  "files": [
+    {
+      "relative": "exports/cjj-b3-native-tl-pair-v2-20261028-owner.json",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-b3-native-tl-pair-v2-20261028-owner.json",
+      "bytes": 1115,
+      "sha256": "fb5c675dcdf1538cc8632c3b16cbd7e6e608c6c6ed57c0916623c7e9a3fb6a4a"
+    },
+    {
+      "relative": "exports/cjj-b3-native-tl-pair-v2-20261028.log",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-b3-native-tl-pair-v2-20261028.log",
+      "bytes": 2300,
+      "sha256": "04045e6e8857b0a55bce4195649039219ef6e8f7d45d864a9204c9347734e280"
+    },
+    {
+      "relative": "out/16k-append/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-append/actual.asm",
+      "bytes": 11462,
+      "sha256": "db3212017bea3c18d820e3e7e712494e283522f1aa7b84e197ea6a558fcf1dbe"
+    },
+    {
+      "relative": "out/16k-append/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-append/actual.cubin",
+      "bytes": 3720,
+      "sha256": "0a1321e2d311e2f993dab754265611425c58de612b09bf37c2748a82eb832e71"
+    },
+    {
+      "relative": "out/16k-append/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-append/actual.llir",
+      "bytes": 7562,
+      "sha256": "cc905b3dd86fe2a58ca214c5b752fc3ed057e0299e7dc40228b4b7076899dbef"
+    },
+    {
+      "relative": "out/16k-append/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-append/actual.source",
+      "bytes": 11632,
+      "sha256": "527b8193993a43b9d320fdf900d9d0496bdefafb773fdc79e68d7f76f4fb09d3"
+    },
+    {
+      "relative": "out/16k-append/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-append/actual.ttgir",
+      "bytes": 10131,
+      "sha256": "0ec65bcfef992c62b8177b77ccb0bfb5f2e95f39455272be598a6cc8fb5114a5"
+    },
+    {
+      "relative": "out/16k-append/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-append/actual.ttir",
+      "bytes": 9709,
+      "sha256": "bc3e4c6e4ca38c5f49b37b3c77a0c9118c3f5b393cb1f09ce7226638e9d5e87a"
+    },
+    {
+      "relative": "out/16k-append/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-append/record.json",
+      "bytes": 2921,
+      "sha256": "4425cdced3fe6b2ea978673d2469fa1018483f5773f9c499e3e5240c35ae741f"
+    },
+    {
+      "relative": "out/16k-control0.npz",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-control0.npz",
+      "bytes": 2908494,
+      "sha256": "d68436b47ef5bf3fe4b15ccc2a9e1cd9b4594b5d19c894176556eaeb5b48cdd7"
+    },
+    {
+      "relative": "out/16k-control1.npz",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-control1.npz",
+      "bytes": 2488057,
+      "sha256": "26338159230f081d5c2261233aae90adacef99b24aec484ff842a914fefaccd0"
+    },
+    {
+      "relative": "out/16k-producer/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-producer/actual.asm",
+      "bytes": 95366,
+      "sha256": "b1a9d360a56fd5f519aa91a655d4ee62bbc548e7b26d29cd702ef13192c2a503"
+    },
+    {
+      "relative": "out/16k-producer/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-producer/actual.cubin",
+      "bytes": 16136,
+      "sha256": "3b6082680232211e4c2ce181abffd76236fc35dc5612cf8c43de6154d5c41e49"
+    },
+    {
+      "relative": "out/16k-producer/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-producer/actual.llir",
+      "bytes": 129046,
+      "sha256": "0a8d10a3b39772702a37eb0c2522335d693498c9d6c7aeb06b56d5b1b49dbc49"
+    },
+    {
+      "relative": "out/16k-producer/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-producer/actual.source",
+      "bytes": 74361,
+      "sha256": "f38112e9076e0e14cb090783caeadb227239a28064a373a9d2b6742f22765919"
+    },
+    {
+      "relative": "out/16k-producer/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-producer/actual.ttgir",
+      "bytes": 58726,
+      "sha256": "97059c9acac5ee98bf4e0a892ad347412bc23963345dbfea8489ed1fc383b91c"
+    },
+    {
+      "relative": "out/16k-producer/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-producer/actual.ttir",
+      "bytes": 50702,
+      "sha256": "01f1c677920808d6f1dc79084882a1302bf3a6d519dff29a121bc56935196698"
+    },
+    {
+      "relative": "out/16k-producer/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-producer/record.json",
+      "bytes": 4901,
+      "sha256": "84adf64d26c0629e96ea1ef617d6fd5a5900ab24d5149c48f492c10c8c390b48"
+    },
+    {
+      "relative": "out/16k-reducer/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-reducer/actual.asm",
+      "bytes": 31454,
+      "sha256": "8c726f9b825d56e7eb221a85f4e6bc08a060f3cec890871a3e2d92dce5b8815e"
+    },
+    {
+      "relative": "out/16k-reducer/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-reducer/actual.cubin",
+      "bytes": 6304,
+      "sha256": "e8ad6de71c8433c8a777158fdf961f7d24655bbb97a5b74c6a3fedda09c9a2f4"
+    },
+    {
+      "relative": "out/16k-reducer/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-reducer/actual.llir",
+      "bytes": 17296,
+      "sha256": "583b1eb78a3d692a021b4a7f48691b74ba40c7747a1e7fbd49f032290c434291"
+    },
+    {
+      "relative": "out/16k-reducer/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-reducer/actual.source",
+      "bytes": 37652,
+      "sha256": "36c5c4563b6a6e55a08b239815cbaad3f145b3345ad9a4ec8adaf5b96a8af021"
+    },
+    {
+      "relative": "out/16k-reducer/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-reducer/actual.ttgir",
+      "bytes": 22699,
+      "sha256": "28daae83ceeb7dfba84af9cf501f2182214c769b3082c52b74dc82d22b11a629"
+    },
+    {
+      "relative": "out/16k-reducer/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-reducer/actual.ttir",
+      "bytes": 19308,
+      "sha256": "e72839da08258f471f94ea521fd0c9dd21ca831336a628cb13dea37fe915a552"
+    },
+    {
+      "relative": "out/16k-reducer/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/16k-reducer/record.json",
+      "bytes": 3873,
+      "sha256": "2c828f78c6bc567555aad3740577aaa4782e5bd553e3fd03de5bbb7e28c732ca"
+    },
+    {
+      "relative": "out/4k-append/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-append/actual.asm",
+      "bytes": 11462,
+      "sha256": "db3212017bea3c18d820e3e7e712494e283522f1aa7b84e197ea6a558fcf1dbe"
+    },
+    {
+      "relative": "out/4k-append/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-append/actual.cubin",
+      "bytes": 3720,
+      "sha256": "0a1321e2d311e2f993dab754265611425c58de612b09bf37c2748a82eb832e71"
+    },
+    {
+      "relative": "out/4k-append/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-append/actual.llir",
+      "bytes": 7562,
+      "sha256": "cc905b3dd86fe2a58ca214c5b752fc3ed057e0299e7dc40228b4b7076899dbef"
+    },
+    {
+      "relative": "out/4k-append/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-append/actual.source",
+      "bytes": 11632,
+      "sha256": "527b8193993a43b9d320fdf900d9d0496bdefafb773fdc79e68d7f76f4fb09d3"
+    },
+    {
+      "relative": "out/4k-append/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-append/actual.ttgir",
+      "bytes": 10131,
+      "sha256": "0ec65bcfef992c62b8177b77ccb0bfb5f2e95f39455272be598a6cc8fb5114a5"
+    },
+    {
+      "relative": "out/4k-append/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-append/actual.ttir",
+      "bytes": 9709,
+      "sha256": "bc3e4c6e4ca38c5f49b37b3c77a0c9118c3f5b393cb1f09ce7226638e9d5e87a"
+    },
+    {
+      "relative": "out/4k-append/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-append/record.json",
+      "bytes": 2921,
+      "sha256": "4425cdced3fe6b2ea978673d2469fa1018483f5773f9c499e3e5240c35ae741f"
+    },
+    {
+      "relative": "out/4k-control0.npz",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-control0.npz",
+      "bytes": 3707758,
+      "sha256": "512090636c0de32281514a067d0fe49ca541e682c9a3b9ac6b0aa2de74946175"
+    },
+    {
+      "relative": "out/4k-control1.npz",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-control1.npz",
+      "bytes": 3546513,
+      "sha256": "f0279591b89cc72749ecffc0190beed1f3a2a12f8d6b67034f0a064a885d3a15"
+    },
+    {
+      "relative": "out/4k-producer/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-producer/actual.asm",
+      "bytes": 95366,
+      "sha256": "b4e707e8c6b08f927be048021e278af004e1b34ef13974011a5fd54d8c641cbd"
+    },
+    {
+      "relative": "out/4k-producer/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-producer/actual.cubin",
+      "bytes": 16136,
+      "sha256": "31e1a920c336abf64c7057819b24bc236f59cea80e19af014443cd10cc89de44"
+    },
+    {
+      "relative": "out/4k-producer/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-producer/actual.llir",
+      "bytes": 129046,
+      "sha256": "d14a67094362e16b98bb450f35525b8308e2f528e83a08a6533ccca061d6dfe8"
+    },
+    {
+      "relative": "out/4k-producer/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-producer/actual.source",
+      "bytes": 74361,
+      "sha256": "59d867a2d9815d4197145f5b2774f973093553dd4280310035a0c7ac50cc620c"
+    },
+    {
+      "relative": "out/4k-producer/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-producer/actual.ttgir",
+      "bytes": 58726,
+      "sha256": "27ea2da0c1f158f2fcef01e07339767ef5e0a7f06bf0838e836fdd0b6ed88dc7"
+    },
+    {
+      "relative": "out/4k-producer/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-producer/actual.ttir",
+      "bytes": 50702,
+      "sha256": "884ea448324d8ffe66cb7c2a3d5cd99ec074d5ef23f8b2a1e6f554c1e7d5222d"
+    },
+    {
+      "relative": "out/4k-producer/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-producer/record.json",
+      "bytes": 4901,
+      "sha256": "435c95864bc4d1d7292bbc507ae15e3abfffed570e08e1de6e8654063d8a819f"
+    },
+    {
+      "relative": "out/4k-reducer/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-reducer/actual.asm",
+      "bytes": 28171,
+      "sha256": "962c224cdd1a23433dd74cfbf74badee1826ff19599706be546f7d2059149853"
+    },
+    {
+      "relative": "out/4k-reducer/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-reducer/actual.cubin",
+      "bytes": 5792,
+      "sha256": "6e1a373418e64cd390020642575966de39d20f8d9a3672bf8d24bf85a112cf8a"
+    },
+    {
+      "relative": "out/4k-reducer/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-reducer/actual.llir",
+      "bytes": 15157,
+      "sha256": "acdbba47bad47d949442f0f5fa4364e44193a06905b46a2e2c206b42e10d6417"
+    },
+    {
+      "relative": "out/4k-reducer/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-reducer/actual.source",
+      "bytes": 37652,
+      "sha256": "02097dc532c43893a59a899f8376c501761f29801490034874f4e4ba4b43d0d8"
+    },
+    {
+      "relative": "out/4k-reducer/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-reducer/actual.ttgir",
+      "bytes": 22699,
+      "sha256": "20ae7338351df0e09033e14ac0533723041e35f4302a63ccbea8ebe9dc09e3c6"
+    },
+    {
+      "relative": "out/4k-reducer/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-reducer/actual.ttir",
+      "bytes": 19308,
+      "sha256": "5b414c86223e2228667af34ec63a694cca567f80e5928ab13f4bf7aa3cadeb2d"
+    },
+    {
+      "relative": "out/4k-reducer/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/4k-reducer/record.json",
+      "bytes": 3873,
+      "sha256": "9cf9e1a32f79f07d1a02b2fbe849ab69cdda7a8a7e3c37eae57f78aeb5e4f194"
+    },
+    {
+      "relative": "out/idle-before.txt",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/idle-before.txt",
+      "bytes": 1284,
+      "sha256": "91916ce2cb313fa1cf709fbf976662a03fd8989a91dd0da636dd5d118fefad13"
+    },
+    {
+      "relative": "out/result.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/result.json",
+      "bytes": 56687,
+      "sha256": "38155e2497e160d630b698a85775f6d3c233dbadd8ca72d476bbee19d85cd8b5"
+    },
+    {
+      "relative": "out/triton-cache/2BQRJ2QURMXNFVGTI2WLWSB4KXYB7HLJGVE5HHINQRXX46YQLH2A/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/2BQRJ2QURMXNFVGTI2WLWSB4KXYB7HLJGVE5HHINQRXX46YQLH2A/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 21640,
+      "sha256": "02a57d4933e8e8a61cc00c48450a90c5d120e7c81c375964eb6ac82b709c2660"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/__grp___gqa_decode_attention.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/__grp___gqa_decode_attention.json",
+      "bytes": 1381,
+      "sha256": "0c131d69a9b13b0e29418ea6cb9071c42cffa060cd968551188c0ee7b06c093c"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.asm",
+      "bytes": 95366,
+      "sha256": "b1a9d360a56fd5f519aa91a655d4ee62bbc548e7b26d29cd702ef13192c2a503"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.cubin",
+      "bytes": 16136,
+      "sha256": "3b6082680232211e4c2ce181abffd76236fc35dc5612cf8c43de6154d5c41e49"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.json",
+      "bytes": 1086,
+      "sha256": "3b51dc6e3cdcdfc41652479b91ce405af8c194ad8f51c00e8e6cef88492fd430"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.llir",
+      "bytes": 129046,
+      "sha256": "0a8d10a3b39772702a37eb0c2522335d693498c9d6c7aeb06b56d5b1b49dbc49"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.source",
+      "bytes": 74361,
+      "sha256": "f38112e9076e0e14cb090783caeadb227239a28064a373a9d2b6742f22765919"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.ttgir",
+      "bytes": 58726,
+      "sha256": "97059c9acac5ee98bf4e0a892ad347412bc23963345dbfea8489ed1fc383b91c"
+    },
+    {
+      "relative": "out/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/4KNAZBGWXGPRVVCBRH55W5CDJMWX3JLHLLZOFYSCFFAXHGIWVW4Q/_gqa_decode_attention.ttir",
+      "bytes": 50702,
+      "sha256": "01f1c677920808d6f1dc79084882a1302bf3a6d519dff29a121bc56935196698"
+    },
+    {
+      "relative": "out/triton-cache/CEA72KQEELSR3ZOU6CYLJZTJ2TIHSSFZ7UODMJX5Y33JFU7EDANQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CEA72KQEELSR3ZOU6CYLJZTJ2TIHSSFZ7UODMJX5Y33JFU7EDANQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 21640,
+      "sha256": "d5ddbdf0d4fce8de40fb4febb42bae9f336c4f0e7929c59fb707224d0f0fd19b"
+    },
+    {
+      "relative": "out/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 17928,
+      "sha256": "5a8523e462a7da8e016c9d6c1556fd90c1efec25a8ea8e5474e69545e3c73ec0"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/__grp___reduce_partials.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/__grp___reduce_partials.json",
+      "bytes": 1311,
+      "sha256": "1446889431865009d2a8d52dace6eac4b0de696ba014fbb803b8196a5390ce6a"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.asm",
+      "bytes": 28171,
+      "sha256": "962c224cdd1a23433dd74cfbf74badee1826ff19599706be546f7d2059149853"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.cubin",
+      "bytes": 5792,
+      "sha256": "6e1a373418e64cd390020642575966de39d20f8d9a3672bf8d24bf85a112cf8a"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.json",
+      "bytes": 1081,
+      "sha256": "f548fd3093010260c88c5022068479bbf023145e0259f58a82629e88c55f2be6"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.llir",
+      "bytes": 15157,
+      "sha256": "acdbba47bad47d949442f0f5fa4364e44193a06905b46a2e2c206b42e10d6417"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.source",
+      "bytes": 37652,
+      "sha256": "02097dc532c43893a59a899f8376c501761f29801490034874f4e4ba4b43d0d8"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.ttgir",
+      "bytes": 22699,
+      "sha256": "20ae7338351df0e09033e14ac0533723041e35f4302a63ccbea8ebe9dc09e3c6"
+    },
+    {
+      "relative": "out/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/CJFCENEWWVLTFSKO6V2N5ZL2QFCJFE7MWSSAL4ZNTNLXXYD5ZAGQ/_reduce_partials.ttir",
+      "bytes": 19308,
+      "sha256": "5b414c86223e2228667af34ec63a694cca567f80e5928ab13f4bf7aa3cadeb2d"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/__grp__append_kv.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/__grp__append_kv.json",
+      "bytes": 1213,
+      "sha256": "83dee6c8d6d028bc52d49018744b4c7c83d92c937702ddb519936a5ffa517b06"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.asm",
+      "bytes": 11462,
+      "sha256": "db3212017bea3c18d820e3e7e712494e283522f1aa7b84e197ea6a558fcf1dbe"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.cubin",
+      "bytes": 3720,
+      "sha256": "0a1321e2d311e2f993dab754265611425c58de612b09bf37c2748a82eb832e71"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.json",
+      "bytes": 1070,
+      "sha256": "72444da08b1367c95544f0447637934a60bb7dc03ec1276b3f40709e07374913"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.llir",
+      "bytes": 7562,
+      "sha256": "cc905b3dd86fe2a58ca214c5b752fc3ed057e0299e7dc40228b4b7076899dbef"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.source",
+      "bytes": 11632,
+      "sha256": "527b8193993a43b9d320fdf900d9d0496bdefafb773fdc79e68d7f76f4fb09d3"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.ttgir",
+      "bytes": 10131,
+      "sha256": "0ec65bcfef992c62b8177b77ccb0bfb5f2e95f39455272be598a6cc8fb5114a5"
+    },
+    {
+      "relative": "out/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/JORZTNUKFWO3PMQBF4CB24CZQSEPQ63EUURBRVIS3AUNF5G53K6A/append_kv.ttir",
+      "bytes": 9709,
+      "sha256": "bc3e4c6e4ca38c5f49b37b3c77a0c9118c3f5b393cb1f09ce7226638e9d5e87a"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/__grp___gqa_decode_attention.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/__grp___gqa_decode_attention.json",
+      "bytes": 1381,
+      "sha256": "87eefcd6348ddde2a332d32642ff6bea5ff7555ba28a4d39efdc8e1117c7119d"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.asm",
+      "bytes": 95366,
+      "sha256": "b4e707e8c6b08f927be048021e278af004e1b34ef13974011a5fd54d8c641cbd"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.cubin",
+      "bytes": 16136,
+      "sha256": "31e1a920c336abf64c7057819b24bc236f59cea80e19af014443cd10cc89de44"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.json",
+      "bytes": 1086,
+      "sha256": "0ceb7143b23419875e621a9744867c3e7772a7c87f340d3f66871be249a73260"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.llir",
+      "bytes": 129046,
+      "sha256": "d14a67094362e16b98bb450f35525b8308e2f528e83a08a6533ccca061d6dfe8"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.source",
+      "bytes": 74361,
+      "sha256": "59d867a2d9815d4197145f5b2774f973093553dd4280310035a0c7ac50cc620c"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.ttgir",
+      "bytes": 58726,
+      "sha256": "27ea2da0c1f158f2fcef01e07339767ef5e0a7f06bf0838e836fdd0b6ed88dc7"
+    },
+    {
+      "relative": "out/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/MQKHRZW5ZU6ZYEIZF66QY3KNI4V7RLJ6HOZP3H5CPME7DDSNZH7Q/_gqa_decode_attention.ttir",
+      "bytes": 50702,
+      "sha256": "884ea448324d8ffe66cb7c2a3d5cd99ec074d5ef23f8b2a1e6f554c1e7d5222d"
+    },
+    {
+      "relative": "out/triton-cache/PCWTOZCIEKYKXWCLI2IGVBWM7I2HY6PPU5GIFPAPPY3LKQ74257A/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/PCWTOZCIEKYKXWCLI2IGVBWM7I2HY6PPU5GIFPAPPY3LKQ74257A/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 21640,
+      "sha256": "91321a2f558e65b181b03a038a8cc9fe24539499cdd35498e1efedcf532a6d95"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/__grp___reduce_partials.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/__grp___reduce_partials.json",
+      "bytes": 1311,
+      "sha256": "e8fe1700eb35178ccba52698a0c170ac77a9c2fedbc0d8daf130f6b2d9545329"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.asm",
+      "bytes": 31454,
+      "sha256": "8c726f9b825d56e7eb221a85f4e6bc08a060f3cec890871a3e2d92dce5b8815e"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.cubin",
+      "bytes": 6304,
+      "sha256": "e8ad6de71c8433c8a777158fdf961f7d24655bbb97a5b74c6a3fedda09c9a2f4"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.json",
+      "bytes": 1081,
+      "sha256": "f40126aee913ca82a012dd66448df06a5aca181a94587171d6b9342c5722e11b"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.llir",
+      "bytes": 17296,
+      "sha256": "583b1eb78a3d692a021b4a7f48691b74ba40c7747a1e7fbd49f032290c434291"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.source",
+      "bytes": 37652,
+      "sha256": "36c5c4563b6a6e55a08b239815cbaad3f145b3345ad9a4ec8adaf5b96a8af021"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.ttgir",
+      "bytes": 22699,
+      "sha256": "28daae83ceeb7dfba84af9cf501f2182214c769b3082c52b74dc82d22b11a629"
+    },
+    {
+      "relative": "out/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-b3-native-tl-pair-v2-20261028/triton-cache/VJRYSD7L4RJHTOCIDZKBULE6SG4NIMH5XKAKDPP7JOO3LRMPDOXA/_reduce_partials.ttir",
+      "bytes": 19308,
+      "sha256": "e72839da08258f471f94ea521fd0c9dd21ca831336a628cb13dea37fe915a552"
+    }
+  ]
+}
