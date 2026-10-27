@@ -1,0 +1,209 @@
+{
+  "cpu_only": true,
+  "gpu_executed": false,
+  "jit_executed": false,
+  "service_installed": false,
+  "host_binding_device_verified": false,
+  "typed_abi_device_verified": false,
+  "host_binding_Q_hoist_device_verified": false,
+  "performance_verified": false,
+  "model_precision_gate": false,
+  "official_score": false,
+  "source": {
+    "sdk_source_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "normalization_source_sha256": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+    "normalized_source_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "reversed_source_sha256": "38198704c37479e4b5c26778d7dd1da2a894409d1c81ff2626e1d988facca104",
+    "route_mode": "always",
+    "context_query_ratio": null,
+    "exact_byte_inverse": true,
+    "source_line_count_preserved": true,
+    "source_line_delta": 0,
+    "q_debug_lines_baseline": [
+      185,
+      186,
+      187
+    ],
+    "q_debug_lines_candidate": [
+      185,
+      186,
+      187
+    ],
+    "q_debug_lookup": "main Manager inspects actual candidate.fn and original SDK file",
+    "source_edit": "q_block_global_idx = tl.num_programs(0) - 1 - tl.program_id(0)",
+    "grid_unchanged": true,
+    "parent_dispatch_unchanged": true,
+    "block_m": 256,
+    "block_q": 32,
+    "tile_size": 64,
+    "num_warps": 16,
+    "num_stages": 1,
+    "minimum_query_rows": 1024,
+    "minimum_actual_query_rows": null,
+    "num_sequences": 1,
+    "is_3d": false,
+    "metadata_loads": 0,
+    "metadata_uniform_for_launch": true,
+    "metadata_cse_device_verified": false,
+    "route_uses_actual_cu_difference": false,
+    "nonzero_cu_start_keeps_original_order": false,
+    "floating_math_and_output_address_expressions_unchanged": true,
+    "helpers_sha256": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+    "component_only": true,
+    "jit_executed": false,
+    "service_binding_verified": false,
+    "host_component_device_verified": false
+  },
+  "target_source_chain": {
+    "actual_target_sources": {
+      "model_executor/layers/attention/attention.py": {
+        "sha256": "3414faca4cc04c699dbb880ba1761230e1ed97035f2934604cad9a5490f4dba1",
+        "bytes": 32510
+      },
+      "forward_context.py": {
+        "sha256": "1c6fa51e9a02a120fed5e7357afb1190516cbdfefd1c644dfcd860603f1527c5",
+        "bytes": 13434
+      }
+    },
+    "source_chain_complete_for_pinned_NONE_path": true,
+    "real_custom_op_and_fake_distinct": true,
+    "direct_and_torch_ops_use_registered_function": true,
+    "actual_function_ast_reads_current_metadata_each_call": true,
+    "nested_context_restored": true,
+    "current_metadata_sequence": [
+      4096,
+      16384,
+      4096,
+      16384
+    ],
+    "outer_hook_needed": false,
+    "actual_NONE_wrapper_AST_executed": true,
+    "actual_dispatcher_nonuniform_NONE_AST_executed": true,
+    "actual_runner_uniform_predicate_AST_executed": true,
+    "capture_source_preconditions": {
+      "ordinary_prefill_max_query_gt_one": true,
+      "fixed_service_FULL_DECODE_ONLY": true,
+      "full_keys_uniform_true": true,
+      "piecewise_keys_empty": true,
+      "forced_dummy_capture_not_claimed_ordinary_prefill": true
+    },
+    "runtime_framework_imported": false,
+    "runtime_custom_op_binding_or_device_verified": false,
+    "source_lines": {
+      "get_attention_context": [
+        670,
+        710
+      ],
+      "unified_attention_with_output": [
+        757,
+        784
+      ],
+      "registration": [
+        800,
+        805
+      ],
+      "get_forward_context": [
+        191,
+        197
+      ],
+      "create": [
+        204,
+        233
+      ],
+      "override": [
+        235,
+        246
+      ],
+      "set_forward_context": [
+        307,
+        323
+      ]
+    }
+  },
+  "local_binding": {
+    "reference_parent": "56f1838192abc940b3fb9accef490022ac125000",
+    "explicit_sdk_maxima_local_scope": true,
+    "sequence": [
+      "reverse",
+      "q32",
+      "reverse"
+    ],
+    "baseline_no_new_tap": true,
+    "current_M2_Q32_identity_preserved": true,
+    "sdk_capture_uses_original_generic_parent_not_Q32": true,
+    "capture_claimed_Q32": false,
+    "stale_missing_wrong_contract_keep_parent": true,
+    "exception_restores_original_wrapper": true,
+    "nested_sdk_call_parent_then_outer_reverse": true,
+    "long_miss_has_no_new_frame_tap_or_capture_query": true,
+    "unchanged_M2_bypasses_single_sequence_boundary_grid": [
+      34,
+      2
+    ],
+    "boundary_records": [
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      },
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      },
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      },
+      {
+        "route": "parent",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "q32",
+        "payload_identity": true,
+        "parent_call_identity": true
+      },
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      }
+    ],
+    "outer_forward_context_hook_installed": false,
+    "real_framework_imported": false,
+    "device_verified": false
+  },
+  "tool_sha256": {
+    "biv150_prefill_host_binding.py": "3499c5a3a47c99f2e6afe3450d2470a99f9bf93be9cf6ed190a0490daffe5173",
+    "check_biv150_prefill_host_binding_cpu.py": "9d21e77239727964d22a0f9197391c11e8e180f186621de3de1a8c2b96a4bed4",
+    "bench_biv150_prefill_host_binding.py": "47ac19995aefe68f645517706486cb75738fb0599cebb2859be9c04c2ca3a62f"
+  }
+}
