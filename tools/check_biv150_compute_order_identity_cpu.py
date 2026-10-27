@@ -4,6 +4,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from check_biv150_stock_service_cpu import original_runner, original_semantics
+
 
 def main():
     root=Path(__file__).resolve().parents[1]
@@ -21,6 +23,7 @@ def main():
         checked.append(name)
     runner=(root/'vllm_fl/worker/model_runner.py').read_text()
     assert digest(runner.encode())==constants['EXPECTED_RUNNER']
+    runner=original_runner(runner)
     multi2='''    from vllm_fl.patches.biv150_prefill_multi2 import install as _install_prefill_multi2
 
     print("BIV150_PREFILL_MULTI2_INSTALL", _install_prefill_multi2(), flush=True)
@@ -74,6 +77,7 @@ def main():
         source=source.replace(old,new)
     assert digest(source.encode())=='3f90de854adeb7d3584b19bad1f317cb527f16f14bec15d40f55ffa3e13b4d8a'
     semantics=(root/'vllm_fl/compile_semantics.py').read_text()
+    semantics=original_semantics(semantics)
     added='''    features["VLLM_FL_BIV150_PREFILL_MULTI2"] = (
         features["VLLM_FL_BIV150_PREFILL_Q32"]
         and env.get("VLLM_FL_BIV150_PREFILL_MULTI2", "1") == "1")

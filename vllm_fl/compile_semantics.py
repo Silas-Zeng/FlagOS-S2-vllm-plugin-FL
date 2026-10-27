@@ -70,6 +70,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     features["VLLM_FL_BIV150_PREFILL_MULTI2"] = (
         features["VLLM_FL_BIV150_PREFILL_Q32"]
         and env.get("VLLM_FL_BIV150_PREFILL_MULTI2", "1") == "1")
+    features["VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC"] = env.get("VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC", "0") == "1"
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
