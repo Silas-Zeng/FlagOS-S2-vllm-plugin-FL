@@ -1,0 +1,165 @@
+{
+  "CPU_only": true,
+  "GPU_executed": false,
+  "JIT_executed": false,
+  "actual_I8_operand_hoist_verified": false,
+  "admission_phases": [
+    "compile",
+    "baseline0",
+    "candidate0",
+    "baseline1",
+    "candidate1",
+    "complete"
+  ],
+  "eager_numeric_passed": false,
+  "expected_encoder_launches": 0,
+  "expected_reader_launches": 4,
+  "full_numerical_matrix_verified": false,
+  "model_or_service_verified": false,
+  "original_BF16_and_quantized_gates_separate": true,
+  "performance_measured": false,
+  "plan": {
+    "CPU_encoded_cache": true,
+    "Graph_verified": false,
+    "actual_I8_operand_hoist_verified": false,
+    "attention_launches_planned": 4,
+    "compile_only": false,
+    "config": {
+      "BLOCK_M": 128,
+      "BLOCK_Q": 16,
+      "IS_3D": false,
+      "TILE_SIZE": 64
+    },
+    "context": 4096,
+    "context16k_tested": false,
+    "current_main_policy_selected": false,
+    "encoder_launches_planned": 0,
+    "forced_component_profile": true,
+    "formal_batch_tokens_changed": false,
+    "grid": [
+      129,
+      2
+    ],
+    "klens": [
+      6144
+    ],
+    "metadata_initialization_required": true,
+    "pages": 773,
+    "patterns": [
+      0,
+      1
+    ],
+    "profile": "normalized2d128",
+    "qlens": [
+      2048
+    ],
+    "requested_options": {
+      "num_stages": 1,
+      "num_warps": 8
+    },
+    "seed": 20261025,
+    "segments": 1,
+    "sequences": 1,
+    "side_stream_verified": false,
+    "table_pitch": 8192,
+    "table_shape": [
+      1,
+      8192
+    ],
+    "timing_enabled": false,
+    "total": 2048
+  },
+  "precision_gate": false,
+  "preflight": {
+    "Graph_verified": false,
+    "actual_I8_operand_hoist_verified": false,
+    "actual_compile_mechanism_reviewed": true,
+    "baseline_is_current_main_policy": false,
+    "eager_numeric_passed": false,
+    "loaded_resources_verified": false,
+    "model_or_service_verified": false,
+    "original_compile_commit": "78ebd23bc0ae1517293dbbd07b4aef895dff7755",
+    "performance_measured": false,
+    "plan": {
+      "CPU_encoded_cache": true,
+      "Graph_verified": false,
+      "actual_I8_operand_hoist_verified": false,
+      "attention_launches_planned": 4,
+      "compile_only": false,
+      "config": {
+        "BLOCK_M": 128,
+        "BLOCK_Q": 16,
+        "IS_3D": false,
+        "TILE_SIZE": 64
+      },
+      "context": 4096,
+      "context16k_tested": false,
+      "current_main_policy_selected": false,
+      "encoder_launches_planned": 0,
+      "forced_component_profile": true,
+      "formal_batch_tokens_changed": false,
+      "grid": [
+        129,
+        2
+      ],
+      "klens": [
+        6144
+      ],
+      "metadata_initialization_required": true,
+      "pages": 773,
+      "patterns": [
+        0,
+        1
+      ],
+      "profile": "normalized2d128",
+      "qlens": [
+        2048
+      ],
+      "requested_options": {
+        "num_stages": 1,
+        "num_warps": 8
+      },
+      "seed": 20261025,
+      "segments": 1,
+      "sequences": 1,
+      "side_stream_verified": false,
+      "table_pitch": 8192,
+      "table_shape": [
+        1,
+        8192
+      ],
+      "timing_enabled": false,
+      "total": 2048
+    },
+    "precision_gate": false,
+    "side_stream_verified": false,
+    "source_root": "/workspace/experiments/minicpm-s2/cjj-konly-prefill-2d128-compile-v1-20261027/sources"
+  },
+  "real_record_binding_accepted": [
+    "baseline",
+    "candidate"
+  ],
+  "rejected": [
+    "baseline_typed_ABI",
+    "baseline_actual_options",
+    "baseline_jit_version",
+    "baseline_hash",
+    "candidate_typed_ABI",
+    "candidate_actual_options",
+    "candidate_jit_version",
+    "candidate_hash",
+    "hard_finite",
+    "hard_baseline_reference",
+    "hard_CPU_codec_cache_bytes",
+    "hard_output_canaries",
+    "hard_read_only_inputs",
+    "hard_actual_IR",
+    "hard_quantized_implementation",
+    "BF16_failure_requires_diagnostic",
+    "foreign_PID",
+    "port_open",
+    "stale_owner",
+    "wrong_phase",
+    "wrong_token"
+  ]
+}

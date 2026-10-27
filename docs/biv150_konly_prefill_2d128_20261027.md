@@ -83,3 +83,18 @@ Actual mainDAC was API-confirmed. The initial fetch command did not execute
 because automatic approval review timed out; the single allowed retry then
 completed a normal fetch successfully. No unsafe action was inferred from the
 review timeout, and no official upstream branch was merged.
+
+## Actual compile evidence and bounded eager follow-up
+
+Root completed the exact78e zero-launch compile. The complete38-file originals
+and independent source/typed-ABI/IR mechanism review are archived under
+[compile-v1](evidence/konly-prefill-2d128-20261027/compile-v1/README.md).
+The actual candidate uses native I8 QK/BF16 PV and correct full-base FP32 scale
+addresses, but Q shared operand reads remain inside the KV loop. Original
+prelaunch registers/spills are None; there is no BM128 hoist or loaded proof.
+
+A separate default-CPU, explicit-GPU two-pattern eager entry is prepared under
+[numeric-entry-v1](evidence/konly-prefill-2d128-20261027/numeric-entry-v1/README.md).
+It preserves the old kernel and all original gates, separates quantized FP64
+implementation from original BF16 quality, and has no timing/Graph/service hook.
+It has not been run on device. No model/service/performance acceptance is claimed.
