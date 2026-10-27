@@ -1,5 +1,9 @@
 # Read-only feasibility: host metadata chooses CTA ordering
 
+A separate [CPU-only component prototype](biv150_prefill_host_component_20261027.md)
+now consumes explicitly supplied metadata at the selected-Q32 boundary. It does
+not implement the missing service/custom-op binding or close the source gap below.
+
 No host hook, kernel, production installer, new PR or device queue is implemented
 by this study. The existing140cecc device-predicate component remains frozen.
 The proposed distinction is general context/query ratio; it uses no benchmark

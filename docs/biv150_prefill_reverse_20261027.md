@@ -18,6 +18,14 @@ direction remains open; long-context residual cost is still about0.75%, so this
 screen does not satisfy the zero-loss goal. No service gain or model precision
 acceptance is claimed.
 
+A [minimal explicit-CPU-metadata host component](biv150_prefill_host_component_20261027.md)
+now executes the conservative ratio decision at the already-parent-selected Q32
+boundary. Its CPU protocol/source checks pass13 boundary and45 rejection cases,
+including real main56f Q32/M2 Python-policy AST. It preserves long-context original
+Call identity and introduces no long-context device predicate. This is no service
+hook or device result: the new host component's numerical/performance/model gates
+remain unverified.
+
 The first unconditional-reversal falsifier at
 `fcaec8af5e5bb674c16920134c5101a22e853e92` passed its numerical and Q-hoist
 guards for both tested components. Known launch/shared metadata matched. The
