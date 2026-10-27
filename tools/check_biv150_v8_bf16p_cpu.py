@@ -236,12 +236,22 @@ def benchmark_contract_check():
     policy = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
               and isinstance(node.func, ast.Name) and node.func.id == 'numeric_timing_policy']
     assert len(policy) == 1 and ast.unparse(policy[0].args[-1]) == 'args.numeric_diagnostic'
+    baseline = next(node for node in ast.walk(tree) if isinstance(node, ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == 'baseline_records' for target in node.targets))
+    expected_baseline = ast.parse("[record for record in row['numeric'] if 'cpu' in record and not record['quantized']]", mode='eval').body
+    assert ast.dump(baseline.value) == ast.dump(expected_baseline)
+    hard = next(node.value for node in ast.walk(tree) if isinstance(node, ast.Assign)
+                and any(isinstance(target, ast.Name) and target.id == 'hard_checks' for target in node.targets))
+    baseline_gate = next(keyword.value for keyword in hard.keywords if keyword.arg == 'baseline_numeric')
+    expected_gate = ast.parse("len(baseline_records) == 2 and all(record['cpu']['passed'] for record in baseline_records)", mode='eval').body
+    assert ast.dump(baseline_gate) == ast.dump(expected_gate)
     return dict(reference_calls_from_expected_cpu=True, mapped_cache_poison_before_replay=True,
-                graph_writer_validated_before_eager=True, explicit_numeric_diagnostic_policy=True)
+                graph_writer_validated_before_eager=True, explicit_numeric_diagnostic_policy=True,
+                baseline_cpu_pointwise_required_for_both_patterns=True)
 
 
 def numeric_diagnostic_check():
-    hard = dict.fromkeys(('finite', 'codec', 'slot_mapping', 'unmapped_bytes', 'graph_eager'), True)
+    hard = dict.fromkeys(('finite', 'baseline_numeric', 'codec', 'slot_mapping', 'unmapped_bytes', 'graph_eager'), True)
     assert numeric_timing_policy(True, hard)['timing_rounds'] == 3
     decision = numeric_timing_policy(False, hard, diagnostic=True)
     assert decision['timing_rounds'] == 1 and not decision['numeric_passed']
@@ -262,6 +272,17 @@ def numeric_diagnostic_check():
         rejected.append((False, 'numeric'))
     else:
         raise AssertionError('Default mode timed failed numerics')
+    # A finite but independently inaccurate baseline cannot qualify a diagnostic
+    # comparison, even if an inconsistent caller marks aggregate numerics true.
+    bad_baseline = dict(hard, baseline_numeric=False)
+    assert bad_baseline['finite'] is True
+    for numeric_passed in (False, True):
+        try:
+            numeric_timing_policy(numeric_passed, bad_baseline, diagnostic=True)
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError('Finite baseline CPU pointwise failure reached timing')
     trace = dict(coordinate=[0, 0, 0], scores=[i*.037 for i in range(17)],
                  canonical_codes=[2]+[i%7-3 for i in range(16)],
                  validated_actual_codes=[1]+[i%7-3 for i in range(16)],
@@ -273,6 +294,7 @@ def numeric_diagnostic_check():
     assert not attributed['acceptance_tolerance_changed']
     return dict(numeric_failure_retained_in_diagnostic=True, diagnostic_timing_pairs=1,
                 rejected_fault_modes=rejected, default_numeric_failure_rejected=True,
+                finite_baseline_pointwise_failure_rejected=True,
                 cpu_codec_and_weighted_p_effects_separated=True, gpu_executed=False)
 
 

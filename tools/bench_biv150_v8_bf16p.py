@@ -28,6 +28,7 @@ def main(args):
                               hypothetical_aligned_compact_bytes_per_page=12544, precision_gate=False,
                               component_consumption_relative_rmse_limit=0.02,
                               numeric_diagnostic=args.numeric_diagnostic,
+                              baseline_independent_numeric_required=True,
                               timing_rounds=1 if args.numeric_diagnostic else 3,
                               oracle_from_frozen_cpu_bf16=True, graph_writer_poison_check=True,
                               model_accuracy='not tested', throughput='not tested')))
@@ -52,6 +53,7 @@ def main(args):
                   probability_dtype='bfloat16', pv_dtype='bfloat16', candidate_warps=args.warps,
                   component_consumption_relative_rmse_limit=0.02,
                   numeric_diagnostic=args.numeric_diagnostic, diagnostic_only=args.numeric_diagnostic,
+                  baseline_independent_numeric_required=True,
                   numeric_passed=False, hard_checks_passed=False,
                   oracle_from_frozen_cpu_bf16=True, graph_writer_poison_check=True,
                   source_commit=subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip(),
@@ -451,8 +453,10 @@ def main(args):
             for record in row['numeric']:
                 for label in ('all_rows_bf16_consumption_gate', 'independent_bf16_consumption_gate'):
                     numeric_passed = numeric_passed and all(check['passed'] for check in record.get(label, []))
+            baseline_records = [record for record in row['numeric'] if 'cpu' in record and not record['quantized']]
             hard_checks = dict(
                 finite=all(record['cpu']['finite'] for record in row['numeric'] if 'cpu' in record),
+                baseline_numeric=len(baseline_records) == 2 and all(record['cpu']['passed'] for record in baseline_records),
                 codec=row['initial_codec']['passed'] and row['last_codec']['passed'],
                 slot_mapping=tuple(slots.cpu().tolist()) == host_slots,
                 unmapped_bytes=all(record[label]['unmapped_bytes_unchanged'] for record in row['numeric']
@@ -502,7 +506,7 @@ if __name__ == '__main__':
     p.add_argument('--case', action='append', choices=sorted(CASES))
     p.add_argument('--warps', type=int, choices=(1, 2), default=1)
     p.add_argument('--numeric-diagnostic', action='store_true',
-                   help='Retain finite numeric gate failures and run one diagnostic timing pair; all hard guards remain fatal')
+                   help='Retain finite candidate precision failures for one diagnostic pair; baseline CPU numerics and every hard guard must pass')
     a = p.parse_args()
     if a.run_gpu and a.out is None:
         p.error('--out is required for GPU work')

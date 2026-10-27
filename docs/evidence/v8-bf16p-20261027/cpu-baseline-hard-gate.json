@@ -1,0 +1,122 @@
+{
+  "source": {
+    "baseline_source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+    "normalized_producer_ast_equal": true,
+    "pv_sites": 2,
+    "scale_load_sites": 2
+  },
+  "layout": {
+    "allocated_bytes_per_page": 16384,
+    "key_bytes": 8192,
+    "code_bytes": 4096,
+    "scale_bytes": 128,
+    "payload_bytes": 12416,
+    "padding_bytes": 3968,
+    "hypothetical_aligned_compact_bytes": 12544,
+    "capacity_reclaimed": false,
+    "signed_codes_exact_in_bfloat16": true
+  },
+  "algebra": {
+    "length_segment_combinations": 72,
+    "max_fp64_recurrence_error": 8.881784197001252e-16,
+    "max_weighted_bf16_p_error": 0.014219835134730019,
+    "gpu_numerics_tested": false,
+    "model_accuracy_tested": false
+  },
+  "validation_falsification": {
+    "rejected_mutants": [
+      "one_code_error_away_from_half_tie",
+      "huge_scale_zero_codes",
+      "wrong_scale_with_self_consistent_codes",
+      "zero_vector_wrong_scale",
+      "missing_min_normal_clamp",
+      "omitted_graph_writer_False",
+      "stale_graph_token_False",
+      "graph_writer_only_K_False",
+      "graph_writer_only_V_False",
+      "unmapped_padding_write_False",
+      "omitted_graph_writer_True",
+      "stale_graph_token_True",
+      "graph_writer_only_K_True",
+      "graph_writer_only_V_True",
+      "unmapped_padding_write_True",
+      "self_consistent_bad_codec_in_graph"
+    ],
+    "permitted_half_tie_differences": 2,
+    "zero_and_min_normal_scale_checked": true,
+    "consumption_gate_limit": 0.02,
+    "zero_code_consumption_rejected": true,
+    "gpu_executed": false
+  },
+  "benchmark_contract": {
+    "reference_calls_from_expected_cpu": true,
+    "mapped_cache_poison_before_replay": true,
+    "graph_writer_validated_before_eager": true,
+    "explicit_numeric_diagnostic_policy": true,
+    "baseline_cpu_pointwise_required_for_both_patterns": true
+  },
+  "numeric_diagnostic": {
+    "numeric_failure_retained_in_diagnostic": true,
+    "diagnostic_timing_pairs": 1,
+    "rejected_fault_modes": [
+      [
+        false,
+        "finite"
+      ],
+      [
+        false,
+        "baseline_numeric"
+      ],
+      [
+        false,
+        "codec"
+      ],
+      [
+        false,
+        "slot_mapping"
+      ],
+      [
+        false,
+        "unmapped_bytes"
+      ],
+      [
+        false,
+        "graph_eager"
+      ],
+      [
+        true,
+        "finite"
+      ],
+      [
+        true,
+        "baseline_numeric"
+      ],
+      [
+        true,
+        "codec"
+      ],
+      [
+        true,
+        "slot_mapping"
+      ],
+      [
+        true,
+        "unmapped_bytes"
+      ],
+      [
+        true,
+        "graph_eager"
+      ],
+      [
+        false,
+        "numeric"
+      ]
+    ],
+    "default_numeric_failure_rejected": true,
+    "finite_baseline_pointwise_failure_rejected": true,
+    "cpu_codec_and_weighted_p_effects_separated": true,
+    "gpu_executed": false
+  },
+  "precision_gate": false,
+  "official_score": false
+}

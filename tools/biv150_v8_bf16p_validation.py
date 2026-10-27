@@ -90,8 +90,8 @@ def consumption_gate(actual, original_bf16, limit=0.02):
 
 
 def numeric_timing_policy(numeric_passed, hard_checks, diagnostic=False):
-    """Diagnostics may retain failed numeric gates; structural faults stay fatal."""
-    required = {'finite', 'codec', 'slot_mapping', 'unmapped_bytes', 'graph_eager'}
+    """Only candidate numeric failures are diagnostic; baseline/hard faults fail."""
+    required = {'finite', 'baseline_numeric', 'codec', 'slot_mapping', 'unmapped_bytes', 'graph_eager'}
     assert set(hard_checks) == required
     assert all(value is True for value in hard_checks.values()), ('Hard validation failure', hard_checks)
     assert numeric_passed or diagnostic, 'Numeric precision gate failed; timing disabled'
