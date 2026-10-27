@@ -278,7 +278,10 @@ def parent_host_source(source, role):
                    ('seen.pointer + 8192', 'seen.pointer + 4352', 1),
                    ('k.strides == v.strides == (8192, 256, 128, 1)',
                     'k.strides == v.strides == (6272, 256, 128, 1)', 1)]
-    need(hashlib.sha256(source.encode()).hexdigest() == pin, 'pinned parent host source')
+    accepted = {pin}
+    if role == 'runtime':
+        accepted.add('93acf5658f76faa031bd8d6865d0fc489a2e59521f9e7b25a1ccf45e991d6aef')
+    need(hashlib.sha256(source.encode()).hexdigest() in accepted, 'pinned parent host source')
     output = source
     for old, new, count in changes:
         need(output.count(old) == count, 'parent host address grammar: ' + old)
