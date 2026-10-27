@@ -11,7 +11,7 @@ import types
 from pathlib import Path
 
 # Current team runner plus the opt-in Q32 installer; input/order code is unchanged.
-EXPECTED_RUNNER = "42cdf64d8af025ecd2762e586ca592daf3d760a69e204e01ce930729f74f2c6e"
+EXPECTED_RUNNER = "b4bf3ec5cb7b46392452c37e2ac91292d7c40522ad711ce3a8be3eb55a418d7d"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
@@ -91,7 +91,19 @@ def _main_stack(torch):
         or cells["signature"] != inspect.signature(previous)
     ):
         raise ValueError("normalized统一函数不是原generic的独立global克隆")
-    source = inspect.getsource(attention.kernel_unified_attention.fn)
+    raw_kernel = attention.kernel_unified_attention
+    normalized_kernel = clone.__globals__.get("kernel_unified_attention")
+    if os.environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1":
+        encoded = sys.modules.get("vllm_fl.patches.biv150_konly_encoded_service")
+        if encoded is None:
+            raise ValueError("encoded dispatch installed source is missing")
+        receipt = encoded.compute_order_receipt(attention, normalized_kernel)
+        if not receipt.get("encoded_dispatch_registered") or not receipt.get("implementation_sha256"):
+            raise ValueError("encoded dispatch identity receipt is incomplete")
+        # Parent .fn below proves only the preserved SDK interface/metadata chain.
+        # The separate receipt verifies actual private dispatch, never new numerics.
+        raw_kernel, normalized_kernel = receipt["parent_raw"], receipt["parent_normalized"]
+    source = inspect.getsource(raw_kernel.fn)
     old_mass = "L = tl.full([BLOCK_M], 1.0, dtype=tl.float32)"
     old_name = "def kernel_unified_attention("
     if source.count(old_mass) != 1 or source.count(old_name) != 1:
@@ -99,11 +111,11 @@ def _main_stack(torch):
     expected = source.replace(old_mass, "L = tl.zeros([BLOCK_M], dtype=tl.float32)")
     expected = expected.replace(old_name, "def kernel_biv150_prefill_normalized(", 1)
     expected = normalized._specialize_strides(expected)
-    kernel = clone.__globals__.get("kernel_unified_attention")
+    kernel = normalized_kernel
     fn = getattr(kernel, "fn", None)
     digest = hashlib.sha256(expected.encode()).hexdigest()
     if (
-        kernel is attention.kernel_unified_attention
+        kernel is raw_kernel
         or not isinstance(fn, types.FunctionType)
         or fn.__code__.co_filename != "<biv150-prefill-normalized-" + digest + ".py>"
         or fn.__code__.co_name != "kernel_biv150_prefill_stride"
