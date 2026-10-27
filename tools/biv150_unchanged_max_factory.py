@@ -84,8 +84,11 @@ def build(text):
     old_tree, new_tree = ast.parse(original), ast.parse(candidate)
     old_fn, new_fn = old_tree.body[0], new_tree.body[-1]
     need(ast.dump(old_fn.args) == ast.dump(new_fn.args), 'Raw parameter schema changed')
-    lines = dict(alpha_exp=[], probability_exp=[], running_sum_fma=[], pv=[])
+    lines = dict(alpha_exp=[], probability_exp=[], running_sum_fma=[], pv=[],
+                 accumulator_scale=[], branch=[], qk=[])
     for node in ast.walk(new_fn):
+        if isinstance(node, ast.If) and isinstance(node.test, ast.Name) and node.test.id == 'need_rescale':
+            lines['branch'].append(node.lineno)
         if isinstance(node, ast.Assign):
             target = node.targets[0]
             name = target.id if isinstance(target, ast.Name) else ''
@@ -100,6 +103,13 @@ def build(text):
                     isinstance(n.func, ast.Attribute) and n.func.attr == 'dot'
                     for n in ast.walk(node.value)):
                 lines['pv'].append(node.lineno)
+            if name == 'accumulator' and isinstance(node.value, ast.BinOp) and \
+                    isinstance(node.value.op, ast.Mult):
+                lines['accumulator_scale'].append(node.lineno)
+            if name == 'scores' and any(isinstance(n, ast.Call) and
+                    isinstance(n.func, ast.Attribute) and n.func.attr == 'dot'
+                    for n in ast.walk(node.value)):
+                lines['qk'].append(node.lineno)
     need(all(len(v) == 2 for v in lines.values()), 'Full/tail source map incomplete')
     proof = dict(main=MAIN, source_sha256=SOURCE_SHA, kernel_sha256=KERNEL_SHA,
                  generated_sha256=digest(candidate), exact_source_inverse=True,

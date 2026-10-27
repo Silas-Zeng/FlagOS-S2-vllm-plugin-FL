@@ -25,8 +25,39 @@ emptysegment保留原早退，tail保留原mask。finite BF16输入也可能在Q
 动态归约。未来tiny BF16/signedzero/subnormal和逐元素bitwise硬证伪失败就不计时，
 不能用allclose掩盖差异。标题中experiment不代表已经证明完全等价。
 
-接下来补CPU合同/拒绝检查及显式--gpu组件入口，使用真实base._pick_segments、
-producer1warp/1stage和原reducer4warps；先exact/实际IR机制门，再完整producer+
-reducer配对成本。独立FP64参考原门不放宽，unknown资源不视为相等。
+CPU检查及显式--gpu组件入口已准备。默认命令只stdlib，不导入Torch/Triton、不JIT：
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 tools/check_biv150_unchanged_max_cpu.py --out NEW_CPU_JSON
+PYTHONDONTWRITEBYTECODE=1 python3 tools/bench_biv150_unchanged_max.py
+```
+
+CPU合同覆盖46个八head状态（首page、单head更新、旧/新NaN、Inf、signed0/subnormal），
+另有4090个host IEEE乘1位模式。该host例不是GPU模拟器。精确逆回原kernel字节及
+参数表，full/tail/empty早退原文保留；默认CLI子进程证明未导入GPU SDK。
+IR parser只用结构性合成fixture验证其拒绝规则，并对本地原baseline/PR71实际
+TTGIR做负例；**没有真实新candidate正例**。不能因parser单测通过声称设备机制通过。
+
+未来只有root明确排期后才使用`--gpu --source FROZEN_TREE --commit FROZEN_HEAD
+--out FRESH_DIRECTORY`。入口首先验证空闲状态、冻结源码/JIT SHA及vllm_fl/csrc字节。
+独立小primitive必须保留真实exp/mul指令，并逐bit检查native exp2(±0)=1和mul1
+对signed0、FP32subnormal、normal/max有限值的恒等性，失败立即停止。
+
+随后仅准备4K/B64和16K/B32的packed/page16、table pitch8192与narrowed scratch，
+沿用原input factory/seed、真实base._pick_segments、producer1warp/1stage与原
+reducer4warps，核对真实baseline641478/e29a0c身份。保存所有实际kernel.asm原件，
+TTGIR必须有两个full/tail条件区、原new_max/P/BF16P链、校正显式FMA和PV的条件C；
+LLVM CFG必须证明4个alpha调用、64个acc mul和4个FMA均在校正分支，16个PV MMA
+保留非zero C；ASM还要对应原ml_fma_f32与同型BF16 MMA。未知lowering即拒绝，
+若仍unconditional rescale、FMA拆分或PV C链改变，不能认可机制或进入计时。
+
+逐bit比较原/候选的producer FP32 scratch/max/sum及BF16最终输出，而不只比较
+allclose。先原seed、ragged/empty/tail、zero QK强制无更新、单head递增强制校正、
+tiny BF16 V及signed0，再动态Q/lengths Graph和侧流；输出及scratch poison覆盖
+未写/陈旧值，Graph/侧流也须有限且exact。独立CPU FP64门保留原
+`candidate_rmse<=max(.005,1.2*baseline_rmse)`，RMS0与maxdiff非0矛盾会直接失败。
+全部当case硬门通过才运行三轮交替完整producer+reducer成本；失败case不计时。
+post-launch资源逐字段记录known_equal/known_changed/unknown，None不作为相等证明。
+
 只准备4K/B64与16K/B32，仍等root已有66终态及4a诊断后统一安排，不自动启动。
 full105、正式吞吐和TTFT均未验收，不能合并。

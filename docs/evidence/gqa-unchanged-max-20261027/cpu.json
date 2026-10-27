@@ -1,0 +1,86 @@
+{
+  "cpu_only": true,
+  "checks_passed": true,
+  "proof": {
+    "main": "241220723a09061c182764f8f738e5ec01190367",
+    "source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+    "kernel_sha256": "b505e712ea21e10563ffb4a14f01a13a9c77fa32308095a80ebbc417b96e69ce",
+    "generated_sha256": "225c9cc1be483f7cee32eb8c61b87f97f238ea740ee1348c4f5a4023adf35313",
+    "exact_source_inverse": true,
+    "same_raw_parameter_schema": true,
+    "source_lines": {
+      "alpha_exp": [
+        98,
+        137
+      ],
+      "probability_exp": [
+        93,
+        132
+      ],
+      "running_sum_fma": [
+        99,
+        138
+      ],
+      "pv": [
+        103,
+        142
+      ],
+      "accumulator_scale": [
+        100,
+        139
+      ],
+      "branch": [
+        97,
+        136
+      ],
+      "qk": [
+        91,
+        129
+      ]
+    },
+    "original_new_max_probability_and_pv_dot_preserved": true,
+    "corrected_sum_explicit_fma": true,
+    "actual_ir_guard_pending": true,
+    "ieee_identity_target_only": true,
+    "device_bitwise_equivalence_proven": false,
+    "ftz_subnormal_and_signed_zero_device_falsifier_pending": true,
+    "gpu_executed": false,
+    "production_installed": false,
+    "precision_gate": false
+  },
+  "predicate_cases": 46,
+  "host_ieee_bit_patterns": 4090,
+  "host_not_a_gpu_simulator": true,
+  "firstpage_empty_tail_source_preserved": true,
+  "rejected": [
+    "module-sha",
+    "nonrecurrence-edit",
+    "fma-removed",
+    "one-transform-missing",
+    "head-count",
+    "missing-actual-ir",
+    "pv-zero-c",
+    "wrong-fma-opcode",
+    "asm-no-rescale-branch",
+    "pv-c-not-phi",
+    "changed-p-anchor",
+    "unconditional-alpha"
+  ],
+  "structural_ir_parser_fixture_only": true,
+  "actual_ir_negative_tests": [
+    {
+      "path": "/private/tmp/cjj-gqa-rescale-equivalence-review-20261027/b64-baseline.ttgir",
+      "sha256": "1e8eeae1b10fa63ac77965049653a892e7750d7714a9f3a858eaf67022fbee0d"
+    },
+    {
+      "path": "/private/tmp/cjj-gqa-rescale-equivalence-review-20261027/b64-candidate.ttgir",
+      "sha256": "390510ffd12b61e266632c21928c47c737012c4a9dbfbafb6a015fe26f572263"
+    }
+  ],
+  "default_cli_no_gpu_import": true,
+  "tiny_device_primitive_pending": true,
+  "gpu_executed": false,
+  "queued": false,
+  "precision_gate": false,
+  "limitation": "Source, predicate, and IEEE targets only; actual CFG/FMA/PV/FTZ/exactness/resources/performance unverified."
+}
