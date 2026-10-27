@@ -1,0 +1,487 @@
+{
+  "cpu_only": true,
+  "new_GPU_execution": false,
+  "source_commit": "ee579b3401b1a34dd4316ab60299236e435b9c50",
+  "diagnostic_only": true,
+  "performance_score": false,
+  "speedup_computed": false,
+  "old_v4_gap_cause_proven": false,
+  "no_new_runtime_optimization_justified": true,
+  "arms": [
+    {
+      "arm": "baseline",
+      "host_call_ns": [
+        6954108,
+        5248437
+      ],
+      "profiled_wall_ns": 16392132,
+      "profiled_event_ms": 2.9051806926727295,
+      "end_sync_ns": 2982975,
+      "exclusive_buckets_seconds": {
+        "SDK-and-normalization": 0.006303311000000001,
+        "native-sync": 0.0029482880000000003,
+        "native-other": 0.0024349329999999994,
+        "descriptor": 0.000667783,
+        "Triton-binder-and-launcher": 0.0011379090000000005,
+        "opaque-parent-policy": 0.0005661679999999999,
+        "opaque-Manager-dispatch": 0.0008682560000000001,
+        "other-Python": 0.0012890710000000001,
+        "native-launch": 0.00012206900000000001
+      },
+      "top_self_functions": [
+        {
+          "bucket": "SDK-and-normalization",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.005735315,
+          "inclusive_seconds": 0.011390540000000001,
+          "function": "unified_attention",
+          "filename": "/usr/local/lib/python3.12/site-packages/vllm/v1/attention/ops/triton_unified_attention.py",
+          "first_line": 780
+        },
+        {
+          "bucket": "native-sync",
+          "calls": 1,
+          "recursive": 0,
+          "self_seconds": 0.0029482880000000003,
+          "inclusive_seconds": 0.0029482880000000003,
+          "function": "<function Event.synchronize at 0x7fea70b7a840>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "native-other",
+          "calls": 40,
+          "recursive": 16,
+          "self_seconds": 0.001157826,
+          "inclusive_seconds": 0.0018679080000000002,
+          "function": "<built-in method builtins.any>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "descriptor",
+          "calls": 4,
+          "recursive": 0,
+          "self_seconds": 0.000667783,
+          "inclusive_seconds": 0.002743629,
+          "function": "_eligible",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_q_fragment_service.py",
+          "first_line": 94
+        },
+        {
+          "bucket": "Triton-binder-and-launcher",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.000534139,
+          "inclusive_seconds": 0.001433143,
+          "function": "JITFunction.run",
+          "filename": "/usr/local/lib/python3.12/site-packages/triton/spec/iluvatar/triton/runtime/jit.py",
+          "first_line": 737
+        },
+        {
+          "bucket": "opaque-parent-policy",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.000406366,
+          "inclusive_seconds": 0.005138295,
+          "function": "_Policy.__getitem__.<locals>.invoke",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_prefill_q32.py",
+          "first_line": 39
+        },
+        {
+          "bucket": "SDK-and-normalization",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00034046200000000003,
+          "inclusive_seconds": 0.012103404,
+          "function": "install.<locals>.wrapper",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_prefill_normalized.py",
+          "first_line": 169
+        },
+        {
+          "bucket": "opaque-Manager-dispatch",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00022924300000000001,
+          "inclusive_seconds": 0.0032035590000000004,
+          "function": "_Launch.__getitem__.<locals>.invoke",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_q_fragment_service.py",
+          "first_line": 343
+        },
+        {
+          "bucket": "Triton-binder-and-launcher",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00022555,
+          "inclusive_seconds": 0.0016586930000000001,
+          "function": "KernelInterface.__getitem__.<locals>.<lambda>",
+          "filename": "/usr/local/lib/python3.12/site-packages/triton/spec/iluvatar/triton/runtime/jit.py",
+          "first_line": 412
+        },
+        {
+          "bucket": "native-other",
+          "calls": 106,
+          "recursive": 0,
+          "self_seconds": 0.000222331,
+          "inclusive_seconds": 0.000222331,
+          "function": "<method 'stride' of 'torch._C.TensorBase' objects>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "native-other",
+          "calls": 194,
+          "recursive": 0,
+          "self_seconds": 0.00020743400000000002,
+          "inclusive_seconds": 0.00020743400000000002,
+          "function": "<method 'get' of 'dict' objects>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "native-other",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00018540600000000002,
+          "inclusive_seconds": 0.00018540600000000002,
+          "function": "<function Event.record at 0x7fea70b7a5c0>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "other-Python",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00017775,
+          "inclusive_seconds": 0.00029685700000000003,
+          "function": "dynamic_func",
+          "filename": "<string>",
+          "first_line": 2
+        },
+        {
+          "bucket": "other-Python",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00017768000000000002,
+          "inclusive_seconds": 0.0008496710000000001,
+          "function": "current_stream",
+          "filename": "/usr/local/lib/python3.12/site-packages/torch/cuda/__init__.py",
+          "first_line": 1139
+        },
+        {
+          "bucket": "SDK-and-normalization",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00014677600000000002,
+          "inclusive_seconds": 0.00037240200000000003,
+          "function": "_eligible",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_prefill_normalized.py",
+          "first_line": 98
+        },
+        {
+          "bucket": "native-other",
+          "calls": 8,
+          "recursive": 0,
+          "self_seconds": 0.00014575500000000002,
+          "inclusive_seconds": 0.000209988,
+          "function": "<built-in method builtins.all>",
+          "filename": null,
+          "first_line": null
+        }
+      ],
+      "postlaunch_audit_span_ns": [],
+      "audit_span_overlaps_boundary": true,
+      "gc_events": [],
+      "rusage_deltas": {
+        "process": {
+          "ru_utime": 0.017295999999999978,
+          "ru_stime": 0.00017099999999992122,
+          "ru_minflt": 42,
+          "ru_majflt": 0,
+          "ru_nvcsw": 2,
+          "ru_nivcsw": 0
+        },
+        "thread": {
+          "ru_utime": 0.017286000000000357,
+          "ru_stime": 0.000148000000000037,
+          "ru_minflt": 40,
+          "ru_majflt": 0,
+          "ru_nvcsw": 0,
+          "ru_nivcsw": 0
+        }
+      },
+      "live_descriptor_calls": {
+        "128": 2,
+        "256": 2
+      },
+      "unique_binary_profile_rows_matched": 111,
+      "JSON_function_rows": 111,
+      "binary_profile_rows": 111,
+      "profile_key_collisions": []
+    },
+    {
+      "arm": "candidate",
+      "host_call_ns": [
+        2466169,
+        1960377
+      ],
+      "profiled_wall_ns": 7595873,
+      "profiled_event_ms": 2.7911536693573,
+      "end_sync_ns": 2828352,
+      "exclusive_buckets_seconds": {
+        "native-sync": 0.002820279,
+        "SDK-and-normalization": 0.0018599659999999998,
+        "native-other": 0.0008605249999999999,
+        "descriptor": 0.000211167,
+        "Triton-binder-and-launcher": 0.000301119,
+        "boundary-and-audit-plumbing": 0.000132749,
+        "opaque-parent-policy": 0.00014249800000000002,
+        "host-binding-scope": 0.000157284,
+        "certificate": 8.9535e-05,
+        "route-and-one-shot": 0.00015157500000000004,
+        "other-Python": 0.0005978470000000004,
+        "opaque-Manager-dispatch": 0.000258893,
+        "native-launch": 3.6022e-05
+      },
+      "top_self_functions": [
+        {
+          "bucket": "native-sync",
+          "calls": 1,
+          "recursive": 0,
+          "self_seconds": 0.002820279,
+          "inclusive_seconds": 0.002820279,
+          "function": "<function Event.synchronize at 0x7fea70b7a840>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "SDK-and-normalization",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.001745482,
+          "inclusive_seconds": 0.0038804210000000002,
+          "function": "unified_attention",
+          "filename": "/usr/local/lib/python3.12/site-packages/vllm/v1/attention/ops/triton_unified_attention.py",
+          "first_line": 780
+        },
+        {
+          "bucket": "native-other",
+          "calls": 44,
+          "recursive": 16,
+          "self_seconds": 0.000431206,
+          "inclusive_seconds": 0.0007102520000000001,
+          "function": "<built-in method builtins.any>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "descriptor",
+          "calls": 4,
+          "recursive": 0,
+          "self_seconds": 0.000211167,
+          "inclusive_seconds": 0.000849356,
+          "function": "_eligible",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_q_fragment_service.py",
+          "first_line": 94
+        },
+        {
+          "bucket": "Triton-binder-and-launcher",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00014581900000000002,
+          "inclusive_seconds": 0.00040522500000000005,
+          "function": "JITFunction.run",
+          "filename": "/usr/local/lib/python3.12/site-packages/triton/spec/iluvatar/triton/runtime/jit.py",
+          "first_line": 737
+        },
+        {
+          "bucket": "boundary-and-audit-plumbing",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00013194000000000001,
+          "inclusive_seconds": 0.001442913,
+          "function": "_BoundaryLaunch.__call__",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/tools/biv150_prefill_host_binding.py",
+          "first_line": 151
+        },
+        {
+          "bucket": "opaque-parent-policy",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 0.00010597300000000001,
+          "inclusive_seconds": 0.001997224,
+          "function": "_Policy.__getitem__.<locals>.invoke",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_prefill_q32.py",
+          "first_line": 39
+        },
+        {
+          "bucket": "host-binding-scope",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 9.1396e-05,
+          "inclusive_seconds": 0.004320359,
+          "function": "LocalSdkBinding.call",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/tools/biv150_prefill_host_binding.py",
+          "first_line": 212
+        },
+        {
+          "bucket": "certificate",
+          "calls": 6,
+          "recursive": 0,
+          "self_seconds": 8.9535e-05,
+          "inclusive_seconds": 0.00010185100000000001,
+          "function": "ParentCertificate.intact",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/tools/biv150_prefill_parent_certificate.py",
+          "first_line": 92
+        },
+        {
+          "bucket": "native-other",
+          "calls": 296,
+          "recursive": 0,
+          "self_seconds": 8.6693e-05,
+          "inclusive_seconds": 8.6693e-05,
+          "function": "<method 'get' of 'dict' objects>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "route-and-one-shot",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 6.9774e-05,
+          "inclusive_seconds": 0.00030334400000000004,
+          "function": "Router.select",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/tools/biv150_prefill_host_component.py",
+          "first_line": 190
+        },
+        {
+          "bucket": "native-other",
+          "calls": 106,
+          "recursive": 0,
+          "self_seconds": 6.9706e-05,
+          "inclusive_seconds": 6.9706e-05,
+          "function": "<method 'stride' of 'torch._C.TensorBase' objects>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "other-Python",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 6.7076e-05,
+          "inclusive_seconds": 0.0044188610000000005,
+          "function": "device.<locals>.<lambda>",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/tools/diagnose_biv150_prefill_host_overhead.py",
+          "first_line": 270
+        },
+        {
+          "bucket": "opaque-Manager-dispatch",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 6.138400000000001e-05,
+          "inclusive_seconds": 0.0009470920000000001,
+          "function": "_Launch.__getitem__.<locals>.invoke",
+          "filename": "/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v2-20261027/vllm_fl/patches/biv150_q_fragment_service.py",
+          "first_line": 343
+        },
+        {
+          "bucket": "native-other",
+          "calls": 10,
+          "recursive": 0,
+          "self_seconds": 5.7112000000000005e-05,
+          "inclusive_seconds": 8.109500000000001e-05,
+          "function": "<built-in method builtins.all>",
+          "filename": null,
+          "first_line": null
+        },
+        {
+          "bucket": "Triton-binder-and-launcher",
+          "calls": 2,
+          "recursive": 0,
+          "self_seconds": 5.3979000000000006e-05,
+          "inclusive_seconds": 0.000459204,
+          "function": "KernelInterface.__getitem__.<locals>.<lambda>",
+          "filename": "/usr/local/lib/python3.12/site-packages/triton/spec/iluvatar/triton/runtime/jit.py",
+          "first_line": 412
+        }
+      ],
+      "postlaunch_audit_span_ns": [
+        27677,
+        22663
+      ],
+      "audit_span_overlaps_boundary": true,
+      "gc_events": [],
+      "rusage_deltas": {
+        "process": {
+          "ru_utime": 0.007888999999998703,
+          "ru_stime": 0.0,
+          "ru_minflt": 122,
+          "ru_majflt": 0,
+          "ru_nvcsw": 1,
+          "ru_nivcsw": 0
+        },
+        "thread": {
+          "ru_utime": 0.007874000000001047,
+          "ru_stime": 0.0,
+          "ru_minflt": 121,
+          "ru_majflt": 0,
+          "ru_nvcsw": 0,
+          "ru_nivcsw": 0
+        }
+      },
+      "live_descriptor_calls": {
+        "128": 2,
+        "256": 2
+      },
+      "unique_binary_profile_rows_matched": 133,
+      "JSON_function_rows": 140,
+      "binary_profile_rows": 134,
+      "profile_key_collisions": [
+        {
+          "filename": "<string>",
+          "line": 2,
+          "name": "__init__",
+          "JSON_rows": 7,
+          "binary_rows": 1,
+          "JSON_self_seconds": 5.3728000000000005e-05,
+          "retained_binary_self_seconds": 7.6e-07,
+          "individual_rows_independently_resolved": false
+        }
+      ]
+    }
+  ],
+  "candidate_only_exclusive_total_seconds": 0.0005311430000000001,
+  "candidate_only_instrumented_exclusive_seconds_per_call": 0.00026557150000000004,
+  "candidate_audit_instrumented_seconds_per_call": 2.517e-05,
+  "shared_SDK_self_seconds": [
+    0.005735315,
+    0.001745482
+  ],
+  "findings": [
+    "Shared SDK/descriptor/JIT paths shift substantially between the two instrumented arms; their difference is not an algorithm speedup.",
+    "Both arms retain two BM128 and two BM256 descriptor checks; the qualified cache did not remove live parent/Manager validation.",
+    "No GC events, thread involuntary context switches or major faults were observed in these captured windows; this says nothing conclusive about older v4 rounds.",
+    "End synchronize includes remaining GPU wait and cannot independently identify host scheduling or old discrete gaps.",
+    "The kwargs normalizer path already bypasses inspect.Signature.bind; no new argument-binding cache is indicated.",
+    "Postlaunch audit is evidence-only but remains part of this component lifecycle/charge. Do not disable it only in timed calls.",
+    "Keep runtime code/guards unchanged; move toward controlled real-service/105 diagnostics rather than more proof-cache complexity."
+  ],
+  "raw_files": 44,
+  "raw_bytes": 2708690,
+  "original_owner": {
+    "pid": 627617,
+    "start_ticks": 344253804,
+    "same_start": true,
+    "state": "Z"
+  },
+  "original_manifest_sha256": "c655e47d7b3c16357a7f42b9287c758d100e261ad7717a69ffd943699151b154",
+  "original_diagnostic_sha256": "47b8020fdbdbb4818eb52f4e98e77c76b1ef4fd545e745c4b80704c14caf3280",
+  "rejected_faults": [
+    "score",
+    "cleanup",
+    "resource",
+    "profile-metric"
+  ],
+  "opaque_cache_SO_cubin_preserved_not_loaded": true
+}
