@@ -18,6 +18,17 @@ from biv150_konly_2d128_numeric_admission import Admission
 parent=frontend.legacy
 
 
+def guarded_cpu_snapshot(buffer,torch):
+    """Read the entire allocation before selecting guard rows on the CPU.
+
+    The isolated 4d probe found GPU advanced[0,-1] incorrect without attention.
+    This keeps both original 71 guards and preserves the actual whole backing.
+    """
+    full=buffer.cpu()
+    actual.need(full.device.type=='cpu' and tuple(full.shape)==(2050,16,128),'full guarded CPU snapshot')
+    return full,torch.stack((full[0],full[2049]))
+
+
 def preflight():
     files,proof,summary=actual.original();frontend.source_bundle()
     roots={}
@@ -134,19 +145,26 @@ def run(args,payload):
             before=fingerprints();outputs={};canaries={};readonly=True;canary=True
             artifact=dict(original_CPU=cpu,actual_encoded_cache_bytes=torch.from_numpy(np.frombuffer(read_cache,dtype=np.uint8).copy()),
                           expected_encoded_sha256=actual.sha(raw),reference=reference,outputs=outputs,output_canaries=canaries,
-                          read_only_before=before,read_only_after={})
+                          read_only_before=before,read_only_after={},guarded_before={},guarded_after={},
+                          guard_readback='entire guarded.cpu(), then CPU positive rows0/2049')
             artifact_path=args.out/('pattern-'+str(pattern)+'.pt.gz')
             def dump():
                 with gzip.open(artifact_path,'wb',compresslevel=3) as gz:torch.save(artifact,gz)
             try:
                 for role in guarded:
                     guarded[role].fill_(71);current,kw,d=calls[role];current['out'].fill_(float('nan'))
+                    full_before,guard_before=guarded_cpu_snapshot(guarded[role],torch)
+                    artifact['guarded_before'][role]=full_before
+                    actual.need(bool((guard_before==71).all()),'output guard setup before attention')
                     admission.check(role+str(pattern),token)
                     actual.need(descriptors.descriptors(current)==d,'live descriptor changed')
                     launched=functions[role][p['grid']](**kw,**p['requested_options']);result['reader_launches']+=1
                     actual.need(str(launched.hash)==records[role]['hash'],'launched specialization differs')
                     torch.cuda.synchronize();outputs[role]=current['out'].cpu()
-                    canaries[role]=guarded[role][[0,-1]].cpu();canary=canary and bool((canaries[role]==71).all())
+                    full_after,canaries[role]=guarded_cpu_snapshot(guarded[role],torch)
+                    artifact['guarded_after'][role]=full_after
+                    actual.need(host_bytes(full_after[1:2049])==host_bytes(outputs[role]),'output view/full-storage CPU copies differ')
+                    canary=canary and bool((canaries[role]==71).all())
                     after=fingerprints();artifact['read_only_after'][role]=after;readonly=readonly and after==before
                     actual.need(canary and readonly,'output canary/readonly hard gate')
                 check=numeric.gates(outputs['baseline'][reference['rows']].double().reshape(-1).tolist(),
