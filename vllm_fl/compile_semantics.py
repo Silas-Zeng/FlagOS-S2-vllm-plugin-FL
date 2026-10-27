@@ -83,6 +83,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         features["VLLM_FL_BIV150_GQA_DECODE"]
         and env.get("VLLM_FL_BIV150_NATIVE_GQA", "1") == "1")
     features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] = env.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"
+    native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'
+    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8
+    if native_k8 and (not features['VLLM_FL_BIV150_KONLY_ENCODED_SERVICE'] or env.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','0')=='1'):
+        raise ValueError('NativeK8 requires only the owned16384 encoded format')
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
@@ -128,6 +132,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
                    "producer_boundary": "owned-encoded-before-stock-native",
                    "q32_hoist_enabled": env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1",
                    "implementation_sha256": _digest({path.name: _sha(path) for path in encoded_paths})}
+        if native_k8:
+            from .patches.biv150_konly_encoded_native import library_config
+            native_library = library_config(env)
+            encoded['native_decode'] = dict(enabled=True,library_sha256=native_library['sha256'],operator='cjj_native_k8_qk_probe::produce')
         facts["konly_encoded"] = encoded
     result = {"schema": 1, "sha256": _digest(facts),
               "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}

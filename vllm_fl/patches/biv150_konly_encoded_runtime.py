@@ -112,6 +112,7 @@ class Runtime:
         self.shape_records = {}; self.kernel_records = {}; self.shape_overflow = 0
         self.stats_path = None; self.final_export = None
         self.q32_hoist = None
+        self.native_decode = None; self.native_decode_identity = None
 
     @staticmethod
     def typed(value):
@@ -231,6 +232,7 @@ class Runtime:
             dynamic_I8_hoist_verified=bool(self.q32_hoist and self.q32_hoist.by_hash), all_service_shapes_verified=False,
             raw3d_enabled=self.raw3d_enabled, mixed_pair_enabled=self.mixed_pair_enabled,
             multi2_enabled=self.multi2_enabled, capacity_reclaimed=False, precision_gate=False)
+        result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()
         result['q32_hoist'] = dict(enabled=False) if self.q32_hoist is None else self.q32_hoist.stats()
         return result
 
@@ -359,6 +361,8 @@ class KernelFacade:
                 views = entry.roles['decode79']
                 selected.update(views, query_code_ptr=views['key_cache_ptr'], query_scale_ptr=views['key_scale_ptr'])
                 profile = 'decode'; target_grid = grid
+                if runtime.native_decode is not None and runtime.native_decode.try_produce(runtime,entry,selected,target_grid):
+                    return None
             else:
                 views = entry.roles['prefill80']; selected.update(views)
                 n = kwargs['num_seqs']; qrows = kwargs['query_ptr'].shape[0]
