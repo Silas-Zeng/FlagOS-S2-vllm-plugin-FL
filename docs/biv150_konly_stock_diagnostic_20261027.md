@@ -1,6 +1,6 @@
 # Stock-BF16-cache decode quantization diagnostic bridge
 
-This CPU-only private source factory is an early bridge for testing **decode quantization accuracy**, not another throughput candidate. It leaves the stock BF16 KV allocation, writer and cache contents intact. There is no service hook, dispatcher mutation, fallback change or device runner in this update. The existing ae00/f287 kernels/support/driver/gates and production files remain byte-for-byte unchanged. Team main was freshly checked by GitHub API as `56f1838192abc940b3fb9accef490022ac125000`; the simultaneous `git fetch origin main` failed to connect, so it is not reported as a successful synchronization. CLI identity is CJJ1008.
+This private source factory is an early bridge for testing **decode quantization accuracy**, not another throughput candidate. It leaves the stock BF16 KV allocation, writer and cache contents intact. There is no service hook, dispatcher mutation or fallback change. The subsequent explicit compile/numeric entry is prepared but has not been executed on device. The existing ae00/f287 kernels/support/driver/gates and production files remain byte-for-byte unchanged. Team main was freshly checked by GitHub API as `56f1838192abc940b3fb9accef490022ac125000`; the simultaneous `git fetch origin main` failed to connect, so it is not reported as a successful synchronization. CLI identity is CJJ1008.
 
 `tools/biv150_konly_stock_diagnostic_factory.py` accepts only audited GQA source SHA `2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1`. It extracts the original producer and makes a narrow reversible transform:
 
@@ -32,3 +32,20 @@ PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_stock_diagno
 ```
 
 Default source SHA is `fb28165b3426bd81fe2e4a27952da9aa98625e0ce383200878b1930df0711e7d`. CPU report is `docs/evidence/konly-i8-qk-20261027/stock-diagnostic-source-cpu-v1.json`. Device compilation/numeric, micro cost, service hook, model105, full-prefill quantization and service performance are all pending. PR79 remains Draft and no existing precision gate is relaxed.
+
+## Subsequent minimal explicit device frontier, not executed here
+
+`tools/bench_biv150_konly_stock_diagnostic.py` defaults to source/plan JSON without Torch/Triton/NumPy imports. Explicit `--compile-only` requires frozen clean HEAD, audited production/JIT/frontend bytes, a fresh output directory, correct target and idle-device/service guards. It allocates empty buffers and uses `.warmup` only: M16 codec, separate comparison encoder, actual-main BF16 producer, stock diagnostic producer, frozen packed-v2 inline producer and original reducer. It does not launch them. Pre-launch register/spill nulls remain unknown. Every successful role's original source/IR/ASM/cubin is retained before later semantic gates can reject.
+
+Explicit numerical mode first checks **M16** against all141 independent RN32→RNE vectors with scale/code bits, whole-tile canaries and unchanged source. Only a pass reaches attention. The same original input-factory seed is packed as stock BF16 cache; it is never encoded in place. A separate comparison cache is encoded and byte-checked against the complete CPU oracle. Three producers run on identical Q/table/length metadata: original BF16, stock on-load Q/K8, and existing ae00 packed-v2 inline. The latter's unused inline pointer arguments still have the correct I8/FP32 types. The original reducer and split/one-warp/four-warp policy are retained.
+
+Three controls cover original full rows, ragged/empty/tail metadata, and zero Q. Original BF16 and reconstructed-quantized FP64 references use independent CPU INT64 score arithmetic. Existing numerical gates are unchanged; original-reference failures remain `passed=false` and `precision_gate=false`. Stock-vs-packed bits are recorded, not promoted to a replacement for the original independent error gate. Actual producer IR uses each current generated source's AST sites and must preserve I8 geometry/native chains and BF16 PV C chains. Resources are recorded by phase with no equality assumption. Whole stock/encoded cache hashes, valid finite outputs, inactive poison and output canaries, Q/metadata immutability and unused-Qtemp poison are checked. A changed-Q/table/length poisoned Graph and side stream must match eager. This does **not** test append writer or changing K/V cache contents; those belong to later service validation. There is no timing entry.
+
+Root-only future serial commands (use the delivered exact HEAD and fresh output paths):
+
+```sh
+python3 tools/bench_biv150_konly_stock_diagnostic.py --compile-only --case 4k --commit FROZEN_HEAD --out FRESH_COMPILE_OUT
+python3 tools/bench_biv150_konly_stock_diagnostic.py --run-gpu --case 4k --commit FROZEN_HEAD --out FRESH_NUMERIC_OUT
+```
+
+`--case 16k` prepares the corresponding B32 case without changing the source or numerical gates. No invocation above was executed by this author. The new CPU entry report is `docs/evidence/konly-i8-qk-20261027/stock-diagnostic-entry-cpu-v1.json`. The independently archived target-service IO obligations and explicit missing implementations are in `docs/biv150_konly_service_io_review_20261027.md`.

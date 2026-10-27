@@ -113,6 +113,12 @@ def run(emit_source=None):
     tiny = [2. ** -133, -2. ** -133, -0.] + [0.] * 125
     t = tile_reference([tiny] * 8, [tiny] * 16, 16)
     assert all(v == 0 for row in t['fp32'] for v in row)
+    default_entry = json.loads(subprocess.check_output([sys.executable, str(ROOT / 'tools/bench_biv150_konly_stock_diagnostic.py')], text=True))
+    assert default_entry['cpu_only'] and default_entry['compile_entry_prepared'] and default_entry['numeric_entry_prepared']
+    assert not any(default_entry[k] for k in ('torch_imported', 'triton_imported', 'numpy_imported', 'gpu_executed', 'timing_entry_prepared'))
+    probe = ast.parse((ROOT / 'tools/kernels/biv150_konly_stock_codec_falsifier.py').read_text())
+    assert any(isinstance(n, ast.Call) and ast.unparse(n) == 'tl.arange(0, 16)' for n in ast.walk(probe))
+    assert len([n for n in ast.walk(probe) if isinstance(n, ast.Call) and ast.unparse(n.func) == 'quantize_bf16_rne']) == 1
     # Existing f287 runtime and production are immutable throughout this bridge.
     subprocess.run(['git', '-C', str(ROOT), 'diff', '--exit-code', 'f28783e', '--',
                     'vllm_fl', 'csrc', 'tools/bench_biv150_konly_decode_numeric.py',
@@ -128,6 +134,7 @@ def run(emit_source=None):
                 source_cache_unchanged=True, closed_attention_targets=closed, rejected_mutants=len(mutants) + 5,
                 v2_half_boundary_code=64, tiny_cpu_fp32_target_zero=True,
                 cpu_is_not_gpu_recurrence_or_FTZ_simulation=True, f287_runtime_and_production_unchanged=True,
+                default_entry_cpu_only=True, compile_only_and_numeric_entry_prepared=True, timing_entry_prepared=False,
                 gpu_executed=False, device_numeric_verified=False, actual_m16_codec_verified=False,
                 full_prefill_quantization_represented=False, throughput_candidate=False, service_installed=False)
 
