@@ -49,3 +49,18 @@ python3 tools/bench_biv150_konly_stock_diagnostic.py --run-gpu --case 4k --commi
 ```
 
 `--case 16k` prepares the corresponding B32 case without changing the source or numerical gates. No invocation above was executed by this author. The new CPU entry report is `docs/evidence/konly-i8-qk-20261027/stock-diagnostic-entry-cpu-v1.json`. The independently archived target-service IO obligations and explicit missing implementations are in `docs/biv150_konly_service_io_review_20261027.md`.
+
+## Root-serialized first actual compile/numeric evidence
+
+Frozen5abf full4K compile owner626501/start343854123 and numeric owner626700/start343910915 were both terminal with matching start identity. Original93 files/5,620,321B and103 files/8,054,561B are individually SHA-verified and preserved in three ≤2MiB archives. Each run excludes only two explicitly listed generated-module pycache files; original manifests and root download directories remain unchanged. Provenance is `stock-device-v1-provenance.json`; source, result/log/owner, actual IR/ASM/cubin, witnesses and compiled-cache evidence are retained. No original status is rewritten.
+
+Compile-only has six roles, `compile_passed=true`, no errors, no numerical/timing qualification and pre-launch register/spill unknowns. Actual stock/packed decoder IR independently replays in both runs. Numeric M16 passes141 vectors, all18,048 codes and141 FP32 scale bits, unchanged input and canaries. Its loaded resources are118 registers/zero spills/shared64. Stock producer loaded resources are209/0/shared4160; packed producer144/0/shared6144. Thus the stock bridge costs more registers; no throughput claim is made or measured.
+
+All three controls record stock/packed scratch/max/sum/output bitwise identical. Independent CPU replay checks every saved output bit and recomputes every metric for21 selected rows exactly, along with M16 code/scale from original BF16 source bits. Other buffers' equality remains the recorded device assertion because they are not archived as arrays. Quantized-operand implementation gates, complete readonly cache/source/canary guards, changed-Q/table/length poisoned Graph and side stream pass. Original-BF16 precision remains false, `passed=false`, full-prefill=false and timing=false. No append/changed-cache writer is tested. Saved FP64 references are SHA-verified but the absent cold cache is not independently reconstructed during this replay. This bounded result justifies preparing a separate default-off decode-only model-accuracy hook; it is not model105/full-prefill quantization or service acceptance. B1 and other service split specializations require their own micro/eager warm validation first.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_stock_evidence.py --out /tmp/stock-evidence-replay.json
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_stock_evidence.py --arrays --out /tmp/stock-evidence-arrays-replay.json
+```
+
+These are archive-only CPU replays without Torch/Triton/JIT/GPU/SSH. All original5abf runtime bytes and original numerical gates remain unchanged.
