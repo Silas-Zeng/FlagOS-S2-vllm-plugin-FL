@@ -1,0 +1,199 @@
+{
+  "schema": "cjj-stock-controller-pre-question-failures-v1",
+  "archive": {
+    "file": "controller-startup-failures-v1.tar.gz",
+    "bytes": 30391,
+    "sha256": "d6c65c0d1084bc6620998128cfa3f5986a8fe6c8f6b6bde7df2354a45d8c8796",
+    "members": 17
+  },
+  "recordings": [
+    {
+      "attempt": "v1",
+      "source_commit": "d3054a21fa2c6fe5f022e5fbeac71dbd030e2dce",
+      "owner_pid": 628586,
+      "owner_start_ticks": 344524208,
+      "original_raw_directory": "/private/tmp/cjj-stock-qk8-model105-raw-v1-20261027",
+      "original_raw_files": 6,
+      "original_raw_bytes": 17325823,
+      "original_download_manifest": {
+        "bytes": 2158,
+        "sha256": "74d38cc2e62972bf980de25853f5ce1e94480b2d491cd749f15e79b4424dd35e"
+      },
+      "retained_non_database_files": [
+        {
+          "relative": "exports/cjj-stock-qk8-model105-v1-20261027-owner.json",
+          "bytes": 1480,
+          "sha256": "3cd0e9bdeba0b1949b932ea0433a0c4a1507aaf8c111a6224ccec73ea826ae49"
+        },
+        {
+          "relative": "exports/cjj-stock-qk8-model105-v1-20261027.log",
+          "bytes": 1477,
+          "sha256": "a74507ac2b977ea5b58923d80ad22c32191dad0d2325d42a5e45eb054cbc2bf5"
+        },
+        {
+          "relative": "out/idle-before.txt",
+          "bytes": 1284,
+          "sha256": "2f05786af7b4ab1d6382d6141b915f8e81d9a9e7501079a8354744a21476e1ad"
+        },
+        {
+          "relative": "out/micro-certificate.json",
+          "bytes": 3694,
+          "sha256": "ee20e9c7879b18ee4a6e28f85878cd71677aa9b75b05566060d425580e466d8b"
+        }
+      ],
+      "omitted_private_databases": [
+        {
+          "relative": "out/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_2.db",
+          "bytes": 1605632,
+          "sha256": "5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55"
+        },
+        {
+          "relative": "out/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_6.db",
+          "bytes": 15712256,
+          "sha256": "2c5aa448065453188f1ff1794d8e929bacb63dcad84a600e086ae05165821314"
+        }
+      ],
+      "original_databases_retained_locally": true,
+      "stage": "optional_package_metadata",
+      "failure": "PackageNotFoundError: canonical triton distribution absent",
+      "service_started": false,
+      "math105_executed": false,
+      "prediction_rows": 0,
+      "actual_state": null
+    },
+    {
+      "attempt": "v2",
+      "source_commit": "2f646ec572d5c947d57a7d2170231e34c154441b",
+      "owner_pid": 628698,
+      "owner_start_ticks": 344570804,
+      "original_raw_directory": "/private/tmp/cjj-stock-qk8-model105-raw-v2-20261027",
+      "original_raw_files": 13,
+      "original_raw_bytes": 17411700,
+      "original_download_manifest": {
+        "bytes": 4187,
+        "sha256": "6e67bdd2e08efa4ba8172a2df8a4666c31f92c94922aa5c895ec1a54ce6b8fcc"
+      },
+      "retained_non_database_files": [
+        {
+          "relative": "exports/cjj-stock-qk8-model105-v2-20261027-owner.json",
+          "bytes": 1480,
+          "sha256": "2193ff945e84e2b2737bf6621bfb2afcc7fc268078bfdd778e5774156febfb16"
+        },
+        {
+          "relative": "exports/cjj-stock-qk8-model105-v2-20261027.log",
+          "bytes": 592,
+          "sha256": "735d4c2ba0b294f005c59fe51e6019c073c7e7aa2db913de9c322d2940a702d5"
+        },
+        {
+          "relative": "out/error-traceback.txt",
+          "bytes": 279,
+          "sha256": "81a8881ee11566913b4c716af8a39395dd1545fb0e1a1e1bf1cc6e12af31f088"
+        },
+        {
+          "relative": "out/idle-before.txt",
+          "bytes": 1284,
+          "sha256": "e193e2adb383d3c9535fefd54d152eacb331a5af754689861e883e0e7744d554"
+        },
+        {
+          "relative": "out/manifest.json",
+          "bytes": 37280,
+          "sha256": "851405bbcf3403ed3268c1645c04fb89743960f2975b0df4d3cd6b947a96569e"
+        },
+        {
+          "relative": "out/micro-certificate.json",
+          "bytes": 3694,
+          "sha256": "ee20e9c7879b18ee4a6e28f85878cd71677aa9b75b05566060d425580e466d8b"
+        },
+        {
+          "relative": "out/owned-cleanup.json",
+          "bytes": 643,
+          "sha256": "3bc8058995f68df3aff1331eeda1bf3550e4fb5fdfef1f95f0a5949159b3377d"
+        },
+        {
+          "relative": "out/prediction-inventory.json",
+          "bytes": 140,
+          "sha256": "43086e04f9985076e7d3b5e412e877ebeefcc9727528c86ceff70cbe9c8550af"
+        },
+        {
+          "relative": "out/server.log",
+          "bytes": 29596,
+          "sha256": "59b6dd236fe97cdc276f79babde9d7b2bfcf1c8c401eef201820f4f48c8bb364"
+        },
+        {
+          "relative": "out/state.json",
+          "bytes": 896,
+          "sha256": "d142fe07c24625c278371801b26eaea0b53d3f18a17db32abcc57b26d51ae628"
+        },
+        {
+          "relative": "out/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+          "bytes": 17928,
+          "sha256": "5a8523e462a7da8e016c9d6c1556fd90c1efec25a8ea8e5474e69545e3c73ec0"
+        }
+      ],
+      "omitted_private_databases": [
+        {
+          "relative": "out/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_2.db",
+          "bytes": 1605632,
+          "sha256": "5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55"
+        },
+        {
+          "relative": "out/flaggems-cache/config_cache/TunedConfig_iluvatar_triton_3_6.db",
+          "bytes": 15712256,
+          "sha256": "2c5aa448065453188f1ff1794d8e929bacb63dcad84a600e086ae05165821314"
+        }
+      ],
+      "original_databases_retained_locally": true,
+      "stage": "worker_engine_initialization",
+      "failure": "NameError: os is not defined in worker diagnostic tail",
+      "service_started": true,
+      "math105_executed": false,
+      "prediction_rows": 0,
+      "actual_state": {
+        "completed": false,
+        "passed": false,
+        "valid_pure_decode_diagnostic": false,
+        "precision_gate": false,
+        "diagnostic_only": true,
+        "full_prefill_precision_passed": false,
+        "encoded_cache_precision_passed": false,
+        "throughput_measured": false,
+        "cleanup_complete": true,
+        "errors": [
+          {
+            "type": "RuntimeError",
+            "message": "Owned server exited before ready"
+          }
+        ],
+        "owner": {
+          "pid": 628698,
+          "start_ticks": 344570804,
+          "ppid": 1,
+          "pgid": 628698,
+          "sid": 628698,
+          "state": "R"
+        },
+        "phase": "failed",
+        "updated_utc": "2026-10-27T10:50:05.580898+00:00",
+        "server_owner": {
+          "pid": 628712,
+          "start_ticks": 344571461,
+          "ppid": 628698,
+          "pgid": 628712,
+          "sid": 628712,
+          "state": "R"
+        },
+        "prediction_rows": {
+          "count": 0,
+          "unique_questions": 0,
+          "unique_indices": 0,
+          "failed": [],
+          "parse_errors": []
+        }
+      }
+    }
+  ],
+  "original_outputs_modified": false,
+  "gpu_executed_for_archiving": false,
+  "model105_passed": false,
+  "note": "Original private initial tuning database copies remain in root raw directories with full descriptors, not duplicated in Git. Both failures precede any Math105 question; neither is a model accuracy failure."
+}
