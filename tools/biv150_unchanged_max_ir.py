@@ -7,18 +7,74 @@ def need(condition, message):
         raise ValueError(message)
 
 
+SSA = r'%[\w.$-]+(?:#\d+)?'
+
+
+class ScopedSSA:
+    """Small conservative reader for SSA definitions in printed SCF/reduce regions."""
+    def __init__(self, lines):
+        self.lines = lines
+        self.allow_external = not any(re.search(r'\btt\.func\b', line) for line in lines)
+        self.parents, self.defs, self.scopes = {0: None}, {0: {}}, []
+        stack = [(0, -1)]
+        for number, line in enumerate(lines):
+            stripped = line.lstrip()
+            indent = len(line) - len(stripped)
+            closing = stripped.startswith('}')
+            if closing:
+                need(len(stack) > 1 and stack[-1][1] == indent, 'Unknown TTGIR region closing')
+                stack.pop()
+            scope = stack[-1][0]
+            self.scopes.append(scope)
+            match = re.match(r'\s*(%[\w.$-]+)(?::(\d+))? = (.*)', line)
+            if match:
+                name, arity, expression = match.groups()
+                need(name not in self.defs[scope], 'Duplicate SSA name inside one region')
+                self.defs[scope][name] = (number, int(arity or 1), expression)
+            if stripped.endswith('{'):
+                child = len(self.parents)
+                self.parents[child], self.defs[child] = scope, {}
+                stack.append((child, indent))
+                if 'tt.func ' in line:
+                    for name in re.findall(r'(%[\w.$-]+):', line):
+                        self.defs[child][name] = (number, 1, None)
+                # Bind loop block arguments to this region, not to another same-name region.
+                if 'iter_args(' in line:
+                    for name in re.findall(r'(%[\w.$-]+)\s*=', line.split('iter_args(', 1)[1]):
+                        self.defs[child][name] = (number, 1, None)
+            if stripped.startswith('^bb'):
+                for name in re.findall(r'(%[\w.$-]+):', line):
+                    self.defs[scope][name] = (number, 1, None)
+        need(len(stack) == 1, 'Unclosed TTGIR region')
+
+    def resolve(self, token, at):
+        base, _, component = token.partition('#')
+        selector = int(component or 0)
+        scope = self.scopes[at]
+        while scope is not None:
+            definition = self.defs[scope].get(base)
+            if definition and definition[0] <= at:
+                need(selector < definition[1], 'SSA result selector out of range')
+                return (scope, base, definition[0], selector)
+            scope = self.parents[scope]
+        # Synthetic fixtures may model external function arguments without declarations.
+        need(self.allow_external and not component, 'Unresolved TTGIR SSA value/result selector')
+        return (-1, base, -1, 0)
+
+    def operands(self, value, operation):
+        scope, name, at, _ = value
+        expression = self.defs.get(scope, {}).get(name, (0, 0, None))[2]
+        need(expression is not None and expression.startswith(operation),
+             'Unrecognized '+operation+' SSA chain for '+str(value))
+        return [self.resolve(t, at) for t in re.findall(SSA, expression.split(' : ')[0])]
+
+
 def audit_ttgir(text):
     lines = text.splitlines()
-    definitions = {m[1]: m[2] for line in lines if (m := re.match(r'\s*(%\w+) = (.*)', line))}
-
-    def operands(value, operation):
-        expression = definitions.get(value, '')
-        need(expression.startswith(operation), 'Unrecognized '+operation+' chain for '+value)
-        return re.findall(r'%\w+', expression.split(' : ')[0])
-
+    ssa = ScopedSSA(lines)
     branches = []
     for i, line in enumerate(lines):
-        match = re.search(r'(%[\w]+):2 = scf.if (%[\w]+).*tensor<8x128xf32', line)
+        match = re.search(r'(%[\w.$-]+):2 = scf.if ('+SSA+r').*tensor<8x128xf32', line)
         if not match:
             continue
         indent = len(line) - len(line.lstrip())
@@ -31,13 +87,21 @@ def audit_ttgir(text):
                     end = j
                     break
         need(split is not None and end is not None, 'Cannot recover rescale SCF branches')
-        yes, no = '\n'.join(lines[i+1:split]), '\n'.join(lines[split+1:end])
-        alpha = re.findall(r'(%\w+) = math.exp2 (%\w+)', yes)
-        scale = re.findall(r'(%\w+) = arith.mulf (%\w+), (%\w+) : tensor<8x128xf32', yes)
-        fma = re.findall(r'(%\w+) = math.fma (%\w+), (%\w+), (%\w+)', yes)
-        add = re.findall(r'(%\w+) = arith.addf (%\w+), (%\w+) : tensor<8xf32', no)
-        yes_yield = re.findall(r'scf.yield (%\w+), (%\w+) :', yes)
-        no_yield = re.findall(r'scf.yield (%\w+), (%\w+) :', no)
+
+        def matches(begin, finish, pattern):
+            found = []
+            for at in range(begin, finish):
+                m = re.search(pattern, lines[at])
+                if m:
+                    found.append(tuple(ssa.resolve(t, at) for t in m.groups()))
+            return found
+
+        alpha = matches(i+1, split, '('+SSA+r') = math.exp2 ('+SSA+')')
+        scale = matches(i+1, split, '('+SSA+r') = arith.mulf ('+SSA+'), ('+SSA+r') : tensor<8x128xf32')
+        fma = matches(i+1, split, '('+SSA+r') = math.fma ('+SSA+'), ('+SSA+'), ('+SSA+')')
+        add = matches(split+1, end, '('+SSA+r') = arith.addf ('+SSA+'), ('+SSA+r') : tensor<8xf32')
+        yes_yield = matches(i+1, split, r'scf.yield ('+SSA+'), ('+SSA+r') :')
+        no_yield = matches(split+1, end, r'scf.yield ('+SSA+'), ('+SSA+r') :')
         need(len(alpha) == len(scale) == len(fma) == len(add) == len(yes_yield) == len(no_yield) == 1,
              'Missing conditional alpha/accumulator scale/explicit FMA/skip state')
         need(fma[0][2] == alpha[0][0], 'Correction FMA does not use alpha')
@@ -45,34 +109,44 @@ def audit_ttgir(text):
         need(no_yield[0] == (add[0][0], scale[0][1]), 'Skip path changes accumulator')
         need((fma[0][1], fma[0][3]) == (add[0][1], add[0][2]),
              'Correction and skip use different L/probability sums')
-        scale_expand = operands(scale[0][2], 'tt.broadcast')[0]
-        need(operands(scale_expand, 'tt.expand_dims') == [alpha[0][0]], 'Accumulator scale is not alpha')
+        scale_expand = ssa.operands(scale[0][2], 'tt.broadcast')[0]
+        need(ssa.operands(scale_expand, 'tt.expand_dims') == [alpha[0][0]], 'Accumulator scale is not alpha')
+        yes, no = '\n'.join(lines[i+1:split]), '\n'.join(lines[split+1:end])
         need('math.exp2' not in no and 'arith.mulf' not in no and 'tt.dot' not in yes+no,
              'Unexpected skip math or duplicated PV')
-        branches.append(dict(result=match[1], begin=i+1, end=end+1,
+        branches.append(dict(result=match[1], result_ref=ssa.resolve(match[1], i), begin=i+1, end=end+1,
                              alpha_delta=alpha[0][1], probability_sum=fma[0][3]))
     need(len(branches) == 2, 'Expected full and tail conditional rescale regions')
     need(len(re.findall(r'= math.exp2 ', text)) == 4, 'Unexpected unconditional or missing exp path')
-    pv = [line for line in lines if '= tt.dot ' in line and '-> tensor<8x128xf32' in line]
+    pv = [(i,line) for i,line in enumerate(lines) if '= tt.dot ' in line and '-> tensor<8x128xf32' in line]
     qk = [line for line in lines if '= tt.dot ' in line and '-> tensor<8x16xf32' in line]
     need(len(pv) == len(qk) == 2, 'QK/PV shape/count changed')
     for branch in branches:
-        uses = [line for line in pv if re.search(r', '+re.escape(branch['result'])+r'#1,', line)]
+        result = branch['result_ref']
+        conditional_c = result[:3]+(1,)
+        uses = []
+        for at,line in pv:
+            operands = re.findall(SSA, line.split(' = tt.dot ',1)[1].split(' : ')[0])
+            if len(operands) == 3 and ssa.resolve(operands[2],at) == conditional_c:
+                uses.append((at,operands))
         need(len(uses) == 1, 'PV does not consume the conditional accumulator as C')
-        p_fragment = re.search(r'= tt.dot (%\w+),', uses[0])[1]
-        p_bf16 = operands(p_fragment, 'ttg.convert_layout')[0]
-        p_value = operands(p_bf16, 'arith.truncf')[0]
-        p_shift = operands(p_value, 'math.exp2')[0]
-        score, anchor_broadcast = operands(p_shift, 'arith.subf')
-        anchor_expand = operands(anchor_broadcast, 'tt.broadcast')[0]
-        anchor = operands(anchor_expand, 'tt.expand_dims')[0]
-        old_anchor, max_score = operands(anchor, 'arith.maxnumf')
-        need(operands(max_score, '"tt.reduce"') == [score], 'P uses a different maximum/score')
-        need(operands(branch['alpha_delta'], 'arith.subf') == [old_anchor, anchor],
+        at,operands = uses[0]
+        p_fragment = ssa.resolve(operands[0],at)
+        p_bf16 = ssa.operands(p_fragment, 'ttg.convert_layout')[0]
+        p_value = ssa.operands(p_bf16, 'arith.truncf')[0]
+        p_shift = ssa.operands(p_value, 'math.exp2')[0]
+        score, anchor_broadcast = ssa.operands(p_shift, 'arith.subf')
+        anchor_expand = ssa.operands(anchor_broadcast, 'tt.broadcast')[0]
+        anchor = ssa.operands(anchor_expand, 'tt.expand_dims')[0]
+        old_anchor, max_score = ssa.operands(anchor, 'arith.maxnumf')
+        need(ssa.operands(max_score, '"tt.reduce"') == [score], 'P uses a different maximum/score')
+        need(ssa.operands(branch['alpha_delta'], 'arith.subf') == [old_anchor, anchor],
              'Alpha does not use the original old/new anchors')
-        need(operands(branch['probability_sum'], '"tt.reduce"') == [p_value],
+        need(ssa.operands(branch['probability_sum'], '"tt.reduce"') == [p_value],
              'Denominator and PV consume different P')
-    return dict(passed=True, conditional_regions=branches, pv_c_chain=True,
+    return dict(passed=True, validator_version=2,
+                conditional_regions=[{k:v for k,v in b.items() if k != 'result_ref'} for b in branches],
+                scoped_multi_result_ssa=True, pv_c_chain=True,
                 correction_explicit_fma=True, original_p_new_max_chain=True)
 
 
@@ -162,6 +236,102 @@ def pv_debug_inventory(llir, assembly, proof):
                 accepted_sites=sorted(accepted), excluded_sites=sorted(excluded))
 
 
+def llvm_c_chains(blocks, gates, source_line, pv_sites):
+    """Trace every native C scalar through its conditional phi, not just nonzero C."""
+    definitions, owners, users = {}, {}, {}
+    for block, content in blocks.items():
+        for line in content:
+            match = re.match(r'\s*(%[\w.$-]+) = (.*)', line)
+            if not match:
+                continue
+            value, expression = match.groups()
+            definitions[value], owners[value] = expression, block
+            for operand in re.findall(r'%[\w.$-]+', expression):
+                users.setdefault(operand, []).append((value, expression))
+
+    def fargs(value, opcode, count):
+        expression = definitions.get(value, '')
+        match = re.fullmatch(opcode+r' float ('+SSA+')(?:, ('+SSA+'))?', expression.split(', !dbg')[0])
+        need(match is not None, 'Unrecognized LLVM '+opcode+' scalar')
+        result = [x for x in match.groups() if x is not None]
+        need(len(result) == count, 'Wrong LLVM scalar operand count')
+        return result
+
+    result = []
+    for _, yes, no, branch_source in gates:
+        def successor(block):
+            targets = re.findall(r'^\s*br label %([\w.$-]+)', '\n'.join(blocks[block]), re.M)
+            need(len(targets) == 1, 'Correction/skip does not have one unconditional join')
+            return targets[0]
+        join = successor(yes)
+        need(successor(no) == join, 'Correction/skip join differs')
+        alphas = [v for v,e in definitions.items() if owners[v] == yes and
+                  'call ' in e and 'ex2.approx' in e]
+        fmas = [v for v,e in definitions.items() if owners[v] == yes and
+                re.search(r'@llvm\.(?:nvvm\.)?fma[.\w]*\(', e)]
+        adds = [v for v,e in definitions.items() if owners[v] == no and e.startswith('fadd float ')]
+        need(len(alphas) == len(fmas) == len(adds) == 2, 'Missing branch-local alpha/FMA/skip adds')
+        denominator_phis = []
+        for fma, add in zip(fmas, adds):
+            expression = definitions[fma]
+            args = re.search(r'@llvm\.(?:nvvm\.)?fma[.\w]*\(float ('+SSA+'), float ('+SSA+'), float ('+SSA+r')\)', expression)
+            need(args is not None and args[2] in alphas, 'LLVM corrected denominator is not old L*alpha+Psum')
+            need(fargs(add, 'fadd', 2) == [args[1], args[3]], 'LLVM skip denominator changed L/Psum')
+            matching = [v for v,e in definitions.items() if owners[v] == join and
+                        e.startswith('phi float ') and
+                        dict((b,a) for a,b in re.findall(r'\[ ('+SSA+r'), %([\w.$-]+) \]', e)) == {yes:fma,no:add}]
+            need(len(matching) == 1, 'Missing conditional denominator phi')
+            denominator_phis.extend(matching)
+        pv_values = [v for v,e in definitions.items() if owners[v] == join and
+                     '@llvm.bi.matrix.mad.f32x4.bf16x4' in e and
+                     source_line(e) in pv_sites]
+        need(len(pv_values) == 8 and len({pv_sites[source_line(definitions[v])] for v in pv_values}) == 1,
+             'PV does not occur eight times at the common join')
+        all_phis, all_old = [], []
+        alpha_pattern = []
+        for pv in pv_values:
+            expression = definitions[pv]
+            call = re.search(r', <4 x float> ('+SSA+r')\)', expression)
+            need(call is not None, 'PV became zero-C or changed native C type')
+            packed, components = call[1], {}
+            for _ in range(4):
+                pack = re.match(r'insertelement <4 x float> (poison|'+SSA+'), float ('+SSA+r'), i\d+ ([0-3])',
+                                definitions.get(packed, ''))
+                need(pack is not None and int(pack[3]) not in components and owners[packed] == join,
+                     'PV C is not four branch-phi scalars packed at the join')
+                components[int(pack[3])] = pack[2]
+                packed = pack[1]
+            need(packed == 'poison' and set(components) == set(range(4)), 'Incomplete native PV C vector')
+            for component in range(4):
+                phi = components[component]
+                phi_expr = definitions.get(phi, '')
+                need(owners.get(phi) == join and phi_expr.startswith('phi float '), 'PV C lost conditional phi')
+                incoming = dict((b,a) for a,b in re.findall(r'\[ ('+SSA+r'), %([\w.$-]+) \]', phi_expr))
+                need(set(incoming) == {yes,no}, 'PV C has a wrong phi predecessor')
+                old, corrected = incoming[no], incoming[yes]
+                need(owners.get(corrected) == yes, 'PV C scale moved out of correction')
+                operands = fargs(corrected, 'fmul', 2)
+                need(operands[0] == old and operands[1] in alphas, 'PV C changes original acc or alpha')
+                alpha_pattern.append(operands[1])
+                all_phis.append(phi); all_old.append(old)
+            extracts = users.get(pv, [])
+            need(len(extracts) == 4, 'Native PV D result has unexpected users')
+            slots = []
+            for extracted, expression in extracts:
+                match = re.match(r'extractelement <4 x float> '+re.escape(pv)+r', i\d+ ([0-3])', expression)
+                need(match is not None, 'PV result decomposed or transformed')
+                slots.append(int(match[1]))
+                need(users.get(extracted) and all(e.startswith('phi float ') for _,e in users[extracted]),
+                     'PV output is post-added/transformed before the original recurrence phi')
+            need(sorted(slots) == list(range(4)), 'Native PV D component extraction changed')
+        need(len(set(all_phis)) == len(set(all_old)) == 32, 'Not all 32 independent C states reach eight PV groups')
+        need(alpha_pattern == alphas*16, 'Conditional C alpha row/component pattern changed')
+        result.append(dict(branch_source=branch_source, correction=yes, skip=no, join=join,
+                           c_phi_count=32, pv_groups=8, all_c_scalars_consumed_once=True,
+                           denominator_phis=denominator_phis, pv_post_add_absent=True))
+    return result
+
+
 def audit_llir(text, proof):
     locations = source_location(text)
     blocks, dom = llvm_blocks(text)
@@ -207,69 +377,160 @@ def audit_llir(text, proof):
     for key, source_key, expected in [('alpha_exp', 'alpha_exp', 2), ('accumulator_mul', 'accumulator_scale', 32),
                                        ('corrected_fma', 'running_sum_fma', 2), ('pv_mma', 'pv', 8)]:
         need(by_source[key] == {line: expected for line in mapping[source_key]}, 'Full/tail LLVM count mismatch')
-    return dict(passed=True, cfg_gates=gates, counts=counts, by_source=by_source)
+    chains = llvm_c_chains(blocks, gates, source_line, pv_sites)
+    return dict(passed=True, validator_version=2, cfg_gates=gates, counts=counts, by_source=by_source,
+                conditional_c_chains=chains)
+
+
+def asm_blocks(text):
+    """BI printed labels and explicit/fallthrough edges; .Ltmp debug labels are not blocks."""
+    blocks, order, current = {'entry': []}, ['entry'], 'entry'
+    location = (None, None)
+    for index, line in enumerate(text.splitlines()):
+        loc = re.match(r'\s*\.loc\s+(\d+)\s+(\d+)', line)
+        if loc:
+            location = tuple(map(int, loc.groups()))
+        label = re.match(r'^(BB\d+_\d+):', line)
+        if label:
+            current = label[1]
+            need(current not in blocks, 'Duplicate ASM basic block label')
+            blocks[current] = []
+            order.append(current)
+        instruction = re.match(r'\s*((?:sl|ml)_\w+)\s*(.*?)\s*$', line)
+        if instruction:
+            blocks[current].append(dict(line=index+1, file=location[0], source=location[1],
+                                        op=instruction[1], args=instruction[2]))
+    successors = {}
+    for position, block in enumerate(order):
+        content = blocks[block]
+        fallthrough = [order[position+1]] if position+1 < len(order) else []
+        last = content[-1] if content else None
+        if last and last['op'] == 'sl_jump':
+            targets = [last['args']]
+        elif last and last['op'].startswith('sl_cbr_'):
+            targets = [last['args'].split(',')[0]] + fallthrough
+        else:
+            targets = fallthrough
+        successors[block] = targets
+    need(all(target in blocks for targets in successors.values() for target in targets), 'Unknown ASM CFG target')
+    return blocks, order, successors
 
 
 def audit_asm(text, proof):
-    mapping = proof['source_lines']
-    pv_sites = pv_source_sites(proof)
-    counts = dict(alpha_exp=0, accumulator_mul=0, corrected_fma=0, pv_mma=0)
-    operations = []
-    gates = []
-    loc_file = loc_line = None
-    lines = text.splitlines()
-    for index, line in enumerate(lines):
-        location = re.match(r'\s*\.loc\s+(\d+)\s+(\d+)', line)
-        if location:
-            loc_file, loc_line = map(int, location.groups())
-        words = line.strip().split()
-        if not words or loc_file != 1:
-            continue
-        op = words[0]
-        operations.append((index, loc_line, op))
-        if loc_line in mapping['branch'] and op == 'sl_cbr_tmskaz':
-            gates.append((index, words[1].rstrip(','), loc_line))
-        if loc_line in mapping['alpha_exp'] and op == 'ml_exp_f32':
-            counts['alpha_exp'] += 1
-        if loc_line in mapping['accumulator_scale'] and op == 'ml_mul_f32':
-            counts['accumulator_mul'] += 1
-        if loc_line in mapping['running_sum_fma'] and op == 'ml_fma_f32':
-            counts['corrected_fma'] += 1
-        if loc_line in pv_sites and op == 'ml_matrix_mad_f32_bf16_m16n16k16':
-            counts['pv_mma'] += 1
+    mapping, pv_sites = proof['source_lines'], pv_source_sites(proof)
+    blocks, order, successors = asm_blocks(text)
+    all_ops = [(block, op) for block, content in blocks.items() for op in content]
+    selectors = dict(alpha_exp=('alpha_exp', 'ml_exp_f32'),
+                     accumulator_mul=('accumulator_scale', 'ml_mul_f32'),
+                     corrected_fma=('running_sum_fma', 'ml_fma_f32'),
+                     pv_mma=('pv', 'ml_matrix_mad_f32_bf16_m16n16k16'))
+
+    def selected(op, kind):
+        source_key, opcode = selectors[kind]
+        sites = pv_sites if kind == 'pv_mma' else mapping[source_key]
+        return op['file'] == 1 and op['source'] in sites and op['op'] == opcode
+
+    counts = {kind: sum(selected(op,kind) for _,op in all_ops) for kind in selectors}
     need(counts == dict(alpha_exp=4, accumulator_mul=64, corrected_fma=4, pv_mma=16),
          'Unrecognized actual ASM type/rounding/count: '+repr(counts))
+    gates = [(block,op) for block,op in all_ops if op['op'] == 'sl_cbr_tmskaz']
     need(len(gates) == 2, 'Missing actual full/tail conditional rescale branches')
-    need({g[2] for g in gates} == set(mapping['branch']), 'Missing full or tail actual ASM gate')
-    regions = []
-    for begin, target, branch_source in gates:
-        end = next((i for i in range(begin+1, len(lines)) if
-                    re.match(r'\s*sl_jump\s+\w+\s*$', lines[i])), None)
-        need(end is not None, 'Unrecognized actual rescale reconvergence')
-        join = re.match(r'\s*sl_jump\s+(\w+)', lines[end])[1]
-        if target != join:
-            skip_line = next((i for i, s in enumerate(lines) if re.match(re.escape(target)+':', s)), None)
-            join_line = next((i for i, s in enumerate(lines) if re.match(re.escape(join)+':', s)), None)
-            need(skip_line is not None and join_line is not None and end < skip_line <= join_line,
-                 'Unrecognized actual correction/skip diamond')
-            need(not any('sl_cbr_' in s for s in lines[skip_line:join_line]), 'Unknown skip-side CFG')
-            need(not any(loc in mapping['alpha_exp']+mapping['accumulator_scale']+mapping['running_sum_fma']
-                         and op.startswith(('ml_exp_', 'ml_mul_', 'ml_fma_'))
-                         for i, loc, op in operations if skip_line <= i < join_line),
-                 'Skip-side still performs rescale')
-        need(not any('sl_cbr_' in s for s in lines[begin+1:end]),
-             'Nested or unrecognized actual rescale CFG')
-        body = [(loc, op) for i, loc, op in operations if begin < i < end]
-        body_counts = dict(
-            alpha_exp=sum(loc in mapping['alpha_exp'] and op == 'ml_exp_f32' for loc, op in body),
-            accumulator_mul=sum(loc in mapping['accumulator_scale'] and op == 'ml_mul_f32' for loc, op in body),
-            corrected_fma=sum(loc in mapping['running_sum_fma'] and op == 'ml_fma_f32' for loc, op in body))
-        need(body_counts == dict(alpha_exp=2, accumulator_mul=32, corrected_fma=2),
+    regions, gate_sources, covered = [], set(), {key:set() for key in selectors}
+    for flow, gate in gates:
+        position = order.index(flow)
+        need(position >= 2 and position+1 < len(order), 'Missing ASM gate neighbors')
+        setup, skip, correction = order[position-2], order[position-1], order[position+1]
+        join = gate['args']
+        need(join in blocks and len({flow,setup,skip,correction,join}) == 5,
+             'Invalid correction/skip/common-join labels')
+        need(successors[flow] == [join, correction] and successors[skip] == [flow] and
+             successors[setup] == [skip], 'Unknown skip-side ASM CFG')
+        need(successors[correction] == [join], 'Correction branch has wrong join')
+        # Bind .loc 0 to the actual source-owned saved-mask gate, never to arbitrary .loc 0 branches.
+        flow_ops, setup_ops, skip_ops = blocks[flow], blocks[setup][-2:], blocks[skip]
+        need(len(flow_ops) == 3 and flow_ops[-1] == gate and gate['source'] == 0 and gate['file'] == 1,
+             'Unknown actual mask-flow region')
+        need(len(setup_ops) == 2 and setup_ops[0]['op'] == 'sl_and_savetmsk_b64' and
+             setup_ops[1]['op'] == 'sl_xor_b64', 'Missing source-owned conditional mask setup')
+        source = setup_ops[0]['source']
+        need(source in mapping['branch'] and all(o['file'] == 1 and o['source'] == source for o in setup_ops),
+             'Mask setup is not the original rescale source gate')
+        index = mapping['branch'].index(source)
+        need(source not in gate_sources, 'Duplicate full/tail ASM source gate')
+        gate_sources.add(source)
+        save = re.fullmatch(r'\{(s\[\d+:\d+\]), wcr\}, tcr, tmsk', setup_ops[0]['args'])
+        need(save is not None, 'Unrecognized saved skip mask')
+        mask = save[1]
+        need(setup_ops[1]['args'] == '{'+mask+', wcr}, tmsk, '+mask,
+             'Mask setup complement changed')
+        need(flow_ops[0]['op'] == 'sl_or_savetmsk_b64' and
+             flow_ops[0]['args'] == '{'+mask+', wcr}, '+mask+', tmsk', 'Wrong reconvergence mask union')
+        second = re.fullmatch(r'\{(s\[\d+:\d+\]), wcr\}, '+re.escape(mask)+r', tmsk', flow_ops[1]['args'])
+        need(flow_ops[1]['op'] == 'sl_xor_savetmsk_b64' and second is not None and second[1] != mask,
+             'Wrong correction mask complement')
+        need(all(o['file'] == 1 and o['source'] == 0 for o in flow_ops), 'Unexpected flow debug ownership')
+        joined = blocks[join]
+        need(joined and joined[0]['op'] == 'sl_or_b64' and
+             joined[0]['args'] == '{tmsk, wcr}, tmsk, '+mask,
+             'Missing matching common-join mask restore')
+        need(len(skip_ops) == 2 and all(o['op'] == 'ml_add_f32' for o in skip_ops),
+             'Skip side contains rescale or accumulator writes')
+        skip_args = [re.fullmatch(r'(v\d+), (v\d+), (v\d+)', o['args']) for o in skip_ops]
+        need(all(m and m[1] == m[2] for m in skip_args), 'Skip denominator does not retain original L')
+        body = blocks[correction]
+        # A backward explicit join and a next-block fallthrough are both valid actual layouts.
+        body_math = body[:-1] if body and body[-1]['op'] == 'sl_jump' else body
+        need(all(o['op'] in {'ml_sub_f32','ml_exp_f32','ml_mul_f32','ml_fma_f32'} for o in body_math),
+             'Nested or unrecognized correction ASM')
+        local_counts = {kind: sum(selected(o,kind) for o in body_math) for kind in
+                        ('alpha_exp','accumulator_mul','corrected_fma')}
+        need(local_counts == dict(alpha_exp=2, accumulator_mul=32, corrected_fma=2),
              'Actual rescale ops are unconditional, hoisted, or changed')
-        regions.append(dict(branch_line=begin+1, source_line=branch_source, jump_line=end+1,
-                            skip_target=target, join_target=join))
-    return dict(passed=True, counts=counts, conditional_regions=regions,
-                baseline_fma_opcode='ml_fma_f32')
+        need(sum(o['op'] == 'ml_sub_f32' for o in body_math) == 2 and len(body_math) == 38,
+             'Unexpected correction scalar operations')
+        for kind in local_counts:
+            expected_site = mapping[selectors[kind][0]][index]
+            need(all(o['source'] == expected_site for o in body_math if selected(o,kind)),
+                 'Correction owns a different full/tail rescale site')
+            covered[kind].update(o['line'] for o in body_math if selected(o,kind))
+        alpha_ops = [o for o in body_math if selected(o,'alpha_exp')]
+        alpha_args = [re.fullmatch(r'(v\d+), (v\d+)', o['args']) for o in alpha_ops]
+        need(all(m and m[1] == m[2] for m in alpha_args), 'Unrecognized actual alpha registers')
+        alphas = [m[1] for m in alpha_args]
+        fma_ops = [o for o in body_math if selected(o,'corrected_fma')]
+        for fma, add, alpha in zip(fma_ops, skip_args, alphas):
+            need(fma['args'] == ', '.join((add[1],add[2],alpha,add[3])),
+                 'Actual correction FMA/skip L/Psum operands changed')
+        pv_ops = [o for o in joined if selected(o,'pv_mma')]
+        need(len(pv_ops) == 8 and all(pv_sites[o['source']] == mapping['pv'][index] for o in pv_ops),
+             'Common join does not own the original eight PV groups')
+        c_registers = []
+        for pv in pv_ops:
+            args = re.findall(r'v\[(\d+):(\d+)\]', pv['args'])
+            need(len(args) == 4 and args[0] == args[3] and int(args[0][1])-int(args[0][0]) == 3,
+                 'Native PV changed its actual C/D register group')
+            c_registers.extend('v'+str(r) for r in range(int(args[0][0]),int(args[0][1])+1))
+        need(len(set(c_registers)) == 32, 'Not all 32 actual C registers reach eight PV groups')
+        multiply = {}
+        for o in body_math:
+            if selected(o,'accumulator_mul'):
+                m = re.fullmatch(r'(v\d+), (v\d+), (v\d+)', o['args'])
+                need(m and m[1] == m[2] and m[1] not in multiply, 'Actual acc multiply changed original C')
+                multiply[m[1]] = m[3]
+        need(set(multiply) == set(c_registers) and
+             [multiply[r] for r in c_registers] == alphas*16, 'Actual C alpha/component mapping changed')
+        covered['pv_mma'].update(o['line'] for o in pv_ops)
+        regions.append(dict(branch_line=gate['line'], source_line=source, mask=mask,
+                            setup=setup, skip=skip, flow=flow, correction=correction, join=join,
+                            correction_to_join='jump' if body[-1]['op'] == 'sl_jump' else 'fallthrough',
+                            backward_join=order.index(join) < position, c_register_count=32,
+                            pv_groups=8, counts=local_counts))
+    need(gate_sources == set(mapping['branch']), 'Missing full or tail actual ASM gate')
+    for kind in selectors:
+        need(covered[kind] == {op['line'] for _,op in all_ops if selected(op,kind)},
+             'Rescale/PV instruction is outside its conditional/common-join region')
+    return dict(passed=True, validator_version=2, counts=counts, conditional_regions=regions,
+                source_owned_mask_cfg=True, baseline_fma_opcode='ml_fma_f32')
 
 
 def audit_artifacts(artifacts, proof):

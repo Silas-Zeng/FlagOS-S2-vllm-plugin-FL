@@ -12,6 +12,8 @@ import sys
 
 from biv150_unchanged_max_factory import MAIN, NEW, SOURCE_SHA, build, pv_call_spans, restore, skip_contract
 from biv150_unchanged_max_ir import audit_artifacts, audit_ttgir, pv_debug_inventory
+from biv150_unchanged_max_mutants import run_mutants
+from biv150_unchanged_max_replay import load_v1
 
 
 def reject(function):
@@ -141,12 +143,16 @@ def main():
             ('head-count', lambda: skip_contract([0.]*7, [0.]*7))]:
         reject(action); rejects.append(label)
     fixture = structural_fixture(proof)
-    audit_artifacts(fixture, proof)
+    audit_ttgir(fixture['ttgir'])
     parameter_fixture = structural_fixture(proof, [s['argument_lines'][0] for s in proof['pv_call_spans']])
-    audit_artifacts(parameter_fixture, proof)
+    audit_ttgir(parameter_fixture['ttgir'])
+    expected = {s['start']:8 for s in proof['pv_call_spans']}
+    inventory = pv_debug_inventory(parameter_fixture['llir'],parameter_fixture['asm'],proof)
+    assert inventory['llvm_counts'] == inventory['asm_counts'] == expected
     diamond = dict(fixture, asm=fixture['asm'].replace('sl_cbr_tmskaz JOIN0', 'sl_cbr_tmskaz SKIP0').replace(
         'sl_jump JOIN0\nJOIN0:', 'sl_jump JOIN0\nSKIP0:\nml_add_f32 v0, v1, v2\nJOIN0:'))
-    audit_artifacts(diamond, proof)
+    # The old synthetic diamond lacks real saved-mask/C-phi data: never use it as a mechanism positive.
+    reject(lambda: audit_artifacts(diamond,proof))
     for label, changed in [
             ('missing-actual-ir', {}),
             ('pv-zero-c', dict(fixture, llir=fixture['llir'].replace('<4 x float> %c', '<4 x float> zeroinitializer'))),
@@ -164,6 +170,8 @@ def main():
             ('pv-outside-ast-llvm-site', dict(fixture, llir=outside_call['llir'])),
             ('pv-outside-ast-asm-site', dict(fixture, asm=outside_call['asm']))]:
         reject(lambda changed=changed: audit_artifacts(changed, proof)); rejects.append(label)
+    candidate, replay, raw = load_v1(root,proof)
+    mutants = run_mutants(candidate,proof)
     actual_negative = []
     primary_debug_regressions = []
     if args.existing_ir:
@@ -198,12 +206,13 @@ def main():
     result = dict(cpu_only=True, checks_passed=True, proof=proof, predicate_cases=predicate_cases,
                   host_ieee_bit_patterns=ieee_checked, host_not_a_gpu_simulator=True,
                   firstpage_empty_tail_source_preserved=True, rejected=rejects,
-                  structural_ir_parser_fixture_only=True, actual_ir_negative_tests=actual_negative,
+                  structural_fixture_only_for_debug_sites=True, actual_ir_negative_tests=actual_negative,
+                  validator_version=2, immutable_v1_replay=replay, actual_ir_mutants=mutants,
                   original_pv_parameter_debug_regressions=primary_debug_regressions,
-                  kernel_bytes_unchanged_from_5328aa2=True,
+                  kernel_bytes_unchanged_from_5328aa2=True, kernel_bytes_unchanged_from_8e6855f=True,
                   default_cli_no_gpu_import=True, tiny_device_primitive_pending=True,
                   gpu_executed=False, queued=False, precision_gate=False,
-                  limitation='Source, predicate, and IEEE targets only; actual CFG/FMA/PV/FTZ/exactness/resources/performance unverified.')
+                  limitation='CPU source/IEEE and v1 actual-IR replay only. Old run remains parser-rejected; full GQA bitwise/numeric tests, B32, performance and model acceptance remain unverified.')
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(result, indent=2)+'\n')

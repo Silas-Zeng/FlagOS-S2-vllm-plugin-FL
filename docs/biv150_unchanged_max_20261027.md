@@ -35,8 +35,9 @@ PYTHONDONTWRITEBYTECODE=1 python3 tools/bench_biv150_unchanged_max.py
 CPU合同覆盖46个八head状态（首page、单head更新、旧/新NaN、Inf、signed0/subnormal），
 另有4090个host IEEE乘1位模式。该host例不是GPU模拟器。精确逆回原kernel字节及
 参数表，full/tail/empty早退原文保留；默认CLI子进程证明未导入GPU SDK。
-IR parser只用结构性合成fixture验证其拒绝规则，并对本地原baseline/PR71实际
-TTGIR做负例；**没有真实新candidate正例**。不能因parser单测通过声称设备机制通过。
+初版8e6855f的IR parser只用结构性合成fixture，并对原baseline/PR71实际TTGIR做负例。
+下述validator v2新增已下载的真实candidate原件静态正例；旧run结果仍是parser拒绝，
+不能把事后CPU审查写成原运行已经通过数值或性能门。
 
 未来只有root明确排期后才使用`--gpu --source FROZEN_TREE --commit FROZEN_HEAD
 --out FRESH_DIRECTORY`。入口首先验证空闲状态、冻结源码/JIT SHA及vllm_fl/csrc字节。
@@ -78,3 +79,60 @@ CPU新增真实baseline LLIR+ASM位点回归：各识别16条PV MMA（full/tail�
 明确排除16条QK MMA。另有参数行合成parser正例、错误QK和范围外下一行的LLVM/ASM
 拒绝，共16个拒绝检查。此定位回归不把原baseline认作条件rescale候选，也不是新
 candidate设备正例；原baseline/PR71完整机制负例仍保持拒绝。
+
+
+## Validator v2：原始产物的 CPU replay
+
+本次只修复审计和CPU检查；factory与benchmark逐字不变，生成kernel仍为
+`225c9cc1be483f7cee32eb8c61b87f97f238ea740ee1348c4f5a4023adf35313`。
+提交前本次fetch origin main成功，CJJ1008 CLI亦核对团队main为56f1838，GQA仍为2596cc。
+源码工厂继续固定原2412同一GQA；本次没有同步上游SDK或改生产代码。
+
+首次真实运行的source是8e6855f。identity primitive保留真实exp/mul且signed-zero、
+subnormal、normal的逐位恒等门已过；B64 baseline/candidate均首次launch并记录
+post-launch 93regs/0spill/8192shared。随后TTGIR解析器抛出
+`Missing conditional alpha/accumulator scale/explicit FMA/skip state`，尚未进行完整GQA
+数值门或计时，B32未运行。**原passed=false和timing_attempted=false保持原字节**；
+这不是数值或吞吐负例，也不是完整组件通过。
+
+原26文件925773B（含2份仅作不透明字节保存、不会执行的pyc）和下载manifest保存在
+`docs/evidence/gqa-unchanged-max-20261027/v1-raw.tar.gz`，压缩134547B，SHA
+`18aa36f0973c3a678a0617b185df6fbc2de837373a1937b8cbe5eaaae30519b5`。
+CPU replay仅在内存读tar成员，逐个核对文件大小/SHA；不会解包、导入Python或加载cubin。
+历史result SHA为`cae41baa9391b04eb616ee1f88ca6a25b2b885e72274bb0f94314c8aba50a2ef`，
+log SHA为`d57b608d60357f509a0574bb9354911f71e70a6d06ca59d7b509d68985366b50`。
+附带原PR71 threshold8 TTGIR负例（SHA见v1-provenance.json），原无条件baseline与它
+都必须拒绝；不会重开71或把它当作本实现的设备正例。
+
+v2是针对这些实际lowering格式的保守识别器，并非通用MLIR/LLVM/BI ISA验证器：
+
+- TTGIR按SCF/reduce词法region解析SSA，保留多结果#idx。full/tail中的同名
+  `%rescale`、`%probability_sum`、`%new_max`不再相互覆盖。原full区域227–238与
+  tail318–329各保留校正FMA/acc乘alpha、skip加Psum及不改C；PV242/333分别消费
+  `%12#1`和`%running_sum#1`。P/new_max/BF16P链和相同Psum门继续检查。
+- LLVM仍要求两个动态gate及4alpha/64acc-mul/4FMA/16PV计数和校正支配关系。
+  另按实际SSA逐个追踪full join613和tail join1321：每处32个C phi的skip输入是
+  原C、correct输入是同一C乘该行alpha，完整装入8个原生PV C向量；没有删去任何
+  native M16分量。两个denominator phi连接同一L/Psum的FMA与skip-add，PV输出
+  不能再post-add到C。这里不推断opaque MMA内部的C→D跨lane ABI。
+- ASM按真实BB label和taken/fallthrough边恢复控制流，将`.loc 0`的branch绑定到
+  `.loc 97/136`的原saved-mask设置和配对restore。full gate838经BB0_7显式跳回
+  较早的BB0_3；tail gate1624经BB0_72自然fallthrough到BB0_73。各校正区仍须
+  2exp/32原C乘法/2原`ml_fma_f32`，skip仅两条原L+Psum，join包含8组C/D相同的PV。
+  缺mask、错误join、nested CFG、投机/hoist或未知形式仍拒绝；不会无条件放行loc0。
+
+CPU保留46个predicate、4090个host IEEE目标及既有16个拒绝检查；synthetic fixture
+只用于源码/位点回归，不再把其缺失实际mask/C-phi的数据当机制正例。实际原件新增
+35个单点mutant拒绝（9 TTGIR、11 LLVM、15 ASM），覆盖漏门、#idx/old-anchor混淆、
+wrong join、tail错误fallthrough、alpha出分支、FMA缺失、skip改C、重复/错alpha缩放、
+zero-C、PV post-add、mask restore/complement以及QK/相邻错误debug站点。
+新静态报告在`validator-v2-cpu.json`，与旧cpu.json/result/log分开。
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_unchanged_max_cpu.py \
+  --out NEW_VALIDATOR_V2_JSON
+```
+
+该命令stdlib-only、无SSH/JIT/GPU。设备仍须从新validator tag重跑完整组件的bitwise、
+CPU FP64 reference、poison、changed-input Graph/side与producer+reducer成本门；
+原数值门、输入/seed、资源未知标记和正式full105/吞吐/TTFT要求均不变。

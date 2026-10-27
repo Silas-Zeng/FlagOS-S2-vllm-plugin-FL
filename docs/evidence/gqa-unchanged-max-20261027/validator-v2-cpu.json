@@ -1,0 +1,572 @@
+{
+  "cpu_only": true,
+  "checks_passed": true,
+  "proof": {
+    "main": "241220723a09061c182764f8f738e5ec01190367",
+    "source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+    "kernel_sha256": "b505e712ea21e10563ffb4a14f01a13a9c77fa32308095a80ebbc417b96e69ce",
+    "generated_sha256": "225c9cc1be483f7cee32eb8c61b87f97f238ea740ee1348c4f5a4023adf35313",
+    "exact_source_inverse": true,
+    "same_raw_parameter_schema": true,
+    "source_lines": {
+      "alpha_exp": [
+        98,
+        137
+      ],
+      "probability_exp": [
+        93,
+        132
+      ],
+      "running_sum_fma": [
+        99,
+        138
+      ],
+      "pv": [
+        103,
+        142
+      ],
+      "accumulator_scale": [
+        100,
+        139
+      ],
+      "branch": [
+        97,
+        136
+      ],
+      "qk": [
+        91,
+        129
+      ]
+    },
+    "pv_call_spans": [
+      {
+        "start": 103,
+        "end": 105,
+        "argument_lines": [
+          104
+        ],
+        "call_ast_sha256": "5641748cb1b335d8481569f85b4c2d4008e9353683d78c45315397c6a163927a"
+      },
+      {
+        "start": 142,
+        "end": 144,
+        "argument_lines": [
+          143
+        ],
+        "call_ast_sha256": "5641748cb1b335d8481569f85b4c2d4008e9353683d78c45315397c6a163927a"
+      }
+    ],
+    "original_new_max_probability_and_pv_dot_preserved": true,
+    "corrected_sum_explicit_fma": true,
+    "actual_ir_guard_pending": true,
+    "ieee_identity_target_only": true,
+    "device_bitwise_equivalence_proven": false,
+    "ftz_subnormal_and_signed_zero_device_falsifier_pending": true,
+    "gpu_executed": false,
+    "production_installed": false,
+    "precision_gate": false
+  },
+  "predicate_cases": 46,
+  "host_ieee_bit_patterns": 4090,
+  "host_not_a_gpu_simulator": true,
+  "firstpage_empty_tail_source_preserved": true,
+  "rejected": [
+    "module-sha",
+    "nonrecurrence-edit",
+    "fma-removed",
+    "one-transform-missing",
+    "head-count",
+    "missing-actual-ir",
+    "pv-zero-c",
+    "wrong-fma-opcode",
+    "asm-no-rescale-branch",
+    "pv-c-not-phi",
+    "changed-p-anchor",
+    "unconditional-alpha",
+    "pv-qk-llvm-site",
+    "pv-qk-asm-site",
+    "pv-outside-ast-llvm-site",
+    "pv-outside-ast-asm-site"
+  ],
+  "structural_fixture_only_for_debug_sites": true,
+  "actual_ir_negative_tests": [],
+  "validator_version": 2,
+  "immutable_v1_replay": {
+    "validator_version": 2,
+    "cpu_ir_replay_passed": true,
+    "raw_run_source_commit": "8e6855fd47b7506e575888cf84bb8853880e6e44",
+    "raw_files_sha256_verified": 26,
+    "raw_bytes_verified": 925773,
+    "archive": {
+      "path": "v1-raw.tar.gz",
+      "bytes": 134547,
+      "sha256": "18aa36f0973c3a678a0617b185df6fbc2de837373a1937b8cbe5eaaae30519b5"
+    },
+    "historic_result_unchanged": true,
+    "historic_passed": false,
+    "historic_timing_attempted": false,
+    "actual_ir_review": {
+      "ttgir": {
+        "passed": true,
+        "validator_version": 2,
+        "conditional_regions": [
+          {
+            "result": "%12",
+            "begin": 227,
+            "end": 238,
+            "alpha_delta": [
+              8,
+              "%rescale",
+              227,
+              0
+            ],
+            "probability_sum": [
+              4,
+              "%probability_sum",
+              210,
+              0
+            ]
+          },
+          {
+            "result": "%running_sum",
+            "begin": 318,
+            "end": 329,
+            "alpha_delta": [
+              14,
+              "%rescale",
+              318,
+              0
+            ],
+            "probability_sum": [
+              10,
+              "%probability_sum",
+              301,
+              0
+            ]
+          }
+        ],
+        "scoped_multi_result_ssa": true,
+        "pv_c_chain": true,
+        "correction_explicit_fma": true,
+        "original_p_new_max_chain": true
+      },
+      "llir": {
+        "passed": true,
+        "validator_version": 2,
+        "cfg_gates": [
+          [
+            "248",
+            "571",
+            "610",
+            97
+          ],
+          [
+            "1098",
+            "1279",
+            "1318",
+            136
+          ]
+        ],
+        "counts": {
+          "alpha_exp": 4,
+          "accumulator_mul": 64,
+          "corrected_fma": 4,
+          "pv_mma": 16
+        },
+        "by_source": {
+          "alpha_exp": {
+            "98": 2,
+            "137": 2
+          },
+          "accumulator_mul": {
+            "100": 32,
+            "139": 32
+          },
+          "corrected_fma": {
+            "99": 2,
+            "138": 2
+          },
+          "pv_mma": {
+            "103": 8,
+            "142": 8
+          }
+        },
+        "conditional_c_chains": [
+          {
+            "branch_source": 97,
+            "correction": "571",
+            "skip": "610",
+            "join": "613",
+            "c_phi_count": 32,
+            "pv_groups": 8,
+            "all_c_scalars_consumed_once": true,
+            "denominator_phis": [
+              "%.pn73",
+              "%.pn71"
+            ],
+            "pv_post_add_absent": true
+          },
+          {
+            "branch_source": 136,
+            "correction": "1279",
+            "skip": "1318",
+            "join": "1321",
+            "c_phi_count": 32,
+            "pv_groups": 8,
+            "all_c_scalars_consumed_once": true,
+            "denominator_phis": [
+              "%.pn67",
+              "%.pn65"
+            ],
+            "pv_post_add_absent": true
+          }
+        ]
+      },
+      "asm": {
+        "passed": true,
+        "validator_version": 2,
+        "counts": {
+          "alpha_exp": 4,
+          "accumulator_mul": 64,
+          "corrected_fma": 4,
+          "pv_mma": 16
+        },
+        "conditional_regions": [
+          {
+            "branch_line": 838,
+            "source_line": 97,
+            "mask": "s[12:13]",
+            "setup": "BB0_4",
+            "skip": "BB0_5",
+            "flow": "BB0_6",
+            "correction": "BB0_7",
+            "join": "BB0_3",
+            "correction_to_join": "jump",
+            "backward_join": true,
+            "c_register_count": 32,
+            "pv_groups": 8,
+            "counts": {
+              "alpha_exp": 2,
+              "accumulator_mul": 32,
+              "corrected_fma": 2
+            }
+          },
+          {
+            "branch_line": 1624,
+            "source_line": 136,
+            "mask": "s[2:3]",
+            "setup": "BB0_69",
+            "skip": "BB0_70",
+            "flow": "BB0_71",
+            "correction": "BB0_72",
+            "join": "BB0_73",
+            "correction_to_join": "fallthrough",
+            "backward_join": false,
+            "c_register_count": 32,
+            "pv_groups": 8,
+            "counts": {
+              "alpha_exp": 2,
+              "accumulator_mul": 32,
+              "corrected_fma": 2
+            }
+          }
+        ],
+        "source_owned_mask_cfg": true,
+        "baseline_fma_opcode": "ml_fma_f32"
+      },
+      "passed": true
+    },
+    "old_ir_negative_labels": [
+      "v1-unconditional-baseline",
+      "pr71-threshold8"
+    ],
+    "historic_identity_primitive_passed": true,
+    "full_gqa_numeric_checks_reached": false,
+    "historic_post_launch_resources": {
+      "baseline": {
+        "phase": "post_launch",
+        "hash": "641478e6ddcd3d9c11192fbd0c6d4d472bf8ad3e3bb2fd9fa27b09f18e4dc9ff",
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      },
+      "candidate": {
+        "phase": "post_launch",
+        "hash": "a7460b4ec8623e04baedda661f87fe34301b5b4a3393fed4e1818271a8592fa5",
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 14,
+          "warp_size": 64
+        }
+      }
+    },
+    "gpu_numeric_acceptance": false,
+    "performance_acceptance": false
+  },
+  "actual_ir_mutants": [
+    {
+      "stage": "ttgir",
+      "label": "missing-gate",
+      "rejected": true,
+      "reason": "Expected full and tail conditional rescale regions",
+      "mutant_sha256": "7d63db0984c4e487bc7a0e4b440c3c47788ea387ae21e325138da73a63910523"
+    },
+    {
+      "stage": "ttgir",
+      "label": "wrong-full-result-selector",
+      "rejected": true,
+      "reason": "PV does not consume the conditional accumulator as C",
+      "mutant_sha256": "2307bd4f383f3cf6b9020e79b98b87bf24b900272701a9b3608770093e4553f4"
+    },
+    {
+      "stage": "ttgir",
+      "label": "wrong-tail-result-selector",
+      "rejected": true,
+      "reason": "PV does not consume the conditional accumulator as C",
+      "mutant_sha256": "62374c539a036d432051896c0914621393c1868fb70d515adadd2952eac8dbbc"
+    },
+    {
+      "stage": "ttgir",
+      "label": "wrong-tail-old-anchor-selector",
+      "rejected": true,
+      "reason": "Alpha does not use the original old/new anchors",
+      "mutant_sha256": "5e54226dee32d5ce898e6ce0dfd949866f5b69f06ae0bee1fd3cc8c7a7d83976"
+    },
+    {
+      "stage": "ttgir",
+      "label": "fma-missing",
+      "rejected": true,
+      "reason": "Missing conditional alpha/accumulator scale/explicit FMA/skip state",
+      "mutant_sha256": "11267756f6cc5c672a753ef19e9411c7c535581edf2d7687cebfeffd9f4ad8ea"
+    },
+    {
+      "stage": "ttgir",
+      "label": "p-newmax-changed",
+      "rejected": true,
+      "reason": "Unrecognized arith.maxnumf SSA chain for (4, '%new_max_125', 205, 0)",
+      "mutant_sha256": "104384458f2f92141f1e71dc270a9d9a23eb31c7d9349fe25113808cf940ea09"
+    },
+    {
+      "stage": "ttgir",
+      "label": "skip-changes-c",
+      "rejected": true,
+      "reason": "Unresolved TTGIR SSA value/result selector",
+      "mutant_sha256": "811e2ec421c0cbc1a45539bc7516156997f1cfb36ebc9ebd5501a5397c07262c"
+    },
+    {
+      "stage": "ttgir",
+      "label": "sum-and-pv-use-different-p",
+      "rejected": true,
+      "reason": "Denominator and PV consume different P",
+      "mutant_sha256": "9b50df48d90e423e722fc2ea1f1cab21604a57e21443f83f843fad5f414e55c2"
+    },
+    {
+      "stage": "ttgir",
+      "label": "alpha-outside-branch",
+      "rejected": true,
+      "reason": "Missing conditional alpha/accumulator scale/explicit FMA/skip state",
+      "mutant_sha256": "9b61c5e58dab4a095eb9118f3b624c2cffcf87c472bb48f627bd2fcf24a940de"
+    },
+    {
+      "stage": "llir",
+      "label": "missing-gate",
+      "rejected": true,
+      "reason": "Missing dynamic full/tail rescale CFG gates",
+      "mutant_sha256": "1fb264852030567ef77e21dabc4919d6cde95a770b65471f2ae32e9fd20e84e1"
+    },
+    {
+      "stage": "llir",
+      "label": "wrong-join",
+      "rejected": true,
+      "reason": "Correction/skip join differs",
+      "mutant_sha256": "f8c09cb2cf1854741de786e5e1f941da4522caf80e39c19175b94d57f36ef417"
+    },
+    {
+      "stage": "llir",
+      "label": "fma-missing",
+      "rejected": true,
+      "reason": "Unrecognized LLVM rescale/PV instruction counts: {'alpha_exp': 4, 'accumulator_mul': 64, 'corrected_fma': 3, 'pv_mma': 16}",
+      "mutant_sha256": "e5e7f4ebcadf4c8aed82b503bc9191b19d4a967a65d69998d86246ebdc49beeb"
+    },
+    {
+      "stage": "llir",
+      "label": "wrong-c-phi-old-state",
+      "rejected": true,
+      "reason": "PV C changes original acc or alpha",
+      "mutant_sha256": "d329d742af24c34c5307ee18c9bec02a0c13a26eb2f4de62127ae29fd11d734d"
+    },
+    {
+      "stage": "llir",
+      "label": "wrong-c-alpha-component",
+      "rejected": true,
+      "reason": "Conditional C alpha row/component pattern changed",
+      "mutant_sha256": "68dfc9190d701569b9bf39bfd9c2ed06871c4eae1d97b85e0c949d7a385d9b86"
+    },
+    {
+      "stage": "llir",
+      "label": "skip-denominator-changed",
+      "rejected": true,
+      "reason": "LLVM skip denominator changed L/Psum",
+      "mutant_sha256": "4da86547a7989396eb8ea70ac4783fdcaee4b01f4e9b9022540c89630c2b917c"
+    },
+    {
+      "stage": "llir",
+      "label": "alpha-outside-branch",
+      "rejected": true,
+      "reason": "Rescale operation hoisted outside the correction branch",
+      "mutant_sha256": "94138589a67173905b5663649b375d75b74c0944d657456079e55cb7d059f9dd"
+    },
+    {
+      "stage": "llir",
+      "label": "pv-zero-c",
+      "rejected": true,
+      "reason": "PV became a zero-C dot",
+      "mutant_sha256": "c7c1383d356e47b8f2cd932bfdefa9e9b3f5dc8e3c8c4d5a574db70a6e4d24cb"
+    },
+    {
+      "stage": "llir",
+      "label": "pv-post-add",
+      "rejected": true,
+      "reason": "PV output is post-added/transformed before the original recurrence phi",
+      "mutant_sha256": "3c31288ed4041af8eaf8699ed3b0983f9086ed718d84f830e9877ac21656320e"
+    },
+    {
+      "stage": "llir",
+      "label": "qk-debug-site",
+      "rejected": true,
+      "reason": "Unrecognized LLVM rescale/PV instruction counts: {'alpha_exp': 4, 'accumulator_mul': 64, 'corrected_fma': 4, 'pv_mma': 0}",
+      "mutant_sha256": "6d5f539d4f7e8a57f25c76e039cb669ef6abc827b507986163fd97a2b14a7abf"
+    },
+    {
+      "stage": "llir",
+      "label": "outside-pv-call-site",
+      "rejected": true,
+      "reason": "Unrecognized LLVM rescale/PV instruction counts: {'alpha_exp': 4, 'accumulator_mul': 64, 'corrected_fma': 4, 'pv_mma': 0}",
+      "mutant_sha256": "916e36033f46d759b9bbfc45d7445bba99a7228d25b4138dc39376c2d016ab25"
+    },
+    {
+      "stage": "asm",
+      "label": "missing-gate",
+      "rejected": true,
+      "reason": "Missing actual full/tail conditional rescale branches",
+      "mutant_sha256": "6d8cafd81703a31d939f88bd50de2bcb4d353a57fddfd9cc6a0ee84d87d36cc4"
+    },
+    {
+      "stage": "asm",
+      "label": "wrong-backward-join",
+      "rejected": true,
+      "reason": "Correction branch has wrong join",
+      "mutant_sha256": "1c1492c7d2217459026b4f61259adf75eae0f9972a6da8ded0b930906165c485"
+    },
+    {
+      "stage": "asm",
+      "label": "wrong-tail-fallthrough",
+      "rejected": true,
+      "reason": "Correction branch has wrong join",
+      "mutant_sha256": "6a41ef3b3f7665dd529d252adf5366b8af4a67d8c5347a6ce946b669555cbab3"
+    },
+    {
+      "stage": "asm",
+      "label": "fma-missing",
+      "rejected": true,
+      "reason": "Unrecognized actual ASM type/rounding/count: {'alpha_exp': 4, 'accumulator_mul': 64, 'corrected_fma': 3, 'pv_mma': 16}",
+      "mutant_sha256": "b9d5b48067f4d7f23aa2b8ccfc00ca537624322872fd66cfb76b5619a64157f3"
+    },
+    {
+      "stage": "asm",
+      "label": "duplicate-c-scale",
+      "rejected": true,
+      "reason": "Actual acc multiply changed original C",
+      "mutant_sha256": "509412e81f7cc86aafe00ba8dfa357bf73f3f71e81c057d5ae005a2dbde12e2b"
+    },
+    {
+      "stage": "asm",
+      "label": "wrong-c-alpha-component",
+      "rejected": true,
+      "reason": "Actual C alpha/component mapping changed",
+      "mutant_sha256": "e5e230c631fc8d9fb45274bdccda5ba7972949eb4b7d61a7b56ec1ededd49561"
+    },
+    {
+      "stage": "asm",
+      "label": "missing-mask-restore",
+      "rejected": true,
+      "reason": "Missing matching common-join mask restore",
+      "mutant_sha256": "9365e3056e9aeeee253e3e3dc4357f149aa48e234ccf2dfb907b81a82a65ff4a"
+    },
+    {
+      "stage": "asm",
+      "label": "wrong-mask-complement",
+      "rejected": true,
+      "reason": "Wrong correction mask complement",
+      "mutant_sha256": "cb146b2106108539d996df43a0b55283a1ea89a84665ec9fffd2e20c7e1311d8"
+    },
+    {
+      "stage": "asm",
+      "label": "unbound-loc0-gate",
+      "rejected": true,
+      "reason": "Mask setup is not the original rescale source gate",
+      "mutant_sha256": "785ac64ec69b11e578e07fa2590dcefa525e8ad289e2721e17f495fbb299468b"
+    },
+    {
+      "stage": "asm",
+      "label": "skip-changes-c",
+      "rejected": true,
+      "reason": "Skip side contains rescale or accumulator writes",
+      "mutant_sha256": "f9343a1b12e294f9b119cf690a48d5982e277d26a2a618496ce7662c898739d4"
+    },
+    {
+      "stage": "asm",
+      "label": "nested-correction-branch",
+      "rejected": true,
+      "reason": "Missing actual full/tail conditional rescale branches",
+      "mutant_sha256": "d26b31d363445552a65b9a4bb3813fac40a4d9056f7394bb36ab69cadfee733e"
+    },
+    {
+      "stage": "asm",
+      "label": "alpha-outside-branch",
+      "rejected": true,
+      "reason": "Actual rescale ops are unconditional, hoisted, or changed",
+      "mutant_sha256": "76a6e402d3e1d1d5ed1428adfd7fb1e63709dfb93cd2a07c1e55c47e2e689cd9"
+    },
+    {
+      "stage": "asm",
+      "label": "pv-c-register-changed",
+      "rejected": true,
+      "reason": "Native PV changed its actual C/D register group",
+      "mutant_sha256": "d69c184c35cfe6d76b88250e88371f30c5de0f01e1c714755a681c525c5fd270"
+    },
+    {
+      "stage": "asm",
+      "label": "qk-debug-site",
+      "rejected": true,
+      "reason": "Unrecognized actual ASM type/rounding/count: {'alpha_exp': 4, 'accumulator_mul': 64, 'corrected_fma': 4, 'pv_mma': 0}",
+      "mutant_sha256": "000960f48385a049b4f7e97bc272e39cad1cdd2c554a74a4ba4cb9a0ceb6ab6c"
+    },
+    {
+      "stage": "asm",
+      "label": "outside-pv-call-site",
+      "rejected": true,
+      "reason": "Unrecognized actual ASM type/rounding/count: {'alpha_exp': 4, 'accumulator_mul': 64, 'corrected_fma': 4, 'pv_mma': 0}",
+      "mutant_sha256": "5a4d8ab91109d93cbcd607b66e5a64f8768d2e7e3e75d7d07b50604aa5ca700a"
+    }
+  ],
+  "original_pv_parameter_debug_regressions": [],
+  "kernel_bytes_unchanged_from_5328aa2": true,
+  "kernel_bytes_unchanged_from_8e6855f": true,
+  "default_cli_no_gpu_import": true,
+  "tiny_device_primitive_pending": true,
+  "gpu_executed": false,
+  "queued": false,
+  "precision_gate": false,
+  "limitation": "CPU source/IEEE and v1 actual-IR replay only. Old run remains parser-rejected; full GQA bitwise/numeric tests, B32, performance and model acceptance remain unverified."
+}
