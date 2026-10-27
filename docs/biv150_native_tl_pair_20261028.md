@@ -21,4 +21,35 @@ bit exact; cross-arm bit equality is recorded, while both must independently
 pass original.005+.005|reference| pointwise and.005RRMSE gates. Initial BF16 pack
 copy cost is separate; no model/TTFT/service gain is inferred.
 
-Initial Draft currently contains a CPU-only contract; device runner is pending.
+The explicit device runner is now prepared. Default execution and the CPU checker
+import only stdlib. Device entry requires exact clean commit, fixed aace library
+SHA, unchanged b3 production source,9031 closed and low GPU memory; the namespace
+process table alone never establishes exclusivity. Root still owns scheduling.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_native_tl_pair_cpu.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/bench_biv150_native_tl_pair.py
+python3 tools/bench_biv150_native_tl_pair.py --run-device --commit FROZEN_HEAD \
+  --library /workspace/experiments/minicpm-s2/cjj-main-b3-native-gqa-build-v1-20261028/corex_native_gqa_s2_probe.so \
+  --out NEW_ABSOLUTE_OUT
+```
+
+Without --case it executes both exact cases, two numeric controls each (dense and
+ragged/empty/page tails), then one dense ABBA per case. It preserves full output
+and partial bits, FP64 references, q/newKV/table/slots in compressed NPZ, actual
+Triton source/IR/ASM/cubin/typed ABI and native source/SO/descriptor identities.
+Half-GB caches are represented by deterministic CPU seed, complete SHA and append
+oracle instead of archived full copies. The CPU input generator is explicitly
+Torch CPU BF16 with seed20261023+B+length and its actual version recorded; this
+fixed larger arena replaces old small active-only fixtures, so old timings are
+not paired observations. Source/destination initialization is separate.
+
+Timing captures the complete same BF16 append+producer+original reducer4 into
+resident CUDAGraphs (unroll8), checks full Graph/eager bits, warms each128replays,
+then records a single Native/TL/TL/Native sequence of64replays each. Both GPU event
+cost and Graph host-launch/synchronization wall cost are reported. Python normal
+producer dispatch is outside this captured operator timing. This cannot explain
+all model/CPU/SQLite/JIT/cache effects. Initial GPU pack-copy is separate; host
+random generation/H2D/reference/validation are setup, not a free service encoder.
+No new timing or numeric result exists until Root executes this frozen source.
+
