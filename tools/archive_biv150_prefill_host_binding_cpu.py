@@ -18,6 +18,13 @@ SOURCE='e684ff8e190822771080d5205c262064d58bf900'
 MAIN='56f1838192abc940b3fb9accef490022ac125000'
 MANIFEST='96fdfc661dd71802c56baff09a33b3f925affdaa2f36458b4b69f5121212f9f4'
 RESULT='64bb5bde325aacd32853818e5a1a178990bca4becdf354337bab277ffc6a185b'
+RUNS={
+    'e684':dict(source=SOURCE,manifest=MANIFEST,result=RESULT,raw_bytes=5902115,
+        owner=dict(pid=624624,start_ticks=342942814,same_start=True,state='Z'),archive='v2-raw.tar.gz'),
+    '5967':dict(source='5967d49c7e4ef7b19ddf5b3344fb7ff1db9bf30d',
+        manifest='34a60e221851ad96372f43bc568476a067e49e5d3d397e70983c37c03efcdb42',
+        result='99f18a8abd926680221a8f32013f3ba65795e56f8843dca875e738d07740e417',raw_bytes=5912292,
+        owner=dict(pid=626303,start_ticks=343560965,same_start=True,state='Z'),archive='v4-raw.tar.gz')}
 
 
 def need(ok,message):
@@ -38,8 +45,8 @@ def reference(record):
     need(record['new_or_worsened_violations']==0,'New oracle violation')
 
 
-def audit(r,files):
-    need(r['source_commit']==SOURCE and r['production_parent']==MAIN,'Wrong source')
+def audit(r,files,source=SOURCE):
+    need(r['source_commit']==source and r['production_parent']==MAIN,'Wrong source')
     need(r['completed']is True and r['requested_component_gates_passed']is True and r['errors']==[],'Component incomplete')
     need(r['full_numerical_matrix_verified']is False,'Two requested cases are not full matrix')
     need(r['component_only']is True and all(r[k]is False for k in('official_score','model_precision_gate','service_installed','timing_is_service_throughput')),'Wrong formal scope')
@@ -98,29 +105,39 @@ def audit(r,files):
         for record in manager['compile_records']:
             if record.get('mode')!='selected':continue
             proof=record['mechanism'];need(proof['mechanism_pass']and proof['llvm_q_memory_reads_in_loop']==0 and proof['llvm_q_memory_reads_total']==32,'Manager Qhoist proof failed')
-    return dict(cpu_only=True,new_GPU_execution=False,source_commit=SOURCE,production_parent=MAIN,cases=rows,
+    summary=dict(cpu_only=True,new_GPU_execution=False,source_commit=source,production_parent=MAIN,cases=rows,
         requested_component_gates_passed=True,full_numerical_matrix_verified=False,
         numeric_device_comparisons_reexecuted=False,saved_actual_files_SHA_verified=True,
         new_independent_IR_transform_validation_claimed=False,model105_evaluated=False,service_evaluated=False,
         official_score=False,model_precision_gate=False,
         conclusion='Two requested component cases passed. 4K event ratio is positive but wall median is below1; no host/service gain established. 16K uses the original parent binary. No claim of a full numerical matrix or stable effect.',
         late_round_host_attribution='Raw rounds do not identify CPU phases, GC or scheduler latency; structural extra Python work is a candidate cause, not a measured causal attribution.')
+    if source==RUNS['5967']['source']:
+        adapter=r['host_adapter'];certificate=adapter['parent_certificate']
+        need(all(certificate[k]is True for k in('loaded_policy_and_predicate_code_equal',
+            'whole_module_compile_context_preserved','module_not_executed_for_reference',
+            'loaded_function_and_globals_paths_equal_pinned_root','all_CodeType_fields_strictly_compared')),'Actual certificate proof failed')
+        need(adapter['private_qualification_cache_entries']==1 and adapter['private_qualification_cache_misses']==1
+             and adapter['private_qualification_cache_hits']==61,'Actual qualification lifecycle differs')
+        summary['actual_host_adapter']=adapter
+    return summary
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--snapshot',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--snapshot',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--run',choices=RUNS,default='e684');a=p.parse_args();run=RUNS[a.run]
     files={x.relative_to(a.snapshot).as_posix():x.read_bytes()for x in a.snapshot.rglob('*')if x.is_file()}
-    need(sha(files['download-manifest.json'])==MANIFEST and sha(files['out/result.json'])==RESULT,'Wrong frozen snapshot')
+    need(sha(files['download-manifest.json'])==run['manifest']and sha(files['out/result.json'])==run['result'],'Wrong frozen snapshot')
     manifest=json.loads(files['download-manifest.json']);names={'download-manifest.json'}
     for row in manifest['files']:
         name=row['relative'];path=PurePosixPath(name);need(not path.is_absolute()and'..'not in path.parts and name not in names,'Unsafe/duplicate member')
         raw=files[name];need(len(raw)==row['bytes']and sha(raw)==row['sha256'],'Raw mismatch: '+name);names.add(name)
-    need(set(files)==names and len(names)==76 and manifest['raw_files']==75 and manifest['raw_bytes']==5902115,'Wrong raw inventory')
-    need(sum(len(files[n])for n in names if n!='download-manifest.json')==5902115,'Wrong raw byte count')
-    need(manifest['original_owner']==dict(pid=624624,start_ticks=342942814,same_start=True,state='Z'),'Wrong owner')
-    result=json.loads(files['out/result.json']);summary=audit(result,files)
+    need(set(files)==names and len(names)==76 and manifest['raw_files']==75 and manifest['raw_bytes']==run['raw_bytes'],'Wrong raw inventory')
+    need(sum(len(files[n])for n in names if n!='download-manifest.json')==run['raw_bytes'],'Wrong raw byte count')
+    need(manifest['original_owner']==run['owner'],'Wrong owner')
+    result=json.loads(files['out/result.json']);summary=audit(result,files,run['source'])
     runtime_manifest=json.loads(files['out/manifest.json'])
-    need(runtime_manifest['result_sha256']==RESULT and runtime_manifest['source_commit']==SOURCE and runtime_manifest['actual_GPU_result_pending']is False,'Run manifest differs')
+    need(runtime_manifest['result_sha256']==run['result']and runtime_manifest['source_commit']==run['source']and runtime_manifest['actual_GPU_result_pending']is False,'Run manifest differs')
     faults=[]
     for name,mutate in [('matrix',lambda r:r.update(full_numerical_matrix_verified=True)),
         ('bitwise',lambda r:r['cases'][0]['checks'][0]['direct'].update(numeric_equal=False)),
@@ -129,10 +146,10 @@ def main():
         ('ratio',lambda r:r['cases'][0]['rounds'][0].update(wall_speedup=1.)),
         ('cleanup',lambda r:r.update(parent_restored=False))]:
         bad=copy.deepcopy(result);mutate(bad)
-        try:audit(bad,files)
+        try:audit(bad,files,run['source'])
         except(ValueError,AssertionError):faults.append(name)
         else:raise ValueError('Fault accepted: '+name)
-    summary.update(original_manifest_sha256=MANIFEST,original_result_sha256=RESULT,raw_files=75,raw_bytes=5902115,
+    summary.update(original_manifest_sha256=run['manifest'],original_result_sha256=run['result'],raw_files=75,raw_bytes=run['raw_bytes'],
         original_owner=manifest['original_owner'],rejected_faults=faults,
         opaque_private_cache_preserved=True,private_cache_or_binary_loaded=False,
         note='Run manifest lists private cache as excluded, but this downloaded snapshot includes it. All75 downloaded originals are preserved, including opaque launch SO/cubin/cache files.')
@@ -142,10 +159,10 @@ def main():
             for name,raw in sorted(files.items()):
                 info=tarfile.TarInfo(name);info.size=len(raw);info.mode=0o644;info.uid=info.gid=info.mtime=0;info.uname=info.gname='';archive.addfile(info,io.BytesIO(raw))
     raw=buffer.getvalue();need(len(raw)<=2*1024*1024,'Archive exceeds publisher bound')
-    a.out.mkdir(parents=True,exist_ok=False);(a.out/'v2-raw.tar.gz').write_bytes(raw)
+    a.out.mkdir(parents=True,exist_ok=False);(a.out/run['archive']).write_bytes(raw)
     (a.out/'download-manifest.json').write_bytes(files['download-manifest.json']);(a.out/'summary.json').write_bytes(encode(summary))
-    (a.out/'archive-manifest.json').write_bytes(encode(dict(archive='v2-raw.tar.gz',bytes=len(raw),sha256=sha(raw),
-        archive_members=76,original_manifest_sha256=MANIFEST,original_result_sha256=RESULT,summary_sha256=sha(encode(summary)),files=manifest['files'])))
+    (a.out/'archive-manifest.json').write_bytes(encode(dict(archive=run['archive'],bytes=len(raw),sha256=sha(raw),
+        archive_members=76,original_manifest_sha256=run['manifest'],original_result_sha256=run['result'],summary_sha256=sha(encode(summary)),files=manifest['files'])))
     need('torch'not in sys.modules and'triton'not in sys.modules,'GPU import occurred')
     print(json.dumps(dict(passed=True,cpu_only=True,archive_sha256=sha(raw),archive_bytes=len(raw),summary_sha256=sha(encode(summary)))))
 

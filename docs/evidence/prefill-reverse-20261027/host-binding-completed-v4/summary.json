@@ -1,0 +1,231 @@
+{
+  "cpu_only": true,
+  "new_GPU_execution": false,
+  "source_commit": "5967d49c7e4ef7b19ddf5b3344fb7ff1db9bf30d",
+  "production_parent": "56f1838192abc940b3fb9accef490022ac125000",
+  "cases": [
+    {
+      "name": "chunk4k",
+      "query": 2048,
+      "actual_kv": 4096,
+      "cpu_upper": 4096,
+      "route": "reverse",
+      "rounds": [
+        {
+          "iteration": 0,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 1.6868743987288326,
+          "baseline_event_ms": 1.448773980140686,
+          "candidate_wall_ms": 1.7211858939845115,
+          "candidate_event_ms": 1.3947556018829346,
+          "wall_speedup": 0.9800652007574565,
+          "event_speedup": 1.0387296370667565
+        },
+        {
+          "iteration": 1,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_wall_ms": 1.4662086323369294,
+          "candidate_event_ms": 1.3952423334121704,
+          "baseline_wall_ms": 1.6840852331370115,
+          "baseline_event_ms": 1.4501327276229858,
+          "wall_speedup": 1.1485986345973271,
+          "event_speedup": 1.039341118669025
+        },
+        {
+          "iteration": 2,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 1.494355994509533,
+          "baseline_event_ms": 1.452555775642395,
+          "candidate_wall_ms": 1.7179537971969694,
+          "candidate_event_ms": 1.3951115608215332,
+          "wall_speedup": 0.8698464399611556,
+          "event_speedup": 1.0411753557450523
+        }
+      ],
+      "median_wall_speedup": 0.9800652007574565,
+      "median_event_speedup": 1.039341118669025,
+      "baseline_hash": "5668ee6dca6d4783c84c8994729e9051b1c48ba63012b8c4ee5aee8e7db3aa1a",
+      "selected_hash": "e753de1e6a9b8277f93be18b2a157c655a345819f80359bd9a5964d38aff8c12",
+      "n_regs": 113,
+      "n_spills": 0,
+      "compiler_shared": 65536,
+      "resource_guard": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      },
+      "recorded_numeric_Graph_side_stale_typed_ABI_Qhoist_gates_passed": true
+    },
+    {
+      "name": "chunk16k",
+      "query": 2048,
+      "actual_kv": 16384,
+      "cpu_upper": 16384,
+      "route": "parent",
+      "rounds": [
+        {
+          "iteration": 0,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 6.796204455895349,
+          "baseline_event_ms": 6.556541919708252,
+          "candidate_wall_ms": 6.824780750321224,
+          "candidate_event_ms": 6.559810161590576,
+          "wall_speedup": 0.9958128626440447,
+          "event_speedup": 0.9995017779780487
+        },
+        {
+          "iteration": 1,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_wall_ms": 6.839237437816337,
+          "candidate_event_ms": 6.575400352478027,
+          "baseline_wall_ms": 6.804471660871059,
+          "baseline_event_ms": 6.568622589111328,
+          "wall_speedup": 0.9949167173590074,
+          "event_speedup": 0.9989692242291917
+        },
+        {
+          "iteration": 2,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 6.577173626283184,
+          "baseline_event_ms": 6.550563335418701,
+          "candidate_wall_ms": 6.8079007032793015,
+          "candidate_event_ms": 6.542960166931152,
+          "wall_speedup": 0.9661089244611075,
+          "event_speedup": 1.0011620380215633
+        }
+      ],
+      "median_wall_speedup": 0.9949167173590074,
+      "median_event_speedup": 0.9995017779780487,
+      "baseline_hash": "5668ee6dca6d4783c84c8994729e9051b1c48ba63012b8c4ee5aee8e7db3aa1a",
+      "selected_hash": "5668ee6dca6d4783c84c8994729e9051b1c48ba63012b8c4ee5aee8e7db3aa1a",
+      "n_regs": 113,
+      "n_spills": 0,
+      "compiler_shared": 65536,
+      "resource_guard": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      },
+      "recorded_numeric_Graph_side_stale_typed_ABI_Qhoist_gates_passed": true
+    }
+  ],
+  "requested_component_gates_passed": true,
+  "full_numerical_matrix_verified": false,
+  "numeric_device_comparisons_reexecuted": false,
+  "saved_actual_files_SHA_verified": true,
+  "new_independent_IR_transform_validation_claimed": false,
+  "model105_evaluated": false,
+  "service_evaluated": false,
+  "official_score": false,
+  "model_precision_gate": false,
+  "conclusion": "Two requested component cases passed. 4K event ratio is positive but wall median is below1; no host/service gain established. 16K uses the original parent binary. No claim of a full numerical matrix or stable effect.",
+  "late_round_host_attribution": "Raw rounds do not identify CPU phases, GC or scheduler latency; structural extra Python work is a candidate cause, not a measured causal attribution.",
+  "actual_host_adapter": {
+    "parent_certificate": {
+      "source_pins": {
+        "biv150_prefill_q32.py": "3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b",
+        "biv150_prefill_multi2.py": "fc3cdd066aacc6dfdc5029bb8aae9589f868b6800534511d2198f1f0d88da342",
+        "biv150_q_fragment_service.py": "38e44e6b0272116a1c76561119e9742337caed4dfaf5ab891fc57df4f2c16a82"
+      },
+      "loaded_policy_and_predicate_code_equal": true,
+      "whole_module_compile_context_preserved": true,
+      "module_not_executed_for_reference": true,
+      "compile_optimize": 0,
+      "compile_dont_inherit": true,
+      "loaded_function_and_globals_paths_equal_pinned_root": true,
+      "all_CodeType_fields_strictly_compared": true,
+      "parent_checks_mutable_tensor_descriptors_each_call": true,
+      "private_duplicate_constexpr_qualification_only": true,
+      "actual_parent_invoke_code_checked_at_boundary": true,
+      "arbitrary_direct_launchers_certified": false,
+      "source_or_hash_reads_in_hot_path": false
+    },
+    "private_qualification_cache_entries": 1,
+    "private_qualification_cache_hits": 61,
+    "private_qualification_cache_misses": 1,
+    "fresh_metadata_checked_each_call": true,
+    "live_parent_and_Manager_guards_unchanged": true,
+    "per_call_audit_records_retained": true,
+    "per_call_audit_materialization_deferred": false,
+    "timing_or_warmup_changed": false
+  },
+  "original_manifest_sha256": "34a60e221851ad96372f43bc568476a067e49e5d3d397e70983c37c03efcdb42",
+  "original_result_sha256": "99f18a8abd926680221a8f32013f3ba65795e56f8843dca875e738d07740e417",
+  "raw_files": 75,
+  "raw_bytes": 5912292,
+  "original_owner": {
+    "pid": 626303,
+    "start_ticks": 343560965,
+    "same_start": true,
+    "state": "Z"
+  },
+  "rejected_faults": [
+    "matrix",
+    "bitwise",
+    "reference",
+    "graph",
+    "ratio",
+    "cleanup"
+  ],
+  "opaque_private_cache_preserved": true,
+  "private_cache_or_binary_loaded": false,
+  "note": "Run manifest lists private cache as excluded, but this downloaded snapshot includes it. All75 downloaded originals are preserved, including opaque launch SO/cubin/cache files."
+}

@@ -452,3 +452,39 @@ The actual code-identity issue is explained and corrected; new target default
 CPU and bounded device acceptance remain for root. The old kernel benefit and
 0cc host adaptation are retained. No new host/device performance, model105 or
 service/official-score result is claimed by this identity-tool correction.
+
+## Completed5967 host screen: actual certificate passed, wall attribution pending
+
+Owner626303/start343560965 is recorded same-start Z. The requested two cases
+completed with errors=[], parent restored and requested component gates true;
+full_numerical_matrix_verified remains false. The actual whole-module/code/path
+certificate passed, with1 private qualification miss and61 hits. Original typed
+ABI/Q-hoist/resource, exact direct/reference, changed-data/metadata Graph,
+side-stream/stale/input-canary guards passed without changing their thresholds.
+
+| Component | Wall AB/BA/AB | Wall median | Event median |
+|---|---|---|---|
+| Q2048/KV4096 | .9800652007574565 / 1.1485986345973271 / .8698464399611556 | .9800652007574565 | 1.039341118669025 |
+| Q2048/KV16384 original parent | .9958128626440447 / .9949167173590074 / .9661089244611075 | .9949167173590074 | .9995017779780487 |
+
+4K baseline wall1.686874/1.684085/1.494356ms and candidate wall
+1.721186/1.466209/1.717954ms show discrete gaps around.2ms, while event ratios
+remain1.038730/1.039341/1.041175. No CPU phase/GC/scheduling data identifies their
+cause. Further timing-round sweeps are not justified; the next work is a bounded
+diagnostic, without interpreting profiled timings as performance. The old kernel
+benefit remains of interest, but neither this wall median nor the small16K
+difference establishes a host/service gain. No model105/service/official score.
+
+All75 originals5912292B plus original manifest are preserved in
+`host-binding-completed-v4/v4-raw.tar.gz`, 733124B, SHA256
+`3fd8d1ba36054181c8cd7887f7f53f1c097c07188fe6af554b32146c50f28672`.
+Summary SHA256 `ea08f5888cb2911ce3d74ad2a6cc866d053521681b526663ea73fb6aa8651abe`.
+Every downloaded file, including opaque private cache/SO/cubin bytes, is retained.
+Raw SHAs, recorded gates, resource/identity records and all ratios/medians are
+checked on CPU; six faulty-record gates reject. Unpacked replay is byte-identical,
+and the earlier default e684 replay still reproduces its exact prior outputs:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/archive_biv150_prefill_host_binding_cpu.py \
+  --run 5967 --snapshot SNAPSHOT_DIRECTORY --out NEW_DIRECTORY
+```
