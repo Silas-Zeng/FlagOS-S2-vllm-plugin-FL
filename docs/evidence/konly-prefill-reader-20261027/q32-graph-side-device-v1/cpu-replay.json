@@ -1,0 +1,200 @@
+{
+  "actual_IR_and_postlaunch_resources": {
+    "baseline": {
+      "hash": "678ec5b47d05e5f427ebedf674334c3ec7a1e948cd0ac59e514002ec17b42485",
+      "n_regs": [
+        101,
+        101,
+        101,
+        101
+      ],
+      "n_spills": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "shared": [
+        98304,
+        98304,
+        98304,
+        98304
+      ]
+    },
+    "hoisted": {
+      "hash": "68f376d4394d07e21221008dd44099e2178ffd8b18a4e11a610bd175088f5ddc",
+      "n_regs": [
+        122,
+        122,
+        122,
+        122
+      ],
+      "n_spills": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "shared": [
+        33792,
+        33792,
+        33792,
+        33792
+      ]
+    },
+    "unhoisted": {
+      "hash": "c0a523d9d0d4d5dde57b241df9d22c9c38fa71e480878d18e690b4eb002e24f7",
+      "n_regs": [
+        135,
+        135,
+        135,
+        135
+      ],
+      "n_spills": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "shared": [
+        57344,
+        57344,
+        57344,
+        57344
+      ]
+    }
+  },
+  "all_original_SHA_verified": true,
+  "arrays": {
+    "actual_Q_table_length_digests_recomputed": true,
+    "all_modes_I8_hoisted_unhoisted_bitwise": true,
+    "eager_artifact_replay": {
+      "canary_readonly_scope": "Recorded device guards; prefix/suffix canary buffers and live before/after fingerprints are not serialized",
+      "full_output_bitwise_replay": true,
+      "independent_metric_replay": true,
+      "patterns": [
+        {
+          "all_three_outputs_finite": true,
+          "eager_numeric_passed": true,
+          "full_encoded_bytes_equal": true,
+          "full_output_bytes": 8388608,
+          "full_output_elements": 4194304,
+          "independent_byte_layout_equal": true,
+          "metrics": {
+            "baseline": {
+              "finite": true,
+              "max_abs": 0.0009445002836778182,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0017466300350681173,
+              "rms": 0.0003930947201338438
+            },
+            "original_BF16": {
+              "finite": true,
+              "max_abs": 0.0009445002836778182,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0017466300350681173,
+              "rms": 0.0003930947201338438
+            },
+            "quantized_operand": {
+              "finite": true,
+              "max_abs": 0.0009445002836778182,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0017466300350681173,
+              "rms": 0.0003930947201338438
+            }
+          },
+          "output_bits_equal": true,
+          "pattern": 0
+        },
+        {
+          "all_three_outputs_finite": true,
+          "eager_numeric_passed": false,
+          "full_encoded_bytes_equal": true,
+          "full_output_bytes": 8388608,
+          "full_output_elements": 4194304,
+          "independent_byte_layout_equal": true,
+          "metrics": {
+            "baseline": {
+              "finite": true,
+              "max_abs": 0.00033584525499748275,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022874587115760603,
+              "rms": 5.730561376662517e-05
+            },
+            "original_BF16": {
+              "finite": true,
+              "max_abs": 0.0011051162578886997,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009626741068106567,
+              "rms": 0.00024116995104148792
+            },
+            "quantized_operand": {
+              "finite": true,
+              "max_abs": 0.00030156309991787034,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022542700142202956,
+              "rms": 5.6475773004888354e-05
+            }
+          },
+          "output_bits_equal": true,
+          "pattern": 1
+        }
+      ],
+      "reference_scope": "Metrics recomputed from archived independent FP64 references; global softmax reference not regenerated here"
+    },
+    "full_mode_replay": [
+      {
+        "Graph_eager_side_full_bitwise": true,
+        "all_modes_finite": true,
+        "full_elements_per_mode": 4194304,
+        "role": "baseline"
+      },
+      {
+        "Graph_eager_side_full_bitwise": true,
+        "all_modes_finite": true,
+        "full_elements_per_mode": 4194304,
+        "role": "unhoisted"
+      },
+      {
+        "Graph_eager_side_full_bitwise": true,
+        "all_modes_finite": true,
+        "full_elements_per_mode": 4194304,
+        "role": "hoisted"
+      }
+    ],
+    "reference_scope": "Archived selected-row FP64 references; metrics independently recomputed"
+  },
+  "capacity_reclaimed": false,
+  "eager_numeric_passed": false,
+  "legacy_baseline_binary_equality_label_invalid": true,
+  "maximum_archive_bytes": 1900772,
+  "new_archives": 52,
+  "original_owner": {
+    "pid": 628883,
+    "same_start": true,
+    "start_ticks": 344599705,
+    "state": "Z"
+  },
+  "original_raw_bytes": 117797007,
+  "original_raw_files": 98,
+  "performance_verified": false,
+  "precision_gate": false,
+  "recorded_Graph_verified": true,
+  "recorded_side_stream_verified": true,
+  "reused_eager_v3_bytes": 20098950,
+  "service_verified": false,
+  "transport_recovery_only": {
+    "model_rerun": false,
+    "prior_90_second_collector_timeout_is_not_a_kernel_failure": true,
+    "read_only": true,
+    "reported_compression": "zlib1",
+    "reported_deadline_seconds": 240,
+    "reported_scoped_transport_commit": "62d3ca5\u2026"
+  }
+}

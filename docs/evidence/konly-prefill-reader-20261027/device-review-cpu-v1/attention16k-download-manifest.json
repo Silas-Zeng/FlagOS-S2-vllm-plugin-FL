@@ -1,0 +1,586 @@
+{
+  "utc": "2026-10-27T12:36:00.626972+00:00",
+  "tag": "cjj-konly-q32-main-attention-16k-v1-20261027",
+  "read_only": true,
+  "model_rerun": false,
+  "original_owner": {
+    "pid": 637166,
+    "start_ticks": 345166569,
+    "same_start": true,
+    "state": "Z"
+  },
+  "raw_files": 95,
+  "raw_bytes": 101394796,
+  "files": [
+    {
+      "relative": "exports/cjj-konly-q32-main-attention-16k-v1-20261027-owner.json",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-konly-q32-main-attention-16k-v1-20261027-owner.json",
+      "bytes": 1338,
+      "sha256": "8e383a44dd0420de48bf1e722642e3e5cabb323399f8d16d22fe9f18794e3283"
+    },
+    {
+      "relative": "exports/cjj-konly-q32-main-attention-16k-v1-20261027.log",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-konly-q32-main-attention-16k-v1-20261027.log",
+      "bytes": 102008,
+      "sha256": "c9bd27f9cdf74ff11ae6e7ddeefcd3807a0591da9425f2836e5219571f44216d"
+    },
+    {
+      "relative": "out/actual-main-q-hoist-override.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/actual-main-q-hoist-override.ttgir",
+      "bytes": 67812,
+      "sha256": "c202ea1fa9c8c731daf8117608230bd4cec7a50a08a6ed6aec5776a66a621c22"
+    },
+    {
+      "relative": "out/attention-perf-summary.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/attention-perf-summary.json",
+      "bytes": 88670,
+      "sha256": "aa75f2b7631e42254de8f4370a6695bd6a773997a949f7ad620a6400546da50e"
+    },
+    {
+      "relative": "out/codec-support-ae00.py",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/codec-support-ae00.py",
+      "bytes": 4007,
+      "sha256": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018"
+    },
+    {
+      "relative": "out/expected-normalized-raw.py.txt",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/expected-normalized-raw.py.txt",
+      "bytes": 18472,
+      "sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744"
+    },
+    {
+      "relative": "out/ir/accepted_main/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/accepted_main/actual.asm",
+      "bytes": 195478,
+      "sha256": "231339851666a2ebfe20dbdc71f5df590bddac9629973299758b74fd6ea35d4f"
+    },
+    {
+      "relative": "out/ir/accepted_main/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/accepted_main/actual.cubin",
+      "bytes": 25320,
+      "sha256": "ee7ca22def039eca1dd0b5e48ca4589be7a55279cf44d624d55da5a3106ad41c"
+    },
+    {
+      "relative": "out/ir/accepted_main/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/accepted_main/actual.llir",
+      "bytes": 141026,
+      "sha256": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29"
+    },
+    {
+      "relative": "out/ir/accepted_main/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/accepted_main/actual.source",
+      "bytes": 18460,
+      "sha256": "b6703eef9828e4497b446a5bd96d0c00c84049d1a092bf5fc0077f44dd5e7a63"
+    },
+    {
+      "relative": "out/ir/accepted_main/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/accepted_main/actual.ttgir",
+      "bytes": 67799,
+      "sha256": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e"
+    },
+    {
+      "relative": "out/ir/accepted_main/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/accepted_main/actual.ttir",
+      "bytes": 46868,
+      "sha256": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9"
+    },
+    {
+      "relative": "out/ir/accepted_main/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/accepted_main/record.json",
+      "bytes": 57195,
+      "sha256": "18014051035190e74a891effd6ae8161960530dde72d1669ae5f374c2f82086d"
+    },
+    {
+      "relative": "out/ir/hoisted/actual-compilation-binding.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/actual-compilation-binding.json",
+      "bytes": 7657,
+      "sha256": "22394ee751f6ab2288be2fbdd10859dfc3ed78a4e8ec11caec76a9d414d14693"
+    },
+    {
+      "relative": "out/ir/hoisted/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/actual.asm",
+      "bytes": 276889,
+      "sha256": "14fa1b1e60f02a333309a30fdd09778ff2834d35303a9f3964b6463c98d10b9d"
+    },
+    {
+      "relative": "out/ir/hoisted/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/actual.cubin",
+      "bytes": 47800,
+      "sha256": "88a3e24ee15c98c6475b4970f9586861edcdc34f52b1bd64b8849bb14453b4fb"
+    },
+    {
+      "relative": "out/ir/hoisted/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/actual.llir",
+      "bytes": 217799,
+      "sha256": "273529661740c323f7084bfb906140b1d03c14feb9e654bdbbdb8e150fc80605"
+    },
+    {
+      "relative": "out/ir/hoisted/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/actual.source",
+      "bytes": 19850,
+      "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+    },
+    {
+      "relative": "out/ir/hoisted/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/actual.ttgir",
+      "bytes": 85734,
+      "sha256": "ffb5820b7e12cfd7db9f6fe28cd388328334e3dde06a726f3685723a8fa1bd2c"
+    },
+    {
+      "relative": "out/ir/hoisted/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/actual.ttir",
+      "bytes": 60871,
+      "sha256": "776998f735cb21017a4ff3347c211849f0a63771186ede99324ed55bf3b40991"
+    },
+    {
+      "relative": "out/ir/hoisted/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/hoisted/record.json",
+      "bytes": 58341,
+      "sha256": "b24ae7a245a773b7d566a8aa9a03eeda134a4a756fa0cba8c8edfb979f930ce0"
+    },
+    {
+      "relative": "out/ir/raw_bf16/actual-compilation-binding.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/actual-compilation-binding.json",
+      "bytes": 2848,
+      "sha256": "29e1b7969896b4c43432edadbca0982e99040ddd378d4e839a9e5299bb3b9c47"
+    },
+    {
+      "relative": "out/ir/raw_bf16/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/actual.asm",
+      "bytes": 141070,
+      "sha256": "284085a759484c59b0296e5383cb508dff7c57bf6d658209ef377a4ee4dedce5"
+    },
+    {
+      "relative": "out/ir/raw_bf16/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/actual.cubin",
+      "bytes": 25304,
+      "sha256": "2c8189a049cbb662cdc8864cf6fbddc499ac56a28ee0b35e55af64a801aec5fe"
+    },
+    {
+      "relative": "out/ir/raw_bf16/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/actual.llir",
+      "bytes": 140569,
+      "sha256": "b4bfd6321e5602dd10eed729bc837ecae2679edd605e4d2498513fe600746431"
+    },
+    {
+      "relative": "out/ir/raw_bf16/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/actual.source",
+      "bytes": 18460,
+      "sha256": "b6703eef9828e4497b446a5bd96d0c00c84049d1a092bf5fc0077f44dd5e7a63"
+    },
+    {
+      "relative": "out/ir/raw_bf16/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/actual.ttgir",
+      "bytes": 67815,
+      "sha256": "71686176691a6b246027908cd6efa64a3d5e8c1a3258f2ddbdce33b36f659966"
+    },
+    {
+      "relative": "out/ir/raw_bf16/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/actual.ttir",
+      "bytes": 46869,
+      "sha256": "83fde875b4b94ffb9c9d2da282d7c283db353b72265e90359d68ec160ce84771"
+    },
+    {
+      "relative": "out/ir/raw_bf16/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/raw_bf16/record.json",
+      "bytes": 56871,
+      "sha256": "31fb706c5ece8a94ce85789443aff46cb4aba2b1481bb0a42c3fbc16f68caf0a"
+    },
+    {
+      "relative": "out/ir/unhoisted/actual-compilation-binding.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/actual-compilation-binding.json",
+      "bytes": 2756,
+      "sha256": "9f73131ae25ffe8a3664c840e13f2385bdd1fa96233208ccbe99381100cc126e"
+    },
+    {
+      "relative": "out/ir/unhoisted/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/actual.asm",
+      "bytes": 276706,
+      "sha256": "c5c004c0740ae6d8560a90dc71658c67318603990e364c603d35dfef030ad995"
+    },
+    {
+      "relative": "out/ir/unhoisted/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/actual.cubin",
+      "bytes": 47784,
+      "sha256": "09f79d570ad29dc1393af992cc37c7f0bdd1ea7ff9dfe6d138c28541a97890ab"
+    },
+    {
+      "relative": "out/ir/unhoisted/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/actual.llir",
+      "bytes": 217361,
+      "sha256": "250c1e69bd9342b6ba82416a0af60b46c4692c5105ecf77f6132133dccdf7a26"
+    },
+    {
+      "relative": "out/ir/unhoisted/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/actual.source",
+      "bytes": 19850,
+      "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+    },
+    {
+      "relative": "out/ir/unhoisted/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/actual.ttgir",
+      "bytes": 85749,
+      "sha256": "5e87a8fddac1cf254628a409212f5a6fed2be616179bdefb894e101c40b78264"
+    },
+    {
+      "relative": "out/ir/unhoisted/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/actual.ttir",
+      "bytes": 61151,
+      "sha256": "a3237fd3c15086643c4887bd65657cad7f6299915d735abcee52ea500399abaf"
+    },
+    {
+      "relative": "out/ir/unhoisted/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/ir/unhoisted/record.json",
+      "bytes": 58122,
+      "sha256": "5c173c4688655d61640f1cfcdaaef7639cd6b21f5ddaca9c5ee05172c3746ac2"
+    },
+    {
+      "relative": "out/main-installations.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/main-installations.json",
+      "bytes": 1616,
+      "sha256": "aaabf0fb63b45bcf91c64413377247eb5126d653c573f81cbb9f2b9c5a1cf900"
+    },
+    {
+      "relative": "out/main-materialization.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/main-materialization.json",
+      "bytes": 51124,
+      "sha256": "f9507009b87402b45166b0ed38bbb82118b6941490a2d71757b5103d21ca4797"
+    },
+    {
+      "relative": "out/main-materializer-attempt.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/main-materializer-attempt.json",
+      "bytes": 57706,
+      "sha256": "5c6235a04b54159901758b3f941b8a28cb75f4bc6582353f6e8659fa7894dff9"
+    },
+    {
+      "relative": "out/main-normalized-raw.py.txt",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/main-normalized-raw.py.txt",
+      "bytes": 18472,
+      "sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744"
+    },
+    {
+      "relative": "out/pattern-0.pt.gz",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/pattern-0.pt.gz",
+      "bytes": 20304960,
+      "sha256": "6127cbce0477f89a72f38563545f6dc504e32d812131e8675be1a160b493c1bb"
+    },
+    {
+      "relative": "out/pattern-1.pt.gz",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/pattern-1.pt.gz",
+      "bytes": 74567417,
+      "sha256": "e351d0845cf6a57d172544cecb106af9f8929dcddc9a032d936bd48631213efe"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/__grp__encode_initial.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/__grp__encode_initial.json",
+      "bytes": 1360,
+      "sha256": "efeecd595a1d17671325dbc7bd7ed5aa341b8007a25b50b6c4f9a9b5680425bc"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.asm",
+      "bytes": 27095,
+      "sha256": "9cf00e72214c4a1e7e7edc30fee96a7af7302234845bc6e257455a09ffcd90f2"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.cubin",
+      "bytes": 5632,
+      "sha256": "df75bc084bfe38209cc49a7e72b3fc19551b4addee6f6e81a75a91b4d4d48465"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.json",
+      "bytes": 1075,
+      "sha256": "5cb1f9ae18e600ac9b91468693079fc53d9b750bae1c3399e06db89d8a63fc59"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.llir",
+      "bytes": 16403,
+      "sha256": "8f5dd1be86cb465bc67467ec5a72c8466f1d42ed1bbb615f630b67948b307927"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.source",
+      "bytes": 24495,
+      "sha256": "2d40fee8466b9df4b50034e59fa0dfc9ff9e944b602bdd235f90c35cc34f8043"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.ttgir",
+      "bytes": 22094,
+      "sha256": "4799b53ff20689a87cfae77c6890f5e0754d736dddc395fb6194ead550612698"
+    },
+    {
+      "relative": "out/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/3MZWRVCFOJEFS3EZX22PO3VWL6OP3BIYT63DVFZCKXO4H3HYAFJA/encode_initial.ttir",
+      "bytes": 19661,
+      "sha256": "8ead0a5a8f83601da6ab16ef68b8053447c8794dd2fea68b584b94095b63b3aa"
+    },
+    {
+      "relative": "out/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/CETBTLHDHMLIJZQHVGRBA4ZC7S2AAHA24QVWV2MUNDTDP3MASZOA/cuda_utils.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 17928,
+      "sha256": "5a8523e462a7da8e016c9d6c1556fd90c1efec25a8ea8e5474e69545e3c73ec0"
+    },
+    {
+      "relative": "out/triton-cache/EJPURH5T5CBCMSZ2M5CZN4NDINRV5JHNP46T7L46RGL2QZUWW2CA/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/EJPURH5T5CBCMSZ2M5CZN4NDINRV5JHNP46T7L46RGL2QZUWW2CA/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 21640,
+      "sha256": "2d9c4daee94cba77c0fbb2054e8eb8aad2a0cef13658038fca79cce31dada1de"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/__grp__kernel_biv150_prefill_stride.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/__grp__kernel_biv150_prefill_stride.json",
+      "bytes": 1556,
+      "sha256": "c7ccfcd3a1fec46d1258f309f5773a5ba327499d25429a0e8d94781eb06938d8"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.asm",
+      "bytes": 195478,
+      "sha256": "231339851666a2ebfe20dbdc71f5df590bddac9629973299758b74fd6ea35d4f"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.cubin",
+      "bytes": 25320,
+      "sha256": "ee7ca22def039eca1dd0b5e48ca4589be7a55279cf44d624d55da5a3106ad41c"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.json",
+      "bytes": 1210,
+      "sha256": "ffc43b6d15ddc75dbf19f946656ffeea8f5f3d655281b0f6bda850f2e9bbb6de"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.llir",
+      "bytes": 141026,
+      "sha256": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.source",
+      "bytes": 101141,
+      "sha256": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.ttgir",
+      "bytes": 67799,
+      "sha256": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e"
+    },
+    {
+      "relative": "out/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/JU6RG6PJFS6PEYQDQJV5FG2TSGJ3Z7E2ASTWQEQTMMKGJC5UELBQ/kernel_biv150_prefill_stride.ttir",
+      "bytes": 46868,
+      "sha256": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/__grp__kernel_biv150_prefill_stride.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/__grp__kernel_biv150_prefill_stride.json",
+      "bytes": 1556,
+      "sha256": "069d79887b01f86686aa018a1b535bc87e6f050f7513d947065b601ed9718af9"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.asm",
+      "bytes": 141070,
+      "sha256": "284085a759484c59b0296e5383cb508dff7c57bf6d658209ef377a4ee4dedce5"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.cubin",
+      "bytes": 25304,
+      "sha256": "2c8189a049cbb662cdc8864cf6fbddc499ac56a28ee0b35e55af64a801aec5fe"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.json",
+      "bytes": 1099,
+      "sha256": "7d759cb5a793101304da888b0849c7b2868fa2f26422e55a24b8decd5059503f"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.llir",
+      "bytes": 140569,
+      "sha256": "b4bfd6321e5602dd10eed729bc837ecae2679edd605e4d2498513fe600746431"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.source",
+      "bytes": 101142,
+      "sha256": "50ec48d0ce4f17fd8b25a9c51f85b1d0c6d2db4e9b191ffbc702a8201afdadef"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.ttgir",
+      "bytes": 67815,
+      "sha256": "71686176691a6b246027908cd6efa64a3d5e8c1a3258f2ddbdce33b36f659966"
+    },
+    {
+      "relative": "out/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/M6HMLND5AXS7IJ7L5X3HIM2MH3D2D2KIZUFMLHSRIABOYF5UESCQ/kernel_biv150_prefill_stride.ttir",
+      "bytes": 46869,
+      "sha256": "83fde875b4b94ffb9c9d2da282d7c283db353b72265e90359d68ec160ce84771"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/__grp__kernel_cjj_konly_q32.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/__grp__kernel_cjj_konly_q32.json",
+      "bytes": 1444,
+      "sha256": "75928f69c5732eff2a19cf491ce3a8a169418d4ecac5cc7ee5623190cb1a548d"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.asm",
+      "bytes": 276889,
+      "sha256": "14fa1b1e60f02a333309a30fdd09778ff2834d35303a9f3964b6463c98d10b9d"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.cubin",
+      "bytes": 47800,
+      "sha256": "88a3e24ee15c98c6475b4970f9586861edcdc34f52b1bd64b8849bb14453b4fb"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.json",
+      "bytes": 1195,
+      "sha256": "1a8316076628b8c8078dd0c4a68df5dc9136039a98f03a6bc07e03c7bf436ef0"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.llir",
+      "bytes": 217799,
+      "sha256": "273529661740c323f7084bfb906140b1d03c14feb9e654bdbbdb8e150fc80605"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.source",
+      "bytes": 119146,
+      "sha256": "11b9b3a64f15016c7bc6aad7e0d2ecb4e28511b2eec2fb3987c7513388ed4b19"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.ttgir",
+      "bytes": 85734,
+      "sha256": "ffb5820b7e12cfd7db9f6fe28cd388328334e3dde06a726f3685723a8fa1bd2c"
+    },
+    {
+      "relative": "out/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/NDZXNVBZJUD6EERBACG5IQEZ4ILY77MLDCSOCGTBBPIXKCEPLXOA/kernel_cjj_konly_q32.ttir",
+      "bytes": 60871,
+      "sha256": "776998f735cb21017a4ff3347c211849f0a63771186ede99324ed55bf3b40991"
+    },
+    {
+      "relative": "out/triton-cache/O5IHMNNPVIW4X4JYLMAB3H3SFEU2A25KXWVGKHUL7S4YKYXJRKDQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/O5IHMNNPVIW4X4JYLMAB3H3SFEU2A25KXWVGKHUL7S4YKYXJRKDQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 25776,
+      "sha256": "edcb8e385030ae99ded70d534fb45a236ab5c629b30a62a5d2a7677b0476803a"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/__grp__kernel_biv150_prefill_stride.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/__grp__kernel_biv150_prefill_stride.json",
+      "bytes": 1556,
+      "sha256": "7dc4e68c5d8b0b3f4ec8fe0f0557ffb78d98c09fd2e1df694b95164ea5c41c6f"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.asm",
+      "bytes": 193905,
+      "sha256": "ce5e4401c1259fc264dd1b474dcf2c078dbd9f002eee589d1c7ae608bd5432d7"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.cubin",
+      "bytes": 25408,
+      "sha256": "39a89445a7fdc87d908715eb57f1f585b7f349a3d8814d4ea7d423ed694997e7"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.json",
+      "bytes": 1099,
+      "sha256": "74661ac1413835baebf2c920498124f40bde741fbb815ca133995ba11cd59d99"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.llir",
+      "bytes": 140568,
+      "sha256": "606a2592b9222bb646cf689f6affd24ca85d1b4157684de1d1f68cf6c0e8067c"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.source",
+      "bytes": 101141,
+      "sha256": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.ttgir",
+      "bytes": 67814,
+      "sha256": "d75a7acaedc5f9fabb7728b7a7aa7c23ab3c5f292efe99dbada0fe33abc1852d"
+    },
+    {
+      "relative": "out/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/PCKNQHCC66KGERVD7TVXWPWND2RTFE7N36CR5JRTAMZSYNBYC4YQ/kernel_biv150_prefill_stride.ttir",
+      "bytes": 46868,
+      "sha256": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9"
+    },
+    {
+      "relative": "out/triton-cache/RPVJTLHKYYDMDL44BZWOXC2SXB6QMJDW4YUTONOESJSD5Q4FBQ6A/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/RPVJTLHKYYDMDL44BZWOXC2SXB6QMJDW4YUTONOESJSD5Q4FBQ6A/__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+      "bytes": 25776,
+      "sha256": "8482fc7601ecb0c808bf1b5921adc82b0d9369111e8bf3534a19911c4a8ba3c7"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/__grp__kernel_cjj_konly_q32.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/__grp__kernel_cjj_konly_q32.json",
+      "bytes": 1444,
+      "sha256": "8ace14c112696b82d8c4378c779573799cb967939257acc81950ad699a9ecd1d"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.asm",
+      "bytes": 276706,
+      "sha256": "c5c004c0740ae6d8560a90dc71658c67318603990e364c603d35dfef030ad995"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.cubin",
+      "bytes": 47784,
+      "sha256": "09f79d570ad29dc1393af992cc37c7f0bdd1ea7ff9dfe6d138c28541a97890ab"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.json",
+      "bytes": 1091,
+      "sha256": "352b5dff8a203493859399b11b800a0333f2d320d70d98e26ab1e8dab93d0383"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.llir",
+      "bytes": 217361,
+      "sha256": "250c1e69bd9342b6ba82416a0af60b46c4692c5105ecf77f6132133dccdf7a26"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.source",
+      "bytes": 119542,
+      "sha256": "93872dc2ef6c76edbaf7d07604e42bf00feba735f4b2d5f59f9690ed57555b10"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttgir",
+      "bytes": 85749,
+      "sha256": "5e87a8fddac1cf254628a409212f5a6fed2be616179bdefb894e101c40b78264"
+    },
+    {
+      "relative": "out/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-konly-q32-main-attention-16k-v1-20261027/triton-cache/YCSSHWOQ2TK53ZL3EQO7TURMTQ4PU4PEQCDY2GHGSC2OWABOET3Q/kernel_cjj_konly_q32.ttir",
+      "bytes": 61151,
+      "sha256": "a3237fd3c15086643c4887bd65657cad7f6299915d735abcee52ea500399abaf"
+    }
+  ]
+}

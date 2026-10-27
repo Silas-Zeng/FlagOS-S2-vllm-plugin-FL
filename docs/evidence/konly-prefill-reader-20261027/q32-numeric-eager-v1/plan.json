@@ -1,0 +1,57 @@
+{
+  "GPU_executed": false,
+  "Graph_verified": false,
+  "JIT_executed": false,
+  "actual_binding_verified": false,
+  "actual_mechanism_verified": true,
+  "baseline_is_accepted_service_main": false,
+  "capacity_reclaimed": false,
+  "cpu_only": true,
+  "eager_numeric_passed": false,
+  "override": "/workspace/experiments/minicpm-s2/cjj-konly-q32-hoist-compile-v1-20261027/fixed-q32-i8-operand-hoist.ttgir",
+  "override_sha256": "ef347cd98b1603f9deec35b9ac3e0407efde022e399972b14ca5a60a4226891e",
+  "performance_verified": false,
+  "plan": {
+    "Graph_verified": false,
+    "config": {
+      "BLOCK_M": 256,
+      "BLOCK_Q": 32,
+      "IS_3D": false,
+      "TILE_SIZE": 64
+    },
+    "context": 4096,
+    "context16k_tested": false,
+    "formal_batch_tokens_changed": false,
+    "grid": [
+      65,
+      2
+    ],
+    "klens": [
+      6144
+    ],
+    "pages": 773,
+    "patterns": [
+      0,
+      1
+    ],
+    "profile": "q32",
+    "qlens": [
+      2048
+    ],
+    "requested_options": {
+      "num_stages": 1,
+      "num_warps": 16
+    },
+    "seed": 20261025,
+    "segments": 1,
+    "sequences": 1,
+    "side_stream_verified": false,
+    "table_pitch": 8192,
+    "timing_enabled": false,
+    "total": 2048
+  },
+  "precision_gate": false,
+  "service_verified": false,
+  "side_stream_verified": false,
+  "source_root": "/workspace/experiments/minicpm-s2/cjj-konly-prefill-q32-compile-v1-20261027/sources"
+}

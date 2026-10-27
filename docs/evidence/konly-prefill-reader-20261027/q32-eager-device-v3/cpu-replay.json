@@ -1,0 +1,157 @@
+{
+  "Graph_verified": false,
+  "actual_IR_replayed": {
+    "baseline": {
+      "actual_cubin_exact": false,
+      "actual_cubin_sha256": "2c8189a049cbb662cdc8864cf6fbddc499ac56a28ee0b35e55af64a801aec5fe",
+      "hash": "678ec5b47d05e5f427ebedf674334c3ec7a1e948cd0ac59e514002ec17b42485",
+      "loaded_resources": {
+        "handles_explicitly_initialized": true,
+        "loaded_resource_fields_known": true,
+        "n_regs": 101,
+        "n_spills": 0,
+        "num_stages": 1,
+        "num_warps": 16,
+        "shared": 98304,
+        "use_sme": 114691,
+        "warp_size": 64,
+        "zero_spill_observed": true
+      }
+    },
+    "hoisted": {
+      "actual_cubin_exact": false,
+      "actual_cubin_sha256": "8e5b80adb333883d452997c7d0a9f0f08a87bd694530308fe96ab70b3f1769d4",
+      "hash": "68f376d4394d07e21221008dd44099e2178ffd8b18a4e11a610bd175088f5ddc",
+      "loaded_resources": {
+        "handles_explicitly_initialized": true,
+        "loaded_resource_fields_known": true,
+        "n_regs": 122,
+        "n_spills": 0,
+        "num_stages": 1,
+        "num_warps": 16,
+        "shared": 33792,
+        "use_sme": 229379,
+        "warp_size": 64,
+        "zero_spill_observed": true
+      }
+    },
+    "unhoisted": {
+      "actual_cubin_exact": false,
+      "actual_cubin_sha256": "f94cbe4230edd07d33bc8dc6e5f98cfe86dac21c78980d42e2b919af0e18542c",
+      "hash": "c0a523d9d0d4d5dde57b241df9d22c9c38fa71e480878d18e690b4eb002e24f7",
+      "loaded_resources": {
+        "handles_explicitly_initialized": true,
+        "loaded_resource_fields_known": true,
+        "n_regs": 135,
+        "n_spills": 0,
+        "num_stages": 1,
+        "num_warps": 16,
+        "shared": 57344,
+        "use_sme": 229379,
+        "warp_size": 64,
+        "zero_spill_observed": true
+      }
+    }
+  },
+  "all_original_SHA_verified": true,
+  "archives": 29,
+  "arrays": {
+    "canary_readonly_scope": "Recorded device guards; prefix/suffix canary buffers and live before/after fingerprints are not serialized",
+    "full_output_bitwise_replay": true,
+    "independent_metric_replay": true,
+    "patterns": [
+      {
+        "all_three_outputs_finite": true,
+        "eager_numeric_passed": true,
+        "full_encoded_bytes_equal": true,
+        "full_output_bytes": 8388608,
+        "full_output_elements": 4194304,
+        "independent_byte_layout_equal": true,
+        "metrics": {
+          "baseline": {
+            "finite": true,
+            "max_abs": 0.0009445002836778182,
+            "pointwise_passed": true,
+            "pointwise_violations": 0,
+            "relative_rmse": 0.0017466300350681173,
+            "rms": 0.0003930947201338438
+          },
+          "original_BF16": {
+            "finite": true,
+            "max_abs": 0.0009445002836778182,
+            "pointwise_passed": true,
+            "pointwise_violations": 0,
+            "relative_rmse": 0.0017466300350681173,
+            "rms": 0.0003930947201338438
+          },
+          "quantized_operand": {
+            "finite": true,
+            "max_abs": 0.0009445002836778182,
+            "pointwise_passed": true,
+            "pointwise_violations": 0,
+            "relative_rmse": 0.0017466300350681173,
+            "rms": 0.0003930947201338438
+          }
+        },
+        "output_bits_equal": true,
+        "pattern": 0
+      },
+      {
+        "all_three_outputs_finite": true,
+        "eager_numeric_passed": false,
+        "full_encoded_bytes_equal": true,
+        "full_output_bytes": 8388608,
+        "full_output_elements": 4194304,
+        "independent_byte_layout_equal": true,
+        "metrics": {
+          "baseline": {
+            "finite": true,
+            "max_abs": 0.00031992080811571455,
+            "pointwise_passed": true,
+            "pointwise_violations": 0,
+            "relative_rmse": 0.002308993744776649,
+            "rms": 5.792556254274812e-05
+          },
+          "original_BF16": {
+            "finite": true,
+            "max_abs": 0.0012052177378101825,
+            "pointwise_passed": true,
+            "pointwise_violations": 0,
+            "relative_rmse": 0.009644218032913768,
+            "rms": 0.00024194381474839562
+          },
+          "quantized_operand": {
+            "finite": true,
+            "max_abs": 0.0002909624753580503,
+            "pointwise_passed": true,
+            "pointwise_violations": 0,
+            "relative_rmse": 0.0022699815155583425,
+            "rms": 5.694933685043927e-05
+          }
+        },
+        "output_bits_equal": true,
+        "pattern": 1
+      }
+    ],
+    "reference_scope": "Metrics recomputed from archived independent FP64 references; global softmax reference not regenerated here"
+  },
+  "capacity_reclaimed": false,
+  "context16k_tested": false,
+  "eager_numeric_passed": false,
+  "legacy_baseline_source_IR_and_cubin_exact_label_preserved_but_invalid": true,
+  "maximum_archive_bytes": 1900771,
+  "original_owner": {
+    "pid": 628305,
+    "same_start": true,
+    "start_ticks": 344402049,
+    "state": "Z"
+  },
+  "original_raw_bytes": 57073824,
+  "original_raw_files": 93,
+  "performance_verified": false,
+  "precision_gate": false,
+  "recorded_device_hard_checks_passed": true,
+  "service_verified": false,
+  "side_stream_verified": false,
+  "statement": "Exact source/ABI/key IR plus actual ASM mechanism; binary equality is not claimed"
+}

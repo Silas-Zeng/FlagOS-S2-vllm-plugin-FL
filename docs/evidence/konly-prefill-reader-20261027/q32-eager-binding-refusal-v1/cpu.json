@@ -1,0 +1,43 @@
+{
+  "CPU_rejected_unknowns": 9,
+  "actual_new_numeric_run": false,
+  "all_original_SHA_verified": true,
+  "archive_sha256": "2a57a09d2dd267a937d66709c64c491c568441d27bc1be22c570b07c176e9948",
+  "baseline_binding": {
+    "ASM_diff": "--- reviewed.asm\n\n+++ actual.asm\n\n@@ -717,15 +717,15 @@\n\n \tml_and_b32 v1, tid, 0x10\n \tml_cmp_eq_u32 tcr, v1, 0x0\n-\tml_mov_b32 v2, 0x5410\n-\tml_mov_b32 v3, 0x7632\n-\tml_csel_b32 v50, v2, v3, tcr\n-\tml_csel_b32 v51, v3, v2, tcr\n+\tml_mov_b32 v2, 0x7632\n+\tml_mov_b32 v3, 0x5410\n+\tml_csel_b32 v50, v3, v2, tcr\n+\tml_csel_b32 v51, v2, v3, tcr\n \tml_shl_b32 v1, v1, 0x1\n \tml_and_b32 v4, tid, 0x20\n \tml_cmp_eq_u32 tcr, v4, 0x0\n \tml_mov_b32 v5, 0x1054\n-\tml_csel_b32 v52, v2, v5, tcr\n-\tml_mov_b32 v2, 0x3276\n-\tml_csel_b32 v53, v3, v2, tcr\n+\tml_csel_b32 v52, v3, v5, tcr\n+\tml_mov_b32 v3, 0x3276\n+\tml_csel_b32 v53, v2, v3, tcr\n \tml_srl_b32 v2, v4, 0x1\n .Ltmp10:\n@@ -2184,5 +2184,5 @@\n\n \t.loc\t3 315 36                        ; standard.py:315:36 @[ triton_attention_helpers.py:413:17 @[ baseline.py:381:44 ] ]\n \tml_slb_shuffle_rtn_b32 v44, v42, v35\n-\tml_mov_b32 v24, 0x5410\n+\tml_mov_b32 v24, 0x1054\n .Ltmp126:\n \t.loc\t3 285 15                        ; standard.py:285:15 @[ standard.py:315:36 @[ triton_attention_helpers.py:413:17 @[ baseline.py:381:44 ] ] ]\n@@ -2199,6 +2199,6 @@\n\n \t.loc\t3 315 36                        ; standard.py:315:36 @[ triton_attention_helpers.py:413:17 @[ baseline.py:381:44 ] ]\n \tml_slb_shuffle_rtn_b32 v45, v39, v36\n-\tml_mov_b32 v36, 0x1054\n-\tml_csel_b32 v24, v24, v36, tcr\n+\tml_mov_b32 v36, 0x5410\n+\tml_csel_b32 v24, v36, v24, tcr\n .Ltmp130:\n \t.loc\t3 285 15                        ; standard.py:285:15 @[ standard.py:315:36 @[ triton_attention_helpers.py:413:17 @[ baseline.py:381:44 ] ] ]",
+    "ASM_text_exact": false,
+    "actual_cubin_exact": true,
+    "actual_strict_audit": {
+      "BF16_matrix_instructions": 64,
+      "actual_I8_operand_hoist_verified": false,
+      "source_IR_and_cubin_exact": true
+    },
+    "contract": "three recorded Q32 roles: exact ABI/source/TTIR/TTGIR/LLVM/cubin plus strict actual audit",
+    "original_numeric_gates_unchanged": true,
+    "precision_gate": false,
+    "source_and_IR_exact": true,
+    "typed_ABI_options_exact": true
+  },
+  "changed_query_rows_and_canary_do_not_change_observed_ABI": true,
+  "correct_d6_exact_cubin": true,
+  "encoder_launches": 0,
+  "numeric_precision_gate_unchanged": true,
+  "original_precision_failure": false,
+  "original_raw_bytes": 1050358,
+  "original_raw_files": 20,
+  "original_refusal_preserved": true,
+  "precision_gate": false,
+  "reader_launches": 0,
+  "role_source_roots": {
+    "baseline": "/workspace/experiments/minicpm-s2/cjj-konly-prefill-q32-compile-v1-20261027/sources",
+    "hoisted": "/workspace/experiments/minicpm-s2/cjj-konly-q32-hoist-compile-v1-20261027/sources",
+    "unhoisted": "/workspace/experiments/minicpm-s2/cjj-konly-prefill-q32-compile-v1-20261027/sources"
+  },
+  "source_typed_ABI_options_unchanged": true,
+  "tiny_CUDA_initialization_was_executed": true,
+  "wrong_bb_reference_path_occurrences": {
+    "llir": 1,
+    "ttgir": 96,
+    "ttir": 97
+  }
+}
