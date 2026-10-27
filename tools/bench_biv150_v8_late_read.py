@@ -7,7 +7,7 @@ import subprocess
 from types import SimpleNamespace
 
 from biv150_v8_late_read_checks import (CANDIDATE_KERNEL, DEPENDENCY, FROZEN_BENCH,
-    FROZEN_KERNEL, ROOT, adapted_benchmark_tree, lowering_check, sha, source_inverse)
+    FROZEN_KERNEL, ROOT, adapted_benchmark_tree, lowering_check, runtime_descriptors, sha, source_inverse)
 
 CASES = {'ragged': (8, 257), 'ragged-long': (8, 257),
          'steady4k': (64, 4096), 'steady16k': (32, 16384)}
@@ -73,6 +73,37 @@ def inspect_case(row):
     return proof
 
 
+def compile_tensors(torch, batch, length, segments):
+    """Uninitialized real-shape views; metadata exactly matches frozen4a.
+
+    Allocation/view/narrow do not launch a kernel. One packed allocation is
+    reused for baseline/V8 compilation, with their respective actual views;
+    the compile-only mode never compares or consumes uninitialized values.
+    """
+    plan = runtime_descriptors(batch, length, segments)
+    packed = torch.empty(tuple(plan['packed_shape']), device='cuda', dtype=torch.bfloat16)
+    key, value = packed.unbind(1)
+    raw_bytes = packed.view(torch.int8).reshape(-1)
+    blocks = plan['packed_shape'][0]
+    encoded_v = torch.as_strided(raw_bytes, (blocks,16,2,128), (16384,256,128,1), 8192)
+    scales = torch.as_strided(packed.view(torch.float32).reshape(-1),
+                             (blocks,16,2), (4096,2,1), 3072)
+    tensors = dict(q=torch.empty(batch,16,128,device='cuda',dtype=torch.bfloat16),
+        k=key, v=value, v8=encoded_v, scale=scales,
+        scratch=torch.empty(batch,16,16,128,device='cuda',dtype=torch.float32).narrow(2,0,segments),
+        maxima=torch.empty(batch,16,16,device='cuda',dtype=torch.float32).narrow(2,0,segments),
+        sums=torch.empty(batch,16,16,device='cuda',dtype=torch.float32).narrow(2,0,segments),
+        table=torch.empty(batch,8192,device='cuda',dtype=torch.int32),
+        lengths=torch.empty(batch,device='cuda',dtype=torch.int32))
+    for name,tensor in tensors.items():
+        expected = plan['tensors'][name]
+        actual = dict(shape=list(tensor.shape), stride=list(tensor.stride()),
+            dtype=str(tensor.dtype).removeprefix('torch.'), storage_offset=tensor.storage_offset(),
+            is_contiguous=tensor.is_contiguous())
+        assert all(actual[key] == expected[key] for key in actual), ('Descriptor mismatch',name,actual,expected)
+    return tensors, plan
+
+
 def compile_only(args):
     device_preflight()
     args.out.mkdir(parents=True, exist_ok=False)
@@ -83,11 +114,6 @@ def compile_only(args):
     # Match the adapted runtime probe's module identity as well as its source.
     own = bench.load_module(CANDIDATE_KERNEL, 'v8_bf16p_experimental_kernels')
     assert base.TARGET_PROGRAMS == 256
-    # Tiny pointer stubs only: stride/constexpr ABI matches the frozen packed
-    # fixture, including its NARROWED (not recontiguous) scratch. No values are
-    # initialized or consumed; these are never launched by compile-only mode.
-    pointers = {name: torch.empty(1, device='cuda', dtype=dtype) for name, dtype in
-                [('bf16', torch.bfloat16), ('i8', torch.int8), ('f32', torch.float32), ('i32', torch.int32)]}
     record = dict(completed=False, compile_only=True, kernel_launches=0, source_commit=head(),
         dependency=DEPENDENCY, source=source_inverse(), precision_gate=False,
         numeric_passed=False, official_score=False, cases=[], errors=[])
@@ -97,28 +123,33 @@ def compile_only(args):
         for name in args.case:
             batch, length = CASES[name]
             segments = base._pick_segments(batch, 2, 16)
-            kw = dict(segm_output_ptr=pointers['f32'], segm_max_ptr=pointers['f32'],
-                segm_expsum_ptr=pointers['f32'], query_ptr=pointers['bf16'], key_cache_ptr=pointers['bf16'],
-                value_cache_ptr=pointers['bf16'], seq_lens_ptr=pointers['i32'], block_table_ptr=pointers['i32'],
+            tensors, descriptors = compile_tensors(torch, batch, length, segments)
+            q,k,v = (tensors[name] for name in ('q','k','v'))
+            scratch,maxima = (tensors[name] for name in ('scratch','maxima'))
+            kw = dict(segm_output_ptr=scratch, segm_max_ptr=maxima,
+                segm_expsum_ptr=tensors['sums'], query_ptr=q, key_cache_ptr=k,
+                value_cache_ptr=v, seq_lens_ptr=tensors['lengths'], block_table_ptr=tensors['table'],
                 softmax_scale_log2e=128**-.5*base.LOG2E, queries_per_kv=8,
-                block_table_stride=8192, query_stride_token=2048, query_stride_head=128,
-                k_stride_block=8192, k_stride_slot=256, k_stride_head=128,
-                v_stride_block=8192, v_stride_slot=256, v_stride_head=128,
-                segment_stride_token=32768, segment_stride_head=2048, segment_stride_segment=128,
-                max_stride_token=256, max_stride_head=16,
+                block_table_stride=tensors['table'].stride(0), query_stride_token=q.stride(0), query_stride_head=q.stride(1),
+                k_stride_block=k.stride(0), k_stride_slot=k.stride(1), k_stride_head=k.stride(2),
+                v_stride_block=v.stride(0), v_stride_slot=v.stride(1), v_stride_head=v.stride(2),
+                segment_stride_token=scratch.stride(0), segment_stride_head=scratch.stride(1), segment_stride_segment=scratch.stride(2),
+                max_stride_token=maxima.stride(0), max_stride_head=maxima.stride(1),
                 HEAD_SIZE=128, PAGE_SIZE=16, ROWS=8, SEGMENTS=segments, num_warps=1, num_stages=1)
             grid = (batch, 2, segments)
-            row = dict(case=name, nominal_length=length, segments=segments, grid=list(grid))
+            row = dict(case=name, nominal_length=length, segments=segments, grid=list(grid), descriptors=descriptors)
             compiled = base._gqa_decode_attention.warmup(grid=grid, **kw)
             row['bf16'] = resources(compiled, args.out/(name+'-bf16'))
-            kw.update(value_cache_ptr=pointers['i8'], value_scale_ptr=pointers['f32'],
-                v_stride_block=16384, scale_stride_block=4096, scale_stride_slot=2, scale_stride_head=1)
+            kw.update(value_cache_ptr=tensors['v8'], value_scale_ptr=tensors['scale'],
+                v_stride_block=tensors['v8'].stride(0), v_stride_slot=tensors['v8'].stride(1), v_stride_head=tensors['v8'].stride(2),
+                scale_stride_block=tensors['scale'].stride(0), scale_stride_slot=tensors['scale'].stride(1), scale_stride_head=tensors['scale'].stride(2))
             for label, module in [('frozen_v8', original), ('late_v8', own)]:
                 compiled = module.gqa_decode_v8_bf16p.warmup(grid=grid, **kw)
                 row[label] = resources(compiled, args.out/(name+'-'+label))
             row['lowering'] = inspect_case(row)
             record['cases'].append(row)
             save(destination, record)
+            del kw,tensors,q,k,v,scratch,maxima
         record['mechanism_passed'] = all(row['lowering']['mechanism_passed'] for row in record['cases'])
         record['completed'] = True
         save(destination, record)

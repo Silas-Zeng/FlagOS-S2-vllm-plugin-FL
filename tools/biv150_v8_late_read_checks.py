@@ -14,6 +14,45 @@ CANDIDATE_KERNEL = ROOT/'tools/kernels/biv150_v8_late_read.py'
 FROZEN_BENCH = ROOT/'tools/bench_biv150_v8_bf16p.py'
 
 
+def runtime_descriptors(batch, length, segments):
+    """Pure CPU description of the pinned4a fixture, including view gaps.
+
+    The SDK can specialize from rank, shape, stride and contiguity as well as
+    explicit scalar arguments. A contiguous1D pointer stub is not equivalent.
+    K/V/scale storage is reusable across sequential compile-only calls because
+    no values are initialized or read by a device kernel in that mode.
+    """
+    assert batch > 0 and length > 0 and 1 <= segments <= 16
+    blocks = batch*((length+15)//16)
+    packed_bytes = blocks*16384
+    def descriptor(shape, stride, dtype, offset, storage_bytes):
+        itemsize = {'bfloat16': 2, 'int8': 1, 'float32': 4, 'int32': 4}[dtype]
+        end = (offset+sum((n-1)*s for n,s in zip(shape,stride))+1)*itemsize
+        assert end <= storage_bytes
+        expected_stride, contiguous = 1, True
+        for n,s in zip(reversed(shape),reversed(stride)):
+            if n > 1:
+                contiguous = contiguous and s == expected_stride
+                expected_stride *= n
+        return dict(shape=list(shape), stride=list(stride), dtype=dtype,
+                    storage_offset=offset, is_contiguous=contiguous,
+                    highest_addressed_byte_exclusive=end, storage_bytes=storage_bytes)
+    result = {
+        'q': descriptor((batch,16,128),(2048,128,1),'bfloat16',0,batch*4096),
+        'k': descriptor((blocks,16,2,128),(8192,256,128,1),'bfloat16',0,packed_bytes),
+        'v': descriptor((blocks,16,2,128),(8192,256,128,1),'bfloat16',4096,packed_bytes),
+        'v8': descriptor((blocks,16,2,128),(16384,256,128,1),'int8',8192,packed_bytes),
+        'scale': descriptor((blocks,16,2),(4096,2,1),'float32',3072,packed_bytes),
+        'scratch': descriptor((batch,16,segments,128),(32768,2048,128,1),'float32',0,batch*131072),
+        'maxima': descriptor((batch,16,segments),(256,16,1),'float32',0,batch*1024),
+        'sums': descriptor((batch,16,segments),(256,16,1),'float32',0,batch*1024),
+        'table': descriptor((batch,8192),(8192,1),'int32',0,batch*32768),
+        'lengths': descriptor((batch,),(1,),'int32',0,batch*4)}
+    return dict(packed_shape=[blocks,2,16,2,128], tensors=result,
+                unique_allocation_bytes=packed_bytes+batch*(4096+131072+2048+32768+4),
+                packed_storage_reused_between_nonexecuted_compilations=True)
+
+
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 

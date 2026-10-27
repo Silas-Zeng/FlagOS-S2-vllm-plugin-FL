@@ -4,12 +4,97 @@ import json
 from pathlib import Path
 import tarfile
 from types import SimpleNamespace
+import math
 
 import biv150_v8_late_read_checks as checks
 import bench_biv150_v8_late_read as probe
 import check_biv150_v8_bf16p_cpu as frozen_checks
 
 EVIDENCE = checks.ROOT/'docs/evidence/v8-late-read-20261027'
+
+
+class MetadataTensor:
+    """Independent CPU view arithmetic, no storage allocation or GPU imports."""
+    sizes = dict(bfloat16=2, int8=1, float32=4, int32=4)
+    def __init__(self, shape, dtype, stride=None, offset=0, storage=None):
+        self.shape, self.kind = tuple(shape), dtype
+        if stride is None:
+            reverse, step = [], 1
+            for size in reversed(shape):
+                reverse.append(step); step *= size
+            stride = tuple(reversed(reverse))
+        self.steps, self.offset = tuple(stride), offset
+        self.storage = math.prod(shape)*self.sizes[dtype] if storage is None else storage
+        end = (offset+sum((n-1)*s for n,s in zip(shape,stride))+1)*self.sizes[dtype]
+        assert end <= self.storage
+    @property
+    def dtype(self):
+        return 'torch.'+self.kind
+    def stride(self, dim=None):
+        return self.steps if dim is None else self.steps[dim]
+    def storage_offset(self):
+        return self.offset
+    def is_contiguous(self):
+        step = 1
+        for n,s in zip(reversed(self.shape),reversed(self.steps)):
+            if n > 1 and s != step:
+                return False
+            step *= n
+        return True
+    def unbind(self, dim):
+        shape = self.shape[:dim]+self.shape[dim+1:]
+        strides = self.steps[:dim]+self.steps[dim+1:]
+        return tuple(MetadataTensor(shape,self.kind,strides,self.offset+i*self.steps[dim],self.storage)
+                     for i in range(self.shape[dim]))
+    def view(self, dtype):
+        old, new = self.sizes[self.kind], self.sizes[dtype]
+        assert self.steps[-1] == 1 and self.shape[-1]*old % new == 0
+        assert all(s*old % new == 0 for s in self.steps[:-1])
+        shape = self.shape[:-1]+(self.shape[-1]*old//new,)
+        stride = tuple(s*old//new for s in self.steps[:-1])+(1,)
+        return MetadataTensor(shape,dtype,stride,self.offset*old//new,self.storage)
+    def reshape(self, size):
+        assert size == -1 and self.is_contiguous()
+        return MetadataTensor((math.prod(self.shape),),self.kind,(1,),self.offset,self.storage)
+    def narrow(self, dim, start, length):
+        assert 0 <= start <= self.shape[dim]-length
+        shape = list(self.shape); shape[dim] = length
+        return MetadataTensor(shape,self.kind,self.steps,self.offset+start*self.steps[dim],self.storage)
+
+
+class MetadataTorch:
+    bfloat16, int8, float32, int32 = 'bfloat16', 'int8', 'float32', 'int32'
+    allocated_bytes = 0
+    def empty(self, *shape, device, dtype):
+        assert device == 'cuda'  # describes intended constructor, never accesses it
+        if len(shape) == 1 and isinstance(shape[0], tuple):
+            shape = shape[0]
+        tensor = MetadataTensor(shape,dtype)
+        self.allocated_bytes += tensor.storage
+        return tensor
+    def as_strided(self, tensor, shape, stride, offset):
+        return MetadataTensor(shape,tensor.kind,stride,offset,tensor.storage)
+
+
+def descriptor_check():
+    records = []
+    for name, batch, length, segments in [('ragged',8,257,16), ('ragged-long',8,257,16),
+                                        ('steady4k',64,4096,2), ('steady16k',32,16384,4)]:
+        metadata = MetadataTorch()
+        tensors,plan = probe.compile_tensors(metadata,batch,length,segments)
+        assert metadata.allocated_bytes == plan['unique_allocation_bytes']
+        assert len(tensors['k'].shape) == len(tensors['v8'].shape) == 4
+        assert len(tensors['scale'].shape) == 3
+        assert not tensors['k'].is_contiguous() and not tensors['v8'].is_contiguous()
+        assert not tensors['scale'].is_contiguous()
+        assert tensors['scratch'].is_contiguous() == (segments == 16)
+        assert tensors['maxima'].is_contiguous() == (segments == 16)
+        assert tensors['scratch'].stride() == (32768,2048,128,1)
+        assert tensors['maxima'].stride() == (256,16,1)
+        assert tensors['k'].storage_offset() == 0 and tensors['v'].storage_offset() == 4096
+        assert tensors['v8'].storage_offset() == 8192 and tensors['scale'].storage_offset() == 3072
+        records.append(dict(case=name, descriptor_plan=plan, no_storage_or_gpu_access=True))
+    return records
 
 
 def originals():
@@ -156,6 +241,7 @@ def check():
     finally:
         probe.validated_proof = old_loader
     return dict(source=checks.source_inverse(), frozen_benchmark_ast_inverse=True,
+        runtime_descriptor_cpu_view_arithmetic=descriptor_check(),
         archive=dict(files=19, bytes=966065, archive_bytes=(EVIDENCE/'b8-ir-originals.tar.gz').stat().st_size,
                      sha256=checks.sha((EVIDENCE/'b8-ir-originals.tar.gz').read_bytes())),
         original_b8_lowering_rejected=old_proof,

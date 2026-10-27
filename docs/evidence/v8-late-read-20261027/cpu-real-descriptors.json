@@ -1,0 +1,1441 @@
+{
+  "source": {
+    "dependency": "4a1f7ddd38e4bcade30e702faba2e9a7cdb5441d",
+    "frozen_sha256": "a7fc539dccbd2e2910538665abf42d0dd6204939d39f1ebeb7a6cac1f992c3ca",
+    "candidate_sha256": "b562d2cdbabf0dba9b7e495fd9b6a48b7dc70f7ca64220fe441efcbdd3cb66c8",
+    "exact_ast_inverse": true,
+    "movements": [
+      {
+        "loads": [
+          "V",
+          "value_scale"
+        ],
+        "from_after": "running_sum",
+        "restored_after": "K",
+        "independent_of_crossed_writes": true
+      },
+      {
+        "loads": [
+          "V",
+          "value_scale"
+        ],
+        "from_after": "running_sum",
+        "restored_after": "K",
+        "independent_of_crossed_writes": true
+      }
+    ],
+    "cache_writes_unchanged": true,
+    "numeric_expression_unchanged": true,
+    "scheduling_proven": false
+  },
+  "frozen_benchmark_ast_inverse": true,
+  "runtime_descriptor_cpu_view_arithmetic": [
+    {
+      "case": "ragged",
+      "descriptor_plan": {
+        "packed_shape": [
+          136,
+          2,
+          16,
+          2,
+          128
+        ],
+        "tensors": {
+          "q": {
+            "shape": [
+              8,
+              16,
+              128
+            ],
+            "stride": [
+              2048,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 32768,
+            "storage_bytes": 32768
+          },
+          "k": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2220032,
+            "storage_bytes": 2228224
+          },
+          "v": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 4096,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2228224,
+            "storage_bytes": 2228224
+          },
+          "v8": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              16384,
+              256,
+              128,
+              1
+            ],
+            "dtype": "int8",
+            "storage_offset": 8192,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2224128,
+            "storage_bytes": 2228224
+          },
+          "scale": {
+            "shape": [
+              136,
+              16,
+              2
+            ],
+            "stride": [
+              4096,
+              2,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 3072,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2224256,
+            "storage_bytes": 2228224
+          },
+          "scratch": {
+            "shape": [
+              8,
+              16,
+              16,
+              128
+            ],
+            "stride": [
+              32768,
+              2048,
+              128,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 1048576,
+            "storage_bytes": 1048576
+          },
+          "maxima": {
+            "shape": [
+              8,
+              16,
+              16
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 8192,
+            "storage_bytes": 8192
+          },
+          "sums": {
+            "shape": [
+              8,
+              16,
+              16
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 8192,
+            "storage_bytes": 8192
+          },
+          "table": {
+            "shape": [
+              8,
+              8192
+            ],
+            "stride": [
+              8192,
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 262144,
+            "storage_bytes": 262144
+          },
+          "lengths": {
+            "shape": [
+              8
+            ],
+            "stride": [
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 32,
+            "storage_bytes": 32
+          }
+        },
+        "unique_allocation_bytes": 3588128,
+        "packed_storage_reused_between_nonexecuted_compilations": true
+      },
+      "no_storage_or_gpu_access": true
+    },
+    {
+      "case": "ragged-long",
+      "descriptor_plan": {
+        "packed_shape": [
+          136,
+          2,
+          16,
+          2,
+          128
+        ],
+        "tensors": {
+          "q": {
+            "shape": [
+              8,
+              16,
+              128
+            ],
+            "stride": [
+              2048,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 32768,
+            "storage_bytes": 32768
+          },
+          "k": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2220032,
+            "storage_bytes": 2228224
+          },
+          "v": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 4096,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2228224,
+            "storage_bytes": 2228224
+          },
+          "v8": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              16384,
+              256,
+              128,
+              1
+            ],
+            "dtype": "int8",
+            "storage_offset": 8192,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2224128,
+            "storage_bytes": 2228224
+          },
+          "scale": {
+            "shape": [
+              136,
+              16,
+              2
+            ],
+            "stride": [
+              4096,
+              2,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 3072,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2224256,
+            "storage_bytes": 2228224
+          },
+          "scratch": {
+            "shape": [
+              8,
+              16,
+              16,
+              128
+            ],
+            "stride": [
+              32768,
+              2048,
+              128,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 1048576,
+            "storage_bytes": 1048576
+          },
+          "maxima": {
+            "shape": [
+              8,
+              16,
+              16
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 8192,
+            "storage_bytes": 8192
+          },
+          "sums": {
+            "shape": [
+              8,
+              16,
+              16
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 8192,
+            "storage_bytes": 8192
+          },
+          "table": {
+            "shape": [
+              8,
+              8192
+            ],
+            "stride": [
+              8192,
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 262144,
+            "storage_bytes": 262144
+          },
+          "lengths": {
+            "shape": [
+              8
+            ],
+            "stride": [
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 32,
+            "storage_bytes": 32
+          }
+        },
+        "unique_allocation_bytes": 3588128,
+        "packed_storage_reused_between_nonexecuted_compilations": true
+      },
+      "no_storage_or_gpu_access": true
+    },
+    {
+      "case": "steady4k",
+      "descriptor_plan": {
+        "packed_shape": [
+          16384,
+          2,
+          16,
+          2,
+          128
+        ],
+        "tensors": {
+          "q": {
+            "shape": [
+              64,
+              16,
+              128
+            ],
+            "stride": [
+              2048,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 262144,
+            "storage_bytes": 262144
+          },
+          "k": {
+            "shape": [
+              16384,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 268427264,
+            "storage_bytes": 268435456
+          },
+          "v": {
+            "shape": [
+              16384,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 4096,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 268435456,
+            "storage_bytes": 268435456
+          },
+          "v8": {
+            "shape": [
+              16384,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              16384,
+              256,
+              128,
+              1
+            ],
+            "dtype": "int8",
+            "storage_offset": 8192,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 268431360,
+            "storage_bytes": 268435456
+          },
+          "scale": {
+            "shape": [
+              16384,
+              16,
+              2
+            ],
+            "stride": [
+              4096,
+              2,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 3072,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 268431488,
+            "storage_bytes": 268435456
+          },
+          "scratch": {
+            "shape": [
+              64,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              32768,
+              2048,
+              128,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 8381440,
+            "storage_bytes": 8388608
+          },
+          "maxima": {
+            "shape": [
+              64,
+              16,
+              2
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 65480,
+            "storage_bytes": 65536
+          },
+          "sums": {
+            "shape": [
+              64,
+              16,
+              2
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 65480,
+            "storage_bytes": 65536
+          },
+          "table": {
+            "shape": [
+              64,
+              8192
+            ],
+            "stride": [
+              8192,
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 2097152,
+            "storage_bytes": 2097152
+          },
+          "lengths": {
+            "shape": [
+              64
+            ],
+            "stride": [
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 256,
+            "storage_bytes": 256
+          }
+        },
+        "unique_allocation_bytes": 279314688,
+        "packed_storage_reused_between_nonexecuted_compilations": true
+      },
+      "no_storage_or_gpu_access": true
+    },
+    {
+      "case": "steady16k",
+      "descriptor_plan": {
+        "packed_shape": [
+          32768,
+          2,
+          16,
+          2,
+          128
+        ],
+        "tensors": {
+          "q": {
+            "shape": [
+              32,
+              16,
+              128
+            ],
+            "stride": [
+              2048,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 131072,
+            "storage_bytes": 131072
+          },
+          "k": {
+            "shape": [
+              32768,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 536862720,
+            "storage_bytes": 536870912
+          },
+          "v": {
+            "shape": [
+              32768,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 4096,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 536870912,
+            "storage_bytes": 536870912
+          },
+          "v8": {
+            "shape": [
+              32768,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              16384,
+              256,
+              128,
+              1
+            ],
+            "dtype": "int8",
+            "storage_offset": 8192,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 536866816,
+            "storage_bytes": 536870912
+          },
+          "scale": {
+            "shape": [
+              32768,
+              16,
+              2
+            ],
+            "stride": [
+              4096,
+              2,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 3072,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 536866944,
+            "storage_bytes": 536870912
+          },
+          "scratch": {
+            "shape": [
+              32,
+              16,
+              4,
+              128
+            ],
+            "stride": [
+              32768,
+              2048,
+              128,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 4188160,
+            "storage_bytes": 4194304
+          },
+          "maxima": {
+            "shape": [
+              32,
+              16,
+              4
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 32720,
+            "storage_bytes": 32768
+          },
+          "sums": {
+            "shape": [
+              32,
+              16,
+              4
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 32720,
+            "storage_bytes": 32768
+          },
+          "table": {
+            "shape": [
+              32,
+              8192
+            ],
+            "stride": [
+              8192,
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 1048576,
+            "storage_bytes": 1048576
+          },
+          "lengths": {
+            "shape": [
+              32
+            ],
+            "stride": [
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 128,
+            "storage_bytes": 128
+          }
+        },
+        "unique_allocation_bytes": 542310528,
+        "packed_storage_reused_between_nonexecuted_compilations": true
+      },
+      "no_storage_or_gpu_access": true
+    }
+  ],
+  "archive": {
+    "files": 19,
+    "bytes": 966065,
+    "archive_bytes": 140713,
+    "sha256": "4476c38ca3564cde83ca6d1b635ffa988f5515341488c999136e5464901fe3c8"
+  },
+  "original_b8_lowering_rejected": {
+    "mechanism_passed": false,
+    "reasons": [
+      "LLVM still has V byte extraction/conversion before softmax finishes",
+      "LLVM still has V byte extraction/conversion before softmax finishes",
+      "ASM still expands/converts packed V before softmax finishes",
+      "ASM still expands/converts packed V before softmax finishes"
+    ],
+    "evidence": {
+      "llvm_paths": [
+        {
+          "qk": [
+            530,
+            531,
+            532,
+            533,
+            534,
+            535,
+            536,
+            537
+          ],
+          "pv": [
+            800,
+            809,
+            818,
+            827,
+            836,
+            845,
+            854,
+            863
+          ],
+          "exp2": [
+            578,
+            579,
+            582,
+            583
+          ],
+          "v_extracts": [
+            462,
+            463,
+            464,
+            465,
+            467,
+            468,
+            469,
+            470,
+            472,
+            473,
+            474,
+            475,
+            477,
+            478,
+            479,
+            480,
+            482,
+            483,
+            484,
+            485,
+            487,
+            488,
+            489,
+            490,
+            492,
+            493,
+            494,
+            495,
+            497,
+            498,
+            499,
+            500
+          ],
+          "v_casts": [
+            656,
+            657,
+            658,
+            659,
+            660,
+            661,
+            662,
+            663,
+            664,
+            665,
+            666,
+            667,
+            668,
+            669,
+            670,
+            671,
+            672,
+            673,
+            674,
+            675,
+            676,
+            677,
+            678,
+            679,
+            680,
+            681,
+            682,
+            683,
+            684,
+            685,
+            686,
+            687
+          ],
+          "v_packed_loads": [
+            461,
+            466,
+            471,
+            476,
+            481,
+            486,
+            491,
+            496
+          ],
+          "scale_loads": [
+            503
+          ],
+          "late": false
+        },
+        {
+          "qk": [
+            1378,
+            1379,
+            1380,
+            1381,
+            1382,
+            1383,
+            1384,
+            1385
+          ],
+          "pv": [
+            1720,
+            1729,
+            1738,
+            1747,
+            1756,
+            1765,
+            1774,
+            1783
+          ],
+          "exp2": [
+            1432,
+            1433,
+            1436,
+            1437
+          ],
+          "v_extracts": [
+            1222,
+            1223,
+            1224,
+            1225,
+            1234,
+            1235,
+            1236,
+            1237,
+            1246,
+            1247,
+            1248,
+            1249,
+            1258,
+            1259,
+            1260,
+            1261,
+            1270,
+            1271,
+            1272,
+            1273,
+            1282,
+            1283,
+            1284,
+            1285,
+            1294,
+            1295,
+            1296,
+            1297,
+            1306,
+            1307,
+            1308,
+            1309
+          ],
+          "v_casts": [
+            1510,
+            1511,
+            1512,
+            1513,
+            1514,
+            1515,
+            1516,
+            1517,
+            1518,
+            1519,
+            1520,
+            1521,
+            1522,
+            1523,
+            1524,
+            1525,
+            1526,
+            1527,
+            1528,
+            1529,
+            1530,
+            1531,
+            1532,
+            1533,
+            1534,
+            1535,
+            1536,
+            1537,
+            1538,
+            1539,
+            1540,
+            1541
+          ],
+          "v_packed_loads": [
+            1217,
+            1229,
+            1241,
+            1253,
+            1265,
+            1277,
+            1289,
+            1301
+          ],
+          "scale_loads": [
+            1318
+          ],
+          "late": false
+        }
+      ],
+      "asm_paths": [
+        {
+          "qk": [
+            633,
+            639,
+            645,
+            651,
+            657,
+            663,
+            669,
+            671
+          ],
+          "pv": [
+            1009,
+            1015,
+            1021,
+            1027,
+            1033,
+            1039,
+            1045,
+            1047
+          ],
+          "exp": [
+            737,
+            748,
+            754,
+            839
+          ],
+          "v_expand": [
+            529,
+            535,
+            536,
+            541,
+            544,
+            549,
+            550,
+            552,
+            557,
+            558,
+            559,
+            565,
+            567,
+            572,
+            574,
+            580,
+            586,
+            587,
+            592,
+            593,
+            595,
+            600,
+            601,
+            602,
+            604,
+            605,
+            606,
+            607,
+            609,
+            610,
+            611,
+            612
+          ],
+          "v_casts": [
+            626,
+            627,
+            827,
+            828,
+            829,
+            830,
+            831,
+            832,
+            847,
+            848,
+            849,
+            877,
+            878,
+            879,
+            880,
+            881,
+            882,
+            883,
+            884,
+            885,
+            886,
+            887,
+            888,
+            889,
+            890,
+            891,
+            892,
+            893,
+            894,
+            895,
+            896,
+            897,
+            898,
+            899,
+            900,
+            901,
+            902,
+            903,
+            904,
+            905,
+            906,
+            907,
+            908,
+            909,
+            910,
+            911,
+            912,
+            913,
+            914,
+            915,
+            916,
+            917,
+            918,
+            919,
+            920,
+            921,
+            922,
+            923,
+            924,
+            925,
+            926,
+            927,
+            928,
+            932
+          ],
+          "v_packed_loads": [
+            517,
+            527,
+            534,
+            542,
+            564,
+            573,
+            585,
+            599
+          ],
+          "scale_loads": [
+            522
+          ],
+          "late": false
+        },
+        {
+          "qk": [
+            1563,
+            1573,
+            1587,
+            1597,
+            1611,
+            1622,
+            1637,
+            1642
+          ],
+          "pv": [
+            1968,
+            1974,
+            1980,
+            1986,
+            1992,
+            1998,
+            2004,
+            2006
+          ],
+          "exp": [
+            1733,
+            1744,
+            1750,
+            1844
+          ],
+          "v_expand": [
+            1490,
+            1491,
+            1492,
+            1493,
+            1494,
+            1495,
+            1496,
+            1497,
+            1498,
+            1499,
+            1500,
+            1501,
+            1502,
+            1503,
+            1504,
+            1505,
+            1506,
+            1507,
+            1508,
+            1509,
+            1510,
+            1511,
+            1512,
+            1513,
+            1514,
+            1515,
+            1516,
+            1517,
+            1518,
+            1519,
+            1520,
+            1521
+          ],
+          "v_casts": [
+            1556,
+            1557,
+            1558,
+            1559,
+            1560,
+            1568,
+            1569,
+            1570,
+            1578,
+            1579,
+            1580,
+            1581,
+            1582,
+            1583,
+            1584,
+            1592,
+            1593,
+            1594,
+            1602,
+            1603,
+            1604,
+            1605,
+            1606,
+            1607,
+            1608,
+            1618,
+            1619,
+            1629,
+            1630,
+            1631,
+            1632,
+            1633,
+            1634,
+            1646,
+            1660,
+            1666,
+            1667,
+            1668,
+            1669,
+            1670,
+            1671,
+            1672,
+            1673,
+            1674,
+            1675,
+            1676,
+            1677,
+            1678,
+            1797,
+            1798,
+            1817,
+            1818,
+            1832,
+            1833,
+            1850,
+            1851,
+            1852,
+            1853,
+            1880,
+            1881,
+            1882,
+            1883,
+            1884,
+            1885
+          ],
+          "v_packed_loads": [
+            1321,
+            1340,
+            1361,
+            1380,
+            1401,
+            1420,
+            1441,
+            1460
+          ],
+          "scale_loads": [
+            1484
+          ],
+          "late": false
+        }
+      ],
+      "static_counts_not_time": {
+        "ml_slb_store_b16": 64,
+        "ml_slb_store_b32x2": 4,
+        "sl_barrier": 9,
+        "ml_cvt_i16_i8": 64,
+        "ml_cvt_bf16_i16": 64,
+        "ml_matrix_mad_f32_bf16_m16n16k16": 32
+      }
+    },
+    "precision_gate": false,
+    "static_instruction_count_is_time": false,
+    "limitation": "Conservative schema check; changed schemas stop for manual review. Resource counts do not prove speed."
+  },
+  "synthetic_parser_fixture_passed": true,
+  "synthetic_fixture_is_executable_ir": false,
+  "rejected_mutants": [
+    "pv_math",
+    "tail_zero",
+    "fake_dependency",
+    "cache_write",
+    "qk_dtype",
+    "writer_alias",
+    "page_step",
+    "module_side_effect",
+    "early_llvm_extract",
+    "early_asm_unpack",
+    "wrong_mma_dtype",
+    "missing_asm",
+    "extra_store",
+    "missing_barrier",
+    "unproven_runtime_hash",
+    "changed_runtime_ir"
+  ],
+  "numeric_policy": {
+    "numeric_failure_retained_in_diagnostic": true,
+    "diagnostic_timing_pairs": 1,
+    "rejected_fault_modes": [
+      [
+        false,
+        "finite"
+      ],
+      [
+        false,
+        "baseline_numeric"
+      ],
+      [
+        false,
+        "codec"
+      ],
+      [
+        false,
+        "slot_mapping"
+      ],
+      [
+        false,
+        "unmapped_bytes"
+      ],
+      [
+        false,
+        "graph_eager"
+      ],
+      [
+        true,
+        "finite"
+      ],
+      [
+        true,
+        "baseline_numeric"
+      ],
+      [
+        true,
+        "codec"
+      ],
+      [
+        true,
+        "slot_mapping"
+      ],
+      [
+        true,
+        "unmapped_bytes"
+      ],
+      [
+        true,
+        "graph_eager"
+      ],
+      [
+        false,
+        "numeric"
+      ]
+    ],
+    "default_numeric_failure_rejected": true,
+    "finite_baseline_pointwise_failure_rejected": true,
+    "cpu_codec_and_weighted_p_effects_separated": true,
+    "gpu_executed": false
+  },
+  "writer_codec": {
+    "rejected_mutants": [
+      "one_code_error_away_from_half_tie",
+      "huge_scale_zero_codes",
+      "wrong_scale_with_self_consistent_codes",
+      "zero_vector_wrong_scale",
+      "missing_min_normal_clamp",
+      "omitted_graph_writer_False",
+      "stale_graph_token_False",
+      "graph_writer_only_K_False",
+      "graph_writer_only_V_False",
+      "unmapped_padding_write_False",
+      "omitted_graph_writer_True",
+      "stale_graph_token_True",
+      "graph_writer_only_K_True",
+      "graph_writer_only_V_True",
+      "unmapped_padding_write_True",
+      "self_consistent_bad_codec_in_graph"
+    ],
+    "permitted_half_tie_differences": 2,
+    "zero_and_min_normal_scale_checked": true,
+    "consumption_gate_limit": 0.02,
+    "zero_code_consumption_rejected": true,
+    "gpu_executed": false
+  },
+  "compile_only_has_no_kernel_launch_site": true,
+  "gpu_executed": false,
+  "jit_executed": false,
+  "actual_specialization_hash_and_ir_checked_before_launch": true,
+  "new_candidate_compiled": false,
+  "mechanism_passed": false,
+  "precision_gate": false,
+  "official_score": false
+}
