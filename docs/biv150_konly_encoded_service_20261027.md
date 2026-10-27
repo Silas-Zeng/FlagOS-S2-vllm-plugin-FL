@@ -1,6 +1,6 @@
 # Default-off private 16KiB encoded-cache service candidate
 
-Base: authenticated API main **dac1b8fb48e7983e48283032efeee9b592c5fbe5**. The first normal fetch attempt timed out at20s low-speed; API and the already present Git object matched DAC. Parent subsequently fetched DAC successfully. No upstream SDK/dependency upgrade. This own branch is a CPU-ready **experimental service binding**, not a service/model/performance pass.
+Base: authenticated API main **dac1b8fb48e7983e48283032efeee9b592c5fbe5**. The first normal fetch attempt timed out at20s low-speed; API and the already present Git object matched DAC. Parent subsequently fetched DAC successfully. No upstream SDK/dependency upgrade. This own branch is an **experimental service binding**. The root-owned three-request smoke below passed recovered startup/request checks; model precision and performance remain unverified.
 
 `VLLM_FL_BIV150_KONLY_ENCODED_SERVICE` defaults0. Off executes no hook import/binding/device work. On installs once in a cold worker before KV allocation/capture. The official serve CLI stays unchanged. Author performed no SSH/JIT/GPU/service work.
 
@@ -52,7 +52,7 @@ Private GPU functions have independent JIT objects/caches. Installed SDK/helper/
 - `BIV150_KONLY_ENCODED_SELECTED`: actual returned compiled hash (or honest null), source digest, profile, query rows and sequence count. These are host/capture events, never fabricated Graph replay counts.
 - `biv150_konly_encoded_service.stats()`: writer/selected/fallback host counts, all observed hashes, claimed allocations and explicit precision/service/hoist limits.
 
-A root-owned fresh fixed-CLI short-request smoke must confirm real startup, actual format writer and selected readers, compute-order selection, source/on fingerprint and cleanup. Capture fresh sources/typed ABI/IR/resources; unknown resource values remain unknown. Startup/ABI failures are not numerical negatives. No new full105/throughput should be claimed without root's independent run. No author device entry is executed here.
+The root-owned359 short-request smoke is recorded below. Further validation must capture fresh sources/typed ABI/IR/resources and actual compute-order selection where eligible; unknown resource values remain unknown. Startup/ABI failures are not numerical negatives. No full105/throughput is claimed. No author device entry is executed here.
 
 ```sh
 PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/materialize_biv150_konly_encoded.py
@@ -68,3 +68,18 @@ The new runtime wraps the actual `ModelRunnerFL.shutdown` and also registers an 
 The file records process PID/start tick, source implementation digest, all host counts and observed kernel hashes, per-shape grid/dtype/stride/offset/selected scalar/capture counts (bounded4096, explicit overflow), and actual returned CompiledKernel metadata/typed signature/constants/attrs/source digest/artifact SHA/resources when available. Unknown metadata/resources remain null or explicitly unrepresented; no Tensor repr/data read occurs. New-hash SELECTED events replace the former first-role-only event, so later compiled variants are visible. The complete shape table distinguishes differently sized launches sharing a compiled hash. These are host/capture observations and still **do not count kernel executions inside Graph replay**. No service numerical or hoist certificate is invented.
 
 CPU tests exercise one-shot shutdown/atexit export, original return preservation, atomic files, shape records, missing-resource unknown status and no-repr serialization. Kernel/writer/codec source and the three original production files remain byte-identical to359 in this instrumentation revision. Its implementation/compile fingerprint changes because runtime source is included. The original359 smoke source/output are untouched.
+
+
+## Existing359 three-request smoke, independently replayed
+
+Root ran the original359 source with the fixed official service CLI on9031, FULL_DECODE_ONLY, GPU memory utilization0.85 and max model length131072. Owner639752/start345722213 completed three HTTP requests (prompt18/18/5137 tokens, each16 completion tokens). The real enabled compile fingerprint and implementation digest matched; all9 existing parent installers remained installed, including large_linear. Actual SELECTED hashes were recorded for writer83, normalized2d128 (capture256/256), decode (capture64/64), and q32 (2048/1). These host/capture events do not close every executed shape or count Graph replay executions; no actual mixed split or compute-order reorder is inferred.
+
+The original external controller incorrectly searched for the writer label `writer` instead of the emitted `writer83`. Its failed state, traceback and logs are preserved unchanged. Root fixed that parser independently and recovered the existing smoke evidence without a GPU rerun. The archive contains all9 records-only raw files (91327 bytes), the separate recovered report, the original and two later controller sources, and the pinned stdlib helper. Generated caches are excluded explicitly; the original remote output is retained. CPU replay checks245 source hashes against Git359, the on/off fingerprint distinction, installer/selected events, response usage and owned cleanup. Native5c/v6 initial descriptors are checked; the remote after-run source/native/snapshot recheck is a **Root attestation plus proof SHA**, because its raw proof payload is not in this local records archive.
+
+The deterministic39,693-byte tar has SHA256 `2fcf47081679219b1c2d4b87818ac026634eb2e8d391e8ac2007f5d5c160f97f`. Its member manifest and per-member SHA are under `docs/evidence/konly-encoded-service-20261027/smoke-records-v1/`; the separate CPU result is `smoke-replay-v1.json`. No database, model weights or generated compile caches are included. This is startup/short-request evidence only: **no Math105, precision, throughput or TTFT result**. The later4a770 final-statistics instrumentation has not been device-tested by this359 run.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_encoded_smoke_evidence.py
+```
+
+The capture256/256 normalizedBM128 route differs from stock raw2D's compact decode geometry. It is format-aware, but its padding/work and high-N performance need measurement before throughput qualification. Current Q32 remains unhoisted. A new live-source/ABI proof is required for any later override; the old component overlay is not licensed by this smoke hash alone.
