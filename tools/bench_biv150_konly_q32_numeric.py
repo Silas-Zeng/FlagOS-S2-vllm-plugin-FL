@@ -54,7 +54,7 @@ def bind_record(record,expected,role):
     if changed: raise ValueError(role+': unknown actual specialization/ABI/options/IR; retained diff='+json.dumps(changed,sort_keys=True))
 
 
-def verify_exact_machine(record,expected,role,observed,reviewed):
+def verify_exact_machine(record,expected,role,observed,reviewed,*,require_cubin_exact=True):
     """Limited three-role Q32 contract: exact source/IR/cubin, audited ASM sidecar.
 
     A printer-only ASM difference cannot license different actual machine bytes.
@@ -62,10 +62,13 @@ def verify_exact_machine(record,expected,role,observed,reviewed):
     """
     if role not in ('baseline','unhoisted','hoisted'): raise ValueError('Unknown exact-machine role')
     changed=differences(record,expected)
-    if set(changed)-{'asm'}: raise ValueError(role+': source/ABI/options/IR/cubin differs; '+json.dumps(changed,sort_keys=True))
+    permitted={'asm'} if require_cubin_exact else {'asm','cubin'}
+    if set(changed)-permitted: raise ValueError(role+': source/ABI/options/required IR differs; '+json.dumps(changed,sort_keys=True))
     for ext in ('source','ttir','ttgir','llir','asm','cubin'):
         if actual.old.sha(observed[ext])!=record['files'][ext]['sha256'] or actual.old.sha(reviewed[ext])!=expected['files'][ext]['sha256']:
             raise ValueError('Exported/reviewed '+ext+' is not its recorded original')
+    if not require_cubin_exact and (len(observed['cubin'])<64 or observed['cubin'][:6]!=b'\x7fELF\x02\x01'):
+        raise ValueError('Missing/unknown actual target cubin format')
     assembly=observed['asm'].decode();old_assembly=reviewed['asm'].decode()
     def instructions(text):
         return [s.strip() for s in text.splitlines() if s.strip().startswith(('ml_','sl_'))]
@@ -87,10 +90,22 @@ def verify_exact_machine(record,expected,role,observed,reviewed):
         audit=dict(BF16_matrix_instructions=count,source_IR_and_cubin_exact=True,actual_I8_operand_hoist_verified=False)
     diff='\n'.join(difflib.unified_diff(old_assembly.splitlines(),assembly.splitlines(),fromfile='reviewed.asm',tofile='actual.asm',n=2))
     if len(diff.encode())>65536: raise ValueError('ASM sidecar exceeds this bounded review scope')
-    return dict(contract='three recorded Q32 roles: exact ABI/source/TTIR/TTGIR/LLVM/cubin plus strict actual audit',
+    proof=dict(contract='three recorded Q32 roles: exact ABI/source/TTIR/TTGIR/LLVM/cubin plus strict actual audit',
                 actual_cubin_exact=True,typed_ABI_options_exact=True,source_and_IR_exact=True,
                 ASM_text_exact=observed['asm']==reviewed['asm'],ASM_diff=diff,actual_strict_audit=audit,
                 original_numeric_gates_unchanged=True,precision_gate=False)
+    if not require_cubin_exact:
+        proof.update(contract='three Q32 roles: exact source/typed ABI/options/TTIR/TTGIR/LLVM plus actual ASM audit; numerical validation required',
+                     actual_cubin_exact=observed['cubin']==reviewed['cubin'],cubin_byte_equality_required=False,
+                     actual_cubin_sha256=actual.old.sha(observed['cubin']),reviewed_cubin_sha256=actual.old.sha(reviewed['cubin']),
+                     backend_binary_equivalence_claimed=False,numerical_validation_required=True)
+    return proof
+
+
+def verify_actual_compilation(record,expected,role,observed,reviewed):
+    # Explicit v3 contract. Preserve the historical exact-machine default and
+    # its replay; compiler output bytes alone do not prove runtime correctness.
+    return verify_exact_machine(record,expected,role,observed,reviewed,require_cubin_exact=False)
 
 
 def run(args,payload):
@@ -166,8 +181,8 @@ def run(args,payload):
             for ext in ('source','ttir','ttgir','llir','asm','cubin'):
                 (directory/('reviewed.'+ext)).write_bytes(reviewed[role][ext])
             observed={ext:(directory/('actual.'+ext)).read_bytes() for ext in reviewed[role]}
-            audit=verify_exact_machine(record,expected[role],role,observed,reviewed[role])
-            parent.save(directory/'exact-machine-binding.json',audit)
+            audit=verify_actual_compilation(record,expected[role],role,observed,reviewed[role])
+            parent.save(directory/'actual-compilation-binding.json',audit)
             (directory/'actual-vs-reviewed-ASM.diff').write_text(audit['ASM_diff'])
             kernel=compiled[role]
             kernel._init_handles();resources=parent.observed_resources(kernel);resources['handles_explicitly_initialized']=True

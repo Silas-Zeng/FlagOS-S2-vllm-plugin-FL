@@ -35,13 +35,16 @@ initialization is GPU work outside numerical checking, not zero-launch compile.
 
 Actual2048-row Tensor descriptors are allocated and all three roles warm up
 before any encoder/reader launch. They must match reviewed kernel hashes, typed
-ABI/options, source and TTIR/TTGIR/LLVM/cubin bytes. All warmups first export
+ABI/options, source and TTIR/TTGIR/LLVM bytes. All warmups first export
 all actual files and record, then saves the full expected record and a separate
 expected/actual difference JSON. Unknown changed specialization stops with those
 actual bytes retained; nothing is replaced to match the proof. Printed ASM is
-also retained and compared. A bounded ASM-text difference requires exact cubin,
-exact preceding IR/ABI/options, the same instruction/control sequence and each
-role's strict actual audit; see the separate9f binding-refusal report. The
+also retained and compared. After the separately archived6439 backend variation,
+the explicit v3 numerical entry retains actual cubin/SHA without requiring
+cross-run byte equality. It requires exact preceding IR/ABI/options, the same
+instruction/control sequence and each role's strict actual audit; see the
+Q32 backend-variation report. This admits real numerical checking, not a claim
+of machine-code equivalence. The
 hoisted actual positive auditor also reruns. Handle
 initialization records known positive register/warp fields and known zero spills.
 No resource decline is interpreted as performance.
