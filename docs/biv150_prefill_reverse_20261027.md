@@ -278,3 +278,51 @@ any GPU attempt; default invocation below imports no Torch/Triton or GPU driver:
   --target-sources docs/evidence/prefill-reverse-20261027/host-binding-v1/actual-target-sources.tar.gz \
   --out /tmp/NEW_TARGET_CPU_PREFLIGHT_DIRECTORY
 ```
+
+## Completed e684 host-binding component screen
+
+Root's actual target3.12 default CPU preflight passed before the e684 component
+attempt. Owner624624/start342942814 is recorded same-start Z. The requested two
+cases completed with errors=[], parent restored and requested component gates
+passed. The original `full_numerical_matrix_verified` remains **false**; this is
+not the complete shape matrix, model105 or service throughput/TTFT acceptance.
+
+| Requested component | Wall AB/BA/AB ratios | Wall median | Event median |
+|---|---|---|---|
+| Q2048/KV4096, reverse | 1.0512968721960483 / .9788574640839791 / .9715321071846305 | .9788574640839791 | 1.0401160131016387 |
+| Q2048/KV16384, original parent | .9966925738197613 / .9948812711721242 / 1.0054336550269167 | .9966925738197613 | .9967260885414839 |
+
+Two changed-data patterns and changed actual KV4095/16383 passed exact direct,
+selected-kernel Graph, actual SDK generic capture fallback, stale-contract,
+side-stream, input/canary and sampled CPU reference guards. Actual typed ABI,
+target/options and Q-hoist records passed. Baseline and selected binary have
+observed113regs/0spills, compiler shared65536; direct driver local/shared/occupancy
+remain unqueried. Long context retained baseline binary93f15053… and did not
+touch the reverse manager. Source381987… and all e684 guards remain unchanged.
+
+All75 original files5902115B plus manifest are in
+`host-binding-completed-v2/v2-raw.tar.gz`, 730748B, SHA256
+`5d8a00a8adda24d5658a391627457f15d51ba4661bd3c692b92cc72e82c14f7e`.
+Summary SHA256 `b067baf3d1b31ea30412ad46756120a192591e1aff82b6b6f5531d9370e20d17`.
+Although the run manifest lists private cache as excluded, the downloaded75
+originals include it; this archive preserves every downloaded file, including
+opaque launcher SO/cubin/cache bytes, without loading them. CPU replay verifies
+every SHA, recomputes all rounds/medians and resource comparison, and checks the
+recorded numerical/Graph/ABI/Q-hoist gates. It does not rerun device comparisons
+or claim a new independent IR-transform proof. Six malformed-result faults
+(matrix, bitwise, reference, Graph, ratio, cleanup) reject. Unpack then replay:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/archive_biv150_prefill_host_binding_cpu.py \
+  --snapshot SNAPSHOT_DIRECTORY --out NEW_DIRECTORY
+```
+
+4K candidate wall-minus-event residual is .2094/.3364/.3365ms per call versus
+baseline .2361/.2328/.2312ms. These residuals are not a CPU phase profile: event
+and wall ranges include different synchronization/host intervals. The raw run
+does not identify GC, scheduler or individual-call costs. The private adapter
+adds repeated descriptor checks, dataclass/context allocations and per-call
+diagnostic records; those are concrete optimization targets, not a proven
+causal explanation of the late-round difference. The event result keeps this
+direction worth investigating, but there is no demonstrated wall/service gain.
+16K's small differences are not pursued as a stable effect.

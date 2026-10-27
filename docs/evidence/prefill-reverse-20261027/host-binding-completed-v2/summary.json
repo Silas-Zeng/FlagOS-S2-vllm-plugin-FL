@@ -1,0 +1,202 @@
+{
+  "cpu_only": true,
+  "new_GPU_execution": false,
+  "source_commit": "e684ff8e190822771080d5205c262064d58bf900",
+  "production_parent": "56f1838192abc940b3fb9accef490022ac125000",
+  "cases": [
+    {
+      "name": "chunk4k",
+      "query": 2048,
+      "actual_kv": 4096,
+      "cpu_upper": 4096,
+      "route": "reverse",
+      "rounds": [
+        {
+          "iteration": 0,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 1.688122923951596,
+          "baseline_event_ms": 1.452070951461792,
+          "candidate_wall_ms": 1.6057528264354914,
+          "candidate_event_ms": 1.3963162899017334,
+          "wall_speedup": 1.0512968721960483,
+          "event_speedup": 1.039929822464495
+        },
+        {
+          "iteration": 1,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_wall_ms": 1.7281706095673144,
+          "candidate_event_ms": 1.3917911052703857,
+          "baseline_wall_ms": 1.6916327003855258,
+          "baseline_event_ms": 1.4588803052902222,
+          "wall_speedup": 0.9788574640839791,
+          "event_speedup": 1.0482034981871815
+        },
+        {
+          "iteration": 2,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 1.68210593983531,
+          "baseline_event_ms": 1.450878620147705,
+          "candidate_wall_ms": 1.7313951102551073,
+          "candidate_event_ms": 1.394919991493225,
+          "wall_speedup": 0.9715321071846305,
+          "event_speedup": 1.0401160131016387
+        }
+      ],
+      "median_wall_speedup": 0.9788574640839791,
+      "median_event_speedup": 1.0401160131016387,
+      "baseline_hash": "93f15053d6938ba3bc1db05f6717f3f6ee0f46cf245b025c0ce4d1515ce66669",
+      "selected_hash": "eda43b20c5ab91ea85f3f57b04f1c805d1393bee7494c4cc2630eb64e1be581f",
+      "n_regs": 113,
+      "n_spills": 0,
+      "compiler_shared": 65536,
+      "resource_guard": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      },
+      "recorded_numeric_Graph_side_stale_typed_ABI_Qhoist_gates_passed": true
+    },
+    {
+      "name": "chunk16k",
+      "query": 2048,
+      "actual_kv": 16384,
+      "cpu_upper": 16384,
+      "route": "parent",
+      "rounds": [
+        {
+          "iteration": 0,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 6.805876357248053,
+          "baseline_event_ms": 6.5702290534973145,
+          "candidate_wall_ms": 6.828460987890139,
+          "candidate_event_ms": 6.580305099487305,
+          "wall_speedup": 0.9966925738197613,
+          "event_speedup": 0.9984687570199784
+        },
+        {
+          "iteration": 1,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_wall_ms": 6.821926275733858,
+          "candidate_event_ms": 6.576860427856445,
+          "baseline_wall_ms": 6.7870066850446165,
+          "baseline_event_ms": 6.555328369140625,
+          "wall_speedup": 0.9948812711721242,
+          "event_speedup": 0.9967260885414839
+        },
+        {
+          "iteration": 2,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_wall_ms": 6.78395212162286,
+          "baseline_event_ms": 6.551604270935059,
+          "candidate_wall_ms": 6.7472896771505475,
+          "candidate_event_ms": 6.5825676918029785,
+          "wall_speedup": 1.0054336550269167,
+          "event_speedup": 0.9952961485065352
+        }
+      ],
+      "median_wall_speedup": 0.9966925738197613,
+      "median_event_speedup": 0.9967260885414839,
+      "baseline_hash": "93f15053d6938ba3bc1db05f6717f3f6ee0f46cf245b025c0ce4d1515ce66669",
+      "selected_hash": "93f15053d6938ba3bc1db05f6717f3f6ee0f46cf245b025c0ce4d1515ce66669",
+      "n_regs": 113,
+      "n_spills": 0,
+      "compiler_shared": 65536,
+      "resource_guard": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      },
+      "recorded_numeric_Graph_side_stale_typed_ABI_Qhoist_gates_passed": true
+    }
+  ],
+  "requested_component_gates_passed": true,
+  "full_numerical_matrix_verified": false,
+  "numeric_device_comparisons_reexecuted": false,
+  "saved_actual_files_SHA_verified": true,
+  "new_independent_IR_transform_validation_claimed": false,
+  "model105_evaluated": false,
+  "service_evaluated": false,
+  "official_score": false,
+  "model_precision_gate": false,
+  "conclusion": "Two requested component cases passed. 4K event ratio is positive but wall median is below1; no host/service gain established. 16K uses the original parent binary. No claim of a full numerical matrix or stable effect.",
+  "late_round_host_attribution": "Raw rounds do not identify CPU phases, GC or scheduler latency; structural extra Python work is a candidate cause, not a measured causal attribution.",
+  "original_manifest_sha256": "96fdfc661dd71802c56baff09a33b3f925affdaa2f36458b4b69f5121212f9f4",
+  "original_result_sha256": "64bb5bde325aacd32853818e5a1a178990bca4becdf354337bab277ffc6a185b",
+  "raw_files": 75,
+  "raw_bytes": 5902115,
+  "original_owner": {
+    "pid": 624624,
+    "start_ticks": 342942814,
+    "same_start": true,
+    "state": "Z"
+  },
+  "rejected_faults": [
+    "matrix",
+    "bitwise",
+    "reference",
+    "graph",
+    "ratio",
+    "cleanup"
+  ],
+  "opaque_private_cache_preserved": true,
+  "private_cache_or_binary_loaded": false,
+  "note": "Run manifest lists private cache as excluded, but this downloaded snapshot includes it. All75 downloaded originals are preserved, including opaque launch SO/cubin/cache files."
+}
