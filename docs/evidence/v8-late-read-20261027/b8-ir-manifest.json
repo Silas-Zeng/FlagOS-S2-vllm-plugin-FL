@@ -1,0 +1,223 @@
+{
+  "source_head": "b8a4d1d07214307d26580b318ed5ad4749f688cd",
+  "process": {
+    "state": "Z",
+    "start_ticks": 340521337
+  },
+  "metadata": [
+    {
+      "path": "/workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/2JEBXH35XEAAQPQ73PBQPLOV6L3GWWRU7Y5R55WFO7NWT2OJ45QA/gqa_decode_v8_bf16p.json",
+      "metadata": {
+        "hash": "d2481b9f7db900083e1fdbc307add5f2f66b5a34fe3b1ef6c577db69e9c9e760",
+        "target": {
+          "backend": "corex",
+          "arch": 71,
+          "warp_size": 64
+        },
+        "num_warps": 1,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "warp_size": 64,
+        "maxnreg": null,
+        "ptx_version": null,
+        "ptx_options": null,
+        "ir_override": null,
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "supported_fp8_dtypes": [
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "deprecated_fp8_dot_operand_dtypes": [],
+        "default_dot_input_precision": "tf32",
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "max_num_imprecise_acc_default": 0,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+          ]
+        ],
+        "debug": false,
+        "backend_name": "corex",
+        "sanitize_overflow": true,
+        "arch": "sm71",
+        "instrumentation_mode": "",
+        "use_sme": 79,
+        "triton_version": "3.6.0",
+        "tensordesc_meta": [],
+        "shared": 4096,
+        "tmem_size": null,
+        "global_scratch_size": 0,
+        "global_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "profile_scratch_align": 1,
+        "name": "gqa_decode_v8_bf16p"
+      }
+    },
+    {
+      "path": "/workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/YRHNJSVAJAYU6R26KM5EPUDSZBDATB7JYQBWUMQX7PMVL5SE74MQ/_gqa_decode_attention.json",
+      "metadata": {
+        "hash": "c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19",
+        "target": {
+          "backend": "corex",
+          "arch": 71,
+          "warp_size": 64
+        },
+        "num_warps": 1,
+        "num_ctas": 1,
+        "num_stages": 1,
+        "warp_size": 64,
+        "maxnreg": null,
+        "ptx_version": null,
+        "ptx_options": null,
+        "ir_override": null,
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "supported_fp8_dtypes": [
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "deprecated_fp8_dot_operand_dtypes": [],
+        "default_dot_input_precision": "tf32",
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "max_num_imprecise_acc_default": 0,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+          ]
+        ],
+        "debug": false,
+        "backend_name": "corex",
+        "sanitize_overflow": true,
+        "arch": "sm71",
+        "instrumentation_mode": "",
+        "use_sme": 15,
+        "triton_version": "3.6.0",
+        "tensordesc_meta": [],
+        "shared": 8192,
+        "tmem_size": null,
+        "global_scratch_size": 0,
+        "global_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "profile_scratch_align": 1,
+        "name": "_gqa_decode_attention"
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/result.json",
+      "bytes": 8526,
+      "sha256": "f7b0b049f9f2aa8a8fb88297565a5e915f1ebb9f6da5d95e26174cc65c1af8df"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19/actual.asm",
+      "bytes": 95361,
+      "sha256": "933a2b514ec9f2d0d3316e618ae22e7388256316750f55ff7ec84d045a3f9dae"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19/actual.cubin",
+      "bytes": 16128,
+      "sha256": "85fc6c641a5cfa1601b6bed849ab9a14c972b74e7119c1941e0d4f63d17d35f8"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19/actual.llir",
+      "bytes": 129046,
+      "sha256": "8603f57e3dd64aa079011ee162ff5e8b123f9063bdcb0457af71347d0e22ec2d"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19/actual.ttgir",
+      "bytes": 58458,
+      "sha256": "463c889f067a7399c5c0086d608800e9118183d42943ab0130c7476ab6dab339"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/d2481b9f7db900083e1fdbc307add5f2f66b5a34fe3b1ef6c577db69e9c9e760/actual.asm",
+      "bytes": 108088,
+      "sha256": "9ff92f075bd0ea9445f4a952bd9432e34840f8aed1ea4696e024b951038661d0"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/d2481b9f7db900083e1fdbc307add5f2f66b5a34fe3b1ef6c577db69e9c9e760/actual.cubin",
+      "bytes": 18864,
+      "sha256": "45ed6c226e0096533b9cb426eabd4c7c08c5ce6bebee39b80e5deffabf518e05"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/d2481b9f7db900083e1fdbc307add5f2f66b5a34fe3b1ef6c577db69e9c9e760/actual.llir",
+      "bytes": 142739,
+      "sha256": "b5076a9c45d764a1cce8ab10157b0cc7d657e0e14e276aae53414c8cc3cc99ac"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027/compiler-ir/d2481b9f7db900083e1fdbc307add5f2f66b5a34fe3b1ef6c577db69e9c9e760/actual.ttgir",
+      "bytes": 65268,
+      "sha256": "b7dac9568f405038bd399f8369be13de88be1a9f9a9956c542f872919c82f3aa"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/code/cjj-v8-bf16p-ragged-v2-20261027/tools/kernels/biv150_v8_bf16p.py",
+      "bytes": 9045,
+      "sha256": "a7fc539dccbd2e2910538665abf42d0dd6204939d39f1ebeb7a6cac1f992c3ca"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/code/cjj-v8-bf16p-ragged-v2-20261027/vllm_fl/patches/biv150_gqa_decode.py",
+      "bytes": 23801,
+      "sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/code/cjj-v8-bf16p-ragged-v2-20261027/tools/bench_biv150_v8_bf16p.py",
+      "bytes": 23462,
+      "sha256": "4d06eb098c6731a82fd7d36ea481e903e1c04b41d52a0fa970ec006db1c7a549"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/exports/cjj-v8-bf16p-ragged-v2-20261027-owner.json",
+      "bytes": 929,
+      "sha256": "1c5bce959693b8455fc7d098d5e559b3b23632f368d5ceb069b86f5ff0e97bc7"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/2JEBXH35XEAAQPQ73PBQPLOV6L3GWWRU7Y5R55WFO7NWT2OJ45QA/gqa_decode_v8_bf16p.json",
+      "bytes": 1084,
+      "sha256": "4253199a9f77fec2667fa7f68cb1a7fd8b0a19bb45d9518e6cdb1a89cd317d33"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/2JEBXH35XEAAQPQ73PBQPLOV6L3GWWRU7Y5R55WFO7NWT2OJ45QA/gqa_decode_v8_bf16p.ttir",
+      "bytes": 55731,
+      "sha256": "102011a75d04eb3fc95df765d76b1509fa36808c2ec45eeb727a80b6b4b45f44"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/2JEBXH35XEAAQPQ73PBQPLOV6L3GWWRU7Y5R55WFO7NWT2OJ45QA/gqa_decode_v8_bf16p.source",
+      "bytes": 83971,
+      "sha256": "19db20e8de0a32af0b8739df74debd4641d5c9baf49af973697038cfd950f8fd"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/YRHNJSVAJAYU6R26KM5EPUDSZBDATB7JYQBWUMQX7PMVL5SE74MQ/_gqa_decode_attention.json",
+      "bytes": 1086,
+      "sha256": "205c02b381729ff6dc25c9e2998c454cf6a9ac33d691d538f09e4d2a0ab4e27e"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/YRHNJSVAJAYU6R26KM5EPUDSZBDATB7JYQBWUMQX7PMVL5SE74MQ/_gqa_decode_attention.ttir",
+      "bytes": 50414,
+      "sha256": "022a6e62539148ce9411ae7ae478fd9b83e332d1ed3f1a7d5337306775594541"
+    },
+    {
+      "path": "workspace/experiments/minicpm-s2/cjj-v8-bf16p-ragged-v2-20261027-triton/YRHNJSVAJAYU6R26KM5EPUDSZBDATB7JYQBWUMQX7PMVL5SE74MQ/_gqa_decode_attention.source",
+      "bytes": 74064,
+      "sha256": "86ea2e8bd198f1305d105aff9dd43a42ce3f8b1b645bad39cdda49f116ee3313"
+    }
+  ],
+  "original_download_manifest_sha256": "bc87410261b0325ffaa9967a4cc01d44d15fe3e74a4b3a4eaabecf6f5ba34162"
+}
