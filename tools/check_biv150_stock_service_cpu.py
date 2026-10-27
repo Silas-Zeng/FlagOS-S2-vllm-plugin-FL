@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Source/default-off/certificate contracts only; synthetic units are not device evidence."""
 import ast
+import builtins
 import copy
 import hashlib
 import contextlib
@@ -18,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MAIN = '56f1838192abc940b3fb9accef490022ac125000'
 ADDITION = '''
 # Decode-only accuracy diagnostic; all stock BF16 cache paths remain unchanged.
-if os.environ.get("VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC", "0") == "1":
+if __import__("os").environ.get("VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC", "0") == "1":
     if getattr(current_platform, "vendor_name", None) != "iluvatar":
         raise RuntimeError("Stock QK8 diagnostic requires the audited iluvatar target")
     from vllm_fl.patches.biv150_stock_qk8_diagnostic import install as _install_stock_qk8_diagnostic
@@ -120,6 +121,36 @@ def run():
     assert selected.snapshot()['original_fallback_calls'] == 3
     assert selected.snapshot()['graph_replays_not_counted']
     runner = (ROOT / 'vllm_fl/worker/model_runner.py').read_text()
+    # Execute the actual production tail, not just an inverse/string surrogate.
+    # Neither namespace has an os binding; only stdlib/env and installer are mocked.
+    actual_tail = runner[runner.index(ADDITION):]
+    assert actual_tail == ADDITION
+    for enabled in (False, True):
+        calls = []
+        def installer():
+            calls.append('install'); return dict(installed=True, cpu_fixture_only=True)
+        def importer(name, globals=None, locals=None, fromlist=(), level=0):
+            calls.append(name)
+            if name == 'os':
+                return SimpleNamespace(environ={hook.ENABLE: '1'} if enabled else {})
+            assert name == 'vllm_fl.patches.biv150_stock_qk8_diagnostic' and fromlist == ('install',)
+            return SimpleNamespace(install=installer)
+        namespace = dict(current_platform=SimpleNamespace(vendor_name='iluvatar'),
+                         __builtins__=dict(vars(builtins), __import__=importer))
+        assert 'os' not in namespace
+        with contextlib.redirect_stdout(io.StringIO()) as output:
+            exec(compile(actual_tail, 'actual-worker-tail', 'exec'), namespace)
+        assert calls == (['os', 'vllm_fl.patches.biv150_stock_qk8_diagnostic', 'install'] if enabled else ['os'])
+        assert bool(output.getvalue()) == enabled and 'os' not in namespace
+        assert ('_install_stock_qk8_diagnostic' in namespace) == enabled
+        # The original unbound-os production bug must fail this execution check.
+        try:
+            exec(compile(actual_tail.replace('__import__("os").environ', 'os.environ'), 'old-worker-tail', 'exec'),
+                 dict(current_platform=namespace['current_platform'], __builtins__=namespace['__builtins__']))
+        except NameError:
+            pass
+        else:
+            raise AssertionError('Missing-os startup mutant did not fail')
     assert original_runner(runner) == subprocess.check_output(['git', '-C', str(ROOT), 'show', MAIN + ':vllm_fl/worker/model_runner.py'], text=True)
     semantics = (ROOT / 'vllm_fl/compile_semantics.py').read_text()
     assert original_semantics(semantics) == subprocess.check_output(['git', '-C', str(ROOT), 'show', MAIN + ':vllm_fl/compile_semantics.py'], text=True)
@@ -142,6 +173,7 @@ def run():
                 default_off_zero_hook_actions=True, missing_certificate_refused_before_binding=True,
                 synthetic_certificate_schema_only=True, negative_contracts=len(negatives),
                 runner_exact_inverse=True, unique_runner_pin_updated=True, semantics_exact_inverse=True,
+                actual_tail_exec_off_and_on_without_os_binding=True, missing_os_startup_mutant_rejected=True,
                 cache_key_default_equals_off=True, cache_key_on_separate=True, native_default_preserved=True,
                 counter_unit_distinguishes_selected_and_generic_fallback=True,
                 device_micro_verified=False, service_installed=False, gpu_executed=False)

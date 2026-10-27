@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "local_pins": [
+    "vllm_fl.patches.biv150_cpu_metadata",
+    "vllm_fl.patches.biv150_mixed_decode",
+    "vllm_fl.patches.biv150_gqa_decode",
+    "vllm_fl.patches.biv150_prefill_normalized",
+    "vllm_fl.patches.biv150_q_fragment_service",
+    "vllm_fl.patches.biv150_prefill_q32",
+    "vllm_fl.patches.biv150_prefill_multi2"
+  ],
+  "runner_inverse_exact": true,
+  "qfragment_inverse_exact": true,
+  "multi2_installer_inverse_exact": true,
+  "compile_semantics_inverse_exact": true,
+  "limits": "CPU source identity only; live closure/cold scope and service numerical/performance validation still required."
+}

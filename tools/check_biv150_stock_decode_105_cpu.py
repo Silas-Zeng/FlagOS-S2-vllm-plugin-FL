@@ -138,7 +138,8 @@ def run():
                 default_plan_no_service=True, env_cleanup_then_explicit_flag=True, production_defaults_not_disabled=True,
                 sqlite_readonly_and_sha_guards=True, no_unowned_or_reused_pid_signal=True, no_group_signal=True,
                 no_selection_or_wrong_on_fingerprint_refused=True, synthetic_105_rows_only=True,
-                frozen_867_production_unchanged=True, real_math105_executed=False, service_started=False, gpu_executed=False)
+                frozen_production_unchanged=True, frozen_production=tool.FROZEN_PRODUCTION,
+                real_math105_executed=False, service_started=False, gpu_executed=False)
 
 
 if __name__ == '__main__':
