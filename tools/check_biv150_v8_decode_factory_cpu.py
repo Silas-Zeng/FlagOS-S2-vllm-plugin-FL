@@ -2,11 +2,10 @@
 import ast
 import hashlib
 import json
-from pathlib import Path
 import struct
 import sys
 
-from biv150_v8_decode_factory import (BIAS_EXPRESSION, FIXTURE, INSERT, MAIN,
+from biv150_v8_decode_factory import (FIXTURE, INSERT, MAIN,
     MAIN_GQA_SHA, ROOT, V8_COMMIT, code_address, fp32_bias_byte, make_vdecode,
     sha, validate_emitted)
 
@@ -24,6 +23,24 @@ def check():
     assert 'torch' not in sys.modules and 'triton' not in sys.modules
     original = FIXTURE.read_bytes()
     generated,proof = make_vdecode()
+    # Derive the arithmetic from the ACTUAL emitted AST, not just a separately
+    # handwritten scalar model. Cast-chain/bitcast semantics are explicit;
+    # numeric equality below uses an independent signed-byte oracle.
+    emitted = [n.value for n in ast.walk(ast.parse(generated)) if isinstance(n,ast.Assign)
+               and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id=='V'
+               and isinstance(n.value,ast.BinOp)]
+    assert len(emitted)==2 and ast.dump(emitted[0])==ast.dump(emitted[1])
+    expression = emitted[0]
+    assert isinstance(expression.op,ast.Sub) and isinstance(expression.right,ast.Constant)
+    cast = expression.left
+    assert ast.unparse(cast.func).endswith('.to') and ast.unparse(cast.args[0])=='tl.float32'
+    assert [(k.arg,ast.unparse(k.value)) for k in cast.keywords]==[('bitcast','True')]
+    word = cast.func.value
+    assert isinstance(word.op,ast.BitOr) and isinstance(word.right,ast.Constant)
+    flipped = word.left
+    assert isinstance(flipped.op,ast.BitXor) and isinstance(flipped.right,ast.Constant)
+    assert ast.dump(flipped.left)==ast.dump(ast.parse('V.to(tl.uint8, bitcast=True).to(tl.uint32)',mode='eval').body)
+    xor,base,subtract = flipped.right.value,word.right.value,expression.right.value
     # Baseline comparison must remain against current-main BF16, not only the
     # retired slow V8 reference. Its GQA source is still the pinned original.
     current = (ROOT/'vllm_fl/patches/biv150_gqa_decode.py').read_bytes()
@@ -33,6 +50,9 @@ def check():
     for byte in range(256):
         signed = struct.unpack('<b',bytes([byte]))[0]  # independent two's-complement oracle
         value = fp32_bias_byte(byte)
+        emitted_value = struct.unpack('<f',struct.pack('<I',base|(byte^xor)))[0]-subtract
+        emitted_value = struct.unpack('<f',struct.pack('<f',emitted_value))[0]
+        assert f32_bits(emitted_value)==f32_bits(float(signed)), ('Actual emitted expression',byte)
         assert f32_bits(value)==f32_bits(float(signed)), (byte,value,signed)
         assert f32_bits(float(signed))&0xFFFF == 0, 'Every signed I8 integer is exact BF16'
         assert bf16_bits(value)==bf16_bits(float(signed))
@@ -87,7 +107,9 @@ def check():
     assert not any(name.startswith(('torch','triton')) for name in imports)
     assert 'torch' not in sys.modules and 'triton' not in sys.modules
     return dict(main=MAIN,v8_reference_commit=V8_COMMIT,source=proof,
-        all_256_bytes_fp32_and_bf16_exact=True,bitpattern_sha256=digest.hexdigest(),edges=edges,
+        all_256_bytes_fp32_and_bf16_exact=True,actual_emitted_ast_exhaustively_checked=True,
+        emitted_constants=dict(xor=xor,bias_bits=base,subtract=subtract),
+        bitpattern_sha256=digest.hexdigest(),edges=edges,
         codec_range_stays_minus127_to127=True,primitive_minus128_does_not_relax_codec=True,
         masked_zero_bits='00000000',address_vectors=len(addressed),
         addresses_above_32bits=True,maximum_address=max(addressed),
