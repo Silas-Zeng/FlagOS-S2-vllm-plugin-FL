@@ -62,9 +62,9 @@ baseline Q32，全部16类错误拒绝。此检查不是模型精度/吞吐证�
 | --- | --- |
 | root prepared manifest、SDK/C3 off/default-on audit | 待原件 |
 | e936 18组scope result/actual IR | 已逐SHA复验/归档，见completed evidence文档；含254b四例 |
-| main2412/e08两arm的105正确数与raw文件 | baseline-only独立audit102/105已存；candidate尚未审计 |
+| main2412/e08两arm的105正确数与raw文件 | baseline独立audit102/105；candidate live verdict101/105，原reviews终态审计待做 |
 | 4K/16K唯一score TPS/TTFT/完整计数 | baseline5806.1431/4479.5676及TTFT/计数通过；candidate待终态 |
-| defaults、source fingerprint、native/snapshot、MULTI2/C3 proof | baseline-only原audit保留完整判定；candidate待终态 |
+| defaults、source fingerprint、native/snapshot、MULTI2/C3 proof | candidate live default/fingerprint/MULTI2编译hash已联结；C3实际事件仍待后续 |
 | raw initial/post mixed、owned cleanup | baseline-only原audit通过；模型原件未额外复制到组件包 |
 | 本auditor输出与脚本SHA、最终逐文件归档manifest | 待审计 |
 

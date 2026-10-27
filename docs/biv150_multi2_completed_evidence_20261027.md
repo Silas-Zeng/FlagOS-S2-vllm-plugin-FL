@@ -118,3 +118,33 @@ owned cleanup通过；baseline_only审计使用9317工具SHA `cea62aeaea0915ec9a
 也不能推出candidate精度或pair通过。快照中candidate仅在accuracy、未完成cleanup；
 不是精度失败结论，也没有candidate服务成绩可比。后续完整pair终态仍由root读取并用
 冻结auditor重审，未报告新的服务gain，不合并、不重新抽题。
+
+## 后续只读快照：01:31:41 UTC candidate真实路径
+
+新增原件 `docs/evidence/prefill-multi2-20261027/candidate-live-path-v2.json`，
+58,586B，逐字复制，SHA256为
+`1bd5a81b8ca4ccfe63499b6708924ba2bcefbe059a25d685a38e6bc3598079a3`。
+对应manifest记录本地CPU核对及待验门，不改上述01:18历史组件包或baseline审计。
+owner603821仍same_start=true。root另于01:32:31UTC实际
+`git fetch --no-tags origin main`成功，GitHub origin/main仍为2412；本条是root的
+新同步记录，不把本提交前两次失败fetch改写为成功。
+
+此快照candidate已完成accuracy并处于throughput暖场阶段，live verdict记录
+101/105、score0.9619、105唯一、failed0，初始mixed正确。source仍为e08、mode为default；
+production_defaults与loaded fingerprint verified均为true。这里只核live导出字段，
+最终仍须从原始105 reviews/predictions重审；未在这里重跑或重抽题。
+原JSON的model_precision_accepted=false表示尚无完整正式pair验收，不是已知精度失败。
+
+真实服务launch后已有MULTI2_SELECTED：rows2047、num_sequences2、grid65×2，
+BM256/BQ32/w16/K64/s1，hash为
+`43facedad89899d27893be51ca20fb578ea33c4664ac39e0063009bb0e7903b0`。
+selection hash与Q_FRAGMENT compiler_proof的candidate_hash、resource hash一致。
+其记录的Q load在TTGIR循环外、LLVM循环内Q reads0/total32，compiler metadata
+w16/s1/shared65536/use_sme114691一致。这个live JSON保存事件及编译proof，不新增
+实际IR字节归档；组件包的IR与本次服务事件应按各自hash/阶段区分。
+
+compiler prelaunch resource中的n_regs/n_spills都是null，不能当作实际已加载寄存器、
+spill或occupancy证明。此快照compute_order实际事件为空，最终完整auditor仍必须见
+后续C3正常scope选择；空列表不构成C3验证通过。fallback/reject markers目前未见。
+没有候选正式4K/16K score、后置mixed、cleanup或完整pair终态，不能计算服务收益或
+声称pair通过。仍保持Draft，生产e08及9317/CEA审计器逐字不变，不安排任何新GPU任务。
