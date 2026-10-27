@@ -1,0 +1,2132 @@
+{
+  "cpu_replay_passed": true,
+  "executed_gpu": false,
+  "source_commit": "f28783e15eaf8593305c3e6a057b76bb2f7189cc",
+  "frozen_runtime_changed": false,
+  "numpy_opt_in": true,
+  "recordings": [
+    {
+      "label": "codec-prefix-v1",
+      "original_raw_files": 85,
+      "archived_raw_files": 83,
+      "original_raw_bytes": 1396602,
+      "omitted_pycache_files": 2,
+      "recorded_passed": true,
+      "npz_replay": {
+        "codec": [
+          {
+            "m": 1,
+            "vectors": 141,
+            "codes": 18048,
+            "scales": 141,
+            "bits_exact": true
+          },
+          {
+            "m": 8,
+            "vectors": 141,
+            "codes": 18048,
+            "scales": 141,
+            "bits_exact": true
+          }
+        ],
+        "numeric_selected_rows": 0,
+        "numeric_checks": [],
+        "output_bits_inline_preq_equal": true,
+        "reference_scope": "Saved SHA-verified FP64 references; cold BF16 cache not archived, so not regenerated here",
+        "scratch_maxima_sums_equality_scope": "Recorded device checks; those buffers are not present in NPZ"
+      }
+    },
+    {
+      "label": "inline-full4k-v1",
+      "original_raw_files": 222,
+      "archived_raw_files": 220,
+      "original_raw_bytes": 8634643,
+      "omitted_pycache_files": 2,
+      "recorded_passed": false,
+      "hard_checks": {
+        "finite": true,
+        "baseline_reference": true,
+        "codec": true,
+        "cache_bytes": true,
+        "sources_unchanged": true,
+        "scratch_canaries": true,
+        "graph_eager": true,
+        "side_eager": true,
+        "actual_ir": true
+      },
+      "actual_ir": {
+        "inline": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 1170,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1171,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1900,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1901,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 5,
+            "ml_mov_v2s_b32": 29,
+            "ml_mov_s2v_b32": 26,
+            "ml_xor_b32": 36,
+            "ml_lsa_blkload_x4": 2,
+            "ml_mov_b32": 91,
+            "ml_shl_b32": 24,
+            "ml_and_b32": 61,
+            "ml_max_u32": 8,
+            "ml_slb_shuffle_rtn_b32": 88,
+            "ml_max_i32": 48,
+            "ml_cmp_eq_u32": 6,
+            "ml_mul_f32": 102,
+            "ml_fma_f32": 52,
+            "ml_cmp_class_f32": 24,
+            "ml_csel_b32": 82,
+            "ml_max_f32": 44,
+            "ml_cmp_ne_u32": 24,
+            "ml_rcp_f32": 8,
+            "ml_abs_f32": 16,
+            "ml_floor_f32": 16,
+            "ml_sub_f32": 40,
+            "ml_cmp_gt_f32": 16,
+            "ml_cmp_eq_f32": 16,
+            "ml_bfe2_b32": 3,
+            "ml_add_i32": 26,
+            "ml_cvt_i32_f32": 32,
+            "ml_cvt_f32_i32": 20,
+            "ml_add_f32": 32,
+            "ml_cmp_lt_f32": 16,
+            "ml_min_f32": 16,
+            "ml_mul_u64_u32": 16,
+            "ml_anyop3_b32": 6,
+            "ml_byte_permute_b32": 86,
+            "ml_slb_store_b32x1": 20,
+            "ml_or_b32": 2,
+            "ml_slb_load_b8": 32,
+            "ml_srl_b32": 5,
+            "ml_slb_store_b32x4": 2,
+            "ml_slb_load_b32x2": 1,
+            "ml_addo_u32": 49,
+            "ml_addc_i32": 49,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_exp_f32": 8,
+            "ml_cvt_bf16_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 16,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        },
+        "preq": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 586,
+              "source_line": 110
+            },
+            {
+              "llir_line": 587,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1322,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1323,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 11,
+            "ml_mov_v2s_b32": 3,
+            "ml_bfe2_b32": 2,
+            "ml_mul_u64_u32": 16,
+            "ml_and_b32": 26,
+            "ml_anyop3_b32": 8,
+            "ml_add_i32": 27,
+            "ml_cmp_eq_u32": 7,
+            "ml_shl_b32": 16,
+            "ml_mov_b32": 90,
+            "ml_csel_b32": 19,
+            "ml_slb_store_b8": 16,
+            "ml_srl_b32": 18,
+            "ml_xor_b32": 27,
+            "ml_or_b32": 3,
+            "ml_slb_load_b8": 32,
+            "ml_byte_permute_b32": 74,
+            "ml_addo_u32": 50,
+            "ml_addc_i32": 50,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x1": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_cvt_f32_i32": 4,
+            "ml_mul_f32": 78,
+            "ml_slb_shuffle_rtn_b32": 40,
+            "ml_max_f32": 20,
+            "ml_sub_f32": 8,
+            "ml_exp_f32": 8,
+            "ml_add_f32": 16,
+            "ml_cvt_bf16_f32": 4,
+            "ml_fma_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 32,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        }
+      },
+      "resources": {
+        "baseline": {
+          "n_regs": 93,
+          "n_spills": 0,
+          "shared": 8192
+        },
+        "inline": {
+          "n_regs": 144,
+          "n_spills": 0,
+          "shared": 6144
+        },
+        "preq": {
+          "n_regs": 145,
+          "n_spills": 0,
+          "shared": 6144
+        }
+      },
+      "diagnostic_timing": [
+        {
+          "baseline": {
+            "complete_step_ms": 0.5277451872825623,
+            "min_ms": 0.5266605615615845,
+            "max_ms": 0.5290125012397766
+          },
+          "inline": {
+            "complete_step_ms": 0.41801539063453674,
+            "min_ms": 0.41416633129119873,
+            "max_ms": 0.4195740222930908
+          },
+          "baseline_over_candidate": 1.262501809996657
+        }
+      ],
+      "stage_ms": {
+        "baseline_append": 0.0027509615756571293,
+        "candidate_append": 0.0032894231844693422,
+        "baseline_producer": 0.5319432616233826,
+        "candidate_producer": 0.4165014326572418,
+        "original_reducer": 0.007764903828501701,
+        "initial_encoder_separate": 1.7508586645126343
+      },
+      "precision_gate": false,
+      "npz_replay": {
+        "codec": [
+          {
+            "m": 1,
+            "vectors": 141,
+            "codes": 18048,
+            "scales": 141,
+            "bits_exact": true
+          },
+          {
+            "m": 8,
+            "vectors": 141,
+            "codes": 18048,
+            "scales": 141,
+            "bits_exact": true
+          }
+        ],
+        "numeric_selected_rows": 21,
+        "numeric_checks": [
+          {
+            "iteration": 0,
+            "row": 0,
+            "length": 4096,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022958531752200985,
+              "max_abs": 0.0002586954908508632,
+              "rms": 5.7503892387444994e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022801089673628486,
+              "max_abs": 0.0002511549540703817,
+              "rms": 5.711485577089804e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009617598900479559,
+              "max_abs": 0.000881000931111698,
+              "rms": 0.00024089056659547326
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009256814031950814,
+              "max_abs": 0.0009557538959143116,
+              "rms": 0.00023185404175197732
+            }
+          },
+          {
+            "iteration": 0,
+            "row": 1,
+            "length": 4096,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022485859477455504,
+              "max_abs": 0.0002609242868039374,
+              "rms": 6.0414347385696395e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0021530705747727125,
+              "max_abs": 0.00026384340968538256,
+              "rms": 5.787186891042556e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009770611586735131,
+              "max_abs": 0.00118749701236331,
+              "rms": 0.0002625139248795675
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.00955019223481807,
+              "max_abs": 0.0011510738287663167,
+              "rms": 0.0002565917624153759
+            }
+          },
+          {
+            "iteration": 0,
+            "row": 63,
+            "length": 4096,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022611524242091155,
+              "max_abs": 0.00026935107716309636,
+              "rms": 5.700543894149465e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022506583088813025,
+              "max_abs": 0.00033348721790628366,
+              "rms": 5.67628847355213e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009399324116972184,
+              "max_abs": 0.0007980127202394313,
+              "rms": 0.0002369643865246225
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009073858368264742,
+              "max_abs": 0.000749362466549176,
+              "rms": 0.00022875913787935288
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 0,
+            "length": 0,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 1,
+            "length": 1,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 2,
+            "length": 15,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0018055826486820174,
+              "max_abs": 0.004288418479089673,
+              "rms": 0.0008732457637141082
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.001842361698225046,
+              "max_abs": 0.004460684045883179,
+              "rms": 0.0008926241198862567
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 208,
+              "relative_rmse": 0.009142456482262902,
+              "max_abs": 0.02091809591849264,
+              "rms": 0.004421626115483715
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 183,
+              "relative_rmse": 0.008911475866311963,
+              "max_abs": 0.01956800054163954,
+              "rms": 0.004309915447170379
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 3,
+            "length": 16,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019346178337183758,
+              "max_abs": 0.004632921885785679,
+              "rms": 0.0007765287350944744
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0018602412283089968,
+              "max_abs": 0.003982735045378494,
+              "rms": 0.0007476243972208534
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 156,
+              "relative_rmse": 0.009416457576316917,
+              "max_abs": 0.01918903236505909,
+              "rms": 0.003779635317820911
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 153,
+              "relative_rmse": 0.009211966883944534,
+              "max_abs": 0.017690006054466578,
+              "rms": 0.0036975555933818384
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 4,
+            "length": 17,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0018846708735546227,
+              "max_abs": 0.004213115032595249,
+              "rms": 0.0007528336095093049
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019475860174958345,
+              "max_abs": 0.004038593315728534,
+              "rms": 0.0007779059964429933
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 89,
+              "relative_rmse": 0.0075905362870007705,
+              "max_abs": 0.014330929862749753,
+              "rms": 0.003032047086437094
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 88,
+              "relative_rmse": 0.007371095877727243,
+              "max_abs": 0.014647571591458575,
+              "rms": 0.002944391401986468
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 5,
+            "length": 63,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0020446852988628525,
+              "max_abs": 0.0021058709407586473,
+              "rms": 0.0003995445266926004
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0020120527602242293,
+              "max_abs": 0.002171649203443038,
+              "rms": 0.0003932664416339276
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 22,
+              "relative_rmse": 0.01017856770809392,
+              "max_abs": 0.009659461394905533,
+              "rms": 0.0019889569410024657
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 21,
+              "relative_rmse": 0.010015080655874403,
+              "max_abs": 0.009130284360475888,
+              "rms": 0.0019570105300140642
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 6,
+            "length": 100,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019527821282384083,
+              "max_abs": 0.001671169900916869,
+              "rms": 0.0003328059346035042
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.001963181193770394,
+              "max_abs": 0.002010287298628066,
+              "rms": 0.00033410115520417157
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 1,
+              "relative_rmse": 0.00876413798842572,
+              "max_abs": 0.006860596451816803,
+              "rms": 0.001493641862066448
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 1,
+              "relative_rmse": 0.008506317681652501,
+              "max_abs": 0.00681268773451138,
+              "rms": 0.0014497024348694024
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 7,
+            "length": 4095,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022980718282371118,
+              "max_abs": 0.0002950479256942917,
+              "rms": 5.8311083709381906e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022961482253063847,
+              "max_abs": 0.0003636758315944538,
+              "rms": 5.827902788717058e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009479254619319198,
+              "max_abs": 0.0010824971702844688,
+              "rms": 0.00024052581943606477
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009174773534232152,
+              "max_abs": 0.0010042342183352732,
+              "rms": 0.00023279994167094113
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 63,
+            "length": 4096,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002192459725356886,
+              "max_abs": 0.0003187426023274348,
+              "rms": 6.020431953927059e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002188121546261443,
+              "max_abs": 0.0002594736220273286,
+              "rms": 6.009962389533495e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.008993026176376732,
+              "max_abs": 0.0009572753872787174,
+              "rms": 0.00024694593715260973
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.008762607718103691,
+              "max_abs": 0.0009133146509817825,
+              "rms": 0.00024061871192280161
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 0,
+            "length": 0,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 1,
+            "length": 1,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 2,
+            "length": 15,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016894332639707894,
+              "max_abs": 0.0019368489583333481,
+              "rms": 0.00043769357562556643
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016894332639707894,
+              "max_abs": 0.0019368489583333481,
+              "rms": 0.00043769357562556643
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016894332639707894,
+              "max_abs": 0.0019368489583333481,
+              "rms": 0.00043769357562556643
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 3,
+            "length": 16,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016606642543317174,
+              "max_abs": 0.00164794921875,
+              "rms": 0.00042005660427209355
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016606642543317174,
+              "max_abs": 0.00164794921875,
+              "rms": 0.00042005660427209355
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016606642543317174,
+              "max_abs": 0.00164794921875,
+              "rms": 0.00042005660427209355
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 4,
+            "length": 17,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016431560675760726,
+              "max_abs": 0.0018956801470587648,
+              "rms": 0.00043032167620518375
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016431560675760726,
+              "max_abs": 0.0018956801470587648,
+              "rms": 0.00043032167620518375
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016431560675760726,
+              "max_abs": 0.0018956801470587648,
+              "rms": 0.00043032167620518375
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 5,
+            "length": 63,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015400121209763718,
+              "max_abs": 0.0009416852678570953,
+              "rms": 0.00019734500523931918
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015400121209763718,
+              "max_abs": 0.0009416852678570953,
+              "rms": 0.00019734500523931918
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015400121209763718,
+              "max_abs": 0.0009416852678570953,
+              "rms": 0.00019734500523931918
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 6,
+            "length": 100,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016191530505163096,
+              "max_abs": 0.0007482910156249578,
+              "rms": 0.00017020238461009393
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016191530505163096,
+              "max_abs": 0.0007482910156249578,
+              "rms": 0.00017020238461009393
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016191530505163096,
+              "max_abs": 0.0007482910156249578,
+              "rms": 0.00017020238461009393
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 7,
+            "length": 4095,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015231126710862548,
+              "max_abs": 9.69026260469047e-05,
+              "rms": 2.459654128335429e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015231126710862548,
+              "max_abs": 9.69026260469047e-05,
+              "rms": 2.459654128335429e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015231126710862548,
+              "max_abs": 9.69026260469047e-05,
+              "rms": 2.459654128335429e-05
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 63,
+            "length": 4096,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0014951457846628944,
+              "max_abs": 0.00010746950283646584,
+              "rms": 2.323767550022011e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0014951457846628944,
+              "max_abs": 0.00010746950283646584,
+              "rms": 2.323767550022011e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0014951457846628944,
+              "max_abs": 0.00010746950283646584,
+              "rms": 2.323767550022011e-05
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          }
+        ],
+        "output_bits_inline_preq_equal": true,
+        "reference_scope": "Saved SHA-verified FP64 references; cold BF16 cache not archived, so not regenerated here",
+        "scratch_maxima_sums_equality_scope": "Recorded device checks; those buffers are not present in NPZ"
+      }
+    },
+    {
+      "label": "inline-full16k-v1",
+      "original_raw_files": 222,
+      "archived_raw_files": 220,
+      "original_raw_bytes": 7844259,
+      "omitted_pycache_files": 2,
+      "recorded_passed": false,
+      "hard_checks": {
+        "finite": true,
+        "baseline_reference": true,
+        "codec": true,
+        "cache_bytes": true,
+        "sources_unchanged": true,
+        "scratch_canaries": true,
+        "graph_eager": true,
+        "side_eager": true,
+        "actual_ir": true
+      },
+      "actual_ir": {
+        "inline": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 1170,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1171,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1900,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1901,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 5,
+            "ml_mov_v2s_b32": 29,
+            "ml_mov_s2v_b32": 26,
+            "ml_xor_b32": 36,
+            "ml_lsa_blkload_x4": 2,
+            "ml_mov_b32": 91,
+            "ml_shl_b32": 24,
+            "ml_and_b32": 61,
+            "ml_max_u32": 8,
+            "ml_slb_shuffle_rtn_b32": 88,
+            "ml_max_i32": 48,
+            "ml_cmp_eq_u32": 6,
+            "ml_mul_f32": 102,
+            "ml_fma_f32": 52,
+            "ml_cmp_class_f32": 24,
+            "ml_csel_b32": 82,
+            "ml_max_f32": 44,
+            "ml_cmp_ne_u32": 24,
+            "ml_rcp_f32": 8,
+            "ml_abs_f32": 16,
+            "ml_floor_f32": 16,
+            "ml_sub_f32": 40,
+            "ml_cmp_gt_f32": 16,
+            "ml_cmp_eq_f32": 16,
+            "ml_bfe2_b32": 3,
+            "ml_add_i32": 26,
+            "ml_cvt_i32_f32": 32,
+            "ml_cvt_f32_i32": 20,
+            "ml_add_f32": 32,
+            "ml_cmp_lt_f32": 16,
+            "ml_min_f32": 16,
+            "ml_mul_u64_u32": 16,
+            "ml_anyop3_b32": 6,
+            "ml_byte_permute_b32": 86,
+            "ml_slb_store_b32x1": 20,
+            "ml_or_b32": 2,
+            "ml_slb_load_b8": 32,
+            "ml_srl_b32": 5,
+            "ml_slb_store_b32x4": 2,
+            "ml_slb_load_b32x2": 1,
+            "ml_addo_u32": 49,
+            "ml_addc_i32": 49,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_exp_f32": 8,
+            "ml_cvt_bf16_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 16,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        },
+        "preq": {
+          "passed": true,
+          "flags": {
+            "required_artifacts": true,
+            "full_tail_logical_i8_shapes": true,
+            "original_bf16_pv_shapes": true,
+            "native_k32_encoding": true,
+            "eight_native_i8_calls": true,
+            "complete_i8_c_chains": true,
+            "original_pv_calls": true,
+            "all_64_scaled_native_pv_c_scalars": true,
+            "pv_post_add_absent": true,
+            "eight_i8_machine_mmas": true,
+            "sixteen_bf16_pv_machine_mmas": true,
+            "score_casts_at_exact_ast_sites": true
+          },
+          "score_casts_per_lane": [
+            {
+              "llir_line": 586,
+              "source_line": 110
+            },
+            {
+              "llir_line": 587,
+              "source_line": 110
+            },
+            {
+              "llir_line": 1322,
+              "source_line": 146
+            },
+            {
+              "llir_line": 1323,
+              "source_line": 146
+            }
+          ],
+          "score_cast_elements_per_lane_recorded": 4,
+          "isa_opcodes": {
+            "ml_vrf_init_u32": 1,
+            "ml_lsa_load_dword": 11,
+            "ml_mov_v2s_b32": 3,
+            "ml_bfe2_b32": 2,
+            "ml_mul_u64_u32": 16,
+            "ml_and_b32": 26,
+            "ml_anyop3_b32": 8,
+            "ml_add_i32": 27,
+            "ml_cmp_eq_u32": 7,
+            "ml_shl_b32": 16,
+            "ml_mov_b32": 90,
+            "ml_csel_b32": 19,
+            "ml_slb_store_b8": 16,
+            "ml_srl_b32": 18,
+            "ml_xor_b32": 27,
+            "ml_or_b32": 3,
+            "ml_slb_load_b8": 32,
+            "ml_byte_permute_b32": 74,
+            "ml_addo_u32": 50,
+            "ml_addc_i32": 50,
+            "ml_lsa_blkload_x1": 32,
+            "ml_lsa_load_a64_dword": 16,
+            "ml_slb_store_b32x1": 16,
+            "ml_slb_store_b32x2": 16,
+            "ml_slb_load_b32x1": 32,
+            "ml_matrix_mad_i32_i8_m16n16k32": 8,
+            "ml_cvt_f32_i32": 4,
+            "ml_mul_f32": 78,
+            "ml_slb_shuffle_rtn_b32": 40,
+            "ml_max_f32": 20,
+            "ml_sub_f32": 8,
+            "ml_exp_f32": 8,
+            "ml_add_f32": 16,
+            "ml_cvt_bf16_f32": 4,
+            "ml_fma_f32": 4,
+            "ml_cvt_i32_i16": 4,
+            "ml_slb_blkload_x1": 16,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+            "ml_cmp_gt_i32": 9,
+            "ml_lsa_store_a64_dword": 32,
+            "ml_lsa_store_dword": 2
+          },
+          "primitive_geometry_not_reused": true,
+          "native_component_independence_assumed": false,
+          "precise_div_native_support_inferred": false,
+          "device_numeric_verified": false
+        }
+      },
+      "resources": {
+        "baseline": {
+          "n_regs": 93,
+          "n_spills": 0,
+          "shared": 8192
+        },
+        "inline": {
+          "n_regs": 144,
+          "n_spills": 0,
+          "shared": 6144
+        },
+        "preq": {
+          "n_regs": 145,
+          "n_spills": 0,
+          "shared": 6144
+        }
+      },
+      "diagnostic_timing": [
+        {
+          "baseline": {
+            "complete_step_ms": 1.0318504571914673,
+            "min_ms": 1.0309312343597412,
+            "max_ms": 1.0329375267028809
+          },
+          "inline": {
+            "complete_step_ms": 0.8284283876419067,
+            "min_ms": 0.8254177570343018,
+            "max_ms": 0.8330783247947693
+          },
+          "baseline_over_candidate": 1.245551785264861
+        }
+      ],
+      "stage_ms": {
+        "baseline_append": 0.0026682692114263773,
+        "candidate_append": 0.003211538540199399,
+        "baseline_producer": 1.0306370258331299,
+        "candidate_producer": 0.8224605321884155,
+        "original_reducer": 0.005823076702654362,
+        "initial_encoder_separate": 3.4984474182128906
+      },
+      "precision_gate": false,
+      "npz_replay": {
+        "codec": [
+          {
+            "m": 1,
+            "vectors": 141,
+            "codes": 18048,
+            "scales": 141,
+            "bits_exact": true
+          },
+          {
+            "m": 8,
+            "vectors": 141,
+            "codes": 18048,
+            "scales": 141,
+            "bits_exact": true
+          }
+        ],
+        "numeric_selected_rows": 21,
+        "numeric_checks": [
+          {
+            "iteration": 0,
+            "row": 0,
+            "length": 16384,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022632229942150693,
+              "max_abs": 0.00014312697830660276,
+              "rms": 2.8850883298275228e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002241421329249282,
+              "max_abs": 0.0001232137921012219,
+              "rms": 2.858221227347678e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009075951909955658,
+              "max_abs": 0.00043852503815226124,
+              "rms": 0.0001156974942567263
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.008806062614750356,
+              "max_abs": 0.00043847530337076017,
+              "rms": 0.00011225702702069839
+            }
+          },
+          {
+            "iteration": 0,
+            "row": 1,
+            "length": 16384,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022299032299833163,
+              "max_abs": 0.00013465370883804229,
+              "rms": 3.0377954192593168e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002190879795925993,
+              "max_abs": 0.00012961267747536864,
+              "rms": 2.985617781871201e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009900714377149391,
+              "max_abs": 0.0007228211758538577,
+              "rms": 0.00013487735421830079
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009717599301756428,
+              "max_abs": 0.0006578139661045541,
+              "rms": 0.00013238277898406414
+            }
+          },
+          {
+            "iteration": 0,
+            "row": 31,
+            "length": 16384,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022937240433904883,
+              "max_abs": 0.00014247709703804623,
+              "rms": 2.9537649052826572e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002263230982982555,
+              "max_abs": 0.00012900161880185362,
+              "rms": 2.914610465927665e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009954460746322126,
+              "max_abs": 0.0004927177459763399,
+              "rms": 0.0001281895129809844
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009658357387179375,
+              "max_abs": 0.0004260305958375607,
+              "rms": 0.0001243764138721686
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 0,
+            "length": 0,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 1,
+            "length": 1,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 2,
+            "length": 15,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.00204914125330284,
+              "max_abs": 0.0034328335806164123,
+              "rms": 0.0007487109012780193
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002077915807867135,
+              "max_abs": 0.0045214204299290905,
+              "rms": 0.0007594773989134813
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 44,
+              "relative_rmse": 0.007057900975083741,
+              "max_abs": 0.010692170992751687,
+              "rms": 0.0025788009448682913
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 30,
+              "relative_rmse": 0.006330979332517164,
+              "max_abs": 0.010788334330604582,
+              "rms": 0.0023131998510992394
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 3,
+            "length": 16,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019236996513250838,
+              "max_abs": 0.004659590859632967,
+              "rms": 0.0007565797379499237
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002023184710142658,
+              "max_abs": 0.004429865054466742,
+              "rms": 0.0007960437993659846
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 154,
+              "relative_rmse": 0.00915709398313693,
+              "max_abs": 0.019130138984066153,
+              "rms": 0.003601431107695197
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 146,
+              "relative_rmse": 0.009015211327811913,
+              "max_abs": 0.018055959266497723,
+              "rms": 0.00354562949536372
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 4,
+            "length": 17,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019910279877633124,
+              "max_abs": 0.004232729815241143,
+              "rms": 0.0008082122740183824
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019107614436065818,
+              "max_abs": 0.004775965765255963,
+              "rms": 0.0007744755133741943
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 139,
+              "relative_rmse": 0.008254649336669327,
+              "max_abs": 0.016462354853429728,
+              "rms": 0.0033507861027651906
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 130,
+              "relative_rmse": 0.008036339214201492,
+              "max_abs": 0.013803252382368236,
+              "rms": 0.003262168101609329
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 5,
+            "length": 63,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019040372950716237,
+              "max_abs": 0.0019530993452129275,
+              "rms": 0.00039822458365243305
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0018605020815956786,
+              "max_abs": 0.002093688458293941,
+              "rms": 0.0003895361569007662
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 29,
+              "relative_rmse": 0.009971591451486447,
+              "max_abs": 0.0074134459381667295,
+              "rms": 0.002085533127107669
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 24,
+              "relative_rmse": 0.009691201157555457,
+              "max_abs": 0.007370470503218429,
+              "rms": 0.0020268902064307123
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 6,
+            "length": 100,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002031207314805949,
+              "max_abs": 0.002055893153760202,
+              "rms": 0.00033280485466877485
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0019622526751416954,
+              "max_abs": 0.0018299989353735002,
+              "rms": 0.000320871078395814
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 7,
+              "relative_rmse": 0.009840732974509887,
+              "max_abs": 0.008924323173382875,
+              "rms": 0.0016123630924049055
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": false,
+              "pointwise_violations": 7,
+              "relative_rmse": 0.009628637892528758,
+              "max_abs": 0.00799248636172789,
+              "rms": 0.0015776121970038444
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 7,
+            "length": 16383,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022671515134319712,
+              "max_abs": 0.0001448804029040296,
+              "rms": 3.0218836692126055e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002307999504201356,
+              "max_abs": 0.000171487156844001,
+              "rms": 3.0775140638085625e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.008850794951353566,
+              "max_abs": 0.0004294620332564447,
+              "rms": 0.000117972145066551
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.00858581723095547,
+              "max_abs": 0.0003739601477856132,
+              "rms": 0.00011444026005034379
+            }
+          },
+          {
+            "iteration": 1,
+            "row": 31,
+            "length": 16384,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.002271468394967046,
+              "max_abs": 0.00013609753237437544,
+              "rms": 2.899975752611777e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0022631111434748027,
+              "max_abs": 0.0001363837932367648,
+              "rms": 2.889391623478158e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009825903047699277,
+              "max_abs": 0.00045907329579224915,
+              "rms": 0.00012544696042867664
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.009572662688067876,
+              "max_abs": 0.00045333323033439066,
+              "rms": 0.00012221384961744563
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 0,
+            "length": 0,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 1,
+            "length": 1,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 2,
+            "length": 15,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016289660768874566,
+              "max_abs": 0.0018941243489583037,
+              "rms": 0.00046626689535494184
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016289660768874566,
+              "max_abs": 0.0018941243489583037,
+              "rms": 0.00046626689535494184
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0016289660768874566,
+              "max_abs": 0.0018941243489583037,
+              "rms": 0.00046626689535494184
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 3,
+            "length": 16,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0014921985307908081,
+              "max_abs": 0.0013523101806640625,
+              "rms": 0.0004043166348926407
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0014921985307908081,
+              "max_abs": 0.0013523101806640625,
+              "rms": 0.0004043166348926407
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0014921985307908081,
+              "max_abs": 0.0013523101806640625,
+              "rms": 0.0004043166348926407
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 4,
+            "length": 17,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015463667740991539,
+              "max_abs": 0.001723345588235281,
+              "rms": 0.0004005847657991553
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015463667740991539,
+              "max_abs": 0.001723345588235281,
+              "rms": 0.0004005847657991553
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015463667740991539,
+              "max_abs": 0.001723345588235281,
+              "rms": 0.0004005847657991553
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 5,
+            "length": 63,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0018237820666719394,
+              "max_abs": 0.0009688120039682002,
+              "rms": 0.00023464307468129046
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0018237820666719394,
+              "max_abs": 0.0009688120039682002,
+              "rms": 0.00023464307468129046
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0018237820666719394,
+              "max_abs": 0.0009688120039682002,
+              "rms": 0.00023464307468129046
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 6,
+            "length": 100,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015601385962863343,
+              "max_abs": 0.0007592773437500866,
+              "rms": 0.0001682813808415067
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015601385962863343,
+              "max_abs": 0.0007592773437500866,
+              "rms": 0.0001682813808415067
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015601385962863343,
+              "max_abs": 0.0007592773437500866,
+              "rms": 0.0001682813808415067
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 7,
+            "length": 16383,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.001484936198308352,
+              "max_abs": 4.60906422546474e-05,
+              "rms": 1.1554042994623513e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.001484936198308352,
+              "max_abs": 4.60906422546474e-05,
+              "rms": 1.1554042994623513e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.001484936198308352,
+              "max_abs": 4.60906422546474e-05,
+              "rms": 1.1554042994623513e-05
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          },
+          {
+            "iteration": 2,
+            "row": 31,
+            "length": 16384,
+            "baseline": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015838752748672227,
+              "max_abs": 5.591363878920674e-05,
+              "rms": 1.3046918724599906e-05
+            },
+            "quantized_operand": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015838752748672227,
+              "max_abs": 5.591363878920674e-05,
+              "rms": 1.3046918724599906e-05
+            },
+            "original_bf16": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0015838752748672227,
+              "max_abs": 5.591363878920674e-05,
+              "rms": 1.3046918724599906e-05
+            },
+            "quantized_reference_vs_original": {
+              "finite": true,
+              "pointwise_passed": true,
+              "pointwise_violations": 0,
+              "relative_rmse": 0.0,
+              "max_abs": 0.0,
+              "rms": 0.0
+            }
+          }
+        ],
+        "output_bits_inline_preq_equal": true,
+        "reference_scope": "Saved SHA-verified FP64 references; cold BF16 cache not archived, so not regenerated here",
+        "scratch_maxima_sums_equality_scope": "Recorded device checks; those buffers are not present in NPZ"
+      }
+    }
+  ],
+  "full_decoder_precision_passed": false,
+  "diagnostic_only": true,
+  "service_verified": false,
+  "capacity_reclaimed": false
+}

@@ -1,0 +1,431 @@
+	.text
+	.globl	int8_dot_probe                  ; -- Begin function int8_dot_probe
+	.p2align	3
+	.type	int8_dot_probe,@function
+	.iluvatar_kernel int8_dot_probe
+int8_dot_probe:                         ; @int8_dot_probe
+.Lfunc_begin0:
+	.file	1 "/workspace/experiments/minicpm-s2/code/owned55-int8-pv-20261027/tools/kernels" "biv150_int8_pv.py"
+	.loc	1 223 0                         ; biv150_int8_pv.py:223:0
+	.cfi_sections .debug_frame
+	.cfi_startproc
+	.cfi_return_column 32
+	.iluvatar_kernel_code_t
+		iluvatar_code_version_major = 1
+		iluvatar_code_version_minor = 3
+		iluvatar_machine_kind = 1
+		iluvatar_machine_version_major = 1
+		iluvatar_machine_version_minor = 1
+		iluvatar_machine_version_stepping = 0
+		kernel_code_entry_byte_offset = 256
+		kernel_code_prefetch_byte_size = 0
+		granulated_workitem_vgpr_count = 6
+		granulated_warp_sgpr_count = 3
+		float_mode = 12
+		debug_mode = 0
+		has_mbar = 0
+		user_sgpr_count = 6
+		enable_sgpr_workgroup_id_x = 0
+		enable_sgpr_workgroup_id_y = 0
+		enable_sgpr_workgroup_id_z = 0
+		enable_sgpr_workgroup_info = 1
+		enable_vgpr_workitem_id = 3
+		granulated_slb_size = 0
+		enable_exception = 128
+		enable_sgpr_private_segment_buffer = 1
+		enable_sgpr_globalvariable_ptr = 0
+		enable_sgpr_kernarg_segment_ptr = 1
+		enable_sgpr_constvariable_ptr = 0
+		enable_sgpr_private_segment_size = 0
+		enable_sgpr_grid_workgroup_count_x = 0
+		enable_sgpr_grid_workgroup_count_y = 0
+		enable_sgpr_grid_workgroup_count_z = 0
+		private_element_size = 1
+		is_ptr64 = 1
+		is_dynamic_callstack = 0
+		is_debug_enabled = 0
+		enable_private_swizzle = 1
+		has_called_assert = 0
+		has_called_printf = 0
+		has_called_malloc = 0
+		enable_srf_flat_shared = 0
+		enable_srf_flat_scratch = 0
+		has_wgmma = 0
+		has_dva = 0
+		enable_dynamic_smem_size = 0
+		workitem_private_segment_byte_size = 0
+		workgroup_group_segment_byte_size = 0
+		kernarg_segment_byte_size = 40
+		workgroup_fbarrier_count = 0
+		warp_sgpr_count = 32
+		workitem_vgpr_count = 25
+		reserved_vgpr_first = 0
+		reserved_vgpr_count = 0
+		reserved_sgpr_first = 0
+		reserved_sgpr_count = 0
+		debug_warp_private_segment_offset_sgpr = 0
+		debug_private_segment_buffer_sgpr = 0
+		kernarg_segment_alignment = 3
+		group_segment_alignment = 4
+		private_segment_alignment = 4
+		warp_size = 6
+		call_convention = -1
+		runtime_loader_kernel_symbol = 0
+	.end_iluvatar_kernel_code_t
+; %bb.0:
+	ml_vrf_init_u32 v0, tcr
+.Ltmp0:
+	.loc	1 225 20 prologue_end           ; biv150_int8_pv.py:225:20
+	sl_lsa_load_b32x16 s[12:27], s[4:5], noreg, #0, ca
+	sl_mov_b32 s3, 0xffffffff
+	sl_mov_b32 s0, 0x0
+	sl_wait smcnt(0)
+	sl_mov_b32 s23, 0x80
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	sl_mov_b32 s22, s3
+	sl_mov_b32 s1, s0
+	sl_mov_b32 s6, 0x40
+	sl_mov_b32 s7, s0
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	sl_mov_b32 s4, 0x800
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	sl_mov_b32 s5, s0
+	sl_mov_b32 s10, 0x840
+	sl_mov_b32 s11, s0
+	sl_mov_b64 s[20:21], s[14:15]
+	sl_sme_load_16x1b64_rowxfb8 s[20:23], s[0:1], 0x0, 0x0, 0x0, 0x1
+	sl_sme_load_16x1b64_rowxfb8 s[20:23], s[6:7], 0x0, 0x0, 0x100, 0x1
+	sl_sme_load_16x1b64_rowxfb8 s[20:23], s[4:5], 0x0, 0x0, 0x200, 0x1
+	sl_sme_load_16x1b64_rowxfb8 s[20:23], s[10:11], 0x0, 0x0, 0x300, 0x1
+	.loc	1 225 28                        ; biv150_int8_pv.py:225:28
+	ml_shl_b32 v1, v0, 0x2
+	.loc	1 225 14 is_stmt 0              ; biv150_int8_pv.py:225:14
+	ml_and_b32 v2, v1, 0x1c
+	sl_mov_b32 s0, 0xe0
+	ml_anyop3_b32 v2, s0, v1, v2, 0xfffffff8
+	sl_mov_b64 s[0:1], s[12:13]
+	ml_lsa_load_dword v2, s[0:3], signed v2, noreg, #0, ca
+	.loc	1 225 20                        ; biv150_int8_pv.py:225:20
+	ml_and_b32 v10, tid, 0x30
+	.loc	1 225 14                        ; biv150_int8_pv.py:225:14
+	ml_shl_b32 v3, v0, 0x3
+	ml_shl_b32 v4, v10, 0x1
+	ml_and_b32 v5, tid, 0x4
+	ml_cmp_eq_u32 tcr, v5, 0x0
+	ml_mov_b32 v5, 0xc0
+	ml_csel_b32 v5, 0, v5, tcr
+	ml_bfe2_b32 v0, v0, 0x23
+	ml_anyop3_b32 v3, 24, v3, v4, 0xfffffff8
+	ml_anyop3_b32 v0, v3, v5, v0, 0xfffffff6
+	sl_mov_b32 s0, 0x1000
+	.loc	1 226 41 is_stmt 1              ; biv150_int8_pv.py:226:41
+	ml_and_b32 v11, tid, 0xf
+	.loc	1 225 14                        ; biv150_int8_pv.py:225:14
+	sl_wait vmcnt(0)
+	ml_slb_store_b8  v2, v0, s0, #0, null
+	ml_srl_b32 v3, v2, 0x8
+	ml_slb_store_b8  v3, v0, s0, #2, null
+	ml_srl_b32 v3, v2, 0x10
+	ml_srl_b32 v2, v2, 0x18
+	ml_slb_store_b8  v3, v0, s0, #4, null
+	ml_slb_store_b8  v2, v0, s0, #6, null
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	sl_wait lmcnt(0) g2scnt(0)
+	.loc	1 225 14                        ; biv150_int8_pv.py:225:14
+	sl_barrier 
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_and_b32 v18, v1, 0xfc
+	ml_slb_load_b32x1  v8, v18, noreg, #0, null
+	ml_xor_b32 v19, v18, 0x1c0
+	ml_shl_b32 v0, v19, 0x1
+	ml_and_b32 v20, v0, 0x80
+	ml_slb_load_b32x1  v9, v18, s4, #0, null
+	ml_xor_b32 v0, v20, v19
+	ml_xor_b32 v21, v18, 0x80
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_mov_b32 s1, 0x504
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v12, v0, noreg, #0, null
+	ml_add_i32 v0, v19, 0x800
+	ml_xor_b32 v0, v20, v0
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_mov_b32 s2, 0x60504
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v13, v0, noreg, #0, null
+	.loc	1 225 14                        ; biv150_int8_pv.py:225:14
+	ml_shl_b32 v0, v11, 0x1
+	ml_anyop3_b32 v0, s6, v1, v0, 0xfffffff8
+	ml_xor_b32 v1, v0, 0x40
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	ml_slb_load_b8  v2, v1, s0, #128, null
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	sl_mov_b64 s[18:19], s[2:3]
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_xor_b32 v23, v18, 0x340
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	ml_slb_load_b8  v3, v1, s0, #129, null
+	ml_slb_load_b8  v4, v1, s0, #160, null
+	ml_slb_load_b8  v1, v1, s0, #161, null
+	ml_slb_load_b8  v5, v0, s0, #0, null
+	ml_slb_load_b8  v6, v0, s0, #1, null
+	ml_slb_load_b8  v7, v0, s0, #32, null
+	sl_wait lmcnt(5)
+	ml_byte_permute_b32 v2, v3, v2, 4
+	ml_mov_b32 v3, 0x0
+	ml_slb_load_b8  v0, v0, s0, #33, null
+	sl_wait lmcnt(5)
+	ml_byte_permute_b32 v2, v4, v2, s1
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v14, v21, noreg, #512, null
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(5)
+	ml_byte_permute_b32 v17, v1, v2, s2
+	ml_mov_b32 v2, 0x0
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v15, v21, s4, #512, null
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(4)
+	ml_byte_permute_b32 v1, v6, v5, 4
+	sl_wait lmcnt(3)
+	ml_byte_permute_b32 v1, v7, v1, s1
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	sl_mov_b32 s1, 0x400
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(2)
+	ml_byte_permute_b32 v16, v0, v1, s2
+	ml_mov_b32 v0, 0x0
+	ml_mov_b32 v1, 0x0
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	sl_mov_b32 s2, 0xc00
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	ml_matrix_mad_i32_i8_m16n16k32 v[4:7], v[16:17], v[8:9], v[0:3]
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_shl_b32 v8, v11, 0x2
+	ml_shl_b32 v9, v10, 0x5
+	ml_or_b32 v22, v9, v8
+	ml_lsa_store_dword v4, s[16:19], signed v22, noreg, #0, wb
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	ml_matrix_mad_i32_i8_m16n16k32 v[8:11], v[16:17], v[12:13], v[0:3]
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v5, s[16:19], signed v22, s4, #0, wb
+	ml_lsa_store_dword v6, s[16:19], signed v22, noreg, #0, wb
+	ml_lsa_store_dword v7, s[16:19], signed v22, s4, #0, wb
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(0)
+	ml_matrix_mad_i32_i8_m16n16k32 v[4:7], v[16:17], v[14:15], v[0:3]
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v8, s[16:19], signed v22, noreg, #64, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_shl_b32 v8, v23, 0x1
+	ml_and_b32 v24, v8, 0x80
+	ml_xor_b32 v8, v24, v23
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v9, s[16:19], signed v22, s4, #64, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_add_i32 v9, v23, 0x800
+	ml_xor_b32 v9, v24, v9
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v10, s[16:19], signed v22, noreg, #64, wb
+	ml_lsa_store_dword v11, s[16:19], signed v22, s4, #64, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v8, v8, noreg, #0, null
+	ml_slb_load_b32x1  v9, v9, noreg, #0, null
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v4, s[16:19], signed v22, noreg, #128, wb
+	ml_lsa_store_dword v5, s[16:19], signed v22, s4, #128, wb
+	ml_lsa_store_dword v6, s[16:19], signed v22, noreg, #128, wb
+	ml_lsa_store_dword v7, s[16:19], signed v22, s4, #128, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v12, v18, s1, #0, null
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(1)
+	ml_matrix_mad_i32_i8_m16n16k32 v[4:7], v[16:17], v[8:9], v[0:3]
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v13, v18, s2, #0, null
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v4, s[16:19], signed v22, noreg, #192, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_add_i32 v4, v19, 0x400
+	ml_xor_b32 v4, v20, v4
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v5, s[16:19], signed v22, s4, #192, wb
+	ml_lsa_store_dword v6, s[16:19], signed v22, noreg, #192, wb
+	ml_lsa_store_dword v7, s[16:19], signed v22, s4, #192, wb
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(0)
+	ml_matrix_mad_i32_i8_m16n16k32 v[8:11], v[16:17], v[12:13], v[0:3]
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v12, v4, noreg, #0, null
+	ml_add_i32 v4, v19, 0xc00
+	ml_xor_b32 v4, v20, v4
+	ml_slb_load_b32x1  v13, v4, noreg, #0, null
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v8, s[16:19], signed v22, noreg, #256, wb
+	ml_lsa_store_dword v9, s[16:19], signed v22, s4, #256, wb
+	ml_lsa_store_dword v10, s[16:19], signed v22, noreg, #256, wb
+	ml_lsa_store_dword v11, s[16:19], signed v22, s4, #256, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v14, v21, s1, #512, null
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(1)
+	ml_matrix_mad_i32_i8_m16n16k32 v[4:7], v[16:17], v[12:13], v[0:3]
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v15, v21, s2, #512, null
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v4, s[16:19], signed v22, noreg, #320, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_add_i32 v4, v23, 0x400
+	ml_xor_b32 v4, v24, v4
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v5, s[16:19], signed v22, s4, #320, wb
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_add_i32 v5, v23, 0xc00
+	ml_xor_b32 v5, v24, v5
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v6, s[16:19], signed v22, noreg, #320, wb
+	ml_lsa_store_dword v7, s[16:19], signed v22, s4, #320, wb
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(0)
+	ml_matrix_mad_i32_i8_m16n16k32 v[8:11], v[16:17], v[14:15], v[0:3]
+	.loc	1 226 14                        ; biv150_int8_pv.py:226:14
+	ml_slb_load_b32x1  v4, v4, noreg, #0, null
+	ml_slb_load_b32x1  v5, v5, noreg, #0, null
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v8, s[16:19], signed v22, noreg, #384, wb
+	ml_lsa_store_dword v9, s[16:19], signed v22, s4, #384, wb
+	ml_lsa_store_dword v10, s[16:19], signed v22, noreg, #384, wb
+	ml_lsa_store_dword v11, s[16:19], signed v22, s4, #384, wb
+	.loc	1 227 20                        ; biv150_int8_pv.py:227:20
+	sl_wait lmcnt(0)
+	ml_matrix_mad_i32_i8_m16n16k32 v[0:3], v[16:17], v[4:5], v[0:3]
+	.loc	1 228 48                        ; biv150_int8_pv.py:228:48
+	ml_lsa_store_dword v0, s[16:19], signed v22, noreg, #448, wb
+	ml_lsa_store_dword v1, s[16:19], signed v22, s4, #448, wb
+	ml_lsa_store_dword v2, s[16:19], signed v22, noreg, #448, wb
+	ml_lsa_store_dword v3, s[16:19], signed v22, s4, #448, wb
+	.loc	1 228 4 is_stmt 0               ; biv150_int8_pv.py:228:4
+	sl_eop 
+.Ltmp1:
+	.section	.rodata,"a",@progbits
+	.p2align	6, 0x0
+	.globl	int8_dot_probe.kd
+	.type	int8_dot_probe.kd,@object
+	.size	int8_dot_probe.kd, 64
+int8_dot_probe.kd:
+	.asciz	"\000\000\000"
+	.long	0
+	.asciz	"\000\000\000\000\000\000\000"
+	.quad	int8_dot_probe@rel64-int8_dot_probe.kd
+	.asciz	"\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"
+	.long	536774
+	.asciz	"\003\000\204\006\211\000\000\000\000\000\000"
+	.text
+.Lfunc_end0:
+	.size	int8_dot_probe, .Lfunc_end0-int8_dot_probe
+	.cfi_endproc
+                                        ; -- End function
+	.section	.Iluvatar.csdata,"",@progbits
+; Kernel info:
+; codeLenInByte = 1336
+; NumSgprs: 32
+; NumVgprs: 25
+; ScratchSize: 0
+; MemoryBound: 0
+; FloatMode: 12
+; IeeeMode: 1
+; SLBByteSize: 0 bytes/workgroup (compile time only)
+; SGPRBlocks: 3
+; VGPRBlocks: 6
+; NumSGPRsForWarpsPerNU: 28
+; NumVGPRsForWarpsPerNR: 25
+; ReqNTIDx: 0
+; MaxNTIDx: 0
+; MinCTASm: 0
+; ActiveWarp: 8
+; WarpLimiterHint : 0
+	.section	.debug_abbrev,"",@progbits
+	.byte	1                               ; Abbreviation Code
+	.byte	17                              ; DW_TAG_compile_unit
+	.byte	0                               ; DW_CHILDREN_no
+	.byte	37                              ; DW_AT_producer
+	.byte	8                               ; DW_FORM_string
+	.byte	19                              ; DW_AT_language
+	.byte	5                               ; DW_FORM_data2
+	.byte	3                               ; DW_AT_name
+	.byte	8                               ; DW_FORM_string
+	.byte	16                              ; DW_AT_stmt_list
+	.byte	6                               ; DW_FORM_data4
+	.byte	27                              ; DW_AT_comp_dir
+	.byte	8                               ; DW_FORM_string
+	.byte	17                              ; DW_AT_low_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	18                              ; DW_AT_high_pc
+	.byte	1                               ; DW_FORM_addr
+	.byte	0                               ; EOM(1)
+	.byte	0                               ; EOM(2)
+	.byte	0                               ; EOM(3)
+	.section	.debug_info,"",@progbits
+	.long	133                             ; Length of Unit
+	.short	2                               ; DWARF version number
+	.long	.debug_abbrev                   ; Offset Into Abbrev. Section
+	.byte	8                               ; Address Size (in bytes)
+	.byte	1                               ; Abbrev [1] 0xb:0x7e DW_TAG_compile_unit
+	.ascii	"triton"                        ; DW_AT_producer
+	.byte	0
+	.short	2                               ; DW_AT_language
+	.ascii	"biv150_int8_pv.py"             ; DW_AT_name
+	.byte	0
+	.long	.debug_line                     ; DW_AT_stmt_list
+	.ascii	"/workspace/experiments/minicpm-s2/code/owned55-int8-pv-20261027/tools/kernels" ; DW_AT_comp_dir
+	.byte	0
+	.quad	.Lfunc_begin0                   ; DW_AT_low_pc
+	.quad	.Lfunc_end0                     ; DW_AT_high_pc
+	.section	".note.GNU-stack","",@progbits
+	.iluvatar_isa "bi-iluvatar-ilurt--ivcore-1-1-0"
+	.iluvatar_hsa_metadata
+---
+iluvatar.kernels:
+  - .args:
+      - .address_space:  global
+        .name:           KArg_0
+        .offset:         0
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .name:           KArg_1
+        .offset:         8
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .name:           KArg_2
+        .offset:         16
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .name:           KArg_3
+        .offset:         24
+        .size:           8
+        .value_kind:     global_buffer
+      - .address_space:  global
+        .name:           KArg_4
+        .offset:         32
+        .size:           8
+        .value_kind:     global_buffer
+    .group_segment_fixed_size: 0
+    .kernarg_segment_align: 8
+    .kernarg_segment_size: 40
+    .max_flat_workgroup_size: 0
+    .name:           int8_dot_probe
+    .private_segment_fixed_size: 0
+    .sgpr_count:     32
+    .sgpr_spill_count: 0
+    .symbol:         int8_dot_probe.kd
+    .vgpr_count:     25
+    .vgpr_spill_count: 0
+    .warp_size:      64
+iluvatar.version:
+  - 1
+  - 0
+...
+
+	.end_iluvatar_hsa_metadata
