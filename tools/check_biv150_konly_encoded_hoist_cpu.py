@@ -118,6 +118,39 @@ def run():
         changed = dict(launch, query_ptr=Tensor(Storage(2, 0x2000000, 2048*16*128*2),
             'bfloat16', (2048,16,128), (2048,128,1)))
         assert adapter.prepare(fn, changed, grid)[1] is binding and len(fn.calls) == 2
+        # Different host query lengths/grids sharing the exact actual compiler
+        # object still validate each complete scope, but never rehash/recompile
+        # or run the native auditor again. This catches 2487's geometry-in-spec
+        # bug: 2039/2038 would previously create two extra override paths.
+        snapshot, audit = a.kernel_snapshot, native.audit
+        validate = h.validate_meta
+        checked_scopes = []
+        def counted_validate(text, actual_meta):
+            checked_scopes.append(copy.deepcopy(actual_meta))
+            return validate(text, actual_meta)
+        h.validate_meta = counted_validate
+        a.kernel_snapshot = lambda *x:(_ for _ in ()).throw(AssertionError('geometry-only artifact rehash'))
+        native.audit = lambda *x:(_ for _ in ()).throw(AssertionError('geometry-only native re-audit'))
+        for qrows in (2039,2038):
+            host = dict(launch,query_ptr=Tensor(Storage(qrows,0x3000000,2048*16*128*2),
+                'bfloat16',(qrows,16,128),(2048,128,1)))
+            opts, reused = adapter.prepare(fn,host,(qrows//32+1,2))
+            assert reused is binding and opts == override
+        assert len(fn.calls)==2 and adapter.counts['cold_audits']==1
+        assert adapter.counts['geometry_metadata_validations']==3
+        assert [r['query_rows'] for r in checked_scopes]==[2039,2038]
+        assert len(adapter.geometry_records)==3
+        assert {r['native_binding_id'] for r in adapter.geometry_records.values()}=={binding['native_binding_id']}
+        # Reused native code never relaxes query/grid/single-sequence admission.
+        bad_q=dict(launch,query_ptr=Tensor(Storage(9,0x4000000,2048*16*128*2),
+            'bfloat16',(1023,16,128),(2048,128,1)))
+        assert adapter.prepare(fn,bad_q,(32,2))==({},None)
+        assert adapter.prepare(fn,dict(launch,num_seqs=2),grid)==({},None)
+        assert adapter.prepare(fn,dict(launch,IS_3D=True),grid)==({},None)
+        assert adapter.prepare(fn,dict(launch,query_ptr=host['query_ptr']),(65,2))==({},None)
+        a.kernel_snapshot, native.audit, h.validate_meta = snapshot, audit, validate
+        assert len(fn.calls)==2 and adapter.counts['cold_audits']==1
+        assert len(adapter.bindings)==1
         assert adapter.prepare(fn, launch, grid, capture=True) == ({}, None)
         assert len(fn.calls) == 2
         adapter.after_launch(fn.after, fn, binding)
@@ -137,6 +170,16 @@ def run():
         a.kernel_snapshot=lambda *x:(_ for _ in ()).throw(AssertionError('hot artifact hashing'))
         for _ in range(8):adapter.after_launch(fn.after,fn,binding)
         a.kernel_snapshot=original_snapshot
+        # Replacing the actual unhoisted compiler object, even with equal hash/
+        # artifacts, needs its own fresh cold proof. Strong references prevent
+        # Python id reuse from authenticating another object.
+        f=MockFunction(files)
+        replacement=make('replaced-compiler',f)
+        assert replacement.prepare(f,launch,grid)[1] is not None
+        f.before=f.compiled(files,'unhoisted')
+        cache,unhoisted_key=replacement.jit_key(f,launch);cache[unhoisted_key]=f.before
+        assert replacement.prepare(f,launch,grid)[1] is not None
+        assert replacement.counts['cold_audits']==2 and len(replacement.bindings)==2
         # An evicted override cannot cause an unaudited compile+launch.
         _, key = adapter.jit_key(fn, dict(launch, **override)); del fn.cache[key]
         assert adapter.prepare(fn, launch, grid) == ({}, None)
@@ -195,6 +238,10 @@ def run():
         actual_PR90_compile_archive_sha256=ARCHIVE_SHA, actual_native_artifact_replay=True,
         protocol_mock_only=True, call_key_uses_actual_pinned_binder=True,
         address_changes_do_not_force_cold_audits_in_mock=True, exact_codec_slice_pin=True,
+        host_2039_2038_reuse_one_actual_compiler_proof_in_mock=True,
+        each_new_host_geometry_runs_complete_scope_validation=True,
+        reused_binding_rejects_q1023_wrong_grid_numseq2_and_3D=True,
+        changed_actual_compiler_object_needs_fresh_proof=True,
         prelaunch_rejections=failures, postlaunch_no_retry=True, generated_kernel_math_changed=False,
         adapter_service_numeric_verified=False, model_verified=False, performance_verified=False)
 

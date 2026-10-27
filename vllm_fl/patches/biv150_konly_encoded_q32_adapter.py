@@ -14,6 +14,8 @@ from pathlib import Path
 import threading
 
 ENV = 'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST'
+SCOPE_CONSTANTS = ('BLOCK_M', 'BLOCK_Q', 'TILE_SIZE', 'num_seqs', 'num_query_heads',
+                   'num_queries_per_kv', 'KV_QUANT_MODE', 'IS_3D')
 
 
 def need(ok, message):
@@ -86,9 +88,11 @@ class Adapter:
         self.fn, self.source = fn, fn.src
         self.implementation_digest = implementation_digest
         self.calls, self.bindings, self.by_hash = {}, {}, {}
+        self.compiled_objects, self.geometry_records = {}, {}
         self.lock = threading.RLock()
         self.counts = dict(prepared=0, unhoisted_warmups=0, cold_audits=0,
-            admitted_host_calls=0, fallback_host_calls=0, failures={}, capture_bypasses=0)
+            admitted_host_calls=0, fallback_host_calls=0, failures={}, capture_bypasses=0,
+            geometry_metadata_validations=0, compiler_binding_reuse_attempts=0)
 
     @staticmethod
     def installed_pins(fn, source_module, installed):
@@ -129,13 +133,12 @@ class Adapter:
                 # geometry in addition to its actual native specialization.
                 geometry[k] = [str(v.dtype), str(v.device), list(v.shape), list(v.stride())]
         full = identity(dict(fn=id(fn), jit_key=key,
-                             pointer_geometry=geometry, grid=list(grid)))
-        return full, cache.get(key)
+            pointer_geometry=geometry, grid=list(grid),
+            admission_constants={k:typed(launch[k]) for k in SCOPE_CONSTANTS}))
+        return full, cache.get(key), key
 
     def _meta(self, before, launch, grid):
-        names = ('BLOCK_M', 'BLOCK_Q', 'TILE_SIZE', 'num_seqs', 'num_query_heads',
-                 'num_queries_per_kv', 'KV_QUANT_MODE', 'IS_3D')
-        constants = {k: launch[k] for k in names}
+        constants = {k: launch[k] for k in SCOPE_CONSTANTS}
         constants['KV_QUANT_MODE'] = int(constants['KV_QUANT_MODE'])
         return dict(schema=self.proposal.SCHEMA, enabled=True, profile='q32',
             format=self.proposal.FORMAT, target=self.target,
@@ -154,25 +157,51 @@ class Adapter:
             return {}, None
         with self.lock:
             try:
-                key, cached = self.call_key(fn, launch, grid)
+                key, cached, compiler_key = self.call_key(fn, launch, grid)
                 if key in self.calls and self.calls[key][1] is cached:
                     binding = self.calls[key][0]
                 else:
-                    self.counts['unhoisted_warmups'] += 1
-                    first = fn.warmup(grid=grid, **launch)
-                    need(self.call_key(fn, launch, grid)[1] is first,
-                         'actual warmup differs from the exact per-device JIT key')
-                    before = kernel_snapshot(first, fn)
-                    meta = self._meta(before, launch, grid)
-                    self.proposal.validate_meta(first.asm['ttgir'], meta)
-                    # This key contains the complete actual typed ABI, source,
-                    # every compiled artifact, options, grid and CPU shape scope.
-                    spec = identity(dict(before=before, meta=meta))
-                    if spec in self.bindings:
-                        binding = self.bindings[spec]
+                    first = cached
+                    # An actual immutable CompiledKernel and its complete JIT
+                    # specialization/options identify a compiler proof. Host
+                    # query length/grid do not create another native program.
+                    object_key = (id(first), compiler_key)
+                    existing = self.compiled_objects.get(object_key)
+                    if existing is not None:
+                        self._check_unhoisted(first, fn, existing)
+                        before = existing['unhoisted']
                     else:
-                        binding = self._prepare(fn, first, before, meta, launch, grid, spec)
+                        self.counts['unhoisted_warmups'] += 1
+                        first = fn.warmup(grid=grid, **launch)
+                        need(self.call_key(fn, launch, grid)[1] is first,
+                             'actual warmup differs from the exact per-device JIT key')
+                        object_key = (id(first), compiler_key)
+                        before = kernel_snapshot(first, fn)
+                    meta = self._meta(before, launch, grid)
+                    scope = dict(actual_metadata=meta, tensor_geometry={k:[str(v.dtype),str(v.device),
+                        list(v.shape),list(v.stride())] for k,v in launch.items() if hasattr(v,'untyped_storage')},
+                        metadata_validated=False, native_binding_id=None, admitted_host_calls=0)
+                    self.geometry_records[key] = scope
+                    self.counts['geometry_metadata_validations'] += 1
+                    # Never bypass scope checks for a reused compiler object:
+                    # all constants, q>=1024, exact grid, target and pins remain.
+                    self.proposal.validate_meta(first.asm['ttgir'], meta)
+                    scope['metadata_validated'] = True
+                    if existing is not None:
+                        binding = existing
+                        self.counts['compiler_binding_reuse_attempts'] += 1
+                    else:
+                        compiler_meta = {k:v for k,v in meta.items() if k not in ('query_rows','grid')}
+                        spec = identity(dict(actual_compiled_object=id(first),before=before,
+                                             compiler_meta=compiler_meta,jit_key=compiler_key))
+                        binding = self._prepare(fn, first, before, meta, launch, grid, spec, compiler_key)
+                        binding['_unhoisted_kernel'] = first
+                        binding['_unhoisted_ast_source'] = first.src
+                        binding['_unhoisted_ABI_objects'] = {k:getattr(first.src,k)
+                            for k in ('signature','constants','attrs')}
                         self.bindings[spec] = binding
+                        self.compiled_objects[object_key] = binding
+                    scope['native_binding_id'] = binding['native_binding_id']
                     self.calls[key] = binding, first
                 if binding is None:
                     self.counts['fallback_host_calls'] += 1
@@ -184,6 +213,7 @@ class Adapter:
                 cache, override_key = self.jit_key(fn, override)
                 need(cache.get(override_key) is binding['_kernel'], 'audited override JIT cache changed')
                 self.counts['admitted_host_calls'] += 1
+                self.geometry_records[key]['admitted_host_calls'] += 1
                 return dict(ir_override=binding['override_path']), binding
             except Exception as error:
                 # No reader has launched. Preserve diagnostics and the same
@@ -195,7 +225,17 @@ class Adapter:
                 print('BIV150_KONLY_Q32_HOIST_PRELAUNCH_RETAIN', json.dumps(dict(reason=reason)), flush=True)
                 return {}, None
 
-    def _prepare(self, fn, first, before, meta, launch, grid, spec):
+    @staticmethod
+    def _check_unhoisted(kernel, fn, binding):
+        # Same immutable-object contract as the admitted override's hot check;
+        # no full artifact hashing is needed for each new host geometry.
+        need(kernel is binding['_unhoisted_kernel'] and kernel.src is binding['_unhoisted_ast_source']
+             and kernel.src.fn is fn and str(kernel.hash) == binding['unhoisted']['hash'],
+             'unhoisted actual compiler object/source/hash changed')
+        need(all(getattr(kernel.src,k) is v for k,v in binding['_unhoisted_ABI_objects'].items()),
+             'unhoisted actual typed ABI metadata object changed')
+
+    def _prepare(self, fn, first, before, meta, launch, grid, spec, compiler_key):
         self.counts['cold_audits'] += 1
         override, proof = self.proposal.propose(first.asm['ttgir'], meta)
         folder = self.directory / str(os.getpid()) / spec
@@ -211,6 +251,8 @@ class Adapter:
         native = self.native.audit(override, *(second.asm[e] for e in ('ttgir', 'llir', 'asm')))
         resources = dict(unhoisted=loaded(first), hoisted=loaded(second))
         binding = dict(schema='cjj-encoded-q32-live-binding-v1', implementation_sha256=self.implementation_digest,
+            native_binding_id=spec, actual_JIT_specialization_options_key=compiler_key,
+            unhoisted_compiled_object_identity=id(first),
             actual_metadata=meta, unhoisted=before, hoisted=after, override_path=str(path),
             override_sha256=sha(override), proposal=proof, native=native, resources=resources,
             artifact_directory=str(folder), numerical_verified=False, Graph_verified=False,
@@ -257,9 +299,13 @@ class Adapter:
     def stats(self):
         return dict(self.counts, enabled=True, bound_kernel_hashes=sorted(self.by_hash),
             bindings=[dict(hash=b['hoisted']['hash'], unhoisted_hash=b['unhoisted']['hash'],
+                native_binding_id=b['native_binding_id'],
                 artifact_directory=b['artifact_directory'], override_sha256=b['override_sha256'],
                 resources=b['resources'], numerical_verified=False, service_verified=False)
                 for b in self.bindings.values()],
             cache_key='SHA-pinned actual per-device binder/compute_cache_key plus tensor geometry/grid',
-            expensive_audits_per_actual_specialization=True, host_counts_not_Graph_replays=True,
+            native_proof_key='strong actual CompiledKernel identity plus full actual snapshot and JIT specialization/options',
+            host_geometry_checks=list(self.geometry_records.values()),
+            host_geometry_count=len(self.geometry_records), actual_compiler_proof_count=len(self.compiled_objects),
+            expensive_audits_per_actual_compiled_object=True, host_counts_not_Graph_replays=True,
             numerical_verified=False, service_verified=False, performance_verified=False)
