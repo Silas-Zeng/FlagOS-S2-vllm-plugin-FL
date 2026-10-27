@@ -1,0 +1,137 @@
+{
+  "accepted_main": {
+    "accepted_attention_bytes_equal_to56f": true,
+    "accepted_main_commit": "dac1b8fb48e7983e48283032efeee9b592c5fbe5",
+    "actual_BF16_Q_hoist_verified": false,
+    "actual_control_hash": null,
+    "actual_parent_selected": false,
+    "attention_source_pins": {
+      "biv150_prefill_multi2.py": "fc3cdd066aacc6dfdc5029bb8aae9589f868b6800534511d2198f1f0d88da342",
+      "biv150_prefill_normalized.py": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+      "biv150_prefill_q32.py": "3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b",
+      "biv150_q_fragment_service.py": "38e44e6b0272116a1c76561119e9742337caed4dfaf5ab891fc57df4f2c16a82"
+    },
+    "service_performance_baseline_is_not_raw_d6": true
+  },
+  "actual_materializer_executed": false,
+  "actual_timing_executed": false,
+  "cache_flush_or_parameter_sweep": false,
+  "cpu_only": true,
+  "fullcost_ms": null,
+  "implementation_failure_not_diagnostic_bypassable": true,
+  "numeric_proxy_failure_requires_explicit_diagnostic": true,
+  "old_raw96KB_refused_as_timing_baseline": true,
+  "one_case_geometries": {
+    "16384": {
+      "config": {
+        "BLOCK_M": 256,
+        "BLOCK_Q": 32,
+        "IS_3D": false,
+        "TILE_SIZE": 64
+      },
+      "context": 14336,
+      "formal_batch_tokens_changed": false,
+      "grid": [
+        65,
+        2
+      ],
+      "klens": [
+        16384
+      ],
+      "pages": 2053,
+      "patterns": [
+        0,
+        1
+      ],
+      "profile": "q32",
+      "qlens": [
+        2048
+      ],
+      "requested_options": {
+        "num_stages": 1,
+        "num_warps": 16
+      },
+      "seed": 20261025,
+      "segments": 1,
+      "sequences": 1,
+      "table_pitch": 8192,
+      "total": 2048
+    },
+    "4096": {
+      "config": {
+        "BLOCK_M": 256,
+        "BLOCK_Q": 32,
+        "IS_3D": false,
+        "TILE_SIZE": 64
+      },
+      "context": 2048,
+      "formal_batch_tokens_changed": false,
+      "grid": [
+        65,
+        2
+      ],
+      "klens": [
+        4096
+      ],
+      "pages": 517,
+      "patterns": [
+        0,
+        1
+      ],
+      "profile": "q32",
+      "qlens": [
+        2048
+      ],
+      "requested_options": {
+        "num_stages": 1,
+        "num_warps": 16
+      },
+      "seed": 20261025,
+      "segments": 1,
+      "sequences": 1,
+      "table_pitch": 8192,
+      "total": 2048
+    },
+    "6144": {
+      "config": {
+        "BLOCK_M": 256,
+        "BLOCK_Q": 32,
+        "IS_3D": false,
+        "TILE_SIZE": 64
+      },
+      "context": 4096,
+      "formal_batch_tokens_changed": false,
+      "grid": [
+        65,
+        2
+      ],
+      "klens": [
+        6144
+      ],
+      "pages": 773,
+      "patterns": [
+        0,
+        1
+      ],
+      "profile": "q32",
+      "qlens": [
+        2048
+      ],
+      "requested_options": {
+        "num_stages": 1,
+        "num_warps": 16
+      },
+      "seed": 20261025,
+      "segments": 1,
+      "sequences": 1,
+      "table_pitch": 8192,
+      "total": 2048
+    }
+  },
+  "per_actual_length_fresh_numerics_required": true,
+  "performance_verified": false,
+  "precision_gate": false,
+  "selected_Manager_and_lowered_proof_required": true,
+  "service_verified": false,
+  "writer_ms": null
+}
