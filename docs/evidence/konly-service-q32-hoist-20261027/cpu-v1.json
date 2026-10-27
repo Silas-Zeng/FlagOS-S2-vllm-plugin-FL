@@ -1,0 +1,53 @@
+{
+  "CPU_only": true,
+  "accepted_regressions": [
+    {
+      "input_sha256": "5e87a8fddac1cf254628a409212f5a6fed2be616179bdefb894e101c40b78264",
+      "label": "historical_regression",
+      "override_sha256": "ef347cd98b1603f9deec35b9ac3e0407efde022e399972b14ca5a60a4226891e"
+    },
+    {
+      "input_sha256": "a4c790f1ac23472765ce9d61f1f4098232a90f31f88d0f771e056708dba009a8",
+      "label": "synthetic_new_debug_SSA_layout_names",
+      "override_sha256": "7afb8d24938eceb7bed154cf2b0eb5b3f92c27c59e3dbf9c265203f3926536e2"
+    }
+  ],
+  "actual_I8_hoist_verified": false,
+  "actual_override_compiled": false,
+  "actual_service_TTGIR_seen": false,
+  "default_off": true,
+  "metadata_fixture_is_not_runtime_attestation": true,
+  "native_synchronization_verified": false,
+  "old_fixture_reused_as_runtime_proof": false,
+  "performance_verified": false,
+  "precision_gate": false,
+  "query_scope_CPU_metadata": [
+    1024,
+    2048,
+    4096,
+    16384
+  ],
+  "rejected": {
+    "BM128_shape": "unique I8 Q result",
+    "BQ16": "single-sequence Q32 selected constants",
+    "SDK_changed": "SDK/helper/JIT/codec pins",
+    "V_instead_of_Q_pointer": "Q tile does not originate from actual query pointer",
+    "alias_Q_memory": "QCode memory aliases/escapes/is modified",
+    "allocation_in_early_return_sibling": "Q read/code/allocation do not dominate KV in same block",
+    "bool_numseq": "single-sequence Q32 selected constants",
+    "extra_KV_loop": "one KV structured loop required",
+    "extra_operand_use": "Q operand has extra uses",
+    "incomplete_grid": "complete single-sequence parent grid",
+    "memory_store": "QCode memory aliases/escapes/is modified",
+    "nseq2": "single-sequence Q32 selected constants",
+    "query_short": "CPU-visible Q32 query scope",
+    "stale_input_SHA": "actual metadata/input TTGIR binding",
+    "wrong_PV_dtype": "unchanged BF16 PV geometry",
+    "wrong_QK_C": "QK zero I32 C",
+    "wrong_operand_index": "signed I8 Q operand shape/layout",
+    "wrong_target": "actual target/warp module attributes",
+    "wrong_warps": "actual target/warp module attributes"
+  },
+  "runtime_binding_qualified": false,
+  "service_verified": false
+}

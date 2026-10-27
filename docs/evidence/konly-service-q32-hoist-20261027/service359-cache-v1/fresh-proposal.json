@@ -1,0 +1,125 @@
+{
+  "proposal": {
+    "Graph_verified": false,
+    "actual_I8_hoist_verified": false,
+    "actual_metadata": {
+      "constants": {
+        "BLOCK_M": 256,
+        "BLOCK_Q": 32,
+        "IS_3D": false,
+        "KV_QUANT_MODE": 0,
+        "TILE_SIZE": 64,
+        "num_queries_per_kv": 8,
+        "num_query_heads": 16,
+        "num_seqs": 1
+      },
+      "enabled": true,
+      "format": "cjj-konly-rn32-rne-v2",
+      "function_name": "kernel_cjj_konly_q32",
+      "grid": [
+        65,
+        2
+      ],
+      "kernel_hash": "c0a523d9d0d4d5dde57b241df9d22c9c38fa71e480878d18e690b4eb002e24f7",
+      "launch_options": {
+        "num_stages": 1,
+        "num_warps": 16
+      },
+      "pins": {
+        "codec": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+        "helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+        "jit": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+        "sdk": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+      },
+      "profile": "q32",
+      "query_rows": 2048,
+      "schema": "cjj-konly-service-q32-hoist-v1",
+      "source_digest": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23",
+      "target": {
+        "arch": 71,
+        "backend": "corex",
+        "warp_size": 64
+      },
+      "ttgir_sha256": "a6cd3ad42d47c56ff6b9c0d4233e373567f490308fffbb94cef41bc862413447"
+    },
+    "actual_override_compiled": false,
+    "after": {
+      "KV_end": 466,
+      "KV_loop": 353,
+      "PV": 464,
+      "QK": 423,
+      "Q_operand_load": 352,
+      "actual_Q_argument_pointer_origin": true,
+      "fresh_initialized_immutable_QCode": true,
+      "layout_aliases": [
+        "#shared",
+        "#mma"
+      ],
+      "memory": "%5",
+      "no_Q_memory_alias_or_escape": true,
+      "operand": "%10",
+      "operand_only_direct_QK_use": true,
+      "q_allocation": 312,
+      "q_code_cast": 311,
+      "q_global": 277,
+      "same_parent_dominance": true,
+      "zero_trip_local_read_safe": true
+    },
+    "all_other_source_math_masks_stores_barriers_unchanged": true,
+    "before": {
+      "KV_end": 466,
+      "KV_loop": 352,
+      "PV": 464,
+      "QK": 423,
+      "Q_operand_load": 421,
+      "actual_Q_argument_pointer_origin": true,
+      "fresh_initialized_immutable_QCode": true,
+      "layout_aliases": [
+        "#shared",
+        "#mma"
+      ],
+      "memory": "%5",
+      "no_Q_memory_alias_or_escape": true,
+      "operand": "%10",
+      "operand_only_direct_QK_use": true,
+      "q_allocation": 312,
+      "q_code_cast": 311,
+      "q_global": 277,
+      "same_parent_dominance": true,
+      "zero_trip_local_read_safe": true
+    },
+    "caller_actual_metadata_attestation_required": true,
+    "enabled": true,
+    "exact_byte_inverse": true,
+    "fresh_override_compile_required": true,
+    "input_sha256": "a6cd3ad42d47c56ff6b9c0d4233e373567f490308fffbb94cef41bc862413447",
+    "loaded_resources_verified": false,
+    "moved_operations": 1,
+    "native_Q_operand_dominance_alias_synchronization_verified": false,
+    "numerical_verified": false,
+    "old_overlay_or_hash_used_as_admission_predicate": false,
+    "override_generated": true,
+    "override_sha256": "d2671c0ba2375e6a742728dc82a0b8225a18e126d61371a5dccdd8d445541894",
+    "performance_verified": false,
+    "precision_gate": false,
+    "runtime_binding_qualified": false,
+    "schema": "cjj-konly-service-q32-hoist-v1",
+    "service_verified": false
+  },
+  "provenance": {
+    "actual_source_path": "/workspace/experiments/minicpm-s2/code/cjj-konly-encoded-smoke-v1-20261027/vllm_fl/patches/biv150_konly_encoded_q32.py",
+    "implementation_sha256": "afea84ba7725cff83b2a63032b82475e2cfb4046604c4a4f382b5b8de5b8d570",
+    "live_compiled_object_introspection": false,
+    "missing_live_fields": [
+      "src.signature",
+      "src.constants",
+      "src.attrs"
+    ],
+    "module_file_sha256": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+    "reconstruction_requires_fresh_unhoisted_TTGIR_and_LLVM_exact_before_override": true,
+    "runtime_selected_hash_bound_cache": true,
+    "source_commit": "359c3e11c9cf7551fbdda649bfb5a331b4822157",
+    "source_digest_kind": "static function text from verified359 module, not live JIT object",
+    "static_scope_assertions": "verified359 facade Q32 route plus actual TTGIR dimensions/module and cache options"
+  }
+}
