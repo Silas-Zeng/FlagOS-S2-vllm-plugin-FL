@@ -1,0 +1,342 @@
+{
+  "BF16_P_PV_and_device_FP32_not_emulated": true,
+  "FP32_score_order": "RN32(RN32(RN32(I32*sQ)*sK)*natural_softmax_scale)",
+  "JIT_executed": false,
+  "actual_I8_operand_hoist_verified": false,
+  "actual_resources_known": false,
+  "actual_tensor_binding_verified": false,
+  "address_vectors": 16384,
+  "capacity_reclaimed": false,
+  "closed_FP64_examples": [
+    {
+      "context": 0,
+      "max_abs_quantization_delta": 0.0,
+      "query_position": 0
+    },
+    {
+      "context": 0,
+      "max_abs_quantization_delta": 0.0001636260416047336,
+      "query_position": 1
+    },
+    {
+      "context": 12,
+      "max_abs_quantization_delta": 7.152532152204794e-05,
+      "query_position": 0
+    },
+    {
+      "context": 12,
+      "max_abs_quantization_delta": 7.290533012101197e-05,
+      "query_position": 4
+    }
+  ],
+  "codec_vectors": 5,
+  "compile_numeric_and_timing_runner_prepared": false,
+  "cpu_only": true,
+  "dependency_PR": 79,
+  "dependency_commit": "ae00f58629ad85850fec1b8b8d2da28757af5f8b",
+  "kernel_launches": 0,
+  "main": "56f1838192abc940b3fb9accef490022ac125000",
+  "mask_cases": [
+    {
+      "causal_key_pairs": 69040,
+      "grid": [
+        17,
+        2
+      ],
+      "key_lengths": [
+        5,
+        17,
+        31,
+        32,
+        33,
+        47,
+        48,
+        49
+      ],
+      "profile": "normalized2d128",
+      "query_head_rows": 2320,
+      "query_lengths": [
+        0,
+        1,
+        15,
+        16,
+        17,
+        31,
+        32,
+        33
+      ],
+      "segments": 1
+    },
+    {
+      "causal_key_pairs": 7952,
+      "grid": [
+        5,
+        2
+      ],
+      "key_lengths": [
+        17,
+        19,
+        1,
+        33
+      ],
+      "profile": "normalized2d128",
+      "query_head_rows": 352,
+      "query_lengths": [
+        1,
+        3,
+        1,
+        17
+      ],
+      "segments": 1
+    },
+    {
+      "causal_key_pairs": 8675600,
+      "grid": [
+        33,
+        2
+      ],
+      "key_lengths": [
+        1041
+      ],
+      "profile": "q32",
+      "query_head_rows": 16400,
+      "query_lengths": [
+        1025
+      ],
+      "segments": 1
+    },
+    {
+      "causal_key_pairs": 4612896,
+      "grid": [
+        34,
+        2
+      ],
+      "key_lengths": [
+        529,
+        545
+      ],
+      "profile": "multi2",
+      "query_head_rows": 16416,
+      "query_lengths": [
+        513,
+        513
+      ],
+      "segments": 1
+    },
+    {
+      "causal_key_pairs": 8675872,
+      "grid": [
+        34,
+        2
+      ],
+      "key_lengths": [
+        1041,
+        17
+      ],
+      "profile": "multi2",
+      "query_head_rows": 16416,
+      "query_lengths": [
+        1025,
+        1
+      ],
+      "segments": 1
+    },
+    {
+      "causal_key_pairs": 1312,
+      "grid": [
+        4,
+        2,
+        1
+      ],
+      "key_lengths": [
+        0,
+        17,
+        65
+      ],
+      "profile": "raw3d",
+      "query_head_rows": 32,
+      "query_lengths": [
+        0,
+        1,
+        1
+      ],
+      "segments": 1
+    },
+    {
+      "causal_key_pairs": 1312,
+      "grid": [
+        4,
+        2,
+        4
+      ],
+      "key_lengths": [
+        0,
+        17,
+        65
+      ],
+      "profile": "raw3d",
+      "query_head_rows": 32,
+      "query_lengths": [
+        0,
+        1,
+        1
+      ],
+      "segments": 4
+    },
+    {
+      "causal_key_pairs": 1312,
+      "grid": [
+        4,
+        2,
+        16
+      ],
+      "key_lengths": [
+        0,
+        17,
+        65
+      ],
+      "profile": "raw3d",
+      "query_head_rows": 32,
+      "query_lengths": [
+        0,
+        1,
+        1
+      ],
+      "segments": 16
+    }
+  ],
+  "original_BF16_and_quantized_operand_FP64_distinct": true,
+  "passed": true,
+  "performance_verified": false,
+  "precision_gate": false,
+  "rejects": 91,
+  "service_installed": false,
+  "source_proofs": {
+    "multi2": {
+      "JIT_executed": false,
+      "actual_I8_operand_hoist_verified": false,
+      "canonical_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+      "capacity_reclaimed": false,
+      "codec": "cjj-konly-rn32-rne-v2",
+      "dependency_commit": "ae00f58629ad85850fec1b8b8d2da28757af5f8b",
+      "exact_AST_inverse": true,
+      "exact_byte_inverse": true,
+      "factory_imports_no_framework": true,
+      "generated_sha256": "7046cf538bf06278982041d04b129c65c74bdb65531e528366fc62626c6adb19",
+      "kernel_launches": 0,
+      "main": "56f1838192abc940b3fb9accef490022ac125000",
+      "original_BF16_Q_V_PV_and_softmax_preserved": true,
+      "performance_verified": false,
+      "precision_gate": false,
+      "private_binding_only": true,
+      "profile": "multi2",
+      "service_installed": false,
+      "source_Q_quantization_outside_KV_loop": true,
+      "source_generation_only": true,
+      "source_sha256": {
+        "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+        "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+        "codec-support-ae00.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+        "helpers.py": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+        "normalizer.py": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+        "sdk.py": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+      },
+      "unknown_format_fallback": "reject"
+    },
+    "normalized2d128": {
+      "JIT_executed": false,
+      "actual_I8_operand_hoist_verified": false,
+      "canonical_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+      "capacity_reclaimed": false,
+      "codec": "cjj-konly-rn32-rne-v2",
+      "dependency_commit": "ae00f58629ad85850fec1b8b8d2da28757af5f8b",
+      "exact_AST_inverse": true,
+      "exact_byte_inverse": true,
+      "factory_imports_no_framework": true,
+      "generated_sha256": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740",
+      "kernel_launches": 0,
+      "main": "56f1838192abc940b3fb9accef490022ac125000",
+      "original_BF16_Q_V_PV_and_softmax_preserved": true,
+      "performance_verified": false,
+      "precision_gate": false,
+      "private_binding_only": true,
+      "profile": "normalized2d128",
+      "service_installed": false,
+      "source_Q_quantization_outside_KV_loop": true,
+      "source_generation_only": true,
+      "source_sha256": {
+        "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+        "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+        "codec-support-ae00.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+        "helpers.py": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+        "normalizer.py": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+        "sdk.py": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+      },
+      "unknown_format_fallback": "reject"
+    },
+    "q32": {
+      "JIT_executed": false,
+      "actual_I8_operand_hoist_verified": false,
+      "canonical_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+      "capacity_reclaimed": false,
+      "codec": "cjj-konly-rn32-rne-v2",
+      "dependency_commit": "ae00f58629ad85850fec1b8b8d2da28757af5f8b",
+      "exact_AST_inverse": true,
+      "exact_byte_inverse": true,
+      "factory_imports_no_framework": true,
+      "generated_sha256": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+      "kernel_launches": 0,
+      "main": "56f1838192abc940b3fb9accef490022ac125000",
+      "original_BF16_Q_V_PV_and_softmax_preserved": true,
+      "performance_verified": false,
+      "precision_gate": false,
+      "private_binding_only": true,
+      "profile": "q32",
+      "service_installed": false,
+      "source_Q_quantization_outside_KV_loop": true,
+      "source_generation_only": true,
+      "source_sha256": {
+        "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+        "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+        "codec-support-ae00.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+        "helpers.py": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+        "normalizer.py": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+        "sdk.py": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+      },
+      "unknown_format_fallback": "reject"
+    },
+    "raw3d": {
+      "JIT_executed": false,
+      "actual_I8_operand_hoist_verified": false,
+      "canonical_sha256": "58bb729f68fadfda84c4ffb36421913a7900c8064f8e15051c261fdba57b1a31",
+      "capacity_reclaimed": false,
+      "codec": "cjj-konly-rn32-rne-v2",
+      "dependency_commit": "ae00f58629ad85850fec1b8b8d2da28757af5f8b",
+      "exact_AST_inverse": true,
+      "exact_byte_inverse": true,
+      "factory_imports_no_framework": true,
+      "generated_sha256": "190975053927d8f326e47ab0769369b5535524ff4f32e25156f5d16ab717c39c",
+      "kernel_launches": 0,
+      "main": "56f1838192abc940b3fb9accef490022ac125000",
+      "original_BF16_Q_V_PV_and_softmax_preserved": true,
+      "performance_verified": false,
+      "precision_gate": false,
+      "private_binding_only": true,
+      "profile": "raw3d",
+      "service_installed": false,
+      "source_Q_quantization_outside_KV_loop": true,
+      "source_generation_only": true,
+      "source_sha256": {
+        "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+        "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+        "codec-support-ae00.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+        "helpers.py": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+        "normalizer.py": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+        "sdk.py": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+      },
+      "unknown_format_fallback": "reject"
+    }
+  },
+  "torch_imported": false,
+  "triton_imported": false
+}
