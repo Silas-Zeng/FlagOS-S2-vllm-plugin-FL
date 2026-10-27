@@ -59,3 +59,56 @@ serialization: bits() lacked element_size8 and raised KeyError8. Original failur
 is retained; it is not a numerical or performance result. The next tools-only
 revision adds torch.int64 byte reinterpretation and a stdlib recorder regression
 for signed sentinels/extremes. Inputs/layout/reference/timing gates are unchanged.
+
+## Existing Root v2 result (CPU audit only)
+
+Source36c5b0b, owner688719/start347244779 is terminalZ. All94 original files /
+15,217,427 bytes independently match the download manifest. The actual local
+native SO payload matches aace693b…; source-function SHA and complete actual
+Triton typed ABI/artifact hashes match this exact b3 control. No device rerun.
+
+| Resident case | Native complete step | Triton complete step | TL/Native |
+|---|---:|---:|---:|
+| 4K/B64/S2 |0.4163701534ms|0.5278745294ms|1.26780108x|
+| 16K/B32/S4 |0.8058110178ms|1.0312613845ms|1.27978070x|
+
+These include identical BF16 append, producer and original reducer4. Each row is
+one ABBA with two observations per arm, after128warmreplays (unroll8). Within-arm
+range/mean is0.02363%/0.02717% (Native/TL) at4K and0.00857%/0.02826% at16K.
+Graph launch/sync wall means reproduce1.26773573x/1.27975935x. Initial same535.56MiB
+arena GPU pack-copy is separately1.92941/1.92833ms. Normal Python producer dispatch,
+model layers/prefill/scheduling/SQL and initialization are outside this captured
+operator timing. No confidence interval, whole-model gain or explanation of the
+14% warm/score difference is claimed; K8 is not an arm.
+
+All four NPZ controls independently show exact Native/TL bits for full output,
+selected partial scratch/maxima/sums. All8 saved-full-FP64 metric comparisons
+recompute with zero pointwise violations, maximum RRMSE0.0022802426 (old gates
+unchanged). Additionally, CPU FP64 segment composition is regenerated from every
+saved partial, and length0/1 closed attention is regenerated from saved newV.
+Native producer resource attributes are unknown; actual loaded Triton producer /
+reducer / append are93/11/6 registers respectively, all0spill.
+
+Evidence boundaries are explicit. Local Python environments lack Torch2.10;
+therefore the535MiB seeded cold arena and original closed-attention FP64 array
+were **not independently regenerated from seed**. Metrics against the original
+saved FP64 array are independently recomputed. Outer guard buffers, same-arm
+second-run and Graph-vs-eager separate snapshots and full readonly/cache payloads
+were not stored; their successful source assertions/runtime flags are retained,
+not presented as an independent CPU replay of absent arrays. Selected partial
+finite/NaN masks, complete cross-arm arrays, table/permutation/slot geometry and
+actual source/SO/ABI are independently replayed. Original raw files remain in
+Root's archive; this commit shares small unchanged result/manifest/receipt plus
+CPU summary, avoiding another large cache/artifact package.
+
+The original v1 KeyError8 failure result is preserved separately and all its
+available files were SHA-checked; it contains no attention or timing result.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_native_tl_pair_evidence.py --arrays
+```
+
+This reader accepts --raw-root and --library for the original immutable records.
+Default paths point to Root's existing local raw/build archives. --arrays uses
+NumPy CPU only; no Torch/Triton/service/JIT/GPU is imported or started. Summary:
+`docs/evidence/native-tl-gqa-pair-20261028/result-v2/independent-cpu-replay.json`.
