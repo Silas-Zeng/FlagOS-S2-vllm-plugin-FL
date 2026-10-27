@@ -1,0 +1,480 @@
+{
+  "source_commit": "4a1f7ddd38e4bcade30e702faba2e9a7cdb5441d",
+  "operator_sha256": "a7fc539dccbd2e2910538665abf42d0dd6204939d39f1ebeb7a6cac1f992c3ca",
+  "completed": true,
+  "errors": [],
+  "hard_checks_passed": true,
+  "numeric_passed": false,
+  "precision_gate": false,
+  "official_score": false,
+  "model_accuracy_tested": false,
+  "service_benchmark": false,
+  "capacity_reclaimed": false,
+  "timing_scope": "writer+producer+reducer; initial cache encode and CPU checks excluded",
+  "paired_rounds_per_case": 1,
+  "order": [
+    "baseline",
+    "candidate"
+  ],
+  "cases": [
+    {
+      "name": "ragged",
+      "segments": 16,
+      "completed": true,
+      "numeric_passed": false,
+      "hard_checks": {
+        "finite": true,
+        "baseline_numeric": true,
+        "codec": true,
+        "slot_mapping": true,
+        "unmapped_bytes": true,
+        "graph_eager": true
+      },
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.01147211529314518,
+            "v8_bf16p": 0.013063942082226276
+          },
+          "speedup": 0.8781511140311311
+        }
+      ],
+      "speedup_median": 0.8781511140311311,
+      "baseline_resources": {
+        "hash": "c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 15,
+        "asm_sha256": {
+          "ttgir": "9a32728915b988d0b95d96682f0636639387a2fbc6573939b5ae8f3eabd45a17",
+          "llir": "63d5ae4c9914edc03287144dc1f103b3404b9d616b341bfcdb6fbbaa3d1f18e1",
+          "asm": "27780dc6e1dd61ba4d7edcc51b2fa227575ae65a31bd93cd9bbc96af062809ec",
+          "cubin": "449e20e7cfb5b2a00538a60f11d7d6de0697d3336af41c81702c2e3edfd6178c"
+        }
+      },
+      "v8_bf16p_resources": {
+        "hash": "d2481b9f7db900083e1fdbc307add5f2f66b5a34fe3b1ef6c577db69e9c9e760",
+        "n_regs": 143,
+        "n_spills": 0,
+        "shared": 4096,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 79,
+        "asm_sha256": {
+          "ttgir": "0e57c33d520ae34a32137a9c892b5619c9ac743aa4abb77fc99942d9b09e187f",
+          "llir": "f871365346159904e94c7989945881ecf0f9413c3e95949bb78ddb3ef329cbea",
+          "asm": "7489bb12980d3c0c42ce960c92eb107ebf4a984a5d2c88b408badfe6f9f1e8b3",
+          "cubin": "f8a76d99ed477133b848ad8ee6cf5e4c024eef077fe8c83f21eadcb2846e6c8a"
+        }
+      },
+      "numeric_evidence": [
+        {
+          "outputs_and_oracles": "ragged-pattern0-numeric-evidence.pt",
+          "cpu_attribution_traces": "ragged-pattern0-failure-coordinates.json",
+          "failed_rows": [
+            1,
+            2
+          ],
+          "traced_coordinates": 4
+        },
+        {
+          "outputs_and_oracles": "ragged-pattern1-numeric-evidence.pt",
+          "cpu_attribution_traces": "ragged-pattern1-failure-coordinates.json",
+          "failed_rows": [
+            1,
+            2,
+            3
+          ],
+          "traced_coordinates": 6
+        }
+      ],
+      "pointwise": [
+        {
+          "pattern": 0,
+          "quantized": false,
+          "finite": true,
+          "max_abs": 0.004786651503792649,
+          "mse": 2.99259237716101e-07,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            4,
+            11,
+            46
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 0,
+          "quantized": true,
+          "finite": true,
+          "max_abs": 0.010334571823477745,
+          "mse": 1.074435552541666e-06,
+          "tol_005_violations": 1,
+          "passed": false,
+          "max_error_coordinate": [
+            1,
+            8,
+            26
+          ],
+          "failed_coordinates": [
+            {
+              "coordinate": [
+                2,
+                7,
+                99
+              ],
+              "actual": 0.875,
+              "oracle": 0.864741108604122,
+              "error": 0.01025889139587799,
+              "tolerance": 0.00932370554302061
+            }
+          ],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 1,
+          "quantized": false,
+          "finite": true,
+          "max_abs": 0.007735474596131553,
+          "mse": 3.7428610774052444e-07,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            4,
+            10,
+            12
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 1,
+          "quantized": true,
+          "finite": true,
+          "max_abs": 0.019193127751350403,
+          "mse": 2.791566883350459e-06,
+          "tol_005_violations": 2,
+          "passed": false,
+          "max_error_coordinate": [
+            1,
+            0,
+            101
+          ],
+          "failed_coordinates": [
+            {
+              "coordinate": [
+                2,
+                7,
+                99
+              ],
+              "actual": 0.6484375,
+              "oracle": 0.6378045906975348,
+              "error": 0.010632909302465188,
+              "tolerance": 0.008189022953487675
+            },
+            {
+              "coordinate": [
+                3,
+                1,
+                34
+              ],
+              "actual": -0.298828125,
+              "oracle": -0.2903498541472194,
+              "error": 0.008478270852780578,
+              "tolerance": 0.006451749270736097
+            }
+          ],
+          "failure_coordinates_truncated": false
+        }
+      ]
+    },
+    {
+      "name": "steady4k",
+      "segments": 2,
+      "completed": true,
+      "numeric_passed": true,
+      "hard_checks": {
+        "finite": true,
+        "baseline_numeric": true,
+        "codec": true,
+        "slot_mapping": true,
+        "unmapped_bytes": true,
+        "graph_eager": true
+      },
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 0.5275581479072571,
+            "v8_bf16p": 0.7300740480422974
+          },
+          "speedup": 0.7226090960525317
+        }
+      ],
+      "speedup_median": 0.7226090960525317,
+      "baseline_resources": {
+        "hash": "641478e6ddcd3d9c11192fbd0c6d4d472bf8ad3e3bb2fd9fa27b09f18e4dc9ff",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14,
+        "asm_sha256": {
+          "ttgir": "a4c87780231a05baaba0849faa40db2508728669bc7c8421e4e502432f6064a7",
+          "llir": "a5c0aa98993d6ab1c8e61730782681b9af61ad4fe305de74af15c02ff5338576",
+          "asm": "c3ccbaa9b88250eb3034939dcc1f9a25e203ee49d4e4fcd0026b304ed2d495e1",
+          "cubin": "f467646129d1947427d811391fafbfc45ea0764e769b5a938cdd502ace7461c4"
+        }
+      },
+      "v8_bf16p_resources": {
+        "hash": "a5cecaafb96a4b034ee63e6c886023dff926aace759909577c6307b9521aa4fe",
+        "n_regs": 143,
+        "n_spills": 0,
+        "shared": 4096,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 78,
+        "asm_sha256": {
+          "ttgir": "1aba1b704dbe5d7dc60577fd22a2ef181ccab35f986e1685901fb03e94c61f9d",
+          "llir": "13e9760f368824b1844aa1b558384f446458f99eec33b8a1963455ba5f63f57e",
+          "asm": "087fb18b8d5dfc69e77b2ed56f92a029fe92cef92a180911cd18e50e20542da9",
+          "cubin": "99eae96e59e2e74e559a1eaf11657a33cadaea5f3cd060c7b4c33fb43a3da82e"
+        }
+      },
+      "numeric_evidence": [
+        {
+          "outputs_and_oracles": "steady4k-pattern0-numeric-evidence.pt",
+          "cpu_attribution_traces": "steady4k-pattern0-failure-coordinates.json",
+          "failed_rows": [],
+          "traced_coordinates": 0
+        },
+        {
+          "outputs_and_oracles": "steady4k-pattern1-numeric-evidence.pt",
+          "cpu_attribution_traces": "steady4k-pattern1-failure-coordinates.json",
+          "failed_rows": [],
+          "traced_coordinates": 0
+        }
+      ],
+      "pointwise": [
+        {
+          "pattern": 0,
+          "quantized": false,
+          "finite": true,
+          "max_abs": 0.00029724566523547935,
+          "mse": 3.2932186551289776e-09,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            2,
+            3,
+            108
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 0,
+          "quantized": true,
+          "finite": true,
+          "max_abs": 0.0003693646871157086,
+          "mse": 4.144037261550154e-09,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            1,
+            15,
+            97
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 1,
+          "quantized": false,
+          "finite": true,
+          "max_abs": 0.00033320502417971687,
+          "mse": 3.3311930362262782e-09,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            0,
+            11,
+            12
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 1,
+          "quantized": true,
+          "finite": true,
+          "max_abs": 0.0003308392613889932,
+          "mse": 3.953020819377435e-09,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            0,
+            4,
+            114
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        }
+      ]
+    },
+    {
+      "name": "steady16k",
+      "segments": 4,
+      "completed": true,
+      "numeric_passed": true,
+      "hard_checks": {
+        "finite": true,
+        "baseline_numeric": true,
+        "codec": true,
+        "slot_mapping": true,
+        "unmapped_bytes": true,
+        "graph_eager": true
+      },
+      "rounds": [
+        {
+          "index": 0,
+          "order": [
+            false,
+            true
+          ],
+          "milliseconds": {
+            "baseline": 1.0312336683273315,
+            "v8_bf16p": 1.5115258693695068
+          },
+          "speedup": 0.6822467873192826
+        }
+      ],
+      "speedup_median": 0.6822467873192826,
+      "baseline_resources": {
+        "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 14,
+        "asm_sha256": {
+          "ttgir": "64846a024b1c0dab2c608ee465277a1ad8c209ca2fbf5734e68265f9f7146992",
+          "llir": "a41dc057749b49fd0817fbe7ece0a9fc102762418e2fc52727bd7ee6994b472c",
+          "asm": "21d754e0638acacf41ec892549b01f9c824a9bec4ac24938537db9d42345f941",
+          "cubin": "ef30c59d27cb24a09b52b96553c902d121377ab52ddc532ce172e872ab632d62"
+        }
+      },
+      "v8_bf16p_resources": {
+        "hash": "d759d5450ac3ca93db9ecf0d734e43798e34d115d8e6c2b6df75634cd4c57c01",
+        "n_regs": 143,
+        "n_spills": 0,
+        "shared": 4096,
+        "num_warps": 1,
+        "num_stages": 1,
+        "use_sme": 78,
+        "asm_sha256": {
+          "ttgir": "d398ce03299aeaef9d94d2da5d1d88fcf14653ee35ab12cf29eafcf01f6ce844",
+          "llir": "3281e434fe4fe21c275b7696f44fad7719464fb79a51455d4f22c564dc5a22c6",
+          "asm": "79bbeff1f1adfba08bbeb099f20142e10a81a64e05f30c645afd669800c9c110",
+          "cubin": "90dbb5108cb3ce9ea3b250b66fc297b9428caeed5cef1a03289d27a7033aac84"
+        }
+      },
+      "numeric_evidence": [
+        {
+          "outputs_and_oracles": "steady16k-pattern0-numeric-evidence.pt",
+          "cpu_attribution_traces": "steady16k-pattern0-failure-coordinates.json",
+          "failed_rows": [],
+          "traced_coordinates": 0
+        },
+        {
+          "outputs_and_oracles": "steady16k-pattern1-numeric-evidence.pt",
+          "cpu_attribution_traces": "steady16k-pattern1-failure-coordinates.json",
+          "failed_rows": [],
+          "traced_coordinates": 0
+        }
+      ],
+      "pointwise": [
+        {
+          "pattern": 0,
+          "quantized": false,
+          "finite": true,
+          "max_abs": 0.00014201800454310964,
+          "mse": 8.552922109079164e-10,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            2,
+            10,
+            97
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 0,
+          "quantized": true,
+          "finite": true,
+          "max_abs": 0.0001549246122474271,
+          "mse": 1.0127749494985984e-09,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            1,
+            13,
+            39
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 1,
+          "quantized": false,
+          "finite": true,
+          "max_abs": 0.00016414851078478537,
+          "mse": 9.234061423077806e-10,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            1,
+            11,
+            22
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        },
+        {
+          "pattern": 1,
+          "quantized": true,
+          "finite": true,
+          "max_abs": 0.00017349806615085672,
+          "mse": 1.0122962231005854e-09,
+          "tol_005_violations": 0,
+          "passed": true,
+          "max_error_coordinate": [
+            0,
+            8,
+            32
+          ],
+          "failed_coordinates": [],
+          "failure_coordinates_truncated": false
+        }
+      ]
+    }
+  ]
+}
