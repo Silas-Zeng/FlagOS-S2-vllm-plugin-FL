@@ -2,11 +2,13 @@
 
 This evidence-only update changes no e256/a432/7db driver, kernel, codec, gate
 or production file. All482 raw files (294,086,418B) and their five manifests
-remain intact in Root's local downloads. This first small shared review includes
-every original manifest/SHA and independently replayed reports. Complete binary
-payload archives are pending; the manifests are not presented as uploaded raw
-payloads. Root can replay directly against its existing downloads without
-waiting for a large evidence transfer. No device or SSH work was performed here.
+remain intact in Root's local downloads. The small fe1 review first shared every
+original manifest/SHA and independently replayed reports. A separate subsequent
+archive update now includes all original bytes in166 deterministic archives,
+each<2MiB, under device-originals-v1. All487 reconstructed files, including the
+five manifests, were compared directly byte-for-byte against Root's downloads.
+No device or SSH work was performed here. Device frontends stay frozen at their
+original e256/a432/7db commits; archive delivery is not a service dependency.
 
 | Runtime | Actual scope | Owner/start, same-start Z | Raw files / bytes |
 |---|---|---|---|
@@ -81,9 +83,14 @@ PYTHONDONTWRITEBYTECODE=1 python3 tools/check_biv150_konly_allreader_device_evid
 # --profile raw3d or rawq2 for the respective complete downloads
 PYTHONDONTWRITEBYTECODE=1 python3 tools/check_biv150_konly_attention_device_evidence.py \
   --raw ORIGINAL_ATTENTION_4K_OR_16K_DOWNLOAD
+# Complete shared raw-byte reconstruction, optionally all CPU array audits:
+PYTHONDONTWRITEBYTECODE=1 python3 tools/check_biv150_konly_device_archives.py \
+  --arrays --extract FRESH_EXTRACT
 ```
 
 These CPU checkers use installed NumPy and the restricted CPU-storage reader,
 never Torch or an arbitrary pickle loader. Reports, all manifest hashes and
 original local paths are in docs/evidence/konly-prefill-reader-20261027/
-device-review-cpu-v1/index.json. No original failed gate or raw file is rewritten.
+device-review-cpu-v1/index.json. Its pending-upload labels describe the earlier
+fe1 review snapshot; complete payloads are indexed independently in
+device-originals-v1/index.json. No original failed gate or raw file is rewritten.
