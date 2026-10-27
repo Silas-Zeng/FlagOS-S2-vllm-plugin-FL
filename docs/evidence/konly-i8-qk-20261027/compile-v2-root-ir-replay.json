@@ -1,0 +1,76 @@
+{
+  "source_commit": "96118f1ab75d7e914b1f6a20d87e75a5d20ba13f",
+  "compile_result_sha256": "8a81d81a189e17a4027531b653846b4d45c8aef889f0a4849a7040ab77df1998",
+  "actual_ir": {
+    "passed": true,
+    "flags": {
+      "required_artifacts_present": true,
+      "logical_m8_k128_n16_signed_i8_i32": true,
+      "native_k32_encoding": true,
+      "exactly_four_i8_mma_calls": true,
+      "complete_native_c_chain": true,
+      "exactly_four_i8_machine_mmas": true,
+      "no_bf16_mma": true,
+      "actual_score_cast_present": true,
+      "casts_at_exact_raw_to_float_ast_site": true
+    },
+    "i32_to_f32_casts": [
+      {
+        "llir_line": 378,
+        "elements_per_lane": 1,
+        "source_line": 35
+      },
+      {
+        "llir_line": 379,
+        "elements_per_lane": 1,
+        "source_line": 35
+      },
+      {
+        "llir_line": 380,
+        "elements_per_lane": 1,
+        "source_line": 35
+      },
+      {
+        "llir_line": 381,
+        "elements_per_lane": 1,
+        "source_line": 35
+      }
+    ],
+    "llvm_cast_elements_per_lane": 4,
+    "logical_score_elements": 128,
+    "isa_opcode_frequencies": {
+      "ml_vrf_init_u32": 1,
+      "ml_mov_b32": 23,
+      "ml_and_b32": 7,
+      "ml_or_b32": 5,
+      "ml_shl_b32": 15,
+      "ml_lsa_load_dword": 18,
+      "ml_cmp_eq_u32": 1,
+      "ml_csel_b32": 5,
+      "ml_srl_b32": 16,
+      "ml_anyop3_b32": 6,
+      "ml_mov_v2s_b32": 2,
+      "ml_cmp_lt_i32": 9,
+      "ml_slb_store_b8": 16,
+      "ml_xor_b32": 8,
+      "ml_add_i32": 8,
+      "ml_slb_store_b32x1": 8,
+      "ml_bfe2_b32": 1,
+      "ml_slb_load_b32x1": 8,
+      "ml_slb_load_b8": 32,
+      "ml_byte_permute_b32": 24,
+      "ml_matrix_mad_i32_i8_m16n16k32": 4,
+      "ml_cvt_f32_i32": 4,
+      "ml_mul_f32": 8,
+      "ml_addo_u32": 4,
+      "ml_addc_i32": 4,
+      "ml_lsa_store_a64_dword": 8
+    },
+    "isa_cast_cost_inferred": false,
+    "native_abi_component_independence_assumed": false,
+    "caveat": "No LLVM count is presented as hardware latency or reclaimed registers."
+  },
+  "loaded_resources_known": false,
+  "device_numeric_passed": false,
+  "performance_verified": false
+}

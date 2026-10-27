@@ -1,0 +1,57 @@
+{
+  "cpu_replay_passed": true,
+  "executed_gpu": false,
+  "source_commit": "96118f1ab75d7e914b1f6a20d87e75a5d20ba13f",
+  "kernel_sha256": "0f678e6ad858e3f92213d2e2c5c8c3730355c7c802077077f8e53a8595a5b7f9",
+  "archives": [
+    {
+      "label": "compile-raw-v2",
+      "raw_files": 20,
+      "raw_bytes": 306285,
+      "actual_ir_passed": true,
+      "recorded_numeric_passed": false,
+      "resources": {
+        "phase": "pre_launch",
+        "hash": "bc85d9fceb12218562e5c2abb53944eb97875dac3dae5daa7c67669d9b784307",
+        "n_regs": null,
+        "n_spills": null,
+        "metadata": {
+          "shared": 3072,
+          "num_warps": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "use_sme": 0
+        },
+        "loaded_resources_known": false
+      },
+      "records": 0
+    },
+    {
+      "label": "numeric-raw-v1",
+      "raw_files": 21,
+      "raw_bytes": 341380,
+      "actual_ir_passed": true,
+      "recorded_numeric_passed": true,
+      "resources": {
+        "phase": "post_launch",
+        "hash": "bc85d9fceb12218562e5c2abb53944eb97875dac3dae5daa7c67669d9b784307",
+        "n_regs": 40,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 3072,
+          "num_warps": 1,
+          "num_stages": 1,
+          "warp_size": 64,
+          "use_sme": 0
+        },
+        "loaded_resources_known": true
+      },
+      "records": 18
+    }
+  ],
+  "historical_primitive_numeric_passed": true,
+  "decode_verified": false,
+  "performance_verified": false,
+  "service_verified": false,
+  "capacity_reclaimed": false
+}
