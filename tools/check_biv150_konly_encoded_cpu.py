@@ -186,6 +186,23 @@ def run():
     on=sem.build_fingerprint(config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0',service.ENV:'1'},**common)
     assert off['sha256']!=on['sha256'] and 'konly_encoded' not in off
     assert on['konly_encoded']['implementation_sha256']==service.implementation_digest()
+    # Export is shutdown-only, atomic and one-shot; never claims GPU replay counts.
+    with TemporaryDirectory(prefix='cjj-encoded-stats-cpu-') as folder:
+        runtime.stats_path=Path(folder)/'final-{pid}.json'
+        result=runtime.shutdown(lambda *a: 'original-shutdown-result')(object())
+        assert result=='original-shutdown-result'
+        output=next(Path(folder).glob('final-*.json'));first=output.read_bytes()
+        payload=json.loads(first)
+        assert payload['reason']=='model_runner_shutdown' and payload['shape_records_complete']
+        assert not payload['graph_kernel_replay_counts_available'] and not payload['service_numeric_verified']
+        assert payload['host_shapes'] and payload['actual_kernel_records']
+        assert all(not r['post_launch_resource_fields_known'] for r in payload['actual_kernel_records'])
+        assert runtime.finalize('atexit_fallback')==payload and output.read_bytes()==first
+        assert not list(Path(folder).glob('*.tmp-*'))
+    # Type-preserving ABI metadata never reprs or reads a nonprimitive object.
+    class NoRepr:
+        def __repr__(self):raise AssertionError('metadata repr forbidden')
+    assert runtime.typed(NoRepr())['unrepresented']
     assert not {'torch','triton','vllm','numpy'}.intersection(sys.modules)
     return dict(passed=True,cpu_metadata_routing_only=True,source_and_slot_readback=False,
         source_destination_distinct=True,nonzero_layer_offset_checked=True,Kbyte_Vbf16_units_separate=True,

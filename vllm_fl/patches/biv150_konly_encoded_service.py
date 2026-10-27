@@ -1,5 +1,6 @@
 """Default-off private encoded-cache service binding; no import-time device work."""
 import functools
+import atexit
 import hashlib
 import importlib
 import inspect
@@ -80,6 +81,14 @@ def install(runner_class, *, environ=None):
     broker = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_views')
     runtime_module = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_runtime')
     runtime = runtime_module.Runtime(torch, broker, gpu, gqa)
+    runtime.actual_target = [target.backend,target.arch,target.warp_size]
+    runtime.verified_installed_sources = dict(PINS)
+    runtime.stats_path = env.get('VLLM_FL_BIV150_KONLY_ENCODED_STATS_PATH')
+    if runtime.stats_path is None and env.get('TRITON_CACHE_DIR'):
+        runtime.stats_path = str(Path(env['TRITON_CACHE_DIR']).parent/'konly-encoded-final-{pid}.json')
+    if runtime.stats_path is not None:
+        need(Path(runtime.stats_path).is_absolute(),'private stats output must be absolute')
+
     cls = backend.TritonAttentionImpl
     jobs = [
         (vars(gqa), '_gqa_decode_attention', runtime.facade(gqa._gqa_decode_attention, 'gqa')),
@@ -87,7 +96,8 @@ def install(runner_class, *, environ=None):
         (base.holder, base.kernel_key, runtime.facade(base.holder[base.kernel_key], 'normalized')),
     ]
     attributes = [(cls, 'do_kv_cache_update', runtime.writer(cls.do_kv_cache_update)),
-                  (runner_class, 'initialize_kv_cache', runtime.initialize(runner_class.initialize_kv_cache))]
+                  (runner_class, 'initialize_kv_cache', runtime.initialize(runner_class.initialize_kv_cache)),
+                  (runner_class, 'shutdown', runtime.shutdown(runner_class.shutdown))]
     # Disable only this private backend's unqualified fused writer before FX
     # compilation/capture. The existing separate RoPE->custom-op writer survives.
     def no_fused(self): return False
@@ -128,11 +138,12 @@ def install(runner_class, *, environ=None):
     runtime.profile_identities = dict(runtime.kernels)
     runtime.installed_digest = implementation_digest()
     _STATE = runtime
+    atexit.register(runtime.finalize,'atexit_fallback')
     return dict(installed=True, default_off=True, scope='cold MiniCPM BF16 NHD single-device private encoded lifetime',
         current_profiles=['decode79','normalized2d128','q32-unhoisted','multi2-unhoisted','raw3d-q1'],
         encoded_fallback='format-aware all-sequence normalized2D, never stock BF16',
         multi2_and_raw3d_source_routes_enabled=True, arbitrary_service_geometry_verified=False, mixed85_pair_enabled=False, live_slot_freshness='inherited scheduler/custom-op/stream contract',
-        implementation_sha256=runtime.installed_digest, q32_I8_fragment_hoist_verified=False, service_numeric_verified=False, precision_gate=False)
+        implementation_sha256=runtime.installed_digest,final_stats_path=runtime.stats_path, q32_I8_fragment_hoist_verified=False, service_numeric_verified=False, precision_gate=False)
 
 
 def stats():

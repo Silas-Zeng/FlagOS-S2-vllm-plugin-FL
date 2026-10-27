@@ -6,6 +6,10 @@ stock fallback for an owned encoded allocation. Device qualification is pending.
 from dataclasses import dataclass
 import functools
 import json
+import hashlib
+import os
+from pathlib import Path
+import time
 
 FORMAT = 'cjj-konly-rn32-rne-v2'
 
@@ -104,21 +108,110 @@ class Runtime:
         # Disabled M2 uses encoded2D; disabled raw3D rejects before launch.
         self.raw3d_enabled = True; self.mixed_pair_enabled = False; self.multi2_enabled = True
         self.q32_enabled = True
+        self.shape_records = {}; self.kernel_records = {}; self.shape_overflow = 0
+        self.stats_path = None; self.final_export = None
 
-    def note(self, profile, handle, launch=None):
-        self.counts['selected'][profile] = self.counts['selected'].get(profile, 0) + 1
-        if self.counts['selected'][profile] == 1:
-            launch = {} if launch is None else launch
-            query = launch.get('query_ptr')
-            lengths = launch.get('seq_lens_ptr')
-            print('BIV150_KONLY_ENCODED_SELECTED', json.dumps(dict(profile=profile,
-                hash=str(handle.hash) if getattr(handle,'hash',None) else None,
+    @staticmethod
+    def typed(value):
+        # Never repr a Tensor or read its data merely to serialize metadata.
+        if value is None or type(value) in (bool,str,int,float):
+            return dict(type=type(value).__name__,value=value)
+        if isinstance(value,int): return dict(type=type(value).__name__,value=int(value))
+        if type(value) is dict:
+            return dict(type='dict',items=[[Runtime.typed(k),Runtime.typed(v)] for k,v in value.items()])
+        if type(value) in (list,tuple):
+            return dict(type=type(value).__name__,items=[Runtime.typed(v) for v in value])
+        return dict(type=type(value).__module__+'.'+type(value).__name__,unrepresented=True)
+
+    @staticmethod
+    def geometry(value):
+        return dict(dtype=str(value.dtype),shape=list(value.shape),strides=list(value.stride()),
+                    storage_offset=value.storage_offset(),device=str(value.device))
+
+    def note(self, profile, handle, launch=None, grid=None):
+        launch = {} if launch is None else launch
+        self.counts['selected'][profile] = self.counts['selected'].get(profile,0)+1
+        kernel_hash = str(handle.hash) if getattr(handle,'hash',None) else None
+        query = launch.get('query_ptr'); lengths = launch.get('seq_lens_ptr')
+        pointers = {k:self.geometry(v) for k,v in launch.items() if hasattr(v,'untyped_storage')}
+        scalar_names = ('num_seqs','BLOCK_M','BLOCK_Q','TILE_SIZE','num_warps','num_stages','IS_3D',
+            'KV_QUANT_MODE','HEAD_SIZE','HEAD_SIZE_PADDED','num_query_heads','num_queries_per_kv',
+            'NUM_SEGMENTS_PER_SEQ','ROWS','PAGE_SIZE','SEGMENTS','key_row_stride','value_row_stride',
+            'key_rows','value_rows','slot_count','cache_pages')
+        scalars = {k:self.typed(launch[k]) for k in scalar_names if k in launch}
+        record = dict(profile=profile,hash=kernel_hash,grid=list(grid) if grid is not None else None,
+            capture=self.torch.cuda.is_current_stream_capturing(),pointers=pointers,selected_scalars=scalars)
+        key = json.dumps(record,sort_keys=True,separators=(',',':'))
+        if key in self.shape_records: self.shape_records[key]['host_calls'] += 1
+        elif len(self.shape_records)<4096: self.shape_records[key] = dict(**record,host_calls=1)
+        else: self.shape_overflow += 1
+        identity = (profile,kernel_hash)
+        if identity not in self.kernel_records:
+            src = getattr(handle,'src',None); fn = getattr(src,'fn',None)
+            source = getattr(fn,'src',None); asm = getattr(handle,'asm',{})
+            metadata = getattr(handle,'metadata',None)
+            resources = dict(n_regs=getattr(handle,'n_regs',None),n_spills=getattr(handle,'n_spills',None),
+                **{k:getattr(metadata,k,None) for k in ('shared','num_warps','num_stages','warp_size','use_sme')})
+            known = (type(resources['n_regs']) is int and resources['n_regs']>0
+                and all(type(resources[k]) is int and resources[k]>=0 for k in ('n_spills','shared','use_sme'))
+                and all(type(resources[k]) is int and resources[k]>0 for k in ('num_warps','num_stages','warp_size')))
+            item = dict(profile=profile,hash=kernel_hash,
+                actual_function_name=getattr(metadata,'name',None),source_function_name=getattr(fn,'__name__',None),
+                source_digest=hashlib.sha256(source.encode()).hexdigest() if isinstance(source,str) else None,
+                typed_ABI={k:self.typed(getattr(src,k,None)) for k in ('signature','constants','attrs')},
+                actual_artifact_sha256={k:hashlib.sha256(v.encode() if isinstance(v,str) else v).hexdigest()
+                    for k,v in asm.items() if isinstance(v,(str,bytes))},resources=resources,
+                post_launch_resource_fields_known=known,target=getattr(self,'actual_target',None),
+                verified_installed_sources=getattr(self,'verified_installed_sources',None))
+            self.kernel_records[identity] = item
+            print('BIV150_KONLY_ENCODED_SELECTED',json.dumps(dict(profile=profile,hash=kernel_hash,
                 implementation_sha256=getattr(self,'installed_digest',None),format=FORMAT,
                 query_rows=None if query is None else query.shape[0],
                 sequences=None if lengths is None else lengths.shape[0],
-                I8_fragment_hoist_verified=False,host_event_not_Graph_replay_count=True)), flush=True)
-        if getattr(handle, 'hash', None):
-            self.counts.setdefault('actual_kernel_hashes', {}).setdefault(profile, set()).add(str(handle.hash))
+                I8_fragment_hoist_verified=False,host_event_not_Graph_replay_count=True)),flush=True)
+        if kernel_hash:
+            self.counts.setdefault('actual_kernel_hashes',{}).setdefault(profile,set()).add(kernel_hash)
+
+    def finalize(self, reason):
+        if self.final_export is not None: return self.final_export
+        try:
+            ticks = None
+            stat = Path('/proc/self/stat')
+            if stat.is_file(): ticks = int(stat.read_text().rsplit(')',1)[1].split()[19])
+            payload = dict(schema='cjj-konly-encoded-final-stats-v1',reason=reason,pid=os.getpid(),
+                start_ticks=ticks,unix_time=time.time(),implementation_sha256=getattr(self,'installed_digest',None),
+                stats=self.stats(),host_shapes=list(self.shape_records.values()),
+                shape_records_complete=self.shape_overflow==0,omitted_shape_host_calls=self.shape_overflow,
+                actual_kernel_records=list(self.kernel_records.values()),
+                graph_kernel_replay_counts_available=False,service_numeric_verified=False,precision_gate=False)
+            data = (json.dumps(payload,indent=2)+'\n').encode(); digest = hashlib.sha256(data).hexdigest()
+            if self.stats_path is not None:
+                path = Path(str(self.stats_path).replace('{pid}',str(os.getpid())))
+                require(path.is_absolute(),'absolute private stats path required')
+                path.parent.mkdir(parents=True,exist_ok=True)
+                require(not path.exists(),'refuse overwriting previous final stats')
+                temp = path.with_name(path.name+'.tmp-'+str(os.getpid()))
+                with temp.open('xb') as stream: stream.write(data)
+                temp.replace(path)
+                print('BIV150_KONLY_ENCODED_FINAL_STATS',json.dumps(dict(path=str(path),sha256=digest,
+                    bytes=len(data),pid=os.getpid(),reason=reason,shape_records=len(self.shape_records),
+                    graph_kernel_replay_counts_available=False)),flush=True)
+            else:
+                print('BIV150_KONLY_ENCODED_FINAL_STATS_LOG_ONLY',json.dumps(payload),flush=True)
+            self.final_export = payload
+            return payload
+        except Exception as error:
+            # Statistics failure must not mask a model/shutdown result. A missing
+            # export is nevertheless an evidence gap for the external controller.
+            print('BIV150_KONLY_ENCODED_FINAL_STATS_ERROR',type(error).__name__,str(error)[:160],flush=True)
+            return None
+
+    def shutdown(self, original):
+        @functools.wraps(original)
+        def wrapper(runner,*args,**kwargs):
+            try: return original(runner,*args,**kwargs)
+            finally: self.finalize('model_runner_shutdown')
+        return wrapper
 
     def fallback(self, reason):
         values = self.counts['profile_fallback']; values[reason] = values.get(reason, 0) + 1
@@ -178,7 +271,9 @@ class Runtime:
                     key_row_stride=key.stride(0), value_row_stride=value.stride(0),
                     key_rows=key.shape[0], value_rows=value.shape[0], slot_count=count,
                     cache_pages=entry.observation.shape[0], num_warps=1, num_stages=1)
-                self.note('writer83', handle)
+                self.note('writer83',handle,dict(key_source=key,value_source=value,slots=slots,
+                    key_row_stride=key.stride(0),value_row_stride=value.stride(0),key_rows=key.shape[0],
+                    value_rows=value.shape[0],slot_count=count,cache_pages=entry.observation.shape[0]),(count,2))
             self.counts['writer'] += 1
             # Preserve original do_kv_cache_update's None result/custom-op dummy.
             return None
@@ -251,6 +346,6 @@ class KernelFacade:
                     selected.update(BLOCK_M=bm, BLOCK_Q=bq, TILE_SIZE=64, num_warps=warps, num_stages=1)
                     target_grid = (qrows // bq + n, 2)
             handle = runtime.kernels[profile][target_grid](**selected)
-            runtime.note(profile, handle, selected)
+            runtime.note(profile, handle, selected, target_grid)
             return handle
         return invoke
