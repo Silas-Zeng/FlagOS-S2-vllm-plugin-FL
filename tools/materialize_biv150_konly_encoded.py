@@ -13,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 MIXED = '4a3fc7773b37e745082d0d98f8d53713130384ea'
 PREFILL = 'ef4034b23d194b8163062826447ee2b4aa950c36'
 WRITER = 'ec4262557282e6c95d29e69784bb16a2c6654091'
-MAIN = 'dac1b8fb48e7983e48283032efeee9b592c5fbe5'
+MAIN = 'b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd'
+GQA_MATH_BASE = 'dac1b8fb48e7983e48283032efeee9b592c5fbe5'
 HOIST = 'e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4'
 
 
@@ -37,7 +38,19 @@ def run(write=False):
             decode = importlib.import_module('biv150_konly_decode_factory')
             mixed = importlib.import_module('biv150_konly_mixed_factory')
             prefill = importlib.import_module('biv150_konly_prefill_factory')
-            main_source = git(MAIN, 'vllm_fl/patches/biv150_gqa_decode.py').decode()
+            current = git(MAIN, 'vllm_fl/patches/biv150_gqa_decode.py').decode()
+            main_source = git(GQA_MATH_BASE, 'vllm_fl/patches/biv150_gqa_decode.py').decode()
+            def span(text,name):
+                node = next(n for n in ast.parse(text).body if isinstance(n,ast.FunctionDef) and n.name==name)
+                start = min([node.lineno]+[n.lineno for n in node.decorator_list])-1
+                return ''.join(text.splitlines(True)[start:node.end_lineno])
+            names = ('_gqa_decode_attention','_reduce_partials')
+            assert all(span(current,n)==span(main_source,n) for n in names)
+            proofs['current_main_GQA'] = dict(current_main=MAIN,current_source_sha256=sha(current),
+                certified_factory_source_base=GQA_MATH_BASE,factory_source_sha256=sha(main_source),
+                decorated_kernel_and_reducer_byte_identical=list(names),
+                new_native_host_entry_not_covered_by_math_proof=True,
+                new_host_format_boundary_checked_separately=True)
             source, proofs['decode'] = decode.build(main_source, 'inline')
             old = 'from cjj_konly_decode_support import quantize_bf16_rne\n'
             new = 'from vllm_fl.patches.biv150_konly_encoded_writer import quantize_bf16_rne\n'

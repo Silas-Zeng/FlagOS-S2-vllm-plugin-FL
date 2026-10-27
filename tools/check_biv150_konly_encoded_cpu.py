@@ -133,6 +133,11 @@ def run():
     runtime.attribute_bindings=[];runtime.facade_type=runtime_module.KernelFacade
     runtime.facade_code=runtime_module.KernelFacade.__getitem__.__code__
     runtime.profile_identities=dict(runtime.kernels);runtime.installed_digest=service.implementation_digest()
+    gqa._native_s2=object()
+    parent=lambda grid,**kwargs:None
+    producer=runtime.launch_producer(parent,gqa_facade)
+    gqa._launch_producer=producer
+    runtime.producer_binding=(gqa,producer,parent,gqa._native_s2,producer.__code__)
     service._STATE=runtime; attention=SimpleNamespace(kernel_unified_attention=raw)
     receipt=service.compute_order_receipt(attention,norm)
     assert receipt['parent_fn_is_interface_only'] and not receipt['encoded_math_device_certified']
@@ -140,14 +145,19 @@ def run():
     previous=runtime.kernels['decode'];runtime.kernels['decode']=Kernel()
     rejected(lambda:service.compute_order_receipt(attention,norm));runtime.kernels['decode']=previous
     runtime.installed_digest='wrong';rejected(lambda:service.compute_order_receipt(attention,norm))
-    runtime.installed_digest=service.implementation_digest();service._STATE=None
+    runtime.installed_digest=service.implementation_digest()
+    previous_native=gqa._native_s2;gqa._native_s2=object()
+    rejected(lambda:service.compute_order_receipt(attention,norm));gqa._native_s2=previous_native
+    gqa._launch_producer=parent
+    rejected(lambda:service.compute_order_receipt(attention,norm));gqa._launch_producer=producer
+    service._STATE=None
     rejected(lambda: runtime.forbid_transfer(lambda x: None)([cache]))
     assert runtime.forbid_transfer(lambda x: 3)([q]) == 3
     assert runtime.counts['quantization_in_forward'] == 0 and not runtime.stats()['dynamic_I8_hoist_verified']
     text = (ROOT/'vllm_fl/patches/biv150_konly_encoded_runtime.py').read_text()
     assert '.cpu(' not in text and '.item(' not in text
     import hashlib, subprocess
-    def baseline(path): return subprocess.check_output(['git','-C',str(ROOT),'show','dac1b8fb48e7983e48283032efeee9b592c5fbe5:'+path])
+    def baseline(path): return subprocess.check_output(['git','-C',str(ROOT),'show','b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd:'+path])
     path='vllm_fl/worker/model_runner.py'; before=baseline(path); after=(ROOT/path).read_bytes()
     assert after.startswith(before); addition=after[len(before):]
     assert addition.count(b'\n')==addition.count(b'\r\n') and addition.count(b'import as')==0
@@ -167,9 +177,9 @@ def run():
         assert captured==([runner] if on else [])
         assert imported==(['os','vllm_fl.patches.biv150_konly_encoded_service'] if on else ['os'])
     from tempfile import TemporaryDirectory
-    patch=(ROOT/'docs/evidence/konly-encoded-service-20261027/production-changes-v2.patch').read_bytes()
+    patch=(ROOT/'docs/evidence/konly-encoded-service-20261027/production-changes-v3.patch').read_bytes()
     names=['vllm_fl/worker/model_runner.py','vllm_fl/patches/biv150_compute_order.py','vllm_fl/compile_semantics.py']
-    exact=subprocess.check_output(['git','-C',str(ROOT),'diff','--binary','--full-index','dac1b8fb48e7983e48283032efeee9b592c5fbe5','--',*names])
+    exact=subprocess.check_output(['git','-C',str(ROOT),'diff','--binary','--full-index','b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd','--',*names])
     assert exact==patch
     with TemporaryDirectory(prefix='cjj-encoded-inverse-') as temp:
         directory=Path(temp)
@@ -182,14 +192,23 @@ def run():
     sem=importlib.util.module_from_spec(spec);spec.loader.exec_module(sem)
     model=SimpleNamespace(**sem._GEOMETRY);config=SimpleNamespace(model_config=SimpleNamespace(hf_config=model))
     common=dict(vendor_name='iluvatar',abi={'torch':'CPU-fixture','cxx11_abi':False})
-    off=sem.build_fingerprint(config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0'},**common)
-    on=sem.build_fingerprint(config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0',service.ENV:'1'},**common)
-    assert off['sha256']!=on['sha256'] and 'konly_encoded' not in off
-    assert on['konly_encoded']['implementation_sha256']==service.implementation_digest()
-    hoist=sem.build_fingerprint(config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0',service.ENV:'1',
-        'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'},**common)
-    assert not on['konly_encoded']['q32_hoist_enabled'] and hoist['konly_encoded']['q32_hoist_enabled']
-    assert hoist['sha256'] != on['sha256']
+    with TemporaryDirectory(prefix='cjj-native-gqa-fingerprint-cpu-') as temp:
+        library=Path(temp)/'CPU-fixture-not-loadable-native-gqa.so'
+        library.write_bytes(b'CPU-only native GQA fingerprint fixture')
+        env={'VLLM_FL_BIV150_NATIVE_W8A8':'0','BIV150_NATIVE_GQA_LIBRARY':str(library)}
+        off=sem.build_fingerprint(config,environ=env,**common)
+        on=sem.build_fingerprint(config,environ=dict(env,**{service.ENV:'1'}),**common)
+        assert off['sha256']!=on['sha256'] and 'konly_encoded' not in off
+        assert on['konly_encoded']['implementation_sha256']==service.implementation_digest()
+        assert on['konly_encoded']['producer_boundary']=='owned-encoded-before-stock-native'
+        hoist=sem.build_fingerprint(config,environ=dict(env,**{service.ENV:'1',
+            'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'}),**common)
+        assert not on['konly_encoded']['q32_hoist_enabled'] and hoist['konly_encoded']['q32_hoist_enabled']
+        assert hoist['sha256'] != on['sha256']
+        native_off=sem.build_fingerprint(config,environ=dict(env,VLLM_FL_BIV150_NATIVE_GQA='0'),**common)
+        assert native_off['sha256']!=off['sha256']
+        library.write_bytes(b'changed CPU fingerprint fixture, no library loading')
+        assert sem.build_fingerprint(config,environ=env,**common)['sha256']!=off['sha256']
     # Export is shutdown-only, atomic and one-shot; never claims GPU replay counts.
     with TemporaryDirectory(prefix='cjj-encoded-stats-cpu-') as folder:
         runtime.stats_path=Path(folder)/'final-{pid}.json'

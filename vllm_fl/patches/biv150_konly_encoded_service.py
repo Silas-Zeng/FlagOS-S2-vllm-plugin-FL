@@ -11,14 +11,15 @@ from pathlib import Path
 ENV = 'VLLM_FL_BIV150_KONLY_ENCODED_SERVICE'
 _STATE = None
 PINS = {
+    'vllm_fl.patches.biv150_native_gqa': '86f8ca199ce632ccb3bbc251bb5c632e57da3373d8b87bd5f53334ef818a26c4',
     'vllm.v1.attention.backends.triton_attn': '1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605',
     'vllm.v1.attention.ops.triton_unified_attention': '54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f',
     'vllm.v1.attention.ops.triton_attention_helpers': '59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1',
-    'vllm_fl.patches.biv150_gqa_decode': '2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1',
+    'vllm_fl.patches.biv150_gqa_decode': 'f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40',
     'vllm_fl.patches.biv150_prefill_q32': '3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b',
-    'vllm_fl.patches.biv150_prefill_multi2': 'fc3cdd066aacc6dfdc5029bb8aae9589f868b6800534511d2198f1f0d88da342',
+    'vllm_fl.patches.biv150_prefill_multi2': '669a2a4d7b0e5a08f28e3492fd8fa45999f48e5521be94791f103e0fecd6b1eb',
     'vllm_fl.patches.biv150_prefill_normalized': '957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1',
-    'vllm_fl.patches.biv150_q_fragment_service': '38e44e6b0272116a1c76561119e9742337caed4dfaf5ab891fc57df4f2c16a82',
+    'vllm_fl.patches.biv150_q_fragment_service': 'c3c5bb34086681918cc328a6bbc2b349dd9019899b730fc99f9b2dc02f3ae1a9',
 }
 
 
@@ -47,6 +48,14 @@ def install(runner_class, *, environ=None):
     need(attention.current_platform.vendor_name == 'iluvatar' and not attention.is_batch_invariant, 'target platform')
     need(backend.unified_attention is attention.unified_attention, 'backend/SDK function alias')
     need(gqa._state['calls'] == gqa._state['fallbacks'] == 0, 'worker has already executed attention')
+    launcher = gqa._launch_producer
+    need(inspect.isfunction(launcher) and launcher.__globals__ is vars(gqa)
+         and launcher.__code__.co_name == '_launch_producer' and not launcher.__closure__
+         and not hasattr(launcher,'__wrapped__'), 'exact new main producer launcher required')
+    native_parent = gqa._native_s2
+    if env.get('VLLM_FL_BIV150_NATIVE_GQA','1') == '1':
+        need(type(native_parent) is modules['vllm_fl.patches.biv150_native_gqa']._Runtime,
+             'default-on main native GQA parent was not installed')
     base = fragment._MANAGER
     need(base is not None and base.active, 'main normalized/Q-fragment manager required')
     q32 = modules['vllm_fl.patches.biv150_prefill_q32']
@@ -108,8 +117,11 @@ def install(runner_class, *, environ=None):
         need(Path(runtime.stats_path).is_absolute(),'private stats output must be absolute')
 
     cls = backend.TritonAttentionImpl
+    private_gqa = runtime.facade(gqa._gqa_decode_attention, 'gqa')
+    producer = runtime.launch_producer(launcher,private_gqa)
     jobs = [
-        (vars(gqa), '_gqa_decode_attention', runtime.facade(gqa._gqa_decode_attention, 'gqa')),
+        (vars(gqa), '_launch_producer', producer),
+        (vars(gqa), '_gqa_decode_attention', private_gqa),
         (vars(attention), 'kernel_unified_attention', runtime.facade(attention.kernel_unified_attention, 'sdk')),
         (base.holder, base.kernel_key, runtime.facade(base.holder[base.kernel_key], 'normalized')),
     ]
@@ -151,6 +163,7 @@ def install(runner_class, *, environ=None):
     runtime.facade_bindings = [(holder, key, value, previous) for (holder, key, value), (_, _, previous) in zip(jobs, old)
                                if isinstance(value, runtime_module.KernelFacade)]
     runtime.attribute_bindings = [(owner, key, value) for owner, key, value in attributes]
+    runtime.producer_binding = (gqa,producer,launcher,native_parent,producer.__code__)
     runtime.facade_type = runtime_module.KernelFacade
     runtime.facade_code = runtime_module.KernelFacade.__getitem__.__code__
     runtime.profile_identities = dict(runtime.kernels)
@@ -162,6 +175,8 @@ def install(runner_class, *, environ=None):
         encoded_fallback='format-aware all-sequence normalized2D, never stock BF16',
         multi2_and_raw3d_source_routes_enabled=True, arbitrary_service_geometry_verified=False, mixed85_pair_enabled=False, live_slot_freshness='inherited scheduler/custom-op/stream contract',
         implementation_sha256=runtime.installed_digest,final_stats_path=runtime.stats_path,
+        stock_native_gqa_parent_preserved=True, encoded_GQA_uses_stock_native=False,
+        producer_boundary='owned-encoded-private-before-stock-native',
         q32_hoist_enabled=runtime.q32_hoist is not None, q32_I8_fragment_hoist_verified=False, service_numeric_verified=False, precision_gate=False)
 
 
@@ -186,6 +201,12 @@ def compute_order_receipt(attention, normalized_kernel):
     need(state is not None and implementation_digest() == state.installed_digest, 'unregistered/stale encoded runtime')
     need(state.facade_type.__getitem__.__code__ is state.facade_code, 'encoded dispatch code changed')
     need(state.q32_hoist is getattr(state,'q32_hoist_identity',None), 'encoded Q32 adapter binding changed')
+    boundary = getattr(state,'producer_binding',None)
+    need(type(boundary) is tuple and len(boundary)==5, 'new main producer boundary receipt absent')
+    gqa,producer,parent,native_parent,code = boundary
+    need(gqa._launch_producer is producer and producer.__code__ is code
+         and producer.__wrapped__ is parent and gqa._native_s2 is native_parent,
+         'format-aware producer or preserved native parent changed')
     need(set(state.kernels) == set(state.profile_identities) and all(state.kernels[k] is v for k,v in state.profile_identities.items()), 'private profile binding changed')
     parents = {}
     for holder,key,facade,original in state.facade_bindings:
@@ -200,4 +221,5 @@ def compute_order_receipt(attention, normalized_kernel):
          'cache ownership registry incomplete')
     return dict(parent_raw=parents[id(attention.kernel_unified_attention)], parent_normalized=parents[id(normalized_kernel)],
         encoded_dispatch_registered=True, implementation_sha256=state.installed_digest,
+        producer_boundary_registered=True, stock_native_parent_preserved=True, encoded_GQA_uses_stock_native=False,
         parent_fn_is_interface_only=True, encoded_math_device_certified=False)

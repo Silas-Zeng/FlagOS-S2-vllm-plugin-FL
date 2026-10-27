@@ -103,7 +103,8 @@ class Runtime:
         self.torch, self.kernels, self.gqa = torch, kernels, gqa
         self.registry = Registry(torch, broker)
         self.counts = dict(writer=0, selected={}, encoded_to_stock_fallback=0, profile_fallback={},
-                           quantization_in_forward=0, host_counts_not_graph_replays=True)
+                           quantization_in_forward=0, host_counts_not_graph_replays=True,
+                           encoded_stock_native_bypass_attempts=0, stock_parent_producer_host_calls=0)
         # Canonical source routes exist; arbitrary service geometry is unproved.
         # Disabled M2 uses encoded2D; disabled raw3D rejects before launch.
         self.raw3d_enabled = True; self.mixed_pair_enabled = False; self.multi2_enabled = True
@@ -289,6 +290,28 @@ class Runtime:
 
     def facade(self, original, family):
         return KernelFacade(self, original, family)
+
+    def launch_producer(self, original, private_reader):
+        """Intercept format ownership BEFORE main's native BF16 eligibility.
+
+        Before the encoded allocation epoch, unowned stock profiling tensors
+        keep main's entire native/Triton path. Once armed, this private worker
+        admits only its registered encoded caches; other formats are unknown.
+        """
+        @functools.wraps(original)
+        def wrapper(grid, **kwargs):
+            key, value = kwargs.get('key_cache_ptr'), kwargs.get('value_cache_ptr')
+            require(key is not None and value is not None, 'producer cache pointers absent')
+            if self.registry.owns((key,value)):
+                # The private facade validates the exact pair/view/ABI before
+                # launch. Even an unrecognized owned alias never reaches main
+                # native eligibility or its nominal BF16 pointer interpretation.
+                self.counts['encoded_stock_native_bypass_attempts'] += 1
+                return private_reader[grid](**kwargs)
+            require(not self.registry.armed, 'unknown producer cache format after encoded epoch')
+            self.counts['stock_parent_producer_host_calls'] += 1
+            return original(grid, **kwargs)
+        return wrapper
 
     def forbid_transfer(self, original):
         @functools.wraps(original)
