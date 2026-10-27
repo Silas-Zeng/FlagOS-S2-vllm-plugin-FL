@@ -1,0 +1,107 @@
+{
+  "passed": true,
+  "CPU_only": true,
+  "actual_helper_sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+  "actual_expected_fingerprint_called": true,
+  "standalone_no_parent_package": true,
+  "private_or_GPU_package_imported": false,
+  "on_off_and_ABI_cases": [
+    {
+      "enabled": false,
+      "abi": {
+        "torch": "2.10.0",
+        "cxx11_abi": false
+      },
+      "result": {
+        "schema": 1,
+        "sha256": "eab49af704cee3d1521c1d82c7aff2ff4fdb7ff7f96143e1c28bb0ccf30c41a2",
+        "native_enabled": false,
+        "konly_encoded": {
+          "format": "cjj-konly-rn32-rne-v2",
+          "producer_boundary": "owned-encoded-before-stock-native",
+          "q32_hoist_enabled": false,
+          "implementation_sha256": "0e446f154c363c6eac4bd2d203c593a8bda9cbec4b2168717ecef6f598821602"
+        }
+      }
+    },
+    {
+      "enabled": true,
+      "abi": {
+        "torch": "2.10.0",
+        "cxx11_abi": false
+      },
+      "result": {
+        "schema": 1,
+        "sha256": "470c4708afdf3cf053ab697b4c232264a8d5a62307da503ce92c79da06c65d7e",
+        "native_enabled": false,
+        "konly_encoded": {
+          "format": "cjj-konly-rn32-rne-v2",
+          "producer_boundary": "owned-encoded-before-stock-native",
+          "q32_hoist_enabled": false,
+          "implementation_sha256": "0e446f154c363c6eac4bd2d203c593a8bda9cbec4b2168717ecef6f598821602",
+          "native_decode": {
+            "enabled": true,
+            "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+            "operator": "cjj_native_k8_qk_probe::produce"
+          }
+        }
+      }
+    },
+    {
+      "enabled": true,
+      "abi": {
+        "torch": "2.10.0",
+        "cxx11_abi": true
+      },
+      "result": {
+        "schema": 1,
+        "sha256": "d0db1392140c79e7633d17e5b90176c754119103344c72e5e790175a068da481",
+        "native_enabled": false,
+        "konly_encoded": {
+          "format": "cjj-konly-rn32-rne-v2",
+          "producer_boundary": "owned-encoded-before-stock-native",
+          "q32_hoist_enabled": false,
+          "implementation_sha256": "0e446f154c363c6eac4bd2d203c593a8bda9cbec4b2168717ecef6f598821602",
+          "native_decode": {
+            "enabled": true,
+            "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+            "operator": "cjj_native_k8_qk_probe::produce"
+          }
+        }
+      }
+    },
+    {
+      "enabled": true,
+      "abi": {
+        "torch": "2.9.0",
+        "cxx11_abi": false
+      },
+      "result": {
+        "schema": 1,
+        "sha256": "dcd329fc6d0ca2a9610e88e2161fd0ca3ba325cde2bed109cc6b23b3d0940c7e",
+        "native_enabled": false,
+        "konly_encoded": {
+          "format": "cjj-konly-rn32-rne-v2",
+          "producer_boundary": "owned-encoded-before-stock-native",
+          "q32_hoist_enabled": false,
+          "implementation_sha256": "0e446f154c363c6eac4bd2d203c593a8bda9cbec4b2168717ecef6f598821602",
+          "native_decode": {
+            "enabled": true,
+            "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+            "operator": "cjj_native_k8_qk_probe::produce"
+          }
+        }
+      }
+    }
+  ],
+  "all_private_off": {
+    "schema": 1,
+    "sha256": "150aa22955cdf8fcef1d1a5fa670a5aab411e15f85c08b9ece450182134977c9",
+    "native_enabled": false
+  },
+  "rejections": 4,
+  "actual_library_content_SHA_verified": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "helper_modified": false,
+  "library_loaded": false,
+  "GPU_or_SSH_executed": false
+}

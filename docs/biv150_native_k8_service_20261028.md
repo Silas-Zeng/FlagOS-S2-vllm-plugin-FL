@@ -34,3 +34,15 @@ PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_native_k8_service_
 ```
 
 Default library location is the existing local Root compile-record copy. `--library /ABS/EXISTING22e.so` replays the same CPU ELF check elsewhere; no Torch/GPU import or execution occurs. No author SSH/JIT/GPU, dependency installation or service activation was performed. Keep Draft; no new source service accuracy/TTFT/throughput/capacity acceptance is claimed. Do not run89's historical materializer over this overlay: it reconstructs the old dependency and would remove these hooks.
+
+## Standalone fingerprint correction after first preflight
+
+The first266 smoke owner707989/start348275125 exited in the original94db helper preflight, before model startup or GPU numerical/performance work. Its `expected_fingerprint()` loads `compile_semantics.py` with `spec_from_file_location` and no parent package; the relative adapter import raised ImportError. The next revision validates the same absolute path/fixed22e SHA through stdlib `Path`/`_sha`, without importing the private adapter or GPU packages. Native adapter/kernel/math/thresholds,94db/6e2 and the original266 output remain unchanged.
+
+`tools/check_biv150_native_k8_fingerprint_cpu.py` loads the exact actual94db file (SHA checked) and calls its unchanged expected_fingerprint for ON/OFF, CXX11 ABI and Torch-version identity switches, all-private-off and invalid format/path/SHA cases. ABI variants test cache separation, not binary support. Four hashes differ as intended; no SO is loaded and no GPU package imported. The existing attachment/C3/ELF CPU suite also passes.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_native_k8_fingerprint_cpu.py
+```
+
+Defaults use the preserved local actual94db helper and22e record; --helper/--library can supply those exact files elsewhere. Root retries with the same4d597 controller and fresh tag/output; the failed266 run is not overwritten.
