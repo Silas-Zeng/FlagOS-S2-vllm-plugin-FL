@@ -1,0 +1,86 @@
+{
+  "schema": "cjj-stock-puredecode-model105-records-v3",
+  "source_commit": "a48cf1c82f8665b7e70e3e70fea5e0845eeee504",
+  "production_base": "4432fae71deca0d6c43482332b6937084daed10e",
+  "team_base": "56f1838192abc940b3fb9accef490022ac125000",
+  "original_download_manifest": {
+    "bytes": 5942,
+    "sha256": "124284e7ca3c68c415849f2cbd0b2dbdcb11e0d3a11a0605978129701e5c5ea6"
+  },
+  "original_raw_files": 18,
+  "original_raw_bytes": 4325172,
+  "original_owner": {
+    "pid": 629199,
+    "start_ticks": 344628210,
+    "same_start": true,
+    "state": "Z"
+  },
+  "excluded_generated_cache_prefixes": [
+    "triton-cache",
+    "flaggems-cache",
+    "inductor-cache"
+  ],
+  "records_only_not_full_out": true,
+  "original_full_out_retained_remote": true,
+  "omitted_record_files": [],
+  "critical_git_source_files": [
+    {
+      "path": "tools/run_biv150_stock_decode_105.py",
+      "bytes": 30445,
+      "sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976"
+    },
+    {
+      "path": "tools/run_biv150_normalization_accuracy.py",
+      "bytes": 11019,
+      "sha256": "36c97349bd5542f0069ece1627ff6b52709d2f1648d790c41023a079fe2ad501"
+    },
+    {
+      "path": "vllm_fl/worker/model_runner.py",
+      "bytes": 346462,
+      "sha256": "b0e59a974b723593c167aae54da339a424cc13402db4c9763b954c932902ae66"
+    },
+    {
+      "path": "vllm_fl/patches/biv150_compute_order.py",
+      "bytes": 19797,
+      "sha256": "f7d5bc44118602b8b9a6362456762fae8f0ac4e3a6bd53ab8e3bb742e9fa111f"
+    },
+    {
+      "path": "vllm_fl/compile_semantics.py",
+      "bytes": 7312,
+      "sha256": "fef333cf8f9da7753445e5123c624c7062fee26b273e73208a389ec771157dba"
+    },
+    {
+      "path": "vllm_fl/patches/biv150_stock_qk8_kernel.py",
+      "bytes": 7109,
+      "sha256": "af0d6f40e18d8e0dc6e114cf74603834e850e828401dd7600465dad206d44a44"
+    },
+    {
+      "path": "vllm_fl/patches/biv150_stock_qk8_codec.py",
+      "bytes": 874,
+      "sha256": "28ada2dbcc2205891f4e268ad87e679d137e621c91680299a4da7e059773303f"
+    },
+    {
+      "path": "vllm_fl/patches/biv150_stock_qk8_diagnostic.py",
+      "bytes": 11715,
+      "sha256": "559afa329ea478db0a54823e60de8b6b9a1af678815a38f090783a05734deaa7"
+    }
+  ],
+  "archives": [
+    {
+      "file": "model105-records-v3-part1.tar.gz",
+      "members": 27,
+      "bytes": 942354,
+      "sha256": "eb0c033544b74d34134bca5cb4464fb610611a059ab2915c69e86830087af8ee"
+    }
+  ],
+  "payload_files": 27,
+  "public_math_benchmark_only": true,
+  "model_weights_archived": false,
+  "private_sqlite_archived": false,
+  "gpu_executed_for_archiving": false,
+  "precision_gate": false,
+  "encoded_cache_verified": false,
+  "full_prefill_precision_verified": false,
+  "latest_dac_verified": false,
+  "throughput_measured": false
+}

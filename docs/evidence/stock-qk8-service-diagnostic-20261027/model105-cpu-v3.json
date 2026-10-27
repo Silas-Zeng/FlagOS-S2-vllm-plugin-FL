@@ -1,0 +1,53 @@
+{
+  "cpu_replay_passed": true,
+  "source_commit": "a48cf1c82f8665b7e70e3e70fea5e0845eeee504",
+  "team_base": "56f1838192abc940b3fb9accef490022ac125000",
+  "raw_files": 18,
+  "raw_bytes": 4325172,
+  "correct": 102,
+  "total": 105,
+  "reported_score": 0.9714,
+  "transport_failures": [],
+  "unique_indices": 105,
+  "unique_questions": 105,
+  "stop_reasons": {
+    "stop": 104,
+    "max_tokens": 1
+  },
+  "max_tokens_outputs": [
+    {
+      "index": 101,
+      "question_id": "test/geometry/477.json",
+      "output_tokens": 32768
+    }
+  ],
+  "all_outputs_untruncated": false,
+  "official_protocol_exact": true,
+  "actual_installation_on_fingerprint_and_selection": true,
+  "selected_host_submissions_lower_bound": 4096,
+  "actual_kernel_hashes": [
+    "01a8dc00cdc1c12828bfa7c3ae90e0b6e032781aafeacb05da7124ae416cefe3",
+    "46943790e2ccd5de0cd19e877f2c661744c8b48c36fa21bfcb4feba8ba70df8c",
+    "719fb9e2f987f2957caa6f1f1f607a8c07b3644f587935b194205008f8dfbb08",
+    "fa02317c3a6bb0128a7f4df6fea12257e9a0df344c591f0cd14b8809674fe938"
+  ],
+  "graph_replays_not_counted": true,
+  "owned_cleanup_complete": true,
+  "native_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "source_git_hashes_verified": 236,
+  "tracked_symlinks_resolved": [
+    {
+      "path": "vllm_fl/configs/moe/E=256,N=512,device_name=nvidia.json",
+      "target": "E=256,N=512,device_name=nvidia,model=Qwen3.6-35B-A3B-H100.json",
+      "resolved": "vllm_fl/configs/moe/E=256,N=512,device_name=nvidia,model=Qwen3.6-35B-A3B-H100.json"
+    }
+  ],
+  "records_only_not_generated_caches": true,
+  "old_base_stock_bf16_cache_pure_decode_diagnostic_passed": true,
+  "precision_gate": false,
+  "full_prefill_precision_verified": false,
+  "encoded_cache_verified": false,
+  "latest_dac_verified": false,
+  "throughput_measured": false,
+  "gpu_executed_by_replayer": false
+}
