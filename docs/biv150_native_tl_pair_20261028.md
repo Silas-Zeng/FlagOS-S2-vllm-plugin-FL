@@ -52,4 +52,3 @@ producer dispatch is outside this captured operator timing. This cannot explain
 all model/CPU/SQLite/JIT/cache effects. Initial GPU pack-copy is separate; host
 random generation/H2D/reference/validation are setup, not a free service encoder.
 No new timing or numeric result exists until Root executes this frozen source.
-

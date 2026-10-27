@@ -49,6 +49,8 @@ def preserve(kernel,folder):
 
 def run(args):
     assert args.commit and args.out and args.library and not args.out.exists()
+    assert args.out.is_absolute() and args.library.is_absolute()
+    assert len(set(args.case or CASES))==len(args.case or CASES),'duplicate case'
     assert subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()==args.commit
     assert not subprocess.check_output(['git','-C',str(ROOT),'status','--porcelain'],text=True).strip()
     assert not subprocess.check_output(['git','-C',str(ROOT),'diff',MAIN,'--','vllm_fl','csrc'])
@@ -238,6 +240,7 @@ def run(args):
             record['timing']=dict(order=list(ORDER),ABBA=measurements,means=means,
                 native_over_triton=means['triton']/means['native'],warm_ms_per_step=warm,warm_replays=args.warm_replays,
                 no_model_extrapolation=True,complete_step=True)
+            assert digest(raw(cold))==record['initial_source_sha256'],'CPU cold source changed'
             record['elapsed_s']=time.monotonic()-started;record['passed']=True
             record['Graph_eager_full_bitwise']=True;record['timing_source_readonly']=True;checkpoint()
             del graphs,cases,backs,backing,arena,k,v,cold
