@@ -1,0 +1,1014 @@
+{
+  "main": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+  "integration_main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+  "rows": [
+    48,
+    56
+  ],
+  "segments": 4,
+  "max_context": 193,
+  "patterns": [
+    "dense contiguous Q",
+    "ragged including zero/tail, padded Q stride2560"
+  ],
+  "arms": [
+    "new private native S4",
+    "byte-exact b3 TL GQA plus b3 reducer"
+  ],
+  "FP64_pointwise": "abs_error <= .005+.005*abs(reference)",
+  "FP64_relative_RMSE_max": 0.005,
+  "default_CPU": true,
+  "service_activation": false,
+  "GPU_executed": true,
+  "timing": null,
+  "writer": null,
+  "fullcost": null,
+  "Graph_verified": false,
+  "side_stream_verified": false,
+  "N40_coverage": false,
+  "actual_4k_16k_numeric_verified": false,
+  "performance_verified": false,
+  "completed": true,
+  "passed": true,
+  "errors": [],
+  "records": [
+    {
+      "rows": 48,
+      "control": 0,
+      "grid": [
+        48,
+        2,
+        4
+      ],
+      "numeric": [
+        {
+          "arm": "triton",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002042512054240812,
+          "max_abs": 0.0016798474127933671,
+          "hard_guards": true,
+          "passed": true
+        },
+        {
+          "arm": "native",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002042512054240812,
+          "max_abs": 0.0016798474127933671,
+          "hard_guards": true,
+          "passed": true
+        }
+      ],
+      "timing": null,
+      "actual_compiled": {
+        "triton": {
+          "producer": {
+            "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+            "n_regs": 93,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_gqa_decode_attention', num_ctas=1, num_stages=1, num_warps=1, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=8192, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=14, warp_size=64)",
+            "files": {
+              "source": "587e2916096c4d04e0c47b6619d34a6c5ded4e8046f039b480d66eeb9e7789ea",
+              "ttir": "fa09d087afcea526cacbb18e612aee1aaebf212f7448949718e5bd1311da8a6a",
+              "ttgir": "fca982e8da00a2d7be081f17a0ca7be5c96bdd2dce2722d4f445cb538f67d482",
+              "llir": "a98d3e7f15e53ea0530d149ffce58915edc50883c943795fdc564fbc1d728bd1",
+              "asm": "972a712f4bfd877b17e3e0e0d10a69b3388715946b4b1bbe6312b28658c56473",
+              "cubin": "3f501cf2f46de6e139b6481efea83c8f3f3c00cfdf4f89a4bb7c28d5b93e4aad"
+            }
+          },
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        },
+        "native": {
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        }
+      },
+      "passed": true
+    },
+    {
+      "rows": 48,
+      "control": 1,
+      "grid": [
+        48,
+        2,
+        4
+      ],
+      "numeric": [
+        {
+          "arm": "triton",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.001494985538408721,
+          "max_abs": 0.005247003076731316,
+          "hard_guards": true,
+          "passed": true
+        },
+        {
+          "arm": "native",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.001494985538408721,
+          "max_abs": 0.005247003076731316,
+          "hard_guards": true,
+          "passed": true
+        }
+      ],
+      "timing": null,
+      "actual_compiled": {
+        "triton": {
+          "producer": {
+            "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+            "n_regs": 93,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_gqa_decode_attention', num_ctas=1, num_stages=1, num_warps=1, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=8192, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=14, warp_size=64)",
+            "files": {
+              "source": "587e2916096c4d04e0c47b6619d34a6c5ded4e8046f039b480d66eeb9e7789ea",
+              "ttir": "fa09d087afcea526cacbb18e612aee1aaebf212f7448949718e5bd1311da8a6a",
+              "ttgir": "fca982e8da00a2d7be081f17a0ca7be5c96bdd2dce2722d4f445cb538f67d482",
+              "llir": "a98d3e7f15e53ea0530d149ffce58915edc50883c943795fdc564fbc1d728bd1",
+              "asm": "972a712f4bfd877b17e3e0e0d10a69b3388715946b4b1bbe6312b28658c56473",
+              "cubin": "3f501cf2f46de6e139b6481efea83c8f3f3c00cfdf4f89a4bb7c28d5b93e4aad"
+            }
+          },
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        },
+        "native": {
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        }
+      },
+      "passed": true
+    },
+    {
+      "rows": 56,
+      "control": 0,
+      "grid": [
+        56,
+        2,
+        4
+      ],
+      "numeric": [
+        {
+          "arm": "triton",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002026932918658017,
+          "max_abs": 0.0018391396370022184,
+          "hard_guards": true,
+          "passed": true
+        },
+        {
+          "arm": "native",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002026932918658017,
+          "max_abs": 0.0018391396370022184,
+          "hard_guards": true,
+          "passed": true
+        }
+      ],
+      "timing": null,
+      "actual_compiled": {
+        "triton": {
+          "producer": {
+            "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+            "n_regs": 93,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_gqa_decode_attention', num_ctas=1, num_stages=1, num_warps=1, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=8192, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=14, warp_size=64)",
+            "files": {
+              "source": "587e2916096c4d04e0c47b6619d34a6c5ded4e8046f039b480d66eeb9e7789ea",
+              "ttir": "fa09d087afcea526cacbb18e612aee1aaebf212f7448949718e5bd1311da8a6a",
+              "ttgir": "fca982e8da00a2d7be081f17a0ca7be5c96bdd2dce2722d4f445cb538f67d482",
+              "llir": "a98d3e7f15e53ea0530d149ffce58915edc50883c943795fdc564fbc1d728bd1",
+              "asm": "972a712f4bfd877b17e3e0e0d10a69b3388715946b4b1bbe6312b28658c56473",
+              "cubin": "3f501cf2f46de6e139b6481efea83c8f3f3c00cfdf4f89a4bb7c28d5b93e4aad"
+            }
+          },
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        },
+        "native": {
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        }
+      },
+      "passed": true
+    },
+    {
+      "rows": 56,
+      "control": 1,
+      "grid": [
+        56,
+        2,
+        4
+      ],
+      "numeric": [
+        {
+          "arm": "triton",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0015080310052915905,
+          "max_abs": 0.004653076287996605,
+          "hard_guards": true,
+          "passed": true
+        },
+        {
+          "arm": "native",
+          "finite": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0015080310052915905,
+          "max_abs": 0.004653076287996605,
+          "hard_guards": true,
+          "passed": true
+        }
+      ],
+      "timing": null,
+      "actual_compiled": {
+        "triton": {
+          "producer": {
+            "hash": "e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9",
+            "n_regs": 93,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='e29a0c84d6b99f1ad44189fbdb74434b2d7da5675af2e2e2422941739916adb9', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_gqa_decode_attention', num_ctas=1, num_stages=1, num_warps=1, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=8192, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=14, warp_size=64)",
+            "files": {
+              "source": "587e2916096c4d04e0c47b6619d34a6c5ded4e8046f039b480d66eeb9e7789ea",
+              "ttir": "fa09d087afcea526cacbb18e612aee1aaebf212f7448949718e5bd1311da8a6a",
+              "ttgir": "fca982e8da00a2d7be081f17a0ca7be5c96bdd2dce2722d4f445cb538f67d482",
+              "llir": "a98d3e7f15e53ea0530d149ffce58915edc50883c943795fdc564fbc1d728bd1",
+              "asm": "972a712f4bfd877b17e3e0e0d10a69b3388715946b4b1bbe6312b28658c56473",
+              "cubin": "3f501cf2f46de6e139b6481efea83c8f3f3c00cfdf4f89a4bb7c28d5b93e4aad"
+            }
+          },
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        },
+        "native": {
+          "reducer": {
+            "hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+            "n_regs": 11,
+            "n_spills": 0,
+            "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='_reduce_partials', num_ctas=1, num_stages=3, num_warps=4, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=1024, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=13, warp_size=64)",
+            "files": {
+              "source": "588414c68af1e102bc8b5764a7876d3f49ad9ecfd3b25cd6e8b8326882fac93e",
+              "ttir": "9ea2c07739ac5e7abc5d89b96bd80bb3b0895a4c16cd054ff5a575fec400c983",
+              "ttgir": "3e910b1659c169f9e02817f4264b82315c1c0c11c796b43ab8c60f6a5fff03c6",
+              "llir": "46693035dbd6098924d7abd9523a4a276cb6337165f1c3b7a19f1617d4444ca0",
+              "asm": "38d6016553f8b2a0096f418da0d6f21f27bb4abed713e54c8a936a75d1d651e1",
+              "cubin": "5c3dd6323ec61c66909c99ab2e75821749661175378e599f5e888f04ab6d255b"
+            }
+          }
+        }
+      },
+      "passed": true
+    }
+  ],
+  "commit": "9d4f4e6d33b3365ac3628c2d09d71472ac809b70",
+  "library_sha256": "06c5228e1feb0b26cb71dfcf703d60693bd65926491fd7fa5f916d970f879a89",
+  "build_proof_sha256": "4ab59fd240b7d81c35ca07678f44ec41fe62c6cadc3bbeb7bad16f9b96b031ef",
+  "diagnostic_admission": {
+    "schema": "root-serial-context-window-candidates-v3",
+    "root_owned_exclusive_acknowledged": true,
+    "exclusivity_authority": "Root checked prior owned job terminal and dispatches serially; external assertion",
+    "exclusive_by_ixsmi": false,
+    "container_process_identity": {
+      "pid": 706598,
+      "start_ticks": 347893206,
+      "scope": "container process; not a driver host-PID mapping"
+    },
+    "driver_host_pid": null,
+    "driver_host_pid_mapping_verified": false,
+    "context_window_candidates_unverified": [
+      2567506
+    ],
+    "candidates_are_owned_process_proof": false,
+    "candidates_rule_out_races": false,
+    "limits": {
+      "pre_cuda_max_used_mib": 1024,
+      "running_max_used_mib": 4096,
+      "max_running_phase_growth_mib": 1024
+    },
+    "tiny_initialization_outside_numerics": true,
+    "observations": [
+      {
+        "phase": "pre-CUDA",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 68,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [],
+        "native_query_pids": [],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "unavailable",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "post-tiny-initialization",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 206,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 206,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 206,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 206,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 206,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 206,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      },
+      {
+        "phase": "numeric-phase",
+        "container_process_identity": {
+          "pid": 706598,
+          "start_ticks": 347893206,
+          "scope": "container process; not a driver host-PID mapping"
+        },
+        "memory_used_mib": 210,
+        "memory_total_mib": 32768,
+        "visible_native_pids": [
+          2567506
+        ],
+        "native_query_pids": [
+          2567506
+        ],
+        "full_table_native_pids": [],
+        "native_pid_visibility": "visible_unverified_context_candidate",
+        "no_visible_pid_is_idle_proof": false,
+        "port9031_probe_code": 111,
+        "port9031_closed": true,
+        "context_window_candidates_unverified": [
+          2567506
+        ],
+        "refusal_checks_passed": true
+      }
+    ],
+    "port9031_probe_code": 111,
+    "port9031_closed": true,
+    "tiny_cuda_initializations": 1
+  },
+  "imports": {
+    "torch": "/usr/local/lib/python3.12/site-packages/torch/__init__.py",
+    "triton": "/usr/local/lib/python3.12/site-packages/triton/__init__.py",
+    "base": "/workspace/experiments/minicpm-s2/code/cjj-native-gqa-batch95-numeric-v2-20261028/vllm_fl/patches/biv150_gqa_decode.py",
+    "helper": "/workspace/experiments/minicpm-s2/code/cjj-native-gqa-batch95-numeric-v2-20261028/tools/biv150_benchmark_utils.py"
+  },
+  "torch_version": "2.10.0",
+  "actual_target": [
+    "corex",
+    71,
+    64
+  ]
+}

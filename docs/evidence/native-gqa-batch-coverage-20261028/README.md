@@ -114,3 +114,12 @@ model/service coverage and benefit remain unknown/false. Prior N32/64 component
 speedups do not establish an N48/56 benefit or any model gain. Production BF16
 allocator provenance/hooking is deliberately deferred until this bounded
 candidate has actual numeric and complete-component evidence.
+
+
+## Actual numeric v2, tested source9d4f4e6
+
+Root serially ran the new source on the personal BI-V150; all four cases N48/56 × dense/ragged-padded Q pass. Eight Native/Triton independent full FP64 comparisons have0 pointwise violations and relative RMSE .0014949855–.0020425121 under the original .005 gates. Every saved partial O/M/L and final output bit is equal across arms. Actual library06c5228e… remains the previously compiled binary.
+
+Root rechecked all110 original files and regenerated the full FP64 result from saved Q/K/V, page table and lengths. Replay: tools/check_biv150_native_batch95_actual_20261028.py reads the indexed collected archive. Its deterministic report is v2-review/root-review.json, SHA486631d5cea909493493fff25667a700096769da99b1856876ce470b96edda31. v2-review/ has the unmodified actual summary/full SHA manifest; full55MB raw arrays are preserved at the indexed personal-instance and local paths, not all embedded in this PR.
+
+The original v1 admission rejection and its receipts remain untouched. Numeric v2 establishes small-component numerics; no Graph, side-stream, full4K/16K, service activation, N40, actual call frequency or performance is qualified. Runtime guards were asserted by the original run but their complete outer snapshots are not independently replayed; the Root report explicitly preserves this limit. Shipping code is unchanged. Keep Draft pending those gates.
