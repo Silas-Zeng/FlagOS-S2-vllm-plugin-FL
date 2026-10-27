@@ -1,0 +1,379 @@
+{
+  "active_payload_bytes": 12416,
+  "active_platform_copy_observed": false,
+  "append_slots": 48,
+  "base_main": "56f1838192abc940b3fb9accef490022ac125000",
+  "capacity_reclaimed_bytes": 0,
+  "codec_implemented": false,
+  "cpu_only": true,
+  "device_copy_verified": false,
+  "explicit_layout": {
+    "bf16_strides": [
+      8192,
+      4096,
+      256,
+      128,
+      1
+    ],
+    "dtype": "bfloat16",
+    "format": "cjj-konly-rn32-rne-v2",
+    "pages": 3,
+    "quant_mode": 0,
+    "shape_tail": [
+      2,
+      16,
+      2,
+      128
+    ],
+    "storage_byte_offset": 0
+  },
+  "gpu_work": false,
+  "graph_verified": false,
+  "legacy_writer_slot8_corrupted_scale_slots": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "main_sources": {
+    "vllm_fl/compilation/graph.py": "ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2",
+    "vllm_fl/dispatch/backends/flaggems/impl/attention.py": "f86e1cc67a1a3316c6d437ba96a6e0dcf19ebe29b22178d0f4f34fa360d65c57",
+    "vllm_fl/patches/biv150_compute_order.py": "e60909d8832505566f172ecfe69c63728a5bfdfe3e08f40582fc771ce92cf17b",
+    "vllm_fl/patches/biv150_mixed_decode.py": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
+    "vllm_fl/platform.py": "aaf14ee641edb2d02f0c9d6ec52593d73086cae5d05df463404129a7fb9af773",
+    "vllm_fl/worker/model_runner.py": "0161c595ff2f1b115039f03980fbb6de0447f1edf0d55fba1793b6a8055c230c"
+  },
+  "numeric_copy_counterexample": {
+    "after_add_zero": 32705,
+    "original_bf16_bits": 32641
+  },
+  "opaque_copy_pages": 16,
+  "page_bytes": 16384,
+  "passed": true,
+  "precision_gate": false,
+  "preserved_words": 65536,
+  "real_tensor_strides_observed": false,
+  "rejected": [
+    "HND",
+    "padding",
+    "offset",
+    "old-format",
+    "mode2",
+    "bad-dtype",
+    "bool-page-count",
+    "wrong-shape",
+    "out-of-bounds",
+    "bool-slot",
+    "code-minus128",
+    "scale-NaN",
+    "wrong-V-size"
+  ],
+  "service_hook_installed": false,
+  "source_anchors": {
+    "flag_gems/fused/reshape_and_cache_flash.py:reshape_and_cache_flash": [
+      [
+        77,
+        134
+      ]
+    ],
+    "flag_gems/fused/reshape_and_cache_flash.py:reshape_and_cache_flash_kernel": [
+      [
+        32,
+        74
+      ]
+    ],
+    "model_executor/layers/attention/attention.py:get_attention_context": [
+      [
+        670,
+        710
+      ]
+    ],
+    "model_executor/layers/attention/attention.py:unified_attention_with_output": [
+      [
+        757,
+        784
+      ]
+    ],
+    "model_executor/layers/attention/attention.py:unified_kv_cache_update": [
+      [
+        713,
+        736
+      ]
+    ],
+    "v1/attention/backends/triton_attn.py:do_kv_cache_update": [
+      [
+        724,
+        767
+      ]
+    ],
+    "v1/attention/backends/triton_attn.py:do_rope_and_kv_cache_update": [
+      [
+        774,
+        808
+      ]
+    ],
+    "v1/attention/backends/triton_attn.py:fused_rope_kvcache_supported": [
+      [
+        769,
+        772
+      ]
+    ],
+    "v1/attention/backends/triton_attn.py:get_kv_cache_shape": [
+      [
+        294,
+        315
+      ]
+    ],
+    "v1/core/kv_cache_manager.py:free": [
+      [
+        460,
+        468
+      ]
+    ],
+    "v1/core/kv_cache_manager.py:get_computed_blocks": [
+      [
+        202,
+        242
+      ]
+    ],
+    "v1/core/kv_cache_manager.py:reset_prefix_cache": [
+      [
+        504,
+        518
+      ]
+    ],
+    "v1/core/kv_cache_utils.py:generate_block_hash_extra_keys": [
+      [
+        539,
+        574
+      ]
+    ],
+    "v1/core/kv_cache_utils.py:hash_block_tokens": [
+      [
+        577,
+        604
+      ]
+    ],
+    "v1/worker/block_table.py:_compute_slot_mapping_kernel": [
+      [
+        326,
+        380
+      ]
+    ],
+    "v1/worker/block_table.py:swap_row": [
+      [
+        136,
+        139
+      ],
+      [
+        299,
+        301
+      ]
+    ],
+    "vllm/_custom_ops.py:gather_and_maybe_dequant_cache": [
+      [
+        2724,
+        2745
+      ]
+    ],
+    "vllm/_custom_ops.py:swap_blocks": [
+      [
+        2659,
+        2685
+      ]
+    ],
+    "vllm/distributed/kv_transfer/kv_connector/utils.py:copy_kv_blocks": [
+      [
+        184,
+        218
+      ]
+    ],
+    "vllm/distributed/kv_transfer/kv_connector/utils.py:kv_postprocess_blksize_and_layout_on_receive": [
+      [
+        277,
+        296
+      ]
+    ],
+    "vllm/distributed/kv_transfer/kv_connector/utils.py:kv_postprocess_blksize_on_receive": [
+      [
+        221,
+        249
+      ]
+    ],
+    "vllm/distributed/kv_transfer/kv_connector/utils.py:kv_postprocess_layout_on_receive": [
+      [
+        252,
+        274
+      ]
+    ],
+    "vllm/v1/attention/ops/triton_reshape_and_cache_flash.py:reshape_and_cache_kernel_flash": [
+      [
+        33,
+        139
+      ]
+    ],
+    "vllm/v1/attention/ops/triton_reshape_and_cache_flash.py:triton_reshape_and_cache_flash": [
+      [
+        344,
+        441
+      ]
+    ],
+    "vllm/v1/core/block_pool.py:cache_full_blocks": [
+      [
+        226,
+        356
+      ]
+    ],
+    "vllm/v1/core/block_pool.py:cache_partial_block": [
+      [
+        358,
+        457
+      ]
+    ],
+    "vllm/v1/core/block_pool.py:free_blocks": [
+      [
+        614,
+        635
+      ]
+    ],
+    "vllm/v1/core/block_pool.py:get_new_blocks": [
+      [
+        542,
+        572
+      ]
+    ],
+    "vllm/v1/core/block_pool.py:touch": [
+      [
+        597,
+        612
+      ]
+    ],
+    "vllm/v1/core/single_type_kv_cache_manager.py:add_local_computed_blocks": [
+      [
+        182,
+        232
+      ],
+      [
+        1296,
+        1305
+      ]
+    ],
+    "vllm/v1/core/single_type_kv_cache_manager.py:allocate_new_blocks": [
+      [
+        278,
+        310
+      ],
+      [
+        1178,
+        1252
+      ]
+    ],
+    "vllm/v1/core/single_type_kv_cache_manager.py:free": [
+      [
+        401,
+        409
+      ]
+    ],
+    "vllm/v1/worker/gpu/attn_utils.py:_reshape_attention_kv_cache": [
+      [
+        194,
+        247
+      ]
+    ],
+    "vllm/v1/worker/kv_connector_model_runner_mixin.py:_get_kv_connector_output": [
+      [
+        78,
+        112
+      ]
+    ],
+    "vllm/v1/worker/kv_connector_model_runner_mixin.py:finalize_kv_connector": [
+      [
+        64,
+        72
+      ]
+    ],
+    "vllm_fl/compilation/graph.py:__call__": [
+      [
+        145,
+        253
+      ]
+    ],
+    "vllm_fl/compilation/graph.py:clear_graphs": [
+      [
+        142,
+        143
+      ]
+    ],
+    "vllm_fl/platform.py:insert_blocks_to_device": [
+      [
+        405,
+        414
+      ]
+    ],
+    "vllm_fl/platform.py:swap_out_blocks_to_host": [
+      [
+        417,
+        426
+      ]
+    ],
+    "vllm_fl/worker/model_runner.py:_get_slot_mappings": [
+      [
+        4069,
+        4141
+      ]
+    ],
+    "vllm_fl/worker/model_runner.py:_reshape_kv_cache_tensors": [
+      [
+        7200,
+        7309
+      ]
+    ],
+    "vllm_fl/worker/model_runner.py:_zero_block_ids": [
+      [
+        1168,
+        1171
+      ]
+    ],
+    "vllm_fl/worker/model_runner.py:initialize_kv_cache_tensors": [
+      [
+        7345,
+        7398
+      ]
+    ]
+  },
+  "source_archives": [
+    {
+      "bytes": 124440,
+      "file": "service-io-target-source-v1.tar.gz",
+      "sha256": "d9915caff7883cdcae6d04a9bf8df5212c82864be3c8af299b66f3c8f4414688",
+      "source_bytes": 569277,
+      "sources": 7
+    },
+    {
+      "bytes": 11897,
+      "file": "attention-context-source-v1.tar.gz",
+      "sha256": "eac530fbc7a1d10453144c01764283d848e41d762566dd3883b76e26f7130781",
+      "source_bytes": 45944,
+      "sources": 2
+    },
+    {
+      "bytes": 67245,
+      "file": "lifecycle-target-source-v1.tar.gz",
+      "sha256": "f154e9e38ece8244b5b5cf233fccacc6d1a37e4840b19d13288473ea84b2ee2e",
+      "source_bytes": 338100,
+      "sources": 14
+    }
+  ],
+  "source_io_closed": false
+}
