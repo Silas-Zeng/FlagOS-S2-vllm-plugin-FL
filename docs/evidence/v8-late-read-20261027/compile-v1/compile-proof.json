@@ -1,0 +1,907 @@
+{
+  "completed": true,
+  "compile_only": true,
+  "kernel_launches": 0,
+  "source_commit": "3f1a2586cecc71c3badefc165a9bf9b2321a6db3",
+  "dependency": "4a1f7ddd38e4bcade30e702faba2e9a7cdb5441d",
+  "source": {
+    "dependency": "4a1f7ddd38e4bcade30e702faba2e9a7cdb5441d",
+    "frozen_sha256": "a7fc539dccbd2e2910538665abf42d0dd6204939d39f1ebeb7a6cac1f992c3ca",
+    "candidate_sha256": "b562d2cdbabf0dba9b7e495fd9b6a48b7dc70f7ca64220fe441efcbdd3cb66c8",
+    "exact_ast_inverse": true,
+    "movements": [
+      {
+        "loads": [
+          "V",
+          "value_scale"
+        ],
+        "from_after": "running_sum",
+        "restored_after": "K",
+        "independent_of_crossed_writes": true
+      },
+      {
+        "loads": [
+          "V",
+          "value_scale"
+        ],
+        "from_after": "running_sum",
+        "restored_after": "K",
+        "independent_of_crossed_writes": true
+      }
+    ],
+    "cache_writes_unchanged": true,
+    "numeric_expression_unchanged": true,
+    "scheduling_proven": false
+  },
+  "precision_gate": false,
+  "numeric_passed": false,
+  "official_score": false,
+  "cases": [
+    {
+      "case": "ragged",
+      "nominal_length": 257,
+      "segments": 16,
+      "grid": [
+        8,
+        2,
+        16
+      ],
+      "descriptors": {
+        "packed_shape": [
+          136,
+          2,
+          16,
+          2,
+          128
+        ],
+        "tensors": {
+          "q": {
+            "shape": [
+              8,
+              16,
+              128
+            ],
+            "stride": [
+              2048,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 32768,
+            "storage_bytes": 32768
+          },
+          "k": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 0,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2220032,
+            "storage_bytes": 2228224
+          },
+          "v": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              8192,
+              256,
+              128,
+              1
+            ],
+            "dtype": "bfloat16",
+            "storage_offset": 4096,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2228224,
+            "storage_bytes": 2228224
+          },
+          "v8": {
+            "shape": [
+              136,
+              16,
+              2,
+              128
+            ],
+            "stride": [
+              16384,
+              256,
+              128,
+              1
+            ],
+            "dtype": "int8",
+            "storage_offset": 8192,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2224128,
+            "storage_bytes": 2228224
+          },
+          "scale": {
+            "shape": [
+              136,
+              16,
+              2
+            ],
+            "stride": [
+              4096,
+              2,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 3072,
+            "is_contiguous": false,
+            "highest_addressed_byte_exclusive": 2224256,
+            "storage_bytes": 2228224
+          },
+          "scratch": {
+            "shape": [
+              8,
+              16,
+              16,
+              128
+            ],
+            "stride": [
+              32768,
+              2048,
+              128,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 1048576,
+            "storage_bytes": 1048576
+          },
+          "maxima": {
+            "shape": [
+              8,
+              16,
+              16
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 8192,
+            "storage_bytes": 8192
+          },
+          "sums": {
+            "shape": [
+              8,
+              16,
+              16
+            ],
+            "stride": [
+              256,
+              16,
+              1
+            ],
+            "dtype": "float32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 8192,
+            "storage_bytes": 8192
+          },
+          "table": {
+            "shape": [
+              8,
+              8192
+            ],
+            "stride": [
+              8192,
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 262144,
+            "storage_bytes": 262144
+          },
+          "lengths": {
+            "shape": [
+              8
+            ],
+            "stride": [
+              1
+            ],
+            "dtype": "int32",
+            "storage_offset": 0,
+            "is_contiguous": true,
+            "highest_addressed_byte_exclusive": 32,
+            "storage_bytes": 32
+          }
+        },
+        "unique_allocation_bytes": 3588128,
+        "packed_storage_reused_between_nonexecuted_compilations": true
+      },
+      "bf16": {
+        "hash": "c44ed4caa048314f475e533a47d072c8460987e9c4036a3217fbd955f644ff19",
+        "n_regs": 93,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 8192,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 15,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        },
+        "files": {
+          "source": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-bf16/actual.source",
+            "bytes": 74839,
+            "sha256": "9f44974101f729134863270f747df120d7a3a7a411bda4a61160b6548a78096c"
+          },
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-bf16/actual.ttir",
+            "bytes": 51139,
+            "sha256": "634016a161cf0e87af85b6eb571132ba8cf7fb8ad14cf65789a9aa750b398e0a"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-bf16/actual.ttgir",
+            "bytes": 59143,
+            "sha256": "12304e6d6994e3f4acf867af0b53d0ee68271c9e6a1b5b6cd08cf2e565c6cbc4"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-bf16/actual.llir",
+            "bytes": 129051,
+            "sha256": "77714c6640a88f415b01fd1ef1864aba9699ca1a22070a1592cade9aa070787d"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-bf16/actual.asm",
+            "bytes": 95372,
+            "sha256": "c511c36f1039bb8d050789341e18b304f1b9a8277fc14911f784542144184dd3"
+          },
+          "cubin": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-bf16/actual.cubin",
+            "bytes": 16136,
+            "sha256": "9f29a0865d1723ea79fe1dba0d0e36348197988f7303fd544488a9f652476502"
+          }
+        }
+      },
+      "frozen_v8": {
+        "hash": "d2481b9f7db900083e1fdbc307add5f2f66b5a34fe3b1ef6c577db69e9c9e760",
+        "n_regs": 143,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 4096,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 79,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        },
+        "files": {
+          "source": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-frozen_v8/actual.source",
+            "bytes": 84846,
+            "sha256": "af4841b7e6cdcc2b59c0a0356b1b389915dbe474f31b06e21b3b3e7630dcd773"
+          },
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-frozen_v8/actual.ttir",
+            "bytes": 56546,
+            "sha256": "ee22fc827c496b7ca3f91a4af7be429229303d0f0a0ba9541ae8e9def74b48f5"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-frozen_v8/actual.ttgir",
+            "bytes": 66038,
+            "sha256": "8b66e764e1a95cceebd3a635335ff1fa7d312247f573369a10b155eb9339cc55"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-frozen_v8/actual.llir",
+            "bytes": 142744,
+            "sha256": "b2d1a804d7517c96bf56ceab86da3323a82552345aabaec792123f2857049f39"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-frozen_v8/actual.asm",
+            "bytes": 108098,
+            "sha256": "763aadb79dc4bf4ecd9d48f6524a77365437d9b2f49acc9fc90cc669474a7e17"
+          },
+          "cubin": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-frozen_v8/actual.cubin",
+            "bytes": 18864,
+            "sha256": "3ec12a76644ec7801d5fad9b293192daae251b87ec7fc15fef2af9c5c528523d"
+          }
+        }
+      },
+      "late_v8": {
+        "hash": "428d26d5a579b3946f88d348bc065ea9a5c9cbfcba5bd7a59b07550d5d2a2d65",
+        "n_regs": 137,
+        "n_spills": 0,
+        "metadata": {
+          "shared": 4096,
+          "num_warps": 1,
+          "num_stages": 1,
+          "use_sme": 79,
+          "warp_size": 64,
+          "triton_version": "3.6.0"
+        },
+        "files": {
+          "source": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-late_v8/actual.source",
+            "bytes": 85552,
+            "sha256": "9f0e618faf383f3ad472e22316bad857228b15d2256aef4bd5d2286501e82c40"
+          },
+          "ttir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-late_v8/actual.ttir",
+            "bytes": 57199,
+            "sha256": "88bf011be28a1081d64bbb4a3249e6f383dd31f3fb839d051305018a9dcf8531"
+          },
+          "ttgir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-late_v8/actual.ttgir",
+            "bytes": 66660,
+            "sha256": "d94074827316ee36bb6ff663866fcded61e0af42d88c1049ed1c7c7ce53d38fa"
+          },
+          "llir": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-late_v8/actual.llir",
+            "bytes": 142789,
+            "sha256": "66d9506b31bb2db0d0f0bc76f26d18ea849b5278287ee969d63f8d7b19efc1cc"
+          },
+          "asm": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-late_v8/actual.asm",
+            "bytes": 112040,
+            "sha256": "2ab3c938daaf3ee834db6e4367743d0e1a0f6f820943b67af8ec2415905522fd"
+          },
+          "cubin": {
+            "path": "/workspace/experiments/minicpm-s2/cjj-v8-late-read-compile-v1-20261027/ragged-late_v8/actual.cubin",
+            "bytes": 19000,
+            "sha256": "bb05f94792b2c8f9b47adbf46db82ada90b2fa000f5d9790bfbc62ee7eb3d9a8"
+          }
+        }
+      },
+      "lowering": {
+        "mechanism_passed": false,
+        "reasons": [
+          "ASM still expands/converts packed V before softmax finishes",
+          "ASM still expands/converts packed V before softmax finishes"
+        ],
+        "evidence": {
+          "llvm_paths": [
+            {
+              "qk": [
+                461,
+                462,
+                463,
+                464,
+                465,
+                466,
+                467,
+                468
+              ],
+              "pv": [
+                800,
+                809,
+                818,
+                827,
+                836,
+                845,
+                854,
+                863
+              ],
+              "exp2": [
+                509,
+                510,
+                513,
+                514
+              ],
+              "v_extracts": [
+                577,
+                578,
+                579,
+                580,
+                582,
+                583,
+                584,
+                585,
+                587,
+                588,
+                589,
+                590,
+                592,
+                593,
+                594,
+                595,
+                597,
+                598,
+                599,
+                600,
+                602,
+                603,
+                604,
+                605,
+                607,
+                608,
+                609,
+                610,
+                612,
+                613,
+                614,
+                615
+              ],
+              "v_casts": [
+                656,
+                657,
+                658,
+                659,
+                660,
+                661,
+                662,
+                663,
+                664,
+                665,
+                666,
+                667,
+                668,
+                669,
+                670,
+                671,
+                672,
+                673,
+                674,
+                675,
+                676,
+                677,
+                678,
+                679,
+                680,
+                681,
+                682,
+                683,
+                684,
+                685,
+                686,
+                687
+              ],
+              "v_packed_loads": [
+                576,
+                581,
+                586,
+                591,
+                596,
+                601,
+                606,
+                611
+              ],
+              "scale_loads": [
+                618
+              ],
+              "late": true
+            },
+            {
+              "qk": [
+                1243,
+                1244,
+                1245,
+                1246,
+                1247,
+                1248,
+                1249,
+                1250
+              ],
+              "pv": [
+                1720,
+                1729,
+                1738,
+                1747,
+                1756,
+                1765,
+                1774,
+                1783
+              ],
+              "exp2": [
+                1297,
+                1298,
+                1301,
+                1302
+              ],
+              "v_extracts": [
+                1372,
+                1373,
+                1374,
+                1375,
+                1384,
+                1385,
+                1386,
+                1387,
+                1396,
+                1397,
+                1398,
+                1399,
+                1408,
+                1409,
+                1410,
+                1411,
+                1420,
+                1421,
+                1422,
+                1423,
+                1432,
+                1433,
+                1434,
+                1435,
+                1444,
+                1445,
+                1446,
+                1447,
+                1456,
+                1457,
+                1458,
+                1459
+              ],
+              "v_casts": [
+                1510,
+                1511,
+                1512,
+                1513,
+                1514,
+                1515,
+                1516,
+                1517,
+                1518,
+                1519,
+                1520,
+                1521,
+                1522,
+                1523,
+                1524,
+                1525,
+                1526,
+                1527,
+                1528,
+                1529,
+                1530,
+                1531,
+                1532,
+                1533,
+                1534,
+                1535,
+                1536,
+                1537,
+                1538,
+                1539,
+                1540,
+                1541
+              ],
+              "v_packed_loads": [
+                1367,
+                1379,
+                1391,
+                1403,
+                1415,
+                1427,
+                1439,
+                1451
+              ],
+              "scale_loads": [
+                1468
+              ],
+              "late": true
+            }
+          ],
+          "asm_paths": [
+            {
+              "qk": [
+                514,
+                520,
+                526,
+                532,
+                538,
+                544,
+                550,
+                555
+              ],
+              "pv": [
+                1040,
+                1046,
+                1052,
+                1058,
+                1064,
+                1070,
+                1076,
+                1078
+              ],
+              "exp": [
+                707,
+                709,
+                726,
+                748
+              ],
+              "v_expand": [
+                590,
+                591,
+                592,
+                606,
+                627,
+                628,
+                654,
+                655,
+                670,
+                671,
+                735,
+                741,
+                756,
+                757,
+                770,
+                773,
+                777,
+                808,
+                816,
+                841,
+                853,
+                854,
+                855,
+                867,
+                886,
+                894,
+                902,
+                925,
+                926,
+                930,
+                931,
+                932
+              ],
+              "v_casts": [
+                608,
+                609,
+                610,
+                611,
+                612,
+                613,
+                623,
+                624,
+                657,
+                658,
+                673,
+                674,
+                675,
+                676,
+                677,
+                687,
+                688,
+                689,
+                690,
+                694,
+                907,
+                908,
+                909,
+                910,
+                911,
+                912,
+                913,
+                914,
+                915,
+                916,
+                917,
+                918,
+                934,
+                935,
+                936,
+                937,
+                938,
+                939,
+                940,
+                941,
+                942,
+                943,
+                944,
+                945,
+                946,
+                947,
+                948,
+                949,
+                950,
+                951,
+                952,
+                953,
+                954,
+                955,
+                956,
+                957,
+                958,
+                959,
+                960,
+                961,
+                962,
+                963,
+                964,
+                965
+              ],
+              "v_packed_loads": [
+                572,
+                585,
+                641,
+                728,
+                746,
+                771,
+                831,
+                839
+              ],
+              "scale_loads": [
+                557
+              ],
+              "late": false
+            },
+            {
+              "qk": [
+                1387,
+                1394,
+                1400,
+                1406,
+                1412,
+                1419,
+                1426,
+                1429
+              ],
+              "pv": [
+                1979,
+                1985,
+                1992,
+                1998,
+                2004,
+                2010,
+                2016,
+                2018
+              ],
+              "exp": [
+                1504,
+                1510,
+                1764,
+                1771
+              ],
+              "v_expand": [
+                1738,
+                1739,
+                1740,
+                1741,
+                1742,
+                1743,
+                1744,
+                1745,
+                1746,
+                1747,
+                1748,
+                1749,
+                1750,
+                1751,
+                1752,
+                1753,
+                1754,
+                1755,
+                1756,
+                1757,
+                1758,
+                1762,
+                1768,
+                1769,
+                1773,
+                1777,
+                1784,
+                1785,
+                1802,
+                1821,
+                1827,
+                1828
+              ],
+              "v_casts": [
+                1833,
+                1834,
+                1835,
+                1836,
+                1837,
+                1838,
+                1839,
+                1840,
+                1841,
+                1842,
+                1843,
+                1844,
+                1845,
+                1846,
+                1847,
+                1848,
+                1849,
+                1850,
+                1851,
+                1852,
+                1853,
+                1854,
+                1855,
+                1856,
+                1857,
+                1858,
+                1859,
+                1860,
+                1861,
+                1862,
+                1863,
+                1864,
+                1865,
+                1866,
+                1867,
+                1868,
+                1869,
+                1870,
+                1871,
+                1872,
+                1873,
+                1874,
+                1875,
+                1876,
+                1877,
+                1878,
+                1879,
+                1880,
+                1881,
+                1882,
+                1883,
+                1884,
+                1885,
+                1886,
+                1887,
+                1888,
+                1889,
+                1890,
+                1891,
+                1892,
+                1893,
+                1894,
+                1895,
+                1896
+              ],
+              "v_packed_loads": [
+                1576,
+                1595,
+                1616,
+                1635,
+                1656,
+                1675,
+                1696,
+                1715
+              ],
+              "scale_loads": [
+                1732
+              ],
+              "late": false
+            }
+          ],
+          "static_counts_not_time": {
+            "ml_slb_store_b16": 64,
+            "ml_slb_store_b32x2": 4,
+            "sl_barrier": 9,
+            "ml_cvt_i16_i8": 64,
+            "ml_cvt_bf16_i16": 64,
+            "ml_matrix_mad_f32_bf16_m16n16k16": 32
+          }
+        },
+        "precision_gate": false,
+        "static_instruction_count_is_time": false,
+        "limitation": "Conservative schema check; changed schemas stop for manual review. Resource counts do not prove speed.",
+        "resource_delta": {
+          "n_regs": -6,
+          "n_spills": 0
+        }
+      }
+    }
+  ],
+  "errors": [
+    "AssertionError('Late-V mechanism absent or staging changed: stop before device execution/timing')"
+  ],
+  "mechanism_passed": false
+}

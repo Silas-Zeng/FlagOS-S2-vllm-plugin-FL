@@ -5,6 +5,7 @@ from pathlib import Path
 import tarfile
 from types import SimpleNamespace
 import math
+import tempfile
 
 import biv150_v8_late_read_checks as checks
 import bench_biv150_v8_late_read as probe
@@ -95,6 +96,77 @@ def descriptor_check():
         assert tensors['v8'].storage_offset() == 8192 and tensors['scale'].storage_offset() == 3072
         records.append(dict(case=name, descriptor_plan=plan, no_storage_or_gpu_access=True))
     return records
+
+
+def actual_after_qk_check():
+    """Read-only original3f1 artifacts: strict stays false; test new hypothesis."""
+    directory = EVIDENCE/'compile-v1'
+    manifest = json.loads((directory/'archive-manifest.json').read_text())
+    files = {}
+    for archive in manifest['archives']:
+        raw = (directory/archive['path']).read_bytes()
+        assert len(raw) == archive['bytes'] and checks.sha(raw) == archive['sha256']
+        with tarfile.open(directory/archive['path']) as tar:
+            files.update({member.name:tar.extractfile(member).read() for member in tar.getmembers()})
+    for item in manifest['original']['files']:
+        assert checks.sha(files[item['relative']]) == item['sha256'] and len(files[item['relative']]) == item['bytes']
+    def ir(label):
+        return {name:files[f'out/ragged-{label}/actual.{name}'].decode() for name in ('ttgir','llir','asm')}
+    late,old = ir('late_v8'),ir('frozen_v8')
+    original = json.loads(files['out/compile-proof.json'])
+    assert original['source_commit'] == '3f1a2586cecc71c3badefc165a9bf9b2321a6db3'
+    assert original['mechanism_passed'] is False and original['kernel_launches'] == 0
+    assert original['source'] == checks.source_inverse()
+    strict = checks.lowering_check(late['ttgir'],late['llir'],late['asm'],previous=old)
+    assert strict['mechanism_passed'] is False and len(strict['reasons']) == 2
+    partial = checks.after_qk_check(late['ttgir'],late['llir'],late['asm'],previous=old)
+    assert partial['diagnostic_mechanism_passed'] is True and partial['strict_mechanism_passed'] is False
+    source_options = dict(source=checks.FROZEN_KERNEL.read_bytes(),source_name=checks.FROZEN_KERNEL.name)
+    assert not checks.after_qk_check(old['ttgir'],old['llir'],old['asm'],previous=old,**source_options)['diagnostic_mechanism_passed']
+    rejected = ['original_before_qk']
+    # A one-instruction move is a parser mutant, not executable GPU IR.
+    records = checks.asm_records(late['asm'])
+    for path_index,key in [(0,'v_packed_loads'),(1,'scale_loads'),(0,'v_expand'),(1,'v_casts')]:
+        path = strict['evidence']['asm_paths'][path_index]
+        selected = path[key][0]
+        rec = next(r for r in records if r['line'] == selected)
+        lines = late['asm'].splitlines()
+        moved = lines.pop(selected-1)
+        insert = path['qk'][0]-1
+        lines[insert:insert] = [f'\t.loc\t1 {rec["source_line"]} 1',moved,'\t.loc\t1 0 0']
+        proof = checks.after_qk_check(late['ttgir'],late['llir'],'\n'.join(lines),previous=old)
+        assert not proof['diagnostic_mechanism_passed'], key
+        rejected.append(f'early_asm_path{path_index}_{key}')
+    llvm_lines = late['llir'].splitlines()
+    lp = strict['evidence']['llvm_paths'][0]
+    moved = llvm_lines.pop(lp['v_packed_loads'][0]-1)
+    llvm_lines.insert(lp['qk'][0]-1,moved)
+    assert not checks.after_qk_check(late['ttgir'],'\n'.join(llvm_lines),late['asm'],previous=old)['diagnostic_mechanism_passed']
+    rejected.append('early_llvm_load')
+    first_store = next(r['text'] for r in records if r['opcode']=='ml_slb_store_b16')
+    assert '#0' in first_store
+    changed_offset = late['asm'].replace(first_store,first_store.replace('#0','#2',1),1)
+    for label,assembly in [('barrier',late['asm'].replace('sl_barrier','wrong_barrier',1)),
+                           ('store_offset_same_opcode_count',changed_offset)]:
+        assert not checks.after_qk_check(late['ttgir'],late['llir'],assembly,previous=old)['diagnostic_mechanism_passed']
+        rejected.append(label)
+    # A new partial compile record cannot be consumed through default strict mode.
+    with tempfile.TemporaryDirectory(prefix='late-qk-policy-') as directory:
+        path = Path(directory)/'proof.json'
+        path.write_text(json.dumps(dict(completed=True,compile_only=True,kernel_launches=0,
+            source_commit=probe.head(),dependency=checks.DEPENDENCY,source=checks.source_inverse(),
+            errors=[],mechanism_passed=False,after_qk_diagnostic=True,
+            selected_mechanism_contract=checks.AFTER_QK_CONTRACT,diagnostic_mechanism_passed=True,cases=[])))
+        try:probe.validated_proof(path,[])
+        except AssertionError:rejected.append('partial_proof_in_default_strict_mode')
+        else:raise AssertionError('Default strict mode accepted a partial proof')
+    return dict(original_raw_compile_head=original['source_commit'],original_raw_strict_false=True,
+        original_raw_proof_sha256=checks.sha(files['out/compile-proof.json']),
+        source_and_descriptors_match=original['source']==checks.source_inverse() and
+          original['cases'][0]['descriptors']==checks.runtime_descriptors(8,257,16),
+        partial_mechanical_predicate=partial,rejected_mutants=rejected,
+        legacy_options_not_serialized=True,fresh_explicit_compile_proof_required=True,
+        local_gpu_or_jit_executed=False)
 
 
 def originals():
@@ -214,7 +286,7 @@ def check():
     allowed_ir = dict(ttgir='typed', llir='llvm', asm='assembly')
     allowed = dict(hash='allowed', files={name: dict(sha256=checks.sha(text.encode()))
                                          for name,text in allowed_ir.items()})
-    probe.validated_proof = lambda path, chosen: dict(cases=[dict(late_v8=allowed)])
+    probe.validated_proof = lambda path, chosen, **kwargs: dict(cases=[dict(late_v8=allowed)])
     class FakeKernel:
         launches = warmups = 0
         compiled_hash = 'allowed'
@@ -238,9 +310,33 @@ def check():
         changed = FakeKernel(); changed.ir = dict(allowed_ir, asm='changed')
         reject('changed_runtime_ir', lambda: probe.GuardedKernel(changed, None)[(1, 2, 16)](num_warps=1))
         assert changed.launches == 0
+        options = dict(enable_fp_fusion=True,enable_reflect_ftz=True,
+            default_dot_input_precision='tf32',maxnreg=None,backend_name='corex',arch='sm71',
+            sanitize_overflow=True,debug=False)
+        metadata = dict(shared=4096,num_warps=1,num_stages=1,use_sme=79,warp_size=64,triton_version='3.6.0')
+        partial_allowed = dict(allowed,options=options,metadata=metadata,n_regs=137,n_spills=0)
+        probe.validated_proof = lambda path,chosen,**kwargs: dict(cases=[dict(late_v8=partial_allowed)])
+        class OptionKernel(FakeKernel):
+            def __init__(self, *, option_updates=None, metadata_updates=None, n_regs=137):
+                self.options = dict(options,**(option_updates or {}))
+                self.metadata = dict(metadata,**(metadata_updates or {}))
+                self.n_regs = n_regs
+            def warmup(self, **kwargs):
+                self.warmups += 1
+                return SimpleNamespace(hash='allowed',asm=allowed_ir,n_regs=self.n_regs,n_spills=0,
+                    metadata=SimpleNamespace(**self.options,**self.metadata),_init_handles=lambda:None)
+        partial = OptionKernel()
+        probe.GuardedKernel(partial,None,after_qk=True)[(1,2,16)](num_warps=1)
+        assert partial.launches == 1
+        for label,kernel in [('changed_runtime_option',OptionKernel(option_updates=dict(enable_fp_fusion=False))),
+                             ('changed_runtime_metadata',OptionKernel(metadata_updates=dict(num_warps=2))),
+                             ('changed_runtime_resource',OptionKernel(n_regs=143))]:
+            reject(label,lambda k=kernel:probe.GuardedKernel(k,None,after_qk=True)[(1,2,16)](num_warps=1))
+            assert kernel.launches == 0
     finally:
         probe.validated_proof = old_loader
     return dict(source=checks.source_inverse(), frozen_benchmark_ast_inverse=True,
+        actual_after_qk=actual_after_qk_check(),
         runtime_descriptor_cpu_view_arithmetic=descriptor_check(),
         archive=dict(files=19, bytes=966065, archive_bytes=(EVIDENCE/'b8-ir-originals.tar.gz').stat().st_size,
                      sha256=checks.sha((EVIDENCE/'b8-ir-originals.tar.gz').read_bytes())),
@@ -249,7 +345,9 @@ def check():
         rejected_mutants=rejected, numeric_policy=baseline, writer_codec=writer,
         compile_only_has_no_kernel_launch_site=True, gpu_executed=False, jit_executed=False,
         actual_specialization_hash_and_ir_checked_before_launch=True,
-        new_candidate_compiled=False, mechanism_passed=False, precision_gate=False, official_score=False)
+        owner_compiled_3f1=True, this_cpu_check_compiled_candidate=False,
+        current_after_qk_entrypoint_device_tested=False,
+        mechanism_passed=False, precision_gate=False, official_score=False)
 
 
 if __name__ == '__main__':

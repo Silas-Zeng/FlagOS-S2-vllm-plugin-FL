@@ -136,7 +136,7 @@ def adapted_benchmark_tree():
     assert sha(raw) == FROZEN_BENCH_SHA
     tree = ast.parse(raw)
     replacements = 0
-    insertion = ast.parse('own.gqa_decode_v8_bf16p = GuardedKernel(own.gqa_decode_v8_bf16p, args.ir_proof)').body[0]
+    insertion = ast.parse('own.gqa_decode_v8_bf16p = GuardedKernel(own.gqa_decode_v8_bf16p, args.ir_proof, after_qk=args.after_qk_diagnostic)').body[0]
 
     class Rebind(ast.NodeTransformer):
         def visit_Constant(self, node):
@@ -297,3 +297,48 @@ def lowering_check(ttgir, llir, assembly, *, previous=None, source=None, source_
     return dict(mechanism_passed=not reasons, reasons=reasons, evidence=evidence,
                 precision_gate=False, static_instruction_count_is_time=False,
                 limitation='Conservative schema check; changed schemas stop for manual review. Resource counts do not prove speed.')
+
+
+AFTER_QK_CONTRACT = 'after_qk_diagnostic_v1'
+
+
+def after_qk_check(ttgir, llir, assembly, *, previous, source=None, source_name=None):
+    """A separate, explicit hypothesis; never promote the original strict proof.
+
+    First retain every original schema/type/layout/store/barrier requirement.
+    Then require ALL V loads, scale loads, extraction and conversions after the
+    last QK tensor MMA and before PV in BOTH LLVM and ASM full/tail paths.
+    Score scaling/max/softmax may still interleave with them. This is not the
+    original after-all-exp contract and is not a speed/precision claim.
+    """
+    strict = lowering_check(ttgir,llir,assembly,previous=previous,source=source,source_name=source_name)
+    softmax_only = {'LLVM still has V byte extraction/conversion before softmax finishes',
+                    'ASM still expands/converts packed V before softmax finishes'}
+    reasons = [reason for reason in strict['reasons'] if reason not in softmax_only]
+    boundaries = []
+    for stage, keys in [('llvm_paths', {'v_packed_loads':8,'scale_loads':1,'v_extracts':32,'v_casts':32}),
+                        ('asm_paths', {'v_packed_loads':8,'scale_loads':1,'v_expand':32,'v_casts':64})]:
+        paths_found = strict['evidence'].get(stage, [])
+        if len(paths_found) != 2:
+            reasons.append(stage+': both full and tail required')
+        for index,path in enumerate(paths_found):
+            qk_end, pv_start = max(path['qk']), min(path['pv'])
+            for key,count in keys.items():
+                values = path.get(key, [])
+                if len(values) != count or not all(qk_end < value < pv_start for value in values):
+                    reasons.append(f'{stage} path{index}: {key} must all follow last QK MMA and precede PV')
+            boundaries.append(dict(stage=stage,path=index,last_qk_mma=qk_end,first_pv_mma=pv_start,
+                                   operations={key:path.get(key,[]) for key in keys}))
+    # Staging count/layout preservation is checked by strict. Also retain each
+    # store's immediate offset/mode and every barrier opcode. Register names may
+    # change with allocation; this does not claim a formal address-dataflow proof.
+    def staging(text):
+        return sorted(re.sub(r'\bv\d+\b','v',re.sub(r'\bs\d+\b','s',r['text']))
+                      for r in asm_records(text) if r['opcode'].startswith('ml_slb_store_') or r['opcode']=='sl_barrier')
+    if staging(assembly) != staging(previous['asm']):
+        reasons.append('Shared store immediate/mode or barrier signature changed')
+    return dict(contract=AFTER_QK_CONTRACT, diagnostic_mechanism_passed=not reasons,
+                strict_mechanism_passed=strict['mechanism_passed'], strict_reasons=strict['reasons'],
+                reasons=reasons, boundaries=boundaries, staging_signatures_equal=staging(assembly)==staging(previous['asm']),
+                precision_gate=False, official_score=False,
+                limitation='After last QK tensor MMA only; not after softmax, not timing or precision acceptance.')
