@@ -1,0 +1,57 @@
+{
+  "claim": "constructible source path only; not an observed v6 or after-score Config mutation",
+  "current_v6_Config_with_benchmark_name_found": false,
+  "explicit_fake_protocols": [
+    {
+      "actual_ConfigCache_get_put_names": [
+        "namespace_probe_kernel_identity",
+        "namespace_probe_kernel_identity"
+      ],
+      "actual_SQL_physical_table_name": "namespace_probe_kernel_identity-9a53cbcc7dbaf825c0f5309a57c63070",
+      "config_logical_name": "namespace_probe_kernel_identity",
+      "old_benchmark_substring_filter_would_exclude": false,
+      "test_protocol": [
+        "triton_do_bench",
+        25,
+        100
+      ]
+    },
+    {
+      "actual_ConfigCache_get_put_names": [
+        "namespace_probe_kernel_identity_benchmark_e01184d8f339",
+        "namespace_probe_kernel_identity_benchmark_e01184d8f339"
+      ],
+      "actual_SQL_physical_table_name": "namespace_probe_kernel_identity_benchmark_e01184d8f339-9a53cbcc7dbaf825c0f5309a57c63070",
+      "config_logical_name": "namespace_probe_kernel_identity_benchmark_e01184d8f339",
+      "old_benchmark_substring_filter_would_exclude": true,
+      "test_protocol": [
+        "custom_do_bench",
+        -1,
+        -1
+      ]
+    },
+    {
+      "actual_ConfigCache_get_put_names": [
+        "namespace_probe_kernel_identity_benchmark_d80ec4cfeec6",
+        "namespace_probe_kernel_identity_benchmark_d80ec4cfeec6"
+      ],
+      "actual_SQL_physical_table_name": "namespace_probe_kernel_identity_benchmark_d80ec4cfeec6-9a53cbcc7dbaf825c0f5309a57c63070",
+      "config_logical_name": "namespace_probe_kernel_identity_benchmark_d80ec4cfeec6",
+      "old_benchmark_substring_filter_would_exclude": true,
+      "test_protocol": [
+        "triton_cuda_graph_replay_v1",
+        25,
+        100,
+        10,
+        10.0
+      ]
+    }
+  ],
+  "formal_score_eligible": false,
+  "full_module_code_extraction": true,
+  "libentry_sha256": "414e8a3f74e2522e40659e7fccd84e301f4517220837a87af0311f050bbf3025",
+  "live_after_score_database_available": false,
+  "no_framework_imports": true,
+  "sql_sha256": "6dc19cb581d70154f14b95ed9112d682c6b5919b6cf3f8dea01a78a75ec0efd7",
+  "target_resolved_protocol_proven": false
+}

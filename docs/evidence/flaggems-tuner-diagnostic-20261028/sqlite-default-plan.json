@@ -1,0 +1,31 @@
+{
+  "GPU_or_framework_imports": false,
+  "classification": "unattributed until joined to actual hook identity",
+  "default": "stdlib CPU plan; no database opened",
+  "diff": "offline diff --before SNAPSHOT --after SNAPSHOT --out NEW_JSON",
+  "duplicate_rows": "full-row multiset counts; no rowid or primary-key assumptions",
+  "formal_score_eligible": false,
+  "format": "cjj-sqlite-typed-multiset-v1",
+  "limits": {
+    "max_cell_bytes": 4194304,
+    "max_columns": 512,
+    "max_output_bytes": 67108864,
+    "max_rows": 1000000,
+    "max_schema_bytes": 8388608,
+    "max_source_bytes": 268435456,
+    "max_tables": 4096,
+    "timeout_ms": 1000
+  },
+  "snapshot": "explicit snapshot --db EXISTING --out NEW_JSON",
+  "source_mutations": false,
+  "source_pragmas": "read-only table_xinfo only",
+  "tables": "all ordinary tables including sqlite internal; tableless/virtual databases fail qualification",
+  "typed_values": [
+    "null",
+    "integer decimal int64",
+    "real IEEE754 binary64 bits",
+    "text bytes base64",
+    "blob bytes base64"
+  ],
+  "wal": "no immutable; existing WAL+SHM required, no sidecar creation intended"
+}

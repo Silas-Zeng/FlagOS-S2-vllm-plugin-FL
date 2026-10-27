@@ -1,0 +1,49 @@
+{
+  "Config_named_benchmark_never_filtered_or_classified": true,
+  "URI_readonly_single_transaction_consistent_with_concurrent_WAL_commit": true,
+  "actual_bench_execution_proven": false,
+  "actual_v6_readonly_replay": [
+    {
+      "classification": "unattributed; column names are observations, not execution proof",
+      "excluded_tables_with_p50_p20_p80": 29,
+      "initialized_v6_only_not_after_score": true,
+      "logical_sha256": "c8ffa6c740621868e21e1414bbed555b8d07b4e5faac34d237c26c85b5756ed5",
+      "name": "TunedConfig_iluvatar_triton_3_2.db",
+      "old_name_filter_excluded_tables": 29,
+      "rows": 3859,
+      "same_source_two_read_transactions_equal": true,
+      "schema_sha256": "0862bc80d06ba0d88bf44243f114e37e9355419b991925e9789597c4b5534922",
+      "source_sha256": "5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55",
+      "tables": 58
+    },
+    {
+      "classification": "unattributed; column names are observations, not execution proof",
+      "excluded_tables_with_p50_p20_p80": 426,
+      "initialized_v6_only_not_after_score": true,
+      "logical_sha256": "540bab0deff8df5eccd4edf0393e011ab7a8ea6758919abcf885ae96197220c4",
+      "name": "TunedConfig_iluvatar_triton_3_6.db",
+      "old_name_filter_excluded_tables": 426,
+      "rows": 32110,
+      "same_source_two_read_transactions_equal": true,
+      "schema_sha256": "89dd29bec837ace6a8fd8d3ce2b8427f7aa7b1bb785507687bd0ee47d8ab8666",
+      "source_sha256": "2c5aa448065453188f1ff1794d8e929bacb63dcad84a600e086ae05165821314",
+      "tables": 894
+    }
+  ],
+  "all_connections_closed_and_transactions_rolled_back": true,
+  "completed": true,
+  "default_plan_and_new_output_CLI": true,
+  "duplicate_multiset_and_WITHOUT_ROWID": true,
+  "formal_score_eligible": false,
+  "incomplete_snapshot_faults_rejected": 8,
+  "missing_zero_empty_locked_and_WAL_sidecar_gap_explicit_failures": true,
+  "no_framework_or_GPU_import": true,
+  "physical_metadata_not_a_semantic_diff": true,
+  "quoted_identifiers_no_SQL_injection": true,
+  "seven_limits_enforced": true,
+  "source_bytes_and_permissions_unchanged": true,
+  "typed_null_int_real_text_blob_and_invalid_UTF8": true,
+  "typed_row_update_table_add_remove_and_schema_only_diff": true,
+  "unsupported_virtual_table": "explicitly rejected",
+  "views_triggers_indexes_internal_and_generated_columns_recorded": true
+}
