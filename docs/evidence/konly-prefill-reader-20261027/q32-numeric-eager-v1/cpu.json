@@ -1,0 +1,53 @@
+{
+  "Graph_verified": false,
+  "actual_numeric_executed": false,
+  "cpu_only": true,
+  "finite_baseline_failure_not_bypassable": true,
+  "framework_imported": false,
+  "geometry": {
+    "Graph_verified": false,
+    "config": {
+      "BLOCK_M": 256,
+      "BLOCK_Q": 32,
+      "IS_3D": false,
+      "TILE_SIZE": 64
+    },
+    "context": 4096,
+    "context16k_tested": false,
+    "formal_batch_tokens_changed": false,
+    "grid": [
+      65,
+      2
+    ],
+    "klens": [
+      6144
+    ],
+    "pages": 773,
+    "patterns": [
+      0,
+      1
+    ],
+    "profile": "q32",
+    "qlens": [
+      2048
+    ],
+    "requested_options": {
+      "num_stages": 1,
+      "num_warps": 16
+    },
+    "seed": 20261025,
+    "segments": 1,
+    "sequences": 1,
+    "side_stream_verified": false,
+    "table_pitch": 8192,
+    "timing_enabled": false,
+    "total": 2048
+  },
+  "mechanism_replayed": true,
+  "native_namespace_distinction_tested": true,
+  "original_thresholds_preserved": true,
+  "precision_gate": false,
+  "side_stream_verified": false,
+  "timing_attempted": false,
+  "unknown_ABI_or_IR_refused": true
+}
