@@ -7785,6 +7785,17 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
 
     print("BIV150_STABLE_SMALL_O_INSTALL", _install_stable_small_o(), flush=True)
 
+# Redundant direct-worker gate; package preflight already rejects earlier.
+if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE", "0") == "1":
+    from vllm_fl.compact_native_qualification import preflight as _compact_native_preflight
+    _compact_native_preflight()
+
+# NativeK8 may only refine the owned16KiB private decode producer.
+if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_NATIVE_DECODE", "0") == "1":
+    if (__import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") != "1"
+            or __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1"):
+        raise RuntimeError("NativeK8 requires only owned16384 encoded service")
+
 # Reject two cache formats or an unlicensed old hoist before either installer.
 if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1":
     if getattr(current_platform, "vendor_name", None) != "iluvatar":

@@ -110,6 +110,15 @@ def install(runner_class, *, environ=None):
             implementation_digest=implementation_digest(), jit=inspect.getmodule(type(fn)),
             device=triton.runtime.driver.active.get_current_device(), fn=fn)
     runtime.q32_hoist_identity = runtime.q32_hoist
+    if env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE','0') == '1':
+        declared = provenance['native_decode']; path = package/'biv150_konly_encoded_native.py'
+        need(declared['physical_page_bytes']==16384 and declared['adapter']['path']=='vllm_fl/patches/'+path.name,
+             'native adapter format/source manifest')
+        need(hashlib.sha256(path.read_bytes()).hexdigest()==declared['adapter']['sha256'],'native adapter source SHA')
+        native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_native')
+        need(Path(native.__file__).resolve()==path.resolve() and native.LIBRARY_SHA==declared['library_sha256'],
+             'actual native module/library identity')
+        native.attach(runtime,env)
     runtime.stats_path = env.get('VLLM_FL_BIV150_KONLY_ENCODED_STATS_PATH')
     if runtime.stats_path is None and env.get('TRITON_CACHE_DIR'):
         runtime.stats_path = str(Path(env['TRITON_CACHE_DIR']).parent/'konly-encoded-final-{pid}.json')
@@ -177,6 +186,7 @@ def install(runner_class, *, environ=None):
         implementation_sha256=runtime.installed_digest,final_stats_path=runtime.stats_path,
         stock_native_gqa_parent_preserved=True, encoded_GQA_uses_stock_native=False,
         producer_boundary='owned-encoded-private-before-stock-native',
+        native_decode_enabled=runtime.native_decode is not None,native_decode_library=None if runtime.native_decode is None else runtime.native_decode.library,
         q32_hoist_enabled=runtime.q32_hoist is not None, q32_I8_fragment_hoist_verified=False, service_numeric_verified=False, precision_gate=False)
 
 
@@ -201,6 +211,12 @@ def compute_order_receipt(attention, normalized_kernel):
     need(state is not None and implementation_digest() == state.installed_digest, 'unregistered/stale encoded runtime')
     need(state.facade_type.__getitem__.__code__ is state.facade_code, 'encoded dispatch code changed')
     need(state.q32_hoist is getattr(state,'q32_hoist_identity',None), 'encoded Q32 adapter binding changed')
+    native = state.native_decode
+    need((native is None and state.native_decode_identity is None) or
+         state.native_decode_identity == (native,type(native).verify.__code__,type(native).validate.__code__,type(native).try_produce.__code__),
+         'encoded NativeK8 installed code/binding changed')
+    need(native is None or not any(n in vars(native) for n in ('verify','validate','try_produce')), 'native instance wrapper override')
+    native_receipt = dict(enabled=False) if native is None else native.verify(state)
     boundary = getattr(state,'producer_binding',None)
     need(type(boundary) is tuple and len(boundary)==5, 'new main producer boundary receipt absent')
     gqa,producer,parent,native_parent,code = boundary
@@ -220,6 +236,7 @@ def compute_order_receipt(attention, normalized_kernel):
     need(all(e.observation.storage_id in state.registry.owned_storages for e in state.registry.entries.values()),
          'cache ownership registry incomplete')
     return dict(parent_raw=parents[id(attention.kernel_unified_attention)], parent_normalized=parents[id(normalized_kernel)],
+        native_decode_registered=native_receipt,
         encoded_dispatch_registered=True, implementation_sha256=state.installed_digest,
         producer_boundary_registered=True, stock_native_parent_preserved=True, encoded_GQA_uses_stock_native=False,
         parent_fn_is_interface_only=True, encoded_math_device_certified=False)

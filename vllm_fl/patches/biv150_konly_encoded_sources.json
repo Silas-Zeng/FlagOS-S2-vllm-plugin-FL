@@ -288,5 +288,28 @@
   "service_activated": false,
   "dynamic_I8_fragment_hoist_proved": false,
   "all_service_profiles_device_verified": false,
-  "specialized_mixed85_pair_not_installed": true
+  "specialized_mixed85_pair_not_installed": true,
+  "native_decode": {
+    "adapter": {
+      "path": "vllm_fl/patches/biv150_konly_encoded_native.py",
+      "sha256": "165d54a29d878b91532076b1a28c77ff5e43ff1b8772ab440b0fe7c54f2873b3"
+    },
+    "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+    "physical_page_bytes": 16384,
+    "shape_segments": [
+      [
+        64,
+        2
+      ],
+      [
+        32,
+        4
+      ]
+    ],
+    "query_strides": [
+      2048,
+      2560
+    ],
+    "new_service_qualified": false
+  }
 }

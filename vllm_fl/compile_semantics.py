@@ -66,6 +66,14 @@ def _runtime_abi():
 
 def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=None, abi=None):
     """只读文件和配置；不导入 runner、模型、算子或加载 SO。"""
+    env = os.environ if environ is None else environ
+    compact_native = None
+    if env.get('VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE', '0') == '1':
+        import importlib.util
+        qpath = Path(__file__).with_name('compact_native_qualification.py')
+        qspec = importlib.util.spec_from_file_location('_compact_native_qualification_fingerprint', qpath)
+        qmod = importlib.util.module_from_spec(qspec); qspec.loader.exec_module(qmod)
+        compact_native = qmod.preflight(env)
     model = getattr(getattr(vllm_config, "model_config", None), "hf_config", None)
     if vendor_name != "iluvatar" or not native_model_matches(model):
         return None
@@ -83,6 +91,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         features["VLLM_FL_BIV150_GQA_DECODE"]
         and env.get("VLLM_FL_BIV150_NATIVE_GQA", "1") == "1")
     features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] = env.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"
+    native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'
+    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8
+    if native_k8 and (not features['VLLM_FL_BIV150_KONLY_ENCODED_SERVICE'] or env.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','0')=='1'):
+        raise ValueError('NativeK8 requires only the owned16384 encoded format')
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
@@ -128,6 +140,9 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         compact_paths = sorted(directory.glob("biv150_konly_compact_*.py")) + [directory / "biv150_konly_compact_sources.json"]
         compact = {"format": "cjj-konly-compact12544-rn32-rne-v1", "page_bytes": 12544, "producer_boundary": "owned-compact-before-stock-native", "q32_hoist_enabled": False,
                    "implementation_sha256": _digest({path.name: _sha(path) for path in compact_paths})}
+        if compact_native is not None:
+            features['VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE'] = True
+            compact['native_decode'] = dict(enabled=True, **compact_native)
         facts["konly_compact"] = compact
     encoded = None
     if features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"]:
@@ -137,6 +152,17 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
                    "producer_boundary": "owned-encoded-before-stock-native",
                    "q32_hoist_enabled": env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1",
                    "implementation_sha256": _digest({path.name: _sha(path) for path in encoded_paths})}
+        if native_k8:
+            # Also loaded standalone by the owned-service helper. Keep this
+            # fingerprint stdlib-only; never import a package/private operator.
+            expected = '22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd'
+            library = Path(env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY', ''))
+            if (not library.is_absolute() or not library.is_file()
+                    or env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256') != expected):
+                raise ValueError('NativeK8 fingerprint requires absolute library and fixed SHA pair')
+            if _sha(library) != expected:
+                raise ValueError('NativeK8 fingerprint library content differs')
+            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_qk_probe::produce')
         facts["konly_encoded"] = encoded
     result = {"schema": 1, "sha256": _digest(facts),
               "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}

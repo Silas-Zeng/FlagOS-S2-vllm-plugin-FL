@@ -57,4 +57,13 @@ def verify_package():
     for relative, pin in record['binding_files'].items():
         need(hashlib.sha256((directory.parent/relative).read_bytes()).hexdigest() == pin,
              'binding source mismatch: ' + relative)
+    native = record['native_decode']
+    need(native['qualification_state'] in ('pending','component-reviewed') and native['format'] == FORMAT
+         and native['operator'] == 'cjj_native_k8_compact_probe::produce', 'explicit pending native provenance')
+    for key in ('adapter', 'qualification', 'early_import_gate'):
+        item = native[key]
+        path = (directory.parent.parent / item['path']).resolve()
+        need(path.is_relative_to(directory.parent.resolve())
+             and hashlib.sha256(path.read_bytes()).hexdigest() == item['sha256'],
+             'compact native source mismatch: ' + key)
     return record
