@@ -1,0 +1,1429 @@
+{
+  "CPU_only": true,
+  "IR_display_limit": "ixobjdump wraps long signatures, including a cut attribute token; raw display retained, body SSA audited rather than recompiled",
+  "SO_sha256": "b144a39345bee54169eb6e3d5f14d8db68b16a1dfe657b44d21cb89c236dfe17",
+  "actual_SO_IR_profiles": [
+    {
+      "actual_SO_IR_Vfirst": true,
+      "body_sha256": "787116f5eabfb2999188f2b17a337d496c3808afe7b643594c5de619c8d299bd",
+      "global_lines": [
+        23,
+        1627
+      ],
+      "paths": [
+        {
+          "K_barrier_lines_before_wait": [
+            605
+          ],
+          "K_global_I32_load_lines": [
+            575,
+            579,
+            583,
+            587,
+            591,
+            595,
+            599,
+            603
+          ],
+          "K_shared_I32_store_lines": [
+            576,
+            580,
+            584,
+            588,
+            592,
+            596,
+            600,
+            604
+          ],
+          "V_SME_lines": [
+            568,
+            569,
+            570,
+            571
+          ],
+          "V_block": "528",
+          "V_dominates_all_K_loads_and_stores": true,
+          "V_post_wait_barrier_line": 607,
+          "V_wait8_line": 606,
+          "path": "full"
+        },
+        {
+          "K_barrier_lines_before_wait": [
+            1143
+          ],
+          "K_global_I32_load_lines": [
+            945,
+            969,
+            993,
+            1020,
+            1047,
+            1074,
+            1101,
+            1128
+          ],
+          "K_shared_I32_store_lines": [
+            956,
+            980,
+            1007,
+            1034,
+            1061,
+            1088,
+            1115,
+            1142
+          ],
+          "V_SME_lines": [
+            928,
+            929,
+            930,
+            931
+          ],
+          "V_block": "877",
+          "V_dominates_all_K_loads_and_stores": true,
+          "V_post_wait_barrier_line": 1145,
+          "V_wait8_line": 1144,
+          "path": "tail"
+        }
+      ],
+      "static_counts_full_plus_tail": {
+        "BF16_PV": 16,
+        "BF16_P_casts": 4,
+        "I8_QK": 8,
+        "L_FMA": 4,
+        "Q_integer_RNE": 16,
+        "exp2_approx": 8,
+        "signed_I32_to_F32": 4,
+        "unflagged_F32_divides": 18
+      },
+      "symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "actual_SO_IR_Vfirst": true,
+      "body_sha256": "72882e1bea52c65beb71e8a923f0339fc5069836e39c97e5ad70788fdbf9e63a",
+      "global_lines": [
+        1649,
+        3253
+      ],
+      "paths": [
+        {
+          "K_barrier_lines_before_wait": [
+            2231
+          ],
+          "K_global_I32_load_lines": [
+            2201,
+            2205,
+            2209,
+            2213,
+            2217,
+            2221,
+            2225,
+            2229
+          ],
+          "K_shared_I32_store_lines": [
+            2202,
+            2206,
+            2210,
+            2214,
+            2218,
+            2222,
+            2226,
+            2230
+          ],
+          "V_SME_lines": [
+            2194,
+            2195,
+            2196,
+            2197
+          ],
+          "V_block": "528",
+          "V_dominates_all_K_loads_and_stores": true,
+          "V_post_wait_barrier_line": 2233,
+          "V_wait8_line": 2232,
+          "path": "full"
+        },
+        {
+          "K_barrier_lines_before_wait": [
+            2769
+          ],
+          "K_global_I32_load_lines": [
+            2571,
+            2595,
+            2619,
+            2646,
+            2673,
+            2700,
+            2727,
+            2754
+          ],
+          "K_shared_I32_store_lines": [
+            2582,
+            2606,
+            2633,
+            2660,
+            2687,
+            2714,
+            2741,
+            2768
+          ],
+          "V_SME_lines": [
+            2554,
+            2555,
+            2556,
+            2557
+          ],
+          "V_block": "877",
+          "V_dominates_all_K_loads_and_stores": true,
+          "V_post_wait_barrier_line": 2771,
+          "V_wait8_line": 2770,
+          "path": "tail"
+        }
+      ],
+      "static_counts_full_plus_tail": {
+        "BF16_PV": 16,
+        "BF16_P_casts": 4,
+        "I8_QK": 8,
+        "L_FMA": 4,
+        "Q_integer_RNE": 16,
+        "exp2_approx": 8,
+        "signed_I32_to_F32": 4,
+        "unflagged_F32_divides": 18
+      },
+      "symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    }
+  ],
+  "actual_SO_IR_sha256": "00b6ca237353fee77387cb85e16fb870c592f430155dc80be1797bb073b4799c",
+  "actual_SO_SASS_sha256": "1fb96f2490c41503a2b25b81db2503879e424e1c246a8791ee5c4a02dd92d518",
+  "actual_SO_profiles": [
+    {
+      "actual_ELF_metadata": {
+        ".group_segment_fixed_size": 8192,
+        ".kernarg_segment_align": 8,
+        ".kernarg_segment_size": 144,
+        ".max_flat_workgroup_size": 0,
+        ".name": "_Z33cjj_native_k8_vfirst_gqa_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 68,
+        ".sgpr_spill_count": 0,
+        ".symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "actual_relative_branch_targets_match_all_standalone_labels": true,
+      "all_instructions_byte_bound_to_original_SO": true,
+      "all_opcode_order_matches_standalone": true,
+      "branches": [
+        {
+          "line": 20,
+          "pc": "0x12068",
+          "target": "0x149e0"
+        },
+        {
+          "line": 534,
+          "pc": "0x13078",
+          "target": "0x139c8"
+        },
+        {
+          "line": 606,
+          "pc": "0x132b8",
+          "target": "0x13530"
+        },
+        {
+          "line": 684,
+          "pc": "0x13528",
+          "target": "0x139c8"
+        },
+        {
+          "line": 828,
+          "pc": "0x139a8",
+          "target": "0x132c0"
+        },
+        {
+          "line": 831,
+          "pc": "0x139c0",
+          "target": "0x132c0"
+        },
+        {
+          "line": 833,
+          "pc": "0x139d0",
+          "target": "0x145f8"
+        },
+        {
+          "line": 963,
+          "pc": "0x13de0",
+          "target": "0x13f78"
+        },
+        {
+          "line": 973,
+          "pc": "0x13e30",
+          "target": "0x13e88"
+        },
+        {
+          "line": 983,
+          "pc": "0x13e80",
+          "target": "0x13f60"
+        },
+        {
+          "line": 1000,
+          "pc": "0x13f08",
+          "target": "0x13e40"
+        },
+        {
+          "line": 1004,
+          "pc": "0x13f28",
+          "target": "0x13e38"
+        },
+        {
+          "line": 1010,
+          "pc": "0x13f58",
+          "target": "0x13e38"
+        },
+        {
+          "line": 1311,
+          "pc": "0x148c0",
+          "target": "0x149d8"
+        }
+      ],
+      "code_body_sha256": "fa64ef9ab58b6e0879cbe5313d9bd1d5af43d0783e86f1f9e9a154031d58f482",
+      "float_MMA_conversion_operands_exactly_match_standalone": 316,
+      "instruction_count": 1341,
+      "non_float_display_differences": [
+        {
+          "assembly": "v0, tid, 0x4",
+          "disassembly": "v0, 0, 0x4",
+          "line": 22,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v34, tid, 0x8",
+          "disassembly": "v34, 0, 0x8",
+          "line": 26,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v35, tid, 0x4",
+          "disassembly": "v35, 0, 0x4",
+          "line": 27,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v53, tid, 0x2",
+          "disassembly": "v53, 0, 0x2",
+          "line": 28,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v54, tid, 0x1",
+          "disassembly": "v54, 0, 0x1",
+          "line": 29,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v1, tid, 0xf",
+          "disassembly": "v1, 0, 0xf",
+          "line": 35,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v18, tid, 0x1",
+          "disassembly": "v18, 0, 0x1",
+          "line": 218,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v19, tid, 0xf",
+          "disassembly": "v19, 0, 0xf",
+          "line": 219,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v18, 16, v18, v19, 0xfffffff8",
+          "disassembly": "v18, 16, v18, v19, 0xf8",
+          "line": 220,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v23, tid, 0x4",
+          "disassembly": "v23, 0, 0x4",
+          "line": 224,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v23, 32, v23, v19, 0xfffffff8",
+          "disassembly": "v23, 32, v23, v19, 0xf8",
+          "line": 227,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x10",
+          "disassembly": "v0, 0, 0x10",
+          "line": 447,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v1, tid, 0x40",
+          "disassembly": "v1, 0, 0x40",
+          "line": 457,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v2, tid, 0x80",
+          "disassembly": "v2, 0, 0x80",
+          "line": 458,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v3, tid, 0xc0",
+          "disassembly": "v3, 0, 0xc0",
+          "line": 459,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v4, tid, 0x100",
+          "disassembly": "v4, 0, 0x100",
+          "line": 460,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v5, tid, 0x140",
+          "disassembly": "v5, 0, 0x140",
+          "line": 461,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v6, tid, 0x180",
+          "disassembly": "v6, 0, 0x180",
+          "line": 462,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v7, tid, 0x1c0",
+          "disassembly": "v7, 0, 0x1c0",
+          "line": 463,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v12, tid, 0x20",
+          "disassembly": "v12, 0, 0x20",
+          "line": 465,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v13, tid, 0x2",
+          "disassembly": "v13, 0, 0x2",
+          "line": 466,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v14, tid, 0x20",
+          "disassembly": "v14, 0, 0x20",
+          "line": 467,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v15, tid, 0x5",
+          "disassembly": "v15, 0, 0x5",
+          "line": 468,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v16, tid, 0x6",
+          "disassembly": "v16, 0, 0x6",
+          "line": 469,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v50, v0, v12, v19, 0xfffffffe",
+          "disassembly": "v50, v0, v12, v19, 0xfe",
+          "line": 500,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v70, v15, v13, v56, 0xfffffffe",
+          "disassembly": "v70, v15, v13, v56, 0xfe",
+          "line": 501,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v69, v16, v1, v56, 0xfffffffe",
+          "disassembly": "v69, v16, v1, v56, 0xfe",
+          "line": 502,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v1, tid, 0x4",
+          "disassembly": "v1, 0, 0x4",
+          "line": 538,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v0, v0, v1, tid, 0xfffffff8",
+          "disassembly": "v0, v0, v1, 0, 0xf8",
+          "line": 539,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x20",
+          "disassembly": "v0, 0, 0x20",
+          "line": 545,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x3",
+          "disassembly": "v0, 0, 0x3",
+          "line": 547,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v1, tid, 0xc0",
+          "disassembly": "v1, 0, 0xc0",
+          "line": 549,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v2, tid, 0x140",
+          "disassembly": "v2, 0, 0x140",
+          "line": 553,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v3, tid, 0x1c0",
+          "disassembly": "v3, 0, 0x1c0",
+          "line": 556,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v4, tid, 0x5",
+          "disassembly": "v4, 0, 0x5",
+          "line": 559,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v5, tid, 0x1f",
+          "disassembly": "v5, 0, 0x1f",
+          "line": 561,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v85, v0, v67, v56, 0xfffffffe",
+          "disassembly": "v85, v0, v67, v56, 0xfe",
+          "line": 588,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v86, v1, v65, v56, 0xfffffffe",
+          "disassembly": "v86, v1, v65, v56, 0xfe",
+          "line": 589,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v87, v0, v63, v56, 0xfffffffe",
+          "disassembly": "v87, v0, v63, v56, 0xfe",
+          "line": 590,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v88, v2, v61, v56, 0xfffffffe",
+          "disassembly": "v88, v2, v61, v56, 0xfe",
+          "line": 591,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v89, v0, v59, v56, 0xfffffffe",
+          "disassembly": "v89, v0, v59, v56, 0xfe",
+          "line": 592,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v90, v3, v57, v56, 0xfffffffe",
+          "disassembly": "v90, v3, v57, v56, 0xfe",
+          "line": 593,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x5",
+          "disassembly": "v32, 0, 0x5",
+          "line": 846,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x1f",
+          "disassembly": "v32, 0, 0x1f",
+          "line": 849,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v34, tid, 0x5",
+          "disassembly": "v34, 0, 0x5",
+          "line": 871,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v34, v34, v67, v56, 0xfffffffe",
+          "disassembly": "v34, v34, v67, v56, 0xfe",
+          "line": 895,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v35, v35, v65, v56, 0xfffffffe",
+          "disassembly": "v35, v35, v65, v56, 0xfe",
+          "line": 908,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v34, v34, v63, v56, 0xfffffffe",
+          "disassembly": "v34, v34, v63, v56, 0xfe",
+          "line": 919,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v35, v35, v61, v56, 0xfffffffe",
+          "disassembly": "v35, v35, v61, v56, 0xfe",
+          "line": 932,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v34, v34, v59, v56, 0xfffffffe",
+          "disassembly": "v34, v34, v59, v56, 0xfe",
+          "line": 943,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, v32, v57, v56, 0xfffffffe",
+          "disassembly": "v32, v32, v57, v56, 0xfe",
+          "line": 955,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, tid, 0xffffffc0",
+          "disassembly": "v32, 0, 0xffffffc0",
+          "line": 964,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v35, tid, 0x4",
+          "disassembly": "v35, 0, 0x4",
+          "line": 965,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v54, v54, v57, v56, 0xfffffffe",
+          "disassembly": "v54, v54, v57, v56, 0xfe",
+          "line": 991,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x4",
+          "disassembly": "v32, 0, 0x4",
+          "line": 1015,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v32, s12, v32, tid, 0xfffffff8",
+          "disassembly": "v32, s12, v32, 0, 0xf8",
+          "line": 1016,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v34, tid, 0xf",
+          "disassembly": "v34, 0, 0xf",
+          "line": 1042,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v36, tid, 0x8",
+          "disassembly": "v36, 0, 0x8",
+          "line": 1062,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v38, tid, 0x4",
+          "disassembly": "v38, 0, 0x4",
+          "line": 1068,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v40, tid, 0x2",
+          "disassembly": "v40, 0, 0x2",
+          "line": 1069,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v41, tid, 0x1",
+          "disassembly": "v41, 0, 0x1",
+          "line": 1070,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x20",
+          "disassembly": "v32, 0, 0x20",
+          "line": 1132,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x4",
+          "disassembly": "v0, 0, 0x4",
+          "line": 1222,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v16, tid, 0xf",
+          "disassembly": "v16, 0, 0xf",
+          "line": 1234,
+          "opcode": "ml_and_b32"
+        }
+      ],
+      "paths": [
+        {
+          "K_barrier_line": 725,
+          "K_flush_wait_line": 724,
+          "K_global_load_lines": [
+            701,
+            702,
+            703,
+            708,
+            709,
+            715,
+            716,
+            717
+          ],
+          "K_shared_store_lines": [
+            705,
+            707,
+            711,
+            713,
+            714,
+            719,
+            721,
+            723
+          ],
+          "V_SME": [
+            {
+              "line": 696,
+              "pc": "0x13588"
+            },
+            {
+              "line": 697,
+              "pc": "0x13590"
+            },
+            {
+              "line": 698,
+              "pc": "0x13598"
+            },
+            {
+              "line": 699,
+              "pc": "0x135a0"
+            }
+          ],
+          "V_dominates_K_in_actual_machine_CFG": true,
+          "explicit_original_V_wait_line": 726,
+          "path": "full",
+          "post_V_barrier_line": 727
+        },
+        {
+          "K_barrier_line": 959,
+          "K_flush_wait_line": 958,
+          "K_global_load_lines": [
+            874,
+            883,
+            891,
+            904,
+            915,
+            928,
+            939,
+            951
+          ],
+          "K_shared_store_lines": [
+            879,
+            887,
+            897,
+            910,
+            921,
+            934,
+            945,
+            957
+          ],
+          "V_SME": [
+            {
+              "line": 855,
+              "pc": "0x13a80"
+            },
+            {
+              "line": 858,
+              "pc": "0x13a98"
+            },
+            {
+              "line": 861,
+              "pc": "0x13ab0"
+            },
+            {
+              "line": 864,
+              "pc": "0x13ac8"
+            }
+          ],
+          "V_dominates_K_in_actual_machine_CFG": true,
+          "explicit_original_V_wait_line": 960,
+          "path": "tail",
+          "post_V_barrier_line": 961
+        }
+      ],
+      "symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "actual_ELF_metadata": {
+        ".group_segment_fixed_size": 8192,
+        ".kernarg_segment_align": 8,
+        ".kernarg_segment_size": 144,
+        ".max_flat_workgroup_size": 0,
+        ".name": "_Z33cjj_native_k8_vfirst_gqa_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 68,
+        ".sgpr_spill_count": 0,
+        ".symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "actual_relative_branch_targets_match_all_standalone_labels": true,
+      "all_instructions_byte_bound_to_original_SO": true,
+      "all_opcode_order_matches_standalone": true,
+      "branches": [
+        {
+          "line": 1363,
+          "pc": "0x14b50",
+          "target": "0x174c8"
+        },
+        {
+          "line": 1877,
+          "pc": "0x15b60",
+          "target": "0x164b0"
+        },
+        {
+          "line": 1949,
+          "pc": "0x15da0",
+          "target": "0x16018"
+        },
+        {
+          "line": 2027,
+          "pc": "0x16010",
+          "target": "0x164b0"
+        },
+        {
+          "line": 2171,
+          "pc": "0x16490",
+          "target": "0x15da8"
+        },
+        {
+          "line": 2174,
+          "pc": "0x164a8",
+          "target": "0x15da8"
+        },
+        {
+          "line": 2176,
+          "pc": "0x164b8",
+          "target": "0x170e0"
+        },
+        {
+          "line": 2306,
+          "pc": "0x168c8",
+          "target": "0x16a60"
+        },
+        {
+          "line": 2316,
+          "pc": "0x16918",
+          "target": "0x16970"
+        },
+        {
+          "line": 2326,
+          "pc": "0x16968",
+          "target": "0x16a48"
+        },
+        {
+          "line": 2343,
+          "pc": "0x169f0",
+          "target": "0x16928"
+        },
+        {
+          "line": 2347,
+          "pc": "0x16a10",
+          "target": "0x16920"
+        },
+        {
+          "line": 2353,
+          "pc": "0x16a40",
+          "target": "0x16920"
+        },
+        {
+          "line": 2654,
+          "pc": "0x173a8",
+          "target": "0x174c0"
+        }
+      ],
+      "code_body_sha256": "14ef19d29f3bf4c7ffcbdbf307657a0bbaa8745d0b0a694cdbc431d337aaefab",
+      "float_MMA_conversion_operands_exactly_match_standalone": 316,
+      "instruction_count": 1341,
+      "non_float_display_differences": [
+        {
+          "assembly": "v0, tid, 0x4",
+          "disassembly": "v0, 0, 0x4",
+          "line": 1365,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v34, tid, 0x8",
+          "disassembly": "v34, 0, 0x8",
+          "line": 1369,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v35, tid, 0x4",
+          "disassembly": "v35, 0, 0x4",
+          "line": 1370,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v53, tid, 0x2",
+          "disassembly": "v53, 0, 0x2",
+          "line": 1371,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v54, tid, 0x1",
+          "disassembly": "v54, 0, 0x1",
+          "line": 1372,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v1, tid, 0xf",
+          "disassembly": "v1, 0, 0xf",
+          "line": 1378,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v18, tid, 0x1",
+          "disassembly": "v18, 0, 0x1",
+          "line": 1561,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v19, tid, 0xf",
+          "disassembly": "v19, 0, 0xf",
+          "line": 1562,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v18, 16, v18, v19, 0xfffffff8",
+          "disassembly": "v18, 16, v18, v19, 0xf8",
+          "line": 1563,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v23, tid, 0x4",
+          "disassembly": "v23, 0, 0x4",
+          "line": 1567,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v23, 32, v23, v19, 0xfffffff8",
+          "disassembly": "v23, 32, v23, v19, 0xf8",
+          "line": 1570,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x10",
+          "disassembly": "v0, 0, 0x10",
+          "line": 1790,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v1, tid, 0x40",
+          "disassembly": "v1, 0, 0x40",
+          "line": 1800,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v2, tid, 0x80",
+          "disassembly": "v2, 0, 0x80",
+          "line": 1801,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v3, tid, 0xc0",
+          "disassembly": "v3, 0, 0xc0",
+          "line": 1802,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v4, tid, 0x100",
+          "disassembly": "v4, 0, 0x100",
+          "line": 1803,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v5, tid, 0x140",
+          "disassembly": "v5, 0, 0x140",
+          "line": 1804,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v6, tid, 0x180",
+          "disassembly": "v6, 0, 0x180",
+          "line": 1805,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v7, tid, 0x1c0",
+          "disassembly": "v7, 0, 0x1c0",
+          "line": 1806,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v12, tid, 0x20",
+          "disassembly": "v12, 0, 0x20",
+          "line": 1808,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v13, tid, 0x2",
+          "disassembly": "v13, 0, 0x2",
+          "line": 1809,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v14, tid, 0x20",
+          "disassembly": "v14, 0, 0x20",
+          "line": 1810,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v15, tid, 0x5",
+          "disassembly": "v15, 0, 0x5",
+          "line": 1811,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v16, tid, 0x6",
+          "disassembly": "v16, 0, 0x6",
+          "line": 1812,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v50, v0, v12, v19, 0xfffffffe",
+          "disassembly": "v50, v0, v12, v19, 0xfe",
+          "line": 1843,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v70, v15, v13, v56, 0xfffffffe",
+          "disassembly": "v70, v15, v13, v56, 0xfe",
+          "line": 1844,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v69, v16, v1, v56, 0xfffffffe",
+          "disassembly": "v69, v16, v1, v56, 0xfe",
+          "line": 1845,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v1, tid, 0x4",
+          "disassembly": "v1, 0, 0x4",
+          "line": 1881,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v0, v0, v1, tid, 0xfffffff8",
+          "disassembly": "v0, v0, v1, 0, 0xf8",
+          "line": 1882,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x20",
+          "disassembly": "v0, 0, 0x20",
+          "line": 1888,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x3",
+          "disassembly": "v0, 0, 0x3",
+          "line": 1890,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v1, tid, 0xc0",
+          "disassembly": "v1, 0, 0xc0",
+          "line": 1892,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v2, tid, 0x140",
+          "disassembly": "v2, 0, 0x140",
+          "line": 1896,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v3, tid, 0x1c0",
+          "disassembly": "v3, 0, 0x1c0",
+          "line": 1899,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v4, tid, 0x5",
+          "disassembly": "v4, 0, 0x5",
+          "line": 1902,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v5, tid, 0x1f",
+          "disassembly": "v5, 0, 0x1f",
+          "line": 1904,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v85, v0, v67, v56, 0xfffffffe",
+          "disassembly": "v85, v0, v67, v56, 0xfe",
+          "line": 1931,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v86, v1, v65, v56, 0xfffffffe",
+          "disassembly": "v86, v1, v65, v56, 0xfe",
+          "line": 1932,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v87, v0, v63, v56, 0xfffffffe",
+          "disassembly": "v87, v0, v63, v56, 0xfe",
+          "line": 1933,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v88, v2, v61, v56, 0xfffffffe",
+          "disassembly": "v88, v2, v61, v56, 0xfe",
+          "line": 1934,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v89, v0, v59, v56, 0xfffffffe",
+          "disassembly": "v89, v0, v59, v56, 0xfe",
+          "line": 1935,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v90, v3, v57, v56, 0xfffffffe",
+          "disassembly": "v90, v3, v57, v56, 0xfe",
+          "line": 1936,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x5",
+          "disassembly": "v32, 0, 0x5",
+          "line": 2189,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x1f",
+          "disassembly": "v32, 0, 0x1f",
+          "line": 2192,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v34, tid, 0x5",
+          "disassembly": "v34, 0, 0x5",
+          "line": 2214,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v34, v34, v67, v56, 0xfffffffe",
+          "disassembly": "v34, v34, v67, v56, 0xfe",
+          "line": 2238,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v35, v35, v65, v56, 0xfffffffe",
+          "disassembly": "v35, v35, v65, v56, 0xfe",
+          "line": 2251,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v34, v34, v63, v56, 0xfffffffe",
+          "disassembly": "v34, v34, v63, v56, 0xfe",
+          "line": 2262,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v35, v35, v61, v56, 0xfffffffe",
+          "disassembly": "v35, v35, v61, v56, 0xfe",
+          "line": 2275,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v34, v34, v59, v56, 0xfffffffe",
+          "disassembly": "v34, v34, v59, v56, 0xfe",
+          "line": 2286,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, v32, v57, v56, 0xfffffffe",
+          "disassembly": "v32, v32, v57, v56, 0xfe",
+          "line": 2298,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, tid, 0xffffffc0",
+          "disassembly": "v32, 0, 0xffffffc0",
+          "line": 2307,
+          "opcode": "ml_add_i32"
+        },
+        {
+          "assembly": "v35, tid, 0x4",
+          "disassembly": "v35, 0, 0x4",
+          "line": 2308,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v54, v54, v57, v56, 0xfffffffe",
+          "disassembly": "v54, v54, v57, v56, 0xfe",
+          "line": 2334,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x4",
+          "disassembly": "v32, 0, 0x4",
+          "line": 2358,
+          "opcode": "ml_shl_b32"
+        },
+        {
+          "assembly": "v32, s12, v32, tid, 0xfffffff8",
+          "disassembly": "v32, s12, v32, 0, 0xf8",
+          "line": 2359,
+          "opcode": "ml_anyop3_b32"
+        },
+        {
+          "assembly": "v34, tid, 0xf",
+          "disassembly": "v34, 0, 0xf",
+          "line": 2385,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v36, tid, 0x8",
+          "disassembly": "v36, 0, 0x8",
+          "line": 2405,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v38, tid, 0x4",
+          "disassembly": "v38, 0, 0x4",
+          "line": 2411,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v40, tid, 0x2",
+          "disassembly": "v40, 0, 0x2",
+          "line": 2412,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v41, tid, 0x1",
+          "disassembly": "v41, 0, 0x1",
+          "line": 2413,
+          "opcode": "ml_xor_b32"
+        },
+        {
+          "assembly": "v32, tid, 0x20",
+          "disassembly": "v32, 0, 0x20",
+          "line": 2475,
+          "opcode": "ml_and_b32"
+        },
+        {
+          "assembly": "v0, tid, 0x4",
+          "disassembly": "v0, 0, 0x4",
+          "line": 2565,
+          "opcode": "ml_srl_b32"
+        },
+        {
+          "assembly": "v16, tid, 0xf",
+          "disassembly": "v16, 0, 0xf",
+          "line": 2577,
+          "opcode": "ml_and_b32"
+        }
+      ],
+      "paths": [
+        {
+          "K_barrier_line": 2068,
+          "K_flush_wait_line": 2067,
+          "K_global_load_lines": [
+            2044,
+            2045,
+            2046,
+            2051,
+            2052,
+            2058,
+            2059,
+            2060
+          ],
+          "K_shared_store_lines": [
+            2048,
+            2050,
+            2054,
+            2056,
+            2057,
+            2062,
+            2064,
+            2066
+          ],
+          "V_SME": [
+            {
+              "line": 2039,
+              "pc": "0x16070"
+            },
+            {
+              "line": 2040,
+              "pc": "0x16078"
+            },
+            {
+              "line": 2041,
+              "pc": "0x16080"
+            },
+            {
+              "line": 2042,
+              "pc": "0x16088"
+            }
+          ],
+          "V_dominates_K_in_actual_machine_CFG": true,
+          "explicit_original_V_wait_line": 2069,
+          "path": "full",
+          "post_V_barrier_line": 2070
+        },
+        {
+          "K_barrier_line": 2302,
+          "K_flush_wait_line": 2301,
+          "K_global_load_lines": [
+            2217,
+            2226,
+            2234,
+            2247,
+            2258,
+            2271,
+            2282,
+            2294
+          ],
+          "K_shared_store_lines": [
+            2222,
+            2230,
+            2240,
+            2253,
+            2264,
+            2277,
+            2288,
+            2300
+          ],
+          "V_SME": [
+            {
+              "line": 2198,
+              "pc": "0x16568"
+            },
+            {
+              "line": 2201,
+              "pc": "0x16580"
+            },
+            {
+              "line": 2204,
+              "pc": "0x16598"
+            },
+            {
+              "line": 2207,
+              "pc": "0x165b0"
+            }
+          ],
+          "V_dominates_K_in_actual_machine_CFG": true,
+          "explicit_original_V_wait_line": 2303,
+          "path": "tail",
+          "post_V_barrier_line": 2304
+        }
+      ],
+      "symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    }
+  ],
+  "actual_codec_machine_text_identical_to_old22e": true,
+  "actual_embedded_IR_math_vs_standalone": [
+    {
+      "exact_F32_BF16_I32_math_SSA_and_FP_flags": true,
+      "math_lines": 196,
+      "sha256": "a392c7e409957f90e020510c6b623fd45db9d57414fa60e1efe8c01ac04fc0a9",
+      "slices": {
+        "final_PV_output_store": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "aac78ad6ae770ff458ec89e750ac36347b6335fbc539f8197942c3db110bb6f2"
+        },
+        "full_QK_softmax_PV": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "1f2098e382bb58ccef692d6a5c59482c994155ce2fe4b738447c2cc7c1e7e5da"
+        },
+        "tail_QK_softmax_PV": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "1a697c964a79ffcf9624fc7bd26e7c1082ca390bb86ee8a6366ea5fc6cb112a5"
+        },
+        "tail_clear": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "883e3ee45ff7fa549dcc9b18e52c7da7d4756515933e4dcb00f8e913b9d32e9a"
+        }
+      },
+      "symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "exact_F32_BF16_I32_math_SSA_and_FP_flags": true,
+      "math_lines": 196,
+      "sha256": "a392c7e409957f90e020510c6b623fd45db9d57414fa60e1efe8c01ac04fc0a9",
+      "slices": {
+        "final_PV_output_store": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "aac78ad6ae770ff458ec89e750ac36347b6335fbc539f8197942c3db110bb6f2"
+        },
+        "full_QK_softmax_PV": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "1f2098e382bb58ccef692d6a5c59482c994155ce2fe4b738447c2cc7c1e7e5da"
+        },
+        "tail_QK_softmax_PV": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "5c8396d80d8d07dc5a2c71fd3f06af89c6b88800b3ee1ce08633e9e460884203"
+        },
+        "tail_clear": {
+          "integer_optimization_annotation_and_proven_loop_metadata_normalized_SSA_exact": true,
+          "sha256": "54659b3e21081b76c731f6da2072f171fe32130b12bbd6679c178dc350a134c0"
+        }
+      },
+      "symbol": "_Z33cjj_native_k8_vfirst_gqa_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    }
+  ],
+  "actual_machine_schedule_supported": true,
+  "approved_sidecar_generated": false,
+  "binding": {
+    "compile_summary_sha256": "5b502cf54be5e25430fc2a6d9017c8314976ceaf9af8d322e7377737a88ecac9",
+    "qk_ASM_sha256": "8f8a177c8d674c94483ca4eccda81125b968ff4e5ec3e3ab075927c2c44eb09e",
+    "qk_LLVM_sha256": "52b5af90dad2b2ef6f9a3f4aa265058561120caf77d68ca6a777c118c3c5563d",
+    "variant_CUDA_sha256": "5fd2cdd49f016659d7d08bc9ef7f1365ad8ab021812da7c55499ab8fe3f3f845",
+    "variant_library_sha256": "b144a39345bee54169eb6e3d5f14d8db68b16a1dfe657b44d21cb89c236dfe17"
+  },
+  "capacity_reclaimed": false,
+  "decoded_instruction_bytes_independently_bound": 22144,
+  "manifest_sha256": "a955ce8bda8a9d21e1d10067890560565b6cf24e8c93c8166bc8804accf34a83",
+  "manual_Root_approval": false,
+  "model_verified": false,
+  "numeric_licensed": false,
+  "original_failed_supplements_preserved": true,
+  "performance_verified": false,
+  "precision_gate": false,
+  "prior_failed_supplement_files_rehashed": 19,
+  "prior_failed_supplement_manifest_sha256": "c7e9d3757a271857966045865f4dc97fd5d34e2aea52fea3ca69a1389f780a50",
+  "raw_bytes_verified": 496623,
+  "raw_files_verified": 9,
+  "recommended_review_flags": {
+    "actual_V_issue_before_K_packing": true,
+    "actual_wait_barrier_tail_preserved": true,
+    "original_I8_QK_BF16_PV_and_codec_preserved": true
+  },
+  "reviewer_Torch_JIT_GPU_SSH_or_compile_executed": false,
+  "script_sha256": "b89b78a8c16ee3f9da99cc7abf5104a7b17499b58ab0ae2edf87aa536151b45e",
+  "service_verified": false,
+  "source_commit": "e46fa381ccc0d10b92251c73ba7cd24abf0b9bfb"
+}
