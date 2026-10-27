@@ -281,6 +281,8 @@ def parent_host_source(source, role):
     accepted = {pin}
     if role == 'runtime':
         accepted.add('93acf5658f76faa031bd8d6865d0fc489a2e59521f9e7b25a1ccf45e991d6aef')
+        # d8ef055: format ownership before main native GQA, retained byte-exact.
+        accepted.add('c7266c9ae587e12846cd171441f635878e9d32fb9f93e9840f04760201d7a0c8')
     need(hashlib.sha256(source.encode()).hexdigest() in accepted, 'pinned parent host source')
     output = source
     for old, new, count in changes:

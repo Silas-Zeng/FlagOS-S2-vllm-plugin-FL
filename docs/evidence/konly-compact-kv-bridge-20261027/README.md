@@ -1,11 +1,13 @@
 # Compact K-only KV bridge: CPU source candidate
 
-**Current source stage:** default-off service wiring on frozen DAC1/PR89-2487 is
-implemented and CPU metadata-tested; see [service-wiring-dac2487.md](service-wiring-dac2487.md).
-That freeze is held from new main `b3b87d2` until the new native producer entry
-receives an explicit format-aware hook. Actual Tensor/IR/numeric/model/capacity/
-throughput remain unverified. The study below and `cpu.json` describe the earlier
-factory-only69ac65d stage; its historical `activation_ready=false` is preserved.
+**Current source stage:** default-off service wiring now follows native-GQA main
+`b3b87d2` and immutable PR89 `d8ef055`, with ownership routing before stock native;
+see [service-wiring-b3-native.md](service-wiring-b3-native.md).
+The complete installer passes explicit CPU metadata mocks. Actual Tensor/IR/
+numeric/model/capacity/throughput remain unverified. The DAC1/2487 report and
+phase-one `cpu.json` below are preserved historical stages, not new-main evidence.
+
+## Historical phase-one study (69ac65d)
 
 Base: fresh fetched main `dac1b8fb48e7983e48283032efeee9b592c5fbe5`.
 Depends on PR88 contract `65db624d39f554f2330fef578930c4048a109f06` and PR89

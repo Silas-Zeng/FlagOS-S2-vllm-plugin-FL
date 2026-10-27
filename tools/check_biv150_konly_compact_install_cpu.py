@@ -175,6 +175,16 @@ def setup_install(torch,kv):
         def indexes_kv_by_block_stride():return True
     backend.TritonAttentionBackend=Backend
     gqa=parent_modules['vllm_fl.patches.biv150_gqa_decode'];gqa._state={'calls':0,'fallbacks':0};gqa._gqa_decode_attention=Kernel()
+    native=parent_modules['vllm_fl.patches.biv150_native_gqa']
+    class Native:
+        def __init__(self):self.calls=[]
+        def try_produce(self,grid,kwargs):
+            # Poison eligibility: accepts every dtype/stride. Owned storage must
+            # never arrive here, even when compact strides cease to reject it.
+            self.calls.append((grid,kwargs));return True
+    native._Runtime=Native;gqa._native_s2=Native()
+    functions(gqa.__file__,('_launch_producer',),vars(gqa))
+
     fragment=parent_modules['vllm_fl.patches.biv150_q_fragment_service']
     base=S(active=True,holder={},kernel_key='kernel_unified_attention',wrapper=Kernel(),raw=Kernel());fragment._MANAGER=base
     q32=parent_modules['vllm_fl.patches.biv150_prefill_q32'];m2=parent_modules['vllm_fl.patches.biv150_prefill_multi2']
@@ -273,6 +283,12 @@ def run(export_only=False):
     parent_get=Runner.get_kv_cache_spec;parent_alloc=Runner._allocate_kv_cache_tensors
     installed=service.install(Runner,environ={ENV:'1'});assert installed['installed']
     host=service._STATE.compact_host
+    gqa=sys.modules['vllm_fl.patches.biv150_gqa_decode']
+    native=gqa._native_s2;installed_producer=gqa._launch_producer
+    ordinary=Tensor(torch.bfloat16,(2,16,2,128),(8192,256,128,1))
+    assert gqa._launch_producer((1,),key_cache_ptr=ordinary,value_cache_ptr=ordinary) is None
+    assert len(native.calls)==1 and gqa._native_s2 is native
+
     for obj,key,bad in [(runner.vllm_config,'speculative_config',S()),
         (runner.vllm_config,'kv_transfer_config',S()),
         (runner.cache_config,'kv_offloading_size',0),
@@ -319,7 +335,28 @@ def run(export_only=False):
     entry=next(iter(service._STATE.registry.entries.values()))
     assert entry.roles['decode79']['key_cache_ptr'].stride(0)==12544
     assert entry.roles['decode79']['value_cache_ptr'].data_ptr()==first.data_ptr()+4352
+    # Actual private facade, actual ownership lookup, explicit Tensor/JIT mocks.
+    # Cache K/V have nominal BF16 carriers but byte-packed private K payloads.
+    key=Tensor(torch.bfloat16,(2,16,2,128),(6272,256,128,1),first.storage)
+    value=Tensor(torch.bfloat16,(2,16,2,128),(6272,256,128,1),first.storage,2176)
+    query=Tensor(torch.bfloat16,(1,16,128))
+    kw=dict(key_cache_ptr=key,value_cache_ptr=value,query_ptr=query,
+            HEAD_SIZE=128,PAGE_SIZE=16,ROWS=8,queries_per_kv=8)
+    gqa._launch_producer((1,2,1),**kw)
+    assert len(kernels['decode'].calls)==1 and len(native.calls)==1
+    changed=dict(kw,key_cache_ptr=Tensor(torch.bfloat16,key.shape,(8192,256,128,1),first.storage))
+    reject(lambda:gqa._launch_producer((1,2,1),**changed))
+    changed=dict(kw,value_cache_ptr=Tensor(torch.bfloat16,value.shape,value.strides,first.storage,2177))
+    reject(lambda:gqa._launch_producer((1,2,1),**changed))
+    reject(lambda:gqa._launch_producer((1,),key_cache_ptr=ordinary,value_cache_ptr=ordinary))
+    assert len(native.calls)==1 and len(kernels['decode'].calls)==1
+
     receipt=service.compute_order_receipt(attention,base.holder[base.kernel_key]);assert receipt['parent_fn_is_interface_only']
+    assert receipt['producer_boundary_registered'] and receipt['stock_native_parent_preserved']
+    gqa._native_s2=object();reject(lambda:service.compute_order_receipt(attention,base.holder[base.kernel_key]));gqa._native_s2=native
+    gqa._launch_producer=installed_producer.__wrapped__
+    reject(lambda:service.compute_order_receipt(attention,base.holder[base.kernel_key]));gqa._launch_producer=installed_producer
+
     old_hook=Runner.get_kv_cache_spec;Runner.get_kv_cache_spec=parent_get
     reject(lambda:service.compact_spec_is_owned(groups[0].kv_cache_spec));Runner.get_kv_cache_spec=old_hook
     fakeold=kv.FullAttentionSpec(block_size=16,num_kv_heads=2,head_size=128,dtype=torch.bfloat16)
@@ -343,8 +380,15 @@ def run(export_only=False):
     exec(compile(Path(sem.__file__).read_bytes(),sem.__file__,'exec'),vars(sem))
     runner.vllm_config.model_config.hf_config=S(**sem._GEOMETRY)
     common=dict(vendor_name='iluvatar',abi={'CPU_only':True})
-    off=sem.build_fingerprint(runner.vllm_config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0'},**common)
-    on=sem.build_fingerprint(runner.vllm_config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0',ENV:'1'},**common)
+    with TemporaryDirectory(prefix='cjj-compact-native-fingerprint-') as folder:
+        library=Path(folder)/'CPU-metadata-not-executable.so';library.write_bytes(b'CPU-only-native-content-1')
+        flags={'VLLM_FL_BIV150_NATIVE_W8A8':'0','BIV150_NATIVE_GQA_LIBRARY':str(library)}
+        off=sem.build_fingerprint(runner.vllm_config,environ=flags,**common)
+        on=sem.build_fingerprint(runner.vllm_config,environ={**flags,ENV:'1'},**common)
+        library.write_bytes(b'CPU-only-native-content-2')
+        changed=sem.build_fingerprint(runner.vllm_config,environ={**flags,ENV:'1'},**common)
+        assert changed['sha256']!=on['sha256']
+
     assert off['sha256']!=on['sha256'] and on['konly_compact']['page_bytes']==12544
     assert on['konly_compact']['implementation_sha256']==service.implementation_digest()
     child=subprocess.check_output([sys.executable,'-B',__file__,'--export-only'],env=dict(os.environ,**{ENV:'1'}))
@@ -361,7 +405,9 @@ def run(export_only=False):
         old_format_hoist_reinit_late_getspec_rejected=True,no_spec_connector_offload_scope_verified=True,
         CUDA_temporary_profile_cache_scope_excluded=True,
         wrong_installed_source_rejected=True,pure_full_attention_zeroer_not_activated=True,
-        compile_fingerprint_bound=True,
+        compile_fingerprint_bound=True,native_library_content_fingerprint_retained=True,
+        owned_compact_before_native_verified=True,unknown_or_alias_cannot_reach_native=True,
+        cold_unowned_main_native_preserved=True,native_receipt_mutants_rejected=True,
         actual_Tensor_verified=False,JIT_executed=False,GPU_executed=False,actual_IR_verified=False,
         numeric_verified=False,model_verified=False,capacity_reclaimed=False,performance_verified=False,precision_gate=False)
 

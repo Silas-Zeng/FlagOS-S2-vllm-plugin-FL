@@ -22,11 +22,11 @@ SOURCES = {
     "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
     "vllm_fl.patches.biv150_cpu_metadata": "0e96152454a9197f65a34c2fe8805bd5073e1fa473070d59d4ec4f20a6d8846f",
     "vllm_fl.patches.biv150_mixed_decode": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
-    "vllm_fl.patches.biv150_gqa_decode": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+    "vllm_fl.patches.biv150_gqa_decode": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
     "vllm_fl.patches.biv150_prefill_normalized": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
-    "vllm_fl.patches.biv150_q_fragment_service": "38e44e6b0272116a1c76561119e9742337caed4dfaf5ab891fc57df4f2c16a82",
+    "vllm_fl.patches.biv150_q_fragment_service": "c3c5bb34086681918cc328a6bbc2b349dd9019899b730fc99f9b2dc02f3ae1a9",
     "vllm_fl.patches.biv150_prefill_q32": "3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b",
-    "vllm_fl.patches.biv150_prefill_multi2": "fc3cdd066aacc6dfdc5029bb8aae9589f868b6800534511d2198f1f0d88da342",
+    "vllm_fl.patches.biv150_prefill_multi2": "669a2a4d7b0e5a08f28e3492fd8fa45999f48e5521be94791f103e0fecd6b1eb",
     "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
     "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
 }
@@ -104,7 +104,8 @@ def _main_stack(torch):
         if encoded is None:
             raise ValueError("encoded dispatch installed source is missing")
         receipt = encoded.compute_order_receipt(attention, normalized_kernel)
-        if not receipt.get("encoded_dispatch_registered") or not receipt.get("implementation_sha256"):
+        if (not receipt.get("encoded_dispatch_registered") or not receipt.get("implementation_sha256")
+                or not receipt.get("producer_boundary_registered") or not receipt.get("stock_native_parent_preserved")):
             raise ValueError("encoded dispatch identity receipt is incomplete")
         # Parent .fn below proves only the preserved SDK interface/metadata chain.
         # The separate receipt verifies actual private dispatch, never new numerics.

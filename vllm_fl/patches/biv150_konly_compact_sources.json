@@ -1,9 +1,11 @@
 {
-  "main": "dac1b8fb48e7983e48283032efeee9b592c5fbe5",
-  "parent89": "2487e75aaf367b0924b12a5d53d15c1dff971be9",
+  "main": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+  "parent89": "d8ef055422d9d5c45049f85468b486b47b993406",
   "contract88": "65db624d39f554f2330fef578930c4048a109f06",
   "format": "cjj-konly-compact12544-rn32-rne-v1",
   "page_bytes": 12544,
+  "producer_boundary": "owned-compact-before-stock-native",
+  "native_producer_binding_ready": true,
   "generated": {
     "writer": {
       "path": "vllm_fl/patches/biv150_konly_compact_writer.py",
@@ -35,7 +37,7 @@
     },
     "runtime": {
       "path": "vllm_fl/patches/biv150_konly_compact_runtime.py",
-      "sha256": "f5638eb6887c0c2b1f0af6d509b0718890b9e945f5fdc0502f62b89ba27d9088"
+      "sha256": "ddfb92304e13b0d1b1b79f86574b95c168c775594b497372dfeae1542a05c9be"
     },
     "identity": {
       "path": "vllm_fl/patches/biv150_konly_compact_identity.py",
@@ -55,7 +57,7 @@
     },
     "service": {
       "path": "vllm_fl/patches/biv150_konly_compact_service.py",
-      "sha256": "b8fdbc57eea7ce9b2f365262a3e548e494739691ab8aae6075378d6ce615be2a"
+      "sha256": "ac714f2b8f4f0a864266ddaa917aef8c4922d7948f055957e39b0d0736ee3179"
     }
   },
   "address_source_proofs": {
@@ -112,8 +114,8 @@
   },
   "binding_files": {
     "worker/model_runner.py": "3276d6d3524f4ee6e49a1f19443a3de88b9ffaa674007c5472a7fa855356ebc4",
-    "patches/biv150_compute_order.py": "da4aaba0c52ab4cd9a283bda97183df3a67098968138ab2951c53eebb9c3d9e0",
-    "compile_semantics.py": "862ea88a3adef4a51115eb5e610f9b1969610aa64991985d8e45fdb83c979785"
+    "patches/biv150_compute_order.py": "a63df22d106adf3125f9301b127497a02aba97415f9dcf6f488669aef12aa3b2",
+    "compile_semantics.py": "f6fa39b0f8f2829c2559eeac96ae43db44a419aa5136e2e3d597c66b3bf254f0"
   },
   "q32_hoist_supported": false,
   "service_numeric_verified": false,

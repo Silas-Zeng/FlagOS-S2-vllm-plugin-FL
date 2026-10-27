@@ -8,7 +8,8 @@ import subprocess
 import biv150_konly_compact_kv_bridge as bridge
 
 ROOT = Path(__file__).resolve().parents[1]
-PARENT = '2487e75aaf367b0924b12a5d53d15c1dff971be9'
+PARENT = 'd8ef055422d9d5c45049f85468b486b47b993406'
+MAIN = 'b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd'
 ENV = 'VLLM_FL_BIV150_KONLY_COMPACT_SERVICE'
 
 
@@ -48,7 +49,7 @@ def run():
         proofs[role] = proof
 
     source = raw('vllm_fl/patches/biv150_konly_encoded_service.py').decode()
-    assert hashlib.sha256(source.encode()).hexdigest() == 'd21c1268b69b3ec1736cd8f196e89371db689be1b664590c7913da16b1bc1f81'
+    assert hashlib.sha256(source.encode()).hexdigest() == '63945e66fb5699ea89b9c4a4d2b4503510e6288055ba02a0bbe91c48d40a53f9'
     # Remove the explicitly unsupported 16KiB Q32 hoist before renaming modules.
     tree = ast.parse(source); matches = [n for n in ast.walk(tree) if isinstance(n, ast.If)
         and "env.get('VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST'" in ast.unparse(n.test)]
@@ -116,7 +117,7 @@ if (getattr(current_platform, "vendor_name", None) == "iluvatar"
     (ROOT / 'vllm_fl/worker/model_runner.py').write_bytes(worker.encode())
     worker_sha = hashlib.sha256(worker.encode()).hexdigest()
 
-    c3 = raw('vllm_fl/patches/biv150_compute_order.py').decode()
+    c3 = raw('vllm_fl/patches/biv150_compute_order.py').decode().replace('\r\n', '\n').replace('\n', '\r\n')
     c3 = replace(c3, 'EXPECTED_RUNNER = "b4bf3ec5cb7b46392452c37e2ac91292d7c40522ad711ce3a8be3eb55a418d7d"',
                  'EXPECTED_RUNNER = "' + worker_sha + '"')
     c3 = replace(c3, '    if os.environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1":',
@@ -142,7 +143,7 @@ def _compact_or_stock_spec(spec, spec_module):
     c3 = c3.replace('\r\n', '\n').replace('\n', '\r\n')
     (directory / 'biv150_compute_order.py').write_bytes(c3.encode())
 
-    sem = raw('vllm_fl/compile_semantics.py').decode()
+    sem = raw('vllm_fl/compile_semantics.py').decode().replace('\r\n', '\n').replace('\n', '\r\n')
     marker = '    encoded = None'
     sem = replace(sem, marker,
         '    compact = None\r\n'
@@ -151,7 +152,7 @@ def _compact_or_stock_spec(spec, spec_module):
         '            raise ValueError("compact format/old-hoist conflict")\r\n'
         '        directory = package / "patches"\r\n'
         '        compact_paths = sorted(directory.glob("biv150_konly_compact_*.py")) + [directory / "biv150_konly_compact_sources.json"]\r\n'
-        '        compact = {"format": "' + bridge.FORMAT + '", "page_bytes": 12544, "q32_hoist_enabled": False,\r\n'
+        '        compact = {"format": "' + bridge.FORMAT + '", "page_bytes": 12544, "producer_boundary": "owned-compact-before-stock-native", "q32_hoist_enabled": False,\r\n'
         '                   "implementation_sha256": _digest({path.name: _sha(path) for path in compact_paths})}\r\n'
         '        facts["konly_compact"] = compact\r\n' + marker)
     sem = replace(sem, '    return result\r\n\r\n\r\nclass _WithCompileSemantics:',
@@ -162,8 +163,9 @@ def _compact_or_stock_spec(spec, spec_module):
     for role in ('identity', 'spec', 'manager', 'host', 'service'):
         path = directory / ('biv150_konly_compact_' + role + '.py')
         generated[role] = dict(path=str(path.relative_to(ROOT)), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
-    manifest = dict(main=bridge.BASE, parent89=PARENT, contract88=bridge.CONTRACT88,
-        format=bridge.FORMAT, page_bytes=12544, generated=generated, address_source_proofs=proofs,
+    manifest = dict(main=MAIN, parent89=PARENT, contract88=bridge.CONTRACT88,
+        format=bridge.FORMAT, page_bytes=12544, producer_boundary='owned-compact-before-stock-native',
+        native_producer_binding_ready=True, generated=generated, address_source_proofs=proofs,
         binding_files={name:hashlib.sha256((ROOT/'vllm_fl'/name).read_bytes()).hexdigest()
                        for name in ('worker/model_runner.py','patches/biv150_compute_order.py','compile_semantics.py')},
         q32_hoist_supported=False, service_numeric_verified=False, capacity_reclaimed=False,
