@@ -1,0 +1,45 @@
+{
+  "CPU_only": true,
+  "DDL_error_identity": true,
+  "actual_source_method_executed": true,
+  "defaults_and_override_preserved": true,
+  "existing_other_method_change_not_overwritten": true,
+  "framework_imported": false,
+  "kernel_modified": false,
+  "opaque_adapter_not_real_SQLAlchemy": true,
+  "passed": true,
+  "performance_verified": false,
+  "precision_gate": false,
+  "production_installed": false,
+  "reductions": [
+    {
+      "backend": "sqlite",
+      "first_get": false,
+      "fixed_reflections": 1,
+      "original_reflections": 2
+    },
+    {
+      "backend": "postgresql",
+      "first_get": false,
+      "fixed_reflections": 1,
+      "original_reflections": 2
+    },
+    {
+      "backend": "sqlite",
+      "first_get": true,
+      "fixed_reflections": 2,
+      "original_reflections": 3
+    },
+    {
+      "backend": "postgresql",
+      "first_get": true,
+      "fixed_reflections": 2,
+      "original_reflections": 3
+    }
+  ],
+  "source_database_modified": false,
+  "source_sha256": "6dc19cb581d70154f14b95ed9112d682c6b5919b6cf3f8dea01a78a75ec0efd7",
+  "target_runtime_verified": false,
+  "threads": 12,
+  "two_schemas": true
+}
