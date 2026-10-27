@@ -108,7 +108,7 @@ def source_factory(sdk_text, source_root, mode='causal-skew'):
         q_debug_lookup='main Manager inspects actual candidate.fn and original SDK file',
         source_edit=edit.strip(), grid_unchanged=True, parent_dispatch_unchanged=True,
         block_m=256, block_q=32, tile_size=64, num_warps=16, num_stages=1,
-        minimum_query_rows=1024, minimum_actual_query_rows=1024, num_sequences=1, is_3d=False,
+        minimum_query_rows=1024, minimum_actual_query_rows=1024 if mode=='causal-skew' else None, num_sequences=1, is_3d=False,
         metadata_loads=3 if mode=='causal-skew' else 0,
         metadata_uniform_for_launch=True,metadata_cse_device_verified=False,
         route_uses_actual_cu_difference=mode=='causal-skew',

@@ -82,6 +82,109 @@
     "original_helper_large_nonzero_start_unsupported": true,
     "nonzero_start_is_not_new_numerical_support": true
   },
+  "dynamic_device_entry_cpu_checks": {
+    "exact_route_probe_prefix": true,
+    "route_probe_source_sha256": "32135cfcf2dd038742582952a195086eafb8ea8ad5ed99a4bbb98a84d0feefb8",
+    "fixed_grid": [
+      65,
+      2
+    ],
+    "metadata_states": [
+      {
+        "name": "short_prefix",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 4096,
+        "order": "reverse"
+      },
+      {
+        "name": "long_prefix",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 16384,
+        "order": "forward"
+      },
+      {
+        "name": "prefix6144",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 8192,
+        "order": "reverse"
+      },
+      {
+        "name": "threshold_below",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 10239,
+        "order": "reverse"
+      },
+      {
+        "name": "threshold_equal",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 10240,
+        "order": "reverse"
+      },
+      {
+        "name": "threshold_above",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 10241,
+        "order": "forward"
+      },
+      {
+        "name": "prefix10240",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 12288,
+        "order": "forward"
+      },
+      {
+        "name": "actual1024",
+        "q_start": 0,
+        "q_stop": 1024,
+        "kv_rows": 5120,
+        "order": "reverse"
+      },
+      {
+        "name": "actual1023_padded",
+        "q_start": 0,
+        "q_stop": 1023,
+        "kv_rows": 5115,
+        "order": "forward"
+      },
+      {
+        "name": "actual1025_partial",
+        "q_start": 0,
+        "q_stop": 1025,
+        "kv_rows": 5125,
+        "order": "reverse"
+      },
+      {
+        "name": "nonzero_start1",
+        "q_start": 1,
+        "q_stop": 1025,
+        "kv_rows": 5120,
+        "order": "forward"
+      },
+      {
+        "name": "nonzero_start31",
+        "q_start": 31,
+        "q_stop": 1055,
+        "kv_rows": 5120,
+        "order": "forward"
+      },
+      {
+        "name": "return_to_short",
+        "q_start": 0,
+        "q_stop": 2048,
+        "kv_rows": 4096,
+        "order": "reverse"
+      }
+    ],
+    "captures_prepared_not_executed": true
+  },
+  "historical_unconditional_source_preserved": true,
   "complete_grid_sizes_checked": 2049,
   "route_outcomes_checked_per_grid": 2,
   "rejects_changed_sdk": true,

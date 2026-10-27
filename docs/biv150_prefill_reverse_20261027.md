@@ -120,10 +120,47 @@ python3 tools/check_biv150_prefill_reverse_cpu.py --source "$PWD" \
   --out /tmp/prefill-causal-skew-cpu-result.json
 ```
 
-Device tests must cover metadata crossing both route outcomes in one captured
-graph with fixed pointers/grid, the qlen1024 boundary, partial query tiles and
-supported nonzero/padded metadata. A route-ID probe generated from the exact
-predicate is prepared; the dynamic graph entry is being completed. Actual IR
-must establish scalar-load reuse, selected order, Q-hoist retention and unchanged
-resources. Root coordinates every GPU run serially. Full model precision and
-unchanged official throughput/TTFT acceptance remain mandatory before integration.
+## Prepared device validation entry (not executed)
+
+The dynamic gate keeps all pointers and the 65x2 grid fixed. It captures baseline,
+candidate and an exact generated route-ID probe once each, then updates only
+`cu_q` and `seqused_k` across thirteen states: short/long prefix, prefix8192±1,
+actual qlen1023/1024/1025, supported nonzero starts1/31, then back to short prefix.
+CPU checks confirm the probe and real candidate have identical route-prefix AST.
+The future device gate must verify both heads' complete logical-ID map and
+bit-exact direct/graph output, CPU-double reference guards, inactive output
+canaries, input bytes and descriptor/ABI identity. This precedes component timing.
+
+Root can first screen the two original components with the dynamic gate:
+
+```bash
+python3 tools/bench_biv150_prefill_reverse.py --source "$PWD" \
+  --commit FROZEN_PR_COMMIT --run-gpu --dynamic-metadata \
+  --case chunk4k --case chunk16k --out /tmp/prefill-causal-skew-first
+```
+
+Omit the two `--case` flags for all nineteen ordinary fresh/prefix/suffix and
+threshold cases. The result distinguishes completion of requested work from
+`refined_route_numerical_matrix_complete`, which requires both the entire matrix
+and dynamic gate. That field is not precision, performance, CSE or service
+acceptance. Passing a two-case screen remains partial coverage.
+
+Both routes use the unchanged actual main Q32 policy and Q-hoist verified manager.
+Before timing, the harness requires exact numerical identity/reference guards,
+changed-input graphs, side streams, input/output canaries, identical ABI/launch
+descriptors, equal shared/launch metadata and equal loaded registers/spills.
+It records the actual kernel source, all IR/ASM/cubin and manager proofs so root
+can inspect added scalar-load CSE and codegen. A live port9031 service, busy GPU,
+dirty tracked source, production differences or a wrong import checkout stop the
+run without stopping anything else. Component graphs replay warmed private JITs
+with the parent's actual arguments; this does not claim the serving wrapper's
+capture path has been integrated.
+
+Metadata-load CSE, Q-hoist retention, resources, route probes, refined throughput
+and full numerical matrix are still untested on device. Three extra source-level
+loads may not CSE through a dynamic sequence index; inspect the actual IR rather
+than assuming reuse. If overhead erases the useful shape's gain, keep the original
+positive observation and refine the mechanism instead of discarding it solely
+because another shape is negative. Root coordinates all GPU work serially.
+Full model precision and unchanged official throughput/TTFT acceptance remain
+mandatory before integration.

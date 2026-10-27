@@ -10,7 +10,7 @@ import sys
 from types import SimpleNamespace
 
 from biv150_prefill_reverse import (CASES, HELPER_SHA, source_factory, function_source,
-                                    load_python, eligible, OLD, NEW)
+                                    load_python, eligible, OLD, NEW, route_probe_source)
 from check_biv150_prefill_probe_cpu import Tensor
 
 
@@ -191,6 +191,27 @@ def c3_and_metadata_check(root,candidate,helpers):
         nonzero_start_is_not_new_numerical_support=True)
 
 
+def dynamic_entry_cpu_check(candidate):
+    from biv150_prefill_reverse_dynamic import DYNAMIC_METADATA,expected_reverse
+    probe=route_probe_source()
+    def prefix(text):
+        fn=next(n for n in ast.parse(text).body if isinstance(n,ast.FunctionDef))
+        return [ast.dump(n) for n in fn.body if isinstance(n,ast.Assign)
+                and isinstance(n.targets[0],ast.Name)
+                and (n.targets[0].id.startswith('route_') or n.targets[0].id=='q_block_global_idx')]
+    assert prefix(candidate)==prefix(probe),'Device route probe differs from real candidate prefix'
+    records=[]
+    for name,start,stop,kvlen in DYNAMIC_METADATA:
+        mapped,reverse=route_mapping(candidate,65,start,stop,kvlen)
+        probe_mapped,probe_reverse=route_mapping(probe,65,start,stop,kvlen)
+        assert mapped==probe_mapped and reverse==probe_reverse==expected_reverse(start,stop,kvlen)
+        assert 0<=start<32 and start<stop<=2048 and stop-start<=kvlen<=16384
+        records.append(dict(name=name,q_start=start,q_stop=stop,kv_rows=kvlen,
+                            order='reverse' if reverse else 'forward'))
+    return dict(exact_route_probe_prefix=True,route_probe_source_sha256=hashlib.sha256(probe.encode()).hexdigest(),
+        fixed_grid=[65,2],metadata_states=records,captures_prepared_not_executed=True)
+
+
 def scope_check(root):
     fragment=load_python(root/'vllm_fl/patches/biv150_q_fragment_service.py','_reverse_cpu_fragment')
     values=dict(IS_3D=False,HEAD_SIZE=128,HEAD_SIZE_PADDED=128,num_query_heads=16,
@@ -280,6 +301,9 @@ def main(args):
         geometry_check('nonzero_start1',1024,5120,baseline,candidate,helpers,qstart=1,capacity=2048),
         geometry_check('nonzero_start31',1024,5120,baseline,candidate,helpers,qstart=31,capacity=2048)]
     c3=c3_and_metadata_check(args.source,candidate,helpers)
+    dynamic=dynamic_entry_cpu_check(candidate)
+    _,_,historical=source_factory(args.sdk_source.read_text(),args.source,mode='always')
+    assert historical['reversed_source_sha256']=='38198704c37479e4b5c26778d7dd1da2a894409d1c81ff2626e1d988facca104'
     # Complete id-permutation proof for each grid length, including one and
     # every threshold/tile boundary through 2049 programs (65536 query rows).
     grids=0
@@ -296,6 +320,7 @@ def main(args):
         official_score=False,precision_gate=False,production_unchanged=True,
         source_transform=proof,helper_ast_sha256=helper_proof,scope_checks=scope_check(args.source),
         controller_checks=controller_check(args.source),c3_and_metadata_checks=c3,
+        dynamic_device_entry_cpu_checks=dynamic,historical_unconditional_source_preserved=True,
         complete_grid_sizes_checked=grids,route_outcomes_checked_per_grid=2, rejects_changed_sdk=rejects_changed_sdk,cases=records,
         limitation='Scalar actual-SDK AST plus ownership proof; device codegen, resources, scheduling and performance untested.')
     assert 'torch' not in sys.modules and 'triton' not in sys.modules

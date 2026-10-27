@@ -16,6 +16,7 @@ import statistics
 import subprocess
 import sys
 import traceback
+from types import SimpleNamespace
 
 from biv150_prefill_reverse import MAIN, CASES, eligible, private_manager
 
@@ -70,7 +71,7 @@ def main(args):
     if not args.run_gpu:
         print(json.dumps(dict(cpu_only=True,gpu_executed=False,cases=CASES,
             component_only=True,official_score=False,precision_gate=False,
-            exact_parent_policy=True,geometry=[256,32,64,16,1])))
+            exact_parent_policy=True,geometry=[256,32,64,16,1],dynamic_metadata_prepared=True)))
         return
     source=args.source.resolve()
     assert subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()==args.commit
@@ -108,10 +109,17 @@ def main(args):
     result=dict(completed=False,component_only=True,official_score=False,precision_gate=False,
         production_unchanged=True,service_installed=False,source_commit=args.commit,
         production_baseline=MAIN,source_transform=proof,baseline_installations=states,
-        q32_installation=installed,actual_parent_policy=True,cases=[],errors=[])
+        q32_installation=installed,actual_parent_policy=True,
+        dynamic_metadata_requested=args.dynamic_metadata,refined_route_numerical_matrix_complete=False,cases=[],errors=[])
     def save():atomic(args.out/'result.json',result)
     save()
     try:
+        if args.dynamic_metadata:
+            from biv150_prefill_reverse_dynamic import run_dynamic_metadata
+            run_dynamic_metadata(SimpleNamespace(torch=torch,fixture=fixture,parent=parent,
+                base=base,policy=policy,function=function,taps=taps,managers=managers,
+                reverse=reverse,fragment=fragment,result=result,save=save,out=args.out,
+                descriptors=descriptors,resources=resources))
         for name in args.case or CASES:
             qlens,klens=CASES[name]
             row=dict(name=name,qlens=qlens,klens=klens,checks=[],rounds=[],completed=False)
@@ -215,6 +223,9 @@ def main(args):
             del graphs,device,key_cache,value_cache,output,output_storage,actual,expected
             torch.cuda.empty_cache()
         result['completed']=True
+        result['full_matrix']=set(args.case or CASES)==set(CASES)
+        result['refined_route_numerical_matrix_complete']=bool(result['full_matrix'] and
+            result.get('dynamic_metadata',{}).get('completed',False))
     except BaseException as error:
         result['errors'].append(dict(error=repr(error),traceback=traceback.format_exc()))
         raise
@@ -234,6 +245,7 @@ if __name__=='__main__':
     p.add_argument('--commit')
     p.add_argument('--out',type=Path)
     p.add_argument('--run-gpu',action='store_true')
+    p.add_argument('--dynamic-metadata',action='store_true',help='Require fixed-pointer Graph route flips and actual route-ID probe before timing')
     p.add_argument('--case',action='append',choices=CASES)
     p.add_argument('--iterations',type=int,default=3)
     args=p.parse_args()
