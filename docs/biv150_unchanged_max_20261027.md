@@ -1,4 +1,55 @@
-# Unchanged-max rescale skip experiment：CPU Draft
+# Unchanged-max rescale skip experiment
+
+## 9b71 终态：组件守卫通过，未观察到收益
+
+本次CPU留证不改受测9b71的factory、benchmark、IR validator、生成kernel225c或
+vllm_fl/csrc。原运行owner623736/start342729110同start终态Z；不启动新设备任务。
+最新正常fetch/API核实团队main56f1838192abc940b3fb9accef490022ac125000；其GQA
+控制源码与原受测main2412逐字相同（SHA2596cc09…）。本实验分支生产树未同步66的
+其他生产改动，不能据此声称全生产树等同main56f；本提交仅归档tools/docs。
+
+原result completed=true，B64/4096与B32/16384均passed=true，五模式
+original/ragged/zero_qk/one_head_update/tiny_v的scratch/maxima/sums/out全张量
+bitwise一致且有限；独立CPU FP64每模式只抽取row0、1、末行，不是全元素独立exact
+oracle。changed-input Graph和side-stream的exact/finite守卫均通过。两种配置的
+baseline/candidate实际post-launch均93regs/0spills/8192shared，w1/s1/use_sme14；
+实际TTGIR/LLVM/ASM使用未修改v2 validator再次CPU审查，与原mechanism整字典一致。
+identity primitive有实际exp/mul及signed-zero/subnormal/normal有限测试集合通过；
+不推广为全部浮点输入的设备等价证明。
+
+| 实际组件 | AB / BA / AB speedup | 三轮中位 |
+|---|---|---|
+| B64 / 4096 | .9975662644143614 / .9976054861688967 / .9975631304901982 | .9975662644143614 |
+| B32 / 16384 | .9989044274096636 / .9988296004804774 / .9995290636650316 | .9989044274096636 |
+
+比值由原baseline_ms/candidate_ms重算，完整producer+原reducer计时；三轮顺序由
+原timings键顺序及冻结benchmark循环核对。均略低于1，未观察到微测收益；单组微小
+差异没有稳定性/统计显著性结论，不追加整机测试。未做模型105、服务吞吐或TTFT，
+official_score/model_evaluated/precision_gate仍false，不合并。本exact-no-new-max
+版本等待root审阅后关闭；不删除分支，不据此否定整个C09或其他条件rescale方向。
+
+38原件1815467B及原download-manifest完整保存于
+`docs/evidence/gqa-unchanged-max-20261027/v3-completed/`。确定性gzip254601B，
+SHA e049e97c7a0c8502eddc34c6634f480f49d536e76214788efa2a6612451348e3；
+包括actual source/TTIR/TTGIR/LLVM/ASM/cubin、owner、空log及两个opaque pyc。
+不导入原件Python/pyc、不加载cubin。原manifest SHA45315390…，result SHA9b9625df…。
+原v1/v2失败包、provenance、失败result均保留并逐文件SHA重验，原因分别为旧parser
+拒绝、fixture赋值dtype错误；不改写历史失败为通过。source proof内历史pending标记
+原样保留；后续component运行状态另列，不能把source factory报告当设备验收。
+
+标准库重放命令（解包上述自有证据包到新目录，SNAPSHOT须含原39成员）：
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/archive_biv150_unchanged_max_cpu.py \
+  --snapshot SNAPSHOT --out NEW_OUTPUT_DIRECTORY
+```
+
+归档/manifest/summary解包重放逐字一致；六项bitwise、reference、Graph、资源、median、
+completion故障注入均拒绝。Python3.14默认省略AST空字段，与目标3.12的PV AST打印
+不同；checker显式恢复目标包含空字段的打印并严格核对原固定hash，不改变原数据或
+数学门。CPU重放不重新执行设备数值比较，不能冒称新设备测试。
+
+## 以下保留开发过程与早期失败记录
 
 基于2026-10-27重新fetch并fast-forward检查的团队main2412207，独立本人分支。
 只tools/docs，不改vllm_fl/csrc，不SSH/JIT/GPU、不进入队列。
