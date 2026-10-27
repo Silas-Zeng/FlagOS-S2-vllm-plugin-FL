@@ -123,12 +123,21 @@ def run():
         need(old in source, 'mutation site')
         reject(name, lambda old=old,new=new: check_kernel_source(source.replace(old,new)))
     vectors = codec_vectors()
+    codec_case=make_case(SPECS[-1])
+    need(len([s for s in codec_case['snapshot'].values if s >= 0])*2 == 282, 'all old codec head rows')
+    import struct
+    vector_bits={struct.pack('<128f',*v) for v in vectors}
+    from biv150_konly_strided_writer_contract import bf16_value
+    actual_vectors={struct.pack('<128f',*[bf16_value(b) for b in row])
+                    for heads in codec_case['logical_keys'] for row in heads}
+    need(actual_vectors == vector_bits, 'old codec fixture coverage')
     coded = [quantize_v2(v) for v in vectors]
     bits = b''.join(bytes(c & 255 for c in code)+f32_bits(scale).to_bytes(4,'little') for code,scale in coded)
     need(not {'torch','triton','numpy'}.intersection(sys.modules), 'framework imported')
     return dict(cpu_only=True, passed=True, base_main='56f1838192abc940b3fb9accef490022ac125000',
                 dependencies=[79,80,82], provenance=prov, kernel_sha256=hashlib.sha256(source.encode()).hexdigest(),
-                cases=records, old_codec_vectors=len(vectors), old_codec_code_scale_sha256=hashlib.sha256(bits).hexdigest(),
+                cases=records, old_codec_vectors=len(vectors), codec141_valid_head_rows=282,
+                old_codec_code_scale_sha256=hashlib.sha256(bits).hexdigest(),
                 rejected=faults, device_entry_executed=False, live_slot_provenance_closed=False,
                 service_installed=False, full_lifecycle_verified=False, precision_gate=False)
 

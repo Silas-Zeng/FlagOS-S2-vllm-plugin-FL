@@ -28,6 +28,8 @@ def make_case(spec, phase=0):
                     (37*t+11*phase) % (pages*16)) for t in range(count))
     if name == 'negative_only':
         values = (-1, -2, -2**63, -17, -1)
+    if name == 'codec141':
+        values = tuple((37*t+11*phase) % (pages*16) for t in range(count))
     vectors = codec_vectors()
     keys, vals = [], []
     for t in range(count):

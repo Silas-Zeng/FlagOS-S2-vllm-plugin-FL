@@ -61,7 +61,8 @@ def qualify(key, value, slots, cache, pages, snapshot):
     K/V may share read-only QKV backing, but no input may alias writable cache.
     """
     need(type(pages) is int and 0 < pages <= 2**31-1, 'cache pages')
-    need(type(snapshot) is SlotSnapshot and snapshot.provenance == 'component-owned-cpu-preupload'
+    need(type(snapshot) is SlotSnapshot and type(snapshot.provenance) is str
+         and snapshot.provenance == 'component-owned-cpu-preupload'
          and type(snapshot.epoch) is int and snapshot.epoch >= 0, 'slot provenance/freshness')
     for view in (key, value, slots, cache):
         need(type(view) is View, 'explicit view')
@@ -84,7 +85,8 @@ def qualify(key, value, slots, cache, pages, snapshot):
     return dict(grid=(count, 2), launch=count > 0, key_row_stride=key.strides[0],
                 value_row_stride=value.strides[0], key_rows=key.shape[0], value_rows=value.shape[0],
                 slot_count=count, cache_pages=pages, format=FORMAT, slot_epoch=snapshot.epoch,
-                requires_gpu_slots_equal_snapshot=True, live_gpu_mapping_certified=False)
+                requires_gpu_slots_equal_snapshot=True, requires_finite_valid_K_external=True,
+                live_gpu_mapping_certified=False)
 
 
 def bf16_value(bits):
@@ -130,7 +132,11 @@ def scatter_model(case):
             stores += [(page*PAGE+slot*256+head*128, bytes(c & 255 for c in code)),
                        (page*PAGE+4096+slot*8+head*4, struct.pack('<f', scale)),
                        (page*PAGE+8192+slot*512+head*256, struct.pack('<128H', *vectors[1]))]
-    output = bytearray(case['before'])
+    base = case['cache'].byte_offset
+    output = bytearray(b'\x5a'*case['cache'].storage_bytes)
+    output[base:base+len(case['before'])] = case['before']
     for offset, data in stores:
-        output[offset:offset+len(data)] = data
-    return bytes(output), binding
+        output[base+offset:base+offset+len(data)] = data
+    need(output[:base] == b'\x5a'*base
+         and output[base+len(case['before']):] == b'\x5a'*(len(output)-base-len(case['before'])), 'CPU cache canaries')
+    return bytes(output[base:base+len(case['before'])]), binding
