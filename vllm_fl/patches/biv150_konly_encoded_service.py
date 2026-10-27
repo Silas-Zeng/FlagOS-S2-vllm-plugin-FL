@@ -83,6 +83,24 @@ def install(runner_class, *, environ=None):
     runtime = runtime_module.Runtime(torch, broker, gpu, gqa)
     runtime.actual_target = [target.backend,target.arch,target.warp_size]
     runtime.verified_installed_sources = dict(PINS)
+    if env.get('VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST', '0') == '1':
+        adapter = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_q32_adapter')
+        helpers = {}
+        for name in ('hoist_proposal','hoist_native'):
+            path = package / Path(generated[name]['path']).name
+            need(hashlib.sha256(path.read_bytes()).hexdigest() == generated[name]['sha256'],
+                 'fresh hoist helper source '+name)
+            helpers[name] = importlib.import_module('vllm_fl.patches.'+path.stem)
+        cache = env.get('TRITON_CACHE_DIR')
+        need(cache is not None and Path(cache).is_absolute(), 'hoist needs absolute private TRITON_CACHE_DIR')
+        fn = gpu['q32']; source_path = package / Path(generated['q32']['path']).name
+        runtime.q32_hoist = adapter.Adapter(helpers['hoist_proposal'], helpers['hoist_native'],
+            directory=Path(cache).parent/'konly-q32-hoist',
+            target=dict(backend=target.backend, arch=target.arch, warp_size=target.warp_size),
+            pins=adapter.Adapter.installed_pins(fn,source_path,PINS),
+            implementation_digest=implementation_digest(), jit=inspect.getmodule(type(fn)),
+            device=triton.runtime.driver.active.get_current_device(), fn=fn)
+    runtime.q32_hoist_identity = runtime.q32_hoist
     runtime.stats_path = env.get('VLLM_FL_BIV150_KONLY_ENCODED_STATS_PATH')
     if runtime.stats_path is None and env.get('TRITON_CACHE_DIR'):
         runtime.stats_path = str(Path(env['TRITON_CACHE_DIR']).parent/'konly-encoded-final-{pid}.json')
@@ -143,7 +161,8 @@ def install(runner_class, *, environ=None):
         current_profiles=['decode79','normalized2d128','q32-unhoisted','multi2-unhoisted','raw3d-q1'],
         encoded_fallback='format-aware all-sequence normalized2D, never stock BF16',
         multi2_and_raw3d_source_routes_enabled=True, arbitrary_service_geometry_verified=False, mixed85_pair_enabled=False, live_slot_freshness='inherited scheduler/custom-op/stream contract',
-        implementation_sha256=runtime.installed_digest,final_stats_path=runtime.stats_path, q32_I8_fragment_hoist_verified=False, service_numeric_verified=False, precision_gate=False)
+        implementation_sha256=runtime.installed_digest,final_stats_path=runtime.stats_path,
+        q32_hoist_enabled=runtime.q32_hoist is not None, q32_I8_fragment_hoist_verified=False, service_numeric_verified=False, precision_gate=False)
 
 
 def stats():
@@ -166,6 +185,7 @@ def compute_order_receipt(attention, normalized_kernel):
     state = _STATE
     need(state is not None and implementation_digest() == state.installed_digest, 'unregistered/stale encoded runtime')
     need(state.facade_type.__getitem__.__code__ is state.facade_code, 'encoded dispatch code changed')
+    need(state.q32_hoist is getattr(state,'q32_hoist_identity',None), 'encoded Q32 adapter binding changed')
     need(set(state.kernels) == set(state.profile_identities) and all(state.kernels[k] is v for k,v in state.profile_identities.items()), 'private profile binding changed')
     parents = {}
     for holder,key,facade,original in state.facade_bindings:

@@ -107,6 +107,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         directory = package / "patches"
         encoded_paths = sorted(directory.glob("biv150_konly_encoded_*.py")) + [directory / "biv150_konly_encoded_sources.json"]
         encoded = {"format": "cjj-konly-rn32-rne-v2",
+                   "q32_hoist_enabled": env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1",
                    "implementation_sha256": _digest({path.name: _sha(path) for path in encoded_paths})}
         facts["konly_encoded"] = encoded
     result = {"schema": 1, "sha256": _digest(facts),

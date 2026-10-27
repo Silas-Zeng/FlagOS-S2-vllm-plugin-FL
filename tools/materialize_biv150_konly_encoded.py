@@ -14,6 +14,7 @@ MIXED = '4a3fc7773b37e745082d0d98f8d53713130384ea'
 PREFILL = 'ef4034b23d194b8163062826447ee2b4aa950c36'
 WRITER = 'ec4262557282e6c95d29e69784bb16a2c6654091'
 MAIN = 'dac1b8fb48e7983e48283032efeee9b592c5fbe5'
+HOIST = 'e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4'
 
 
 def sha(data): return hashlib.sha256(data.encode() if isinstance(data, str) else data).hexdigest()
@@ -73,6 +74,10 @@ def run(write=False):
     original_codec = ast.unparse(next(n for n in ast.parse(git(MIXED, 'tools/kernels/biv150_konly_decode_support.py')) .body if isinstance(n, ast.FunctionDef) and n.name == 'quantize_bf16_rne'))
     writer_codec = ast.unparse(next(n for n in ast.parse(payload['writer']).body if isinstance(n, ast.FunctionDef) and n.name == 'quantize_bf16_rne'))
     assert writer_codec == original_codec
+    for suffix, name in (('hoist_proposal','biv150_konly_service_q32_hoist.py'), ('hoist_native','biv150_konly_service_q32_native.py')):
+        source = git(HOIST, 'tools/' + name)
+        payload[suffix] = source.decode()
+        inputs['tools/' + name] = dict(commit=HOIST, bytes=len(source), sha256=sha(source))
     output = {}
     for name, source in payload.items():
         compile(source, '<syntax-only-no-execution>', 'exec')
@@ -80,7 +85,7 @@ def run(write=False):
         data = source.encode(); output[name] = dict(path=path, bytes=len(data), sha256=sha(data))
         if write: (ROOT / path).write_bytes(data)
         else: assert (ROOT / path).read_bytes() == data, name
-    result = dict(main=MAIN, dependencies=dict(mixed85=MIXED, prefill80_87=PREFILL, writer83=WRITER), input_files=inputs,
+    result = dict(main=MAIN, dependencies=dict(mixed85=MIXED, prefill80_87=PREFILL, writer83=WRITER, service_q32_hoist90=HOIST), input_files=inputs,
         generated=output, source_proofs=proofs, codec_function_AST_identical=True, GPU_imports_executed=False,
         service_activated=False, dynamic_I8_fragment_hoist_proved=False, all_service_profiles_device_verified=False,
         specialized_mixed85_pair_not_installed=True)

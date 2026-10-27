@@ -110,6 +110,7 @@ class Runtime:
         self.q32_enabled = True
         self.shape_records = {}; self.kernel_records = {}; self.shape_overflow = 0
         self.stats_path = None; self.final_export = None
+        self.q32_hoist = None
 
     @staticmethod
     def typed(value):
@@ -163,12 +164,18 @@ class Runtime:
                     for k,v in asm.items() if isinstance(v,(str,bytes))},resources=resources,
                 post_launch_resource_fields_known=known,target=getattr(self,'actual_target',None),
                 verified_installed_sources=getattr(self,'verified_installed_sources',None))
+            if self.q32_hoist and kernel_hash in self.q32_hoist.by_hash:
+                binding = self.q32_hoist.by_hash[kernel_hash]
+                item['fresh_Q32_hoist'] = dict(artifact_directory=binding['artifact_directory'],
+                    override_sha256=binding['override_sha256'],actual_native_verified=True,
+                    complete_actual_ABI_bound=True,numerical_verified=False,service_verified=False)
             self.kernel_records[identity] = item
             print('BIV150_KONLY_ENCODED_SELECTED',json.dumps(dict(profile=profile,hash=kernel_hash,
                 implementation_sha256=getattr(self,'installed_digest',None),format=FORMAT,
                 query_rows=None if query is None else query.shape[0],
                 sequences=None if lengths is None else lengths.shape[0],
-                I8_fragment_hoist_verified=False,host_event_not_Graph_replay_count=True)),flush=True)
+                I8_fragment_hoist_verified=bool(self.q32_hoist and kernel_hash in self.q32_hoist.by_hash),
+                hoist_numerical_verified=False,host_event_not_Graph_replay_count=True)),flush=True)
         if kernel_hash:
             self.counts.setdefault('actual_kernel_hashes',{}).setdefault(profile,set()).add(kernel_hash)
 
@@ -220,9 +227,10 @@ class Runtime:
         result = dict(self.counts); result['actual_kernel_hashes'] = {
             k: sorted(v) for k, v in self.counts.get('actual_kernel_hashes', {}).items()}
         result.update(format=FORMAT, claimed_allocations=len(self.registry.entries),
-            dynamic_I8_hoist_verified=False, all_service_shapes_verified=False,
+            dynamic_I8_hoist_verified=bool(self.q32_hoist and self.q32_hoist.by_hash), all_service_shapes_verified=False,
             raw3d_enabled=self.raw3d_enabled, mixed_pair_enabled=self.mixed_pair_enabled,
             multi2_enabled=self.multi2_enabled, capacity_reclaimed=False, precision_gate=False)
+        result['q32_hoist'] = dict(enabled=False) if self.q32_hoist is None else self.q32_hoist.stats()
         return result
 
     def initialize(self, original):
@@ -345,7 +353,14 @@ class KernelFacade:
                         if n == 2 and qrows >= 1024: runtime.fallback('multi2_to_encoded_2d_pending_numeric')
                     selected.update(BLOCK_M=bm, BLOCK_Q=bq, TILE_SIZE=64, num_warps=warps, num_stages=1)
                     target_grid = (qrows // bq + n, 2)
-            handle = runtime.kernels[profile][target_grid](**selected)
+            fn = runtime.kernels[profile]
+            override, binding = ({}, None)
+            if profile == 'q32' and runtime.q32_hoist is not None:
+                override, binding = runtime.q32_hoist.prepare(fn, selected, target_grid,
+                    capture=runtime.torch.cuda.is_current_stream_capturing())
+            # Exactly one reader launch. No postlaunch retry/fallback.
+            handle = fn[target_grid](**selected, **override)
+            if binding is not None: runtime.q32_hoist.after_launch(handle, fn, binding)
             runtime.note(profile, handle, selected, target_grid)
             return handle
         return invoke

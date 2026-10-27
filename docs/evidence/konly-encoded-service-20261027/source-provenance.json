@@ -3,7 +3,8 @@
   "dependencies": {
     "mixed85": "4a3fc7773b37e745082d0d98f8d53713130384ea",
     "prefill80_87": "ef4034b23d194b8163062826447ee2b4aa950c36",
-    "writer83": "ec4262557282e6c95d29e69784bb16a2c6654091"
+    "writer83": "ec4262557282e6c95d29e69784bb16a2c6654091",
+    "service_q32_hoist90": "e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4"
   },
   "input_files": {
     "tools/biv150_konly_decode_factory.py": {
@@ -45,6 +46,16 @@
       "commit": "ef4034b23d194b8163062826447ee2b4aa950c36",
       "bytes": 1132,
       "sha256": "9aca2341d5e7f8206673d136e8aabed7f89bbab1da279db5cca0c19f0bc1a340"
+    },
+    "tools/biv150_konly_service_q32_hoist.py": {
+      "commit": "e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4",
+      "bytes": 14112,
+      "sha256": "c0135ba632270b5d769cf3e53d5a5fc0dbde62a6e782daedc97422d2bbeff658"
+    },
+    "tools/biv150_konly_service_q32_native.py": {
+      "commit": "e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4",
+      "bytes": 19888,
+      "sha256": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2"
     }
   },
   "generated": {
@@ -82,6 +93,16 @@
       "path": "vllm_fl/patches/biv150_konly_encoded_writer.py",
       "bytes": 2531,
       "sha256": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9"
+    },
+    "hoist_proposal": {
+      "path": "vllm_fl/patches/biv150_konly_encoded_hoist_proposal.py",
+      "bytes": 14112,
+      "sha256": "c0135ba632270b5d769cf3e53d5a5fc0dbde62a6e782daedc97422d2bbeff658"
+    },
+    "hoist_native": {
+      "path": "vllm_fl/patches/biv150_konly_encoded_hoist_native.py",
+      "bytes": 19888,
+      "sha256": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2"
     }
   },
   "source_proofs": {

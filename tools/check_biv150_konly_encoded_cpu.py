@@ -167,7 +167,7 @@ def run():
         assert captured==([runner] if on else [])
         assert imported==(['os','vllm_fl.patches.biv150_konly_encoded_service'] if on else ['os'])
     from tempfile import TemporaryDirectory
-    patch=(ROOT/'docs/evidence/konly-encoded-service-20261027/production-changes-v1.patch').read_bytes()
+    patch=(ROOT/'docs/evidence/konly-encoded-service-20261027/production-changes-v2.patch').read_bytes()
     names=['vllm_fl/worker/model_runner.py','vllm_fl/patches/biv150_compute_order.py','vllm_fl/compile_semantics.py']
     exact=subprocess.check_output(['git','-C',str(ROOT),'diff','--binary','--full-index','dac1b8fb48e7983e48283032efeee9b592c5fbe5','--',*names])
     assert exact==patch
@@ -186,6 +186,10 @@ def run():
     on=sem.build_fingerprint(config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0',service.ENV:'1'},**common)
     assert off['sha256']!=on['sha256'] and 'konly_encoded' not in off
     assert on['konly_encoded']['implementation_sha256']==service.implementation_digest()
+    hoist=sem.build_fingerprint(config,environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0',service.ENV:'1',
+        'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'},**common)
+    assert not on['konly_encoded']['q32_hoist_enabled'] and hoist['konly_encoded']['q32_hoist_enabled']
+    assert hoist['sha256'] != on['sha256']
     # Export is shutdown-only, atomic and one-shot; never claims GPU replay counts.
     with TemporaryDirectory(prefix='cjj-encoded-stats-cpu-') as folder:
         runtime.stats_path=Path(folder)/'final-{pid}.json'
