@@ -37,11 +37,11 @@
     },
     "runtime": {
       "path": "vllm_fl/patches/biv150_konly_compact_runtime.py",
-      "sha256": "ddfb92304e13b0d1b1b79f86574b95c168c775594b497372dfeae1542a05c9be"
+      "sha256": "ac59607580f3c04df43c77916de9b2b7536d2b34923e1a61e62916b872f86e66"
     },
     "identity": {
       "path": "vllm_fl/patches/biv150_konly_compact_identity.py",
-      "sha256": "da63b554bb49b1696ef7052f36c8943a4f0930d851f3b0d3a12c9f9493f3b9fc"
+      "sha256": "11a84f74d674e493a397ad7e9077d7e1f79138511dca84473aa1d4efd3a579ab"
     },
     "spec": {
       "path": "vllm_fl/patches/biv150_konly_compact_spec.py",
@@ -57,7 +57,15 @@
     },
     "service": {
       "path": "vllm_fl/patches/biv150_konly_compact_service.py",
-      "sha256": "ac714f2b8f4f0a864266ddaa917aef8c4922d7948f055957e39b0d0736ee3179"
+      "sha256": "57f02744d044e8bf3b80963bccca361b543aa4299a095d65d3da505208411243"
+    },
+    "hoist_proposal": {
+      "path": "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py",
+      "sha256": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9"
+    },
+    "q32_adapter": {
+      "path": "vllm_fl/patches/biv150_konly_compact_q32_adapter.py",
+      "sha256": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d"
     }
   },
   "address_source_proofs": {
@@ -113,14 +121,21 @@
     }
   },
   "binding_files": {
-    "worker/model_runner.py": "3276d6d3524f4ee6e49a1f19443a3de88b9ffaa674007c5472a7fa855356ebc4",
+    "worker/model_runner.py": "d3f7a4cdd8727c17e8a4e0b8fb0c86fde257e9ecae34d98f7fe7f747ef9bf3e7",
     "patches/biv150_compute_order.py": "a63df22d106adf3125f9301b127497a02aba97415f9dcf6f488669aef12aa3b2",
-    "compile_semantics.py": "f6fa39b0f8f2829c2559eeac96ae43db44a419aa5136e2e3d597c66b3bf254f0"
+    "compile_semantics.py": "3a78e344de39496654affd7d6d7df7646928a29176fbc5f16f08d76ae062085f"
   },
   "q32_hoist_supported": false,
   "service_numeric_verified": false,
   "capacity_reclaimed": false,
   "actual_IR_verified": false,
   "performance_verified": false,
-  "precision_gate": false
+  "precision_gate": false,
+  "hoist_dependencies": {
+    "biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b",
+    "biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2"
+  },
+  "q32_hoist_actual_compact_device_verified": false,
+  "hoist_scope": "opt-in fresh compact Q32; actual object/IR/native/resource admission, never old overlay",
+  "q32_hoist_opt_in_adapter_available": true
 }

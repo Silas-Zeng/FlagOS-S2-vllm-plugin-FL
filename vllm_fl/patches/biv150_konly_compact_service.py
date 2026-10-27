@@ -37,7 +37,6 @@ def install(runner_class, *, environ=None):
     env = os.environ if environ is None else environ
     if env.get(ENV, '0') != '1': return dict(installed=False, reason='disabled')
     need(env.get('VLLM_FL_BIV150_KONLY_ENCODED_SERVICE', '0') != '1', 'two cache formats enabled')
-    need(env.get('VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST', '0') != '1', 'compact Q32 hoist unsupported')
     from .biv150_konly_compact_identity import verify_package
     verify_package()
     need(_STATE is None, 'install once in a fresh worker')
@@ -99,6 +98,21 @@ def install(runner_class, *, environ=None):
     runtime.compact_host = host
     runtime.actual_target = [target.backend,target.arch,target.warp_size]
     runtime.verified_installed_sources = {**PINS, **host.verified_core_pins}
+    if env.get('VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST', '0') == '1':
+        adapter = importlib.import_module('vllm_fl.patches.biv150_konly_compact_q32_adapter')
+        proposal = importlib.import_module('vllm_fl.patches.biv150_konly_compact_hoist_proposal')
+        native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_hoist_native')
+        cache = env.get('TRITON_CACHE_DIR')
+        need(cache is not None and Path(cache).is_absolute(), 'hoist needs absolute private TRITON_CACHE_DIR')
+        fn = gpu['q32']; source_path = package / Path(generated['q32']['path']).name
+        runtime.q32_hoist = adapter.Adapter(proposal, native,
+            directory=Path(cache).parent/'konly-compact-q32-hoist',
+            target=dict(backend=target.backend, arch=target.arch, warp_size=target.warp_size),
+            pins=adapter.Adapter.installed_pins(fn, source_path, PINS),
+            implementation_digest=implementation_digest(), jit=inspect.getmodule(type(fn)),
+            device=triton.runtime.driver.active.get_current_device(), fn=fn,
+            source_module=importlib.import_module('vllm_fl.patches.biv150_konly_compact_q32'),
+            source_sha256=generated['q32']['sha256'])
     runtime.q32_hoist_identity = runtime.q32_hoist
     runtime.stats_path = env.get('VLLM_FL_BIV150_KONLY_COMPACT_STATS_PATH')
     if runtime.stats_path is None and env.get('TRITON_CACHE_DIR'):
@@ -178,7 +192,8 @@ def stats():
 
 def implementation_digest(package=None):
     directory = Path(__file__).resolve().parent if package is None else Path(package)
-    paths = sorted(directory.glob('biv150_konly_compact_*.py')) + [directory/'biv150_konly_compact_sources.json']
+    paths = sorted(directory.glob('biv150_konly_compact_*.py')) + [directory/'biv150_konly_compact_sources.json'] + [directory/name for name in
+        ('biv150_konly_encoded_q32_adapter.py','biv150_konly_encoded_hoist_native.py')]
     records = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     return hashlib.sha256(json.dumps(records,sort_keys=True,separators=(',',':'),ensure_ascii=True).encode()).hexdigest()
 

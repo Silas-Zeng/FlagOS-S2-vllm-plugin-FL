@@ -122,11 +122,11 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         facts["native_gqa"] = {"library_sha256": _sha(library), "source": sources}
     compact = None
     if env.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1":
-        if features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] or env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1":
-            raise ValueError("compact format/old-hoist conflict")
+        if features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"]:
+            raise ValueError("compact/encoded16KiB format conflict")
         directory = package / "patches"
-        compact_paths = sorted(directory.glob("biv150_konly_compact_*.py")) + [directory / "biv150_konly_compact_sources.json"]
-        compact = {"format": "cjj-konly-compact12544-rn32-rne-v1", "page_bytes": 12544, "producer_boundary": "owned-compact-before-stock-native", "q32_hoist_enabled": False,
+        compact_paths = sorted(directory.glob("biv150_konly_compact_*.py")) + [directory / "biv150_konly_compact_sources.json"] + [directory / name for name in ("biv150_konly_encoded_q32_adapter.py", "biv150_konly_encoded_hoist_native.py")]
+        compact = {"format": "cjj-konly-compact12544-rn32-rne-v1", "page_bytes": 12544, "producer_boundary": "owned-compact-before-stock-native", "q32_hoist_enabled": env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1",
                    "implementation_sha256": _digest({path.name: _sha(path) for path in compact_paths})}
         facts["konly_compact"] = compact
     encoded = None
