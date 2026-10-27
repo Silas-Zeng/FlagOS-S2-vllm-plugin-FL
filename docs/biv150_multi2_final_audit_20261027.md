@@ -61,11 +61,12 @@ baseline Q32，全部16类错误拒绝。此检查不是模型精度/吞吐证�
 | 原件 | 结果/归档SHA |
 | --- | --- |
 | root prepared manifest、SDK/C3 off/default-on audit | 待原件 |
-| e936 18组scope result/actual IR | root已报告completed/errors[]；待原件hash |
-| main2412/e08两arm的105正确数与raw文件 | 待实际模型终态 |
-| 4K/16K唯一score TPS/TTFT/完整计数 | 待实际模型终态 |
-| defaults、source fingerprint、native/snapshot、MULTI2/C3 proof | 待原件 |
-| raw initial/post mixed、owned cleanup | 待原件 |
+| e936 18组scope result/actual IR | 已逐SHA复验/归档，见completed evidence文档；含254b四例 |
+| main2412/e08两arm的105正确数与raw文件 | baseline-only独立audit102/105已存；candidate尚未审计 |
+| 4K/16K唯一score TPS/TTFT/完整计数 | baseline5806.1431/4479.5676及TTFT/计数通过；candidate待终态 |
+| defaults、source fingerprint、native/snapshot、MULTI2/C3 proof | baseline-only原audit保留完整判定；candidate待终态 |
+| raw initial/post mixed、owned cleanup | baseline-only原audit通过；模型原件未额外复制到组件包 |
 | 本auditor输出与脚本SHA、最终逐文件归档manifest | 待审计 |
 
-尚未填写任何服务吞吐收益或模型通过结论。
+当前只交付组件及baseline单臂证据，详见 `docs/biv150_multi2_completed_evidence_20261027.md`。
+没有candidate模型通过、pair验收或新的服务吞吐收益结论。
