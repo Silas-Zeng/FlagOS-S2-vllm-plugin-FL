@@ -24,7 +24,7 @@ def module(path,name):
 
 def bits(t):
     host=t.detach().cpu().contiguous()
-    return host.view({1:__import__('torch').int8,2:__import__('torch').int16,4:__import__('torch').int32}[host.element_size()])
+    return host.view({1:__import__('torch').int8,2:__import__('torch').int16,4:__import__('torch').int32,8:__import__('torch').int64}[host.element_size()])
 
 def raw(t):return bits(t).numpy().tobytes()
 

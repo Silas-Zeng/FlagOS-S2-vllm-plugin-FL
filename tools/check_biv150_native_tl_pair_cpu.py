@@ -5,6 +5,9 @@ import json
 import math
 from pathlib import Path
 import subprocess
+import struct
+from types import SimpleNamespace as NS
+from unittest.mock import patch
 import sys
 import biv150_native_tl_pair_contract as c
 import bench_biv150_native_tl_pair as runner
@@ -53,12 +56,27 @@ def run():
     assert "assert fingerprints()==dense_readonly and digest(raw(arena))==expected_sha" in text
     assert c.ORDER==('native','triton','triton','native')
     assert not subprocess.check_output(['git','-C',str(c.ROOT),'diff',c.MAIN,'--','vllm_fl','csrc'])
+    # Execute actual bits/raw with an explicit stdlib-only metadata recorder.
+    # No real Torch import: preserve signed int64 bytes, including invalid slots.
+    values=(-2**63,-1,0,548415,2**63-1)
+    token=object()
+    class Int64Host:
+        def detach(self):return self
+        def cpu(self):return self
+        def contiguous(self):return self
+        def element_size(self):return 8
+        def view(self,dtype):assert dtype is token;return self
+        def numpy(self):return NS(tobytes=lambda:struct.pack('<5q',*values))
+    fake=NS(int8=object(),int16=object(),int32=object(),int64=token)
+    with patch.dict(sys.modules,{'torch':fake}):
+        assert runner.raw(Int64Host())==struct.pack('<5q',*values)
     assert not {'torch','triton','vllm','numpy'}.intersection(sys.modules)
     return dict(passed=True,CPU_only=True,GPU_executed=False,JIT_executed=False,
         main=c.MAIN,arena_pages=c.ARENA_PAGES,active_pages={'4k':16384,'16k':32768},
         deterministic_scattered_no_overlap=True,post_append_coordinates_checked=coordinates,
         page16_to17_transition_verified=True,complete_step_order_verified=True,
         append_ENCODE_false=True,full_FP64_gate_before_timing=True,
+        int64_signed_serializer_actual_function_checked=True,
         actual_device_numeric_and_ABBA_verified=False,model_extrapolation=False)
 
 

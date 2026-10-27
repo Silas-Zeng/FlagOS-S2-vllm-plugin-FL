@@ -52,3 +52,10 @@ producer dispatch is outside this captured operator timing. This cannot explain
 all model/CPU/SQLite/JIT/cache effects. Initial GPU pack-copy is separate; host
 random generation/H2D/reference/validation are setup, not a free service encoder.
 No new timing or numeric result exists until Root executes this frozen source.
+
+First28d748 device attempt (Root owner688424/start347203865) passed the complete
+append-cache SHA check, then failed before any attention/ABBA at int64 slots
+serialization: bits() lacked element_size8 and raised KeyError8. Original failure
+is retained; it is not a numerical or performance result. The next tools-only
+revision adds torch.int64 byte reinterpretation and a stdlib recorder regression
+for signed sentinels/extremes. Inputs/layout/reference/timing gates are unchanged.
