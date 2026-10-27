@@ -1,0 +1,2916 @@
+{
+  "passed": true,
+  "cpu_evidence_replay_only": true,
+  "case": "mixed16k",
+  "source_commit": "4a3fc7773b37e745082d0d98f8d53713130384ea",
+  "original_raw_files": 86,
+  "archived_raw_files": 84,
+  "explicitly_omitted_pycache": 2,
+  "parts": 20,
+  "raw_top_level_passed": false,
+  "original_bf16_proxy_passed": false,
+  "numerical_gates_unchanged": true,
+  "gpu_executed_for_replay": false,
+  "actual_ir_records": [
+    {
+      "role": "bf16-producer",
+      "hash": "aa1f089ae6319f03b2b488d622b43e9f14cd75b7e1f188c19ee284cdb1ec4f2c",
+      "actual_typed_abi": {
+        "typed_abi_match": true,
+        "ttir_parameters": [
+          [
+            "segm_output_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_max_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_expsum_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "query_ptr",
+            "!tt.ptr<bf16>"
+          ],
+          [
+            "query_start_len_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "key_cache_ptr",
+            "!tt.ptr<bf16>"
+          ],
+          [
+            "value_cache_ptr",
+            "!tt.ptr<bf16>"
+          ],
+          [
+            "seq_lens_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "block_table_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "softmax_scale_log2e",
+            "f32"
+          ],
+          [
+            "block_table_stride",
+            "i64"
+          ],
+          [
+            "query_stride_token",
+            "i64"
+          ],
+          [
+            "k_stride_block",
+            "i64"
+          ],
+          [
+            "k_stride_slot",
+            "i64"
+          ],
+          [
+            "k_stride_head",
+            "i64"
+          ],
+          [
+            "v_stride_block",
+            "i64"
+          ],
+          [
+            "v_stride_slot",
+            "i64"
+          ]
+        ],
+        "llvm_parameters": [
+          [
+            "ptr addrspace(1)",
+            "0"
+          ],
+          [
+            "ptr addrspace(1)",
+            "1"
+          ],
+          [
+            "ptr addrspace(1)",
+            "2"
+          ],
+          [
+            "ptr addrspace(1)",
+            "3"
+          ],
+          [
+            "ptr addrspace(1)",
+            "4"
+          ],
+          [
+            "ptr addrspace(1)",
+            "5"
+          ],
+          [
+            "ptr addrspace(1)",
+            "6"
+          ],
+          [
+            "ptr addrspace(1)",
+            "7"
+          ],
+          [
+            "ptr addrspace(1)",
+            "8"
+          ],
+          [
+            "float",
+            "9"
+          ],
+          [
+            "i64",
+            "10"
+          ],
+          [
+            "i64",
+            "11"
+          ],
+          [
+            "i64",
+            "12"
+          ],
+          [
+            "i64",
+            "13"
+          ],
+          [
+            "i64",
+            "14"
+          ],
+          [
+            "i64",
+            "15"
+          ],
+          [
+            "i64",
+            "16"
+          ],
+          [
+            "ptr addrspace(1)",
+            "17"
+          ],
+          [
+            "ptr addrspace(1)",
+            "18"
+          ]
+        ],
+        "implicit_vendor_pointers": 2,
+        "native_accumulator_component_independence_assumed": false
+      },
+      "loaded": {
+        "n_regs": 93,
+        "n_spills": 0,
+        "shared": 8192
+      },
+      "actual_mechanism": {
+        "passed": true,
+        "flags": {
+          "required_artifacts": true,
+          "original_qk_and_pv_shapes": true,
+          "native_bf16_calls": true,
+          "pv_calls": true,
+          "all_64_scaled_pv_c_components": true,
+          "pv_post_add_absent": true,
+          "machine_bf16_mmas": true,
+          "no_i8_mma": true
+        },
+        "isa_opcodes": {
+          "ml_vrf_init_u32": 1,
+          "ml_lsa_load_dwordx2": 1,
+          "ml_mov_v2s_b32": 5,
+          "ml_lsa_load_dword": 3,
+          "ml_and_b32": 23,
+          "ml_shl_b32": 12,
+          "ml_lsa_blkload_x4": 2,
+          "ml_mov_b32": 102,
+          "ml_cmp_eq_u32": 8,
+          "ml_csel_b32": 18,
+          "ml_anyop3_b32": 7,
+          "ml_byte_permute_b32": 42,
+          "ml_slb_store_b32x2": 20,
+          "ml_xor_b32": 26,
+          "ml_slb_blkload_x1": 20,
+          "ml_slb_load_b32x1": 52,
+          "ml_srl_b32": 3,
+          "ml_or_b32": 1,
+          "ml_lsa_blkload_x1": 64,
+          "ml_slb_store_b32x4": 8,
+          "ml_matrix_mad_f32_bf16_m16n16k16": 32,
+          "ml_mul_f32": 70,
+          "ml_slb_shuffle_rtn_b32": 40,
+          "ml_max_f32": 20,
+          "ml_sub_f32": 8,
+          "ml_exp_f32": 8,
+          "ml_cvt_bf16_f32": 4,
+          "ml_cvt_i32_i16": 4,
+          "ml_add_f32": 16,
+          "ml_fma_f32": 4,
+          "ml_add_i32": 3,
+          "ml_cmp_gt_i32": 1,
+          "ml_addo_u32": 17,
+          "ml_addc_i32": 17,
+          "ml_lsa_store_a64_dword": 16,
+          "ml_bfe2_b32": 1,
+          "ml_lsa_store_dword": 2
+        },
+        "actual_metadata_cfg_verified": false,
+        "native_accumulator_component_independence_assumed": false,
+        "metadata_guard_correctness_requires_numeric_and_actual_cfg_review": true
+      },
+      "new_cpu_llvm_cfg_audit": {
+        "passed": true,
+        "schema": "cjj-mixed-actual-llvm-cfg-v1",
+        "role": "producer",
+        "num_sequences": 32,
+        "query_capacity": 2051,
+        "kernel_define_line": 12,
+        "blocks": 73,
+        "sequence_bound_branch_line": 15,
+        "metadata_load_lines": [
+          23,
+          27
+        ],
+        "metadata_difference_line": 30,
+        "decode_guard_branch_line": 36,
+        "metadata_block": "22",
+        "valid_decode_block": "38",
+        "early_return_block": "common.ret",
+        "ssa": {
+          "pid": "%20",
+          "pid64": "%23",
+          "q_start_i32": "%26",
+          "q_start_i64": "%27",
+          "q_end_i64": "%31",
+          "length_difference": "%32"
+        },
+        "qlen_and_bounds_cta_uniform_for_immutable_metadata": true,
+        "signed_i64_difference": true,
+        "all_non_cuq_global_accesses_dominated_by_valid_decode_edge": true,
+        "partial_rows_use_sequence_index": true,
+        "query_output_rows_use_cuq_index": true,
+        "invalid_or_prefill_path_global_data_accesses": 0,
+        "accesses": [
+          {
+            "line": 23,
+            "block": "22",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 27,
+            "block": "22",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 41,
+            "block": "38",
+            "pointer": "seq_lens_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 101,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 102,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 103,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 104,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 105,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 106,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 107,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 108,
+            "block": "47",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 318,
+            "block": "264",
+            "pointer": "block_table_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 371,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 372,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 373,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 375,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 377,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 378,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 379,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 381,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 383,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 384,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 385,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 387,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 389,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 390,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 391,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 393,
+            "block": "264",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 460,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 461,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 462,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 463,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 464,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 465,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 466,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 467,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 468,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 469,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 470,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 471,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 472,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 473,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 474,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 475,
+            "block": "264",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 803,
+            "block": "767",
+            "pointer": "block_table_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 885,
+            "block": "767",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 892,
+            "block": "854",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 901,
+            "block": "862",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 910,
+            "block": "867",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 919,
+            "block": "872",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 928,
+            "block": "877",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 937,
+            "block": "882",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 946,
+            "block": "887",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 955,
+            "block": "892",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 964,
+            "block": "897",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 973,
+            "block": "902",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 982,
+            "block": "907",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 991,
+            "block": "912",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1000,
+            "block": "917",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1009,
+            "block": "922",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1018,
+            "block": "927",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1099,
+            "block": "930",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1106,
+            "block": "1003",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1114,
+            "block": "1010",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1122,
+            "block": "1014",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1130,
+            "block": "1018",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1138,
+            "block": "1022",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1146,
+            "block": "1026",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1154,
+            "block": "1030",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1162,
+            "block": "1034",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1170,
+            "block": "1038",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1178,
+            "block": "1042",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1186,
+            "block": "1046",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1194,
+            "block": "1050",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1202,
+            "block": "1054",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1210,
+            "block": "1058",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1218,
+            "block": "1062",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1642,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1644,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1646,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1648,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1650,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1652,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1654,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1656,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1658,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1660,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1662,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1664,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1666,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1668,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1670,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1672,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1674,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1676,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1678,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1680,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1682,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1684,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1686,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1688,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1690,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1692,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1694,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1696,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1698,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1700,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1702,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1704,
+            "block": "1410",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1739,
+            "block": "1530",
+            "pointer": "segm_max_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 1755,
+            "block": "1540",
+            "pointer": "segm_expsum_ptr",
+            "kind": "store"
+          }
+        ],
+        "native_accumulator_component_independence_assumed": false,
+        "binary_cfg_audited": false
+      },
+      "actual_llvm_mutants_rejected": [
+        "wrong_sequence_bound",
+        "wrong_decode_length",
+        "unsigned_metadata",
+        "inverted_decode_edges",
+        "unconditional_decode_edge",
+        "ordinary_load_before_decode_guard",
+        "intrinsic_load_before_decode_guard",
+        "query_uses_sequence_instead_of_qstart"
+      ]
+    },
+    {
+      "role": "bf16-reducer",
+      "hash": "79207f318a877ec991c7a89f7be4c682b3cfafddc35451a85383be00dedbddb2",
+      "actual_typed_abi": {
+        "typed_abi_match": true,
+        "ttir_parameters": [
+          [
+            "output_ptr",
+            "!tt.ptr<bf16>"
+          ],
+          [
+            "segm_output_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_max_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_expsum_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "seq_lens_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "query_start_len_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "segment_stride_token",
+            "i32"
+          ],
+          [
+            "segment_stride_head",
+            "i32"
+          ],
+          [
+            "segment_stride_segment",
+            "i32"
+          ],
+          [
+            "max_stride_token",
+            "i32"
+          ],
+          [
+            "max_stride_head",
+            "i32"
+          ]
+        ],
+        "llvm_parameters": [
+          [
+            "ptr addrspace(1)",
+            "0"
+          ],
+          [
+            "ptr addrspace(1)",
+            "1"
+          ],
+          [
+            "ptr addrspace(1)",
+            "2"
+          ],
+          [
+            "ptr addrspace(1)",
+            "3"
+          ],
+          [
+            "ptr addrspace(1)",
+            "4"
+          ],
+          [
+            "ptr addrspace(1)",
+            "5"
+          ],
+          [
+            "i32",
+            "6"
+          ],
+          [
+            "i32",
+            "7"
+          ],
+          [
+            "i32",
+            "8"
+          ],
+          [
+            "i32",
+            "9"
+          ],
+          [
+            "i32",
+            "10"
+          ],
+          [
+            "ptr addrspace(1)",
+            "11"
+          ],
+          [
+            "ptr addrspace(1)",
+            "12"
+          ]
+        ],
+        "implicit_vendor_pointers": 2,
+        "native_accumulator_component_independence_assumed": false
+      },
+      "loaded": {
+        "n_regs": 11,
+        "n_spills": 0,
+        "shared": 1024
+      },
+      "actual_mechanism": null,
+      "new_cpu_llvm_cfg_audit": {
+        "passed": true,
+        "schema": "cjj-mixed-actual-llvm-cfg-v1",
+        "role": "reducer",
+        "num_sequences": 32,
+        "query_capacity": 2051,
+        "kernel_define_line": 12,
+        "blocks": 18,
+        "sequence_bound_branch_line": 15,
+        "metadata_load_lines": [
+          23,
+          27
+        ],
+        "metadata_difference_line": 30,
+        "decode_guard_branch_line": 36,
+        "metadata_block": "16",
+        "valid_decode_block": "32",
+        "early_return_block": "common.ret",
+        "ssa": {
+          "pid": "%14",
+          "pid64": "%17",
+          "q_start_i32": "%20",
+          "q_start_i64": "%21",
+          "q_end_i64": "%25",
+          "length_difference": "%26"
+        },
+        "qlen_and_bounds_cta_uniform_for_immutable_metadata": true,
+        "signed_i64_difference": true,
+        "all_non_cuq_global_accesses_dominated_by_valid_decode_edge": true,
+        "partial_rows_use_sequence_index": true,
+        "query_output_rows_use_cuq_index": true,
+        "invalid_or_prefill_path_global_data_accesses": 0,
+        "accesses": [
+          {
+            "line": 23,
+            "block": "16",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 27,
+            "block": "16",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 41,
+            "block": "32",
+            "pointer": "seq_lens_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 76,
+            "block": "64",
+            "pointer": "segm_max_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 85,
+            "block": "71",
+            "pointer": "segm_max_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 94,
+            "block": "76",
+            "pointer": "segm_max_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 118,
+            "block": "93",
+            "pointer": "segm_expsum_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 162,
+            "block": "132",
+            "pointer": "segm_output_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 171,
+            "block": "141",
+            "pointer": "segm_output_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 230,
+            "block": "161",
+            "pointer": "output_ptr",
+            "kind": "store"
+          }
+        ],
+        "native_accumulator_component_independence_assumed": false,
+        "binary_cfg_audited": false
+      },
+      "actual_llvm_mutants_rejected": [
+        "wrong_sequence_bound",
+        "wrong_decode_length",
+        "unsigned_metadata",
+        "inverted_decode_edges",
+        "unconditional_decode_edge",
+        "ordinary_load_before_decode_guard",
+        "intrinsic_load_before_decode_guard",
+        "output_uses_sequence_instead_of_qstart"
+      ]
+    },
+    {
+      "role": "k8-producer",
+      "hash": "ee3752d90d5b95f24ad119536b08290f50cf097d69ae09f3acc69297ce990307",
+      "actual_typed_abi": {
+        "typed_abi_match": true,
+        "ttir_parameters": [
+          [
+            "segm_output_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_max_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_expsum_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "query_ptr",
+            "!tt.ptr<bf16>"
+          ],
+          [
+            "query_start_len_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "query_code_ptr",
+            "!tt.ptr<i8>"
+          ],
+          [
+            "query_scale_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "key_scale_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "key_cache_ptr",
+            "!tt.ptr<i8>"
+          ],
+          [
+            "value_cache_ptr",
+            "!tt.ptr<bf16>"
+          ],
+          [
+            "seq_lens_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "block_table_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "softmax_scale_log2e",
+            "f32"
+          ],
+          [
+            "block_table_stride",
+            "i64"
+          ],
+          [
+            "query_stride_token",
+            "i64"
+          ],
+          [
+            "k_stride_block",
+            "i64"
+          ],
+          [
+            "k_stride_slot",
+            "i64"
+          ],
+          [
+            "k_stride_head",
+            "i64"
+          ],
+          [
+            "v_stride_block",
+            "i64"
+          ],
+          [
+            "v_stride_slot",
+            "i64"
+          ]
+        ],
+        "llvm_parameters": [
+          [
+            "ptr addrspace(1)",
+            "0"
+          ],
+          [
+            "ptr addrspace(1)",
+            "1"
+          ],
+          [
+            "ptr addrspace(1)",
+            "2"
+          ],
+          [
+            "ptr addrspace(1)",
+            "3"
+          ],
+          [
+            "ptr addrspace(1)",
+            "4"
+          ],
+          [
+            "ptr addrspace(1)",
+            "5"
+          ],
+          [
+            "ptr addrspace(1)",
+            "6"
+          ],
+          [
+            "ptr addrspace(1)",
+            "7"
+          ],
+          [
+            "ptr addrspace(1)",
+            "8"
+          ],
+          [
+            "ptr addrspace(1)",
+            "9"
+          ],
+          [
+            "ptr addrspace(1)",
+            "10"
+          ],
+          [
+            "ptr addrspace(1)",
+            "11"
+          ],
+          [
+            "float",
+            "12"
+          ],
+          [
+            "i64",
+            "13"
+          ],
+          [
+            "i64",
+            "14"
+          ],
+          [
+            "i64",
+            "15"
+          ],
+          [
+            "i64",
+            "16"
+          ],
+          [
+            "i64",
+            "17"
+          ],
+          [
+            "i64",
+            "18"
+          ],
+          [
+            "i64",
+            "19"
+          ],
+          [
+            "ptr addrspace(1)",
+            "20"
+          ],
+          [
+            "ptr addrspace(1)",
+            "21"
+          ]
+        ],
+        "implicit_vendor_pointers": 2,
+        "native_accumulator_component_independence_assumed": false
+      },
+      "loaded": {
+        "n_regs": 144,
+        "n_spills": 0,
+        "shared": 6144
+      },
+      "actual_mechanism": {
+        "passed": true,
+        "flags": {
+          "required_artifacts": true,
+          "full_tail_logical_i8_shapes": true,
+          "original_bf16_pv_shapes": true,
+          "native_k32_encoding": true,
+          "eight_native_i8_calls": true,
+          "complete_i8_c_chains": true,
+          "original_pv_calls": true,
+          "all_64_scaled_native_pv_c_scalars": true,
+          "pv_post_add_absent": true,
+          "eight_i8_machine_mmas": true,
+          "sixteen_bf16_pv_machine_mmas": true,
+          "score_casts_at_exact_ast_sites": true
+        },
+        "score_casts_per_lane": [
+          {
+            "llir_line": 1191,
+            "source_line": 120
+          },
+          {
+            "llir_line": 1192,
+            "source_line": 120
+          },
+          {
+            "llir_line": 1921,
+            "source_line": 156
+          },
+          {
+            "llir_line": 1922,
+            "source_line": 156
+          }
+        ],
+        "score_cast_elements_per_lane_recorded": 4,
+        "isa_opcodes": {
+          "ml_vrf_init_u32": 1,
+          "ml_lsa_load_dwordx2": 1,
+          "ml_mov_v2s_b32": 77,
+          "ml_lsa_load_dword": 5,
+          "ml_mov_s2v_b32": 22,
+          "ml_lsa_blkload_x4": 2,
+          "ml_xor_b32": 36,
+          "ml_mov_b32": 91,
+          "ml_shl_b32": 24,
+          "ml_and_b32": 61,
+          "ml_max_u32": 8,
+          "ml_slb_shuffle_rtn_b32": 88,
+          "ml_max_i32": 48,
+          "ml_mul_f32": 102,
+          "ml_fma_f32": 52,
+          "ml_cmp_eq_u32": 6,
+          "ml_cmp_class_f32": 24,
+          "ml_csel_b32": 82,
+          "ml_max_f32": 44,
+          "ml_cmp_ne_u32": 24,
+          "ml_rcp_f32": 8,
+          "ml_abs_f32": 16,
+          "ml_floor_f32": 16,
+          "ml_sub_f32": 40,
+          "ml_cmp_gt_f32": 16,
+          "ml_cmp_eq_f32": 16,
+          "ml_bfe2_b32": 3,
+          "ml_add_i32": 26,
+          "ml_cvt_i32_f32": 32,
+          "ml_cvt_f32_i32": 20,
+          "ml_add_f32": 32,
+          "ml_cmp_lt_f32": 16,
+          "ml_min_f32": 16,
+          "ml_mul_u64_u32": 16,
+          "ml_anyop3_b32": 6,
+          "ml_byte_permute_b32": 86,
+          "ml_slb_store_b32x1": 20,
+          "ml_or_b32": 2,
+          "ml_slb_load_b8": 32,
+          "ml_srl_b32": 5,
+          "ml_slb_store_b32x4": 2,
+          "ml_slb_load_b32x2": 1,
+          "ml_addo_u32": 49,
+          "ml_addc_i32": 49,
+          "ml_lsa_blkload_x1": 32,
+          "ml_lsa_load_a64_dword": 16,
+          "ml_slb_store_b32x2": 16,
+          "ml_slb_load_b32x1": 32,
+          "ml_matrix_mad_i32_i8_m16n16k32": 8,
+          "ml_exp_f32": 8,
+          "ml_cvt_bf16_f32": 4,
+          "ml_cvt_i32_i16": 4,
+          "ml_slb_blkload_x1": 16,
+          "ml_matrix_mad_f32_bf16_m16n16k16": 16,
+          "ml_cmp_gt_i32": 9,
+          "ml_lsa_store_a64_dword": 16,
+          "ml_lsa_store_dword": 2
+        },
+        "primitive_geometry_not_reused": true,
+        "native_component_independence_assumed": false,
+        "precise_div_native_support_inferred": false,
+        "device_numeric_verified": false,
+        "metadata_guard_correctness_requires_numeric_and_actual_cfg_review": true
+      },
+      "new_cpu_llvm_cfg_audit": {
+        "passed": true,
+        "schema": "cjj-mixed-actual-llvm-cfg-v1",
+        "role": "producer",
+        "num_sequences": 32,
+        "query_capacity": 2051,
+        "kernel_define_line": 16,
+        "blocks": 61,
+        "sequence_bound_branch_line": 19,
+        "metadata_load_lines": [
+          27,
+          31
+        ],
+        "metadata_difference_line": 34,
+        "decode_guard_branch_line": 40,
+        "metadata_block": "25",
+        "valid_decode_block": "41",
+        "early_return_block": "common.ret",
+        "ssa": {
+          "pid": "%23",
+          "pid64": "%26",
+          "q_start_i32": "%29",
+          "q_start_i64": "%30",
+          "q_end_i64": "%34",
+          "length_difference": "%35"
+        },
+        "qlen_and_bounds_cta_uniform_for_immutable_metadata": true,
+        "signed_i64_difference": true,
+        "all_non_cuq_global_accesses_dominated_by_valid_decode_edge": true,
+        "partial_rows_use_sequence_index": true,
+        "query_output_rows_use_cuq_index": true,
+        "invalid_or_prefill_path_global_data_accesses": 0,
+        "accesses": [
+          {
+            "line": 27,
+            "block": "25",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 31,
+            "block": "25",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 45,
+            "block": "41",
+            "pointer": "seq_lens_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 115,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 116,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 117,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 118,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 119,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 120,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 121,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 122,
+            "block": "50",
+            "pointer": "query_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1039,
+            "block": "971",
+            "pointer": "block_table_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1069,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1070,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1071,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1072,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1073,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1074,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1075,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1076,
+            "block": "971",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1090,
+            "block": "971",
+            "pointer": "key_scale_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1140,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1141,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1142,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1143,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1144,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1145,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1146,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1147,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1148,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1149,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1150,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1151,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1152,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1153,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1154,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1155,
+            "block": "971",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1474,
+            "block": "1419",
+            "pointer": "block_table_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1555,
+            "block": "1498",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1563,
+            "block": "1505",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1571,
+            "block": "1509",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1579,
+            "block": "1513",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1587,
+            "block": "1517",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1595,
+            "block": "1521",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1603,
+            "block": "1525",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1611,
+            "block": "1529",
+            "pointer": "key_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1651,
+            "block": "1551",
+            "pointer": "key_scale_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1702,
+            "block": "1558",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1709,
+            "block": "1607",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1717,
+            "block": "1614",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1725,
+            "block": "1618",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1733,
+            "block": "1622",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1741,
+            "block": "1626",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1749,
+            "block": "1630",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1757,
+            "block": "1634",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1765,
+            "block": "1638",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1773,
+            "block": "1642",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1781,
+            "block": "1646",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1789,
+            "block": "1650",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1797,
+            "block": "1654",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1805,
+            "block": "1658",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1813,
+            "block": "1662",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 1821,
+            "block": "1666",
+            "pointer": "value_cache_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 2246,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2248,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2250,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2252,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2254,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2256,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2258,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2260,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2262,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2264,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2266,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2268,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2270,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2272,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2274,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2276,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2278,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2280,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2282,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2284,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2286,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2288,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2290,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2292,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2294,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2296,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2298,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2300,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2302,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2304,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2306,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2308,
+            "block": "2014",
+            "pointer": "segm_output_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2343,
+            "block": "2134",
+            "pointer": "segm_max_ptr",
+            "kind": "store"
+          },
+          {
+            "line": 2359,
+            "block": "2144",
+            "pointer": "segm_expsum_ptr",
+            "kind": "store"
+          }
+        ],
+        "native_accumulator_component_independence_assumed": false,
+        "binary_cfg_audited": false
+      },
+      "actual_llvm_mutants_rejected": [
+        "wrong_sequence_bound",
+        "wrong_decode_length",
+        "unsigned_metadata",
+        "inverted_decode_edges",
+        "unconditional_decode_edge",
+        "ordinary_load_before_decode_guard",
+        "intrinsic_load_before_decode_guard",
+        "query_uses_sequence_instead_of_qstart"
+      ]
+    },
+    {
+      "role": "k8-reducer",
+      "hash": "ed5f48812446b32c5644fb16bb4a4df23d72df1e41d38327e265c78fcdcd8203",
+      "actual_typed_abi": {
+        "typed_abi_match": true,
+        "ttir_parameters": [
+          [
+            "output_ptr",
+            "!tt.ptr<bf16>"
+          ],
+          [
+            "segm_output_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_max_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "segm_expsum_ptr",
+            "!tt.ptr<f32>"
+          ],
+          [
+            "seq_lens_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "query_start_len_ptr",
+            "!tt.ptr<i32>"
+          ],
+          [
+            "segment_stride_token",
+            "i32"
+          ],
+          [
+            "segment_stride_head",
+            "i32"
+          ],
+          [
+            "segment_stride_segment",
+            "i32"
+          ],
+          [
+            "max_stride_token",
+            "i32"
+          ],
+          [
+            "max_stride_head",
+            "i32"
+          ]
+        ],
+        "llvm_parameters": [
+          [
+            "ptr addrspace(1)",
+            "0"
+          ],
+          [
+            "ptr addrspace(1)",
+            "1"
+          ],
+          [
+            "ptr addrspace(1)",
+            "2"
+          ],
+          [
+            "ptr addrspace(1)",
+            "3"
+          ],
+          [
+            "ptr addrspace(1)",
+            "4"
+          ],
+          [
+            "ptr addrspace(1)",
+            "5"
+          ],
+          [
+            "i32",
+            "6"
+          ],
+          [
+            "i32",
+            "7"
+          ],
+          [
+            "i32",
+            "8"
+          ],
+          [
+            "i32",
+            "9"
+          ],
+          [
+            "i32",
+            "10"
+          ],
+          [
+            "ptr addrspace(1)",
+            "11"
+          ],
+          [
+            "ptr addrspace(1)",
+            "12"
+          ]
+        ],
+        "implicit_vendor_pointers": 2,
+        "native_accumulator_component_independence_assumed": false
+      },
+      "loaded": {
+        "n_regs": 11,
+        "n_spills": 0,
+        "shared": 1024
+      },
+      "actual_mechanism": null,
+      "new_cpu_llvm_cfg_audit": {
+        "passed": true,
+        "schema": "cjj-mixed-actual-llvm-cfg-v1",
+        "role": "reducer",
+        "num_sequences": 32,
+        "query_capacity": 2051,
+        "kernel_define_line": 12,
+        "blocks": 18,
+        "sequence_bound_branch_line": 15,
+        "metadata_load_lines": [
+          23,
+          27
+        ],
+        "metadata_difference_line": 30,
+        "decode_guard_branch_line": 36,
+        "metadata_block": "16",
+        "valid_decode_block": "32",
+        "early_return_block": "common.ret",
+        "ssa": {
+          "pid": "%14",
+          "pid64": "%17",
+          "q_start_i32": "%20",
+          "q_start_i64": "%21",
+          "q_end_i64": "%25",
+          "length_difference": "%26"
+        },
+        "qlen_and_bounds_cta_uniform_for_immutable_metadata": true,
+        "signed_i64_difference": true,
+        "all_non_cuq_global_accesses_dominated_by_valid_decode_edge": true,
+        "partial_rows_use_sequence_index": true,
+        "query_output_rows_use_cuq_index": true,
+        "invalid_or_prefill_path_global_data_accesses": 0,
+        "accesses": [
+          {
+            "line": 23,
+            "block": "16",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 27,
+            "block": "16",
+            "pointer": "query_start_len_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 41,
+            "block": "32",
+            "pointer": "seq_lens_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 76,
+            "block": "64",
+            "pointer": "segm_max_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 85,
+            "block": "71",
+            "pointer": "segm_max_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 94,
+            "block": "76",
+            "pointer": "segm_max_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 118,
+            "block": "93",
+            "pointer": "segm_expsum_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 162,
+            "block": "132",
+            "pointer": "segm_output_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 171,
+            "block": "141",
+            "pointer": "segm_output_ptr",
+            "kind": "load"
+          },
+          {
+            "line": 230,
+            "block": "161",
+            "pointer": "output_ptr",
+            "kind": "store"
+          }
+        ],
+        "native_accumulator_component_independence_assumed": false,
+        "binary_cfg_audited": false
+      },
+      "actual_llvm_mutants_rejected": [
+        "wrong_sequence_bound",
+        "wrong_decode_length",
+        "unsigned_metadata",
+        "inverted_decode_edges",
+        "unconditional_decode_edge",
+        "ordinary_load_before_decode_guard",
+        "intrinsic_load_before_decode_guard",
+        "output_uses_sequence_instead_of_qstart"
+      ]
+    }
+  ],
+  "graph_side_partial_scope": "Original frozen runner asserts bitwise equality of all scratch/max/sum/out; original result flags true. Snapshots absent, no independent CPU partial/Graph replay.",
+  "encoder_cache_scope": "Recorded device CPU-byte-oracle gate true; complete cold/encoded caches not archived",
+  "arrays": {
+    "saved_fp64_rows": 15,
+    "metrics": [
+      {
+        "iteration": 0,
+        "sequence": 0,
+        "q_start": 0,
+        "length": 16384,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0023286301850439367,
+          "max_abs": 0.00013601585621154239,
+          "rms": 3.0384440114071597e-05
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002291203041921393,
+          "max_abs": 0.00012697462937827364,
+          "rms": 2.990504011531833e-05
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.009746961553974932,
+          "max_abs": 0.0005185712935711385,
+          "rms": 0.00012718033611907407
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.009433752882408167,
+          "max_abs": 0.000482547901359532,
+          "rms": 0.00012309352569054365
+        }
+      },
+      {
+        "iteration": 0,
+        "sequence": 1,
+        "q_start": 1,
+        "length": 16384,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002244469924525091,
+          "max_abs": 0.0001247869177409891,
+          "rms": 2.8264017266688258e-05
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0022596194922723445,
+          "max_abs": 0.0001042204668864205,
+          "rms": 2.8447208260107944e-05
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.009923446735133313,
+          "max_abs": 0.0004976797148759397,
+          "rms": 0.00012496334515429757
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.00973548930384744,
+          "max_abs": 0.0004941981378464447,
+          "rms": 0.0001225964468389235
+        }
+      },
+      {
+        "iteration": 0,
+        "sequence": 30,
+        "q_start": 30,
+        "length": 16384,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002323577435217229,
+          "max_abs": 0.00014854451143711533,
+          "rms": 2.812206626789432e-05
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002352652859254437,
+          "max_abs": 0.00015809070198221503,
+          "rms": 2.8487347845780056e-05
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.010316912395561446,
+          "max_abs": 0.00043595685201538266,
+          "rms": 0.00012486474075305138
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.010033352350180645,
+          "max_abs": 0.000431061330358373,
+          "rms": 0.00012143283688522075
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 1,
+        "q_start": 2017,
+        "length": 0,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 2,
+        "q_start": 2018,
+        "length": 15,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0019537346710483618,
+          "max_abs": 0.0036712986994067442,
+          "rms": 0.0007283845287308268
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0018872170475481168,
+          "max_abs": 0.004290799063342732,
+          "rms": 0.0007034119091242458
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 81,
+          "relative_rmse": 0.007910146347772387,
+          "max_abs": 0.018256650820387743,
+          "rms": 0.0029490331031605263
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 85,
+          "relative_rmse": 0.00772660558206563,
+          "max_abs": 0.016772350578300732,
+          "rms": 0.002880606076649053
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 3,
+        "q_start": 2019,
+        "length": 1,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 4,
+        "q_start": 2020,
+        "length": 16,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002020766067528805,
+          "max_abs": 0.0034623704770566643,
+          "rms": 0.0006985399561252024
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0021710222928557964,
+          "max_abs": 0.00362967000148684,
+          "rms": 0.0007513168852296903
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 81,
+          "relative_rmse": 0.008542893392823188,
+          "max_abs": 0.012261985316666585,
+          "rms": 0.002953113906501168
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 83,
+          "relative_rmse": 0.008387257823106708,
+          "max_abs": 0.012435928346419628,
+          "rms": 0.002899313684007219
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 5,
+        "q_start": 2021,
+        "length": 17,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002076722609332085,
+          "max_abs": 0.0038632125726349997,
+          "rms": 0.0006795948274936293
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0020644387056179612,
+          "max_abs": 0.0038192736110247427,
+          "rms": 0.0006751101860069877
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 52,
+          "relative_rmse": 0.008524568844875955,
+          "max_abs": 0.01030079641150726,
+          "rms": 0.0027896132432700133
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 55,
+          "relative_rmse": 0.008397816264386522,
+          "max_abs": 0.010817999257598077,
+          "rms": 0.0027481342331773786
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 6,
+        "q_start": 2022,
+        "length": 63,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0019402965313929591,
+          "max_abs": 0.003432653129695762,
+          "rms": 0.00043295976518379736
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0019418752184888546,
+          "max_abs": 0.0038908324485864565,
+          "rms": 0.0004341009844519798
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 20,
+          "relative_rmse": 0.00886199322757282,
+          "max_abs": 0.012440746731520735,
+          "rms": 0.0019774742905486666
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 18,
+          "relative_rmse": 0.008595086240507968,
+          "max_abs": 0.011126192967419457,
+          "rms": 0.001917916390724689
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 7,
+        "q_start": 2023,
+        "length": 100,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.001999140816688703,
+          "max_abs": 0.002047464397202714,
+          "rms": 0.0003154977872903589
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0019681312971694055,
+          "max_abs": 0.0017242601664866353,
+          "rms": 0.00031013055483503635
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 10,
+          "relative_rmse": 0.009906301799196882,
+          "max_abs": 0.008026908502910088,
+          "rms": 0.001563379763839714
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 10,
+          "relative_rmse": 0.009809099425583896,
+          "max_abs": 0.008346603265297348,
+          "rms": 0.0015480396069391794
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 8,
+        "q_start": 2024,
+        "length": 16383,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0022805496266864464,
+          "max_abs": 0.00013606616442742026,
+          "rms": 3.0906794704181746e-05
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0021779169788547275,
+          "max_abs": 0.00013719905764020268,
+          "rms": 2.9527832095602213e-05
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.009182143378306095,
+          "max_abs": 0.0008903856031552311,
+          "rms": 0.00012443957238063066
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.008861420064229339,
+          "max_abs": 0.0008730206411368541,
+          "rms": 0.00012009301946679751
+        }
+      },
+      {
+        "iteration": 1,
+        "sequence": 31,
+        "q_start": 2047,
+        "length": 100,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0020496749978109905,
+          "max_abs": 0.0016309140002636058,
+          "rms": 0.00031776622932917526
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.001996795828544136,
+          "max_abs": 0.0013539390606729373,
+          "rms": 0.0003094262111878758
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 2,
+          "relative_rmse": 0.009321551884755842,
+          "max_abs": 0.006200359269881037,
+          "rms": 0.0014451434481459566
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": false,
+          "pointwise_violations": 3,
+          "relative_rmse": 0.009122876638194773,
+          "max_abs": 0.006142498418328576,
+          "rms": 0.0014143423289303839
+        }
+      },
+      {
+        "iteration": 2,
+        "sequence": 0,
+        "q_start": 0,
+        "length": 16384,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.001468457773004375,
+          "max_abs": 5.847995635122061e-05,
+          "rms": 1.0139562849311298e-05
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.001468457773004375,
+          "max_abs": 5.847995635122061e-05,
+          "rms": 1.0139562849311298e-05
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.001468457773004375,
+          "max_abs": 5.847995635122061e-05,
+          "rms": 1.0139562849311298e-05
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        }
+      },
+      {
+        "iteration": 2,
+        "sequence": 1,
+        "q_start": 1,
+        "length": 16384,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0016267125111808607,
+          "max_abs": 5.725817754864693e-05,
+          "rms": 1.3371521225877253e-05
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0016267125111808607,
+          "max_abs": 5.725817754864693e-05,
+          "rms": 1.3371521225877253e-05
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0016267125111808607,
+          "max_abs": 5.725817754864693e-05,
+          "rms": 1.3371521225877253e-05
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        }
+      },
+      {
+        "iteration": 2,
+        "sequence": 31,
+        "q_start": 2047,
+        "length": 16384,
+        "baseline": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0016090903530988087,
+          "max_abs": 5.707161835744046e-05,
+          "rms": 1.3238533299833536e-05
+        },
+        "quantized_operand": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0016090903530988087,
+          "max_abs": 5.707161835744046e-05,
+          "rms": 1.3238533299833536e-05
+        },
+        "original_bf16": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0016090903530988087,
+          "max_abs": 5.707161835744046e-05,
+          "rms": 1.3238533299833536e-05
+        },
+        "quantized_reference_vs_original": {
+          "finite": true,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0,
+          "max_abs": 0.0,
+          "rms": 0.0
+        }
+      }
+    ],
+    "full_output_controls": [
+      {
+        "iteration": 0,
+        "decoded_output_rows": 31,
+        "untouched_prefill_padding_rows": 2020,
+        "full_output_bit_equality_between_bf16_and_k8": false
+      },
+      {
+        "iteration": 1,
+        "decoded_output_rows": 31,
+        "untouched_prefill_padding_rows": 2020,
+        "full_output_bit_equality_between_bf16_and_k8": false
+      },
+      {
+        "iteration": 2,
+        "decoded_output_rows": 31,
+        "untouched_prefill_padding_rows": 2020,
+        "full_output_bit_equality_between_bf16_and_k8": true
+      },
+      {
+        "iteration": 3,
+        "decoded_output_rows": 0,
+        "untouched_prefill_padding_rows": 2051,
+        "full_output_bit_equality_between_bf16_and_k8": true
+      }
+    ],
+    "original_gate_failures": 10,
+    "references_regenerated": false,
+    "reference_scope": "SHA-checked saved FP64 arrays only; cold K/V absent",
+    "independent_partial_graph_array_replay": false,
+    "reason": "Scratch/eager/Graph/side snapshots were not saved in original NPZ"
+  },
+  "precision_gate": false,
+  "service_verified": false,
+  "performance_measured": false
+}
