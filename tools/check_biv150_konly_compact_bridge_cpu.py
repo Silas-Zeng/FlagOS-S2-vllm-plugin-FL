@@ -1,6 +1,7 @@
 """Exercise pinned KV host allocation/zeroing methods with CPU metadata mocks."""
 import argparse
 import ast
+import builtins
 import copy
 from dataclasses import dataclass, fields, replace
 import hashlib
@@ -29,6 +30,7 @@ PINS = {
     'vllm/v1/core/single_type_kv_cache_manager.py': '22e3677acf0e769461bdbf278df031d6e362c97aa1ba7b862c071b76d47d8914',
     'vllm/v1/worker/utils.py': '36cae980896d5607ce238606ec6c053eff17b7597a0c9185549f94583c1b9de6',
     'vllm/v1/worker/gpu/attn_utils.py': 'a351178df66fb5364cbe663ba7f25346c6317927fcc29a8c00f8972a23440ace',
+    'vllm/v1/kv_cache_spec_registry.py': '16b3f6458538910f72cdac48554c20432c7ac0e5122e91c8a6219a1ec25f44fe',
     'vllm/v1/worker/kv_connector_model_runner_mixin.py': 'd140e79e93b8670a2100b8b365606d3af402430a59c990ef65820da987ef4974',
 }
 
@@ -39,6 +41,7 @@ ARCHIVED = {
     'vllm/v1/core/single_type_kv_cache_manager.py': '/private/tmp/cjj-target-konly-cache-lifecycle-sources-v1-20261027/vllm/v1/core/single_type_kv_cache_manager.py',
     'vllm/v1/worker/utils.py': '/private/tmp/cjj-target-kv-zeroer-platform-sources-v1-20261027/vllm/v1/worker/utils.py',
     'vllm/v1/worker/gpu/attn_utils.py': '/private/tmp/cjj-target-konly-cache-lifecycle-sources-v1-20261027/vllm/v1/worker/gpu/attn_utils.py',
+    'vllm/v1/kv_cache_spec_registry.py': '/private/tmp/cjj-target-kv-spec-registry-20261028.py',
     'vllm/v1/worker/kv_connector_model_runner_mixin.py': '/private/tmp/cjj-target-konly-cache-lifecycle-sources-v1-20261027/vllm/v1/worker/kv_connector_model_runner_mixin.py',
 }
 
@@ -145,6 +148,33 @@ def run(a):
     added = mgr.allocate_new_blocks('r',32,32); assert len(added)==2 and mgr.new_block_ids==[10,11]
     mgr.get_num_skipped_tokens=lambda _:0
     mgr.allocate_external_computed_blocks('r',32,16); assert mgr.new_block_ids==[10,11,12]
+    # Replay the actual registry with one narrowly mocked lazy-import endpoint.
+    # No vLLM/framework package is imported; the callback records initialization.
+    regmod=ModuleType('_cjj_target_registry_cpu');sys.modules[regmod.__name__]=regmod
+    regscope=regmod.__dict__;registrations={};bootstrap=[]
+    def register_defaults(config):
+        bootstrap.append(config)
+        regscope['KVCacheSpecRegistry'].register(full,scope['FullAttentionManager'],full)
+    def only_lazy_import(name,*args,**kwargs):
+        if name=='__future__':return builtins.__import__(name,*args,**kwargs)
+        assert name=='vllm.v1.core.single_type_kv_cache_manager'
+        return SimpleNamespace(register_all_kvcache_specs=register_defaults)
+    builtin_scope=dict(vars(builtins));builtin_scope['__import__']=only_lazy_import
+    regscope.update(__builtins__=builtin_scope,dataclass=dataclass,_REGISTRY_KVCACHESPEC_LIST=registrations)
+    regtree=ast.parse(source['vllm/v1/kv_cache_spec_registry.py'])
+    execute([n for n in regtree.body if isinstance(n,ast.ClassDef)
+             and n.name in ('KVCacheSpecMetadata','KVCacheSpecRegistry')],regscope)
+    reg=regscope['KVCacheSpecRegistry'];cfg=SimpleNamespace()
+    reg._ensure_registered(cfg)
+    reg.register(compact,scope['CompactFullAttentionManager'],compact)
+    assert len(bootstrap)==1 and set(registrations)=={full,compact}
+    assert reg.get_manager_class(spec) is scope['CompactFullAttentionManager']
+    assert reg.get_uniform_type_base_spec(spec) is compact
+    reg.check_kv_cache_spec_registry(specs)
+    registrations.clear();bootstrap.clear()
+    reg.register(compact,scope['CompactFullAttentionManager'],compact)
+    reg._ensure_registered(cfg)
+    assert not bootstrap and full not in registrations
     parent = json.loads(git_bytes(a.parent_repo,b.PARENT89,'vllm_fl/patches/biv150_konly_encoded_sources.json'))
     host_proofs={};broker=None
     for role in ('views','runtime'):
@@ -235,8 +265,8 @@ def run(a):
     assert not {'torch','triton','vllm','numpy'}.intersection(sys.modules)
     return dict(base=b.BASE,contract88=b.CONTRACT88,parent89=b.PARENT89,format=b.FORMAT,
         cpu_only=True,source_hashes=PINS,source_provenance='Existing local target-source archives, no fresh machine access',
-        registry_source_not_replayed=True,prior_local_registry_hash_not_runtime_verified=
-        '16b3f6458538910f72cdac48554c20432c7ac0e5122e91c8a6219a1ec25f44fe',
+        target_registry_source_replayed=True,builtin_then_private_registration_verified=True,
+        private_first_skips_builtin_mutant_reproduced=True,
         runtime_installed_hashes_require_future_check=True,actual_DAC_allocator_method_replayed=True,
         mock_raw_allocations=42,mock_total_requested_bytes=42*2*b.PAGE,physical_page_bytes=b.PAGE,
         carrier_shape=[2,2,16,2,128],carrier_strides=list(carrier.stride()),
@@ -253,6 +283,6 @@ def run(a):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--vllm-root',type=Path,help='Optional complete source root; default uses seven existing target archives')
+    p.add_argument('--vllm-root',type=Path,help='Optional complete source root; default uses eight existing target archives')
     p.add_argument('--parent-repo',type=Path,default=Path('/private/tmp/flagos-cjj-konly-encoded-service-20261027'))
     print(json.dumps(run(p.parse_args()),indent=2)+'\n',end='')

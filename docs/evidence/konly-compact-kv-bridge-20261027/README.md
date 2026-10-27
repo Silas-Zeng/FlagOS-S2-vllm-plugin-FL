@@ -15,11 +15,12 @@ accuracy and performance claims remain false; `activation_ready=false`.
 PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_compact_bridge_cpu.py
 ```
 
-Inputs are seven existing target-source archives and immutable Git objects from
+Inputs are eight existing target-source archives and immutable Git objects from
 the PR88/89 commits, not PR89's working files. Source paths are listed in the
 checker's `ARCHIVED` mapping: `cjj-target-kv-cache-service-sources-20261027`,
 `cjj-target-konly-cache-lifecycle-sources-v1-20261027`, and
-`cjj-target-kv-zeroer-platform-sources-v1-20261027`, all under `/private/tmp`.
+`cjj-target-kv-zeroer-platform-sources-v1-20261027`, plus the actual registry
+file `/private/tmp/cjj-target-kv-spec-registry-20261028.py`.
 An optional complete source tree can be passed with `--vllm-root`; change the
 Git object source with `--parent-repo`. `cpu.json` records exact source hashes.
 The interface `7e3c2209…` and backend `1219c4d1…` also match existing C3 pins.
@@ -28,10 +29,13 @@ upgrade or package replacement is proposed.
 
 The earlier `/private/tmp/vllm-0.24.0` tree became empty during this work; the
 seven archived files reproduce the same hashes without any remote recovery.
-The registry source was read earlier but is not among these seven archives;
-its prior local hash is recorded separately and is not a runtime verification.
-Registry behavior/registration order below remains a prerequisite to check
-against an actual source copy before activation.
+Root then supplied the actual7619B registry source, SHA256
+`16b3f6458538910f72cdac48554c20432c7ac0e5122e91c8a6219a1ec25f44fe`.
+The checker now replays its real registration code, with only its lazy built-in
+registration import replaced by a recorded CPU callback. Built-ins-first then
+compact registration resolves the private manager/uniform base correctly;
+private-first demonstrably skips built-in initialization. This is metadata-only
+replay, not actual scheduler/worker registration or activation.
 
 ## Actual allocation and view path
 
