@@ -1,0 +1,186 @@
+{
+  "cpu_only": true,
+  "passed": true,
+  "codec": "cjj-konly-rn32-rne-v2",
+  "source_inverse": {
+    "inline": {
+      "mode": "inline",
+      "main": "56f1838192abc940b3fb9accef490022ac125000",
+      "source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+      "generated_sha256": "4718f473dc5221eee2cadf54a598af37039f1c906490dd73eda2558da786eb0b",
+      "exact_byte_inverse": true,
+      "codec": "cjj-konly-rn32-rne-v2",
+      "support_sha256": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+      "logical_q_rows": 8,
+      "qk_accumulator": "int32",
+      "v_pv_dtype": "bfloat16",
+      "original_softmax_pv_reducer_preserved": true,
+      "full_and_tail_qk_sites": 2,
+      "unchanged_pv_sites": 2,
+      "q_quantization_position": "inside_each_active_split_CTA",
+      "k_byte_strides": [
+        16384,
+        256,
+        128,
+        1
+      ],
+      "v_bf16_strides": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "scale_f32_strides": [
+        4096,
+        2,
+        1
+      ],
+      "scale_base_f32_elements": 1024,
+      "allocated_page_bytes": 16384,
+      "capacity_reclaimed": false,
+      "actual_decoder_ir_verified": false,
+      "gpu_executed": false,
+      "precision_gate": false,
+      "service_installed": false
+    },
+    "preq": {
+      "mode": "preq",
+      "main": "56f1838192abc940b3fb9accef490022ac125000",
+      "source_sha256": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
+      "generated_sha256": "529b46957f9eb331fbc4b11d0d0ac4d76229589ffcfeda535edf640561bfd8af",
+      "exact_byte_inverse": true,
+      "codec": "cjj-konly-rn32-rne-v2",
+      "support_sha256": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+      "logical_q_rows": 8,
+      "qk_accumulator": "int32",
+      "v_pv_dtype": "bfloat16",
+      "original_softmax_pv_reducer_preserved": true,
+      "full_and_tail_qk_sites": 2,
+      "unchanged_pv_sites": 2,
+      "q_quantization_position": "one_prep_per_token_and_kvhead",
+      "k_byte_strides": [
+        16384,
+        256,
+        128,
+        1
+      ],
+      "v_bf16_strides": [
+        8192,
+        256,
+        128,
+        1
+      ],
+      "scale_f32_strides": [
+        4096,
+        2,
+        1
+      ],
+      "scale_base_f32_elements": 1024,
+      "allocated_page_bytes": 16384,
+      "capacity_reclaimed": false,
+      "actual_decoder_ir_verified": false,
+      "gpu_executed": false,
+      "precision_gate": false,
+      "service_installed": false
+    }
+  },
+  "codec_vectors": 92,
+  "codec_elements": 11776,
+  "writer_byte_addresses": 12288,
+  "rejects": 23,
+  "v1_v2_boundary": {
+    "peak": 240,
+    "value": 120,
+    "v1": 63,
+    "v2": 64,
+    "scale": 1.8897638320922852
+  },
+  "cost_plans": {
+    "inline": {
+      "mode": "inline",
+      "initial_encoder": "separately_recorded_once",
+      "baseline_step": [
+        "BF16_KV_append",
+        "BF16_GQA_producer",
+        "original_reducer4"
+      ],
+      "candidate_step": [
+        "Kcode_Kscale_and_original_BF16_V_append",
+        "I8_QK_GQA_producer_with_inline_Q8",
+        "original_reducer4"
+      ],
+      "producer_warps": 1,
+      "reducer_warps": 4,
+      "split_policy": "actual_base._pick_segments",
+      "first_cases": [
+        {
+          "batch": 64,
+          "kv": 4096
+        },
+        {
+          "batch": 32,
+          "kv": 16384
+        }
+      ],
+      "initial_encode_source_destination_separate": true,
+      "physical_page_bytes": 16384,
+      "default_runs_device": false,
+      "capacity_reclaimed": false,
+      "service_installed": false
+    },
+    "preq": {
+      "mode": "preq",
+      "initial_encoder": "separately_recorded_once",
+      "baseline_step": [
+        "BF16_KV_append",
+        "BF16_GQA_producer",
+        "original_reducer4"
+      ],
+      "candidate_step": [
+        "Qprep",
+        "Kcode_Kscale_and_original_BF16_V_append",
+        "I8_QK_GQA_producer",
+        "original_reducer4"
+      ],
+      "producer_warps": 1,
+      "reducer_warps": 4,
+      "split_policy": "actual_base._pick_segments",
+      "first_cases": [
+        {
+          "batch": 64,
+          "kv": 4096
+        },
+        {
+          "batch": 32,
+          "kv": 16384
+        }
+      ],
+      "initial_encode_source_destination_separate": true,
+      "physical_page_bytes": 16384,
+      "default_runs_device": false,
+      "capacity_reclaimed": false,
+      "service_installed": false
+    }
+  },
+  "primitive_961_unchanged": true,
+  "default_cli_cpu_only": true,
+  "compile_entry_opt_in": true,
+  "numeric_and_timing_runner_prepared": false,
+  "support_sha256": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+  "gpu_executed": false,
+  "actual_decoder_ir_verified": false,
+  "primitive_ir_rejected_as_full_decoder": true,
+  "target_div_rn_frontend": {
+    "actual_frontend_present": true,
+    "math_sha256": "474139317072193ad472f182967e09fa2b46c9b7a4115d4dc3bfba1960f25964",
+    "top_init_sha256": "ef5fdb926433bf34fb47c4fef12218e7ba9a96790c010a1f8f7b08bc2b7a0fa1",
+    "fp32_precise_divf_builder_present": true,
+    "native_lowering_verified": false,
+    "installed_cpp_source_available": false,
+    "device_numeric_verified": false
+  },
+  "target_div_rn_native_support_verified": false,
+  "device_quantizer_verified": false,
+  "precision_gate": false,
+  "service_verified": false
+}
