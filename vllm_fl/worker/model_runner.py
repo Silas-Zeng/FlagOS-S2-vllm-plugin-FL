@@ -7784,3 +7784,22 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_stable_small_o import install as _install_stable_small_o
 
     print("BIV150_STABLE_SMALL_O_INSTALL", _install_stable_small_o(), flush=True)
+
+# Reject simultaneous cache formats before either private installer.
+if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1":
+    if getattr(current_platform, "vendor_name", None) != "iluvatar":
+        raise RuntimeError("Compact cache supports only the qualified Iluvatar source path")
+    if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1":
+        raise RuntimeError("Compact cache conflicts with encoded16KiB format")
+
+# Private encoded-cache diagnostic: install once before allocation/capture; default off.
+if (getattr(current_platform, "vendor_name", None) == "iluvatar"
+        and __import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"):
+    from vllm_fl.patches.biv150_konly_encoded_service import install as _install_konly_encoded
+    print("BIV150_KONLY_ENCODED_INSTALL", _install_konly_encoded(ModelRunnerFL), flush=True)
+
+# Private compact allocation: fixed-module metadata and encoded routes, default off.
+if (getattr(current_platform, "vendor_name", None) == "iluvatar"
+        and __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1"):
+    from vllm_fl.patches.biv150_konly_compact_service import install as _install_konly_compact
+    print("BIV150_KONLY_COMPACT_INSTALL", _install_konly_compact(ModelRunnerFL), flush=True)

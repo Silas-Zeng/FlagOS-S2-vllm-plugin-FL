@@ -1,0 +1,14 @@
+{
+  "previous_source": "3541b19777ce5a1cce417dfc8bc2f9bb5e432ddd",
+  "previous_91_GPU_run": false,
+  "root_observation": {
+    "file": "bootstrap-observation-v1.txt",
+    "bytes": 976,
+    "sha256": "3dfe0d421d4e8aa6beaa8ab5711e9f369757affa3398a3df3a6d9c0bb5e7c55e",
+    "scope": "separate Root torch/vllm.triton_utils import probe; source path belongs to that probe"
+  },
+  "reason": "legitimate platform bootstrap imports current vllm_fl and initializes CUDA",
+  "correction": "authenticate loaded package/private module source paths and hashes; require all three private switches off and private service _STATE None; reuse canonical existing module objects",
+  "numeric_witness": "complete NPZ and checks are persisted before original FP64 assert",
+  "kernel_layout_codec_or_threshold_changes": false
+}

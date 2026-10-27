@@ -1,0 +1,54 @@
+{
+  "FP64_reference": "all1024 rows: independent INT64 quantized QK -> FP64 scales/softmax/PV; original BF16 separate",
+  "GPU_executed": false,
+  "Graph_actual_path": "both arms bypass to unhoisted normalized2D128, compared to same-path fresh eagerB",
+  "Graph_hoisted_qualification": false,
+  "changed_Graph_replay_before_fresh_eager_B": true,
+  "default": "stdlib CPU plan; Root-only explicit --compile-only or --gpu",
+  "empty_PID_visibility": "unavailable, not idle proof",
+  "encoder_launches": 0,
+  "format": "cjj-konly-compact12544-rn32-rne-v1",
+  "full_output_cache_guards_readonly": true,
+  "geometry": {
+    "BLOCK_M": 256,
+    "BLOCK_Q": 32,
+    "TILE_SIZE": 64,
+    "num_stages": 1,
+    "num_warps": 16
+  },
+  "grid": [
+    33,
+    2
+  ],
+  "input": "full-D128 nonperiodic counter BF16; shared canonical A/B/C for both arms",
+  "ixsmi_exclusivity_proof": false,
+  "layer_offset_bytes": 256,
+  "lengths": [
+    1057,
+    1056,
+    1058
+  ],
+  "maximum": "not_exposed_by_2D_Q32",
+  "mixed_or_42layer_capacity_verified": false,
+  "original_BF16_RRMSE_proxy": 0.005,
+  "page_bytes": 12544,
+  "pages": 139,
+  "partial": "not_exposed_by_2D_Q32",
+  "performance_measured": false,
+  "pointwise_atol": 0.005,
+  "pointwise_rtol": 0.005,
+  "pre_CUDA_memory_cap_mib": 1024,
+  "precision_gate": false,
+  "prefixes": [
+    33,
+    32,
+    34
+  ],
+  "query_rows": 1024,
+  "root_owned_exclusive_required": true,
+  "sequences": 1,
+  "service_verified": false,
+  "side_actual_path": "Q32 unhoisted vs fresh hoisted",
+  "summation": "not_exposed_by_2D_Q32",
+  "writer_launches": 0
+}
