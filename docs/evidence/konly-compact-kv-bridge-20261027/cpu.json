@@ -1,0 +1,124 @@
+{
+  "base": "dac1b8fb48e7983e48283032efeee9b592c5fbe5",
+  "contract88": "65db624d39f554f2330fef578930c4048a109f06",
+  "parent89": "5b228e2c6e6cf0c4365cf0595c340f83b827e470",
+  "format": "cjj-konly-compact12544-rn32-rne-v1",
+  "cpu_only": true,
+  "source_hashes": {
+    "vllm/v1/kv_cache_interface.py": "7e3c220998267190a622e216b2b125306807cf8be3ec1e9a8e84fe6e7a293003",
+    "vllm/v1/attention/backends/triton_attn.py": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
+    "vllm/v1/core/kv_cache_utils.py": "3ca561818019cef84c43c6d3839627145fd049f9479d40fc733ae142d6d71df3",
+    "vllm/v1/core/single_type_kv_cache_manager.py": "22e3677acf0e769461bdbf278df031d6e362c97aa1ba7b862c071b76d47d8914",
+    "vllm/v1/worker/utils.py": "36cae980896d5607ce238606ec6c053eff17b7597a0c9185549f94583c1b9de6",
+    "vllm/v1/worker/gpu/attn_utils.py": "a351178df66fb5364cbe663ba7f25346c6317927fcc29a8c00f8972a23440ace",
+    "vllm/v1/worker/kv_connector_model_runner_mixin.py": "d140e79e93b8670a2100b8b365606d3af402430a59c990ef65820da987ef4974"
+  },
+  "source_provenance": "Existing local target-source archives, no fresh machine access",
+  "registry_source_not_replayed": true,
+  "prior_local_registry_hash_not_runtime_verified": "16b3f6458538910f72cdac48554c20432c7ac0e5122e91c8a6219a1ec25f44fe",
+  "runtime_installed_hashes_require_future_check": true,
+  "actual_DAC_allocator_method_replayed": true,
+  "mock_raw_allocations": 42,
+  "mock_total_requested_bytes": 1053696,
+  "physical_page_bytes": 12544,
+  "carrier_shape": [
+    2,
+    2,
+    16,
+    2,
+    128
+  ],
+  "carrier_strides": [
+    6272,
+    2176,
+    256,
+    128,
+    1
+  ],
+  "nominal_BF16_K_is_not_data": true,
+  "target_zeroer_metadata_replayed": true,
+  "zeroer_page_i32": 3136,
+  "zeroer_tile_i32": 64,
+  "zeroer_tiles_per_page": 49,
+  "zero_notification_guard_inverse": true,
+  "manager_new_block_ids_verified": true,
+  "compact_C3_guard_AST_inverse": true,
+  "kernel_source_proofs": {
+    "writer": {
+      "parent_sha256": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9",
+      "compact_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+      "literal_edits": 4,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "decode": {
+      "parent_sha256": "149f89b7869b017affce1651b894ae019a8c5c193d8ddf5352e73adac55fbe59",
+      "compact_sha256": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+      "literal_edits": 2,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "normalized2d128": {
+      "parent_sha256": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740",
+      "compact_sha256": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "q32": {
+      "parent_sha256": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+      "compact_sha256": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "multi2": {
+      "parent_sha256": "7046cf538bf06278982041d04b129c65c74bdb65531e528366fc62626c6adb19",
+      "compact_sha256": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "raw3d": {
+      "parent_sha256": "190975053927d8f326e47ab0769369b5535524ff4f32e25156f5d16ab717c39c",
+      "compact_sha256": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    }
+  },
+  "parent_host_source_proofs": {
+    "views": {
+      "parent_sha256": "018c993858803df250ec1fa089778dbed5627e2c1720c3ccd12aad4e40344ede",
+      "compact_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "inverse_byte_exact": true,
+      "guard_code_unchanged": true,
+      "complete_service_binding": false
+    },
+    "runtime": {
+      "parent_sha256": "406d26bd3bd5b6b1ba3278972eb327103af9147760e84c00954df5000c03773c",
+      "compact_sha256": "a7fdba41f95c1aa4365c7cd3a38d3b85b0b54062b789431346501b4323217343",
+      "inverse_byte_exact": true,
+      "guard_code_unchanged": true,
+      "complete_service_binding": false
+    }
+  },
+  "actual_parent_typed_broker_replayed": true,
+  "address_comparisons": 110592,
+  "rejected_cases": 10,
+  "installed": false,
+  "activation_ready": false,
+  "RPC_module_export_verified": false,
+  "actual_tensor_views_verified": false,
+  "actual_IR_verified": false,
+  "device_numeric_verified": false,
+  "capacity_reclaimed": false,
+  "performance_verified": false,
+  "precision_gate": false
+}
