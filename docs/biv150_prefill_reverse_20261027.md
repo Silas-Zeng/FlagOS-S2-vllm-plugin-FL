@@ -6,8 +6,10 @@ Status: Draft, refined shape route has CPU proof only. `precision_gate=false`,
 Production, SDK, dependencies, official launch parameters and benchmark are unchanged.
 
 The first unconditional-reversal falsifier at
-`fcaec8af5e5bb674c16920134c5101a22e853e92` passed its numerical, Q-hoist and
-resource guards for both tested components, with opposite timing outcomes:
+`fcaec8af5e5bb674c16920134c5101a22e853e92` passed its numerical and Q-hoist
+guards for both tested components. Known launch/shared metadata matched. The
+subsequent CPU phase audit confirmed matching post-launch SDK counts of
+113 registers/0 spills for both exact kernels. Timing outcomes were opposite:
 
 | Original component | Query rows | KV rows | Median baseline/candidate speedup |
 | --- | --- | --- | --- |
@@ -80,8 +82,9 @@ remains reconstructible with the factory's historical CPU mode.
 
 Three entry loads may overlap the original helper reads, but compiler CSE is a
 hypothesis to inspect in actual IR. Added loads/predicate/int64 arithmetic may
-cost time or registers even on the identity route. Launch/shared metadata and
-loaded registers/spills remain guarded before timing. The refined route must
+cost time or registers even on the identity route. Default strict comparison
+requires known post-launch SDK counts and known matching launch/shared metadata
+before timing; unknown fields never pass by comparing None to None. The refined route must
 retain the short-prefix gain and avoid long-prefix loss in device measurements.
 
 ## C3 rebasing, nonzero starts and padding
@@ -148,7 +151,8 @@ acceptance. Passing a two-case screen remains partial coverage.
 Both routes use the unchanged actual main Q32 policy and Q-hoist verified manager.
 Before timing, the harness requires exact numerical identity/reference guards,
 changed-input graphs, side streams, input/output canaries, identical ABI/launch
-descriptors, equal shared/launch metadata and equal loaded registers/spills.
+descriptors, known equal shared/launch metadata and, by default, known equal post-launch SDK
+register/spill counts.
 It records the actual kernel source, all IR/ASM/cubin and manager proofs so root
 can inspect added scalar-load CSE and codegen. A live port9031 service, busy GPU,
 dirty tracked source, production differences or a wrong import checkout stop the
@@ -164,3 +168,42 @@ positive observation and refine the mechanism instead of discarding it solely
 because another shape is negative. Root coordinates all GPU work serially.
 Full model precision and unchanged official throughput/TTFT acceptance remain
 mandatory before integration.
+
+
+## Resource evidence phases and optional diagnostic recording
+
+The first compile records contain `candidate_resources.n_regs/n_spills=null`
+before handle loading. Those null values establish no register/spill equality.
+The same records later contain explicit `loaded_resources` with 113/0, and the
+final case resource snapshots also contain 113/0. The CPU
+[phase audit](evidence/prefill-reverse-20261027/first-falsifier/resource-phase-audit.json)
+checks hash, metadata and all ASM hashes across pre/post snapshots and final
+cases. It also cross-checks the unchanged main
+`tools/summarize_biv150_prefill_loaded_resources.py`, whose PR47 evidence likewise
+distinguishes compiled null from observed loaded counts. This uses existing
+artifacts only and does not relaunch a frozen job.
+
+The future harness now records `post_launch_resource_evidence` with explicit
+phase and source. It reads SDK attributes only after an actual launch and may
+reuse the Manager's existing loaded record after proving binary identity.
+A pre-launch record alone, or `None==None`, never establishes observed equality.
+`--resource-mode strict` remains the default and stops timing if required counts
+are unknown or known tested fields differ. Optional `--resource-mode record`
+permits known register/spill changes while retaining matching known launch/shared
+metadata; it labels `resource_changed` and attributes timing to the full candidate
+including metadata/index work and resource costs. Unknown counts stop both modes.
+No unsafe compiler parameter is added to force 113 registers.
+
+This CPU-only audit added no `cuFuncGetAttribute` binding: no pinned COREX function
+attribute ABI or live handle was available to inspect locally. It never calls
+`_init_handles`, initializes a driver, or launches a kernel to obtain metrics.
+Direct driver `LOCAL_SIZE_BYTES` and `SHARED_SIZE_BYTES` remain explicitly unknown.
+Compiler shared metadata 65536B and SDK `n_spills=0` do not prove complete driver
+resource equivalence, occupancy, absence of all local-memory traffic, or CSE.
+The new route's actual counts and metadata-load reuse are still unmeasured.
+
+```bash
+python3 tools/audit_biv150_prefill_resource_phases_cpu.py \
+  --result docs/evidence/prefill-reverse-20261027/first-falsifier/result.json \
+  --out /tmp/prefill-resource-phase-audit.json
+```

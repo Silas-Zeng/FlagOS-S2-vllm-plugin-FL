@@ -19,6 +19,7 @@ import traceback
 from types import SimpleNamespace
 
 from biv150_prefill_reverse import MAIN, CASES, eligible, private_manager
+from biv150_resource_records import resource_evidence, compare_resource_records
 
 
 def atomic(path, value):
@@ -54,8 +55,10 @@ def descriptors(kwargs):
     return result
 
 
-def resources(compiled,fragment,out,label):
+def resources(compiled,fragment,out,label,manager=None):
     record=fragment._resources(compiled)
+    loaded_record=manager.optimized.get(compiled.hash) if manager is not None else None
+    record['post_launch_resource_evidence']=resource_evidence(record,loaded_record,already_launched=True)
     record['files']={}
     for kind,value in compiled.asm.items():
         if not isinstance(value,(str,bytes)):continue
@@ -71,7 +74,7 @@ def main(args):
     if not args.run_gpu:
         print(json.dumps(dict(cpu_only=True,gpu_executed=False,cases=CASES,
             component_only=True,official_score=False,precision_gate=False,
-            exact_parent_policy=True,geometry=[256,32,64,16,1],dynamic_metadata_prepared=True)))
+            exact_parent_policy=True,geometry=[256,32,64,16,1],dynamic_metadata_prepared=True,resource_mode=args.resource_mode)))
         return
     source=args.source.resolve()
     assert subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()==args.commit
@@ -110,7 +113,8 @@ def main(args):
         production_unchanged=True,service_installed=False,source_commit=args.commit,
         production_baseline=MAIN,source_transform=proof,baseline_installations=states,
         q32_installation=installed,actual_parent_policy=True,
-        dynamic_metadata_requested=args.dynamic_metadata,refined_route_numerical_matrix_complete=False,cases=[],errors=[])
+        dynamic_metadata_requested=args.dynamic_metadata,resource_mode=args.resource_mode,
+        refined_route_numerical_matrix_complete=False,complete_resource_equivalence_claimed=False,cases=[],errors=[])
     def save():atomic(args.out/'result.json',result)
     save()
     try:
@@ -194,17 +198,23 @@ def main(args):
             row['grid']=list(taps['baseline'].grid)
             row['launch_descriptors']=descriptors(taps['baseline'].kwargs)
             for label in managers:
-                row[label+'_resources']=resources(taps[label].compiled,fragment,args.out,label)
+                row[label+'_resources']=resources(taps[label].compiled,fragment,args.out,label,managers[label])
             old,new=row['baseline_resources'],row['candidate_resources']
             for key in ('num_warps','num_stages','shared','use_sme','warp_size'):
                 assert old['metadata'][key]==new['metadata'][key], 'Launch/shared resource changed: '+key
             assert old['metadata']['num_warps']==16 and old['metadata']['num_stages']==1
             assert old['metadata']['use_sme']==114691
             assert old['metadata']['shared']==65536 and old['metadata']['warp_size']==64
-            row['same_registers_and_spills']=(old['n_regs'],old['n_spills'])==(new['n_regs'],new['n_spills'])
-            # Scope is a scheduling-only falsifier: do not attribute changed
-            # register occupancy or spilling to launch ordering.
-            assert row['same_registers_and_spills'],'Register/spill footprint changed; isolate before timing'
+            comparison=compare_resource_records(old,new)
+            row['resource_comparison']=comparison
+            row['same_registers_and_spills']=comparison['same_registers_and_spills']
+            row['resource_changed']=comparison['resource_changed']
+            row['resource_mode']=args.resource_mode
+            save()
+            # Unknown does not pass either mode. Record mode permits known
+            # register/spill changes and attributes timing to the full candidate.
+            allowed=comparison['strict_allowed'] if args.resource_mode=='strict' else comparison['record_allowed']
+            assert allowed, 'Observed resource gate failed or counts unknown: '+repr(comparison)
             for iteration in range(args.iterations):
                 order=['baseline','candidate'] if iteration%2==0 else ['candidate','baseline']
                 timing=dict(iteration=iteration,order=order)
@@ -248,6 +258,7 @@ if __name__=='__main__':
     p.add_argument('--dynamic-metadata',action='store_true',help='Require fixed-pointer Graph route flips and actual route-ID probe before timing')
     p.add_argument('--case',action='append',choices=CASES)
     p.add_argument('--iterations',type=int,default=3)
+    p.add_argument('--resource-mode',choices=('strict','record'),default='strict',help='Strict requires known matching post-launch counts; record permits known count changes and marks full-candidate costs')
     args=p.parse_args()
     if args.run_gpu and (not args.commit or not args.out):p.error('--commit and new --out required with --run-gpu')
     if args.iterations<1:p.error('--iterations must be positive')
