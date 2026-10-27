@@ -230,6 +230,36 @@ print(json.dumps(dict(python=sys.executable,sys_path=sys.path,cwd=os.getcwd(),PY
     return json.loads(subprocess.check_output([sys.executable, '-c', code], env=env, cwd=cwd, text=True, timeout=30))
 
 
+def package_metadata(names, metadata=importlib.metadata, find_spec=importlib.util.find_spec):
+    """Observational vendor metadata; never import modules or alter ABI fingerprints."""
+    versions, records = {}, dict(distributions={}, modules={})
+    try:
+        providers = metadata.packages_distributions()
+    except Exception as error:
+        providers = {}
+        records['provider_lookup_error'] = dict(type=type(error).__name__, message=str(error))
+    def lookup(name):
+        try:
+            return dict(version=metadata.version(name), status='found')
+        except importlib.metadata.PackageNotFoundError:
+            return dict(version=None, status='missing')
+        except Exception as error:
+            return dict(version=None, status='lookup_error', error=dict(type=type(error).__name__, message=str(error)))
+    for name in names:
+        requested = lookup(name)
+        versions[name] = requested['version']
+        records['distributions'][name] = dict(requested=requested,
+            providers={provider: lookup(provider) for provider in providers.get(name, [])})
+        try:
+            spec = find_spec(name)
+            records['modules'][name] = dict(origin=spec.origin if spec else None,
+                search_locations=list(spec.submodule_search_locations or []) if spec else [], module_executed=False)
+        except Exception as error:
+            records['modules'][name] = dict(origin=None, module_executed=False,
+                lookup_error=dict(type=type(error).__name__, message=str(error)))
+    return versions, records
+
+
 def abi_probe(env, cwd):
     cpu_env = dict(env, CUDA_VISIBLE_DEVICES='', VLLM_PLUGINS='')
     cpu_env.pop(ENABLE, None); cpu_env.pop(CERTIFICATE, None)
@@ -373,6 +403,7 @@ def run(args):
         raise RuntimeError('Diagnostic on/off or native compile semantics is not separated')
     paths = subprocess.check_output(['git', '-C', str(source), 'ls-files', '--', 'vllm_fl', 'csrc'], text=True).splitlines()
     source_hashes = {p: sha(source / p) for p in paths}
+    packages, package_provenance = package_metadata(('torch', 'vllm', 'flag_gems', 'triton', 'evalscope'))
     manifest = dict(command=SERVICE_COMMAND, accuracy_command=accuracy_command(out), protocol_function_sha256=PROTOCOL_SHA,
         source=str(source), source_commit=args.commit, frozen_production=FROZEN_PRODUCTION, source_hashes=source_hashes,
         controller_sha256=sha(__file__), native_library_sha256=NATIVE_SHA, tuning_snapshot=tuning,
@@ -385,7 +416,7 @@ def run(args):
             'FLAGGEMS_CACHE_DIR', 'BIV150_NATIVE_W8A8_LIBRARY', ENABLE, CERTIFICATE)},
         expected_compile_semantics_on=expected_on, expected_compile_semantics_off=expected_off, abi=abi,
         production_defaults_preserved=True, diagnostic_only=True, full_prefill_quantization=False,
-        packages={name: importlib.metadata.version(name) for name in ('torch', 'vllm', 'flag_gems', 'triton', 'evalscope')})
+        packages=packages, package_metadata_provenance=package_provenance)
     atomic(out / 'manifest.json', manifest)
     state = dict(completed=False, passed=False, valid_pure_decode_diagnostic=False, precision_gate=False,
                  diagnostic_only=True, full_prefill_precision_passed=False, encoded_cache_precision_passed=False,

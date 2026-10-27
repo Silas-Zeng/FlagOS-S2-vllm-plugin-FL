@@ -38,6 +38,21 @@ def run():
     assert hashlib.sha256(tool.protocol_source(ROOT).encode()).hexdigest() == tool.PROTOCOL_SHA
     plan = json.loads(subprocess.check_output([sys.executable, str(path)], text=True))
     assert plan['cpu_only'] and not plan['service_started'] and not plan['gpu_executed'] and not plan['throughput_prepared']
+    # CoreX may import as triton without a canonical 'triton' distribution.
+    class VendorMetadata:
+        @staticmethod
+        def packages_distributions(): return {'triton': ['corex-triton']}
+        @staticmethod
+        def version(name):
+            if name == 'triton': raise tool.importlib.metadata.PackageNotFoundError(name)
+            assert name == 'corex-triton'
+            return 'CPU-vendor-version-fixture'
+    versions, provenance = tool.package_metadata(('triton',), metadata=VendorMetadata,
+        find_spec=lambda name: SimpleNamespace(origin='/CPU-vendor/triton/__init__.py', submodule_search_locations=None))
+    assert versions == {'triton': None}
+    assert provenance['distributions']['triton']['requested']['status'] == 'missing'
+    assert provenance['distributions']['triton']['providers']['corex-triton']['version'] == 'CPU-vendor-version-fixture'
+    assert provenance['modules']['triton'] == dict(origin='/CPU-vendor/triton/__init__.py', search_locations=[], module_executed=False)
     inherited = dict(VLLM_FL_BIV150_PREFILL_MULTI2='0', VLLM_FL_BIV150_PREFILL_Q32='0',
                     VLLM_FL_BIV150_NATIVE_W8A8='0', VLLM_FL_BIV150_GQA_DECODE='0',
                     VLLM_FL_PREFER='wrong', BIV150_NATIVE_W8A8_LIBRARY='wrong.so', FLAGTUNE='1',
@@ -119,6 +134,7 @@ def run():
     subprocess.run(['git', '-C', str(ROOT), 'diff', '--exit-code', tool.FROZEN_PRODUCTION, '--', 'vllm_fl', 'csrc'], check=True)
     assert not {'torch', 'triton', 'numpy', 'vllm', 'evalscope'}.intersection(sys.modules)
     return dict(passed=True, cpu_only=True, official_service_cli_preserved=True, official_accuracy_function_exact=True,
+                missing_canonical_vendor_distribution_is_recorded_not_fatal=True,
                 default_plan_no_service=True, env_cleanup_then_explicit_flag=True, production_defaults_not_disabled=True,
                 sqlite_readonly_and_sha_guards=True, no_unowned_or_reused_pid_signal=True, no_group_signal=True,
                 no_selection_or_wrong_on_fingerprint_refused=True, synthetic_105_rows_only=True,
