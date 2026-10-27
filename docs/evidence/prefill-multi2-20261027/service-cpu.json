@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "gpu_executed": false,
+  "precision_gate": false,
+  "policy": {
+    "default_install": {
+      "installed": true,
+      "block_m": 256,
+      "block_q": 32,
+      "num_warps": 16,
+      "num_stages": 1,
+      "tile_size": 64,
+      "minimum_query_rows": 1024,
+      "num_sequences": 2,
+      "grid": "qrows//32+num_sequences",
+      "fallback": "unchanged Q32 parent chain and verified BM128"
+    },
+    "real_policy_routes": [
+      {
+        "rows": 1023,
+        "sequences": 2,
+        "route": "bm128"
+      },
+      {
+        "rows": 1024,
+        "sequences": 2,
+        "route": "multi2"
+      },
+      {
+        "rows": 1025,
+        "sequences": 2,
+        "route": "multi2"
+      },
+      {
+        "rows": 1026,
+        "sequences": 2,
+        "route": "multi2"
+      },
+      {
+        "rows": 2048,
+        "sequences": 2,
+        "route": "multi2"
+      },
+      {
+        "rows": 2033,
+        "sequences": 1,
+        "route": "q32"
+      },
+      {
+        "rows": 2048,
+        "sequences": 3,
+        "route": "bm128"
+      }
+    ],
+    "guards": [
+      "alias",
+      "unsupported semantic",
+      "foreign override",
+      "capture",
+      "async",
+      "candidate hook",
+      "raw hook",
+      "inactive manager",
+      "positional call",
+      "device mismatch"
+    ],
+    "private_caches_distinct": true,
+    "unchanged_q32_parent": true,
+    "idempotent_install": true,
+    "prelaunch_only_fallback": true,
+    "device_error_propagates_without_retry": true,
+    "disabled_after_proof_failure": true,
+    "rebound_install_rejected": true
+  },
+  "installer_rejections": [
+    "broken parent",
+    "disabled parent",
+    "unknown parent source",
+    "private cache alias"
+  ],
+  "limitation": "Real source installers, policies, manager launch gates; explicit fake tensors/JIT/compiler, no SDK lowering, C3 live stack, numerical, resource or model proof."
+}
