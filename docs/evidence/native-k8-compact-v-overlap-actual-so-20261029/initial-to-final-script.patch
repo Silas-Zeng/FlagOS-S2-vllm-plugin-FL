@@ -1,0 +1,15 @@
+--- a/review_actual_so.py
++++ b/review_actual_so.py
+@@ -378,7 +378,11 @@
+         script_sha256=sha(Path(__file__).read_bytes()),ELF_parser_sha256=sha(Path(elfutil.__file__).read_bytes()))
+     a.report.write_text(json.dumps(report,sort_keys=True,indent=2)+'\n')
+     review=contract.review_template(a.raw/'out/compile-summary.json')
+-    for flag in contract.REVIEW_FLAGS:review[flag]=True
++    verified_flags=('actual_machine_code_bound_to_SO','actual_compact_addresses_and_SME_descriptor_verified',
++        'actual_wait_tail_QK_PV_math_verified','actual_codec_preserved',
++        'actual_K_then_V_issue_order_preserved','actual_V_wait_after_QK_and_P_softmax_packing')
++    assert set(contract.REVIEW_FLAGS)==set(verified_flags),'Unknown review field must not be granted automatically'
++    for flag in verified_flags:review[flag]=True
+     review['static_resources']=resources
+     review['notes']='Independent CPU review of actual7892 final SO: all S2/S4 full+tail K/V, QK/P packing, wait/tail/PV CFG and compact layout/codec checks passed. rho exp/running-L FMA may remain after wait; no device numeric or model claim. Root must independently review before GPU.'
+     review['independent_audit_report_sha256']=sha(a.report.read_bytes());review['manual_Root_approval']=False
