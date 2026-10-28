@@ -19,10 +19,10 @@ sources = [root / "csrc/iluvatar/native_gqa_s2.cpp", root / "csrc/iluvatar/nativ
 result = load(name="corex_native_gqa_s2_probe", sources=list(map(str, sources)),
               build_directory=str(build), extra_cflags=["-O3", "-std=c++17"],
               extra_cuda_cflags=["-O3", "-std=c++17", "-D__ILUVATAR__", "-D__MR__",
-                                "-DCOREX_NATIVE_GQA_V_OVERLAP=0", "-x", "ivcore",
+                                "-DCOREX_NATIVE_GQA_V_OVERLAP=1", "-x", "ivcore",
                                 "--cuda-gpu-arch=ivcore11", "--cuda-path=/usr/local/corex"],
               is_python_module=False, verbose=True)
 sha = lambda path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
 print(json.dumps(dict(library=str(result), library_sha256=sha(result),
-                      source={p.name: sha(p) for p in sources}, overlap_v=False,
+                      source={p.name: sha(p) for p in sources}, overlap_v=True,
                       note="仅构建成品；没有GPU数值或性能资格"), sort_keys=True), flush=True)
