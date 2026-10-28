@@ -1,0 +1,178 @@
+{
+  "actual_K_then_V_issue_order_preserved": true,
+  "actual_SO_IR_sha256": "dae111ee24d64e335958edabeb3da6e5ed74aafb1c772bcca7e5969ac628d9c4",
+  "actual_SO_SASS_sha256": "81023af333c6c9481627e37d1bd782126ec6642d2dc28ccf0efe32c451b5a370",
+  "actual_V_wait_after_QK_and_P_softmax_packing": true,
+  "actual_codec_preserved": true,
+  "actual_compact_addresses_and_SME_descriptor_verified": true,
+  "actual_machine_code_bound_to_SO": true,
+  "actual_wait_tail_QK_PV_math_verified": true,
+  "compile_summary_sha256": "3e88b330dcbbafca6fb332760c5b28e2327a28577488bc906dee63983e6d7f78",
+  "independent_audit_report_sha256": "30c4c7daf2ccf3839bfabc9936f0a845400d26242fe93cc95bec99d270e8f398",
+  "inspection_sha256": "febf841cd66ce1b320fada9751609a86d3e15d766ed54b36fe99a26cb937454c",
+  "library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "manual_Root_approval": true,
+  "notes": "Root read the complete actual-SO audit and its proof limits, then independently replayed the 33-file audit with Python3.12 -B -W error; byte-exact report 30c4c7da and pending receipt46ea96cb reproduced. Approval is only to run the bounded N48/S4 consumer for pitches2048/2560. Actual2ad GPU instruction words, argument ABI and IR bodies/attributes match independently reviewed7892 modulo private symbols; long displayed IR signatures retain the documented ixobjdump truncation difference. Original source_proof fields are historical CPU-only snapshots and are not rewritten. This approval grants no numerical, Graph, side-stream, writer, fullstep, model, capacity or performance qualification and no S2 admission.",
+  "reviewer": "CJJ1008",
+  "scope": {
+    "consumer_only": true,
+    "namespace": "cjj_native_k8_compact_n48_s4_probe",
+    "rows": 48,
+    "segments": 4,
+    "service_or_model_verified": false
+  },
+  "source_proof": {
+    "Graph_verified": false,
+    "S2_host_entry_rejected": true,
+    "actual_compile_verified": false,
+    "actual_library_sha256": null,
+    "actual_resource_or_schedule_verified": false,
+    "compile_flags_unchanged": true,
+    "deferred_V_wait_preserved": true,
+    "device_math_codec_strides_byte_exact_after_symbol_inverse": true,
+    "files": {
+      "codec.cu": {
+        "candidate_sha256": "ade703388d23b9ce3b6051924b531c8d04646903098f1c7770ee3a34b530e623",
+        "changes": "private symbols only",
+        "inverse_byte_exact": true,
+        "parent_sha256": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1"
+      },
+      "codec.cuh": {
+        "candidate_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+        "changes": "private symbols only",
+        "inverse_byte_exact": true,
+        "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+      },
+      "qk.cpp": {
+        "candidate_sha256": "ee1ba1089978c8f53812884bf3b66dd85f1cf661db7789686abf6c95c745eadd",
+        "changes": "private symbols and two exact host-scope lines",
+        "inverse_byte_exact": true,
+        "parent_sha256": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750"
+      },
+      "qk.cu": {
+        "candidate_sha256": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+        "changes": "private symbols only",
+        "inverse_byte_exact": true,
+        "parent_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce"
+      }
+    },
+    "namespace": "cjj_native_k8_compact_n48_s4_probe",
+    "numeric_verified": false,
+    "parent": "4d1166792a5247b774d6b1977e60466574e6a34c",
+    "parent_wait_proof": {
+      "N40_N48_added": false,
+      "PR103_Q32_hoist_combined": false,
+      "Q_pitches": [
+        2048,
+        2560
+      ],
+      "Q_quantization_QK_softmax_PV_and_outputs_unchanged": true,
+      "V_first_PR96_combined": false,
+      "actual_device_schedule_verified": false,
+      "actual_library_sha256": null,
+      "address_proof": {
+        "SME_full_footprint_each_head_bytes": 4096,
+        "SME_row_pitch_bytes": 512,
+        "complete_page_bytes": 12544,
+        "key_bytes": 4096,
+        "last_value_byte": 12543,
+        "page_arithmetic_signed_I64": true,
+        "page_edge_ids": [
+          0,
+          1,
+          32767,
+          2147483646
+        ],
+        "reserved_bytes": 128,
+        "scale_bytes": 128,
+        "value_bytes": 8192
+      },
+      "base": "a455a3de364051fbea80226870c239de3a48e716",
+      "dc5_writer_reference": {
+        "commit": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+        "source_pins": {
+          "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+          "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+        },
+        "writer_in_this_component": false
+      },
+      "deferred_wait": "after QK and P softmax/packing; before V tail clear and PV",
+      "evidence_base": "46b44a1326973ccb6b874452841726298507414c",
+      "files": {
+        "codec.cu": {
+          "commutes_to_reviewed8b_sha256": "8c4d67925f9d731f9fda36c82b75d35da8372ffbb9579b1c2891898a19c371b3",
+          "inverse_byte_exact": true,
+          "parent_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b",
+          "variant_sha256": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1"
+        },
+        "codec.cuh": {
+          "inverse_byte_exact": true,
+          "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+          "variant_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+        },
+        "qk.cpp": {
+          "commutes_to_reviewed8b_sha256": "5b71b43807c8e5f57a4f495a2733f1738ee1248ebec91f4a2f8e26b84b18e0ef",
+          "inverse_byte_exact": true,
+          "parent_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761",
+          "variant_sha256": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750"
+        },
+        "qk.cu": {
+          "commutes_to_reviewed8b_sha256": "8f22c9464b4595caf0059e9571e92d1ede83abe1430fda8f95a7e8b649efe3bf",
+          "inverse_byte_exact": true,
+          "parent_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+          "variant_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce"
+        }
+      },
+      "issue_order": "K ordinary load/store + barrier, then V SME (unchanged)",
+      "namespace": "cjj_native_k8_compact_v_overlap_probe",
+      "numeric_verified": false,
+      "parent": "51da6fd73e7fff1513081fb330323ce72c00856c",
+      "performance_verified": false,
+      "physical_page_bytes": 12544,
+      "precision_gate": false,
+      "scope": [
+        "N64/S2",
+        "N32/S4"
+      ],
+      "service_enabled": false,
+      "shared_K_bytes": [
+        0,
+        2048
+      ],
+      "shared_V_bytes": [
+        4096,
+        8192
+      ],
+      "shared_bytes": 8192,
+      "wait_parent": "a1eb7deee5e8ef99136128984256762096a3657f"
+    },
+    "performance_verified": false,
+    "precision_gate": false,
+    "service_enabled": false,
+    "shared_stage_source_bytes": 8192,
+    "side_stream_verified": false,
+    "source_scope": {
+      "Q_pitches": [
+        2048,
+        2560
+      ],
+      "V_offset_bytes": 4352,
+      "physical_page_bytes": 12544,
+      "rows": 48,
+      "scale_full_page0": true,
+      "segments": 4
+    },
+    "unused_S2_device_symbol_retained_for_exact_inverse": true
+  },
+  "static_resources": {
+    "S4": {
+      "private_segment_bytes": 0,
+      "sgpr": 66,
+      "sgpr_spills": 0,
+      "shared_bytes": 8192,
+      "vgpr": 100,
+      "vgpr_spills": 0
+    }
+  },
+  "version": 1
+}

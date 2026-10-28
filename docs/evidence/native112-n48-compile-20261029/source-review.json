@@ -1,0 +1,320 @@
+{
+  "CPU_only": true,
+  "Graph_verified": false,
+  "existing_fixture_count": 6,
+  "framework_imported": false,
+  "fullstep_verified": false,
+  "inactive_segments_and_rows_remain_poison": true,
+  "largest_partial_element_offset": 1571327,
+  "largest_scalar_element_offset": 12275,
+  "limitations": [
+    "Host contract checker is a CPU model, not actual TORCH_CHECK execution",
+    "No real device, SO loading, encoder, writer, 42-layer capacity or service execution",
+    "The two N32 control calls preserve global48-row Q/data identity; extra16 control rows have distinct padding semantics",
+    "New actual library/IR/resources/ABI/numerics remain unknown; parent7892 is a reference only"
+  ],
+  "manual_Root_approval": false,
+  "model_verified": false,
+  "new_candidate_actual_SO_or_IR_audited": false,
+  "new_candidate_actual_SO_sha256": null,
+  "no_N32_batch_limit_in_GPU_source": true,
+  "numeric_verified": false,
+  "parent": "4d1166792a5247b774d6b1977e60466574e6a34c",
+  "parent_actual_SO_review_sha256": "f5a40726b7ae1c1db122e710c1921815db887a1f06112901c842f976a1c9d0dc",
+  "parent_actual_SO_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "partial_distinct_store_positions": 393216,
+  "performance_verified": false,
+  "precision_gate": false,
+  "producer_does_not_zero_padding": true,
+  "production_unchanged": true,
+  "reducer_sha256": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+  "reducer_zero_length_semantics": "Masked scratch loads, active=0, final output selected +0.0; source proof only",
+  "reused_CPU_fixture_report_sha256": "b45bec614136fffbf064dc37d9c4be45fe3e0c13c3d6c33585ef35996f08d9c2",
+  "scalar_distinct_store_positions": 3072,
+  "schema": 1,
+  "script_sha256": "c9df455d6784dadb25eb0b76ecd3ec181e5ce11c8bfe0da18a4f4a2cc555cad9",
+  "segment_arithmetic": [
+    {
+      "active_segments": [],
+      "length": 0
+    },
+    {
+      "active_segments": [
+        0
+      ],
+      "length": 1
+    },
+    {
+      "active_segments": [
+        0
+      ],
+      "length": 15
+    },
+    {
+      "active_segments": [
+        0
+      ],
+      "length": 16
+    },
+    {
+      "active_segments": [
+        0,
+        1
+      ],
+      "length": 17
+    },
+    {
+      "active_segments": [
+        0,
+        1
+      ],
+      "length": 31
+    },
+    {
+      "active_segments": [
+        0,
+        1
+      ],
+      "length": 32
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "length": 63
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "length": 64
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2
+      ],
+      "length": 65
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "length": 193
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "length": 16896
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "length": 16899
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "length": 17408
+    },
+    {
+      "active_segments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "length": 17411
+    }
+  ],
+  "service_enabled": false,
+  "side_stream_verified": false,
+  "source": "83b6c8c9282445219782ee1377680778a2aa8d3a",
+  "source_factory_proof": {
+    "Graph_verified": false,
+    "S2_host_entry_rejected": true,
+    "actual_compile_verified": false,
+    "actual_library_sha256": null,
+    "actual_resource_or_schedule_verified": false,
+    "compile_flags_unchanged": true,
+    "deferred_V_wait_preserved": true,
+    "device_math_codec_strides_byte_exact_after_symbol_inverse": true,
+    "files": {
+      "codec.cu": {
+        "candidate_sha256": "ade703388d23b9ce3b6051924b531c8d04646903098f1c7770ee3a34b530e623",
+        "changes": "private symbols only",
+        "inverse_byte_exact": true,
+        "parent_sha256": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1"
+      },
+      "codec.cuh": {
+        "candidate_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+        "changes": "private symbols only",
+        "inverse_byte_exact": true,
+        "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+      },
+      "qk.cpp": {
+        "candidate_sha256": "ee1ba1089978c8f53812884bf3b66dd85f1cf661db7789686abf6c95c745eadd",
+        "changes": "private symbols and two exact host-scope lines",
+        "inverse_byte_exact": true,
+        "parent_sha256": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750"
+      },
+      "qk.cu": {
+        "candidate_sha256": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+        "changes": "private symbols only",
+        "inverse_byte_exact": true,
+        "parent_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce"
+      }
+    },
+    "namespace": "cjj_native_k8_compact_n48_s4_probe",
+    "numeric_verified": false,
+    "parent": "4d1166792a5247b774d6b1977e60466574e6a34c",
+    "parent_wait_proof": {
+      "N40_N48_added": false,
+      "PR103_Q32_hoist_combined": false,
+      "Q_pitches": [
+        2048,
+        2560
+      ],
+      "Q_quantization_QK_softmax_PV_and_outputs_unchanged": true,
+      "V_first_PR96_combined": false,
+      "actual_device_schedule_verified": false,
+      "actual_library_sha256": null,
+      "address_proof": {
+        "SME_full_footprint_each_head_bytes": 4096,
+        "SME_row_pitch_bytes": 512,
+        "complete_page_bytes": 12544,
+        "key_bytes": 4096,
+        "last_value_byte": 12543,
+        "page_arithmetic_signed_I64": true,
+        "page_edge_ids": [
+          0,
+          1,
+          32767,
+          2147483646
+        ],
+        "reserved_bytes": 128,
+        "scale_bytes": 128,
+        "value_bytes": 8192
+      },
+      "base": "a455a3de364051fbea80226870c239de3a48e716",
+      "dc5_writer_reference": {
+        "commit": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+        "source_pins": {
+          "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+          "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+        },
+        "writer_in_this_component": false
+      },
+      "deferred_wait": "after QK and P softmax/packing; before V tail clear and PV",
+      "evidence_base": "46b44a1326973ccb6b874452841726298507414c",
+      "files": {
+        "codec.cu": {
+          "commutes_to_reviewed8b_sha256": "8c4d67925f9d731f9fda36c82b75d35da8372ffbb9579b1c2891898a19c371b3",
+          "inverse_byte_exact": true,
+          "parent_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b",
+          "variant_sha256": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1"
+        },
+        "codec.cuh": {
+          "inverse_byte_exact": true,
+          "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+          "variant_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+        },
+        "qk.cpp": {
+          "commutes_to_reviewed8b_sha256": "5b71b43807c8e5f57a4f495a2733f1738ee1248ebec91f4a2f8e26b84b18e0ef",
+          "inverse_byte_exact": true,
+          "parent_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761",
+          "variant_sha256": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750"
+        },
+        "qk.cu": {
+          "commutes_to_reviewed8b_sha256": "8f22c9464b4595caf0059e9571e92d1ede83abe1430fda8f95a7e8b649efe3bf",
+          "inverse_byte_exact": true,
+          "parent_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+          "variant_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce"
+        }
+      },
+      "issue_order": "K ordinary load/store + barrier, then V SME (unchanged)",
+      "namespace": "cjj_native_k8_compact_v_overlap_probe",
+      "numeric_verified": false,
+      "parent": "51da6fd73e7fff1513081fb330323ce72c00856c",
+      "performance_verified": false,
+      "physical_page_bytes": 12544,
+      "precision_gate": false,
+      "scope": [
+        "N64/S2",
+        "N32/S4"
+      ],
+      "service_enabled": false,
+      "shared_K_bytes": [
+        0,
+        2048
+      ],
+      "shared_V_bytes": [
+        4096,
+        8192
+      ],
+      "shared_bytes": 8192,
+      "wait_parent": "a1eb7deee5e8ef99136128984256762096a3657f"
+    },
+    "performance_verified": false,
+    "precision_gate": false,
+    "service_enabled": false,
+    "shared_stage_source_bytes": 8192,
+    "side_stream_verified": false,
+    "source_scope": {
+      "Q_pitches": [
+        2048,
+        2560
+      ],
+      "V_offset_bytes": 4352,
+      "physical_page_bytes": 12544,
+      "rows": 48,
+      "scale_full_page0": true,
+      "segments": 4
+    },
+    "unused_S2_device_symbol_retained_for_exact_inverse": true
+  },
+  "source_identities": {
+    "codec.cu": {
+      "actual7892_source_sha256": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1",
+      "candidate_sha256": "ade703388d23b9ce3b6051924b531c8d04646903098f1c7770ee3a34b530e623"
+    },
+    "codec.cuh": {
+      "actual7892_source_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+      "candidate_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+    },
+    "qk.cpp": {
+      "actual7892_source_sha256": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750",
+      "candidate_sha256": "ee1ba1089978c8f53812884bf3b66dd85f1cf661db7789686abf6c95c745eadd"
+    },
+    "qk.cu": {
+      "actual7892_source_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+      "candidate_sha256": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7"
+    }
+  },
+  "source_inverse_and_CPU_address_checks_passed": true,
+  "source_review_scope": "N48/S4 only; Q pitches2048/2560",
+  "stale_inherited_comment": "qk.cu lines226-227 still describe first-draft S2/future R32; nonexecuting history retained for exact inverse",
+  "worktree_unchanged": true
+}
