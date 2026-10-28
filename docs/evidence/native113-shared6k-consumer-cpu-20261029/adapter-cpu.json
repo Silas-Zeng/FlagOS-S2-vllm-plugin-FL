@@ -1,0 +1,90 @@
+{
+  "CPU_only": true,
+  "GPU_numeric_verified": false,
+  "Graph_verified": false,
+  "actual_Root_review_sha256": "b481ccf7ec5da72b3036b91d212ebdf02c97d906d93f0914d083df7b35d2d87f",
+  "actual_SO_sha256": "5cf698e8a60272d86b2545364f580faf4c40114e0044e91557c1a137f2521bed",
+  "adapter": {
+    "actual_executed_sha256": "5db7ce2634cbdc5b616a7d68ede6195575071a29757d22c09c0d38e143228b6a",
+    "adapted_sha256": "5db7ce2634cbdc5b616a7d68ede6195575071a29757d22c09c0d38e143228b6a",
+    "edits": [
+      {
+        "new": "import biv150_native_k8_compact_n48_shared6k_factory as source",
+        "old": "import biv150_native_k8_compact_n48_factory as source"
+      },
+      {
+        "new": "import biv150_native_k8_compact_n48_shared6k_admission as admission",
+        "old": "import biv150_native_k8_compact_n48_consumer_contract as admission"
+      },
+      {
+        "new": "candidate=torch.ops.cjj_native_k8_compact_n48_shared6k_probe.produce",
+        "old": "candidate=torch.ops.cjj_native_k8_compact_n48_s4_probe.produce"
+      },
+      {
+        "new": "for name in ('probe_biv150_native_k8_compact_n48_shared6k_consumer.py','biv150_native_k8_compact_n48_shared6k_admission.py',\n          'biv150_native_k8_compact_n48_shared6k_factory.py','compile_biv150_native_k8_compact_n48_shared6k.py',\n          'probe_biv150_native_k8_compact_n48_consumer.py',",
+        "old": "for name in ('probe_biv150_native_k8_compact_n48_consumer.py',"
+      },
+      {
+        "new": "        admission.record_executed_source(out,result)\n        for k in ('candidate_compile_summary'",
+        "old": "        for k in ('candidate_compile_summary'"
+      }
+    ],
+    "four_cases_6phases_Graph_first_side_thresholds_bitwise_and_saved_buffers_unchanged": true,
+    "inverse_byte_exact": true,
+    "numeric_and_fixture_code_changed": false,
+    "original_path": "tools/probe_biv150_native_k8_compact_n48_consumer.py",
+    "original_sha256": "5a9e6aaa51b12daae4e1767ca2ae01cbd290c4b7c25d6a610b0176692c8a5ea3",
+    "parent_sha256": "5a9e6aaa51b12daae4e1767ca2ae01cbd290c4b7c25d6a610b0176692c8a5ea3"
+  },
+  "completed": true,
+  "errors": [],
+  "fullstep_consumer_summary_sha256": null,
+  "fullstep_enabled": false,
+  "negative_checks_refuse_modified_receipt_by_exact_SHA": true,
+  "original_fixtures_and_reference_functions_identical": true,
+  "performance_verified": false,
+  "refusals": [
+    {
+      "case": "wrong_actual_library",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "wrong_receipt_sha",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "changed_pinned_Root_receipt_manual_Root_approval",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "changed_pinned_Root_receipt_actual_static_review_passed",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "changed_pinned_Root_receipt_actual_S4_resources",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "missing_actual_receipt",
+      "rejection": "FileNotFoundError"
+    },
+    {
+      "case": "changed_original_numeric_threshold",
+      "rejection": "AssertionError"
+    }
+  ],
+  "scope": {
+    "Q_pitches": [
+      2048,
+      2560
+    ],
+    "consumer_only": true,
+    "namespace": "cjj_native_k8_compact_n48_shared6k_probe",
+    "rows": 48,
+    "segments": 4,
+    "service_or_model_verified": false,
+    "shared_bytes": 6144
+  },
+  "script_sha256": "0d9991b733a29bc3260a245fce946a5eccc70dd771a1b06db6f9157a10e1c370",
+  "side_stream_verified": false
+}
