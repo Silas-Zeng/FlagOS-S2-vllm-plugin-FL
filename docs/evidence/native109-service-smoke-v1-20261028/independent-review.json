@@ -1,0 +1,118 @@
+{
+  "allocation": {
+    "baseline_log": "/private/tmp/cjj-native107-main105-throughput-v1-raw-20261028/out/server.log",
+    "baseline_log_sha256": "d3cf3d22487cf3e6b54528130078c35c6d279701ce7c419ff2d86d8304e598ca",
+    "bytes_per_layer": 561582336,
+    "distinct_storage_evidence": "source-pinned Host._reshape storage._cdata duplicate rejection and initialize plan/42 bound-cache checks; no storage IDs or cache data body saved",
+    "layers": 42,
+    "page_bytes": 12544,
+    "physical_pages_per_layer": 44769,
+    "sdk_tokens": 716304,
+    "stock_pr107_tokens": 548320,
+    "token_capacity_delta": 0.30636124890574856,
+    "total_bytes": 23586458112
+  },
+  "audit_passed": true,
+  "cleanup": {
+    "EngineDeadError": false,
+    "api_returncode": 0,
+    "complete": true,
+    "original_owner": {
+      "pid": 39057,
+      "same_start": true,
+      "start_ticks": 354896408,
+      "state": "Z"
+    },
+    "post_cleanup_gpu_idle_not_independently_observed": true
+  },
+  "controller_sha256": "d8a5bd435845bdb3dd1e4d3741f4ca38fe85b4cc152036517cbcf034f0eb4495",
+  "download_manifest_sha256": "f74bc8f4adc68560fd6e5a5e48ed71ced3be5757781db535ee99e0ee2a9c6bd1",
+  "identities": {
+    "c3_logged_equal_copies": 2,
+    "c3_sha256": "545ae8008b0bae2c98b52a781f41296e55d2db80039ba411edf0be5f54cabe1b",
+    "compact_implementation": "7c9e7064c0aa1df4fd1e68df69d7ce469fc09cc479a35555f0ba2a823fc3fb99",
+    "compact_native": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+    "helper": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+    "library_recheck_scope": "saved actual load receipts; SO bytes excluded from this smoke archive",
+    "sdk_core_pins": {
+      "vllm.config.cache": "0c71c5c04d8e87e88377cb8b4c2966d956be2744afef72acdbd5458a9322d5a2",
+      "vllm.config.offload": "6f2db3d9a2730588473d5155811690c6241b167a21dcb62fbbd9ebb6386de42c",
+      "vllm.v1.core.kv_cache_utils": "3ca561818019cef84c43c6d3839627145fd049f9479d40fc733ae142d6d71df3",
+      "vllm.v1.core.single_type_kv_cache_manager": "22e3677acf0e769461bdbf278df031d6e362c97aa1ba7b862c071b76d47d8914",
+      "vllm.v1.engine.core": "27b23827a86fd488f1f7cc9a2722fe76d284087ca7cfefef5a30c5e74f21bc71",
+      "vllm.v1.executor.abstract": "419002195d13cf050c3ea9705d18a12456c890c27c470a1efadce7de27ded0b1",
+      "vllm.v1.executor.uniproc_executor": "4625c8e59aef1482600b02204701d348d7f716427581d3cf23b06bff9b056abe",
+      "vllm.v1.kv_cache_interface": "7e3c220998267190a622e216b2b125306807cf8be3ec1e9a8e84fe6e7a293003",
+      "vllm.v1.kv_cache_spec_registry": "16b3f6458538910f72cdac48554c20432c7ac0e5122e91c8a6219a1ec25f44fe",
+      "vllm.v1.serial_utils": "d75c17a098231b2398cbdb7da6f9983e5b9229c0ba138b2874934d45fafd1f28",
+      "vllm.v1.worker.gpu.attn_utils": "a351178df66fb5364cbe663ba7f25346c6317927fcc29a8c00f8972a23440ace",
+      "vllm.v1.worker.gpu_worker": "271c3e2eaab7f1ca36fcd7c8e1620db9db4705f46ba5b3257dd6a3937f56b7df",
+      "vllm.v1.worker.kv_connector_model_runner_mixin": "d140e79e93b8670a2100b8b365606d3af402430a59c990ef65820da987ef4974",
+      "vllm.v1.worker.utils": "36cae980896d5607ce238606ec6c053eff17b7597a0c9185549f94583c1b9de6",
+      "vllm.v1.worker.worker_base": "7da44338c2645ebf03d23394e452b31a8e3da1011fd1b42fcfcccfe99551b3fe"
+    },
+    "stock_native": "0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8",
+    "w8a8_gate": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe"
+  },
+  "native": {
+    "actual_request_frequency_proven": false,
+    "captured": 84,
+    "fallback_reader": "private_compact_Triton",
+    "final_stats_error_or_overflow_known": false,
+    "final_stats_saved": false,
+    "graph_replay_verified": false,
+    "host_selected": 84,
+    "observed_fallback_shapes": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      24,
+      40,
+      48,
+      56
+    ],
+    "observed_query_row_stride": 2048,
+    "writer_source_stride_2560_observed": false,
+    "writer_stride_limitation": "writer83 selection saves hash/profile but no K/V source strides; do not infer pitch2560 from source or requests"
+  },
+  "qualifications": {
+    "capacity_comparison_is_not_throughput": true,
+    "component_numerics_repeated": false,
+    "final_stats_counters_not_inferred": true,
+    "model_precision_verified": false,
+    "native_quality_covered": false,
+    "throughput_verified": false
+  },
+  "raw": "/private/tmp/cjj-native109-service-smoke-v1-raw-20261028",
+  "raw_bytes": 1681499,
+  "raw_files": 18,
+  "requests": {
+    "content_quality_evaluated": false,
+    "counts": {
+      "burst32": 32,
+      "burst40": 40,
+      "burst48": 48,
+      "burst64": 64,
+      "short": 3
+    },
+    "finish_reasons": {
+      "length": 187
+    },
+    "http200": 187,
+    "total": 187,
+    "usage": {
+      "completion_tokens": 2992,
+      "prompt_tokens": 11613,
+      "total_tokens": 14605
+    }
+  },
+  "schema": 1,
+  "scope": "saved source/library/C3/allocation/response/cleanup smoke evidence only",
+  "source_commit": "fc25c86a13fc273bb7368b83af4ca264524b4e12",
+  "source_files_verified": 268,
+  "source_symlinks_followed": {
+    "vllm_fl/configs/moe/E=256,N=512,device_name=nvidia.json": "vllm_fl/configs/moe/E=256,N=512,device_name=nvidia,model=Qwen3.6-35B-A3B-H100.json"
+  }
+}
