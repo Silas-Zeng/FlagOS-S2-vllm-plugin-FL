@@ -76,3 +76,11 @@ all fullstep numeric/Graph/side gates, timing and independent raw review.
 Separately pending: source pitch2560, live service prefill/routes,42-layer
 allocation, reclaimed capacity, official accuracy, TTFT and throughput.
 CPU checks do not grant any of those device/service qualifications.
+
+Local CPU review completed on the first adapter: the finite layout/slot checks
+passed; exact writer/views source hashes were checked. The unchanged compact
+consumer saved-array replay also completed: all4 cases,176 hard numeric checks,
+96 full-field cross-arm comparisons and32 original-BF16 proxy checks. Its report
+SHA is `2d9388538f4b4ea794740c388c6ac859dfb5b770e1fdcb56c07477f919edae45`.
+This is replay of the prior29-page consumer, not execution of this fullstep.
+The pending gates above remain pending.
