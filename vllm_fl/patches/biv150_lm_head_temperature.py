@@ -7,12 +7,28 @@ from pathlib import Path
 import weakref
 
 _FLAG = 'VLLM_FL_BIV150_HEAD_TEMPERATURE'
+_RAGGED_FLAG = 'VLLM_FL_BIV150_HEAD_TEMPERATURE_RAGGED'
 _STATE = '_biv150_head_temperature_runtime'
 # 仅两项实际完整head+Sampler组件已过的配置；无新形状泛化。
 _CONFIGS = {
     32: dict(BLOCK_M=32, BLOCK_N=64, BLOCK_K=64, num_warps=8, num_stages=1, grid=(2040, 1)),
     64: dict(BLOCK_M=64, BLOCK_N=256, BLOCK_K=32, num_warps=16, num_stages=2, grid=(510, 1)),
 }
+# Only explicit experimental rows; keep the qualified 32/64 mappings intact.
+_RAGGED_BASE_ROWS = {31: 32, 41: 64, 42: 64, 43: 64}
+
+
+def _config_for_rows(rows):
+    config = _CONFIGS.get(rows)
+    if config is not None:
+        return config
+    if type(rows) is int and os.environ.get(_RAGGED_FLAG, '0') == '1':
+        base_rows = _RAGGED_BASE_ROWS.get(rows)
+        if base_rows is not None:
+            return _CONFIGS[base_rows]
+    return None
+
+
 _PINS = {
     'vllm.model_executor.models.llama': '1e1003454985bf86d3868a7755bcf5324676881548b3895809edf0b76698d384',
     'vllm.model_executor.layers.vocab_parallel_embedding': '90bc72a4758c44fd631dda30a5e8695369bf6e3fe5e1d9b7edc80356abfcd110',
@@ -74,7 +90,8 @@ def _metadata_supported(runner, scheduler_output):
             or runner.broadcast_pp_output or runner.use_aux_hidden_state_outputs
             or runner.is_pooling_model or runner.lora_config is not None
             or getattr(runner, 'routed_experts_initialized', False)
-            or runner.input_batch.num_reqs not in _CONFIGS
+            or (runner.input_batch.num_reqs not in _CONFIGS
+                and _config_for_rows(runner.input_batch.num_reqs) is None)
             or not sm.all_random or sm.all_greedy or not sm.no_penalties
             or sm.max_num_logprobs is not None or sm.logprob_token_ids
             or sm.allowed_token_ids_mask is not None or sm.bad_words_token_ids
@@ -156,7 +173,8 @@ class _Runtime:
         rows = hidden.shape[0] if hidden.ndim == 2 else None
         return (model is not None and runner.get_model() is model and model.lm_head.weight is weight
                 and self.sampler() is runner.sampler
-                and rows in _CONFIGS and runner.input_batch.num_reqs == rows
+                and (rows in _CONFIGS or _config_for_rows(rows) is not None)
+                and runner.input_batch.num_reqs == rows
                 and tuple(hidden.shape) == (rows, 2048) and hidden.dtype == torch.bfloat16
                 and hidden.is_contiguous() and hidden.device.type == 'cuda'
                 and weight.device == hidden.device and not hidden.requires_grad
@@ -173,7 +191,9 @@ class _Runtime:
         from vllm_fl.patches.biv150_lm_head_temperature_kernel import head_temperature_kernel
         weight = self.weight()
         rows = hidden.shape[0]
-        config = _CONFIGS[rows]
+        config = _CONFIGS[rows] if rows in _CONFIGS else _config_for_rows(rows)
+        if config is None:
+            raise ValueError('head row scope changed before launch')
         out = torch.empty((rows, 130560), dtype=torch.float32, device=hidden.device)
         # 原受测自然W descriptor，完整原runtime K循环与配置；仅store前新epilogue。
         kernel = head_temperature_kernel[config['grid']](

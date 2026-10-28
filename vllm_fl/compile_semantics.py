@@ -72,6 +72,9 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
     env = os.environ if environ is None else environ
     features = {key: env.get(key, "1") == "1" for key in _FEATURES}
+    features["VLLM_FL_BIV150_HEAD_TEMPERATURE_RAGGED"] = (
+        features["VLLM_FL_BIV150_HEAD_TEMPERATURE"]
+        and env.get("VLLM_FL_BIV150_HEAD_TEMPERATURE_RAGGED", "0") == "1")
     features["VLLM_FL_BIV150_PREFILL_Q32"] = (
         features["VLLM_FL_BIV150_Q_FRAGMENT"]
         and features["VLLM_FL_BIV150_PREFILL_NORMALIZE"]

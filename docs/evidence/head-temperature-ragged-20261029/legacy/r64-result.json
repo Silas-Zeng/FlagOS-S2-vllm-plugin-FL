@@ -1,0 +1,351 @@
+{
+  "status": "component_one_abba_positive",
+  "cases": [
+    {
+      "label": "normal_real_head",
+      "scaled_bitwise": true,
+      "filtered_bitwise": true,
+      "ids_bitwise": true,
+      "rng_equal": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "independent_fp64",
+      "passed": true,
+      "max_abs": 0.0
+    },
+    {
+      "label": "changed",
+      "scaled_bitwise": true,
+      "filtered_bitwise": true,
+      "ids_bitwise": true,
+      "rng_equal": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "zero",
+      "scaled_bitwise": true,
+      "filtered_bitwise": true,
+      "ids_bitwise": true,
+      "rng_equal": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "extreme",
+      "scaled_bitwise": true,
+      "filtered_bitwise": true,
+      "ids_bitwise": true,
+      "rng_equal": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "per_request_generators",
+      "scaled_bitwise": true,
+      "filtered_bitwise": true,
+      "ids_bitwise": true,
+      "rng_equal": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "side_stream",
+      "scaled_bitwise": true,
+      "filtered_bitwise": true,
+      "ids_bitwise": true,
+      "rng_equal": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "changed_graph_0",
+      "bitwise": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "changed_graph_1",
+      "bitwise": true,
+      "finite": true,
+      "input_unchanged": true
+    },
+    {
+      "label": "after_timing",
+      "scaled_bitwise": true,
+      "filtered_bitwise": true,
+      "ids_bitwise": true,
+      "rng_equal": true,
+      "finite": true,
+      "input_unchanged": true
+    }
+  ],
+  "timings": [
+    {
+      "arm": "A",
+      "calls": 8,
+      "wall_total_ms": 32.352715,
+      "wall_per_call_ms": 4.044089375,
+      "event_total_ms": 31.350400924682617,
+      "event_per_call_ms": 3.918800115585327,
+      "submit_thread_cpu_ns": 13970627,
+      "submit_process_cpu_ns": 14033642,
+      "cpu_stat_before": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112977\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112977,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_after": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112977\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112977,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_delta": {
+        "nr_periods": 0,
+        "nr_throttled": 0,
+        "throttled_time": 0
+      }
+    },
+    {
+      "arm": "B",
+      "calls": 8,
+      "wall_total_ms": 29.252926,
+      "wall_per_call_ms": 3.65661575,
+      "event_total_ms": 25.265335083007812,
+      "event_per_call_ms": 3.1581668853759766,
+      "submit_thread_cpu_ns": 10606887,
+      "submit_process_cpu_ns": 10671894,
+      "cpu_stat_before": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112977\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112977,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_after": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112977\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112977,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_delta": {
+        "nr_periods": 0,
+        "nr_throttled": 0,
+        "throttled_time": 0
+      }
+    },
+    {
+      "arm": "B",
+      "calls": 8,
+      "wall_total_ms": 29.231379,
+      "wall_per_call_ms": 3.653922375,
+      "event_total_ms": 25.378692626953125,
+      "event_per_call_ms": 3.1723365783691406,
+      "submit_thread_cpu_ns": 10521344,
+      "submit_process_cpu_ns": 10553414,
+      "cpu_stat_before": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112977\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112977,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_after": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112978\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112978,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_delta": {
+        "nr_periods": 1,
+        "nr_throttled": 0,
+        "throttled_time": 0
+      }
+    },
+    {
+      "arm": "A",
+      "calls": 8,
+      "wall_total_ms": 34.288575,
+      "wall_per_call_ms": 4.286071875,
+      "event_total_ms": 29.898080825805664,
+      "event_per_call_ms": 3.737260103225708,
+      "submit_thread_cpu_ns": 13778651,
+      "submit_process_cpu_ns": 13844619,
+      "cpu_stat_before": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112978\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112978,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_after": {
+        "paths": {
+          "stat": "/sys/fs/cgroup/cpu/cpu.stat",
+          "quota": "/sys/fs/cgroup/cpu/cpu.cfs_quota_us",
+          "period": "/sys/fs/cgroup/cpu/cpu.cfs_period_us"
+        },
+        "raw": {
+          "stat": "nr_periods 112978\nnr_throttled 566\nthrottled_time 2488620676939",
+          "quota": "600000",
+          "period": "100000"
+        },
+        "counters": {
+          "nr_periods": 112978,
+          "nr_throttled": 566,
+          "throttled_time": 2488620676939
+        }
+      },
+      "cpu_stat_delta": {
+        "nr_periods": 0,
+        "nr_throttled": 0,
+        "throttled_time": 0
+      }
+    }
+  ],
+  "resources": [
+    {
+      "arm": "original-head",
+      "hash": "4fc8b438c6ddeaf70b9526277d56cd70b722a440738aeab469e171b1c28abeff",
+      "shared": 40960,
+      "n_regs": 31,
+      "n_spills": 0
+    },
+    {
+      "arm": "candidate-head",
+      "hash": "f0d33be04e28738702c7a92d5f1c344edb5e397195fb2cc94865c796103a0ac7",
+      "shared": 40960,
+      "n_regs": 37,
+      "n_spills": 0
+    }
+  ],
+  "kind": "lm_head_temperature_epilogue",
+  "source_main": "56f1838192abc940b3fb9accef490022ac125000",
+  "rows": 64,
+  "vocab": 130560,
+  "new_persistent_weight_bytes": 0,
+  "precision_qualified": false,
+  "official_qualified": false,
+  "limitations": [
+    "单层真实head W与合成hidden；不是模型/官方收益。",
+    "完整eager head+Sampler含实际分配/原RNG；Graph仅确定性prefix。",
+    "实际原F.linear配置首次捕获；未变原stats，失败不救旧stats融合。"
+  ],
+  "identity": {
+    "constants": {
+      "num_warps": "16",
+      "num_stages": "2",
+      "num_ctas": "1",
+      "BLOCK_M": "64",
+      "BLOCK_N": "256",
+      "BLOCK_K": "32",
+      "EVEN_K": "True"
+    },
+    "kwargs": {
+      "BIAS": false,
+      "GROUP_M": 8,
+      "SPLIT_K": 1
+    },
+    "grid": [
+      510,
+      1
+    ],
+    "linear_source_sha256": "d431a4fa144ed67dc3deab46dd5beace3612858075f85c39e602447ba3bf768a",
+    "head_source": "actual UnquantizedLinearMethod.apply/F.linear default dispatch",
+    "weight_name": "lm_head.weight",
+    "weight_sha256": "9f5cf86ab727309a3130cad08fc6153925b3a2b29084afc24e641a4733e65189",
+    "output_dtype": "torch.bfloat16",
+    "output_stride": [
+      130560,
+      1
+    ]
+  },
+  "median": {
+    "A": {
+      "event_per_call_ms": 3.8280301094055176,
+      "wall_per_call_ms": 4.165080625
+    },
+    "B": {
+      "event_per_call_ms": 3.1652517318725586,
+      "wall_per_call_ms": 3.6552690625
+    }
+  },
+  "cost_includes": "完整eager原head与Sampler、实际输出分配、原统计/采样/RNG及Python提交；不含W加载，不以prefix Graph计性能"
+}
