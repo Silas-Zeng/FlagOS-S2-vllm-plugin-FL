@@ -135,7 +135,7 @@ __device__ __forceinline__ void consume_page(
 
 
 #ifndef COREX_NATIVE_GQA_V_OVERLAP
-#define COREX_NATIVE_GQA_V_OVERLAP 0
+#define COREX_NATIVE_GQA_V_OVERLAP 1
 #endif
 static_assert(COREX_NATIVE_GQA_V_OVERLAP==0 || COREX_NATIVE_GQA_V_OVERLAP==1,"variant must be explicit 0/1");
 template<unsigned Segments>
