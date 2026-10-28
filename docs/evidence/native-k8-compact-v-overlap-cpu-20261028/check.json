@@ -1,0 +1,130 @@
+{
+  "GPU_executed": false,
+  "K_V_shared_regions_disjoint": true,
+  "V_tail_valid_counts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "V_unique_word_checks": 17408,
+  "compiled": false,
+  "default_CPU_only": true,
+  "missing_Root_ack_rejected": true,
+  "parent_compile_body_inverse": true,
+  "precision_gate": false,
+  "rejected_source_mutants": [
+    "missing_K_ready_barrier",
+    "missing_late_wait",
+    "tail_clear_change",
+    "PV_FMA",
+    "BF16_P",
+    "K_page",
+    "V_page",
+    "scale_page",
+    "host_unapproved_N40",
+    "host_old_V_offset",
+    "host_old_span"
+  ],
+  "source": {
+    "N40_N48_added": false,
+    "PR103_Q32_hoist_combined": false,
+    "Q_pitches": [
+      2048,
+      2560
+    ],
+    "Q_quantization_QK_softmax_PV_and_outputs_unchanged": true,
+    "V_first_PR96_combined": false,
+    "actual_device_schedule_verified": false,
+    "actual_library_sha256": null,
+    "address_proof": {
+      "SME_full_footprint_each_head_bytes": 4096,
+      "SME_row_pitch_bytes": 512,
+      "complete_page_bytes": 12544,
+      "key_bytes": 4096,
+      "last_value_byte": 12543,
+      "page_arithmetic_signed_I64": true,
+      "page_edge_ids": [
+        0,
+        1,
+        32767,
+        2147483646
+      ],
+      "reserved_bytes": 128,
+      "scale_bytes": 128,
+      "value_bytes": 8192
+    },
+    "base": "a455a3de364051fbea80226870c239de3a48e716",
+    "dc5_writer_reference": {
+      "commit": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+      "source_pins": {
+        "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+        "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+      },
+      "writer_in_this_component": false
+    },
+    "deferred_wait": "after QK and P softmax/packing; before V tail clear and PV",
+    "evidence_base": "46b44a1326973ccb6b874452841726298507414c",
+    "files": {
+      "codec.cu": {
+        "commutes_to_reviewed8b_sha256": "8c4d67925f9d731f9fda36c82b75d35da8372ffbb9579b1c2891898a19c371b3",
+        "inverse_byte_exact": true,
+        "parent_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b",
+        "variant_sha256": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1"
+      },
+      "codec.cuh": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+        "variant_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+      },
+      "qk.cpp": {
+        "commutes_to_reviewed8b_sha256": "5b71b43807c8e5f57a4f495a2733f1738ee1248ebec91f4a2f8e26b84b18e0ef",
+        "inverse_byte_exact": true,
+        "parent_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761",
+        "variant_sha256": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750"
+      },
+      "qk.cu": {
+        "commutes_to_reviewed8b_sha256": "8f22c9464b4595caf0059e9571e92d1ede83abe1430fda8f95a7e8b649efe3bf",
+        "inverse_byte_exact": true,
+        "parent_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+        "variant_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce"
+      }
+    },
+    "issue_order": "K ordinary load/store + barrier, then V SME (unchanged)",
+    "namespace": "cjj_native_k8_compact_v_overlap_probe",
+    "numeric_verified": false,
+    "parent": "51da6fd73e7fff1513081fb330323ce72c00856c",
+    "performance_verified": false,
+    "physical_page_bytes": 12544,
+    "precision_gate": false,
+    "scope": [
+      "N64/S2",
+      "N32/S4"
+    ],
+    "service_enabled": false,
+    "shared_K_bytes": [
+      0,
+      2048
+    ],
+    "shared_V_bytes": [
+      4096,
+      8192
+    ],
+    "shared_bytes": 8192,
+    "wait_parent": "a1eb7deee5e8ef99136128984256762096a3657f"
+  },
+  "wait_order_checked": true
+}
