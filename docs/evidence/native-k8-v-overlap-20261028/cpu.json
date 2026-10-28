@@ -1,0 +1,74 @@
+{
+  "GPU_executed": false,
+  "K_V_shared_regions_disjoint": true,
+  "V_tail_valid_counts": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "V_unique_word_checks": 17408,
+  "compiled": false,
+  "default_CPU_only": true,
+  "missing_Root_ack_rejected": true,
+  "parent_compile_body_inverse": true,
+  "precision_gate": false,
+  "rejected_source_mutants": [
+    "missing_K_ready_barrier",
+    "missing_late_wait",
+    "tail_clear_change",
+    "PV_FMA",
+    "BF16_P"
+  ],
+  "source": {
+    "Q_quantization_QK_softmax_PV_and_outputs_unchanged": true,
+    "V_first_PR96_combined": false,
+    "actual_device_schedule_verified": false,
+    "base": "1cbac531ca9afaa0e9a68624d5d10cb1d0412055",
+    "deferred_wait": "after QK/softmax/P packing; before V tail clear and PV",
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+        "variant_sha256": "8c4d67925f9d731f9fda36c82b75d35da8372ffbb9579b1c2891898a19c371b3"
+      },
+      "codec.cuh": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+        "variant_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+        "variant_sha256": "5b71b43807c8e5f57a4f495a2733f1738ee1248ebec91f4a2f8e26b84b18e0ef"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "variant_sha256": "8f22c9464b4595caf0059e9571e92d1ede83abe1430fda8f95a7e8b649efe3bf"
+      }
+    },
+    "issue_order": "K ordinary load/store + barrier, then V SME (unchanged)",
+    "namespace": "cjj_native_k8_v_overlap_probe",
+    "numeric_verified": false,
+    "parent": "37713909f1f25b69d5ef6c155fad3b87351046fb",
+    "performance_verified": false,
+    "physical_page_bytes": 16384,
+    "precision_gate": false,
+    "service_enabled": false
+  },
+  "wait_order_checked": true
+}

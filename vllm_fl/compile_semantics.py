@@ -82,6 +82,11 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     features["VLLM_FL_BIV150_NATIVE_GQA"] = (
         features["VLLM_FL_BIV150_GQA_DECODE"]
         and env.get("VLLM_FL_BIV150_NATIVE_GQA", "1") == "1")
+    features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] = env.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"
+    native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'
+    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8
+    if native_k8 and (not features['VLLM_FL_BIV150_KONLY_ENCODED_SERVICE'] or env.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','0')=='1'):
+        raise ValueError('NativeK8 requires only the owned16384 encoded format')
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
              "compile_semantics.py", "worker/model_runner.py", "worker/worker.py",
              "patches/biv150_native_w8a8.py", "dispatch/config/iluvatar.yaml")}
@@ -119,8 +124,31 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             path = package.parent / "csrc/iluvatar" / name
             sources[name] = _sha(path) if path.is_file() else None
         facts["native_gqa"] = {"library_sha256": _sha(library), "source": sources}
-    return {"schema": 1, "sha256": _digest(facts),
-            "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
+    encoded = None
+    if features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"]:
+        directory = package / "patches"
+        encoded_paths = sorted(directory.glob("biv150_konly_encoded_*.py")) + [directory / "biv150_konly_encoded_sources.json"]
+        encoded = {"format": "cjj-konly-rn32-rne-v2",
+                   "producer_boundary": "owned-encoded-before-stock-native",
+                   "q32_hoist_enabled": env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1",
+                   "implementation_sha256": _digest({path.name: _sha(path) for path in encoded_paths})}
+        if native_k8:
+            # Also loaded standalone by the owned-service helper. Keep this
+            # fingerprint stdlib-only; never import a package/private operator.
+            expected = '8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5'
+            library = Path(env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY', ''))
+            if (not library.is_absolute() or not library.is_file()
+                    or env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256') != expected):
+                raise ValueError('NativeK8 fingerprint requires absolute library and fixed SHA pair')
+            if _sha(library) != expected:
+                raise ValueError('NativeK8 fingerprint library content differs')
+            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_v_overlap_probe::produce')
+        facts["konly_encoded"] = encoded
+    result = {"schema": 1, "sha256": _digest(facts),
+              "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
+    if encoded is not None:
+        result["konly_encoded"] = encoded
+    return result
 
 
 class _WithCompileSemantics:

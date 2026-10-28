@@ -1,0 +1,108 @@
+{
+  "actual_graph_replay_revalidated": false,
+  "actual_new_stock_SO_sha256": null,
+  "controller_v3_new_run_requires_base": "1cbac531ca9afaa0e9a68624d5d10cb1d0412055",
+  "controller_v3_sha256": "4a35a01a38ddd7015dde533a24caed3ed914086f65a506c96c305e7c31e498aa",
+  "fixed_NativeK8_SO_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "graph_bootstrap_bundle_manifest_sha256": "a2b176e668221e602dcba26f98a7af767543889dc1cdc640f7170316225c9a9b",
+  "graph_bootstrap_code_not_modified": true,
+  "graph_bootstrap_sources": {
+    "vllm.compilation.cuda_graph": {
+      "matches_existing_observer_pin": true,
+      "sha256": "cbc474f9098386d2eef2e3ff61364c611fbc1338d9c259ad5a24439aa7f06412",
+      "source": "/private/tmp/cjj-vllm-cudagraph-source-live-20261028/vllm/compilation/cuda_graph.py"
+    },
+    "vllm.forward_context": {
+      "matches_existing_observer_pin": true,
+      "sha256": "1c6fa51e9a02a120fed5e7357afb1190516cbdfefd1c644dfcd860603f1527c5",
+      "source": "/private/tmp/cjj-vllm-cudagraph-source-live-20261028/vllm/forward_context.py"
+    },
+    "vllm.v1.cudagraph_dispatcher": {
+      "matches_existing_observer_pin": true,
+      "sha256": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
+      "source": "/private/tmp/cjj-vllm-cudagraph-source-live-20261028/vllm/v1/cudagraph_dispatcher.py"
+    },
+    "vllm.v1.worker.gpu_input_batch": {
+      "matches_existing_observer_pin": true,
+      "sha256": "de1ea4fc9d43fc6079dd375e407c2b6d93f5e1a11f49732d13654c41eaf30a65",
+      "source": "/private/tmp/cjj-vllm-cudagraph-source-live-20261028/vllm/v1/worker/gpu_input_batch.py"
+    },
+    "vllm_fl.patches.biv150_konly_encoded_native": {
+      "matches_existing_observer_pin": true,
+      "sha256": "165d54a29d878b91532076b1a28c77ff5e43ff1b8772ab440b0fe7c54f2873b3",
+      "source": "/private/tmp/flagos-cjj-native98-main1cb-merge-20261028/vllm_fl/patches/biv150_konly_encoded_native.py"
+    },
+    "vllm_fl.patches.biv150_konly_encoded_runtime": {
+      "matches_existing_observer_pin": true,
+      "sha256": "e51b8d86c54ec39f5aa2b5d465aa5bf2971fd335278c775504606ad40833bfb8",
+      "source": "/private/tmp/flagos-cjj-native98-main1cb-merge-20261028/vllm_fl/patches/biv150_konly_encoded_runtime.py"
+    },
+    "vllm_fl.patches.biv150_konly_encoded_views": {
+      "matches_existing_observer_pin": true,
+      "sha256": "018c993858803df250ec1fa089778dbed5627e2c1720c3ccd12aad4e40344ede",
+      "source": "/private/tmp/flagos-cjj-native98-main1cb-merge-20261028/vllm_fl/patches/biv150_konly_encoded_views.py"
+    },
+    "vllm_fl.worker.model_runner": {
+      "matches_existing_observer_pin": true,
+      "sha256": "6e86acf3ee8329468278b0f708465ddf503eb7937a5cf24cbe43dcefd71e5517",
+      "source": "/private/tmp/flagos-cjj-native98-main1cb-merge-20261028/vllm_fl/worker/model_runner.py"
+    }
+  },
+  "hoist_pins": {
+    "codec": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+    "helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+    "jit": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+    "sdk": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+  },
+  "installed_source_pins": {
+    "vllm.v1.attention.backends.triton_attn": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
+    "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+    "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "vllm_fl.patches.biv150_gqa_decode": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "vllm_fl.patches.biv150_native_gqa": "2f5e730a428548a235b7c1cee7f5222176cce6d840fb406079c042052a49b0e1",
+    "vllm_fl.patches.biv150_prefill_multi2": "669a2a4d7b0e5a08f28e3492fd8fa45999f48e5521be94791f103e0fecd6b1eb",
+    "vllm_fl.patches.biv150_prefill_normalized": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+    "vllm_fl.patches.biv150_prefill_q32": "3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b",
+    "vllm_fl.patches.biv150_q_fragment_service": "c3c5bb34086681918cc328a6bbc2b349dd9019899b730fc99f9b2dc02f3ae1a9"
+  },
+  "integration_main": "1cbac531ca9afaa0e9a68624d5d10cb1d0412055",
+  "legacy_encoded_cpu": {
+    "base_exit_code": 1,
+    "failure_file": "tools/check_biv150_konly_encoded_cpu.py",
+    "failure_line": 178,
+    "guard_not_relaxed": true,
+    "merged_exit_code": 1,
+    "status": "pre-existing nonapplicable PR89 import-tail assertion"
+  },
+  "new_source_GPU_model_or_performance_verified": false,
+  "new_stock_overlap_SO_built_or_loaded": false,
+  "normal_merge": true,
+  "old_stock_aace_is_new_library": false,
+  "original_owned_helper94db_sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+  "private_source_hashes": {
+    "biv150_konly_encoded_decode.py": "149f89b7869b017affce1651b894ae019a8c5c193d8ddf5352e73adac55fbe59",
+    "biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+    "biv150_konly_encoded_hoist_proposal.py": "c0135ba632270b5d769cf3e53d5a5fc0dbde62a6e782daedc97422d2bbeff658",
+    "biv150_konly_encoded_multi2.py": "7046cf538bf06278982041d04b129c65c74bdb65531e528366fc62626c6adb19",
+    "biv150_konly_encoded_native.py": "165d54a29d878b91532076b1a28c77ff5e43ff1b8772ab440b0fe7c54f2873b3",
+    "biv150_konly_encoded_normalized2d128.py": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740",
+    "biv150_konly_encoded_q32.py": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+    "biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b",
+    "biv150_konly_encoded_raw3d.py": "190975053927d8f326e47ab0769369b5535524ff4f32e25156f5d16ab717c39c",
+    "biv150_konly_encoded_runtime.py": "e51b8d86c54ec39f5aa2b5d465aa5bf2971fd335278c775504606ad40833bfb8",
+    "biv150_konly_encoded_service.py": "47495a4a0300fdb10d9d82d625b387109dae4e81c01b8c1cd962b9b2493235dc",
+    "biv150_konly_encoded_sources.json": "6c31ce6e747fa82f1285484bb11b6784989c2f9222204e074f4fb49f7077899a",
+    "biv150_konly_encoded_views.py": "018c993858803df250ec1fa089778dbed5627e2c1720c3ccd12aad4e40344ede",
+    "biv150_konly_encoded_writer.py": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9"
+  },
+  "source_parent98": "c30cf4e2f56b58efaca100ffa54157dd53744944",
+  "stock_native_new_library_full_sha256_pending": true,
+  "stock_overlap_flags_preserved": true,
+  "stock_overlap_main_files": {
+    "csrc/iluvatar/native_gqa_s2.cu": "dc9bc915c9f5b165cbf0915fe653caa4dd727b48d6f94a50064c5d3c572f60bf",
+    "tools/build_biv150_native_gqa.py": "f03327138566df6b222ba3db4c973f3c4079664c3b71fae69459b799be58ea37",
+    "vllm_fl/patches/biv150_native_gqa.py": "2f5e730a428548a235b7c1cee7f5222176cce6d840fb406079c042052a49b0e1"
+  },
+  "textual_conflicts": false,
+  "unchanged_W8A8_gate_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe"
+}
