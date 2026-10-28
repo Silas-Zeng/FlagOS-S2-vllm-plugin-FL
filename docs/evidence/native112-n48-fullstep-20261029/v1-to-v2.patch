@@ -1,0 +1,11 @@
+--- v1-original-adapter.py
++++ v2-original-adapter.py
+@@ -168,7 +168,7 @@
+     for pin in (a.summary_sha256,a.manifest_sha256):assert re.fullmatch('[0-9a-f]{64}',pin or '')
+     raw=a.raw.resolve();assert sha((raw/'out/fullstep-summary.json').read_bytes())==a.summary_sha256 and sha((raw/'download-manifest.json').read_bytes())==a.manifest_sha256
+     summary=json.loads((raw/'out/fullstep-summary.json').read_text());manifest=json.loads((raw/'download-manifest.json').read_text())
+-    assert summary['source_adapter']==front.source.adapted_source()[1]
++    assert summary['source_adapter']==json.loads(json.dumps(front.source.adapted_source()[1]))
+     for name,pin in summary['frontend_sources'].items():assert sha((source/'tools'/name).read_bytes())==pin==sha((raw/'out/frontends'/name).read_bytes())
+     for role,(name,pin) in front.compact.FROZEN.items():assert sha((raw/'out/frozen-sources'/Path(name).name).read_bytes())==pin
+     assert (raw/'out/frozen-sources/biv150_konly_compact_decode.py').read_bytes()==front.source.production_bytes()

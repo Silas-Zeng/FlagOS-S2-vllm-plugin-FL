@@ -1,0 +1,17 @@
+Regenerating full cold counter and CPU packed oracle
+Regenerating valid41 phase0 gold, both arms
+Regenerating valid41 cache chunk digests for all phases
+Regenerating valid42 phase0 gold, both arms
+Regenerating valid42 cache chunk digests for all phases
+{"passed": true, "report": "/private/tmp/cjj-agent-native112-fullstep-independent-review-20261029.json.original-audit-only.json", "seconds": 21.190991083160043, "sha256": "db985c037f33727c238ba4c7b885692f6ac548c702083f88f2ec3c941006699b"}
+Traceback (most recent call last):
+  File "/private/tmp/cjj-agent-native112-fullstep-review-adapter-20261029.py", line 186, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/private/tmp/cjj-agent-native112-fullstep-review-adapter-20261029.py", line 182, in main
+    report=json.loads(intermediate.read_text());extra_review(front,source,raw,summary,report)
+                                                ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/private/tmp/cjj-agent-native112-fullstep-review-adapter-20261029.py", line 125, in extra_review
+    assert md['.vgpr_count']==kernel['n_regs'] and md['.vgpr_spill_count']==md['.sgpr_spill_count']==kernel['n_spills']==0
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
