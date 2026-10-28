@@ -4,6 +4,8 @@
 PR110 `7893f28bc27a52ca93ef3882d7fd9b6079c04919` 与 PR112
 `83b6c8c9282445219782ee1377680778a2aa8d3a`。团队 main 仍以 Root 02:17 实查的
 `a455a3de364051fbea80226870c239de3a48e716` 为集成基础，没有升级官方框架分支。
+随后正常合并已共享的 PR110 `e89d8188aed255a5c5713f3d99e096d6467eb659` 与 PR112
+`09e502134fcf9fa7168c9f342c2a3d33754cee1c`，纳入完整组件证据和 consumer 工具；没有改动其内核。
 
 compact adapter 的 N32/S4、N64/S2 接入实际 `7892a6aa…` 晚 V 等待库；新增 N48/S4
 选择实际 `2ad51a98…` 的独立 namespace。两个路径都接受 Q pitch 2048/2560。N48 有自己的
@@ -26,7 +28,8 @@ N48 consumer summary `493e210f…` / 独立 review `c07937c3…` 已真实填入
 7892 采用已共享的实际静态报告 `0b3d0098…`、consumer summary `6f719fe8…` 及独立 review
 `896c7c99…`。新 fullstep summary 为 `f12332f0…`，独立 review 为 `0cd4cb16…`；
 其真实范围是 **34276 页、新 KV 行距 256**。未将其写成服务行距 2560 或 42 层容量资格。
-N48 的目标 fullstep 几何为 44769 页、新 KV 行距 256，资格未完成前该记录保持空。
+N48 的目标 fullstep 几何为 44769 页、Q/K/V 行距 2560，资格未完成前该记录保持空。
+其独立 Q/K/V backing 即使通过，也不等于模型共享 QKV 分配资格；service_verified 仍必须为 false。
 这两套组件证据都不等于服务 Math105、容量、吞吐或 TTFT 验收。
 
 分段选择和 reducer 完全沿用现有 `biv150_gqa_decode.py`：N48 原本就是 S4，N40 特例仍是

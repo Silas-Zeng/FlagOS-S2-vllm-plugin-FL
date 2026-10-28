@@ -76,8 +76,8 @@ def pin(scope='base'):
     geometry=q['fullstep_geometry']
     need(type(geometry) is dict and set(geometry)=={'physical_pages','new_KV_row_pitch','service_verified'}
          and type(geometry['physical_pages']) is int and geometry['physical_pages']==(34276 if scope=='base' else 44769)
-         and type(geometry['new_KV_row_pitch']) is int and geometry['new_KV_row_pitch']==256
-         and geometry['service_verified'] is False,'component fullstep geometry, not service-pitch2560 qualification')
+         and type(geometry['new_KV_row_pitch']) is int and geometry['new_KV_row_pitch']==(256 if scope=='base' else 2560)
+         and geometry['service_verified'] is False,'component fullstep geometry, not shared model allocation/service qualification')
     need(q['writer_source_sha256']=='a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f'
          and q['views_source_sha256']=='1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e',
          'unchanged dc5 encoder and compact role sources')

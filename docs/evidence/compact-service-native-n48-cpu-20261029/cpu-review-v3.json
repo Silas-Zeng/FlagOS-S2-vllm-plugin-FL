@@ -1,0 +1,378 @@
+{
+  "C3_four_modes_fingerprints": [
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "0c91cc848c16b3bc7f694c69de83ccdb665a76b043f504ca3931fa3817b58829",
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": false
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "52e69bee408ae130e932d81ce846f55d1914e55ca7e0d5bfbf10a61775db534a"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "0c91cc848c16b3bc7f694c69de83ccdb665a76b043f504ca3931fa3817b58829",
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": true
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "3a5779c37e0c653054c49d01cae755c65626a7c9f6684d95d8271b801df55a1d"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "0c91cc848c16b3bc7f694c69de83ccdb665a76b043f504ca3931fa3817b58829",
+        "native_decode": {
+          "enabled": true,
+          "n48": null,
+          "path": "/private/tmp/cjj-native110-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_v_overlap_probe.so",
+          "qualification": {
+            "actual_SO_review_sha256": "0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708",
+            "consumer_review_sha256": "896c7c992aefcbfa36ed7445c3cf6fb1d40135bde610b5d83693ed27ec8fadf1",
+            "consumer_summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+            "format": "cjj-konly-compact12544-rn32-rne-v1",
+            "fullstep_geometry": {
+              "new_KV_row_pitch": 256,
+              "physical_pages": 34276,
+              "service_verified": false
+            },
+            "fullstep_review_sha256": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+            "fullstep_summary_sha256": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478",
+            "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+            "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
+            "page_bytes": 12544,
+            "scopes": [
+              [
+                64,
+                2,
+                2048
+              ],
+              [
+                64,
+                2,
+                2560
+              ],
+              [
+                32,
+                4,
+                2048
+              ],
+              [
+                32,
+                4,
+                2560
+              ]
+            ],
+            "source_CUDA_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+            "state": "component-reviewed",
+            "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+            "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+          },
+          "sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4"
+        },
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": false
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "120c9e381e69d1fb6934a2c567c8c29b2f608845a2a39674b85ba73bd179d264"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "0c91cc848c16b3bc7f694c69de83ccdb665a76b043f504ca3931fa3817b58829",
+        "native_decode": {
+          "enabled": true,
+          "n48": null,
+          "path": "/private/tmp/cjj-native110-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_v_overlap_probe.so",
+          "qualification": {
+            "actual_SO_review_sha256": "0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708",
+            "consumer_review_sha256": "896c7c992aefcbfa36ed7445c3cf6fb1d40135bde610b5d83693ed27ec8fadf1",
+            "consumer_summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+            "format": "cjj-konly-compact12544-rn32-rne-v1",
+            "fullstep_geometry": {
+              "new_KV_row_pitch": 256,
+              "physical_pages": 34276,
+              "service_verified": false
+            },
+            "fullstep_review_sha256": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+            "fullstep_summary_sha256": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478",
+            "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+            "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
+            "page_bytes": 12544,
+            "scopes": [
+              [
+                64,
+                2,
+                2048
+              ],
+              [
+                64,
+                2,
+                2560
+              ],
+              [
+                32,
+                4,
+                2048
+              ],
+              [
+                32,
+                4,
+                2560
+              ]
+            ],
+            "source_CUDA_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+            "state": "component-reviewed",
+            "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+            "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+          },
+          "sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4"
+        },
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": true
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "ae14b6c2fb78e9990030e6e82691571a81fbb1edb5240bd504256732110f5015"
+    }
+  ],
+  "CPU_only": true,
+  "CUDA_CPP_codec_Q32_compute_sources_changed": false,
+  "GPU_executed": false,
+  "N48_fixture_is_not_component_or_service_evidence": true,
+  "N48_production_admission_rejected": true,
+  "N48_routing_only_test_bypassed_qualification_explicitly": true,
+  "actual_SO_files_read_not_loaded": true,
+  "actual_helper_resolution": {
+    "PYTHONPATH": "/private/tmp/flagos-cjj-compact-service-native-n48-a455-20261029",
+    "cwd": "/private/tmp/flagos-cjj-compact-service-native-n48-a455-20261029",
+    "origin": "/private/tmp/flagos-cjj-compact-service-native-n48-a455-20261029/vllm_fl/__init__.py",
+    "package_executed": false,
+    "python": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "sys_path": [
+      "",
+      "/private/tmp/flagos-cjj-compact-service-native-n48-a455-20261029",
+      "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python314.zip",
+      "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14",
+      "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/lib-dynload",
+      "/opt/homebrew/lib/python3.14/site-packages"
+    ]
+  },
+  "actual_segment_picker_results": {
+    "1": 16,
+    "8": 16,
+    "16": 8,
+    "32": 4,
+    "40": 16,
+    "48": 4,
+    "64": 2
+  },
+  "base_SO_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "base_dispatch_cases": [
+    {
+      "batch": 32,
+      "pitch": 2048,
+      "real_adapter_metadata_path": true,
+      "segments": 4
+    },
+    {
+      "batch": 32,
+      "pitch": 2560,
+      "real_adapter_metadata_path": true,
+      "segments": 4
+    },
+    {
+      "batch": 64,
+      "pitch": 2048,
+      "real_adapter_metadata_path": true,
+      "segments": 2
+    },
+    {
+      "batch": 64,
+      "pitch": 2560,
+      "real_adapter_metadata_path": true,
+      "segments": 2
+    }
+  ],
+  "base_native_and_Q32_mock_installation": {
+    "CPU_only": true,
+    "actual_GPU_allocation": false,
+    "actual_Q32_compiler_pins_mocked": true,
+    "actual_manifest_adapter_and_host_C3_binding": true,
+    "both_C3_identity_tamper_checks": true,
+    "both_adapters_same_runtime": true,
+    "configured_blocks": 2,
+    "frameworks_mocked": true,
+    "library_loaded": false,
+    "model_verified": false,
+    "native_ON_actual_installer": true,
+    "q32_hoist_enabled": true,
+    "raw_buffers": 42,
+    "raw_bytes": 1053696
+  },
+  "changed_controller_functions": [
+    "evidence",
+    "native_env",
+    "native_events",
+    "run"
+  ],
+  "controller_parent_sha256": "d8a5bd435845bdb3dd1e4d3741f4ca38fe85b4cc152036517cbcf034f0eb4495",
+  "controller_sha256": "df07bf0f6d145c671302e8d42dbcffe225f9cfe9610543d16d4b5c95be4ce346",
+  "helper_sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+  "n48_SO_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "numeric_verified": false,
+  "official_CLI_Math105_benchmark_and_warmup_function_sources_unchanged": true,
+  "passed": true,
+  "performance_verified": false,
+  "rejections": [
+    {
+      "name": "N48 pending preflight",
+      "reason": "Compact NativeK8: PENDING n48 qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "controller stops before helper/idle/output",
+      "reason": "Compact NativeK8: PENDING n48 qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "N48 without base",
+      "reason": "N48 requires base compact Native ON"
+    },
+    {
+      "name": "Q32 baseline",
+      "reason": "Q32 hoist needs compact candidate mode"
+    },
+    {
+      "name": "wrong actual library",
+      "reason": "Compact NativeK8: actual compact library contents"
+    },
+    {
+      "name": "helper C3 refuses pending N48",
+      "reason": "Compact NativeK8: PENDING n48 qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "stride (32, 2048)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (32, 2048)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "stride (32, 2560)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (32, 2560)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "stride (64, 2048)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (64, 2048)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "stride (64, 2560)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (64, 2560)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "N48 event mislabeled base",
+      "reason": "Native event library/operator/capture mismatch"
+    },
+    {
+      "name": "N48 event mislabeled base",
+      "reason": "Native event library/operator/capture mismatch"
+    }
+  ],
+  "service_verified": false,
+  "source_fixture_reuse": {
+    "inverse_byte_exact": true,
+    "original_fixture_sha256": "29b8e828726579d809616463d185a782ac5d37b05ec76277027c0b16a46cdbc5"
+  },
+  "unchanged_controller_functions": [
+    "OwnedBenchmarkAdapter",
+    "SupplementalMath64Adapter",
+    "clear_graph_environment",
+    "compact_allocation_evidence",
+    "compact_parent_evidence",
+    "concurrent_burst",
+    "full_geometry_throughput",
+    "full_workload_only_throughput",
+    "graceful_api_shutdown",
+    "graph_bootstrap_environment",
+    "private_cache_state",
+    "runtime_window",
+    "sha",
+    "supplemental64_command",
+    "torch_identity_probe",
+    "validate_score",
+    "warmup_plan_metadata"
+  ],
+  "unchanged_fallback_cases": [
+    {
+      "batch": 1,
+      "pitch": 2048,
+      "segments": 16
+    },
+    {
+      "batch": 1,
+      "pitch": 2560,
+      "segments": 16
+    },
+    {
+      "batch": 8,
+      "pitch": 2048,
+      "segments": 16
+    },
+    {
+      "batch": 8,
+      "pitch": 2560,
+      "segments": 16
+    },
+    {
+      "batch": 16,
+      "pitch": 2048,
+      "segments": 8
+    },
+    {
+      "batch": 16,
+      "pitch": 2560,
+      "segments": 8
+    },
+    {
+      "batch": 40,
+      "pitch": 2048,
+      "segments": 16
+    },
+    {
+      "batch": 40,
+      "pitch": 2560,
+      "segments": 16
+    },
+    {
+      "batch": 48,
+      "pitch": 2048,
+      "segments": 4
+    },
+    {
+      "batch": 48,
+      "pitch": 2560,
+      "segments": 4
+    }
+  ]
+}

@@ -16,6 +16,13 @@
       42
     ]
   },
+  "N48_pending_fullstep_required_geometry": {
+    "Q_pitch": 2560,
+    "independent_Q_K_V_backing_is_model_shared_QKV_evidence": false,
+    "new_KV_row_pitch": 2560,
+    "physical_pages": 44769,
+    "service_verified": false
+  },
   "base": "acd6974733661fbde47c3ce76d87d514c0861fbe",
   "fullstep_evidence": {
     "independent_review": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
@@ -24,6 +31,10 @@
     "service_source_pitch2560_covered": false,
     "summary": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478"
   },
+  "merged_shared_dependencies": [
+    "e89d8188aed255a5c5713f3d99e096d6467eb659",
+    "09e502134fcf9fa7168c9f342c2a3d33754cee1c"
+  ],
   "unchanged_compute_and_boundary_sources": {
     "tools/kernels/biv150_native_k8_compact_n48_codec.cu": "ade703388d23b9ce3b6051924b531c8d04646903098f1c7770ee3a34b530e623",
     "tools/kernels/biv150_native_k8_compact_n48_qk.cpp": "ee1ba1089978c8f53812884bf3b66dd85f1cf661db7789686abf6c95c745eadd",
