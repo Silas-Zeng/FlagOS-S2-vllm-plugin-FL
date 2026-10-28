@@ -31,6 +31,12 @@ def check(parent):
     for flag in probe.REVIEW_FLAGS:
         bad=copy.deepcopy(sample);bad[flag]=False
         must_reject(lambda bad=bad:probe.review_fields(bad));faults.append(flag)
+        bad=copy.deepcopy(sample);del bad[flag]
+        must_reject(lambda bad=bad:probe.review_fields(bad));faults.append('missing_'+flag)
+    bad=copy.deepcopy(sample)
+    del bad['actual_V_wait_after_QK_and_P_softmax_packing']
+    bad['actual_V_wait_after_QK_softmax']=True
+    must_reject(lambda:probe.review_fields(bad));faults.append('ambiguous_legacy_wait_field')
     for seg in ('2','4'):
         for field in ('vgpr','sgpr','shared_bytes','spill_bytes'):
             bad=copy.deepcopy(sample);bad['resources'][seg][field]=None

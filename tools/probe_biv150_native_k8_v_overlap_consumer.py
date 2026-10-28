@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Reuse the unchanged four-case consumer after actual V-overlap SO review."""
+"""Reuse the unchanged four-case consumer after actual V-overlap SO review.
+
+The actual SO wait must follow QK and P softmax/packing; the compiler may
+schedule rho exp and running-L FMA after it. This describes the machine-code
+review boundary, not an additional change to CUDA or the numeric consumer.
+"""
 import argparse
 import ast
 import importlib.util
@@ -24,7 +29,7 @@ PINS={
 }
 REDUCER='vllm_fl/patches/biv150_gqa_decode.py'
 REDUCER_SHA='f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40'
-REVIEW_FLAGS=('actual_K_then_V_issue_order_preserved','actual_V_wait_after_QK_softmax',
+REVIEW_FLAGS=('actual_K_then_V_issue_order_preserved','actual_V_wait_after_QK_and_P_softmax_packing',
               'actual_wait_tail_clear_barrier_before_PV','original_QK_softmax_BF16_PV_preserved',
               'actual_SO_codec_equivalent_to_original22e','resources_reviewed')
 CASES=((64,2,2048),(64,2,2560),(32,4,2048),(32,4,2560))
@@ -99,7 +104,8 @@ def review_template(binding):
                 **{key:False for key in REVIEW_FLAGS},
                 actual_SO_disassembly={kind:dict(path=None,sha256=None) for kind in ('IR','SASS')},
                 resources={str(s):dict(vgpr=None,sgpr=None,shared_bytes=None,spill_bytes=None) for s in (2,4)},
-                notes='UNREVIEWED: actual SO full/tail ordering, codec and resource review required')
+                notes='UNREVIEWED: actual SO full/tail ordering, codec and resource review required; '
+                      'wait follows QK and P softmax/packing; rho exp and running-L FMA may follow wait')
 
 
 def review_fields(review):

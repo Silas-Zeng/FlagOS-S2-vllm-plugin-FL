@@ -1,6 +1,6 @@
 # NativeK8：延后 V 完成等待的独立实验
 
-基于最新团队 main `1cbac531ca9afaa0e9a68624d5d10cb1d0412055`。生产路径不改，以下仅为工具目录中的独立候选；未编译、未运行 GPU、未获得精度或吞吐资格。
+基于团队 main `1cbac531ca9afaa0e9a68624d5d10cb1d0412055`。生产路径不改，以下仅为工具目录中的独立候选；已编译并 CPU 审查实际 SO，未运行 GPU 数值检查、未获得精度或吞吐资格。
 
 原 PR93 / PR98 的 NativeK8 CUDA 源码来自 `37713909f1f25b69d5ef6c155fad3b87351046fb`，SHA256 `bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9`，对应原设备库 `22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd`。该库的已有通过结果不能直接授予新库资格。
 
@@ -32,7 +32,7 @@ python tools/compile_biv150_native_k8_v_overlap.py \
   --out /workspace/experiments/minicpm-s2/NEW_UNIQUE_V_OVERLAP_OUTPUT
 ```
 
-产物保存原始 LLVM、ASM、SO、编译命令、失败信息与 SHA manifest。需要用 `ixobjdump --IR` / `--sass` 检查最终 SO 的两个 specialization、完整页与尾页：V 发射顺序没变、QK/softmax 确实先于 V 完成等待、PV 读取前完成等待和 tail clear、无新增 spill、原 codec 与算术未变化。
+产物保存原始 LLVM、ASM、SO、编译命令、失败信息与 SHA manifest。需要用 `ixobjdump --IR` / `--sass` 检查最终 SO 的两个 specialization、完整页与尾页：V 发射顺序没变、QK 及 P 的 softmax/打包确实先于 V 完成等待、PV 读取前完成等待和 tail clear、无新增 spill、原 codec 与算术未变化。
 
 数值检查复用 PR93 `3ebdbebf61e0e90735cd8ad83eb1605627b6ef46` 的 `probe_biv150_native_k8_consumer_v2.py` 和 fullstep，Root 仅适配新库身份与 operator namespace。不得把原固定 22e SHA 的入口直接对新库标为通过；新 SO 必须单独审查后运行原全行 O/M/L/final、独立量化 FP64、尾页、只读/guard、换值 Graph B 先于 fresh Eager B、side C 门。保留原 64/S2、32/S4 与 Q pitch 2048/2560 范围。设备数值通过后再测完整 writer+producer+reducer 成本，再考虑接入 PR98；原始105题、真实分支覆盖及两档正式服务比较仍需新验证。
 
@@ -48,6 +48,10 @@ python tools/probe_biv150_native_k8_v_overlap_consumer.py \
 ```
 
 Root 独立检查后填写实际 SO IR/SASS 文件路径及 SHA、S2/S4 实际 VGPR/SGPR/shared/spill 和各项审核结论。未填写、`false`、未知资源、非 8192B shared 或非零 spill 均拒绝。模板不是验证通过记录；IR/SASS 必须来自本次最终 SO，不能填旧库或 standalone 编译文本。核对候选 codec 与原 22e 实际实现等价后，才可复用原 `3c9733...` codec 收据；不继承旧 attention 数值资格。
+
+等待审核字段为 `actual_V_wait_after_QK_and_P_softmax_packing`：要求实际 SO 的 QK 以及 P 的 exponent、归约、BF16 转换/打包位于 V wait 前，允许编译器将 rho exponent 与 running-L FMA 留在 wait 后。这是对实际机器码边界的准确表述，没有额外修改 CUDA 算术、等待位置或四 case 数值代码。旧的 `actual_V_wait_after_QK_softmax` 不能代替新字段；新字段缺失或为 `false` 仍拒绝。
+
+实际库 `8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5` 对应源提交 `a1eb7deee5e8ef99136128984256762096a3657f`。CPU 审查绑定 2768 条反汇编指令到 SO 字节，四条路径的 CFG 保留上述晚等待和 tail clear/PV 支配关系。S2/S4 的 VGPR 100、SGPR 68、shared 8192 B、spill 0 与原 22e 一致；codec `.text` SHA `936ce115af95401dda3a37cf310b62baa606003a18910ff46de4707fbaba19cf` 与原库逐字相同。完整页机器码把 wait/PV 块排在 QK 块之前的文本位置，不能以行号大小判断执行顺序。部分 rho exponent/FMA 在实际 wait 后，正是此次字段澄清的依据；这些静态结果不授予数值或吞吐资格。
 
 ```bash
 python tools/probe_biv150_native_k8_v_overlap_consumer.py \
