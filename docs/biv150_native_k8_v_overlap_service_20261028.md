@@ -17,12 +17,18 @@ VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256=8b86cb688ad72dcf9859994ed2092620312cd
 
 组件证据见合入的 [PR106 设备证据](evidence/native-k8-v-overlap-device-v1-20261028/README.md)：实际 SO 调度/资源检查、新库四 case 全数组 consumer、独立 CPU 收据重放已经完成。Root 已报告完整 writer+producer+reducer ABBA 通过，完整记录由 Root 归档；组件结果不授予此服务候选模型或吞吐资格。
 
-本候选只执行 CPU 检查，记录在 `docs/evidence/native-k8-v-overlap-service-20261028/`：
+创建候选时的 CPU 检查记录在 `docs/evidence/native-k8-v-overlap-service-20261028/`：
 
 - `service-cpu.json`：实际 8b86 ELF/schema/导出符号，四种 shape/pitch 的 attach、fence、C3、capture 记录、非法指针/epoch/alias/scalar 拒绝、原 private fallback、postlaunch error 不重试，以及身份逆变换通过。
 - `fingerprint-cpu.json`：未修改的实际 `94dbbb...` helper 调用新源码的 standalone fingerprint；开关、ABI 和五种拒绝情况通过，包括拒绝原 22e SHA。无框架或设备导入。
 - `encoded-cpu.json`：旧通用 `check_biv150_konly_encoded_cpu.py` 在未改的 PR98 `41f0f4c` 和本候选都失败于第 178 行 worker-tail import 列表断言。该历史检查还绑定旧 b3 补丁快照，此次未扩改它，也不把它记录为通过。
 
-CPU 检查可用 `python -B tools/check_biv150_native_k8_service_cpu.py --library /ABS/8b86.so` 及 `python -B tools/check_biv150_native_k8_fingerprint_cpu.py --library /ABS/8b86.so --helper /ABS/UNCHANGED_94db_HELPER.py` 重跑。没有 SSH、GPU、共享 site-packages 修改或实际服务启动。
+CPU 检查可用 `python -B tools/check_biv150_native_k8_service_cpu.py --library /ABS/8b86.so` 及 `python -B tools/check_biv150_native_k8_fingerprint_cpu.py --library /ABS/8b86.so --helper /ABS/UNCHANGED_94db_HELPER.py` 重跑。上述 CPU 阶段没有调用设备；实际服务后续由 Root 独占启动，未修改共享 site-packages。
 
-后续仍需要 Root 独立检查并部署候选，验证实际 import/C3/库命中、模型精度、真实 decode/Graph 路径和固定参数下 4K/16K 吞吐/TTFT。当前 `new_service_qualified=false`、`precision_gate=false`；不得将组件约 1.22× 当作模型收益。
+后续仍需完成模型精度、真实 decode/Graph 请求覆盖，以及固定参数下 4K/16K 吞吐/TTFT 验收；实际 import/C3/库命中已进入下述设备流程。当前 `new_service_qualified=false`、`precision_gate=false`；不得将组件约 1.22× 当作模型收益。
+
+## 2026-10-28 服务验收进度
+
+最新主分支同机对照已完成：[完整原件和独立复核](evidence/main105-throughput-control-20261028/README.md)。4K **6371.24**、16K **4815.31 total tok/s**，TTFT **3307.13 / 104764.17 ms**，无失败。包括4K预热/归档疑点，记录不隐藏。
+
+当前实际受测候选仍为 `b5d1a241f45efd21517d04e25a7dc5d44ac1ca06`，5c/0c66/8b86/v6；tag `cjj-native107-main105-math105-v1-20261028`，2026-10-28 20:15 CST 启动。固定CLI、3条短请求及64路burst已通过，v3诊断已记录新库两种capture certificate和真实64bucket replay。正在跑原始105题并发8，随后独立105题并发64；尚未完成精度或正式吞吐验收，不能用旧22e证书替代。正式吞吐将关闭诊断、每档完整warm后计一轮，完成并清理当前服务后才启动。

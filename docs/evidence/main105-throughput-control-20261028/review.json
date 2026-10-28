@@ -1,0 +1,330 @@
+{
+  "SSH_or_GPU_or_PR_used": false,
+  "all_archive_SHA_and_sizes_verified": true,
+  "all_four_complete_warm_score_commands_and_token_duration_arithmetic_verified": true,
+  "benchmark_function_sha256": "e236338934098fda2ea0a795b2ade845015123d8ea052806ca0062cc3035a66d",
+  "cache_observations": {
+    "16384": {
+      "changed_metadata": [],
+      "new_metadata": [],
+      "scope": "Complete benchmark including client preflight; not isolated timed-scoring cost.",
+      "selected_tuning_rows_changed": false
+    },
+    "4096": {
+      "changed_metadata": [],
+      "new_metadata": [
+        "5TTIBLLKDM567U5WGSS4DPYCGP6BUQMPQTVJZLM5GX7KNNQON22A/_index_linearized_jit_function.json",
+        "BNCCYPYIYH2KDWC25VANKIKOMTZB3EVPKLAO3QFSEHGHBF7LGDXA/_index_linearized_jit_function.json",
+        "ROYVGHW6DLB6EPA7RB6MZCOSOS7DCUBGTB7QDMGFQ3TEF62LLU2Q/_index_linearized_jit_function.json",
+        "V243X2Z57RPMT6I72FFPIASTYF22OPT5CMMEXQOO7ZDP3UE5FE4A/_index_linearized_jit_function.json"
+      ],
+      "scope": "Complete benchmark including client preflight; not isolated timed-scoring cost.",
+      "selected_tuning_rows_changed": true
+    }
+  },
+  "controller_sha256": "145ae5002af7769e8ae4777e23f33febe7ed01366dca53f16046bf5727adb9b9",
+  "controller_version": "v4/full-only",
+  "fixed_service_CLI": [
+    "/usr/local/bin/vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "full_acceptance": false,
+  "helper_sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+  "historical_descriptive_comparison_only": {
+    "16384": {
+      "PR98_minus_this_main105_TTFT_percent": -3.5959327406217656,
+      "PR98_minus_this_main105_throughput_percent": 4.08564009316299,
+      "original_a975_PR98_mean_TTFT_ms": 100996.92515456627,
+      "original_a975_PR98_total_tok_s": 5012.049282572983
+    },
+    "4096": {
+      "PR98_minus_this_main105_TTFT_percent": 6.408674686130333,
+      "PR98_minus_this_main105_throughput_percent": 2.212048175817416,
+      "original_a975_PR98_mean_TTFT_ms": 3519.073296462011,
+      "original_a975_PR98_total_tok_s": 6512.178795942298
+    }
+  },
+  "libraries": {
+    "BF16_GQA_SHA_binary_rehashed": "0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8",
+    "BF16_GQA_build_archive_files_rehashed": 8,
+    "W8A8_SHA_recorded": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+    "tuning_snapshot_records": [
+      {
+        "bytes": 1605632,
+        "name": "TunedConfig_iluvatar_triton_3_2.db",
+        "quick_check": "ok",
+        "sha256": "5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55"
+      },
+      {
+        "bytes": 15712256,
+        "name": "TunedConfig_iluvatar_triton_3_6.db",
+        "quick_check": "ok",
+        "sha256": "2c5aa448065453188f1ff1794d8e929bacb63dcad84a600e086ae05165821314"
+      }
+    ],
+    "tuning_snapshot_source": "v6 per exact owner CLI"
+  },
+  "limitations": [
+    "One complete warm and one score per geometry; no variance estimate or sufficient-warmth guarantee.",
+    "4K cache observation found4 new index metadata and selected tuning rows changed;16K had no new/changed selected metadata. Scope includes benchmark-client preflight, not isolated timed cost.",
+    "Parent reports concurrent old fullstep archive read during4K. Absence of another GPU task does not prove zero CPU/IO/network impact; no noise/significance attribution is made.",
+    "SELECTED/CAPTURED events establish native implementation selection and capture identities, not actual request frequency or replay coverage.",
+    "max_concurrent_requests68/65 is preserved alongside exact CLI max-concurrency64; request-level latency/token arrays were not saved.",
+    "W8A8 and tuning snapshot hashes are controller/run records; their binary/database files are excluded from this archive. The separate local GQA archive allowed fresh0c66 binary rehash.",
+    "PR98 a975 descriptive comparison changes source,GQA library,physical capacity,warm scheduling and timing; it is not a controlled causal gain or merge qualification.",
+    "This throughput-only control does not run Math105 or establish model precision. No PR105 documentation average or other-library results are substituted."
+  ],
+  "local_CPU_only": true,
+  "merge_qualified": false,
+  "model_verified": false,
+  "original_owner_at_collection": {
+    "pid": 14598,
+    "same_start": true,
+    "start_ticks": 353505395,
+    "state": "Z"
+  },
+  "precision_gate": false,
+  "private_flags": {
+    "Graph_coverage_observer": false,
+    "compiled_fingerprint_matches_OFF": true,
+    "encoded_K8": false,
+    "native_K8": false,
+    "native_enabled_in_C3_is_parent_native_path_not_private_K8": true,
+    "q32_hoist": false
+  },
+  "raw_bytes": 869640,
+  "raw_files": 30,
+  "raw_root": "/private/tmp/cjj-main105-throughput-v1-raw-20261028",
+  "reported_concurrent_archive_activity": {
+    "during_4K": "Readonly download of old fullstep large archive;240-second timeout",
+    "noisy_or_negligible_effect_conclusion_supported": false,
+    "other_GPU_workload_reported": false,
+    "provenance": "Root task report; not independently timed or resource-profiled in these30 raw files",
+    "stopped_before_16K_score": true,
+    "zero_CPU_IO_network_effect_proven": false
+  },
+  "runtime": {
+    "BF16_native_GQA_events": [
+      {
+        "extra_KV_bytes": 0,
+        "grid": [
+          64,
+          2,
+          2
+        ],
+        "k_stride": [
+          8192,
+          256,
+          128,
+          1
+        ],
+        "library_sha256": "0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8",
+        "marker": "BIV150_NATIVE_GQA_SELECTED",
+        "overlap_v": true,
+        "proof": "successful native launch; not a request coverage ratio",
+        "q_stride": [
+          2048,
+          128,
+          1
+        ],
+        "rows": 64,
+        "segments": 2,
+        "threads": 64,
+        "v_stride": [
+          8192,
+          256,
+          128,
+          1
+        ]
+      },
+      {
+        "extra_KV_bytes": 0,
+        "grid": [
+          32,
+          2,
+          4
+        ],
+        "k_stride": [
+          8192,
+          256,
+          128,
+          1
+        ],
+        "library_sha256": "0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8",
+        "marker": "BIV150_NATIVE_GQA_SELECTED",
+        "overlap_v": true,
+        "proof": "successful native launch; not a request coverage ratio",
+        "q_stride": [
+          2048,
+          128,
+          1
+        ],
+        "rows": 32,
+        "segments": 4,
+        "threads": 64,
+        "v_stride": [
+          8192,
+          256,
+          128,
+          1
+        ]
+      },
+      {
+        "extra_KV_bytes": 0,
+        "grid": [
+          64,
+          2,
+          2
+        ],
+        "k_stride": [
+          8192,
+          256,
+          128,
+          1
+        ],
+        "library_sha256": "0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8",
+        "marker": "BIV150_NATIVE_GQA_CAPTURED",
+        "overlap_v": true,
+        "proof": "successful native launch; not a request coverage ratio",
+        "q_stride": [
+          2048,
+          128,
+          1
+        ],
+        "rows": 64,
+        "segments": 2,
+        "threads": 64,
+        "v_stride": [
+          8192,
+          256,
+          128,
+          1
+        ]
+      },
+      {
+        "extra_KV_bytes": 0,
+        "grid": [
+          32,
+          2,
+          4
+        ],
+        "k_stride": [
+          8192,
+          256,
+          128,
+          1
+        ],
+        "library_sha256": "0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8",
+        "marker": "BIV150_NATIVE_GQA_CAPTURED",
+        "overlap_v": true,
+        "proof": "successful native launch; not a request coverage ratio",
+        "q_stride": [
+          2048,
+          128,
+          1
+        ],
+        "rows": 32,
+        "segments": 4,
+        "threads": 64,
+        "v_stride": [
+          8192,
+          256,
+          128,
+          1
+        ]
+      }
+    ],
+    "KV_capacity_tokens": 548416,
+    "actual_Graph_replay_count_proven": false,
+    "actual_request_frequency_proven": false,
+    "compile_semantics_records": 2,
+    "parent_installers": 9
+  },
+  "scores": {
+    "16384": {
+      "completed": 128,
+      "date": "20261028-200650",
+      "duration": 462.7371125766076,
+      "failed": 0,
+      "max_concurrency": 64,
+      "max_concurrent_requests": 65,
+      "mean_tpot_ms": 99.29960230514827,
+      "mean_ttft_ms": 104764.17440234218,
+      "output_throughput": 283.2537015891515,
+      "total_input_tokens": 2097152,
+      "total_output_tokens": 131072,
+      "total_token_throughput": 4815.312927015575
+    },
+    "4096": {
+      "completed": 256,
+      "date": "20261028-194900",
+      "duration": 205.72435122402385,
+      "failed": 0,
+      "max_concurrency": 64,
+      "max_concurrent_requests": 68,
+      "mean_tpot_ms": 46.686591131241094,
+      "mean_ttft_ms": 3307.1300876945315,
+      "output_throughput": 1274.2487626782593,
+      "total_input_tokens": 1048576,
+      "total_output_tokens": 262144,
+      "total_token_throughput": 6371.243813391296
+    }
+  },
+  "script_sha256": "99601b2f6a22e6425ed3786013a712f17f5f2901a9b3c408f450926efdded2a4",
+  "source_and_executed_controller_and_launch_config_bound": true,
+  "source_commit": "1cbac531ca9afaa0e9a68624d5d10cb1d0412055",
+  "source_hashes_verified": 238,
+  "terminal_state": {
+    "API_returncode": 0,
+    "cleanup_complete": true,
+    "completed": true,
+    "errors": [],
+    "remaining_owned": [],
+    "updated_utc": "2026-10-28T12:06:57.941109+00:00"
+  },
+  "warmup_plan": {
+    "complete_full_workload_warmups_per_case": 1,
+    "complete_warm_request_finite_arithmetic_required": true,
+    "explicit_opt_in": true,
+    "formal_score_gates_unchanged": true,
+    "name": "full-only",
+    "official_score_function_sha256": "e236338934098fda2ea0a795b2ade845015123d8ea052806ca0062cc3035a66d",
+    "optional_short_warmups_requested": 0,
+    "parent_controller_sha256": "4a35a01a38ddd7015dde533a24caed3ed914086f65a506c96c305e7c31e498aa",
+    "score_runs_per_case": 1,
+    "skipped_calls_are_not_faked_success": true,
+    "stability_guaranteed_by_plan": false,
+    "warm_formal_TTFT_or_TP_gate_applied": false
+  },
+  "warmups": {
+    "16384": {
+      "completed": 128,
+      "date": "20261028-195830",
+      "duration": 534.0353908790275,
+      "failed": 0,
+      "mean_ttft_ms": 116183.36486734916,
+      "scored": false,
+      "total_token_throughput": 4172.4275919847205
+    },
+    "4096": {
+      "completed": 256,
+      "date": "20261028-194506",
+      "duration": 223.14632093021646,
+      "failed": 0,
+      "mean_ttft_ms": 8305.807920743973,
+      "scored": false,
+      "total_token_throughput": 5873.814072022705
+    }
+  }
+}
