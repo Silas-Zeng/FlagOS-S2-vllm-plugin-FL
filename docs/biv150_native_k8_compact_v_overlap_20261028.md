@@ -49,3 +49,78 @@ python tools/compile_biv150_native_k8_compact_v_overlap.py \
 随后用 `ixobjdump --IR` 和 `--sass` 审核最终 SO 的 S2/S4、完整页与尾页，检查资源、codec、地址、算术和 CFG。准确的等待边界沿用 `actual_V_wait_after_QK_and_P_softmax_packing`：要求实际 QK 与 P 的 softmax/打包位于 wait 前，允许 rho exponent 和 running-L FMA 被编译器留在 wait 后。不能把源码顺序或机器码文本行号当作 CFG 支配关系。
 
 实际 SO 通过独立检查后，再最小适配原四 case consumer 的库/命名空间身份并保留完整数组、FP64、guard、Graph、side 检查；之后复用 PR108 的 dc5 writer、34276 页和原 BF16 对照完整 ABBA。这里不新增数值框架，也不提前放开当前服务的 40f9 资格。模型105、真实容量、两档正式吞吐与 TTFT 仍需独立实测。
+
+## PR110 后继：仅适配真实身份的验证前端
+
+[手工阶段配置](evidence/native-k8-compact-v-overlap-frontends-cpu-20261029/compile-manual-spec.json) 不是 launcher 输入，`automatic_execution=false`、`root_exclusive_confirmed=false`。其中 owner44037/start355048326 只是任务下发时的 PR109 Math105 快照；真正执行前仍由 Root 重新确认当时的任务结束及设备独占。编译继续使用上面的既有入口，CUDA/CPP/codec/header/compile/factory 对 `940d099` 均不变，没有第二个编译工具。
+
+已有 `probe_biv150_native_k8_compact.inspect_SO` 可以直接导出新库的最终机器码；它只读取本次 compile-summary 的真实库身份，不涉及 attention 启动。Root 编译完成后，在同一冻结 checkout 执行：
+
+```bash
+PYTHONPATH=tools /usr/local/bin/python - <<'PY'
+from pathlib import Path
+from probe_biv150_native_k8_compact import inspect_SO
+out = Path('/workspace/experiments/minicpm-s2/cjj-native-k8-compact-v-overlap-compile-v1-20261029')
+result = inspect_SO(out, Path('/usr/local/corex/bin/ixobjdump'))
+assert result['completed']
+PY
+```
+
+这只生成 `actual-so-inspection.json` 及 IR/SASS，不表示审核通过。40f9 的真实 S2/S4 基线资源都是 VGPR100、SGPR66、shared8192B、private/spill0；新库资源必须重新读取，不能把这些数值填入候选收据。实际审核还需确认：
+
+- 最终 SO 字节、IR/SASS、候选源码及独立 namespace 一致；codec 保留原语义。
+- K 装载/barrier 之后发射 V，QK/P softmax/打包在 wait 前，wait 支配尾清零及 PV shared 读，尾页与每页结束 barrier 完整。
+- 12544/3136/6272 及 V+4352B、page16/head128、32/64 scopes 与全部量化/QK/PV 算术未变；不混入103。
+
+新的 `tools/probe_biv150_native_k8_compact_v_overlap_consumer.py` 复用 PR100 `51da` 的数值 `run`，只改一处 operator 名称和一处前端源码身份 tuple。原 compact layout/LiveEpoch、四 case、29页/maxctx193、完整数组保存、FP64、Graph B 先于 Eager B、side C、原 BF16 proxy 和容差都不变。compile binding 只改编译 frontend/flags 指向；原审核门继续执行，并增加 `actual_K_then_V_issue_order_preserved`、`actual_V_wait_after_QK_and_P_softmax_packing` 两个字段。缺失、false、资源未知仍拒绝。
+
+```bash
+python tools/probe_biv150_native_k8_compact_v_overlap_consumer.py \
+  --review-template --compile-summary "$BUILD/compile-summary.json"
+```
+
+模板需要真实 compile+final-SO inspection，审核项默认 false，资源默认 None。Root 根据实际 SO 完成独立审核后保存 `$REVIEW` 并计算真实 `$REVIEW_SHA256`；已有22e codec收据只表示 codec 参考，不授予候选 attention 资格。
+
+```bash
+python tools/probe_biv150_native_k8_compact_v_overlap_consumer.py \
+  --gpu --root-owned-exclusive \
+  --compile-summary "$BUILD/compile-summary.json" \
+  --assembly-review "$REVIEW" --assembly-review-sha256 "$REVIEW_SHA256" \
+  --compact-library "$BUILD/build/cjj_native_k8_compact_v_overlap_probe.so" \
+  --original-library /workspace/experiments/minicpm-s2/cjj-native-k8-compile-v1-20261028/build/cjj_native_k8_qk_probe.so \
+  --codec-summary /workspace/experiments/minicpm-s2/cjj-native-k8-codec-v1-20261028/codec-summary.json \
+  --codec-proof-sha256 3c9733ab79e69c77f70068cff2d3da553ad9c2b81b08ea3c396c6e0788b4f263 \
+  --out "$NEW_CONSUMER_OUT"
+```
+
+完整步骤入口为 `tools/probe_biv150_native_k8_compact_v_overlap_fullstep.py`。PR108 数值 run 只再替换 namespace；原 dc5 writer、两处写入、34276页、BF16 aace 组件对照、预热/ABBA、完整 cache/guard/padding/FP64/Graph/side 保存范围均保留。实际四 case 原件必须先归档为原流程的 `out/`、`exports/*owner.json`、`download-manifest.json` 结构。
+
+新入口要求真实 consumer-summary SHA 和 archive-manifest SHA，校核真实 owner终态及其提交中的执行源码。旧 saved-array replay 仅参数化路径、owner、文件计数与 review身份，整个数组/数值重放主体逐字不变。所有保存数组与输入仍独立重算校验后才进入 fullstep，不能只凭 summary 的通过字段。
+
+```bash
+python tools/probe_biv150_native_k8_compact_v_overlap_fullstep.py \
+  --gpu --root-owned-exclusive \
+  --parent-source /workspace/experiments/minicpm-s2/code/cjj-native-k8-fullstep-v1-20261028 \
+  --compact-consumer-raw "$ACTUAL_CONSUMER_ARCHIVE" \
+  --variant-consumer-sha256 "$ACTUAL_CONSUMER_SUMMARY_SHA256" \
+  --variant-archive-manifest-sha256 "$ACTUAL_DOWNLOAD_MANIFEST_SHA256" \
+  --compile-summary "$BUILD/compile-summary.json" \
+  --assembly-review "$REVIEW" --assembly-review-sha256 "$REVIEW_SHA256" \
+  --codec-summary /workspace/experiments/minicpm-s2/cjj-native-k8-codec-v1-20261028/codec-summary.json \
+  --original-library /workspace/experiments/minicpm-s2/cjj-native-k8-compile-v1-20261028/build/cjj_native_k8_qk_probe.so \
+  --consumer-summary /workspace/experiments/minicpm-s2/cjj-native-k8-consumer-v2-20261028/consumer-summary.json \
+  --consumer-proof-sha256 c2e13e3766172e9b74342bbcf48b1b4729d1b9604bc249b6974740f7f90cc128 \
+  --k8-library "$BUILD/build/cjj_native_k8_compact_v_overlap_probe.so" \
+  --bf16-library /workspace/experiments/minicpm-s2/cjj-main-b3-native-gqa-build-v1-20261028/corex_native_gqa_s2_probe.so \
+  --out "$NEW_FULLSTEP_OUT"
+```
+
+上述 `$...` 均需由 Root 用实际路径/文件 SHA 设置，当前没有假设它们已存在。候选 SO SHA 未产生，也不复用40f9或8b的 attention收据。四 case 的原22e数学对照与 fullstep 的 aace组件对照按原流程保留；当前生产控制仍为40f9，没有服务接入改动。
+
+[后继 CPU 报告](evidence/native-k8-compact-v-overlap-frontends-cpu-20261029/check.json) 包含源码逆变换、JSON身份 roundtrip、6个审核字段负例、真实40f9编译收据被拒绝、完整数组重放主体字节保持、3eb→adapter 导入顺序及默认CPU/缺参拒绝。没有构造假候选 SO 或通过收据，没有执行保存数组重放或任何 GPU 阶段。
+
+```bash
+python -B tools/check_biv150_native_k8_compact_v_overlap_frontends_cpu.py \
+  --parent-source /ABS/FROZEN_3eb_CHECKOUT \
+  --old40f9-compile-summary /ABS/ACTUAL40f9/compile-summary.json
+```

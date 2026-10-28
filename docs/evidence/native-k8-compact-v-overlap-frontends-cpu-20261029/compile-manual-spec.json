@@ -1,0 +1,71 @@
+{
+  "GPU_executed": false,
+  "actual40f9_baseline_resources": {
+    "S2": {
+      "private_segment_bytes": 0,
+      "sgpr": 66,
+      "sgpr_spills": 0,
+      "shared_bytes": 8192,
+      "vgpr": 100,
+      "vgpr_spills": 0
+    },
+    "S4": {
+      "private_segment_bytes": 0,
+      "sgpr": 66,
+      "sgpr_spills": 0,
+      "shared_bytes": 8192,
+      "vgpr": 100,
+      "vgpr_spills": 0
+    }
+  },
+  "actual_SO_review_sha256": null,
+  "actual_candidate_library_sha256": null,
+  "actual_consumer_archive_manifest_sha256": null,
+  "actual_consumer_summary_sha256": null,
+  "automatic_execution": false,
+  "base": "a455a3de364051fbea80226870c239de3a48e716",
+  "baseline_resource_values_are_not_candidate_receipt": true,
+  "command": [
+    "/usr/local/bin/python",
+    "tools/compile_biv150_native_k8_compact_v_overlap.py",
+    "--compile-only",
+    "--root-owned-exclusive",
+    "--compiler",
+    "/usr/local/corex/bin/clang++",
+    "--out",
+    "/workspace/experiments/minicpm-s2/cjj-native-k8-compact-v-overlap-compile-v1-20261029"
+  ],
+  "current40f9_control_unchanged": true,
+  "existing_final_SO_export": {
+    "function": "inspect_SO",
+    "is_review_approval": false,
+    "module": "probe_biv150_native_k8_compact",
+    "objdump": "/usr/local/corex/bin/ixobjdump",
+    "out": "/workspace/experiments/minicpm-s2/cjj-native-k8-compact-v-overlap-compile-v1-20261029"
+  },
+  "expected_namespace": "cjj_native_k8_compact_v_overlap_probe",
+  "kind": "manual-review-stage-spec-not-a-launcher-input",
+  "ordered_stages": [
+    "existing compile-only entry",
+    "existing inspect_SO final binary export",
+    "independent actual SO/CFG/resources review",
+    "original four-case consumer with candidate identities",
+    "actual saved-array archive replay",
+    "original compact fullstep ABBA with candidate identities"
+  ],
+  "performance_verified": false,
+  "precision_gate": false,
+  "prerequisites": [
+    "Root independently checks the current owner and device; the dispatch snapshot is not live authorization",
+    "Use a clean frozen reviewed checkout and a fresh output directory",
+    "Never run this while the current GPU owner is active"
+  ],
+  "reported_at_dispatch_not_live": {
+    "pid": 44037,
+    "start_ticks": 355048326,
+    "task": "PR109 Math105"
+  },
+  "root_exclusive_confirmed": false,
+  "source_commit": "940d09984da201992194dbc25421e9f9f87198b4",
+  "source_files_unchanged_in_frontend_followup": true
+}
