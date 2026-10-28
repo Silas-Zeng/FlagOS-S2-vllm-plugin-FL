@@ -1,0 +1,70 @@
+{
+  "baseline_report_sha256": "57bb07087627709f2ccc27b73d4def3d78793c5a562b5fb0d7a89aa96bd0c218",
+  "baseline_tested_source": "b5d1a241f45efd21517d04e25a7dc5d44ac1ca06",
+  "candidate_report_sha256": "1a595917940d95cdac0c271f4ed0f0ac7c6acb0cfcec1c04aab0c683bf616aad",
+  "candidate_tested_source": "069838d6fbb7591de4384aac8caef49324c43aef",
+  "causal_attribution_proven": false,
+  "comparisons": {
+    "16384": {
+      "mean_tpot_ms": {
+        "PR107": 91.6359315565178,
+        "percent_change": 37.934571976735974,
+        "pinfix069": 126.39762996937756
+      },
+      "mean_ttft_ms": {
+        "PR107": 98573.61323895384,
+        "percent_change": -16.66367209792692,
+        "pinfix069": 82147.6295537359
+      },
+      "total_token_throughput": {
+        "PR107": 5165.670512577975,
+        "percent_change": -7.79727954253997,
+        "pinfix069": 4762.888742465713
+      }
+    },
+    "4096": {
+      "mean_tpot_ms": {
+        "PR107": 46.32515534437836,
+        "percent_change": -0.08103279259673579,
+        "pinfix069": 46.28761677732803
+      },
+      "mean_ttft_ms": {
+        "PR107": 3675.7097294175765,
+        "percent_change": 6.5561625594874995,
+        "pinfix069": 3916.6952344930905
+      },
+      "total_token_throughput": {
+        "PR107": 6374.4399021712225,
+        "percent_change": -0.3844275684958931,
+        "pinfix069": 6349.934797850074
+      }
+    }
+  },
+  "current_Math105_run": false,
+  "merge_qualification": false,
+  "notes": [
+    "PR107 is the recorded accepted reference later merged as main a455; this is not a fresh main rerun.",
+    "4K -0.3844% is recorded as no demonstrated gain; statistical equivalence is not established.",
+    "16K -7.7973% is a negative single-score observation, not a confidence interval.",
+    "PR107 encoded K8/8b86 and this compact K8/7892+2ad candidate differ in several components; both enable their respective Q32 paths.",
+    "Current 4K score interval adds six index metadata files and changes selected tuning rows; current 16K interval does neither.",
+    "a6d remains a failed service run and is not substituted for the accepted reference."
+  ],
+  "precision_gate": false,
+  "repeat_distribution_available": false,
+  "schema": "native111-vs-accepted-PR107-single-score-v1",
+  "warmup_plan": {
+    "complete_full_workload_warmups_per_case": 1,
+    "complete_warm_request_finite_arithmetic_required": true,
+    "explicit_opt_in": true,
+    "formal_score_gates_unchanged": true,
+    "name": "full-only",
+    "official_score_function_sha256": "e236338934098fda2ea0a795b2ade845015123d8ea052806ca0062cc3035a66d",
+    "optional_short_warmups_requested": 0,
+    "parent_controller_sha256": "4a35a01a38ddd7015dde533a24caed3ed914086f65a506c96c305e7c31e498aa",
+    "score_runs_per_case": 1,
+    "skipped_calls_are_not_faked_success": true,
+    "stability_guaranteed_by_plan": false,
+    "warm_formal_TTFT_or_TP_gate_applied": false
+  }
+}
