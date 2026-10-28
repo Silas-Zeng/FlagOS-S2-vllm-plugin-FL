@@ -115,13 +115,14 @@ def main():
         assert calls[0][2]['RAGGED_M'] is True
         assert {k:v for k,v in calls[0][2].items() if k!='RAGGED_M'}==dict(config,BIAS=False,GROUP_M=8,SPLIT_K=1)
         assert len(launches)==1 and cap.prelaunch[0]['autotune_allowed'] is False
-        for bad in ('cache_miss','wrong_cached_tile','dynamic_flagtune','forced_policy','wrong_table','wrong_key','single_config','short_backing','changed_launch_tile','changed_launch_grid','shared_hook','matching_pool_hook'):
+        for bad in ('cache_miss','wrong_cached_tile','dynamic_flagtune','forced_policy','wrong_table','physical_table_as_logical','wrong_key','single_config','short_backing','changed_launch_tile','changed_launch_grid','shared_hook','matching_pool_hook'):
             e=Entry();bad_args=list(args);bad_grid=grid
             if bad=='cache_miss':e.fn.cache.get=lambda key:None
             elif bad=='wrong_cached_tile':e.fn.cache.get=lambda key:NS(pre_hook=None,all_kwargs=lambda:dict(config,BLOCK_M=256))
             elif bad=='dynamic_flagtune':e._has_flagtune_tuner=True
             elif bad=='forced_policy':e.fn._run_mode='force_policy'
             elif bad=='wrong_table':e.fn.config_table_name='unknown'
+            elif bad=='physical_table_as_logical':e.fn.config_table_name=fm.CONFIG_TABLE+'-0f015d35c97293819201f206510edb40'
             elif bad=='wrong_key':e.fn.get_key=lambda bound:(rows,)
             elif bad=='single_config':e.fn.configs=[None]
             elif bad=='short_backing':bad_args[0]=NS(**{**vars(x),'untyped_storage':lambda:NS(nbytes=lambda:(rows+2)*4096)})

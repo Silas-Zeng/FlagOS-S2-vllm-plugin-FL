@@ -10,7 +10,7 @@ def configure(rows):
     ROWS=rows
 
 LINEAR_SHA='d431a4fa144ed67dc3deab46dd5beace3612858075f85c39e602447ba3bf768a'
-CONFIG_TABLE='linear_kernel_91df7045e2de13a4c456e8d13079eb7c-0f015d35c97293819201f206510edb40'
+CONFIG_TABLE='linear_kernel_91df7045e2de13a4c456e8d13079eb7c'
 
 
 def baseline_config():
