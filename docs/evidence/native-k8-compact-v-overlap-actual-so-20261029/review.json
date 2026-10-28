@@ -1,0 +1,1054 @@
+{
+  "CPU_only": true,
+  "ELF_parser_sha256": "09ac1c98f2f1a1ff25ad02fcc819b25fc00bdb442a55c2ec1ad69defc61ea6e7",
+  "GPU_numeric_verified": false,
+  "Graph_verified": false,
+  "IR": [
+    {
+      "SME_512B_descriptor_lines": [
+        600,
+        1139
+      ],
+      "addresses": [
+        {
+          "K_page_GEP": 560,
+          "V_arg3_page_GEP": 594,
+          "V_head_GEP": 596,
+          "V_stride_BF16": 6272,
+          "page_multiply": 559,
+          "page_sext": 558,
+          "page_stride_bytes": 12544,
+          "path": "full",
+          "scale_4096B_once": 630,
+          "scale_arg2_page_GEP": 629,
+          "scale_stride_F32": 3136
+        },
+        {
+          "K_page_GEP": 919,
+          "V_arg3_page_GEP": 1133,
+          "V_head_GEP": 1135,
+          "V_stride_BF16": 6272,
+          "page_multiply": 918,
+          "page_sext": 917,
+          "page_stride_bytes": 12544,
+          "path": "tail",
+          "scale_4096B_once": 1190,
+          "scale_arg2_page_GEP": 1189,
+          "scale_stride_F32": 3136
+        }
+      ],
+      "arithmetic_alpha_sha256": "a2bfd61e32fe13a6a2beac46e5f8751cfa3879f315c48bc47ac0c86c097ea8bc",
+      "arithmetic_including_constants_flags_and_operand_sharing_equal_to_actual40f9": true,
+      "arithmetic_lines": 291,
+      "paths": [
+        {
+          "IR_CFG_checked": true,
+          "K_dataflow": {
+            "K_barrier_lines_before_wait": [
+              593
+            ],
+            "K_global_I32_load_lines": [
+              563,
+              567,
+              571,
+              575,
+              579,
+              583,
+              587,
+              591
+            ],
+            "K_shared_I32_store_lines": [
+              564,
+              568,
+              572,
+              576,
+              580,
+              584,
+              588,
+              592
+            ],
+            "V_SME_lines": [
+              601,
+              602,
+              603,
+              604
+            ],
+            "V_block": "527",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 746,
+            "V_wait8_line": 743,
+            "path": "full"
+          },
+          "K_ready_barrier": 593,
+          "PV": [
+            765,
+            783,
+            801,
+            819,
+            837,
+            855,
+            873,
+            891
+          ],
+          "P_and_rho_exp": [
+            679,
+            681,
+            715,
+            717
+          ],
+          "QK": [
+            610,
+            616,
+            622,
+            628
+          ],
+          "V_SME": [
+            601,
+            602,
+            603,
+            604
+          ],
+          "V_ready_barrier": 746,
+          "V_wait": 743,
+          "path": "full",
+          "tail_clear_stores": []
+        },
+        {
+          "IR_CFG_checked": true,
+          "K_dataflow": {
+            "K_barrier_lines_before_wait": [
+              1132
+            ],
+            "K_global_I32_load_lines": [
+              934,
+              958,
+              982,
+              1009,
+              1036,
+              1063,
+              1090,
+              1117
+            ],
+            "K_shared_I32_store_lines": [
+              945,
+              969,
+              996,
+              1023,
+              1050,
+              1077,
+              1104,
+              1131
+            ],
+            "V_SME_lines": [
+              1140,
+              1141,
+              1142,
+              1143
+            ],
+            "V_block": "1062",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 1363,
+            "V_wait8_line": 1318,
+            "path": "tail"
+          },
+          "K_ready_barrier": 1132,
+          "PV": [
+            1384,
+            1405,
+            1425,
+            1445,
+            1465,
+            1485,
+            1505,
+            1525
+          ],
+          "P_and_rho_exp": [
+            1247,
+            1249,
+            1283,
+            1285
+          ],
+          "QK": [
+            1156,
+            1167,
+            1176,
+            1185
+          ],
+          "V_SME": [
+            1140,
+            1141,
+            1142,
+            1143
+          ],
+          "V_ready_barrier": 1363,
+          "V_wait": 1318,
+          "path": "tail",
+          "tail_clear_stores": [
+            1344,
+            1354
+          ]
+        }
+      ],
+      "segments": 2,
+      "static_counts": {
+        "BF16_PV": 16,
+        "BF16_P_casts": 4,
+        "I8_QK": 8,
+        "L_FMA": 4,
+        "Q_integer_RNE": 16,
+        "exp2_approx": 8,
+        "signed_I32_to_F32": 4,
+        "unflagged_F32_divides": 18
+      },
+      "symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "tail_and_output_slices": {
+        "final_PV_output_store": {
+          "alpha_sha256": "d64b0ba3ab298e139a1dfcd7a8f8cde50c91236f2a4ed96ddd365a948d5858a0",
+          "lines": 100,
+          "loop_metadata_preserved": true
+        },
+        "tail_clear_guard": {
+          "alpha_sha256": "5675894def0485486bad203449db96985547fe7ed15df243ea3c3ef633661588",
+          "lines": 1,
+          "loop_metadata_preserved": true
+        },
+        "tail_clear_loop": {
+          "alpha_sha256": "a23551fd868820b0ac6ea81522e5f12c95a398a55888b2e392e877222bc0a936",
+          "lines": 38,
+          "loop_metadata_preserved": true
+        }
+      }
+    },
+    {
+      "SME_512B_descriptor_lines": [
+        2223,
+        2762
+      ],
+      "addresses": [
+        {
+          "K_page_GEP": 2183,
+          "V_arg3_page_GEP": 2217,
+          "V_head_GEP": 2219,
+          "V_stride_BF16": 6272,
+          "page_multiply": 2182,
+          "page_sext": 2181,
+          "page_stride_bytes": 12544,
+          "path": "full",
+          "scale_4096B_once": 2253,
+          "scale_arg2_page_GEP": 2252,
+          "scale_stride_F32": 3136
+        },
+        {
+          "K_page_GEP": 2542,
+          "V_arg3_page_GEP": 2756,
+          "V_head_GEP": 2758,
+          "V_stride_BF16": 6272,
+          "page_multiply": 2541,
+          "page_sext": 2540,
+          "page_stride_bytes": 12544,
+          "path": "tail",
+          "scale_4096B_once": 2813,
+          "scale_arg2_page_GEP": 2812,
+          "scale_stride_F32": 3136
+        }
+      ],
+      "arithmetic_alpha_sha256": "a2bfd61e32fe13a6a2beac46e5f8751cfa3879f315c48bc47ac0c86c097ea8bc",
+      "arithmetic_including_constants_flags_and_operand_sharing_equal_to_actual40f9": true,
+      "arithmetic_lines": 291,
+      "paths": [
+        {
+          "IR_CFG_checked": true,
+          "K_dataflow": {
+            "K_barrier_lines_before_wait": [
+              2216
+            ],
+            "K_global_I32_load_lines": [
+              2186,
+              2190,
+              2194,
+              2198,
+              2202,
+              2206,
+              2210,
+              2214
+            ],
+            "K_shared_I32_store_lines": [
+              2187,
+              2191,
+              2195,
+              2199,
+              2203,
+              2207,
+              2211,
+              2215
+            ],
+            "V_SME_lines": [
+              2224,
+              2225,
+              2226,
+              2227
+            ],
+            "V_block": "527",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 2369,
+            "V_wait8_line": 2366,
+            "path": "full"
+          },
+          "K_ready_barrier": 2216,
+          "PV": [
+            2388,
+            2406,
+            2424,
+            2442,
+            2460,
+            2478,
+            2496,
+            2514
+          ],
+          "P_and_rho_exp": [
+            2302,
+            2304,
+            2338,
+            2340
+          ],
+          "QK": [
+            2233,
+            2239,
+            2245,
+            2251
+          ],
+          "V_SME": [
+            2224,
+            2225,
+            2226,
+            2227
+          ],
+          "V_ready_barrier": 2369,
+          "V_wait": 2366,
+          "path": "full",
+          "tail_clear_stores": []
+        },
+        {
+          "IR_CFG_checked": true,
+          "K_dataflow": {
+            "K_barrier_lines_before_wait": [
+              2755
+            ],
+            "K_global_I32_load_lines": [
+              2557,
+              2581,
+              2605,
+              2632,
+              2659,
+              2686,
+              2713,
+              2740
+            ],
+            "K_shared_I32_store_lines": [
+              2568,
+              2592,
+              2619,
+              2646,
+              2673,
+              2700,
+              2727,
+              2754
+            ],
+            "V_SME_lines": [
+              2763,
+              2764,
+              2765,
+              2766
+            ],
+            "V_block": "1062",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 2986,
+            "V_wait8_line": 2941,
+            "path": "tail"
+          },
+          "K_ready_barrier": 2755,
+          "PV": [
+            3007,
+            3028,
+            3048,
+            3068,
+            3088,
+            3108,
+            3128,
+            3148
+          ],
+          "P_and_rho_exp": [
+            2870,
+            2872,
+            2906,
+            2908
+          ],
+          "QK": [
+            2779,
+            2790,
+            2799,
+            2808
+          ],
+          "V_SME": [
+            2763,
+            2764,
+            2765,
+            2766
+          ],
+          "V_ready_barrier": 2986,
+          "V_wait": 2941,
+          "path": "tail",
+          "tail_clear_stores": [
+            2967,
+            2977
+          ]
+        }
+      ],
+      "segments": 4,
+      "static_counts": {
+        "BF16_PV": 16,
+        "BF16_P_casts": 4,
+        "I8_QK": 8,
+        "L_FMA": 4,
+        "Q_integer_RNE": 16,
+        "exp2_approx": 8,
+        "signed_I32_to_F32": 4,
+        "unflagged_F32_divides": 18
+      },
+      "symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "tail_and_output_slices": {
+        "final_PV_output_store": {
+          "alpha_sha256": "d64b0ba3ab298e139a1dfcd7a8f8cde50c91236f2a4ed96ddd365a948d5858a0",
+          "lines": 100,
+          "loop_metadata_preserved": true
+        },
+        "tail_clear_guard": {
+          "alpha_sha256": "5675894def0485486bad203449db96985547fe7ed15df243ea3c3ef633661588",
+          "lines": 1,
+          "loop_metadata_preserved": true
+        },
+        "tail_clear_loop": {
+          "alpha_sha256": "6dd3b9196e59bd7ae797fe38b7f732086ef9b5631a2c26a1bb42eb2681ad6196",
+          "lines": 38,
+          "loop_metadata_preserved": true
+        }
+      }
+    }
+  ],
+  "SO_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "actual_embedded_ELFs_equal_to_built_objects": true,
+  "all_decoded_instruction_words_bound_to_actual_SO": true,
+  "capacity_reclaimed": false,
+  "codec_actual_IR_RNE_conversions": 2,
+  "codec_actual_IR_unflagged_F32_divides": 3,
+  "codec_text_equal_to_actual40f9": true,
+  "codec_text_sha256": "936ce115af95401dda3a37cf310b62baa606003a18910ff46de4707fbaba19cf",
+  "compile_binding": {
+    "actual_SO_IR_sha256": "9329422686c2104fa766b6b789e123e321c351f873bef51faf3a3dad34183eff",
+    "actual_SO_SASS_sha256": "0cc2e959d8148178319eb259465f79c92630f10771b359196acf30ce8fe4242b",
+    "compile_summary_sha256": "45cd9f019d72f1fc784779690cb4ba7771449ddabbf256c50f9a30fd9e4ef7bf",
+    "inspection_sha256": "50d9673ae6ece9025df6c6220b083c76f8cd478896b46d618ae54836265de616",
+    "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+    "source_proof": {
+      "N40_N48_added": false,
+      "PR103_Q32_hoist_combined": false,
+      "Q_pitches": [
+        2048,
+        2560
+      ],
+      "Q_quantization_QK_softmax_PV_and_outputs_unchanged": true,
+      "V_first_PR96_combined": false,
+      "actual_device_schedule_verified": false,
+      "actual_library_sha256": null,
+      "address_proof": {
+        "SME_full_footprint_each_head_bytes": 4096,
+        "SME_row_pitch_bytes": 512,
+        "complete_page_bytes": 12544,
+        "key_bytes": 4096,
+        "last_value_byte": 12543,
+        "page_arithmetic_signed_I64": true,
+        "page_edge_ids": [
+          0,
+          1,
+          32767,
+          2147483646
+        ],
+        "reserved_bytes": 128,
+        "scale_bytes": 128,
+        "value_bytes": 8192
+      },
+      "base": "a455a3de364051fbea80226870c239de3a48e716",
+      "dc5_writer_reference": {
+        "commit": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+        "source_pins": {
+          "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+          "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+        },
+        "writer_in_this_component": false
+      },
+      "deferred_wait": "after QK and P softmax/packing; before V tail clear and PV",
+      "evidence_base": "46b44a1326973ccb6b874452841726298507414c",
+      "files": {
+        "codec.cu": {
+          "commutes_to_reviewed8b_sha256": "8c4d67925f9d731f9fda36c82b75d35da8372ffbb9579b1c2891898a19c371b3",
+          "inverse_byte_exact": true,
+          "parent_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b",
+          "variant_sha256": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1"
+        },
+        "codec.cuh": {
+          "inverse_byte_exact": true,
+          "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+          "variant_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+        },
+        "qk.cpp": {
+          "commutes_to_reviewed8b_sha256": "5b71b43807c8e5f57a4f495a2733f1738ee1248ebec91f4a2f8e26b84b18e0ef",
+          "inverse_byte_exact": true,
+          "parent_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761",
+          "variant_sha256": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750"
+        },
+        "qk.cu": {
+          "commutes_to_reviewed8b_sha256": "8f22c9464b4595caf0059e9571e92d1ede83abe1430fda8f95a7e8b649efe3bf",
+          "inverse_byte_exact": true,
+          "parent_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+          "variant_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce"
+        }
+      },
+      "issue_order": "K ordinary load/store + barrier, then V SME (unchanged)",
+      "namespace": "cjj_native_k8_compact_v_overlap_probe",
+      "numeric_verified": false,
+      "parent": "51da6fd73e7fff1513081fb330323ce72c00856c",
+      "performance_verified": false,
+      "physical_page_bytes": 12544,
+      "precision_gate": false,
+      "scope": [
+        "N64/S2",
+        "N32/S4"
+      ],
+      "service_enabled": false,
+      "shared_K_bytes": [
+        0,
+        2048
+      ],
+      "shared_V_bytes": [
+        4096,
+        8192
+      ],
+      "shared_bytes": 8192,
+      "wait_parent": "a1eb7deee5e8ef99136128984256762096a3657f"
+    }
+  },
+  "conclusion": "Actual 7892 S2/S4 full/tail preserve K-before-V issue, QK/P softmax/packing precede V wait, wait dominates V tail clear and PV. Compact 12544B layout and codec preserved. No resource regression relative to actual40f9.",
+  "control_SO_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+  "control_manifest_sha256": "34591993b40f479b4af9696ae45fd2e5a8df5b5e370680002d3c6f4e01df3ee4",
+  "fullstep_verified": false,
+  "host_compiled_source_and_binary_guard_bound": true,
+  "host_machine_disassembled": false,
+  "instructions_bound": 2764,
+  "limitations": [
+    "Full-loop blocks are physically reordered; CFG rather than line ordering establishes execution order.",
+    "Machine full-page rho has one exp before wait and one after; tail has both rho exp after wait. Both running-L FMAs remain after wait in each path. Do not assert all softmax precedes wait.",
+    "Actual-SO IR is the hash-bound ixobjdump export, not independently decoded LLVM bitcode. Arithmetic/slice/source comparisons and CFG checks are not a whole-program equivalence proof.",
+    "Host offset/stride guards are checked in exact compiled C++ plus binary guard text, not x86 disassembly.",
+    "Binary metadata does not measure runtime occupancy, hide latency, or establish throughput.",
+    "No GPU numerical, Graph, side-stream, fullstep, model, service, capacity, N40/N48, or performance qualification. Root must independently review before a device consumer."
+  ],
+  "machine": [
+    {
+      "branch_targets_checked": 14,
+      "instructions": 1339,
+      "page_12544B_multiply_lines": [
+        692,
+        850
+      ],
+      "paths": [
+        {
+          "CFG_dominance_and_conditional_packing_paths_checked": true,
+          "K_global_loads": [
+            694,
+            695,
+            696,
+            697,
+            698,
+            709,
+            710,
+            711
+          ],
+          "K_ready_barrier": 719,
+          "K_shared_stores": [
+            700,
+            702,
+            704,
+            706,
+            708,
+            713,
+            715,
+            717
+          ],
+          "PV_MMA": [
+            641,
+            645,
+            659,
+            663,
+            669,
+            673,
+            677,
+            679
+          ],
+          "PV_reads": [
+            616,
+            620,
+            624,
+            628,
+            642,
+            643,
+            646,
+            647,
+            660,
+            661,
+            664,
+            665,
+            670,
+            671,
+            674,
+            675
+          ],
+          "P_BF16_casts": [
+            792,
+            800
+          ],
+          "P_exp": [
+            787,
+            790
+          ],
+          "P_pack_ORs": [
+            826,
+            831
+          ],
+          "P_pack_shifts": [
+            824,
+            830
+          ],
+          "P_sums": [
+            795,
+            798,
+            806,
+            809,
+            813,
+            816,
+            817,
+            820
+          ],
+          "QK": [
+            736,
+            745,
+            749,
+            751
+          ],
+          "V_SME": [
+            740,
+            742,
+            743,
+            747
+          ],
+          "V_ready_barrier": 615,
+          "V_wait": 609,
+          "V_wait_pc": "0x13310",
+          "all_softmax_before_wait": false,
+          "path": "full",
+          "physical_wait_before_QK_text": true,
+          "rho_exp_after_wait": [
+            610
+          ],
+          "rho_exp_before_wait": [
+            608
+          ],
+          "running_L_FMA_after_wait": [
+            612,
+            613
+          ],
+          "tail_clear_stores": []
+        },
+        {
+          "CFG_dominance_and_conditional_packing_paths_checked": true,
+          "K_global_loads": [
+            857,
+            865,
+            875,
+            886,
+            899,
+            910,
+            923,
+            934
+          ],
+          "K_ready_barrier": 942,
+          "K_shared_stores": [
+            861,
+            870,
+            881,
+            892,
+            905,
+            916,
+            929,
+            940
+          ],
+          "PV_MMA": [
+            1175,
+            1179,
+            1194,
+            1198,
+            1206,
+            1210,
+            1214,
+            1216
+          ],
+          "PV_reads": [
+            1150,
+            1154,
+            1158,
+            1162,
+            1176,
+            1177,
+            1180,
+            1181,
+            1195,
+            1196,
+            1199,
+            1200,
+            1207,
+            1208,
+            1211,
+            1212
+          ],
+          "P_BF16_casts": [
+            1049,
+            1059
+          ],
+          "P_exp": [
+            1040,
+            1043
+          ],
+          "P_pack_ORs": [
+            1083,
+            1087
+          ],
+          "P_pack_shifts": [
+            1081,
+            1086
+          ],
+          "P_sums": [
+            1047,
+            1051,
+            1054,
+            1057,
+            1066,
+            1069,
+            1072,
+            1074
+          ],
+          "QK": [
+            978,
+            982,
+            984,
+            986
+          ],
+          "V_SME": [
+            950,
+            953,
+            956,
+            959
+          ],
+          "V_ready_barrier": 1148,
+          "V_wait": 1090,
+          "V_wait_pc": "0x14218",
+          "all_softmax_before_wait": false,
+          "path": "tail",
+          "physical_wait_before_QK_text": false,
+          "rho_exp_after_wait": [
+            1141,
+            1143
+          ],
+          "rho_exp_before_wait": [],
+          "running_L_FMA_after_wait": [
+            1144,
+            1146
+          ],
+          "tail_clear_stores": [
+            1125,
+            1137
+          ]
+        }
+      ],
+      "resources": {
+        ".group_segment_fixed_size": 8192,
+        ".kernarg_segment_align": 8,
+        ".kernarg_segment_size": 144,
+        ".max_flat_workgroup_size": 0,
+        ".name": "_Z40cjj_native_k8_compact_v_overlap_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 66,
+        ".sgpr_spill_count": 0,
+        ".symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "segments": 2,
+      "symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "branch_targets_checked": 14,
+      "instructions": 1339,
+      "page_12544B_multiply_lines": [
+        2033,
+        2191
+      ],
+      "paths": [
+        {
+          "CFG_dominance_and_conditional_packing_paths_checked": true,
+          "K_global_loads": [
+            2035,
+            2036,
+            2037,
+            2038,
+            2039,
+            2050,
+            2051,
+            2052
+          ],
+          "K_ready_barrier": 2060,
+          "K_shared_stores": [
+            2041,
+            2043,
+            2045,
+            2047,
+            2049,
+            2054,
+            2056,
+            2058
+          ],
+          "PV_MMA": [
+            1982,
+            1986,
+            2000,
+            2004,
+            2010,
+            2014,
+            2018,
+            2020
+          ],
+          "PV_reads": [
+            1957,
+            1961,
+            1965,
+            1969,
+            1983,
+            1984,
+            1987,
+            1988,
+            2001,
+            2002,
+            2005,
+            2006,
+            2011,
+            2012,
+            2015,
+            2016
+          ],
+          "P_BF16_casts": [
+            2133,
+            2141
+          ],
+          "P_exp": [
+            2128,
+            2131
+          ],
+          "P_pack_ORs": [
+            2167,
+            2172
+          ],
+          "P_pack_shifts": [
+            2165,
+            2171
+          ],
+          "P_sums": [
+            2136,
+            2139,
+            2147,
+            2150,
+            2154,
+            2157,
+            2158,
+            2161
+          ],
+          "QK": [
+            2077,
+            2086,
+            2090,
+            2092
+          ],
+          "V_SME": [
+            2081,
+            2083,
+            2084,
+            2088
+          ],
+          "V_ready_barrier": 1956,
+          "V_wait": 1950,
+          "V_wait_pc": "0x15de8",
+          "all_softmax_before_wait": false,
+          "path": "full",
+          "physical_wait_before_QK_text": true,
+          "rho_exp_after_wait": [
+            1951
+          ],
+          "rho_exp_before_wait": [
+            1949
+          ],
+          "running_L_FMA_after_wait": [
+            1953,
+            1954
+          ],
+          "tail_clear_stores": []
+        },
+        {
+          "CFG_dominance_and_conditional_packing_paths_checked": true,
+          "K_global_loads": [
+            2198,
+            2206,
+            2216,
+            2227,
+            2240,
+            2251,
+            2264,
+            2275
+          ],
+          "K_ready_barrier": 2283,
+          "K_shared_stores": [
+            2202,
+            2211,
+            2222,
+            2233,
+            2246,
+            2257,
+            2270,
+            2281
+          ],
+          "PV_MMA": [
+            2516,
+            2520,
+            2535,
+            2539,
+            2547,
+            2551,
+            2555,
+            2557
+          ],
+          "PV_reads": [
+            2491,
+            2495,
+            2499,
+            2503,
+            2517,
+            2518,
+            2521,
+            2522,
+            2536,
+            2537,
+            2540,
+            2541,
+            2548,
+            2549,
+            2552,
+            2553
+          ],
+          "P_BF16_casts": [
+            2390,
+            2400
+          ],
+          "P_exp": [
+            2381,
+            2384
+          ],
+          "P_pack_ORs": [
+            2424,
+            2428
+          ],
+          "P_pack_shifts": [
+            2422,
+            2427
+          ],
+          "P_sums": [
+            2388,
+            2392,
+            2395,
+            2398,
+            2407,
+            2410,
+            2413,
+            2415
+          ],
+          "QK": [
+            2319,
+            2323,
+            2325,
+            2327
+          ],
+          "V_SME": [
+            2291,
+            2294,
+            2297,
+            2300
+          ],
+          "V_ready_barrier": 2489,
+          "V_wait": 2431,
+          "V_wait_pc": "0x16cf0",
+          "all_softmax_before_wait": false,
+          "path": "tail",
+          "physical_wait_before_QK_text": false,
+          "rho_exp_after_wait": [
+            2482,
+            2484
+          ],
+          "rho_exp_before_wait": [],
+          "running_L_FMA_after_wait": [
+            2485,
+            2487
+          ],
+          "tail_clear_stores": [
+            2466,
+            2478
+          ]
+        }
+      ],
+      "resources": {
+        ".group_segment_fixed_size": 8192,
+        ".kernarg_segment_align": 8,
+        ".kernarg_segment_size": 144,
+        ".max_flat_workgroup_size": 0,
+        ".name": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 66,
+        ".sgpr_spill_count": 0,
+        ".symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "segments": 4,
+      "symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    }
+  ],
+  "manifest_sha256": "36fdbdda9dfa698fce4a2210da2685dcee35f13fe3ee2fa88a73f67e673f4c16",
+  "manual_Root_approval": false,
+  "model_verified": false,
+  "performance_verified": false,
+  "precision_gate": false,
+  "raw_bytes_rehashed": 1408237,
+  "raw_files_rehashed": 33,
+  "reviewer_GPU_SSH_JIT_compile_or_Torch_executed": false,
+  "script_sha256": "99257bae454408161c50f00053efaca939b86f6d5a49aaee57247e76cac907a2",
+  "service_verified": false,
+  "side_stream_verified": false,
+  "source_commit": "4d1166792a5247b774d6b1977e60466574e6a34c",
+  "static_resources_equal_to_actual40f9": true
+}
