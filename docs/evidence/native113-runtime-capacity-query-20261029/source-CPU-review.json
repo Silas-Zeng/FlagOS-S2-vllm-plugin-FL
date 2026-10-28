@@ -1,0 +1,36 @@
+{
+  "CPU_static_checks_passed": true,
+  "default_and_negative_plans": [
+    {
+      "case": "valid",
+      "status": "CPU_plan",
+      "library_hashes_checked": true,
+      "no_runtime_query": true
+    },
+    {
+      "case": "wrong_SO",
+      "status": "diagnostic_unavailable",
+      "library_hashes_checked": true,
+      "no_runtime_query": true
+    }
+  ],
+  "runtime_API_queried": false,
+  "runtime_capacity_observed": false,
+  "SDK_helper_compiled": false,
+  "source_sha256": "c51480908249a08d18b11aa642764a91cc50aae761c38a868f076a92e9bb8e57",
+  "helper_source_sha256": "b5ccb92f228a6dd95156d42ea975716d166483265aa7aad5ab062fbb95a1566b",
+  "bindings_sha256": "c6ab1f4b6c2cdcb3f26ba1fe486f555fa00cfadc765d793f240bd4fb70680b74",
+  "allowed_runtime_API_calls": [
+    "cudaDriverGetVersion",
+    "cudaFuncGetAttributes",
+    "cudaGetDevice",
+    "cudaGetDeviceProperties",
+    "cudaGetErrorString",
+    "cudaGetErrorString",
+    "cudaOccupancyMaxActiveBlocksPerMultiprocessor",
+    "cudaRuntimeGetVersion"
+  ],
+  "full_SDK_ABI_verified": false,
+  "GPU_numeric_verified": false,
+  "source_limits": "Static source + normal CPU plan only. Actual SDK compilation, dlsym/dladdr and runtime capacity remain pending."
+}
