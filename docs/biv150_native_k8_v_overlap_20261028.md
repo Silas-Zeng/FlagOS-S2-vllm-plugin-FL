@@ -1,12 +1,12 @@
 # NativeK8：延后 V 完成等待的独立实验
 
-基于团队 main `1cbac531ca9afaa0e9a68624d5d10cb1d0412055`。生产路径不改，以下仅为工具目录中的独立候选；已编译并 CPU 审查实际 SO，未运行 GPU 数值检查、未获得精度或吞吐资格。
+基于团队 main `1cbac531ca9afaa0e9a68624d5d10cb1d0412055`。生产路径不改，以下为工具目录中的独立候选；实际 SO、四 case consumer 及完整 writer+producer+reducer 已通过设备测试和独立 CPU 原件复核。完整组件证据见 [fullstep 实测记录](evidence/native-k8-v-overlap-fullstep-v1-20261028/README.md)。模型精度与正式服务吞吐仍在独立 PR107 验证，组件结果不能替代。
 
 原 PR93 / PR98 的 NativeK8 CUDA 源码来自 `37713909f1f25b69d5ef6c155fad3b87351046fb`，SHA256 `bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9`，对应原设备库 `22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd`。该库的已有通过结果不能直接授予新库资格。
 
 ## 修改与假设
 
-原执行顺序为 K 普通装载和 shared store → barrier → V SME 发射 → V wait8 / barrier / 尾页清零 → INT8 QK → softmax → BF16 PV。本候选保持 K、V 发射顺序，只启用源码原有的晚等待位置：在 QK、softmax 和 P 打包后，V 尾页清零与 PV 读取前执行 wait8 和 barrier。与 PR105 在 BF16 路径采用的等待重叠机制相同，尚未在 K8 路径验证。
+原执行顺序为 K 普通装载和 shared store → barrier → V SME 发射 → V wait8 / barrier / 尾页清零 → INT8 QK → softmax → BF16 PV。本候选保持 K、V 发射顺序，只启用源码原有的晚等待位置：在 QK、softmax 和 P 打包后，V 尾页清零与 PV 读取前执行 wait8 和 barrier。与 PR105 在 BF16 路径采用的等待重叠机制相同；下文保留最初实验假设与分阶段验证流程，最新实测资格见首段。
 
 PR96 V-first 将 V 发射放在 K 装载之前，仍在 QK 前等待。本实验不组合 PR96，也不组合 Q reload、paired K load 或 compact page。K/Q 量化、INT8 QK、scale 乘法、softmax/FMA、BF16 P 舍入、PV、分段、输出、所有 host ABI 检查和原 16 KiB cache 格式均由全文件逆变换约束为原字节。
 
