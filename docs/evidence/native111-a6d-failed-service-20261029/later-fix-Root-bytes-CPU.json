@@ -1,0 +1,65 @@
+{
+  "schema": "compute-order-runner-raw-bytes-CPU-v1",
+  "passed": true,
+  "parent": "a6d654a7444bba72cbbd48d3d9bfd33172cfd129",
+  "runner_sha256": "d444d8f2b477a979a81a079087070f61d4785d646abe00d08c37d4afd93ec96a",
+  "rejected_stale_pin": "9ee00d1facb70e942871a5780d467df14c8ded2dbfd7efdadf0106187fd6051d",
+  "compute_order_sha256": "a8e117e8964aec26b4986cefedb08d248a8b73039a89ddc938c2a4a4c71df13e",
+  "compact_manifest_sha256": "c358249dd8cf83db522a00abc5a2e18e1e153b03c08e15b9528f4ec22696f183",
+  "actual_cold_source_loop_ast_sha256": "64a538170c2800fa522a4804ea15ef5e20b050baac9a461fb11c1c03789c37f9",
+  "unchanged_complete_function_names": [
+    "Plan",
+    "_cold",
+    "_compact_or_stock_spec",
+    "_function_cells",
+    "_main_stack",
+    "make_plan"
+  ],
+  "all_runner_bytes_unchanged": true,
+  "all_source_allowlist_entries_unchanged": true,
+  "local_pinned_modules": [
+    "vllm_fl.patches.biv150_cpu_metadata",
+    "vllm_fl.patches.biv150_mixed_decode",
+    "vllm_fl.patches.biv150_gqa_decode",
+    "vllm_fl.patches.biv150_prefill_normalized",
+    "vllm_fl.patches.biv150_q_fragment_service",
+    "vllm_fl.patches.biv150_prefill_q32",
+    "vllm_fl.patches.biv150_prefill_multi2"
+  ],
+  "only_two_production_hash_literals_changed": true,
+  "source_loop_uses_runtime_read_bytes": true,
+  "current_raw_bytes_positive": true,
+  "negatives": [
+    {
+      "case": "original_a6d_stale_pin_rejects_current_runner_bytes",
+      "error": "未自然加载的固定compute-order源：vllm_fl.worker.model_runner"
+    },
+    {
+      "case": "old_PR109_runner",
+      "error": "未自然加载的固定compute-order源：vllm_fl.worker.model_runner"
+    },
+    {
+      "case": "current_runner_with_appended_comment",
+      "error": "未自然加载的固定compute-order源：vllm_fl.worker.model_runner"
+    },
+    {
+      "case": "only_CRLF_to_LF_changed",
+      "error": "未自然加载的固定compute-order源：vllm_fl.worker.model_runner"
+    },
+    {
+      "case": "module_absent",
+      "error": "未自然加载的固定compute-order源：vllm_fl.worker.model_runner"
+    },
+    {
+      "case": "pin_absent",
+      "error": "未自然加载的固定compute-order源：vllm_fl.worker.model_runner"
+    }
+  ],
+  "newline_normalized_runner_sha256": "a60c2d440f5903522434cc2228ad6f498f9758ea394de68b5aafa704711a7b99",
+  "GPU_executed": false,
+  "full_GPU_runner_natural_import_verified": false,
+  "remaining_cold_scope_and_live_closures_executed": false,
+  "test_scope": "Exact original _cold first-loop AST; isolated runner entry via empty SOURCES in test namespace and explicit module/file metadata fixtures. Full live natural-import scope awaits a new service run.",
+  "precision_gate": false,
+  "service_acceptance_passed": false
+}
