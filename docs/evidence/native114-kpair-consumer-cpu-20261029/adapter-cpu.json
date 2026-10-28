@@ -1,0 +1,129 @@
+{
+  "CPU_fake_pointer_alignment_scope_check_only": {
+    "extra_whole_cache_shift_bytes": 0,
+    "layer_offset_bytes": 128,
+    "page_stride_bytes": 12544,
+    "pointer_mod8": {
+      "key": 0,
+      "scale": 0,
+      "value": 0
+    },
+    "pointers": {
+      "key": 4096,
+      "scale": 4096,
+      "value": 8448
+    },
+    "scalar_fallback_device_qualification": false,
+    "shifted_4B_non8B_exercised": false
+  },
+  "CPU_only": true,
+  "GPU_numeric_verified": false,
+  "Graph_verified": false,
+  "actual_Root_review_sha256": "5fc79ec23dc50108eea06ee34e3c56d7f55bd2ca5d6f3774b2531919e71b1f61",
+  "actual_SO_sha256": "ef732ef832b6399bf156d24c705b15e2e9e766947c0a456745673953ffbfb8fd",
+  "actual_device_alignment_queried": false,
+  "adapter": {
+    "actual_executed_sha256": "bccf13ed54ec56b97696baa1b26851ebd5831c09d1b138045dfdbc04837ad4b6",
+    "adapted_sha256": "bccf13ed54ec56b97696baa1b26851ebd5831c09d1b138045dfdbc04837ad4b6",
+    "default_alignment_record_added": true,
+    "edits": [
+      {
+        "new": "import biv150_native_k8_compact_n48_kpair_factory as source",
+        "old": "import biv150_native_k8_compact_n48_factory as source"
+      },
+      {
+        "new": "import biv150_native_k8_compact_n48_kpair_admission as admission",
+        "old": "import biv150_native_k8_compact_n48_consumer_contract as admission"
+      },
+      {
+        "new": "candidate=torch.ops.cjj_native_k8_compact_n48_kpair_probe.produce",
+        "old": "candidate=torch.ops.cjj_native_k8_compact_n48_s4_probe.produce"
+      },
+      {
+        "new": "for name in ('probe_biv150_native_k8_compact_n48_kpair_consumer.py','biv150_native_k8_compact_n48_kpair_admission.py',\n          'biv150_native_k8_compact_n48_kpair_factory.py','compile_biv150_native_k8_compact_n48_kpair.py',\n          'probe_biv150_native_k8_compact_n48_consumer.py',",
+        "old": "for name in ('probe_biv150_native_k8_compact_n48_consumer.py',"
+      },
+      {
+        "new": "        admission.record_executed_source(out,result)\n        for k in ('candidate_compile_summary'",
+        "old": "        for k in ('candidate_compile_summary'"
+      },
+      {
+        "new": "                ar['default_cache_alignment']=admission.record_default_alignment(key,scale,value,observe)\n                epoch=candidate_contract.LiveEpoch(",
+        "old": "                epoch=candidate_contract.LiveEpoch("
+      }
+    ],
+    "four_cases_6phases_Graph_first_side_thresholds_bitwise_and_saved_buffers_unchanged": true,
+    "inverse_byte_exact": true,
+    "numeric_and_fixture_code_changed": false,
+    "original_path": "tools/probe_biv150_native_k8_compact_n48_consumer.py",
+    "original_sha256": "5a9e6aaa51b12daae4e1767ca2ae01cbd290c4b7c25d6a610b0176692c8a5ea3",
+    "parent_sha256": "5a9e6aaa51b12daae4e1767ca2ae01cbd290c4b7c25d6a610b0176692c8a5ea3",
+    "whole_cache_4B_non8B_pending": true
+  },
+  "completed": true,
+  "errors": [],
+  "fullstep_consumer_summary_sha256": null,
+  "fullstep_enabled": false,
+  "negative_checks_refuse_modified_receipt_by_exact_SHA": true,
+  "original_fixtures_and_reference_functions_identical": true,
+  "performance_verified": false,
+  "refusals": [
+    {
+      "case": "wrong_actual_library",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "wrong_receipt_sha",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "changed_pinned_Root_receipt_manual_Root_approval",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "changed_pinned_Root_receipt_actual_static_review_passed",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "changed_pinned_Root_receipt_producer_reviews",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "missing_actual_receipt",
+      "rejection": "FileNotFoundError"
+    },
+    {
+      "case": "changed_original_numeric_threshold",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "actual_PR113_receipt_not_PR114",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "whole_cache_4B_not8B_out_of_current_scope",
+      "rejection": "AssertionError"
+    },
+    {
+      "case": "invalid_V_offset",
+      "rejection": "AssertionError"
+    }
+  ],
+  "scope": {
+    "Q_pitches": [
+      2048,
+      2560
+    ],
+    "consumer_only": true,
+    "default_key_base_mod8": 0,
+    "namespace": "cjj_native_k8_compact_n48_kpair_probe",
+    "rows": 48,
+    "segments": 4,
+    "service_or_model_verified": false,
+    "shared_bytes": 8192,
+    "unused_S2_admitted": false,
+    "whole_cache_4B_non8B_verified": false
+  },
+  "script_sha256": "5f82f18532043b6a433d71bdebdb2b0e1adab46af4893a978ac23bf04b4bd86a",
+  "side_stream_verified": false
+}
