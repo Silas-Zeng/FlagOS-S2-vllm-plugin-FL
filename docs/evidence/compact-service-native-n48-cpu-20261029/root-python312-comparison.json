@@ -1,0 +1,35 @@
+{
+  "GPU_or_service_executed_in_this_check": false,
+  "N48_fullstep_qualification": "pending",
+  "agent_report_sha256": "17b02e008cea1b8e7e0d3dd933a95452115a1deb408a7660f35ac52a19aebba8",
+  "all_other_fields_equal": true,
+  "comparison_scope": "Complete parsed report; original files preserved byte-for-byte. Different Python executable and Python-version paths only.",
+  "only_differences": [
+    {
+      "Root": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "agent": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "field": "/actual_helper_resolution/python"
+    },
+    {
+      "Root": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python312.zip",
+      "agent": "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python314.zip",
+      "field": "/actual_helper_resolution/sys_path/2"
+    },
+    {
+      "Root": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12",
+      "agent": "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14",
+      "field": "/actual_helper_resolution/sys_path/3"
+    },
+    {
+      "Root": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/lib-dynload",
+      "agent": "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/lib-dynload",
+      "field": "/actual_helper_resolution/sys_path/4"
+    },
+    {
+      "Root": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages",
+      "agent": "/opt/homebrew/lib/python3.14/site-packages",
+      "field": "/actual_helper_resolution/sys_path/5"
+    }
+  ],
+  "root_report_sha256": "e05a24edc45599a67e8ff0b74f27e6df301834527dadebc5d3284963e37c47eb"
+}

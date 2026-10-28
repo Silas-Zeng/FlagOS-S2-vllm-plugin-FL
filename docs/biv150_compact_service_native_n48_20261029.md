@@ -78,3 +78,18 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B -W error tools/check_biv150_compact_native_
 
 本分支没有启动 GPU、服务、模型精度或吞吐测试，没有新的服务成绩。历史 PR109 成绩及
 PR103 Graph/数值结论不转授本组合；正式合并仍需实际服务精度、吞吐和 TTFT 对照。
+
+## Root 独立 CPU 复跑与依赖同步
+
+在共享 `8229685` 后，正常合入 PR112 `e1c5a8fc3c267f1faf9aa790f3c8f80cc65c12a8`，
+补齐冻结 fullstep 前端及其独立源码审查。该合并未改变生产代码、GPU 数学源码或服务 controller。
+
+Root 使用 Python 3.12 独立重放 CPU 集成检查，原报告 SHA256 为
+`e05a24edc45599a67e8ff0b74f27e6df301834527dadebc5d3284963e37c47eb`。
+与本分支 Python 3.14 的 `17b02e00…` 报告逐字段比较，只有 helper 解析的 Python 可执行路径
+和四项 Python 版本路径不同，其余字段完全相同；两份原报告均保留，详见
+[完整比较记录](evidence/compact-service-native-n48-cpu-20261029/root-python312-comparison.json)。
+
+此提交只同步依赖和 CPU 证据。N48 fullstep 的程序摘要已返回，但完整原件的独立审核
+尚未完成，因此这里保留 fullstep SHA/geometry 为 null、qualification state 为 pending。
+CPU 正例当前只授已有 base 路由；N48 的隔离 mock 不构成正式准入或服务资格。
