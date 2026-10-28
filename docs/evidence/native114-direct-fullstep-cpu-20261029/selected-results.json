@@ -1,0 +1,90 @@
+{
+  "ABBA_order": [
+    "old8k",
+    "kpair",
+    "kpair",
+    "old8k"
+  ],
+  "CPU_only": true,
+  "CPU_refusals": [
+    {
+      "case": "unknown_real114_consumer_evidence",
+      "error": "AssertionError"
+    },
+    {
+      "case": "unexpected_TL_handle",
+      "error": "AssertionError"
+    },
+    {
+      "case": "new_writer_runtime_spill",
+      "error": "AssertionError"
+    },
+    {
+      "case": "old_writer_unknown_registers",
+      "error": "AssertionError"
+    },
+    {
+      "case": "wrong_2560_writer_typed_ABI",
+      "error": "AssertionError"
+    },
+    {
+      "case": "foreign_writer_function_identity",
+      "error": "AssertionError"
+    },
+    {
+      "case": "whole_cache_4B_non8B_unqualified",
+      "error": "AssertionError"
+    },
+    {
+      "case": "wrong_V_offset",
+      "error": "AssertionError"
+    }
+  ],
+  "GPU_fullstep_executed": false,
+  "actual_admission_preflight_sha256": "cb268e679a1393265bf1d98cacae1e65511a348dd0c67ca6e71d01c336c6b794",
+  "capacity42layers_verified": false,
+  "completed": true,
+  "consumer": {
+    "manifest_sha256": "d9b75246b6fec74685a2199d5d3b183bb6da76cc5871d37063c9068134616b10",
+    "owner": [
+      79921,
+      357427804
+    ],
+    "raw_bytes": 59894428,
+    "raw_files": 175,
+    "review_sha256": "ac96a07373c3d432cb9f1884b3916fc5b0a1961df2c49d976551fde7a828c84e",
+    "summary_sha256": "a09ed7e15f949b011c5ad4f4cff35cb5a287fba10ee52978f99f43428f7c48c7"
+  },
+  "direct113_inverse_byte_exact": true,
+  "errors": [],
+  "executed_fullstep_sha256": "d79847f246b03c96268a63e684567710642636c08f9e7e97cea2cce44e5685e6",
+  "fullstep_numeric_verified": false,
+  "model_verified": false,
+  "new_SO": "ef732ef832b6399bf156d24c705b15e2e9e766947c0a456745673953ffbfb8fd",
+  "old_SO": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "page_bytes": 12544,
+  "pages": 44769,
+  "performance_verified": false,
+  "raw_data_external_upload": false,
+  "seven_original_bodies": {
+    "capture": "e3fd8b19c2de33cc9c9574762ce42667b26e07cfaff73444d58828cbad9682a0",
+    "fingerprints": "f3cbd2a41e01a765f752323f63935aa6910bb39dc5b30f2de1c5045208812aad",
+    "poison": "a9a0e0b6957c2914c48977ed0985bb0286f3500313741be53baac0a648670757",
+    "reducer": "84ba74067e67c6c4997b751ed5af2c37981667fe48add5ca0d8329f2b27410f5",
+    "step": "9cc8b621305c4db32c47fa8ae19088369f45867f2f9a9dcacac839f72ddb6666",
+    "timed": "e84af79b3470db82a6c043a387c3bbfc59f2557aaf610c3af6716463c63574b9",
+    "verify_inputs": "425090b5936f9a290baef6f5e1a296589c655bb5275d08874867558cad7edf33"
+  },
+  "source_ABI_report_sha256": "eba7592ae610c4e1bab3561a01f39c1284c33ed51abd4bb6164bcfe08a155459",
+  "source_pitch": 2560,
+  "source_sha256": {
+    "tools/biv150_native_k8_compact_n48_kpair_fullstep_source.py": "4d19b0c1bade2e3f974bfbbcb9adff3d5023923162a6c1e203ed917c46f8b245",
+    "tools/check_biv150_native_k8_compact_n48_kpair_fullstep_cpu.py": "3344563ac6e1947681b482c9f3efb070476e6799eacc90deb12e6e92d2d3c0b8",
+    "tools/probe_biv150_native_k8_compact_n48_kpair_fullstep.py": "0d24b4cc9dd83232a3a98673d1417754494647a0594c23c488b669b4e8266fcc"
+  },
+  "timing_replays": 64,
+  "unroll": 8,
+  "warm_replays": 128,
+  "whole_cache_4B_non8B_qualified": false,
+  "whole_cache_alignment_bytes": 8
+}
