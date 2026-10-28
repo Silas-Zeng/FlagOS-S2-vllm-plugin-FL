@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute actual b3 host dispatch/eligibility with CPU metadata recorders only."""
+"""Execute actual main1cb host dispatch/eligibility with CPU metadata recorders only."""
 import ast
 import contextlib
 import hashlib
@@ -13,7 +13,7 @@ from types import SimpleNamespace as NS
 from check_biv150_konly_encoded_cpu import load, Tensor, Storage, Kernel, rejected
 
 ROOT=Path(__file__).resolve().parents[1]
-MAIN='b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd'
+MAIN='1cbac531ca9afaa0e9a68624d5d10cb1d0412055'
 
 
 class Device:

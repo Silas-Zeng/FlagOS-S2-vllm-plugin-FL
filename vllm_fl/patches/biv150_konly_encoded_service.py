@@ -11,7 +11,7 @@ from pathlib import Path
 ENV = 'VLLM_FL_BIV150_KONLY_ENCODED_SERVICE'
 _STATE = None
 PINS = {
-    'vllm_fl.patches.biv150_native_gqa': '86f8ca199ce632ccb3bbc251bb5c632e57da3373d8b87bd5f53334ef818a26c4',
+    'vllm_fl.patches.biv150_native_gqa': '2f5e730a428548a235b7c1cee7f5222176cce6d840fb406079c042052a49b0e1',
     'vllm.v1.attention.backends.triton_attn': '1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605',
     'vllm.v1.attention.ops.triton_unified_attention': '54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f',
     'vllm.v1.attention.ops.triton_attention_helpers': '59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1',
