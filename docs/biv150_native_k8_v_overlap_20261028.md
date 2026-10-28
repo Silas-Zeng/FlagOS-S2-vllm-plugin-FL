@@ -35,3 +35,29 @@ python tools/compile_biv150_native_k8_v_overlap.py \
 产物保存原始 LLVM、ASM、SO、编译命令、失败信息与 SHA manifest。需要用 `ixobjdump --IR` / `--sass` 检查最终 SO 的两个 specialization、完整页与尾页：V 发射顺序没变、QK/softmax 确实先于 V 完成等待、PV 读取前完成等待和 tail clear、无新增 spill、原 codec 与算术未变化。
 
 数值检查复用 PR93 `3ebdbebf61e0e90735cd8ad83eb1605627b6ef46` 的 `probe_biv150_native_k8_consumer_v2.py` 和 fullstep，Root 仅适配新库身份与 operator namespace。不得把原固定 22e SHA 的入口直接对新库标为通过；新 SO 必须单独审查后运行原全行 O/M/L/final、独立量化 FP64、尾页、只读/guard、换值 Graph B 先于 fresh Eager B、side C 门。保留原 64/S2、32/S4 与 Q pitch 2048/2560 范围。设备数值通过后再测完整 writer+producer+reducer 成本，再考虑接入 PR98；原始105题、真实分支覆盖及两档正式服务比较仍需新验证。
+
+## 最小 consumer 入口
+
+`tools/probe_biv150_native_k8_v_overlap_consumer.py` 不包含数值框架。显式 `--parent-source` 指向已有的干净冻结 `3ebdbeb` checkout；前端核对父提交、8 个测试/参考模块 SHA 和原 reducer SHA，再加载原 consumer。其 `run` 只有两处库 SHA、一个 operator namespace 和结果来源计划的字面适配，逆变换必须恢复原函数。四个 case、所有参考值、容差、数组保存、只读/guard、Graph B 与 side C 流程均保留。
+
+先取得真实编译结果，再生成默认拒绝的审核模板：
+
+```bash
+python tools/probe_biv150_native_k8_v_overlap_consumer.py \
+  --review-template --compile-summary /ABS/compile-summary.json
+```
+
+Root 独立检查后填写实际 SO IR/SASS 文件路径及 SHA、S2/S4 实际 VGPR/SGPR/shared/spill 和各项审核结论。未填写、`false`、未知资源、非 8192B shared 或非零 spill 均拒绝。模板不是验证通过记录；IR/SASS 必须来自本次最终 SO，不能填旧库或 standalone 编译文本。核对候选 codec 与原 22e 实际实现等价后，才可复用原 `3c9733...` codec 收据；不继承旧 attention 数值资格。
+
+```bash
+python tools/probe_biv150_native_k8_v_overlap_consumer.py \
+  --gpu --root-owned-exclusive --parent-source /ABS/FROZEN_3eb_CHECKOUT \
+  --compile-summary /ABS/compile-summary.json \
+  --assembly-review /ABS/root-reviewed.json --assembly-review-sha256 REVIEW_SHA256 \
+  --library /ABS/cjj_native_k8_v_overlap_probe.so \
+  --codec-summary /ABS/ORIGINAL_CODEC/codec-summary.json \
+  --codec-proof-sha256 3c9733ab79e69c77f70068cff2d3da553ad9c2b81b08ea3c396c6e0788b4f263 \
+  --out /ABS/NEW_CONSUMER_DIRECTORY
+```
+
+这条入口不包括 fullstep、自动排队或模型服务。CPU 参数检查命令为 `python -B tools/check_biv150_native_k8_v_overlap_consumer_cpu.py --parent-source /ABS/FROZEN_3eb_CHECKOUT`；检查中的资源值是故障注入用的合成数据，不能作为设备回执。
