@@ -1,0 +1,27 @@
+--- initial-review-branch-adjacency-assumption.py
++++ review_actual_so.py
+@@ -38 +38,17 @@
+-        test=align[0];assert rows[test+1]['op'] in ('sl_cbr_wcrz','sl_cbr_wcrnz')
++        test=align[0];branch=test+(1 if label=='full' else 2)
++        if label=='tail':assert (rows[test+1]['op'],rows[test+1]['args'])==('sl_mov_b32','s15, 0xffffffff') # Does not write WCR.
++        assert rows[branch]['op']=='sl_cbr_wcrz'
++        bypc={r['pc']:i for i,r in enumerate(rows)}
++        def reachable_to_join(first):
++            seen=set();todo=[first]
++            while todo:
++                i=todo.pop()
++                if i==kb or i in seen:continue
++                seen.add(i);r=rows[i]
++                assert r['op'] not in ('sl_exit','sl_end','sl_ret')
++                todo.extend([bypc[targets[r['pc']]]] if r['op']=='sl_jump' else [i+1,bypc[targets[r['pc']]]] if r['op'].startswith('sl_cbr_') else [i+1])
++            return seen
++        aligned=reachable_to_join(bypc[targets[rows[branch]['pc']]])
++        scalar_only=reachable_to_join(branch+1)
++        assert set(vector)<=aligned and not set(scalar)&aligned
++        assert set(scalar)<=scalar_only and not set(vector)&scalar_only
+@@ -53 +69 @@
+-        paths.append(dict(path=label,page_stride=locate([start]),base_alignment_and_branch=locate([test,test+1]),
++        paths.append(dict(path=label,page_stride=locate([start]),base_alignment_and_branch=locate(list(range(test,branch+1))),
+@@ -106 +122 @@
+-                scalar_fallback_static_code_retained=True,actual_vector_lowering_verified=True,
++                scalar_fallback_static_code_retained=True,actual_branch_zero_selects_only_vector_and_nonzero_only_scalar=True,actual_vector_lowering_verified=True,

@@ -1,0 +1,114 @@
+{
+  "initial_script_sha256": "95a84826785eb0a5fc11cb685767f2ee9949566bbe44b5cbd23e2672074f6141",
+  "final_script_sha256": "29a9e3c1df98796daeb2c07b8d5af1e18b5468f1e2cfa5261d21c3a43483ef5e",
+  "initial_assumption": "The conditional branch is immediately after every base &7 test.",
+  "actual_tail": "One sl_mov_b32 s15,0xffffffff lies between sl_and_b32 and sl_cbr_wcrz. This move writes the scalar register, not WCR.",
+  "correction": "Require the exact intervening instruction, then prove branch-zero reaches only vector loads and nonzero reaches only scalar loads, with both paths rejoining the K-ready barrier.",
+  "device_failure": false,
+  "numerical_gate_changed": false,
+  "original_numeric_or_performance_result_exists": false,
+  "actual_branch_locations": [
+    {
+      "symbol": "_Z40cjj_native_k8_compact_n48_kpair_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "host_admitted": false,
+      "paths": [
+        {
+          "path": "full",
+          "base_alignment_and_branch": [
+            {
+              "PC": "0x13790",
+              "args": "{s12, wcr}, s44, 0x7",
+              "index0": 746,
+              "line": 753,
+              "op": "sl_and_b32"
+            },
+            {
+              "PC": "0x13798",
+              "args": "200",
+              "index0": 747,
+              "line": 754,
+              "op": "sl_cbr_wcrz"
+            }
+          ]
+        },
+        {
+          "path": "tail",
+          "base_alignment_and_branch": [
+            {
+              "PC": "0x13ce8",
+              "args": "{s14, wcr}, s12, 0x7",
+              "index0": 917,
+              "line": 924,
+              "op": "sl_and_b32"
+            },
+            {
+              "PC": "0x13cf0",
+              "args": "s15, 0xffffffff",
+              "index0": 918,
+              "line": 925,
+              "op": "sl_mov_b32"
+            },
+            {
+              "PC": "0x13cf8",
+              "args": "1040",
+              "index0": 919,
+              "line": 926,
+              "op": "sl_cbr_wcrz"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "symbol": "_Z40cjj_native_k8_compact_n48_kpair_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "host_admitted": true,
+      "paths": [
+        {
+          "path": "full",
+          "base_alignment_and_branch": [
+            {
+              "PC": "0x168b8",
+              "args": "{s12, wcr}, s44, 0x7",
+              "index0": 746,
+              "line": 2296,
+              "op": "sl_and_b32"
+            },
+            {
+              "PC": "0x168c0",
+              "args": "200",
+              "index0": 747,
+              "line": 2297,
+              "op": "sl_cbr_wcrz"
+            }
+          ]
+        },
+        {
+          "path": "tail",
+          "base_alignment_and_branch": [
+            {
+              "PC": "0x16e10",
+              "args": "{s14, wcr}, s12, 0x7",
+              "index0": 917,
+              "line": 2467,
+              "op": "sl_and_b32"
+            },
+            {
+              "PC": "0x16e18",
+              "args": "s15, 0xffffffff",
+              "index0": 918,
+              "line": 2468,
+              "op": "sl_mov_b32"
+            },
+            {
+              "PC": "0x16e20",
+              "args": "1040",
+              "index0": 919,
+              "line": 2469,
+              "op": "sl_cbr_wcrz"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
