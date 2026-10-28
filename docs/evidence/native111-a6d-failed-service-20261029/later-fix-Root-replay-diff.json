@@ -1,0 +1,40 @@
+{
+  "fix_commit": "069838d6fbb7591de4384aac8caef49324c43aef",
+  "service_retest_result_included": false,
+  "CPU_only": true,
+  "byte_report_diff": [
+    {
+      "path": "/actual_cold_source_loop_ast_sha256",
+      "before": "d1917811444543884462ec59fb66c8e989be62b369de6283bd27922d8bc5e162",
+      "after": "64a538170c2800fa522a4804ea15ef5e20b050baac9a461fb11c1c03789c37f9"
+    }
+  ],
+  "combination_report_diff": [
+    {
+      "path": "/actual_helper_resolution/python",
+      "before": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "after": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+    },
+    {
+      "path": "/actual_helper_resolution/sys_path/2",
+      "before": "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python314.zip",
+      "after": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python312.zip"
+    },
+    {
+      "path": "/actual_helper_resolution/sys_path/3",
+      "before": "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14",
+      "after": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12"
+    },
+    {
+      "path": "/actual_helper_resolution/sys_path/4",
+      "before": "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/lib-dynload",
+      "after": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/lib-dynload"
+    },
+    {
+      "path": "/actual_helper_resolution/sys_path/5",
+      "before": "/opt/homebrew/lib/python3.14/site-packages",
+      "after": "/Users/chenjunjie/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages"
+    }
+  ],
+  "explanation": "Root Python3.12 versus author Python3.14: exact AST dump serialization digest and five Python installation paths differ; every other reported field is identical. Neither report imports full GPU runner or grants service acceptance."
+}

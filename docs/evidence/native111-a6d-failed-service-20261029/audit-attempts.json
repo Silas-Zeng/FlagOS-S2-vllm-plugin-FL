@@ -1,0 +1,17 @@
+{
+  "prepared_success_script_preserved": true,
+  "v1": {
+    "report_created": false,
+    "failure": "Assertion comparing replayed early prefix to stored actual_runtime; audit chose first burst START though actual_runtime is recorded after all four bursts.",
+    "device_failure": false
+  },
+  "v2": {
+    "report_sha256": "28138c6ac2d1013323ded153cb0cf1825d94e086da8bc96ca0e0975d3662dfd5",
+    "correction": "Uses original last burst offset+bytes =954760; original whole-log gate still rejects and no rejection line was removed."
+  },
+  "v3": {
+    "report_sha256": "fb9a2c1d9e0a59b7f71ef5f70ff1a58b2691458ce4d47a443f2590cb081d9542",
+    "addition": "Report original final source/library/tuning checks as not completed; decode actual cubin metadata with existing ELF/msgpack helpers, match saved ASM metadata, and inspect archived CPU receipts. No original gate or raw file changed."
+  },
+  "original_service_completed": false
+}
