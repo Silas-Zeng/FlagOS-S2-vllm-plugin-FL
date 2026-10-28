@@ -1,0 +1,117 @@
+{
+  "GPU_numeric_thresholds_changed": false,
+  "Graph_first_and_side_and_post_timing_bitwise_passed": true,
+  "actual_four_JIT_roles_and_native_SO_identities_passed": true,
+  "actual_new_GPU_executed": true,
+  "benchmark": {
+    "order": [
+      "old8k",
+      "new6k",
+      "new6k",
+      "old8k"
+    ],
+    "pages": 44769,
+    "physical_page_bytes": 12544,
+    "rows": 48,
+    "segments": 4,
+    "source_pitch": 2560,
+    "timing_replays": 64,
+    "unroll": 8,
+    "warm_replays": 128
+  },
+  "component_numeric_and_identity_review_passed": true,
+  "download_manifest_sha256": "c05c8d5a105920bad6a8d4fdedcbeafe69342d779f4a8846b7712f005aa11e22",
+  "full_arrays_or_cache_or_logs_in_this_summary": false,
+  "independent_review_sha256": "3b81df7251deeb08a7efdc7cab75c70cea0296aad65794b555890ef2776d2fe1",
+  "independently_rehashed_original_bytes": 94678536,
+  "independently_rehashed_original_files": 114,
+  "kind": "selected text result summary; not raw artifacts",
+  "limits": [
+    "Runtime capacity16-to21 is not measured residency and did not establish speedup.",
+    "This single direct ABBA provides a negative component result; no claim of stable model regression.",
+    "Ideal-partial diagnostics and original thresholds remain unchanged.",
+    "Full arrays/cache/logs/binaries and failure records remain local; this child contains only selected textual results."
+  ],
+  "new_library_sha256": "5cf698e8a60272d86b2545364f580faf4c40114e0044e91557c1a137f2521bed",
+  "observed_performance_acceptance_field": false,
+  "old112_errata_remain_only_historical_prerequisites": true,
+  "old_library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "original_full_cache_and_initial_source_regenerated": true,
+  "original_numeric_audit_report_sha256": "093d874b04825817886ae2a8b2f610241bf33dc7281ece23580535d14866e585",
+  "performance_acceptance_field_is_not_an_automatic_rejection_gate": true,
+  "performance_conclusion": "No benefit in this direct same-input ABBA: both old8k/new6k ratios are below one.",
+  "qualification": {
+    "capacity42layers": false,
+    "model_precision": false,
+    "official_4K_or_16K_model_score": false,
+    "shared_QKV_model_source": false,
+    "stable_end_to_end_performance": false
+  },
+  "review_script_sha256": "50cbbafd6a7c9f27e309bc3a4b472036d59be0a94771aaf8c67fdc83c56a574d",
+  "rows": [
+    {
+      "ABBA_event_ms": [
+        {
+          "arm": "old8k",
+          "ms": 1.3157247304916382
+        },
+        {
+          "arm": "new6k",
+          "ms": 1.3531643152236938
+        },
+        {
+          "arm": "new6k",
+          "ms": 1.3523571491241455
+        },
+        {
+          "arm": "old8k",
+          "ms": 1.3156641721725464
+        }
+      ],
+      "base_context": 17408,
+      "case": "valid41",
+      "full_snapshot_count": 18,
+      "live_rows": 41,
+      "new6k_event_ms": 1.3527607321739197,
+      "new6k_host_wall_ms": 1.3528725257856422,
+      "new_latency_increase_percent": 2.8172407966225776,
+      "old8k_event_ms": 1.3156944513320923,
+      "old8k_host_wall_ms": 1.3158096749066317,
+      "old8k_over_new6k": 0.9725995292735464,
+      "original_numeric_gates_passed": 72
+    },
+    {
+      "ABBA_event_ms": [
+        {
+          "arm": "old8k",
+          "ms": 1.2824698686599731
+        },
+        {
+          "arm": "new6k",
+          "ms": 1.3438299894332886
+        },
+        {
+          "arm": "new6k",
+          "ms": 1.3438341617584229
+        },
+        {
+          "arm": "old8k",
+          "ms": 1.282477617263794
+        }
+      ],
+      "base_context": 16896,
+      "case": "valid42",
+      "full_snapshot_count": 18,
+      "live_rows": 42,
+      "new6k_event_ms": 1.3438320755958557,
+      "new6k_host_wall_ms": 1.3439470171761059,
+      "new_latency_increase_percent": 4.784373401069764,
+      "old8k_event_ms": 1.2824737429618835,
+      "old8k_host_wall_ms": 1.2825858943870116,
+      "old8k_over_new6k": 0.9543407738598844,
+      "original_numeric_gates_passed": 72
+    }
+  ],
+  "summary_sha256": "fbf95c6543f1d443bdada0948501802cccc552306d3b023f20fe52cafa2cf157",
+  "tested_source_commit": "82dbab5563e3c79e29bae80d002c4110692b7152"
+}
