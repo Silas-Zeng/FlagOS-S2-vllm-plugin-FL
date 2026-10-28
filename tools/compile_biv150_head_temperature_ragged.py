@@ -47,6 +47,7 @@ def main():
             out=torch.empty((rows,130560),dtype=torch.float32,device='cuda')
             temperature=torch.empty((rows,),dtype=torch.float32,device='cuda')
             c=specification['rows'][str(rows)];options={k:v for k,v in c.items() if k!='grid'}
+            assert options['RAGGED_M'] is True,'ragged compile must use explicit input row masks'
             kernel=head_temperature_kernel.warmup(x,w,w,out,rows,130560,2048,2048,1,2048,1,130560,1,0,temperature,
                 BIAS=False,GROUP_M=8,SPLIT_K=1,EVEN_K=True,num_ctas=1,grid=tuple(c['grid']),**options)
             assert {'ttir','ttgir','llir','asm','cubin'}<=set(kernel.asm),'fresh actual IR/ASM/cubin incomplete'

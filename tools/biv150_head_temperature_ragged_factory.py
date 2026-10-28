@@ -49,6 +49,8 @@ def launch(candidate,record,x,w,temp,out):
     args=list(record['args']);args[:4]=[x,w,w,out]
     args.append(temp)
     options=dict(record['constants']);options.update(record['kwargs'])
+    assert 'RAGGED_M' not in options,'original head unexpectedly supplied the new specialization'
+    options['RAGGED_M']=True
     return candidate.head_temperature_kernel[record['grid']](*args,**options)
 
 

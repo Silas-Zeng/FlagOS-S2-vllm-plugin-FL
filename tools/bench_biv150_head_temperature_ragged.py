@@ -17,10 +17,10 @@ def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 def plan():
     return dict(gpu_executed=False,baseline='actual F.linear + unchanged complete original Sampler',
-        candidate='unchanged BF16 head kernel + original PreScaledSampler temperature ticket',
+        candidate='explicit ragged A-load row masks + unchanged dot/temperature rounding and original Sampler ticket',
         rows={str(r):dict(BLOCK_M=32 if r==31 else 64,BLOCK_N=64 if r==31 else 256,
                           BLOCK_K=64 if r==31 else 32,num_warps=8 if r==31 else 16,
-                          num_stages=1 if r==31 else 2,grid=[2040 if r==31 else 510,1]) for r in ROWS},
+                          num_stages=1 if r==31 else 2,RAGGED_M=True,grid=[2040 if r==31 else 510,1]) for r in ROWS},
         numerical='old ten gates plus row-varying positive temperature; FP64 sample .001/.01 upgraded to all real rows x five original columns',
         tail_guards='full storage CPU authority SHA/boundary snapshots; no GPU negative/advanced canary indexing',
         timing='one warmed eager ABBA, 8 complete head+Sampler calls per arm; original timed_batch byte-identical; production-sized output allocations in timing',

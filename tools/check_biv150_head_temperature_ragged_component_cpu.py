@@ -32,6 +32,7 @@ def main():
     assert 'torch' not in sys.modules and 'triton' not in sys.modules
     spec=importlib.util.spec_from_file_location('_head_front',ROOT/'tools/bench_biv150_head_temperature_ragged.py');front=importlib.util.module_from_spec(spec);spec.loader.exec_module(front)
     assert not front.plan()['gpu_executed']
+    assert all(c['RAGGED_M'] is True for c in front.plan()['rows'].values())
     cases=[(False,False,40000,[]),(True,True,40000,[]),(True,False,29999,[]),(True,False,40000,[123])]
     for c in cases:
         try:front.admit(*c)
@@ -88,6 +89,8 @@ def main():
         fm.launch(NS(head_temperature_kernel=Candidate()),cap.records[0],x,w,temp,out)
         assert calls[0][0]==grid and calls[0][1][0] is x and calls[0][1][1] is w and calls[0][1][3] is out and calls[0][1][-1] is temp
         assert calls[0][1][4:7]==(rows,130560,2048)
+        assert calls[0][2]['RAGGED_M'] is True
+        assert {k:v for k,v in calls[0][2].items() if k!='RAGGED_M'}==dict(config,BIAS=False,GROUP_M=8,SPLIT_K=1)
         factory_cases.append(rows)
     try:fm.configure(48)
     except AssertionError:pass
@@ -104,7 +107,8 @@ def main():
         legacy_check_AST_unchanged_except_additional_canary=True,original_sampler_proxy_AST_unchanged=True,
         original_timing_helper_byte_identical=True,FP64_thresholds_unchanged=True,
         FP64_all_real_rows_five_columns=True,guard_CPU_complete_rows_and_cloned_boundaries=True,guard_layout=guard_layout,row_varying_temperature_added=True,
-        SDK_pin_count=len(sdk['files']),factory_actual_argument_cases=factory_cases,pad48_factory_rejected=True,admission_refusals=len(cases),CLI_refusals=cli,
+        SDK_pin_count=len(sdk['files']),factory_actual_argument_cases=factory_cases,factory_and_compile_plan_RAGGED_M_true=True,
+        pad48_factory_rejected=True,admission_refusals=len(cases),CLI_refusals=cli,
         fresh_IR_loaded_resources_numerics_RNG=False,service_105_throughput=False,
         sources={p.name:sha(p) for p in sorted((ROOT/'tools').glob('*head_temperature_ragged*.py'))})
     assert 'torch' not in sys.modules and 'triton' not in sys.modules

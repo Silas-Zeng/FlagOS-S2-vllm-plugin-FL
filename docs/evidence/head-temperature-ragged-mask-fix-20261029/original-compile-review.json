@@ -1,0 +1,73 @@
+{
+  "CPU_only": true,
+  "LLVM_chain": [
+    {
+      "line": 51,
+      "text": "%49 = srem i32 %29, %4, !dbg !41"
+    },
+    {
+      "line": 55,
+      "text": "%53 = getelementptr bfloat, ptr addrspace(1) %0, i64 %52, !dbg !44"
+    },
+    {
+      "line": 111,
+      "text": "%.pn846 = phi ptr addrspace(1) [ %53, %.lr.ph ], [ %153, %111 ]"
+    },
+    {
+      "line": 122,
+      "text": "%106 = ptrtoint ptr addrspace(1) %.pn846 to i64, !dbg !45"
+    },
+    {
+      "line": 125,
+      "text": "%109 = insertelement <4 x i32> %108, i32 -1, i64 2, !dbg !45"
+    },
+    {
+      "line": 127,
+      "text": "tail call void @llvm.bi.sme.load.16x1b64.rowxfb16(i32 %60, <4 x i32> %110, i32 %62, i32 0), !dbg !45"
+    }
+  ],
+  "actual_imports": {
+    "candidate_file": "/workspace/experiments/minicpm-s2/code/cjj-head115-ragged-r31-compile-v1-20261029/vllm_fl/patches/biv150_lm_head_temperature_kernel.py",
+    "package_file": "/workspace/experiments/minicpm-s2/code/cjj-head115-ragged-r31-compile-v1-20261029/vllm_fl/__init__.py",
+    "torch_file": "/usr/local/lib/python3.12/site-packages/torch/__init__.py",
+    "torch_version": "2.10.0"
+  },
+  "all_original_file_SHA_verified": true,
+  "conclusion": "Compile-only static evidence exposes ragged row hint risk; it does not record an executed out-of-bounds load or numerical failure.",
+  "input_SME_descriptor_unbounded_length_minus_one": true,
+  "manifest_sha256": "039066e2ad1abcfda39892606077dc991cab818dd39fd64a8172c1676c61403d",
+  "new_mask_compile_or_numeric_verified": false,
+  "original_CUDA_context_and_allocations": true,
+  "original_archive_sha256": "317cff6bf6d32306596490924634017729924470ddf2c5e0dc9511f955161ccb",
+  "original_archive_shared": false,
+  "original_compile_complete": true,
+  "original_device_numeric_executed": false,
+  "original_head_attention_writer_encoder_launches": 0,
+  "original_kernel_sha256": "4c800693a2ae134fc580382d4166091b4c48e96dc2b7838ab417da7094cb2537",
+  "original_record": {
+    "constants": "{(8,): 1, (10,): 1, (12,): 1, (15,): False, (16,): 32, (17,): 64, (18,): 64, (19,): 8, (20,): 1, (21,): True}",
+    "grid": [
+      2040,
+      1
+    ],
+    "hash": "9051ff58e0b63dc0b82bf3bb73f04a5b7d6b6c7194ab7e9809ec53a66d97208c",
+    "metadata": "KernelMetadata(allowed_dot_input_precisions=['tf32', 'tf32x3', 'ieee', 'bf16x3', 'bf16x6'], arch='sm71', backend_name='corex', debug=False, default_dot_input_precision='tf32', deprecated_fp8_dot_operand_dtypes=[], enable_fp_fusion=True, enable_reflect_ftz=True, extern_libs=[['libdevice', '/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc']], global_scratch_align=1, global_scratch_size=0, hash='9051ff58e0b63dc0b82bf3bb73f04a5b7d6b6c7194ab7e9809ec53a66d97208c', instrumentation_mode='', ir_override=None, launch_cooperative_grid=False, launch_pdl=False, max_num_imprecise_acc_default=0, maxnreg=None, name='head_temperature_kernel', num_ctas=1, num_stages=1, num_warps=8, profile_scratch_align=1, profile_scratch_size=0, ptx_options=None, ptx_version=None, sanitize_overflow=True, shared=12288, supported_fp8_dtypes=['fp8e4nv', 'fp8e5'], target=GPUTarget(backend='corex', arch=71, warp_size=64), tensordesc_meta=[], tmem_size=None, triton_version='3.6.0', use_sme=15, warp_size=64)",
+    "n_regs": null,
+    "n_spills": null,
+    "numerical_qualified": false,
+    "resource_phase": "prelaunch",
+    "rows": 31,
+    "signature": "{'input_ptr': '*bf16', 'weight_ptr': '*bf16', 'bias_ptr': '*bf16', 'output_ptr': '*fp32', 'M': 'i32', 'N': 'i32', 'K': 'i32', 'stride_im': 'i32', 'stride_ik': 'constexpr', 'stride_wn': 'i32', 'stride_wk': 'constexpr', 'stride_om': 'i32', 'stride_on': 'constexpr', 'stride_bn': 'i32', 'temperature_ptr': '*fp32', 'BIAS': 'constexpr', 'BLOCK_M': 'constexpr', 'BLOCK_N': 'constexpr', 'BLOCK_K': 'constexpr', 'GROUP_M': 'constexpr', 'SPLIT_K': 'constexpr', 'EVEN_K': 'constexpr'}"
+  },
+  "owner": {
+    "pid": 79187,
+    "same_start": true,
+    "start_ticks": 357210613,
+    "state": "Z"
+  },
+  "raw_bytes": 483723,
+  "raw_files": 18,
+  "script_sha256": "65aedfb552c878e950f246063c37761c150da74ccdd1cf0845cf61d3fca72e93",
+  "source_commit": "b6066b0899df81605ca1a19867459954e88d8699",
+  "stock_F_linear_ragged_baseline_boundary_verified": false
+}

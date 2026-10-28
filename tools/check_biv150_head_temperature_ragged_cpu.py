@@ -1,5 +1,7 @@
 """Standard-library CPU checks; fake launches prove protocol only, never numerics."""
 import argparse
+import ast
+import copy
 import contextlib
 import io
 import hashlib
@@ -26,6 +28,67 @@ def load(path, name):
     return module
 
 
+def kernel_specialization_proof(kernel, original):
+    """False specialization is the original AST; True has explicit load masks."""
+    before=ast.parse(original)
+    current=ast.parse(kernel.read_bytes())
+    class Choose(ast.NodeTransformer):
+        def __init__(self, ragged):self.ragged=ragged;self.count=0
+        def visit_If(self,node):
+            if isinstance(node.test,ast.Name) and node.test.id=='RAGGED_M':
+                self.count+=1
+                return [self.visit(n) for n in (node.body if self.ragged else node.orelse)]
+            return self.generic_visit(node)
+    projections={}
+    for enabled in (False,True):
+        tree=copy.deepcopy(current);chooser=Choose(enabled);tree=chooser.visit(tree)
+        assert chooser.count==4
+        fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef))
+        assert fn.args.args[-1].arg=='RAGGED_M' and len(fn.args.defaults)==1
+        assert isinstance(fn.args.defaults[0],ast.Constant) and fn.args.defaults[0].value is False
+        fn.args.args.pop();fn.args.defaults=[]
+        tree.body[0]=copy.deepcopy(before.body[0])  # descriptive module docstring only
+        projections[enabled]=tree
+    assert ast.dump(projections[False],include_attributes=False)==ast.dump(before,include_attributes=False)
+    assignments=[n for n in ast.walk(projections[True]) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='ram' for t in n.targets)]
+    assert len(assignments)==1 and isinstance(assignments[0].value,ast.Name) and assignments[0].value.id=='rm'
+    loads=[n for n in ast.walk(projections[True]) if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr=='load' and n.args and isinstance(n.args[0],ast.Name) and n.args[0].id=='A']
+    assert len(loads)==3
+    row=ast.parse('rm[:, None] < M',mode='eval').body
+    both=ast.parse('(rm[:, None] < M) & (rk[None, :] < k_remaining)',mode='eval').body
+    class OnlyAllowedRaggedEdits(ast.NodeTransformer):
+        def visit_Assign(self,node):
+            if any(isinstance(t,ast.Name) and t.id=='ram' for t in node.targets):
+                node.value=ast.Name(id='rm',ctx=ast.Load())
+            return self.generic_visit(node)
+        def visit_Call(self,node):
+            if isinstance(node.func,ast.Attribute) and node.func.attr=='load' and node.args and isinstance(node.args[0],ast.Name) and node.args[0].id=='A':
+                masks=[k for k in node.keywords if k.arg=='mask']
+                if masks:
+                    assert len(masks)==1
+                    masks[0].value=ast.BinOp(left=copy.deepcopy(row),op=ast.BitAnd(),right=masks[0].value)
+                else:
+                    assert not node.keywords
+                    node.keywords=[ast.keyword(arg='mask',value=copy.deepcopy(row)),ast.keyword(arg='other',value=ast.Constant(value=0))]
+            return self.generic_visit(node)
+    expected_true=OnlyAllowedRaggedEdits().visit(copy.deepcopy(before))
+    assert ast.dump(projections[True],include_attributes=False)==ast.dump(expected_true,include_attributes=False)
+    masks=[]
+    for node in loads:
+        kw={k.arg:k.value for k in node.keywords};assert set(kw)=={'mask','other'}
+        mask=ast.dump(kw['mask'],include_attributes=False);masks.append(mask)
+        assert mask in (ast.dump(row,include_attributes=False),ast.dump(both,include_attributes=False))
+        other=kw['other'];assert (isinstance(other,ast.Constant) and other.value==0) or (isinstance(other,ast.Name) and other.id=='_0')
+    assert masks.count(ast.dump(row,include_attributes=False))==2 and masks.count(ast.dump(both,include_attributes=False))==1
+    assert b'tl.zeros((1, 1), dtype=output_ptr.dtype.element_ty)' in kernel.read_bytes()
+    return dict(aligned_false_specialization_AST_matches_original=True,
+      whole_kernel_bytes_unchanged=False,explicit_ragged_input_loads=len(loads),
+      ragged_ram_is_true_rm=True,ragged_A_loads_row_masked_with_zero=True,
+      ragged_true_only_address_and_load_masks_changed=True,dot_weight_load_loop_and_rounding_AST_unchanged=True,
+      non_even_K_tail_combines_original_K_mask=True,compiled_IR_or_numerics_verified=False,
+      original_kernel_sha256=hashlib.sha256(original).hexdigest(),new_kernel_sha256=hashlib.sha256(kernel.read_bytes()).hexdigest())
+
+
 def check():
     assert 'torch' not in sys.modules and 'triton' not in sys.modules
     m = load(HEAD, '_ragged_head_cpu')
@@ -38,9 +101,12 @@ def check():
     inverse = inverse.replace('(runner.input_batch.num_reqs not in _CONFIGS\n                and _config_for_rows(runner.input_batch.num_reqs) is None)', 'runner.input_batch.num_reqs not in _CONFIGS')
     inverse = inverse.replace('(rows in _CONFIGS or _config_for_rows(rows) is not None)\n                and runner.input_batch.num_reqs == rows', 'rows in _CONFIGS and runner.input_batch.num_reqs == rows')
     inverse = inverse.replace("config = _CONFIGS[rows] if rows in _CONFIGS else _config_for_rows(rows)\n        if config is None:\n            raise ValueError('head row scope changed before launch')", 'config = _CONFIGS[rows]')
+    inverse = inverse.replace(', RAGGED_M=rows not in _CONFIGS', '')
+    inverse = inverse.replace('# 保留原W descriptor、K循环和温度舍入；ragged输入mask由独立constexpr控制。', '# 原受测自然W descriptor，完整原runtime K循环与配置；仅store前新epilogue。')
     assert inverse == before.replace('\r\n', '\n')
     kernel = ROOT / 'vllm_fl/patches/biv150_lm_head_temperature_kernel.py'
-    assert kernel.read_bytes() == subprocess.check_output(['git', '-C', str(ROOT), 'show', BASE + ':vllm_fl/patches/biv150_lm_head_temperature_kernel.py'])
+    original_kernel=subprocess.check_output(['git', '-C', str(ROOT), 'show', BASE + ':vllm_fl/patches/biv150_lm_head_temperature_kernel.py'])
+    kernel_proof=kernel_specialization_proof(kernel,original_kernel)
     configs = {r: dict(c) for r, c in m._CONFIGS.items()}
     routes = []
     for flag in (None, '0', '1', 'true', '2'):
@@ -59,19 +125,21 @@ def check():
             assert m._config_for_rows(bad) is None
         routes.append(dict(flag=flag, accepted=accepted))
     assert m._CONFIGS == configs
-    # Scalar address enumeration covers exact shader source modulo/masks. It
-    # does not validate tl.multiple_of/max_contiguous compiler hint behavior.
+    # Ragged rows load only true rm<M; aligned False preserves the old hints.
+    # This is source arithmetic, not proof of fresh generated device behavior.
     address = []
     for rows, base in [(31, 32), (32, 32), (41, 64), (42, 64), (43, 64), (64, 64)]:
         bm, bn = configs[base]['BLOCK_M'], configs[base]['BLOCK_N']
         assert configs[base]['grid'] == (130560 // bn, 1)
-        reads = {r % rows for r in range(bm)}
+        ragged=rows not in (32,64)
+        reads = {r for r in range(bm) if r<rows} if ragged else {r%rows for r in range(bm)}
         assert reads == set(range(rows))
         stores = [r for r in range(bm) if r < rows]
         assert stores == list(range(rows))
         assert (130560 % bn) == (2048 % configs[base]['BLOCK_K']) == 0
         assert max(reads) * 2048 + 2047 == rows * 2048 - 1
-        address.append(dict(rows=rows, tile_rows=bm, repeated_read_rows=bm-rows, active_stores=len(stores), temperature_masked_rows=bm-rows))
+        address.append(dict(rows=rows,tile_rows=bm,RAGGED_M=ragged,zero_filled_inactive_read_rows=bm-rows if ragged else 0,
+          repeated_read_rows=0,active_stores=len(stores),temperature_masked_rows=bm-rows))
     # Real complete module, no AST function substitution. Only imported runtime
     # dependencies are explicit opaque stand-ins; no SDK admission is claimed.
     saved = dict(sys.modules)
@@ -137,6 +205,7 @@ def check():
             assert args[4:7] == (rows, 130560, 2048)
             base = rows if rows in (32,64) else (32 if rows==31 else 64)
             assert grid == configs[base]['grid'] and all(kw[k] == v for k,v in configs[base].items() if k != 'grid')
+            assert kw['RAGGED_M'] is (rows not in (32,64))
             assert m.prepare_sampling(r, out, state, so, None) == (out, state)
             assert m.prepare_sampling(r, out, state, so, object())[1] is None
             # Same-shape fresh metadata object must invalidate the old ticket.
@@ -217,13 +286,19 @@ print(json.dumps({'unset_equals_zero':True,'one_changes_hash':True,'head_off_mas
         assert {c['label'] for c in result['cases']} == expected_labels and len(result['cases']) == 10
         assert all(all(v is True for v in c.values() if type(v) is bool) for c in result['cases'])
         historical.append(dict(rows=result['rows'], original_ten_gates_passed=True,sha256=expected['sha256']))
-    assert (legacy/'r32-candidate.py').read_bytes() == kernel.read_bytes()
-    return dict(historical_original_only=historical,gpu_executed=False,source_inverse_to_main=True,kernel_bytes_unchanged=True,
+    assert (legacy/'r32-candidate.py').read_bytes()==original_kernel
+    for label in ('r32','r64'):
+        receipt=json.loads((legacy/(label+'-archive-receipt.json')).read_text())
+        row=next(x for x in receipt['files'] if x['path'].endswith('/source/candidate.py'))
+        assert row['sha256']==hashlib.sha256(original_kernel).hexdigest()
+    assert not subprocess.check_output(['git','-C',str(ROOT),'diff','b6066b0899df81605ca1a19867459954e88d8699','--',str(legacy)])
+    return dict(historical_original_only=historical,gpu_executed=False,launcher_source_inverse_to_main=True,
+                kernel_specialization=kernel_proof,kernel_bytes_unchanged=False,
                 standalone_fingerprint=fingerprint,
                 main=BASE,routes=routes,address_enumeration=address,protocol=protocol,refusals=refusals,
                 launch_errors_propagated=True,scope_change_prelaunch_rejected=True,
                 actual_SDK_admission_tested=False,numerical_or_RNG_qualification=False,
-                compiler_hint_validity='pending actual IR/device checks; scalar enumeration is insufficient',
+                compiler_hint_validity='unsafe ragged row hints removed; fresh masked IR/device behavior still pending',
                 source_sha256=hashlib.sha256(HEAD.read_bytes()).hexdigest())
 
 

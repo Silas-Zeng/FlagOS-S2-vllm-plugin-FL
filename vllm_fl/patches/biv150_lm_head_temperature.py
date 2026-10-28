@@ -195,13 +195,13 @@ class _Runtime:
         if config is None:
             raise ValueError('head row scope changed before launch')
         out = torch.empty((rows, 130560), dtype=torch.float32, device=hidden.device)
-        # 原受测自然W descriptor，完整原runtime K循环与配置；仅store前新epilogue。
+        # 保留原W descriptor、K循环和温度舍入；ragged输入mask由独立constexpr控制。
         kernel = head_temperature_kernel[config['grid']](
             hidden, weight, weight, out, rows, 130560, 2048,
             2048, 1, 2048, 1, 130560, 1, 0, metadata.temperature,
             BIAS=False, GROUP_M=8, SPLIT_K=1, BLOCK_M=config['BLOCK_M'], BLOCK_N=config['BLOCK_N'],
             BLOCK_K=config['BLOCK_K'], EVEN_K=True, num_warps=config['num_warps'],
-            num_stages=config['num_stages'], num_ctas=1)
+            num_stages=config['num_stages'], num_ctas=1, RAGGED_M=rows not in _CONFIGS)
         if rows not in self.selected:
             self.selected.add(rows)
             print('BIV150_HEAD_TEMPERATURE_SELECTED',
