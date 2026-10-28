@@ -1,0 +1,193 @@
+{
+  "CPU_only": true,
+  "CPU_seconds": 10.554475333541632,
+  "all_raw_and_internal_artifact_hashes_checked": true,
+  "bounded_Graph_and_side_stream_results_verified": true,
+  "bounded_component_implementation_verified": true,
+  "capacity_reclaimed": false,
+  "cases": [
+    {
+      "all_uploaded_readbacks_and_saved_inputs_equal": true,
+      "both_arms_full_OML_final_bitwise": true,
+      "case": [
+        64,
+        2,
+        2048
+      ],
+      "changed_B_Graph_first_equals_fresh_eager_B_all_arrays": true,
+      "compact_closed_epoch_rejection_recorded": true,
+      "pointer_layout_and_epoch_records_checked": true,
+      "reducer_OML_readonly": true,
+      "side_C_saved_arrays_numeric_checked": true,
+      "three_input_patterns_regenerated": true
+    },
+    {
+      "all_uploaded_readbacks_and_saved_inputs_equal": true,
+      "both_arms_full_OML_final_bitwise": true,
+      "case": [
+        64,
+        2,
+        2560
+      ],
+      "changed_B_Graph_first_equals_fresh_eager_B_all_arrays": true,
+      "compact_closed_epoch_rejection_recorded": true,
+      "pointer_layout_and_epoch_records_checked": true,
+      "reducer_OML_readonly": true,
+      "side_C_saved_arrays_numeric_checked": true,
+      "three_input_patterns_regenerated": true
+    },
+    {
+      "all_uploaded_readbacks_and_saved_inputs_equal": true,
+      "both_arms_full_OML_final_bitwise": true,
+      "case": [
+        32,
+        4,
+        2048
+      ],
+      "changed_B_Graph_first_equals_fresh_eager_B_all_arrays": true,
+      "compact_closed_epoch_rejection_recorded": true,
+      "pointer_layout_and_epoch_records_checked": true,
+      "reducer_OML_readonly": true,
+      "side_C_saved_arrays_numeric_checked": true,
+      "three_input_patterns_regenerated": true
+    },
+    {
+      "all_uploaded_readbacks_and_saved_inputs_equal": true,
+      "both_arms_full_OML_final_bitwise": true,
+      "case": [
+        32,
+        4,
+        2560
+      ],
+      "changed_B_Graph_first_equals_fresh_eager_B_all_arrays": true,
+      "compact_closed_epoch_rejection_recorded": true,
+      "pointer_layout_and_epoch_records_checked": true,
+      "reducer_OML_readonly": true,
+      "side_C_saved_arrays_numeric_checked": true,
+      "three_input_patterns_regenerated": true
+    }
+  ],
+  "compact_library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "compile_and_root_review_binding_verified": true,
+  "encoder_launches": 0,
+  "full_array_numeric_hard_checks": 176,
+  "full_field_cross_arm_byte_comparisons": 96,
+  "golden_arrays_regenerated": 84,
+  "guard_and_physical_padding_checks": 384,
+  "ideal_partial_diagnostic_failures_preserved": 48,
+  "limitations": [
+    "Graph and side-stream execution identity comes from hash-bound frontend source and actual run records; saved arrays are independently replayed, not a new GPU run.",
+    "Epoch JSON is evidence from the original live gate, not an authorization token or a reconstructed live allocation.",
+    "No device writer/encoder,42-layer model,allocator-capacity reclamation,actual service,long-context,performance or timing qualification.",
+    "Page compactness changes synthetic physical allocation only; it does not prove service memory-capacity gain."
+  ],
+  "maximum_hard_metric_absolute_error": 0.0018667997130373815,
+  "maximum_hard_metric_relative_RMSE": 0.0011831102609028818,
+  "model_verified": false,
+  "original_BF16_final_proxy_checks": 32,
+  "original_codec_full_bit_replay_passed": true,
+  "original_library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "owner": {
+    "pid": 61196,
+    "same_start": true,
+    "start_ticks": 355697119,
+    "state": "Z"
+  },
+  "performance_verified": false,
+  "precision_gate": false,
+  "raw_bytes": 32796687,
+  "raw_files": 138,
+  "readonly_snapshot_checks": 320,
+  "reference": "Unchanged pagewise BF16 P v2 for partials; unchanged ideal quantized-score FP64 final/M/L; separate original BF16 final proxy; all original .005 thresholds preserved",
+  "review_wrapper_sha256": "3899c102c1485370e07046167e2995db18ca6315be2224f45f9d5536a180ea64",
+  "reviewer_GPU_SSH_Torch_Triton_used": false,
+  "saved_gold_arrays_bitexact_to_local_regeneration": false,
+  "saved_gold_maximum_absolute_difference": 2.842170943040401e-14,
+  "saved_gold_tolerance": "rtol1e-12/atol1e-11; tolerates host FP64 exp/BLAS last-bit differences only",
+  "scope": {
+    "full_array_replay_without_new_reference_or_threshold": true,
+    "layer_offset_bytes": 128,
+    "maximum_context": 193,
+    "one_synthetic_layer_only": true,
+    "pages": 29,
+    "patterns": 3,
+    "query_pitches": [
+      2048,
+      2560
+    ],
+    "scratch_backing_batch": 64,
+    "scratch_backing_segments": 16
+  },
+  "script_sha256": "a1e30ce992c911b0547f80537f56b1f71415d39b7c0ba91329f6a3d66a802c86",
+  "service_verified": false,
+  "source_commit": "4d1166792a5247b774d6b1977e60466574e6a34c",
+  "summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+  "timing": null,
+  "variant_archive_manifest_sha256": "4435696c50214a8ba60f6a4e4fbf7ff1970ce3f8fb202cb13f7b82b4c4c5613a",
+  "variant_fullstep_frontend_sha256": "9aac33390118f3bd58288993042a7cb7b27dc98f88feb37798b63f12e40897a2",
+  "variant_replay_adapter": {
+    "adapted_sha256": "b2f311cd8996aa687c1c5c0b62428349237c6c667d713e3e0a74e8e7feca5d38",
+    "edits": [
+      {
+        "new": "'/private/tmp/flagos-cjj-compact-native-v-overlap-consumer-evidence-20261029'",
+        "old": "'/private/tmp/flagos-cjj-native-k8-compact-consumer-frozen-51d-20261028'"
+      },
+      {
+        "new": "'/Users/chenjunjie/Documents/flagos/artifacts/cjj-native110-consumer-v1-raw-20261029'",
+        "old": "'/private/tmp/cjj-native-k8-compact-consumer-v1-raw-20261028'"
+      },
+      {
+        "new": "'/private/tmp/cjj-native110-compile-v1-raw-20261029/out'",
+        "old": "'/private/tmp/cjj-native-k8-compact-compile-v1-raw-20261028/out'"
+      },
+      {
+        "new": "'/private/tmp/cjj-native-k8-codec-v1-raw-20261028/out/codec-summary.json'",
+        "old": "'/private/tmp/cjj-native-k8-codec-v1-raw-20261028/out/codec-summary.json'"
+      },
+      {
+        "new": "'/private/tmp/cjj-native-k8-compile-v1-raw-20261028/out/build/cjj_native_k8_qk_probe.so'",
+        "old": "'/private/tmp/cjj-native-k8-compile-v1-raw-20261028/out/build/cjj_native_k8_qk_probe.so'"
+      },
+      {
+        "new": "import probe_biv150_native_k8_compact_v_overlap_consumer as variant_frontend\nfrontend=variant_frontend.replay_frontend()",
+        "old": "import probe_biv150_native_k8_compact_consumer as frontend"
+      },
+      {
+        "new": "contract=variant_frontend.modules()[2]",
+        "old": "import biv150_native_k8_compact_consumer_contract as contract"
+      },
+      {
+        "new": "(manifest['raw_files'],manifest['raw_bytes'])==(138, 32796687)",
+        "old": "(manifest['raw_files'],manifest['raw_bytes'])==(138,32787475)"
+      },
+      {
+        "new": "{'pid': 61196, 'start_ticks': 355697119, 'same_start': True, 'state': 'Z'}",
+        "old": "dict(pid=14175,start_ticks=353418626,same_start=True,state='Z')"
+      },
+      {
+        "new": "owner['pid']==61196 and owner['start_ticks']==355697119 and owner['source_commit']=='4d1166792a5247b774d6b1977e60466574e6a34c'",
+        "old": "owner['pid']==14175 and owner['start_ticks']==353418626 and owner['source_commit']=='51da6fd73e7fff1513081fb330323ce72c00856c'"
+      },
+      {
+        "new": "len(manifest['files'])==138 and sum(x['bytes'] for x in manifest['files'])==32796687",
+        "old": "len(manifest['files'])==138 and sum(x['bytes'] for x in manifest['files'])==32787475"
+      },
+      {
+        "new": "review_sha=='90f6e18e142813e732694f453779b876048daaa8c122fd3e2d985dc2969cdb17'",
+        "old": "review_sha=='3b3e94c9af183b77df5be794746f2b783c1b925f643b5d1d450e13da3a3ddc28'"
+      },
+      {
+        "new": "Path('/private/tmp/cjj-native110-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_v_overlap_probe.so')",
+        "old": "COMPILE/'build/cjj_native_k8_compact_probe.so'"
+      },
+      {
+        "new": "raw_files=manifest['raw_files'],raw_bytes=manifest['raw_bytes']",
+        "old": "raw_files=138,raw_bytes=32787475"
+      }
+    ],
+    "entire_array_numeric_replay_body_byte_identical": true,
+    "inverse_byte_exact": true,
+    "parent_sha256": "c7eea1ce276bbc8601e89f42ecc99336b73262dcb94af34e21a1b2ec70ba0b0d"
+  },
+  "writer_verified": false
+}
