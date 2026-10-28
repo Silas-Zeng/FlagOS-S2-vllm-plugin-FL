@@ -1,8 +1,8 @@
-"""Default-off pending-qualified compact12544 NativeK8 adapter, AFTER the private format fence.
+"""Default-off component-qualified compact12544 NativeK8 adapter, AFTER the private format fence.
 
 No compilation, Tensor-data reads, stock fallback, allocator or kernel changes.
-Production qualification is pending; ON cannot load any library in this commit.
-Service qualification is separate from the recorded component evidence.
+Only the reviewed40f9 library and dc5 writer/views are admitted.
+Service/model/capacity qualification is separate from the component evidence.
 """
 import hashlib
 import json
@@ -72,7 +72,7 @@ class Adapter:
         self.code_binding=(type(self).try_produce.__code__,type(self).validate.__code__,type(self).verify.__code__)
         self.helper_binding=tuple((globals()[n],globals()[n].__code__) for n in ('need','storage','overlaps','bounds','geometry'))
         self.constant_binding=(ENV,PATH_ENV,SHA_ENV,LIBRARY_SHA,FORMAT,OPERATOR,SCHEMA,SCALE)
-        self.calls=0;self.fallbacks={};self.records={};self.overflow=0
+        self.calls=0;self.fallbacks={};self.fallback_records={};self.records={};self.overflow=0
         self.imports=dict(installed=True,enabled=True,format=FORMAT,physical_page_bytes=12544,torch_file=str(torch.__file__),module_file=str(Path(__file__).resolve()),
             module_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),library=dict(config),
             operator=OPERATOR,schema=SCHEMA,loaded_library_confirmed=True,runtime_compile=False)
@@ -138,7 +138,18 @@ class Adapter:
         elif any(t.ndim!=3 or t.shape[0]<n or tuple(t.shape[1:])!=(16,s) or tuple(t.stride())!=(256,16,1) for t in (maximum,summation)):reason='scalar_not_narrowed_from_width16'
         elif type(kw.get('softmax_scale_log2e')) not in (float,int) or kw['softmax_scale_log2e']!=SCALE:reason='unverified_attention_scale'
         if reason:
-            self.fallbacks[reason]=self.fallbacks.get(reason,0)+1;return False
+            self.fallbacks[reason]=self.fallbacks.get(reason,0)+1
+            info=dict(shape=n,segments=s,query_strides=list(q.stride()),reason=reason,
+                capture=bool(self.torch.cuda.is_current_stream_capturing()),
+                format=FORMAT,selected_reader='private_compact_Triton',
+                host_or_capture_event_not_Graph_replay_count=True)
+            key=json.dumps(info,sort_keys=True)
+            if key in self.fallback_records:self.fallback_records[key]['host_calls']+=1
+            elif len(self.fallback_records)<128:
+                self.fallback_records[key]=dict(**info,host_calls=1)
+                print('BIV150_KONLY_COMPACT_NATIVE_FALLBACK',json.dumps(info,sort_keys=True),flush=True)
+            else:self.overflow+=1
+            return False
         # Existing SO, current-stream dispatcher, exactly one call. No exception
         # is caught here: a postlaunch error must never cause a second producer.
         self.op(q,k,scale,v,lens,table,partial,maximum,summation,kw['softmax_scale_log2e'],s)
@@ -147,7 +158,7 @@ class Adapter:
         info=dict(shape=n,segments=s,capture=capture,entry_generation=entry.generation,
             query=geometry(q),table=geometry(table),partial=geometry(partial),maximum=geometry(maximum),summation=geometry(summation),
             cache_pages=k.shape[0],format=FORMAT,physical_page_bytes=12544,library=dict(self.library),operator=OPERATOR,
-            component_qualification='compact_small_consumer_only; actual service context/model pending',
+            component_qualification='40f9 four-case consumer and 34276-page writer/reader fullstep; model/service pending',
             host_or_capture_event_not_Graph_replay_count=True,native_launch_returned=True,service_numeric_verified=False)
         key=json.dumps(info,sort_keys=True)
         # Epoch/layer identities are separate; bounded records retain complete
@@ -161,7 +172,8 @@ class Adapter:
 
     def stats(self):
         return dict(enabled=True,library=self.library,actual_imports=self.imports,selected_host_calls=self.calls,
-            private_Triton_fallbacks=dict(self.fallbacks),records=list(self.records.values()),overflow=self.overflow,
+            private_Triton_fallbacks=dict(self.fallbacks),private_Triton_fallback_records=list(self.fallback_records.values()),
+            records=list(self.records.values()),overflow=self.overflow,
             Graph_replays_counted=False,service_numeric_model_or_performance_verified=False)
 
 

@@ -53,11 +53,11 @@
     },
     "host": {
       "path": "vllm_fl/patches/biv150_konly_compact_host.py",
-      "sha256": "7724b2a06bb9d09f75aadf908692bd5bce41bbfd0ea415f327bafad167ec777b"
+      "sha256": "e2097b93e84a46ca9fe86e99d568f036ce40fa9fac86fd3246d5b0c6a29fd22d"
     },
     "service": {
       "path": "vllm_fl/patches/biv150_konly_compact_service.py",
-      "sha256": "f24e1b11b56b3d79ce7643565a8b791bb5955c62c4cb3fcd60fef44939a1f558"
+      "sha256": "9a27689c0a29f9736d4b599dd0f5fa29509512c53dcb5ad4b8226d6e26d0da10"
     }
   },
   "address_source_proofs": {
@@ -115,7 +115,7 @@
   "binding_files": {
     "worker/model_runner.py": "9ee00d1facb70e942871a5780d467df14c8ded2dbfd7efdadf0106187fd6051d",
     "patches/biv150_compute_order.py": "6ef4028e3be91f8b3f88c7b1fe021843389508cd349435ca5fa337173e9bc70a",
-    "compile_semantics.py": "1b4b2efb57fb7dde4653a4bc7f8c47e5e20b6d10e88e556fe5a9988b4e02d585"
+    "compile_semantics.py": "5dc5fea34e1a99f03e6391e58f11094253bb3fe5e493dab7c5cb15181ace1dfa"
   },
   "q32_hoist_supported": false,
   "service_numeric_verified": false,
@@ -124,20 +124,57 @@
   "performance_verified": false,
   "precision_gate": false,
   "native_decode": {
-    "qualification_state": "pending",
+    "qualification_state": "component-reviewed",
     "format": "cjj-konly-compact12544-rn32-rne-v1",
     "operator": "cjj_native_k8_compact_probe::produce",
     "adapter": {
       "path": "vllm_fl/patches/biv150_konly_compact_native.py",
-      "sha256": "4fe9004d716d7d4711dd9e899f02f8c4af05b56d9baaa82d8b0213ad5023e4f7"
+      "sha256": "4a577a890137ec0756ba70b91839580cfbca70f748dfc278e359fc25e25b8ca5"
     },
     "qualification": {
       "path": "vllm_fl/compact_native_qualification.py",
-      "sha256": "229a16351ee61e51e7cfe8ad15572e433eca013db7b83fe36a5bfb19d1a070ec"
+      "sha256": "e6fab2dc7d248d0a395ef84b688a4951d63499d35e18f1391517557dd0cbedd2"
     },
     "early_import_gate": {
       "path": "vllm_fl/__init__.py",
       "sha256": "6c67ead825c816b21db3c067b09fb4c223a3c0ae424768b22081584a78f62c19"
+    },
+    "qualification_binding": {
+      "state": "component-reviewed",
+      "format": "cjj-konly-compact12544-rn32-rne-v1",
+      "operator": "cjj_native_k8_compact_probe::produce",
+      "page_bytes": 12544,
+      "library_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+      "actual_SO_review_sha256": "3b3e94c9af183b77df5be794746f2b783c1b925f643b5d1d450e13da3a3ddc28",
+      "consumer_summary_sha256": "9d2bcd2f803626fca16aae5c73533ce1436d8bb98010f00fa6583061dfa90df8",
+      "fullstep_summary_sha256": "53880d7cad7beb47a07a4551056b616afdba45e6fca4703da98aaea9816f036f",
+      "fullstep_review_sha256": "96262cd2414ce85a3648f0d45e1727f93b243e754310e31e1160fc30639ebdb0",
+      "source_CUDA_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+      "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+      "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "scopes": [
+        [
+          64,
+          2,
+          2048
+        ],
+        [
+          64,
+          2,
+          2560
+        ],
+        [
+          32,
+          4,
+          2048
+        ],
+        [
+          32,
+          4,
+          2560
+        ]
+      ]
     }
-  }
+  },
+  "integration_main": "a455a3de364051fbea80226870c239de3a48e716"
 }

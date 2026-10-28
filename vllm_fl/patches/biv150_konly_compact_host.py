@@ -2,6 +2,7 @@
 from dataclasses import fields
 import functools
 import importlib
+import json
 from pathlib import Path
 import sys
 import types
@@ -160,6 +161,7 @@ class Host:
                 need(cache.untyped_storage().nbytes() == config.num_blocks*PAGE_BYTES,
                      'bound cache storage extent changed')
             self.initialized = True
+            print('BIV150_KONLY_COMPACT_ALLOCATION',json.dumps(self.stats(),sort_keys=True),flush=True)
             return result
         self.initialize_hook = initialize
         return initialize
@@ -190,6 +192,7 @@ class Host:
                      pointer_offset_bytes=carrier.data_ptr()-raw.data_ptr())
                 for raw, carrier, blocks in self.records.values()]
         return dict(format=FORMAT, page_bytes=PAGE_BYTES, initialized=self.initialized,
+                    configured_num_blocks=getattr(getattr(self.runner,'kv_cache_config',None),'num_blocks',None),
                     recorded_layers=len(rows), records=rows,
                     raw_storage_bytes=sum(row['storage_bytes'] for row in rows),
                     verified_core_source_sha256=self.verified_core_pins,

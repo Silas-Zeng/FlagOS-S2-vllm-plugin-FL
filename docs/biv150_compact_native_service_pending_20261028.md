@@ -1,5 +1,9 @@
 # Default-off compact/native service composition — qualification pending
 
+This records the historical104 freeze. The later reviewed-component service
+candidate is documented in `biv150_compact_native_service_a455_20261028.md`;
+its model and real capacity gates remain pending.
+
 Normal two-parent CPU integration of PR91 `5ca6a5464f9e8d11f30428c46508ff0b76e204de`
 and PR98 `c30cf4e2f56b58efaca100ffa54157dd53744944`, both based on fresh team main
 `4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b`. Depends on PR100

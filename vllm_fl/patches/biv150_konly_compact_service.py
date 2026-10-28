@@ -11,7 +11,7 @@ from pathlib import Path
 ENV = 'VLLM_FL_BIV150_KONLY_COMPACT_SERVICE'
 _STATE = None
 PINS = {
-    'vllm_fl.patches.biv150_native_gqa': '86f8ca199ce632ccb3bbc251bb5c632e57da3373d8b87bd5f53334ef818a26c4',
+    'vllm_fl.patches.biv150_native_gqa': '2f5e730a428548a235b7c1cee7f5222176cce6d840fb406079c042052a49b0e1',
     'vllm.v1.attention.backends.triton_attn': '1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605',
     'vllm.v1.attention.ops.triton_unified_attention': '54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f',
     'vllm.v1.attention.ops.triton_attention_helpers': '59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1',
@@ -111,6 +111,10 @@ def install(runner_class, *, environ=None):
         need(declared['format'] == 'cjj-konly-compact12544-rn32-rne-v1'
              and declared['adapter']['path'] == 'vllm_fl/patches/'+path.name,
              'compact native adapter format/source manifest')
+        need(declared['qualification_binding']==compact_native_config['qualification']
+             and generated['writer']['sha256']==compact_native_config['qualification']['writer_source_sha256']
+             and generated['views']['sha256']==compact_native_config['qualification']['views_source_sha256'],
+             'actual native/encoder/roles source qualification binding')
         need(hashlib.sha256(path.read_bytes()).hexdigest() == declared['adapter']['sha256'],
              'compact native adapter source SHA')
         native = importlib.import_module('vllm_fl.patches.biv150_konly_compact_native')
