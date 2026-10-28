@@ -1,0 +1,136 @@
+{
+  "blocking_findings": [],
+  "expanded_source_sha256": "3678f41e6df0e6e11fa52efa2c4174648928534c30da89806a4f4870b90a1d6f",
+  "frozen_commit": "f5695ab58394b4a46da76beaa539afb625e7b46f",
+  "independent_phase_budgets": [
+    {
+      "active_pages": 44649,
+      "base": 17408,
+      "case": "valid41",
+      "live": 41,
+      "padding": 7,
+      "phase": 0,
+      "reserved": 44649,
+      "rows": 48,
+      "spare": 120
+    },
+    {
+      "active_pages": 33783,
+      "base": 17408,
+      "case": "valid41",
+      "live": 41,
+      "padding": 7,
+      "phase": 1,
+      "reserved": 44649,
+      "rows": 48,
+      "spare": 120
+    },
+    {
+      "active_pages": 33783,
+      "base": 17408,
+      "case": "valid41",
+      "live": 41,
+      "padding": 7,
+      "phase": 2,
+      "reserved": 44649,
+      "rows": 48,
+      "spare": 120
+    },
+    {
+      "active_pages": 44394,
+      "base": 16896,
+      "case": "valid42",
+      "live": 42,
+      "padding": 6,
+      "phase": 0,
+      "reserved": 44394,
+      "rows": 48,
+      "spare": 375
+    },
+    {
+      "active_pages": 33848,
+      "base": 16896,
+      "case": "valid42",
+      "live": 42,
+      "padding": 6,
+      "phase": 1,
+      "reserved": 44394,
+      "rows": 48,
+      "spare": 375
+    },
+    {
+      "active_pages": 33848,
+      "base": 16896,
+      "case": "valid42",
+      "live": 42,
+      "padding": 6,
+      "phase": 2,
+      "reserved": 44394,
+      "rows": 48,
+      "spare": 375
+    }
+  ],
+  "limits": [
+    "Code review and CPU geometry only; actual TL/writer compilation, large-context arrays and timing remain device work.",
+    "Separate stride2560 Q/K/V buffers do not establish the shared model QKV allocation path.",
+    "A/B/C use independently defined prefixes, not a claim of three consecutive generated tokens.",
+    "Same-shape TL/native component denominator is not latest-main model throughput.",
+    "Source helper filename recording was added during review; final frozen code includes the change."
+  ],
+  "passed": true,
+  "qualifications": {
+    "capacity42layers_passed": false,
+    "code_ready_for_Root_serial_device_validation": true,
+    "consumer_array_replay_repeated": false,
+    "device_executed": false,
+    "fullstep_numeric_passed": false,
+    "fullstep_timing_passed": false,
+    "model_passed": false,
+    "service_passed": false
+  },
+  "review_script_sha256": "505490d4d5ad267a57301e5ae4a0cd0bd37e9ac5fae0a1a5850e06736d723248",
+  "seven_unchanged_functions": {
+    "capture": "e3fd8b19c2de33cc9c9574762ce42667b26e07cfaff73444d58828cbad9682a0",
+    "fingerprints": "f3cbd2a41e01a765f752323f63935aa6910bb39dc5b30f2de1c5045208812aad",
+    "poison": "a9a0e0b6957c2914c48977ed0985bb0286f3500313741be53baac0a648670757",
+    "reducer": "84ba74067e67c6c4997b751ed5af2c37981667fe48add5ca0d8329f2b27410f5",
+    "step": "9cc8b621305c4db32c47fa8ae19088369f45867f2f9a9dcacac839f72ddb6666",
+    "timed": "e84af79b3470db82a6c043a387c3bbfc59f2557aaf610c3af6716463c63574b9",
+    "verify_inputs": "425090b5936f9a290baef6f5e1a296589c655bb5275d08874867558cad7edf33"
+  },
+  "source_files": [
+    {
+      "path": "tools/biv150_native_k8_compact_n48_fullstep_fixture.py",
+      "sha256": "95968c46dc749b6559dc1be8945dedc2cf81fefcb1dfdc058086b2c196c3014f"
+    },
+    {
+      "path": "tools/biv150_native_k8_compact_n48_fullstep_source.py",
+      "sha256": "fa2b389b925fe6526c7cf42f179dab48794773386449481009815db6efbed9e9"
+    },
+    {
+      "path": "tools/check_biv150_native_k8_compact_n48_fullstep_cpu.py",
+      "sha256": "5badcf6834289e6e3d56d91585145c3774164c172f46d7034021085129ad1e4a"
+    },
+    {
+      "path": "tools/probe_biv150_native_k8_compact_n48_fullstep.py",
+      "sha256": "ad87f323c0b96b13920ab1fd725079a18dbc6153820db2b48efe02cb6d372443"
+    }
+  ],
+  "source_findings": {
+    "ABBA_warm128_replays64_unroll8_preserved": true,
+    "actual_TL_and_stride2560_writer_JIT_identity_ABI_resources_recorded_before_timing": true,
+    "actual_stride2560_Q_K_V_separate_backing": true,
+    "append_producer_reducer_all_inside_timed_graph": true,
+    "both_golden_original_I8_QK_FP64": true,
+    "consumer_c079_actual_report_gate_bound": true,
+    "dc5_writer_and_views_materialized_exact": true,
+    "initial_encode_and_pack_costs_separate": true,
+    "normal_quant_helper_import_SHA_object_identity_and_actual_paths_recorded": true,
+    "original_numeric_thresholds_Graphfirst_side_guards_preserved": true,
+    "reference_reader_fc25_full_file_unchanged": true,
+    "same_compact12544_TL48_vs_actual2ad": true,
+    "whole44769_page_cache_checks_before_after": true,
+    "writer_V_full_base_consumer_V_plus4352": true,
+    "zero_padding_and_negative_slots": true
+  }
+}
