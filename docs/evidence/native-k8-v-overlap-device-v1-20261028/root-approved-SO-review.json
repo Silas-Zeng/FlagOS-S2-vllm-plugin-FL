@@ -1,0 +1,76 @@
+{
+  "GPU_numeric_verified": false,
+  "actual_K_then_V_issue_order_preserved": true,
+  "actual_SO_codec_equivalent_to_original22e": true,
+  "actual_SO_disassembly": {
+    "IR": {
+      "path": "/workspace/experiments/minicpm-s2/cjj-native-k8-v-overlap-compile-v1-20261028/actual-so-inspection/IR.stdout.txt",
+      "sha256": "543476fc01bfb1335f0276631b0c2f3d341d45a7b2b0305eb7daf0385073d33e"
+    },
+    "SASS": {
+      "path": "/workspace/experiments/minicpm-s2/cjj-native-k8-v-overlap-compile-v1-20261028/actual-so-inspection/SASS.stdout.txt",
+      "sha256": "c0b62cc28f58fc2b5a0eb5a2eb57db1da9fe83c695fb04411da5661f35e81186"
+    }
+  },
+  "actual_V_wait_after_QK_and_P_softmax_packing": true,
+  "actual_wait_tail_clear_barrier_before_PV": true,
+  "compile_summary_sha256": "413207a40778cc2d948162fa758c4311501dc007bac1ec5afbd13facc3a026dd",
+  "library_sha256": "8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5",
+  "namespace": "cjj_native_k8_v_overlap_probe",
+  "notes": "Root independently replayed b65851e654cf810598c194343caca391572f21a539283632d46de0cc8ee44a1b on the actual SO. All full/tail QK and P softmax/reduction/packing precede V wait in actual CFG; rho exp and running-L FMA may remain after wait. 2768 encoded instructions bound to SO, unchanged resources and codec machine text. Numeric/device/performance qualification is pending.",
+  "original_QK_softmax_BF16_PV_preserved": true,
+  "resources": {
+    "2": {
+      "sgpr": 68,
+      "shared_bytes": 8192,
+      "spill_bytes": 0,
+      "vgpr": 100
+    },
+    "4": {
+      "sgpr": 68,
+      "shared_bytes": 8192,
+      "spill_bytes": 0,
+      "vgpr": 100
+    }
+  },
+  "resources_reviewed": true,
+  "reviewer": "CJJ1008",
+  "source_proof": {
+    "Q_quantization_QK_softmax_PV_and_outputs_unchanged": true,
+    "V_first_PR96_combined": false,
+    "actual_device_schedule_verified": false,
+    "base": "1cbac531ca9afaa0e9a68624d5d10cb1d0412055",
+    "deferred_wait": "after QK/softmax/P packing; before V tail clear and PV",
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+        "variant_sha256": "8c4d67925f9d731f9fda36c82b75d35da8372ffbb9579b1c2891898a19c371b3"
+      },
+      "codec.cuh": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+        "variant_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+        "variant_sha256": "5b71b43807c8e5f57a4f495a2733f1738ee1248ebec91f4a2f8e26b84b18e0ef"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "variant_sha256": "8f22c9464b4595caf0059e9571e92d1ede83abe1430fda8f95a7e8b649efe3bf"
+      }
+    },
+    "issue_order": "K ordinary load/store + barrier, then V SME (unchanged)",
+    "namespace": "cjj_native_k8_v_overlap_probe",
+    "numeric_verified": false,
+    "parent": "37713909f1f25b69d5ef6c155fad3b87351046fb",
+    "performance_verified": false,
+    "physical_page_bytes": 16384,
+    "precision_gate": false,
+    "service_enabled": false
+  },
+  "version": 1
+}
