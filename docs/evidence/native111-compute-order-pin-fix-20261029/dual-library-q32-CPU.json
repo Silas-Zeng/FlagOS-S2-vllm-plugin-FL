@@ -1,0 +1,872 @@
+{
+  "C3_six_modes_fingerprints": [
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "ac08dcb33a1e05273beddcb19793f6ae4b01f2947755a1b3285ec40022b9968f",
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": false
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "84203add682ba750029556f6b362f9817fc8c07bc7157a1d90f74fdba613777e"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "ac08dcb33a1e05273beddcb19793f6ae4b01f2947755a1b3285ec40022b9968f",
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": true
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "1fe96560d65f0faf9794dfa9ed7dbbc4fbfe59c2d9c26fe9fcfff9871368fb6a"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "ac08dcb33a1e05273beddcb19793f6ae4b01f2947755a1b3285ec40022b9968f",
+        "native_decode": {
+          "enabled": true,
+          "n48": null,
+          "path": "/private/tmp/cjj-native110-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_v_overlap_probe.so",
+          "qualification": {
+            "actual_SO_review_sha256": "0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708",
+            "consumer_review_sha256": "896c7c992aefcbfa36ed7445c3cf6fb1d40135bde610b5d83693ed27ec8fadf1",
+            "consumer_summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+            "format": "cjj-konly-compact12544-rn32-rne-v1",
+            "fullstep_geometry": {
+              "new_KV_row_pitch": 256,
+              "physical_pages": 34276,
+              "service_verified": false
+            },
+            "fullstep_review_sha256": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+            "fullstep_summary_sha256": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478",
+            "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+            "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
+            "page_bytes": 12544,
+            "scopes": [
+              [
+                64,
+                2,
+                2048
+              ],
+              [
+                64,
+                2,
+                2560
+              ],
+              [
+                32,
+                4,
+                2048
+              ],
+              [
+                32,
+                4,
+                2560
+              ]
+            ],
+            "source_CUDA_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+            "state": "component-reviewed",
+            "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+            "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+          },
+          "sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4"
+        },
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": false
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "6c5e1d92b217aff346470073de89d3846c1528896733f45e88dc7b4b2cd8592b"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "ac08dcb33a1e05273beddcb19793f6ae4b01f2947755a1b3285ec40022b9968f",
+        "native_decode": {
+          "enabled": true,
+          "n48": null,
+          "path": "/private/tmp/cjj-native110-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_v_overlap_probe.so",
+          "qualification": {
+            "actual_SO_review_sha256": "0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708",
+            "consumer_review_sha256": "896c7c992aefcbfa36ed7445c3cf6fb1d40135bde610b5d83693ed27ec8fadf1",
+            "consumer_summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+            "format": "cjj-konly-compact12544-rn32-rne-v1",
+            "fullstep_geometry": {
+              "new_KV_row_pitch": 256,
+              "physical_pages": 34276,
+              "service_verified": false
+            },
+            "fullstep_review_sha256": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+            "fullstep_summary_sha256": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478",
+            "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+            "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
+            "page_bytes": 12544,
+            "scopes": [
+              [
+                64,
+                2,
+                2048
+              ],
+              [
+                64,
+                2,
+                2560
+              ],
+              [
+                32,
+                4,
+                2048
+              ],
+              [
+                32,
+                4,
+                2560
+              ]
+            ],
+            "source_CUDA_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+            "state": "component-reviewed",
+            "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+            "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+          },
+          "sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4"
+        },
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": true
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "6718fde871b77275b900ef5306229716a5c16f3076ec4edf07e373edf17f4408"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "ac08dcb33a1e05273beddcb19793f6ae4b01f2947755a1b3285ec40022b9968f",
+        "native_decode": {
+          "enabled": true,
+          "n48": {
+            "path": "/private/tmp/cjj-native112-n48-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_n48_s4_probe.so",
+            "qualification": {
+              "actual_SO_review_sha256": "30c4c7daf2ccf3839bfabc9936f0a845400d26242fe93cc95bec99d270e8f398",
+              "consumer_review_sha256": "c07937c3d6c3ffc78a5c7b213271e4f864a9463775fe932f9f2aadbff08ef4d0",
+              "consumer_summary_sha256": "493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272",
+              "format": "cjj-konly-compact12544-rn32-rne-v1",
+              "fullstep_geometry": {
+                "new_KV_row_pitch": 2560,
+                "physical_pages": 44769,
+                "service_verified": false
+              },
+              "fullstep_review_sha256": "2d8d5b873eb30084da7dd0e25332088462dd5cfef62c45fe45c75bccd07ede5d",
+              "fullstep_summary_sha256": "5a6aefeb7befb777e890402fa9742774ea23ae5e696be67c74f04418df37b131",
+              "library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+              "operator": "cjj_native_k8_compact_n48_s4_probe::produce",
+              "page_bytes": 12544,
+              "scopes": [
+                [
+                  48,
+                  4,
+                  2048
+                ],
+                [
+                  48,
+                  4,
+                  2560
+                ]
+              ],
+              "source_CUDA_sha256": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+              "state": "component-reviewed",
+              "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+              "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+            },
+            "sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1"
+          },
+          "path": "/private/tmp/cjj-native110-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_v_overlap_probe.so",
+          "qualification": {
+            "actual_SO_review_sha256": "0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708",
+            "consumer_review_sha256": "896c7c992aefcbfa36ed7445c3cf6fb1d40135bde610b5d83693ed27ec8fadf1",
+            "consumer_summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+            "format": "cjj-konly-compact12544-rn32-rne-v1",
+            "fullstep_geometry": {
+              "new_KV_row_pitch": 256,
+              "physical_pages": 34276,
+              "service_verified": false
+            },
+            "fullstep_review_sha256": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+            "fullstep_summary_sha256": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478",
+            "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+            "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
+            "page_bytes": 12544,
+            "scopes": [
+              [
+                64,
+                2,
+                2048
+              ],
+              [
+                64,
+                2,
+                2560
+              ],
+              [
+                32,
+                4,
+                2048
+              ],
+              [
+                32,
+                4,
+                2560
+              ]
+            ],
+            "source_CUDA_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+            "state": "component-reviewed",
+            "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+            "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+          },
+          "sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4"
+        },
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": false
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "ac08f914a52f3cb34d3c53b10890d513b407f99bde85880e77e6b9fb38b189c7"
+    },
+    {
+      "konly_compact": {
+        "format": "cjj-konly-compact12544-rn32-rne-v1",
+        "implementation_sha256": "ac08dcb33a1e05273beddcb19793f6ae4b01f2947755a1b3285ec40022b9968f",
+        "native_decode": {
+          "enabled": true,
+          "n48": {
+            "path": "/private/tmp/cjj-native112-n48-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_n48_s4_probe.so",
+            "qualification": {
+              "actual_SO_review_sha256": "30c4c7daf2ccf3839bfabc9936f0a845400d26242fe93cc95bec99d270e8f398",
+              "consumer_review_sha256": "c07937c3d6c3ffc78a5c7b213271e4f864a9463775fe932f9f2aadbff08ef4d0",
+              "consumer_summary_sha256": "493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272",
+              "format": "cjj-konly-compact12544-rn32-rne-v1",
+              "fullstep_geometry": {
+                "new_KV_row_pitch": 2560,
+                "physical_pages": 44769,
+                "service_verified": false
+              },
+              "fullstep_review_sha256": "2d8d5b873eb30084da7dd0e25332088462dd5cfef62c45fe45c75bccd07ede5d",
+              "fullstep_summary_sha256": "5a6aefeb7befb777e890402fa9742774ea23ae5e696be67c74f04418df37b131",
+              "library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+              "operator": "cjj_native_k8_compact_n48_s4_probe::produce",
+              "page_bytes": 12544,
+              "scopes": [
+                [
+                  48,
+                  4,
+                  2048
+                ],
+                [
+                  48,
+                  4,
+                  2560
+                ]
+              ],
+              "source_CUDA_sha256": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+              "state": "component-reviewed",
+              "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+              "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+            },
+            "sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1"
+          },
+          "path": "/private/tmp/cjj-native110-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_v_overlap_probe.so",
+          "qualification": {
+            "actual_SO_review_sha256": "0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708",
+            "consumer_review_sha256": "896c7c992aefcbfa36ed7445c3cf6fb1d40135bde610b5d83693ed27ec8fadf1",
+            "consumer_summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+            "format": "cjj-konly-compact12544-rn32-rne-v1",
+            "fullstep_geometry": {
+              "new_KV_row_pitch": 256,
+              "physical_pages": 34276,
+              "service_verified": false
+            },
+            "fullstep_review_sha256": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+            "fullstep_summary_sha256": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478",
+            "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+            "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
+            "page_bytes": 12544,
+            "scopes": [
+              [
+                64,
+                2,
+                2048
+              ],
+              [
+                64,
+                2,
+                2560
+              ],
+              [
+                32,
+                4,
+                2048
+              ],
+              [
+                32,
+                4,
+                2560
+              ]
+            ],
+            "source_CUDA_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+            "state": "component-reviewed",
+            "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+            "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+          },
+          "sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4"
+        },
+        "page_bytes": 12544,
+        "producer_boundary": "owned-compact-before-stock-native",
+        "q32_hoist_enabled": true
+      },
+      "native_enabled": false,
+      "schema": 1,
+      "sha256": "343d1a49a685fe0bf20b90afc6346b5e2910fdaace4e52b34eb7773ef5aba209"
+    }
+  ],
+  "CPU_only": true,
+  "CUDA_CPP_codec_Q32_compute_sources_changed": false,
+  "GPU_executed": false,
+  "N48_dual_library_cases": [
+    {
+      "actual_host_attach_load_verify_path": true,
+      "batch": 32,
+      "dispatch_queries": [
+        [
+          "cjj_native_k8_compact_v_overlap_probe::produce",
+          "CUDA"
+        ],
+        [
+          "cjj_native_k8_compact_n48_s4_probe::produce",
+          "CUDA"
+        ]
+      ],
+      "pitch": 2048,
+      "registered_mock_schemas": [
+        "cjj_native_k8_compact_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+        "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()"
+      ],
+      "segments": 4,
+      "selected_recorded_calls": 3
+    },
+    {
+      "actual_host_attach_load_verify_path": true,
+      "batch": 32,
+      "dispatch_queries": [
+        [
+          "cjj_native_k8_compact_v_overlap_probe::produce",
+          "CUDA"
+        ],
+        [
+          "cjj_native_k8_compact_n48_s4_probe::produce",
+          "CUDA"
+        ]
+      ],
+      "pitch": 2560,
+      "registered_mock_schemas": [
+        "cjj_native_k8_compact_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+        "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()"
+      ],
+      "segments": 4,
+      "selected_recorded_calls": 3
+    },
+    {
+      "actual_host_attach_load_verify_path": true,
+      "batch": 48,
+      "dispatch_queries": [
+        [
+          "cjj_native_k8_compact_v_overlap_probe::produce",
+          "CUDA"
+        ],
+        [
+          "cjj_native_k8_compact_n48_s4_probe::produce",
+          "CUDA"
+        ]
+      ],
+      "pitch": 2048,
+      "registered_mock_schemas": [
+        "cjj_native_k8_compact_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+        "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()"
+      ],
+      "segments": 4,
+      "selected_recorded_calls": 3
+    },
+    {
+      "actual_host_attach_load_verify_path": true,
+      "batch": 48,
+      "dispatch_queries": [
+        [
+          "cjj_native_k8_compact_v_overlap_probe::produce",
+          "CUDA"
+        ],
+        [
+          "cjj_native_k8_compact_n48_s4_probe::produce",
+          "CUDA"
+        ]
+      ],
+      "pitch": 2560,
+      "registered_mock_schemas": [
+        "cjj_native_k8_compact_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+        "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()"
+      ],
+      "segments": 4,
+      "selected_recorded_calls": 3
+    },
+    {
+      "actual_host_attach_load_verify_path": true,
+      "batch": 64,
+      "dispatch_queries": [
+        [
+          "cjj_native_k8_compact_v_overlap_probe::produce",
+          "CUDA"
+        ],
+        [
+          "cjj_native_k8_compact_n48_s4_probe::produce",
+          "CUDA"
+        ]
+      ],
+      "pitch": 2048,
+      "registered_mock_schemas": [
+        "cjj_native_k8_compact_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+        "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()"
+      ],
+      "segments": 2,
+      "selected_recorded_calls": 3
+    },
+    {
+      "actual_host_attach_load_verify_path": true,
+      "batch": 64,
+      "dispatch_queries": [
+        [
+          "cjj_native_k8_compact_v_overlap_probe::produce",
+          "CUDA"
+        ],
+        [
+          "cjj_native_k8_compact_n48_s4_probe::produce",
+          "CUDA"
+        ]
+      ],
+      "pitch": 2560,
+      "registered_mock_schemas": [
+        "cjj_native_k8_compact_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+        "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()"
+      ],
+      "segments": 2,
+      "selected_recorded_calls": 3
+    }
+  ],
+  "N48_enabled_unsupported_fallbacks": [
+    {
+      "batch": 1,
+      "segments": 16
+    },
+    {
+      "batch": 8,
+      "segments": 16
+    },
+    {
+      "batch": 16,
+      "segments": 16
+    },
+    {
+      "batch": 40,
+      "segments": 16
+    },
+    {
+      "batch": 48,
+      "segments": 2
+    },
+    {
+      "batch": 48,
+      "segments": 16
+    }
+  ],
+  "N48_fixture_is_not_component_or_service_evidence": true,
+  "N48_qualification": {
+    "actual_SO_review_sha256": "30c4c7daf2ccf3839bfabc9936f0a845400d26242fe93cc95bec99d270e8f398",
+    "consumer_review_sha256": "c07937c3d6c3ffc78a5c7b213271e4f864a9463775fe932f9f2aadbff08ef4d0",
+    "consumer_summary_sha256": "493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272",
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "fullstep_geometry": {
+      "new_KV_row_pitch": 2560,
+      "physical_pages": 44769,
+      "service_verified": false
+    },
+    "fullstep_review_sha256": "2d8d5b873eb30084da7dd0e25332088462dd5cfef62c45fe45c75bccd07ede5d",
+    "fullstep_summary_sha256": "5a6aefeb7befb777e890402fa9742774ea23ae5e696be67c74f04418df37b131",
+    "library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+    "operator": "cjj_native_k8_compact_n48_s4_probe::produce",
+    "page_bytes": 12544,
+    "scopes": [
+      [
+        48,
+        4,
+        2048
+      ],
+      [
+        48,
+        4,
+        2560
+      ]
+    ],
+    "source_CUDA_sha256": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+    "state": "component-reviewed",
+    "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+    "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+  },
+  "N48_qualification_bypass_used": false,
+  "N48_source_component_admission_accepted": true,
+  "actual_SO_files_read_not_loaded": true,
+  "actual_helper_resolution": {
+    "PYTHONPATH": "/private/tmp/flagos-cjj-native111-compute-order-pin-fix-20261029",
+    "cwd": "/private/tmp/flagos-cjj-native111-compute-order-pin-fix-20261029",
+    "origin": "/private/tmp/flagos-cjj-native111-compute-order-pin-fix-20261029/vllm_fl/__init__.py",
+    "package_executed": false,
+    "python": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "sys_path": [
+      "",
+      "/private/tmp/flagos-cjj-native111-compute-order-pin-fix-20261029",
+      "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python314.zip",
+      "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14",
+      "/opt/homebrew/Cellar/python@3.14/3.14.4_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/lib-dynload",
+      "/opt/homebrew/lib/python3.14/site-packages"
+    ]
+  },
+  "actual_segment_picker_results": {
+    "1": 16,
+    "8": 16,
+    "16": 8,
+    "32": 4,
+    "40": 16,
+    "48": 4,
+    "64": 2
+  },
+  "base_N48_and_Q32_mock_installation": {
+    "CPU_only": true,
+    "actual_GPU_allocation": false,
+    "actual_Q32_compiler_pins_mocked": true,
+    "actual_manifest_adapter_and_host_C3_binding": true,
+    "both_C3_identity_tamper_checks": true,
+    "both_adapters_same_runtime": true,
+    "configured_blocks": 2,
+    "frameworks_mocked": true,
+    "library_loaded": false,
+    "model_verified": false,
+    "native_N48_enabled": true,
+    "native_ON_actual_installer": true,
+    "q32_hoist_enabled": true,
+    "raw_buffers": 42,
+    "raw_bytes": 1053696
+  },
+  "base_SO_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "base_dispatch_cases": [
+    {
+      "batch": 32,
+      "pitch": 2048,
+      "real_adapter_metadata_path": true,
+      "segments": 4
+    },
+    {
+      "batch": 32,
+      "pitch": 2560,
+      "real_adapter_metadata_path": true,
+      "segments": 4
+    },
+    {
+      "batch": 64,
+      "pitch": 2048,
+      "real_adapter_metadata_path": true,
+      "segments": 2
+    },
+    {
+      "batch": 64,
+      "pitch": 2560,
+      "real_adapter_metadata_path": true,
+      "segments": 2
+    }
+  ],
+  "changed_controller_functions": [
+    "evidence",
+    "graph_bootstrap_environment",
+    "native_env",
+    "native_events",
+    "run"
+  ],
+  "controller_parent_sha256": "d8a5bd435845bdb3dd1e4d3741f4ca38fe85b4cc152036517cbcf034f0eb4495",
+  "controller_sha256": "ae99bfb55c69dc1bf9464ffe0a1b7e627882bd4bc9d185d4177f9a902c29ea56",
+  "helper_sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+  "historical_pending_fixture_sha256": "c6b4ce6110ef5385a270e074b39b7037e5c84f5d438170d90a20e341ffda5903",
+  "n48_SO_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "numeric_verified": false,
+  "official_CLI_Math105_benchmark_and_warmup_function_sources_unchanged": true,
+  "passed": true,
+  "performance_verified": false,
+  "rejections": [
+    {
+      "name": "historical N48 pending preflight",
+      "reason": "Compact NativeK8: PENDING n48 qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "controller pending stops before helper/idle/output",
+      "reason": "Compact NativeK8: PENDING n48 qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "N48 missing explicit SHA",
+      "reason": "Compact NativeK8: explicit actual library SHA pair"
+    },
+    {
+      "name": "N48 wrong explicit SHA",
+      "reason": "Compact NativeK8: explicit actual library SHA pair"
+    },
+    {
+      "name": "N48 wrong actual library",
+      "reason": "Compact NativeK8: actual compact library contents"
+    },
+    {
+      "name": "N48 without base",
+      "reason": "N48 requires base compact Native ON"
+    },
+    {
+      "name": "Q32 baseline",
+      "reason": "Q32 hoist needs compact candidate mode"
+    },
+    {
+      "name": "wrong actual library",
+      "reason": "Compact NativeK8: actual compact library contents"
+    },
+    {
+      "name": "stride (32, 2048)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (32, 2048)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "stride (32, 2560)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (32, 2560)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "stride (64, 2048)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (64, 2048)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "stride (64, 2560)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "postlaunch no retry (64, 2560)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "dual stride (32, 2048)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "dual output alias (32, 2048)",
+      "reason": "NativeK8 service: F32 scratch"
+    },
+    {
+      "name": "dual stale epoch (32, 2048)",
+      "reason": "NativeK8 service: unowned/stale epoch"
+    },
+    {
+      "name": "dual postlaunch no retry (32, 2048)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "dual stride (32, 2560)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "dual output alias (32, 2560)",
+      "reason": "NativeK8 service: F32 scratch"
+    },
+    {
+      "name": "dual stale epoch (32, 2560)",
+      "reason": "NativeK8 service: unowned/stale epoch"
+    },
+    {
+      "name": "dual postlaunch no retry (32, 2560)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "dual stride (48, 2048)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "dual output alias (48, 2048)",
+      "reason": "NativeK8 service: F32 scratch"
+    },
+    {
+      "name": "dual stale epoch (48, 2048)",
+      "reason": "NativeK8 service: unowned/stale epoch"
+    },
+    {
+      "name": "N48 event mislabeled base",
+      "reason": "Native event library/operator/capture mismatch"
+    },
+    {
+      "name": "N48 replaced dispatcher",
+      "reason": "NativeK8 service: dispatcher identity changed"
+    },
+    {
+      "name": "dual postlaunch no retry (48, 2048)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "dual stride (48, 2560)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "dual output alias (48, 2560)",
+      "reason": "NativeK8 service: F32 scratch"
+    },
+    {
+      "name": "dual stale epoch (48, 2560)",
+      "reason": "NativeK8 service: unowned/stale epoch"
+    },
+    {
+      "name": "N48 event mislabeled base",
+      "reason": "Native event library/operator/capture mismatch"
+    },
+    {
+      "name": "N48 replaced dispatcher",
+      "reason": "NativeK8 service: dispatcher identity changed"
+    },
+    {
+      "name": "dual postlaunch no retry (48, 2560)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "dual stride (64, 2048)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "dual output alias (64, 2048)",
+      "reason": "NativeK8 service: F32 scratch"
+    },
+    {
+      "name": "dual stale epoch (64, 2048)",
+      "reason": "NativeK8 service: unowned/stale epoch"
+    },
+    {
+      "name": "dual postlaunch no retry (64, 2048)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "dual stride (64, 2560)",
+      "reason": "NativeK8 service: launch scalar/actual Tensor metadata mismatch"
+    },
+    {
+      "name": "dual output alias (64, 2560)",
+      "reason": "NativeK8 service: F32 scratch"
+    },
+    {
+      "name": "dual stale epoch (64, 2560)",
+      "reason": "NativeK8 service: unowned/stale epoch"
+    },
+    {
+      "name": "dual postlaunch no retry (64, 2560)",
+      "reason": "injected native launch error"
+    },
+    {
+      "name": "wrong N48 registered schema",
+      "reason": "NativeK8 service: exact registered produce ABI"
+    }
+  ],
+  "service_verified": false,
+  "source_fixture_reuse": {
+    "inverse_byte_exact": true,
+    "original_fixture_sha256": "29b8e828726579d809616463d185a782ac5d37b05ec76277027c0b16a46cdbc5"
+  },
+  "unchanged_controller_functions": [
+    "OwnedBenchmarkAdapter",
+    "SupplementalMath64Adapter",
+    "clear_graph_environment",
+    "compact_allocation_evidence",
+    "compact_parent_evidence",
+    "concurrent_burst",
+    "full_geometry_throughput",
+    "full_workload_only_throughput",
+    "graceful_api_shutdown",
+    "private_cache_state",
+    "runtime_window",
+    "sha",
+    "supplemental64_command",
+    "torch_identity_probe",
+    "validate_score",
+    "warmup_plan_metadata"
+  ],
+  "unchanged_fallback_cases": [
+    {
+      "batch": 1,
+      "pitch": 2048,
+      "segments": 16
+    },
+    {
+      "batch": 1,
+      "pitch": 2560,
+      "segments": 16
+    },
+    {
+      "batch": 8,
+      "pitch": 2048,
+      "segments": 16
+    },
+    {
+      "batch": 8,
+      "pitch": 2560,
+      "segments": 16
+    },
+    {
+      "batch": 16,
+      "pitch": 2048,
+      "segments": 8
+    },
+    {
+      "batch": 16,
+      "pitch": 2560,
+      "segments": 8
+    },
+    {
+      "batch": 40,
+      "pitch": 2048,
+      "segments": 16
+    },
+    {
+      "batch": 40,
+      "pitch": 2560,
+      "segments": 16
+    },
+    {
+      "batch": 48,
+      "pitch": 2048,
+      "segments": 4
+    },
+    {
+      "batch": 48,
+      "pitch": 2560,
+      "segments": 4
+    }
+  ]
+}
