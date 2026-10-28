@@ -1,0 +1,321 @@
+{
+  "CPU_read_only_review": true,
+  "CPU_reference_source_pins": {
+    "paths": {
+      "biv150_konly_decode_ir.py": "014ecdd66c1c3acae143f50efe965d52e83b54d2d8b77a053e6620b804a00df6",
+      "biv150_konly_decode_numeric_contract.py": "1d55126084cfdbd08b550536ab0cd92104e7574e9af7149d671df103819f0ddf",
+      "biv150_konly_decode_numeric_oracle.py": "7dd39e3ace815a273c4d49938bfa346bc556071c149a7416ea5bb0cd2fcfce60",
+      "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+      "biv150_konly_decode_reference.py": "1e7ce0a46a23e0d27b86a458851bcdbfbece6f6a018f8f697d9b588465251af4",
+      "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3"
+    },
+    "role": "unchanged reference/audit helpers; 16KiB pack helpers are not used for compact layout",
+    "source": "f28783e15eaf8593305c3e6a057b76bb2f7189cc"
+  },
+  "Graph_boundary": {
+    "Graph_hoisted_qualification": false,
+    "capture_both_labels_actual_normalized2D128_unhoisted": true,
+    "changed_Graph_B_compared_only_same_path_fresh_normalized_eager_B": true,
+    "eager_and_side_actual_Q32_unhoisted_versus_hoisted_bitwise": true
+  },
+  "PR": 103,
+  "SSH_GPU_compiler_service_PR_push_started": false,
+  "compile_activity": {
+    "actual_loaded_resource_gates": {
+      "geometry": [
+        16,
+        1,
+        64
+      ],
+      "registers": "known integer >0",
+      "shared_bytes": "known integer 0..65536",
+      "spills": "known integer exactly0"
+    },
+    "adapter_also_warms_unhoisted_and_fresh_hoisted": true,
+    "attention_launches": 0,
+    "encoder_launches": 0,
+    "estimate_excludes_context_compiler_and_allocator_overheads": true,
+    "explicit_visible_tensor_allocations_bytes_estimate": 14885140,
+    "frontend_unhoisted_warmup_invocations": 1,
+    "initialized_tensor_elements": 0,
+    "occupancy_and_timing_not_proven": true,
+    "preserves_original_unhoisted_before_admission": true,
+    "real_GPU_context_and_allocations_and_init_handles": true,
+    "writer_launches": 0
+  },
+  "compile_expected_artifacts": {
+    "adapter_directory": "adapter/<actual PID>/<actual specialization id>/",
+    "adapter_files": [
+      "binding.json",
+      "override.ttgir",
+      "unhoisted/actual.{ttir,ttgir,llir,asm,cubin,...}",
+      "unhoisted/actual.jit_python_source.py",
+      "unhoisted/record.json",
+      "hoisted/actual.{ttir,ttgir,llir,asm,cubin,...}",
+      "hoisted/actual.jit_python_source.py",
+      "hoisted/record.json"
+    ],
+    "cache": "triton-cache/",
+    "failure": "summary errors plus at most8 existing failure-compiler-N objects, no retry compile/launch/init_handles; unknown actual ids/hashes are not prefilled",
+    "first_original": "first-unhoisted-before-admission/actual.{ttir,ttgir,llir,asm,cubin,...} and record.json",
+    "prelaunch_observations": [
+      "prelaunch-ixsmi.txt",
+      "prelaunch-visible-pids.txt",
+      "prelaunch-ixsmi.stderr.txt",
+      "prelaunch-visible-pids.stderr.txt"
+    ],
+    "root": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build",
+    "summary": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build/summary.json"
+  },
+  "component": "compact12544 Q32 operand-hoist, separate from new compact native service branch",
+  "existing_launch_specs": {
+    "compile": {
+      "contents": {
+        "args": [
+          "--compile-only",
+          "--root-owned-exclusive",
+          "--commit",
+          "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+          "--out",
+          "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build"
+        ],
+        "base": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+        "bundle_base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+        "commit": "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+        "pr": 103,
+        "repo": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028",
+        "script": "tools/probe_biv150_compact_q32_hoist.py",
+        "tag": "cjj-compact-q32-hoist-compile-v1-20261028"
+      },
+      "path": "/private/tmp/cjj-compact-q32-hoist-compile-v1-20261028-launch.json",
+      "sha256": "358cca8f27fe9c3c316a74a474af593478aed9415ebff7b75183fc0687d6e4e7"
+    },
+    "numeric": {
+      "contents": {
+        "args": [
+          "--gpu",
+          "--root-owned-exclusive",
+          "--commit",
+          "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+          "--out",
+          "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-numeric-v1-20261028/numeric",
+          "--compile-receipt",
+          "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build",
+          "--numeric-diagnostic"
+        ],
+        "base": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+        "bundle_base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+        "commit": "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+        "pr": 103,
+        "repo": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028",
+        "script": "tools/probe_biv150_compact_q32_hoist.py",
+        "tag": "cjj-compact-q32-hoist-numeric-v1-20261028"
+      },
+      "path": "/private/tmp/cjj-compact-q32-hoist-numeric-v1-20261028-launch.json",
+      "sha256": "1c652926e7df2078a4c04aceba63fe723219278c67b6d04915bc8a6ad99df5e6"
+    }
+  },
+  "frontend_file_SHA256": {
+    "tools/biv150_compact_q32_probe_admission.py": "1d041ef77af822900862bb39c97b899ecee10704364dfb24e82b93c66bf4f253",
+    "tools/biv150_compact_q32_probe_arguments.py": "ecc3f3de0ea4902991e040754403ac26ac4b67e03c7c629f7a0e9a3e9a4169c6",
+    "tools/biv150_compact_q32_probe_contract.py": "17db4494860744d33d8f63ab4fc084363ccffee037d712fcd81cff5f0102dc8e",
+    "tools/check_biv150_compact_q32_hoist_cpu.py": "f6ac457ba82889b8a1fbcb8fb5edfa26d4bae23bd4c6d8f1291b619372b5c4be",
+    "tools/check_biv150_compact_q32_probe_cpu.py": "8fc65992b20c4a7b0f4b586613c73681ba1c6e874b9dbeb15f9a1a5cb5ac0aed",
+    "tools/probe_biv150_compact_q32_hoist.py": "8a38515571a44243ed64fa4d930eb7ee19a26b8cf9723422fb3e016ab317b3d7"
+  },
+  "frozen_source": {
+    "all20_source_identity_hashes_match_immutable_freeze": true,
+    "head": "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+    "no_production_or_csrc_diff_deab_to6c": true,
+    "path": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028",
+    "production_binding_commit": "deab3ab474925c08dba48c4c8cdb00bf108b3b82",
+    "six_compact_GPU_kernels_byte_equal_PR91_5ca": true,
+    "worktree_clean": true
+  },
+  "next_commands": {
+    "commands_prepared_not_executed": true,
+    "compile": "env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=\"$PWD\" VLLM_FL_BIV150_KONLY_COMPACT_SERVICE=0 VLLM_FL_BIV150_KONLY_ENCODED_SERVICE=0 VLLM_FL_BIV150_KONLY_NATIVE_DECODE=0 VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST=0 /usr/local/bin/python -B tools/probe_biv150_compact_q32_hoist.py --compile-only --root-owned-exclusive --commit 6c08ec2561b1c3cee96838bffd4e296b757ad877 --out /workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build",
+    "numeric_after_compile_review": "env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=\"$PWD\" VLLM_FL_BIV150_KONLY_COMPACT_SERVICE=0 VLLM_FL_BIV150_KONLY_ENCODED_SERVICE=0 VLLM_FL_BIV150_KONLY_NATIVE_DECODE=0 VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST=0 /usr/local/bin/python -B tools/probe_biv150_compact_q32_hoist.py --gpu --root-owned-exclusive --commit 6c08ec2561b1c3cee96838bffd4e296b757ad877 --out /workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-numeric-v1-20261028/numeric --compile-receipt /workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build --numeric-diagnostic",
+    "numeric_command_can_use_same_clean6c_checkout": "Existing numeric launch spec may also materialize its own separate code/tag checkout at exactly the same6c commit; strict imported paths use that checkout.",
+    "output_folders_must_not_exist": true,
+    "required_working_directory": "Root-deployed clean Git checkout with HEAD exactly6c08ec2561b1c3cee96838bffd4e296b757ad877. Actual remote checkout directory not yet observed by this CPU-only review; do not treat any guessed code/tag path as deployed."
+  },
+  "numeric_admission": {
+    "compile_receipt_directory": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build",
+    "each_numeric_process_reaudits_its_own_fresh_IR_ABI_loaded_resources": true,
+    "numeric_diagnostic_only_relaxes_separate_original_BF16_proxy_stop": "The .005 quantized FP64 pointwise, pair-bitwise, finite, guards, readonly and fresh artifact hard gates remain mandatory. It never sets precision_gate true.",
+    "old_16KiB_receipt_cannot_qualify_compact": true,
+    "original_compile_artifacts_rehashed": true,
+    "summary_passed_exact_commit_source_required": true
+  },
+  "numeric_expected_artifacts": {
+    "arrays": "full canonical Q/K/V, refs, full guarded outputs before/after, expected/cache before/after, every readonly snapshot; no sampling",
+    "collector_budget": "Reserve above128MiB; exact compression size unknown. Each stage includes32MiB raw FP64 reference arrays alone, before input/output/cache copies.",
+    "fresh_adapter_and_first_original_artifacts": true,
+    "full_npz": [
+      "eager-A.npz",
+      "capture-normalized-A-and-replay.npz",
+      "Graph-B-first.npz",
+      "fresh-normalized-eager-B.npz",
+      "fresh-Q32-eager-B.npz",
+      "side-Q32-C.npz"
+    ],
+    "normalized": "normalized2d128/actual.* plus actual-metadata.json",
+    "root": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-numeric-v1-20261028/numeric",
+    "summary": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-numeric-v1-20261028/numeric/summary.json"
+  },
+  "numeric_scope": {
+    "KV_lengths_A_B_C": [
+      1057,
+      1056,
+      1058
+    ],
+    "counters_not_device_execution_profiling": true,
+    "expected_Graph_replay_calls": 4,
+    "expected_attention_python_invocations": 10,
+    "layer_offset_bytes": 256,
+    "normalized_capture_geometry": {
+      "BLOCK_M": 128,
+      "BLOCK_Q": 16,
+      "num_stages": 1,
+      "num_warps": 8
+    },
+    "normalized_capture_grid": [
+      65,
+      2
+    ],
+    "output_guard_rows_each_side": 32,
+    "pages": 139,
+    "partial_maximum_summation": "not_exposed_by_2D_Q32",
+    "physical_page_bytes": 12544,
+    "prefix_lengths": [
+      33,
+      32,
+      34
+    ],
+    "q32_geometry": {
+      "BLOCK_M": 256,
+      "BLOCK_Q": 32,
+      "TILE_SIZE": 64,
+      "num_stages": 1,
+      "num_warps": 16
+    },
+    "q32_grid": [
+      33,
+      2
+    ],
+    "query_rows": 1024,
+    "reference": "All1024 rows independent full-D128 INT64 QK/FP64 scales/softmax/PV, original BF16 reference separate; not an online BF16P rounding reference",
+    "sequences": 1,
+    "writer_encoder_launches": 0
+  },
+  "prior_CPU_reports": {
+    "cpu.json": {
+      "path": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/docs/evidence/compact-q32-hoist-20261028/cpu.json",
+      "sha256": "e9684a5e32d54a6a59e5e4d93919d7e7cd2ebc62a5eb80ccea78a9d0c728b40b"
+    },
+    "installer-off-cpu.json": {
+      "path": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/docs/evidence/compact-q32-hoist-20261028/installer-off-cpu.json",
+      "sha256": "eb3309f0242870c01dea14d73931954e8cef75da8d8d3f3786d8bec63a6cb790"
+    },
+    "installer-on-cpu.json": {
+      "path": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/docs/evidence/compact-q32-hoist-20261028/installer-on-cpu.json",
+      "sha256": "5fd30e018e76a595aab5f98c3cea251fc9489c15477a72e5d1d77a5e5520377a"
+    },
+    "probe-cpu.json": {
+      "path": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/docs/evidence/compact-q32-hoist-20261028/probe-cpu.json",
+      "sha256": "ff15860f68fe69864ff846087fd94238d354bad819b82f7ffe22325f586ecc3b"
+    },
+    "probe-plan.json": {
+      "path": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/docs/evidence/compact-q32-hoist-20261028/probe-plan.json",
+      "sha256": "8ab93a60868198a89e5d02151dba46057ae106564d7739c270678901e0f759ae"
+    },
+    "standalone-helper94db-cpu.json": {
+      "path": "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/docs/evidence/compact-q32-hoist-20261028/standalone-helper94db-cpu.json",
+      "sha256": "412cee927d53bbd510db7e99be386453eee708b098249fb23c0119aef80604b9"
+    }
+  },
+  "remote_runtime_requirements": {
+    "installed_root": "/usr/local/lib/python3.12/site-packages",
+    "pins": {
+      "codec": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+      "helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+      "jit": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+      "sdk": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+    },
+    "pre_CUDA": {
+      "Root_external_serial_ownership_ack_required": true,
+      "both_exit_zero": true,
+      "empty_PID_list_is_not_idle_proof": true,
+      "ixsmi_commands": [
+        "/usr/local/corex/bin/ixsmi -i 0",
+        "/usr/local/corex/bin/ixsmi -i 0 --query-compute-apps=pid --format=csv,noheader,nounits"
+      ],
+      "no_visible_preexisting_PID_required": true,
+      "observed_memory_must_not_exceed_MiB": 1024,
+      "port9031_must_return_ECONNREFUSED": true,
+      "previous_owned_tasks_terminal_required": true
+    },
+    "python": "/usr/local/bin/python (existing Python3.12 target environment)",
+    "service_activation_switches_all_zero": [
+      "VLLM_FL_BIV150_KONLY_COMPACT_SERVICE",
+      "VLLM_FL_BIV150_KONLY_ENCODED_SERVICE",
+      "VLLM_FL_BIV150_KONLY_NATIVE_DECODE",
+      "VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST"
+    ],
+    "target": {
+      "arch": 71,
+      "backend": "corex",
+      "warp_size": 64
+    }
+  },
+  "source_identity": {
+    "base_source_commit": "deab3ab474925c08dba48c4c8cdb00bf108b3b82",
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "manifest_sha256": "52ea3a7e94cbc96a9e0d1e9b74ebf4b8cf87ccad4780425c0628b1a65565c2f5",
+    "source_hashes": {
+      "vllm_fl/compile_semantics.py": "3a78e344de39496654affd7d6d7df7646928a29176fbc5f16f08d76ae062085f",
+      "vllm_fl/patches/biv150_compute_order.py": "a63df22d106adf3125f9301b127497a02aba97415f9dcf6f488669aef12aa3b2",
+      "vllm_fl/patches/biv150_konly_compact_decode.py": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+      "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9",
+      "vllm_fl/patches/biv150_konly_compact_host.py": "7724b2a06bb9d09f75aadf908692bd5bce41bbfd0ea415f327bafad167ec777b",
+      "vllm_fl/patches/biv150_konly_compact_identity.py": "11a84f74d674e493a397ad7e9077d7e1f79138511dca84473aa1d4efd3a579ab",
+      "vllm_fl/patches/biv150_konly_compact_manager.py": "3a546d8ee570455686d28cc44ca36472ae98beecce13b2c712752e20172c75d2",
+      "vllm_fl/patches/biv150_konly_compact_multi2.py": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+      "vllm_fl/patches/biv150_konly_compact_normalized2d128.py": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+      "vllm_fl/patches/biv150_konly_compact_q32.py": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+      "vllm_fl/patches/biv150_konly_compact_q32_adapter.py": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d",
+      "vllm_fl/patches/biv150_konly_compact_raw3d.py": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+      "vllm_fl/patches/biv150_konly_compact_runtime.py": "ac59607580f3c04df43c77916de9b2b7536d2b34923e1a61e62916b872f86e66",
+      "vllm_fl/patches/biv150_konly_compact_service.py": "57f02744d044e8bf3b80963bccca361b543aa4299a095d65d3da505208411243",
+      "vllm_fl/patches/biv150_konly_compact_spec.py": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528",
+      "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+      "vllm_fl/patches/biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+      "vllm_fl/patches/biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b",
+      "vllm_fl/worker/model_runner.py": "d3f7a4cdd8727c17e8a4e0b8fb0c86fde257e9ecae34d98f7fe7f747ef9bf3e7"
+    }
+  },
+  "status": {
+    "actual_compact_compile_pending": true,
+    "capacity42layer_pending": true,
+    "fresh_actual_IR_native_resources_pending": true,
+    "full1024_numeric_Graph_side_pending": true,
+    "independent_of_new_compact_service_branch": true,
+    "model105_pending": true,
+    "performance_pending": true,
+    "service_pending": true
+  },
+  "synchronization_conclusion": {
+    "before_service_or_merge": "Sync a455 in a separate reviewed integration; resolve semantic/runtime/model_runner changes and regenerate binding/pins/CPU proofs as needed while preserving GPU math bytes. Never bypass the deab diff gate or change BASE alone.",
+    "blind_merge_breaks_existing_admission": true,
+    "does_not_stack_with_new_compact_service": true,
+    "independent_frozen_component_compile_requires_main_merge": false,
+    "rationale": "The isolated component builds its own private runtime/adapter and requires unchanged deab production/csrc via explicit admit. Current installed SDK/helper/JIT hashes and real target are rechecked before CUDA. No service integration or latest-main performance claim is made."
+  },
+  "team_main": {
+    "frozen_source_includes_new_main": false,
+    "origin_main_observed": "a455a3de364051fbea80226870c239de3a48e716",
+    "source_main_merge_base": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b"
+  }
+}
