@@ -47,11 +47,16 @@ def verify_package():
     record = json.loads((directory / 'biv150_konly_compact_sources.json').read_text())
     need(record['format'] == FORMAT and record['page_bytes'] == PAGE_BYTES, 'source manifest format')
     need(set(record['generated']) == {'writer','decode','normalized2d128','q32','multi2','raw3d',
-         'views','runtime','identity','spec','manager','host','service'}, 'complete compact source manifest')
+         'views','runtime','identity','spec','manager','host','service','hoist_proposal','q32_adapter'}, 'complete compact source manifest')
     for name, entry in record['generated'].items():
         path = directory / Path(entry['path']).name
         need(path.parent == directory and hashlib.sha256(path.read_bytes()).hexdigest() == entry['sha256'],
              'private source mismatch: ' + name)
+    need(set(record['hoist_dependencies']) == {'biv150_konly_encoded_q32_adapter.py',
+         'biv150_konly_encoded_hoist_native.py'}, 'complete reused hoist dependencies')
+    for name, pin in record['hoist_dependencies'].items():
+        need(hashlib.sha256((directory/name).read_bytes()).hexdigest() == pin,
+             'reused hoist dependency source mismatch: ' + name)
     need(set(record['binding_files']) == {'worker/model_runner.py', 'patches/biv150_compute_order.py',
          'compile_semantics.py'}, 'complete host binding source manifest')
     for relative, pin in record['binding_files'].items():

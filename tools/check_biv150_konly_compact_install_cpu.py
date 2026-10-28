@@ -264,7 +264,7 @@ def run(export_only=False):
     assert len(tails)==2
     for flags,vendor,expected in [({},'iluvatar',0),({ENV:'1'},'iluvatar',1),
         ({ENV:'1','VLLM_FL_BIV150_KONLY_ENCODED_SERVICE':'1'},'iluvatar',-1),
-        ({ENV:'1','VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'},'iluvatar',-1),({ENV:'1'},'other',-1)]:
+        ({ENV:'1','VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'},'iluvatar',1),({ENV:'1'},'other',-1)]:
         received=[];imports=[]
         def importer(name,*args,**kw):
             imports.append(name)
@@ -402,7 +402,7 @@ def run(export_only=False):
         independent_child_module_export=True,builtin_then_private_registration=True,
         actual_config_allocator_reshape_bind_methods_replayed=True,raw_buffers=42,raw_bytes=1053696,
         page_bytes=12544,compact_receipt_and_parent_hooks_verified=True,allocation_metadata_export_checked=True,
-        old_format_hoist_reinit_late_getspec_rejected=True,no_spec_connector_offload_scope_verified=True,
+        wrong_format_missing_hoist_cache_reinit_late_getspec_rejected=True,no_spec_connector_offload_scope_verified=True,
         CUDA_temporary_profile_cache_scope_excluded=True,
         wrong_installed_source_rejected=True,pure_full_attention_zeroer_not_activated=True,
         compile_fingerprint_bound=True,native_library_content_fingerprint_retained=True,

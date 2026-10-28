@@ -1,0 +1,72 @@
+{
+  "prior_report_preserved": "/private/tmp/cjj-pr103-next-compile-review-20261028.json",
+  "prior_report_SHA256": "2b965bec8663366d3bc49a5a5c15db41be35541f805b3efd18da71be29077d14",
+  "correction": "Prior statement that existing launch arguments/specs needed no changes omitted the outer launcher base gate and output-parent requirement. The probe-internal6c/deab/source identity and thresholds were unchanged.",
+  "outer_launcher": {
+    "path": "/private/tmp/flagos_launch_personal_component_v3_bundle_base_20261027.py",
+    "sha256": "682b9bb4c7ee92b364dd956b0ce108bc612cd9d04880d65cd59fb0d648598092",
+    "original_base": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "changed_production_paths": [
+      "vllm_fl/compile_semantics.py",
+      "vllm_fl/patches/biv150_compute_order.py",
+      "vllm_fl/patches/biv150_konly_compact_decode.py",
+      "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py",
+      "vllm_fl/patches/biv150_konly_compact_host.py",
+      "vllm_fl/patches/biv150_konly_compact_identity.py",
+      "vllm_fl/patches/biv150_konly_compact_manager.py",
+      "vllm_fl/patches/biv150_konly_compact_multi2.py",
+      "vllm_fl/patches/biv150_konly_compact_normalized2d128.py",
+      "vllm_fl/patches/biv150_konly_compact_q32.py",
+      "vllm_fl/patches/biv150_konly_compact_q32_adapter.py",
+      "vllm_fl/patches/biv150_konly_compact_raw3d.py",
+      "vllm_fl/patches/biv150_konly_compact_runtime.py",
+      "vllm_fl/patches/biv150_konly_compact_service.py",
+      "vllm_fl/patches/biv150_konly_compact_sources.json",
+      "vllm_fl/patches/biv150_konly_compact_spec.py",
+      "vllm_fl/patches/biv150_konly_compact_views.py",
+      "vllm_fl/patches/biv150_konly_compact_writer.py",
+      "vllm_fl/patches/biv150_konly_encoded_decode.py",
+      "vllm_fl/patches/biv150_konly_encoded_hoist_native.py",
+      "vllm_fl/patches/biv150_konly_encoded_hoist_proposal.py",
+      "vllm_fl/patches/biv150_konly_encoded_multi2.py",
+      "vllm_fl/patches/biv150_konly_encoded_normalized2d128.py",
+      "vllm_fl/patches/biv150_konly_encoded_q32.py",
+      "vllm_fl/patches/biv150_konly_encoded_q32_adapter.py",
+      "vllm_fl/patches/biv150_konly_encoded_raw3d.py",
+      "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+      "vllm_fl/patches/biv150_konly_encoded_service.py",
+      "vllm_fl/patches/biv150_konly_encoded_sources.json",
+      "vllm_fl/patches/biv150_konly_encoded_views.py",
+      "vllm_fl/patches/biv150_konly_encoded_writer.py",
+      "vllm_fl/worker/model_runner.py"
+    ],
+    "corrected_comparison_base": "deab3ab474925c08dba48c4c8cdb00bf108b3b82",
+    "diff_deab_production_csrc_empty": true
+  },
+  "attempts": [
+    {
+      "tag": "cjj-compact-q32-hoist-compile-v1-20261028",
+      "source_commit": "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+      "status": "Root reports failed in args.out.mkdir due to missing parent, before Torch/CUDA import; this review does not possess its original exception log.",
+      "device_compilation_pass": false,
+      "actual_probe_semantics": "mkdir(exist_ok=False), not parents=True; occurs before framework imports",
+      "out": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v1-20261028/build"
+    },
+    {
+      "tag": "cjj-compact-q32-hoist-compile-v2-20261028",
+      "source_commit": "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+      "status": "Original v2 completed compile-only, same source and compiler arguments; output changed to fresh top-level directory with existing parent.",
+      "out": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v2-20261028",
+      "original_owner": {
+        "pid": 38713,
+        "start_ticks": 354708474,
+        "same_start": true,
+        "state": "Z"
+      }
+    }
+  ],
+  "source_or_threshold_changes": false,
+  "current_main_qualification": false,
+  "numeric_launch_needs": "Root-reviewed numeric spec: outer base deab, receipt at actual v2 top-level output, fresh top-level numeric output. Internal source6c and gates unchanged.",
+  "Root_local_review_KeyError": "Root reports one local summary-check attempt used nonexistent passed field and raised KeyError before corrected checks; it is not a device failure and is not independently represented in these50 raw files."
+}

@@ -7796,13 +7796,12 @@ if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_NATIVE_DECODE", "0") == "1
             or __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1"):
         raise RuntimeError("NativeK8 requires only owned16384 encoded service")
 
-# Reject two cache formats or an unlicensed old hoist before either installer.
+# Reject simultaneous cache formats before either private installer.
 if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1":
     if getattr(current_platform, "vendor_name", None) != "iluvatar":
         raise RuntimeError("Compact cache supports only the qualified Iluvatar source path")
-    if (__import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"
-            or __import__("os").environ.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1"):
-        raise RuntimeError("Compact cache conflicts with old format/hoist")
+    if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1":
+        raise RuntimeError("Compact cache conflicts with encoded16KiB format")
 
 # Private encoded-cache diagnostic: install once before allocation/capture; default off.
 if (getattr(current_platform, "vendor_name", None) == "iluvatar"

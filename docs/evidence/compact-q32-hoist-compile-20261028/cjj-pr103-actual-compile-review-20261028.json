@@ -1,0 +1,1345 @@
+{
+  "CPU_only_review": true,
+  "CUDA_initialized_after_torch_import": true,
+  "actual_GPU_context_and_allocations": true,
+  "actual_imports": {
+    "torch": {
+      "path": "/usr/local/lib/python3.12/site-packages/torch/__init__.py",
+      "sha256": "ea188ff62c009a539efe40c781c4070fe1a001a224581eade667ee5b5e4ba095"
+    },
+    "vllm_fl.patches.biv150_konly_compact_hoist_proposal": {
+      "path": "/workspace/experiments/minicpm-s2/code/cjj-compact-q32-hoist-compile-v2-20261028/vllm_fl/patches/biv150_konly_compact_hoist_proposal.py",
+      "sha256": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9"
+    },
+    "vllm_fl.patches.biv150_konly_compact_q32": {
+      "path": "/workspace/experiments/minicpm-s2/code/cjj-compact-q32-hoist-compile-v2-20261028/vllm_fl/patches/biv150_konly_compact_q32.py",
+      "sha256": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63"
+    },
+    "vllm_fl.patches.biv150_konly_compact_q32_adapter": {
+      "path": "/workspace/experiments/minicpm-s2/code/cjj-compact-q32-hoist-compile-v2-20261028/vllm_fl/patches/biv150_konly_compact_q32_adapter.py",
+      "sha256": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d"
+    },
+    "vllm_fl.patches.biv150_konly_compact_runtime": {
+      "path": "/workspace/experiments/minicpm-s2/code/cjj-compact-q32-hoist-compile-v2-20261028/vllm_fl/patches/biv150_konly_compact_runtime.py",
+      "sha256": "ac59607580f3c04df43c77916de9b2b7536d2b34923e1a61e62916b872f86e66"
+    },
+    "vllm_fl.patches.biv150_konly_compact_views": {
+      "path": "/workspace/experiments/minicpm-s2/code/cjj-compact-q32-hoist-compile-v2-20261028/vllm_fl/patches/biv150_konly_compact_views.py",
+      "sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e"
+    },
+    "vllm_fl.patches.biv150_konly_encoded_hoist_native": {
+      "path": "/workspace/experiments/minicpm-s2/code/cjj-compact-q32-hoist-compile-v2-20261028/vllm_fl/patches/biv150_konly_encoded_hoist_native.py",
+      "sha256": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2"
+    },
+    "vllm_fl.patches.biv150_konly_encoded_q32_adapter": {
+      "path": "/workspace/experiments/minicpm-s2/code/cjj-compact-q32-hoist-compile-v2-20261028/vllm_fl/patches/biv150_konly_encoded_q32_adapter.py",
+      "sha256": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b"
+    }
+  },
+  "actual_native_replay_exact": {
+    "ASM": {
+      "BF16_PV_lines": [
+        4311,
+        4324,
+        4335,
+        4351,
+        4367,
+        4382,
+        4452,
+        4458,
+        4468,
+        4475,
+        4477,
+        4479,
+        4519,
+        4525,
+        4533,
+        4539,
+        4555,
+        4561,
+        4567,
+        4573,
+        4579,
+        4585,
+        4600,
+        4619,
+        4629,
+        4635,
+        4641,
+        4647,
+        4653,
+        4659,
+        4665,
+        4667
+      ],
+      "I8_QK_lines": [
+        3849,
+        3855,
+        3861,
+        3867,
+        3875,
+        3880,
+        3885,
+        3890,
+        3894,
+        3898,
+        3902,
+        3907,
+        3912,
+        3917,
+        3919,
+        3921
+      ],
+      "KV_blocks": [
+        "BB0_38",
+        "BB0_39",
+        "BB0_40",
+        "BB0_41",
+        "BB0_42",
+        "BB0_43",
+        "BB0_45",
+        "BB0_47",
+        "BB0_49",
+        "BB0_51",
+        "BB0_52",
+        "BB0_53",
+        "BB0_54",
+        "BB0_55",
+        "BB0_56",
+        "BB0_57",
+        "BB0_58",
+        "continuation_4889",
+        "continuation_4902",
+        "continuation_4917",
+        "continuation_4930"
+      ],
+      "KV_header": "BB0_39",
+      "K_acquire_barrier": 3814,
+      "K_read_lines": [
+        3815,
+        3821,
+        3827,
+        3833,
+        3837,
+        3838,
+        3839,
+        3840,
+        3841,
+        3842,
+        3843,
+        3844,
+        3845,
+        3846,
+        3851,
+        3852,
+        3857,
+        3858,
+        3863,
+        3864,
+        3869,
+        3870,
+        3871,
+        3872,
+        3877,
+        3882,
+        3887,
+        3892,
+        3896,
+        3900,
+        3904,
+        3909
+      ],
+      "K_reuse_barrier": 4880,
+      "K_store_lines": [
+        4881,
+        4884
+      ],
+      "Q_byte_read_lines": [
+        3471,
+        3475,
+        3482,
+        3488,
+        3494,
+        3498,
+        3504,
+        3509,
+        3513,
+        3518,
+        3524,
+        3528,
+        3532,
+        3536,
+        3542,
+        3546,
+        3550,
+        3555,
+        3560,
+        3567,
+        3574,
+        3581,
+        3586,
+        3592,
+        3596,
+        3600,
+        3604,
+        3608,
+        3612,
+        3616,
+        3620,
+        3624
+      ],
+      "Q_operand_definitions_dominate_KV": true,
+      "Q_pack_lines": [
+        3554,
+        3558,
+        3562,
+        3564,
+        3566,
+        3569,
+        3571,
+        3573,
+        3576,
+        3578,
+        3580,
+        3583,
+        3626,
+        3628,
+        3630,
+        3632,
+        3634,
+        3636,
+        3638,
+        3640,
+        3642,
+        3647,
+        3652,
+        3657
+      ],
+      "Q_publish_barrier": 3446,
+      "Q_registers": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "Q_registers_immutable_in_KV": true,
+      "Q_store_lines": [
+        3362,
+        3369,
+        3370,
+        3371,
+        3373,
+        3374,
+        3376,
+        3377,
+        3379,
+        3380,
+        3382,
+        3383,
+        3385,
+        3386,
+        3388,
+        3389,
+        3391,
+        3392,
+        3394,
+        3395,
+        3397,
+        3398,
+        3400,
+        3401,
+        3403,
+        3404,
+        3406,
+        3407,
+        3409,
+        3410,
+        3412,
+        3413
+      ]
+    },
+    "LLVM": {
+      "BF16_PV_calls": 32,
+      "BF16_Q_global_read_lines": [
+        265,
+        274,
+        283,
+        292,
+        301,
+        310,
+        319,
+        328,
+        337,
+        346,
+        355,
+        364,
+        373,
+        382,
+        391,
+        400
+      ],
+      "KV_header": "1832",
+      "Q_shared_read_lines": [
+        1777,
+        1780,
+        1783,
+        1786,
+        1789,
+        1792,
+        1795,
+        1797,
+        1801,
+        1803,
+        1805,
+        1807,
+        1809,
+        1811,
+        1813,
+        1814
+      ],
+      "Q_shared_reads_inside_KV": [],
+      "RN32_divisions_dominating_KV": [
+        812,
+        813,
+        814,
+        815,
+        816,
+        817,
+        818,
+        819,
+        820,
+        821,
+        822,
+        823,
+        824,
+        825,
+        826,
+        827,
+        860,
+        861,
+        862,
+        863,
+        864,
+        865,
+        866,
+        867,
+        868,
+        869,
+        870,
+        871,
+        872,
+        873,
+        874,
+        875,
+        876,
+        877,
+        878,
+        879,
+        880,
+        881,
+        882,
+        883,
+        884,
+        885,
+        886,
+        887,
+        888,
+        889,
+        890,
+        891
+      ],
+      "all_Q_operand_reads_outside_KV": true,
+      "known_grammar": true,
+      "native_I8_QK_calls": 16,
+      "raw_quantization_call_source_line": 238
+    },
+    "TTGIR_scoped_SSA_equivalent": true,
+    "actual_I8_operand_hoist_verified": true,
+    "loaded_resources_verified": false,
+    "numerical_verified": false,
+    "old_hash_as_admission": false,
+    "precision_gate": false,
+    "service_verified": false,
+    "shared_memory_synchronization": {
+      "K_acquire_barrier": 2251,
+      "K_operand_read_lines": [
+        2252,
+        2253,
+        2254,
+        2255,
+        2256,
+        2257,
+        2258,
+        2259,
+        2260,
+        2261,
+        2262,
+        2263,
+        2264,
+        2265,
+        2266,
+        2267,
+        2268,
+        2269,
+        2270,
+        2271,
+        2272,
+        2273,
+        2274,
+        2275,
+        2276,
+        2277,
+        2278,
+        2279,
+        2280,
+        2281,
+        2282,
+        2283
+      ],
+      "K_reuse_barrier": 2128,
+      "K_store_lines": [
+        2129,
+        2130
+      ],
+      "Q_publish_barrier": 1739,
+      "Q_read_block": ".lr.ph108",
+      "Q_read_block_dominates_KV": true,
+      "Q_store_lines": [
+        1612,
+        1615,
+        1618,
+        1621,
+        1624,
+        1627,
+        1630,
+        1633,
+        1636,
+        1639,
+        1642,
+        1645,
+        1648,
+        1651,
+        1654,
+        1657,
+        1660,
+        1663,
+        1666,
+        1669,
+        1672,
+        1675,
+        1678,
+        1681,
+        1684,
+        1687,
+        1690,
+        1693,
+        1696,
+        1699,
+        1702,
+        1705
+      ]
+    }
+  },
+  "all_raw_SHA256_verified": true,
+  "artifacts": {
+    "hoisted": {
+      "asm": "07e575f9e4439a4610d8fdf378435213960594a0fc9d58c865be5f5e2683c30d",
+      "cubin": "461078ec7c2e64d745789cade3076d66fc4f0d2606179a5c9a309bf05aa66f92",
+      "llir": "11cd5559664418d026d51ba03955db3a2cd4453667878e702600b4b6f750745e",
+      "source": "1d2719fc0faca68690ecf7d4c01f5b128eff41702dcd95dbeed016970b834e20",
+      "ttgir": "bdb3344e97353b9785276442972d135eb8b11ecc5aee4c83d697db502157e876",
+      "ttir": "1ea0d42c9018fef3e44069b4bbc6c37bb9370274a04ef4dbf5f65cab5e62b92f"
+    },
+    "unhoisted": {
+      "asm": "f2d0c5a924f12b677f5c44db2fcbf84edf568cdf00c86be1899f95b6311017ed",
+      "cubin": "b96ab5135de48d0008a38dcda60254a13b88d9fe9ba4a4df8dfffe30680fa2c3",
+      "llir": "85eb160fdaa4e906c8c23cfb4d7922b97686423340b2f30a7687b580949072eb",
+      "source": "1d2719fc0faca68690ecf7d4c01f5b128eff41702dcd95dbeed016970b834e20",
+      "ttgir": "b2ee663a71caf716c812a82c05b2d94662ee76b4ed8bffca27281214565a47fd",
+      "ttir": "1ea0d42c9018fef3e44069b4bbc6c37bb9370274a04ef4dbf5f65cab5e62b92f"
+    }
+  },
+  "binary": {
+    "hoisted": {
+      "ELF_metadata": {
+        ".args": [
+          {
+            ".address_space": "global",
+            ".name": "KArg_0",
+            ".offset": 0,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_1",
+            ".offset": 8,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_2",
+            ".offset": 16,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_3",
+            ".offset": 24,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_4",
+            ".offset": 32,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_5",
+            ".offset": 40,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_6",
+            ".offset": 48,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_7",
+            ".offset": 56,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_8",
+            ".offset": 64,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_9",
+            ".offset": 72,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_10",
+            ".offset": 80,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_11",
+            ".offset": 84,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_12",
+            ".offset": 88,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_13",
+            ".offset": 96,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_14",
+            ".offset": 104,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_15",
+            ".offset": 112,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_16",
+            ".offset": 120,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_17",
+            ".offset": 128,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_18",
+            ".offset": 136,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_19",
+            ".offset": 144,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_20",
+            ".offset": 152,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_21",
+            ".offset": 160,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_22",
+            ".offset": 168,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_23",
+            ".offset": 176,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_24",
+            ".offset": 184,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_25",
+            ".offset": 192,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_26",
+            ".offset": 200,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_27",
+            ".offset": 208,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          }
+        ],
+        ".group_segment_fixed_size": 0,
+        ".kernarg_segment_align": 8,
+        ".kernarg_segment_size": 216,
+        ".max_flat_workgroup_size": 0,
+        ".name": "kernel_cjj_konly_q32",
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 104,
+        ".sgpr_spill_count": 96,
+        ".symbol": "kernel_cjj_konly_q32.kd",
+        ".vgpr_count": 122,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "compiler_cache_metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm71",
+        "backend_name": "corex",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "8089801eda4e26738dacaa6e12b2f2d1ede5bbf0c9997be42072622b8a19640a",
+        "instrumentation_mode": "",
+        "ir_override": "/workspace/experiments/minicpm-s2/cjj-compact-q32-hoist-compile-v2-20261028/adapter/38713/aa44fded56f3faac7b520d2f787fc8e2b550f0ed2fa19699b91125e20aad194e/override.ttgir",
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 0,
+        "maxnreg": null,
+        "name": "kernel_cjj_konly_q32",
+        "num_ctas": 1,
+        "num_stages": 1,
+        "num_warps": 16,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 33792,
+        "supported_fp8_dtypes": [
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": {
+          "arch": 71,
+          "backend": "corex",
+          "warp_size": 64
+        },
+        "tensordesc_meta": [],
+        "tmem_size": null,
+        "triton_version": "3.6.0",
+        "use_sme": 229379,
+        "warp_size": 64
+      },
+      "cubin_bytes": 47576,
+      "cubin_sha256": "461078ec7c2e64d745789cade3076d66fc4f0d2606179a5c9a309bf05aa66f92",
+      "loaded_resources": {
+        "known": true,
+        "n_regs": 122,
+        "n_spills": 0,
+        "num_stages": 1,
+        "num_warps": 16,
+        "phase": "handles_initialized_pre_reader",
+        "shared": 33792,
+        "warp_size": 64
+      },
+      "text_bytes": 32336,
+      "text_sha256": "3aa08eb4a994da45f2a46c4da311ad56c1296cdb0c72a2eeea2cd91eb2e26ace"
+    },
+    "unhoisted": {
+      "ELF_metadata": {
+        ".args": [
+          {
+            ".address_space": "global",
+            ".name": "KArg_0",
+            ".offset": 0,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_1",
+            ".offset": 8,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_2",
+            ".offset": 16,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_3",
+            ".offset": 24,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_4",
+            ".offset": 32,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_5",
+            ".offset": 40,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_6",
+            ".offset": 48,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_7",
+            ".offset": 56,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_8",
+            ".offset": 64,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_9",
+            ".offset": 72,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_10",
+            ".offset": 80,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_11",
+            ".offset": 84,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_12",
+            ".offset": 88,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_13",
+            ".offset": 96,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_14",
+            ".offset": 104,
+            ".size": 4,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_15",
+            ".offset": 112,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_16",
+            ".offset": 120,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_17",
+            ".offset": 128,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_18",
+            ".offset": 136,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_19",
+            ".offset": 144,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".name": "KArg_20",
+            ".offset": 152,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_21",
+            ".offset": 160,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_22",
+            ".offset": 168,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_23",
+            ".offset": 176,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_24",
+            ".offset": 184,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".name": "KArg_25",
+            ".offset": 192,
+            ".size": 8,
+            ".value_kind": "by_value"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_26",
+            ".offset": 200,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          },
+          {
+            ".address_space": "global",
+            ".name": "KArg_27",
+            ".offset": 208,
+            ".size": 8,
+            ".value_kind": "global_buffer"
+          }
+        ],
+        ".group_segment_fixed_size": 0,
+        ".kernarg_segment_align": 8,
+        ".kernarg_segment_size": 216,
+        ".max_flat_workgroup_size": 0,
+        ".name": "kernel_cjj_konly_q32",
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 104,
+        ".sgpr_spill_count": 99,
+        ".symbol": "kernel_cjj_konly_q32.kd",
+        ".vgpr_count": 135,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "compiler_cache_metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm71",
+        "backend_name": "corex",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "4dad0dca23a3066f7ae31d0b92cde4404a966fc74cb3b72bedf7f49bbec4cfde",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 0,
+        "maxnreg": null,
+        "name": "kernel_cjj_konly_q32",
+        "num_ctas": 1,
+        "num_stages": 1,
+        "num_warps": 16,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 57344,
+        "supported_fp8_dtypes": [
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": {
+          "arch": 71,
+          "backend": "corex",
+          "warp_size": 64
+        },
+        "tensordesc_meta": [],
+        "tmem_size": null,
+        "triton_version": "3.6.0",
+        "use_sme": 229379,
+        "warp_size": 64
+      },
+      "cubin_bytes": 47632,
+      "cubin_sha256": "b96ab5135de48d0008a38dcda60254a13b88d9fe9ba4a4df8dfffe30680fa2c3",
+      "loaded_resources": {
+        "known": true,
+        "n_regs": 135,
+        "n_spills": 0,
+        "num_stages": 1,
+        "num_warps": 16,
+        "phase": "handles_initialized_pre_reader",
+        "shared": 57344,
+        "warp_size": 64
+      },
+      "text_bytes": 32352,
+      "text_sha256": "7d8202593980781bdd677f5472c930b27c364e496d41792f691893fb6f31f7d5"
+    }
+  },
+  "binder": {
+    "ordered_source_arguments_checked": 74,
+    "pins": {
+      "codec": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+      "helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+      "jit": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+      "sdk": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+    },
+    "recorded_actual_key": "[('*bf16', 'D'), ('*bf16', 'D'), ('*i8', 'D'), ('*fp32', 'D'), ('*bf16', 'D'), ('constexpr', None), ('*i32', 'D'), ('*i32', 'D'), ('constexpr', None), ('constexpr', None), ('fp32', None), ('constexpr', None), ('*fp32', 'D'), ('*fp32', 'D'), ('fp32', None), ('i32', 'D'), ('constexpr', 16), ('constexpr', 8), ('constexpr', 8192), ('constexpr', 2048), ('constexpr', 128), ('constexpr', 2048), ('constexpr', 128), ('i64', 'D'), ('constexpr', 16), ('constexpr', 64), ('constexpr', 128), ('constexpr', 128), ('constexpr', False), ('constexpr', False), ('constexpr', False), ('constexpr', False), ('constexpr', False), ('constexpr', 0), ('constexpr', True), ('constexpr', False), ('constexpr', None), ('constexpr', False), ('constexpr', 0), ('constexpr', None), ('constexpr', 12544), ('constexpr', 256), ('constexpr', 128), ('constexpr', 1), ('constexpr', 6272), ('constexpr', 256), ('constexpr', 128), ('constexpr', 1), ('*i32', 'D'), ('constexpr', 32), ('i32', 1), ('constexpr', 256), ('constexpr', 1), ('constexpr', False), ('constexpr', False), ('*bf16', 'D'), ('*bf16', 'D'), ('*bf16', 'D'), ('*i8', 'D'), ('*bf16', 'D'), ('i64', 'D'), ('i64', 'D'), ('i64', 'D'), ('i64', 'D'), ('i64', 'D'), ('i64', 'D'), ('constexpr', 0), ('constexpr', -448.0), ('constexpr', 448.0), ('constexpr', -1), ('constexpr', -1), ('constexpr', False), ('constexpr', False), ('constexpr', False)]{'num_warps': 16, 'num_stages': 1, 'debug': False, 'instrumentation_mode': ''}",
+    "runtime_binder_not_reexecuted_by_CPU_review": true,
+    "target": {
+      "arch": 71,
+      "backend": "corex",
+      "warp_size": 64
+    }
+  },
+  "boundary": {
+    "Graph_hoisted_qualification": false,
+    "Graph_or_side_numerics_verified": false,
+    "current_main_qualification": false,
+    "mixed_42layer_capacity_verified": false,
+    "model105_verified": false,
+    "numerical_verified": false,
+    "old_16KiB_qualification_transferred": false,
+    "performance_verified": false,
+    "precision_gate": false,
+    "service_verified": false
+  },
+  "compile_completed": true,
+  "compile_passed": true,
+  "complete_binary_ABI28_args_equal": true,
+  "erratum": {
+    "path": "/private/tmp/cjj-pr103-next-compile-review-erratum-20261028.json",
+    "sha256": "270d01d43e15d41d86d140c05b78eabf2995c70811c3935bbce30ff5e69cbf16"
+  },
+  "first_unhoisted_all_artifacts_match_adapter_original": true,
+  "limits": [
+    "Fresh actual compiler TTGIR/LLVM/ASM are independently replayed through exact pinned CPU auditors. Cubin SHA, ELF machine, complete ABI and resource notes are parsed and tied to matching preserved/cache artifacts; no independent cubin instruction disassembly was supplied or run locally.",
+    "Installed SDK/helper/JIT pins and live loaded-resource/object/binder values are original runtime attestations under the verified frontend/source. CPU review rehashes local frozen sources and archived artifacts; it does not requery the driver or reload cubins.",
+    "Zero attention/writer/encoder/Graph/input-init counts are verified frontend provenance, not a device-wide profiler trace. Real CUDA initialization/allocations/init_handles occurred.",
+    "V1 missing-parent failure and local check KeyError are explicitly attributed to Root, not misclassified as v2 device failure."
+  ],
+  "local_source_identity_and_Git_blobs_verified": true,
+  "mode": "compile-only",
+  "original_bytes": 4937816,
+  "original_files": 50,
+  "owner": {
+    "pid": 38713,
+    "same_start": true,
+    "start_ticks": 354708474,
+    "state": "Z"
+  },
+  "pre_CUDA": {
+    "exclusive_by_ixsmi": false,
+    "exclusivity_authority": "Root checked prior owned job terminal and schedules serially; external assertion",
+    "full_table_native_pids": [],
+    "memory_total_mib": 32768,
+    "memory_used_mib": 68,
+    "native_pid_visibility": "unavailable",
+    "native_query_pids": [],
+    "no_visible_pid_is_idle_proof": false,
+    "own_driver_PID_inferred": false,
+    "port9031_closed": true,
+    "port_probe_code": 111,
+    "pre_cuda_max_used_mib": 1024,
+    "root_owned_exclusive_acknowledged": true,
+    "visible_native_pids": []
+  },
+  "production_binding_commit": "deab3ab474925c08dba48c4c8cdb00bf108b3b82",
+  "proposal_replay_exact": {
+    "Graph_verified": false,
+    "actual_I8_hoist_verified": false,
+    "actual_metadata": {
+      "constants": {
+        "BLOCK_M": 256,
+        "BLOCK_Q": 32,
+        "IS_3D": false,
+        "KV_QUANT_MODE": 0,
+        "TILE_SIZE": 64,
+        "num_queries_per_kv": 8,
+        "num_query_heads": 16,
+        "num_seqs": 1
+      },
+      "enabled": true,
+      "format": "cjj-konly-compact12544-rn32-rne-v1",
+      "function_name": "kernel_cjj_konly_q32",
+      "grid": [
+        33,
+        2
+      ],
+      "kernel_hash": "4dad0dca23a3066f7ae31d0b92cde4404a966fc74cb3b72bedf7f49bbec4cfde",
+      "launch_options": {
+        "num_stages": 1,
+        "num_warps": 16
+      },
+      "pins": {
+        "codec": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+        "helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+        "jit": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+        "sdk": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+      },
+      "profile": "q32",
+      "query_rows": 1024,
+      "schema": "cjj-konly-compact-q32-hoist-v1",
+      "source_digest": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23",
+      "target": {
+        "arch": 71,
+        "backend": "corex",
+        "warp_size": 64
+      },
+      "ttgir_sha256": "b2ee663a71caf716c812a82c05b2d94662ee76b4ed8bffca27281214565a47fd"
+    },
+    "actual_override_compiled": false,
+    "after": {
+      "KV_end": 466,
+      "KV_loop": 353,
+      "PV": 464,
+      "QK": 423,
+      "Q_operand_load": 352,
+      "actual_Q_argument_pointer_origin": true,
+      "fresh_initialized_immutable_QCode": true,
+      "layout_aliases": [
+        "#shared",
+        "#mma"
+      ],
+      "memory": "%5",
+      "no_Q_memory_alias_or_escape": true,
+      "operand": "%10",
+      "operand_only_direct_QK_use": true,
+      "q_allocation": 312,
+      "q_code_cast": 311,
+      "q_global": 277,
+      "same_parent_dominance": true,
+      "zero_trip_local_read_safe": true
+    },
+    "all_other_source_math_masks_stores_barriers_unchanged": true,
+    "before": {
+      "KV_end": 466,
+      "KV_loop": 352,
+      "PV": 464,
+      "QK": 423,
+      "Q_operand_load": 421,
+      "actual_Q_argument_pointer_origin": true,
+      "fresh_initialized_immutable_QCode": true,
+      "layout_aliases": [
+        "#shared",
+        "#mma"
+      ],
+      "memory": "%5",
+      "no_Q_memory_alias_or_escape": true,
+      "operand": "%10",
+      "operand_only_direct_QK_use": true,
+      "q_allocation": 312,
+      "q_code_cast": 311,
+      "q_global": 277,
+      "same_parent_dominance": true,
+      "zero_trip_local_read_safe": true
+    },
+    "caller_actual_metadata_attestation_required": true,
+    "enabled": true,
+    "exact_byte_inverse": true,
+    "fresh_override_compile_required": true,
+    "input_sha256": "b2ee663a71caf716c812a82c05b2d94662ee76b4ed8bffca27281214565a47fd",
+    "loaded_resources_verified": false,
+    "moved_operations": 1,
+    "native_Q_operand_dominance_alias_synchronization_verified": false,
+    "numerical_verified": false,
+    "old_overlay_or_hash_used_as_admission_predicate": false,
+    "override_generated": true,
+    "override_sha256": "cf086ef3cddd408935f8e8804552c969e22e369444a1ff21ef5b7206095cf8c8",
+    "performance_verified": false,
+    "precision_gate": false,
+    "runtime_binding_qualified": false,
+    "schema": "cjj-konly-compact-q32-hoist-v1",
+    "service_verified": false
+  },
+  "resource_interpretation": "Runtime n_spills=0 is preserved as reported. ELF VGPR spill0/private segment0 but SGPR spill99→96; no blanket all-spills-zero or occupancy/speedup claim. ELF fixed shared0 is distinct from Triton dynamic shared57344→33792.",
+  "review_dependencies_SHA256": {
+    "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/vllm_fl/patches/biv150_konly_compact_hoist_proposal.py": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9",
+    "/private/tmp/flagos-cjj-compact-q32-probe-frozen-6c0-20261028/vllm_fl/patches/biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+    "/private/tmp/flagos-cjj-native-k8-vfirst-20261028/tools/audit_biv150_native_k8_compile_cpu.py": "09ac1c98f2f1a1ff25ad02fcc819b25fc00bdb442a55c2ec1ad69defc61ea6e7"
+  },
+  "review_script_sha256": "e486a29e28fbd51febca8e3d9dac76223b122b4fb9537b10f305fba8540ca996",
+  "reviewer_GPU_SSH_PR_actions": false,
+  "source_ABI_TTIR_equal_across_arms": true,
+  "source_commit": "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+  "source_identity": {
+    "base_source_commit": "deab3ab474925c08dba48c4c8cdb00bf108b3b82",
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "manifest_sha256": "52ea3a7e94cbc96a9e0d1e9b74ebf4b8cf87ccad4780425c0628b1a65565c2f5",
+    "source_hashes": {
+      "vllm_fl/compile_semantics.py": "3a78e344de39496654affd7d6d7df7646928a29176fbc5f16f08d76ae062085f",
+      "vllm_fl/patches/biv150_compute_order.py": "a63df22d106adf3125f9301b127497a02aba97415f9dcf6f488669aef12aa3b2",
+      "vllm_fl/patches/biv150_konly_compact_decode.py": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+      "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9",
+      "vllm_fl/patches/biv150_konly_compact_host.py": "7724b2a06bb9d09f75aadf908692bd5bce41bbfd0ea415f327bafad167ec777b",
+      "vllm_fl/patches/biv150_konly_compact_identity.py": "11a84f74d674e493a397ad7e9077d7e1f79138511dca84473aa1d4efd3a579ab",
+      "vllm_fl/patches/biv150_konly_compact_manager.py": "3a546d8ee570455686d28cc44ca36472ae98beecce13b2c712752e20172c75d2",
+      "vllm_fl/patches/biv150_konly_compact_multi2.py": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+      "vllm_fl/patches/biv150_konly_compact_normalized2d128.py": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+      "vllm_fl/patches/biv150_konly_compact_q32.py": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+      "vllm_fl/patches/biv150_konly_compact_q32_adapter.py": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d",
+      "vllm_fl/patches/biv150_konly_compact_raw3d.py": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+      "vllm_fl/patches/biv150_konly_compact_runtime.py": "ac59607580f3c04df43c77916de9b2b7536d2b34923e1a61e62916b872f86e66",
+      "vllm_fl/patches/biv150_konly_compact_service.py": "57f02744d044e8bf3b80963bccca361b543aa4299a095d65d3da505208411243",
+      "vllm_fl/patches/biv150_konly_compact_spec.py": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528",
+      "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+      "vllm_fl/patches/biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+      "vllm_fl/patches/biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b",
+      "vllm_fl/worker/model_runner.py": "d3f7a4cdd8727c17e8a4e0b8fb0c86fde257e9ecae34d98f7fe7f747ef9bf3e7"
+    }
+  },
+  "source_kernel_function_text_matches_frozen_module": true,
+  "unhoisted_LLVM_observation": {
+    "BF16_PV_calls": 32,
+    "BF16_Q_global_read_lines": [
+      265,
+      274,
+      283,
+      292,
+      301,
+      310,
+      319,
+      328,
+      337,
+      346,
+      355,
+      364,
+      373,
+      382,
+      391,
+      400
+    ],
+    "KV_header": "1796",
+    "Q_shared_read_lines": [
+      2215,
+      2216,
+      2217,
+      2218,
+      2219,
+      2220,
+      2221,
+      2222,
+      2223,
+      2225,
+      2227,
+      2229,
+      2231,
+      2233,
+      2235,
+      2237
+    ],
+    "Q_shared_reads_inside_KV": [
+      2215,
+      2216,
+      2217,
+      2218,
+      2219,
+      2220,
+      2221,
+      2222,
+      2223,
+      2225,
+      2227,
+      2229,
+      2231,
+      2233,
+      2235,
+      2237
+    ],
+    "RN32_divisions_dominating_KV": [
+      812,
+      813,
+      814,
+      815,
+      816,
+      817,
+      818,
+      819,
+      820,
+      821,
+      822,
+      823,
+      824,
+      825,
+      826,
+      827,
+      860,
+      861,
+      862,
+      863,
+      864,
+      865,
+      866,
+      867,
+      868,
+      869,
+      870,
+      871,
+      872,
+      873,
+      874,
+      875,
+      876,
+      877,
+      878,
+      879,
+      880,
+      881,
+      882,
+      883,
+      884,
+      885,
+      886,
+      887,
+      888,
+      889,
+      890,
+      891
+    ],
+    "all_Q_operand_reads_outside_KV": false,
+    "known_grammar": true,
+    "native_I8_QK_calls": 16,
+    "raw_quantization_call_source_line": 238
+  },
+  "zero_frontend_counters": {
+    "Graph_replays": 0,
+    "attention_launches": 0,
+    "encoder_launches": 0,
+    "initialized_tensor_elements": 0,
+    "writer_launches": 0
+  }
+}

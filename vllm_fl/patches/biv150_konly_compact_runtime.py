@@ -384,6 +384,7 @@ class KernelFacade:
             fn = runtime.kernels[profile]
             override, binding = ({}, None)
             if profile == 'q32' and runtime.q32_hoist is not None:
+                runtime.q32_hoist.validate_call(runtime, entry, selected)
                 override, binding = runtime.q32_hoist.prepare(fn, selected, target_grid,
                     capture=runtime.torch.cuda.is_current_stream_capturing())
             # Exactly one reader launch. No postlaunch retry/fallback.
