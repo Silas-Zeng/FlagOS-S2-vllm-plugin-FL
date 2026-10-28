@@ -1,5 +1,17 @@
 # Compact40f9 service candidate on team main a455
 
+2026-10-29 completed result: the same fc25 source passed official Math105
+103/105 (one max-token truncation) and supplemental64 102/105 (zero truncations),
+but full-warm/one-score throughput was **6129.5664 / 4041.3482 total tok/s** for
+4K/16K, **−3.84149% / −21.76527%** against PR107. This is a multiple-change
+comparison (compact40f9/hoist OFF versus16KiB8b86/hoist ON), not an isolated
+layout effect. The proposed disposition is to record the negative result and
+close109 without merging. [Complete originals, independent audit, cache limits,
+and conditional decode investigation](evidence/native109-throughput-v1-20261029/README.md)
+preserve the original evidence; no result is transferred to another candidate.
+
+The initial integration notes below are retained as history.
+
 The reviewed compact reader and existing dc5 writer now have a default-off
 service entry. This candidate normally merges latest104 `f313f948` with108
 development head `faf88f56` (which includes team main
