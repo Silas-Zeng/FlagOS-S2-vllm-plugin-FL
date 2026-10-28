@@ -1,0 +1,355 @@
+{
+  "ABBA_order": [
+    "tl",
+    "native",
+    "native",
+    "tl"
+  ],
+  "CPU_counter_and_byte_oracle_separate": true,
+  "GPU_executed": false,
+  "actual_consumer_summary_sha256": "493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272",
+  "actual_future_consumer_and_all_artifacts_required": true,
+  "actual_source_sha256": "3678f41e6df0e6e11fa52efa2c4174648928534c30da89806a4f4870b90a1d6f",
+  "arena_bytes_per_arm": 561582336,
+  "arms": [
+    "production compact TL48 w1/s1",
+    "actual2ad N48/S4"
+  ],
+  "capacity_claim": false,
+  "cases": {
+    "valid41": {
+      "base_length": 17408,
+      "continuous_generation_claim": false,
+      "independent_changed_snapshots": true,
+      "live_rows": 41,
+      "padding_rows": 7,
+      "pages_per_live_row": 1089,
+      "phase_maximum_lengths": [
+        17409,
+        17410,
+        17411
+      ],
+      "physical_pages": 44769,
+      "reserved_pages": 44649,
+      "rows": 48,
+      "spare_pages": 120
+    },
+    "valid42": {
+      "base_length": 16896,
+      "continuous_generation_claim": false,
+      "independent_changed_snapshots": true,
+      "live_rows": 42,
+      "padding_rows": 6,
+      "pages_per_live_row": 1057,
+      "phase_maximum_lengths": [
+        16897,
+        16898,
+        16899
+      ],
+      "physical_pages": 44769,
+      "reserved_pages": 44394,
+      "rows": 48,
+      "spare_pages": 375
+    }
+  },
+  "complete_step": [
+    "same exact dc5 stride2560 append",
+    "producer",
+    "same original stride-aware S4 reducer"
+  ],
+  "component": "N48 same-shape compact TL vs native2ad full step; not service",
+  "consumer_review_sha256": "c07937c3d6c3ffc78a5c7b213271e4f864a9463775fe932f9f2aadbff08ef4d0",
+  "consumer_source_bytes": "1c0de57574f66f5401c0d1443ccbc57bb1d44a67",
+  "consumer_summary_sha256": null,
+  "continuous_generation_claim": false,
+  "default_CPU": true,
+  "ideal_partial_diagnostic_separate": true,
+  "independent_consumer_review_required": true,
+  "independent_prefix_snapshots": true,
+  "initial_encode_and_source_pack_costs_separate": true,
+  "library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "model_verified": false,
+  "new_KV_pitch": 2560,
+  "numerical_thresholds": {
+    "RRMSE": 0.005,
+    "pointwise_atol": 0.005,
+    "pointwise_rtol": 0.005
+  },
+  "numerical_verified": false,
+  "page_bytes": 12544,
+  "pages": 44769,
+  "phases": [
+    "A base+1",
+    "changed Graph B at most base+2 before new eager B",
+    "side C at most base+3"
+  ],
+  "precision_gate": false,
+  "production_reader": {
+    "commit": "fc25c86a13fc273bb7368b83af4ca264524b4e12",
+    "path": "vllm_fl/patches/biv150_konly_compact_decode.py",
+    "quant_helper": "vllm_fl/patches/biv150_konly_encoded_writer.py",
+    "quant_helper_sha256": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9",
+    "sha256": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7"
+  },
+  "query_pitch": 2560,
+  "readonly_Q_K_V_backings_separate": true,
+  "reference": "unchanged full128D I64 quantized-QK / FP64 ideal-final and page16 BF16-P partial",
+  "scratch_builder_width": 16,
+  "service_verified": false,
+  "shared_model_QKV_allocation_not_covered": true,
+  "source_adapter": {
+    "GPU_math_changed": false,
+    "adapted_sha256": "3fbb38fd174d392c42ae137ebaeab7776bdcb308c55c63098e549c68ea0034c8",
+    "arm_label_renames": [
+      [
+        "'bf16'",
+        "'tl'"
+      ],
+      [
+        "'k8'",
+        "'native'"
+      ],
+      [
+        "event_ratio_BF16_over_K8",
+        "event_ratio_TL_over_Native"
+      ],
+      [
+        "host_wall_ratio_BF16_over_K8",
+        "host_wall_ratio_TL_over_Native"
+      ],
+      [
+        "BF16_GPU_pack",
+        "TL_GPU_full_encode"
+      ],
+      [
+        "K8_GPU_full_encode",
+        "Native_GPU_full_encode"
+      ]
+    ],
+    "edits": [
+      {
+        "new": "pre=actual_consumer_gate(a)",
+        "old": "pre=require_consumer(a.consumer_summary,a.consumer_proof_sha256)"
+      },
+      {
+        "new": "assert f.sha(a.k8_library.read_bytes())==f.LIBRARY_SHA",
+        "old": "assert f.sha(a.k8_library.read_bytes())==COMPACT_LIBRARY and f.sha(a.bf16_library.read_bytes())==f.BF16_SHA"
+      },
+      {
+        "new": "result=dict(compact_plan(),actual_consumer=pre,completed=False,errors=[],records=[],performance_acceptance=False)\n    save_frontend_sources(out,result)",
+        "old": "result=dict(compact_plan(),actual_consumer=pre,completed=False,errors=[],records=[],performance_acceptance=False)"
+      },
+      {
+        "new": "torch.ops.load_library(str(a.k8_library))\n        assert str(a.k8_library.resolve()) in {str(Path(p).resolve()) for p in torch.ops.loaded_libraries}\n        assert str(torch.ops.cjj_native_k8_compact_n48_s4_probe.produce.default._schema)==pre['candidate_actual_schema']\n        result['actual_native_library']=dict(path=str(a.k8_library),sha256=f.sha(a.k8_library.read_bytes()),loaded_library_set_confirmed=True,actual_schema=pre['candidate_actual_schema'])",
+        "old": "for path in (a.bf16_library,a.k8_library):torch.ops.load_library(str(path))"
+      },
+      {
+        "new": "        writer=module(materialize(out,'writer'),'cjj_fullstep_compact91_writer')",
+        "old": "        support=module(f.ROOT/'tools/kernels/biv150_pair_append_support.py','cjj_fullstep_94_support')\n        writer=module(materialize(out,'writer'),'cjj_fullstep_compact91_writer')"
+      },
+      {
+        "new": ",production_compact_reader=reader.__file__",
+        "old": ",support94=support.__file__"
+      },
+      {
+        "new": "contract=compact_contract(module(f.ROOT/'tools/biv150_konly_strided_writer_contract.py','cjj_fullstep_83_contract'))\n        reader=module(materialize_reader(out),'cjj_fullstep_actual_compact_TL48')\n        result['actual_TL_reader_and_quant_helper']=verify_loaded_reader(reader)",
+        "old": "contract=compact_contract(module(f.ROOT/'tools/biv150_konly_strided_writer_contract.py','cjj_fullstep_83_contract'))"
+      },
+      {
+        "new": "nk=inputviews['new_k'].as_strided((n,2,128),(f.SOURCE_PITCH,128,1));nv=inputviews['new_v'].as_strided((n,2,128),(f.SOURCE_PITCH,128,1));",
+        "old": "nk=inputviews['new_k'];nv=inputviews['new_v'];"
+      },
+      {
+        "new": "result['records'].append(rec);rec['page_budget']=f.budget(f.LIVE[case],length);rec['phase_page_proofs']={str(p):{k:v for k,v in f.host_plan(case,p).items() if k!='table'} for p in (0,1,2)};checkpoint()",
+        "old": "result['records'].append(rec);checkpoint()"
+      },
+      {
+        "new": "                page_bytes=12544\n                full=",
+        "old": "                page_bytes=16384 if arm=='bf16' else 12544\n                full="
+      },
+      {
+        "new": "key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(12544,256,128,1));scale=resident.view(torch.float32)\n                value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(6272,256,128,1),storage_offset=(f.GUARD+4352)//2)",
+        "old": "if arm=='bf16':\n                    viewed=resident.view(torch.bfloat16).reshape(f.PAGES,2,16,2,128);key,value=viewed.unbind(1);scale=dummy\n                else:\n                    key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(12544,256,128,1));scale=resident.view(torch.float32)\n                    value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(6272,256,128,1),storage_offset=(f.GUARD+4352)//2)"
+      },
+      {
+        "new": "assert key.data_ptr()",
+        "old": "if arm=='k8':assert key.data_ptr()"
+      },
+      {
+        "new": "def reset(arm):\n                arenas[arm]['raw'].fill_(165)\n                handles['initial_encoder']=writer.encode_append[(f.PAGES*16,2)](initial_values['key'],initial_values['value'],initial_values['slots'],arenas[arm]['raw'].view(torch.int8),cases[arm]['scale'],arenas[arm]['raw'].view(torch.bfloat16),256,256,f.PAGES*16,f.PAGES*16,f.PAGES*16,f.PAGES,num_warps=1,num_stages=1)",
+        "old": "def reset(arm):\n                if arm=='bf16':arenas[arm]['raw'].copy_(gpu_source.view(torch.uint8).reshape(-1))\n                else:\n                    arenas[arm]['raw'].fill_(165)\n                    handles['initial_encoder']=writer.encode_append[(f.PAGES*16,2)](initial_values['key'],initial_values['value'],initial_values['slots'],arenas[arm]['raw'].view(torch.int8),cases[arm]['scale'],arenas[arm]['raw'].view(torch.bfloat16),256,256,f.PAGES*16,f.PAGES*16,f.PAGES*16,f.PAGES,num_warps=1,num_stages=1)"
+      },
+      {
+        "new": "return {arm:contract.qualify(descriptor(nk),descriptor(nv),descriptor(slots),descriptor(arena['raw']),f.PAGES,contract.SlotSnapshot(tuple(int(x) for x in z['slots']),'component-owned-cpu-preupload',p)) for arm,arena in arenas.items()}",
+        "old": "return contract.qualify(descriptor(nk),descriptor(nv),descriptor(slots),descriptor(arenas['k8']['raw']),f.PAGES,contract.SlotSnapshot(tuple(int(x) for x in z['slots']),'component-owned-cpu-preupload',p))"
+      },
+      {
+        "new": "def append(arm):\n                z=cases[arm];handles[arm+'_append']=writer.encode_append[(n,2)](nk,nv,slots,z['key'],z['scale'],arenas[arm]['raw'].view(torch.bfloat16),nk.stride(0),nv.stride(0),nk.shape[0],nv.shape[0],slots.shape[0],f.PAGES,num_warps=1,num_stages=1)",
+        "old": "def append(arm):\n                z=cases[arm]\n                if arm=='bf16':handles['bf16_append']=support.append_kv[(n,2)](nk,nv,slots,z['key'],dummy,z['value'],f.PAGES*16,False,num_warps=1,num_stages=1)\n                else:handles['k8_append']=writer.encode_append[(n,2)](nk,nv,slots,arenas[arm]['raw'].view(torch.int8),z['scale'],arenas[arm]['raw'].view(torch.bfloat16),nk.stride(0),nv.stride(0),nk.shape[0],nv.shape[0],slots.shape[0],f.PAGES,num_warps=1,num_stages=1)"
+      },
+      {
+        "new": "def producer(arm):\n                z=cases[arm]\n                if arm=='bf16':handles['tl_producer']=reader._gqa_decode_konly_i8[(n,2,s)](**tl_arguments(q,z,lens,table,s))\n                else:torch.ops.cjj_native_k8_compact_n48_s4_probe.produce(q,z['key'],z['scale'],z['value'],lens,table,z['partial'],z['maximum'],z['summation'],128**-.5*1.4426950408889634,s)",
+        "old": "def producer(arm):\n                z=cases[arm];args=(q,z['key'],z['value'],lens,table,z['partial'],z['maximum'],z['summation'],128**-.5*1.4426950408889634)\n                if arm=='bf16':getattr(torch.ops,'corex_native_gqa_s'+str(s)+'_probe').produce(*args)\n                else:torch.ops.cjj_native_k8_compact_probe.produce(q,z['key'],z['scale'],z['value'],lens,table,z['partial'],z['maximum'],z['summation'],128**-.5*1.4426950408889634,s)"
+      },
+      {
+        "new": "def compiled(k):\n            return compiled_receipt(k,blob)",
+        "old": "def compiled(k):\n            record=dict(hash=str(k.hash),n_regs=getattr(k,'n_regs',None),n_spills=getattr(k,'n_spills',None),source_sha256=f.sha(k.src.fn.src.encode()))\n            record['artifacts']={ext:blob(data.encode() if isinstance(data,str) else data) for ext,data in k.asm.items() if isinstance(data,(str,bytes))}\n            record['signature']={repr(key):str(value) for key,value in k.src.signature.items()};return record"
+      },
+      {
+        "new": "z=arenas[arm];page_bytes=12544",
+        "old": "z=arenas[arm];page_bytes=16384 if arm=='bf16' else 12544"
+      },
+      {
+        "new": "initial=packed[start:start+count]",
+        "old": "initial=cold[start:start+count] if arm=='bf16' else packed[start:start+count]"
+      },
+      {
+        "new": "initial.copy() if p is None else f.patched_chunk(arm,start,initial,controls[p])",
+        "old": "initial.view(np.uint8).reshape(count,16384).copy() if p is None else f.patched_chunk(arm,start,initial,controls[p])"
+      },
+      {
+        "new": "expected=compact_chunk(expected)",
+        "old": "expected=compact_chunk(expected) if arm=='k8' else expected"
+      },
+      {
+        "new": "gold[arm,p]=f.golden(cold,packed,controls[p],s,arm) if arm=='bf16' else gold['bf16',p]",
+        "old": "gold[arm,p]=f.golden(cold,packed,controls[p],s,arm)"
+      },
+      {
+        "new": "            verify_actual_handles(handles,compiled,rec,writer,reader,base)\n",
+        "old": "            signature={};names=['key_source','value_source','slots','code_full','scale_full','value_full','key_row_stride','value_row_stride','key_rows','value_rows','slot_count','cache_pages']\n            for key,value in handles['k8_append'].src.signature.items():\n                if isinstance(key,tuple):assert len(key)==1;key=key[0]\n                if isinstance(key,str) and key in names:key=names.index(key)\n                assert type(key) is int and 0<=key<12 and key not in signature\n                signature[key]=str(value)\n            assert [signature[i] for i in range(12)]==['*bf16','*bf16','*i64','*i8','*fp32','*bf16']+['i64']*6,'actual83 typed ABI'\n            for role in ('initial_encoder','k8_append','bf16_append','reducer'):\n                handle=handles[role];assert type(handle.n_regs) is int and handle.n_regs>0 and handle.n_spills==0,'unknown/failed postlaunch resources'\n"
+      }
+    ],
+    "final_source_sha256": "3678f41e6df0e6e11fa52efa2c4174648928534c30da89806a4f4870b90a1d6f",
+    "inverse_byte_exact": true,
+    "label_inverse_byte_exact": true,
+    "parent_compact": {
+      "adapted_function_sha256": "3cc568c799bad941d12e6efc8259baadad4a123223e158fd9f97f462471e02bb",
+      "edits": [
+        {
+          "new": "f.sha(a.k8_library.read_bytes())==COMPACT_LIBRARY",
+          "old": "f.sha(a.k8_library.read_bytes())==f.LIBRARY_SHA"
+        },
+        {
+          "new": "result=dict(compact_plan(),actual_consumer=pre,",
+          "old": "result=dict(f.plan(),actual_consumer=pre,"
+        },
+        {
+          "new": "writer=module(materialize(out,'writer'),'cjj_fullstep_compact91_writer')\n        views=module(materialize(out,'views'),'cjj_fullstep_compact91_views')",
+          "old": "writer=module(f.ROOT/'tools/kernels/biv150_konly_strided_writer.py','cjj_fullstep_exact83_writer')"
+        },
+        {
+          "new": "contract=compact_contract(module(f.ROOT/'tools/biv150_konly_strided_writer_contract.py','cjj_fullstep_83_contract'))",
+          "old": "contract=module(f.ROOT/'tools/biv150_konly_strided_writer_contract.py','cjj_fullstep_83_contract')"
+        },
+        {
+          "new": "page_bytes=16384 if arm=='bf16' else 12544\n                full=torch.full((f.PAGES*page_bytes+2*f.GUARD,),90,dtype=torch.uint8,device='cuda');resident=full.narrow(0,f.GUARD,f.PAGES*page_bytes)",
+          "old": "full=torch.full((f.PAGES*16384+2*f.GUARD,),90,dtype=torch.uint8,device='cuda');resident=full.narrow(0,f.GUARD,f.PAGES*16384)"
+        },
+        {
+          "new": "key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(12544,256,128,1));scale=resident.view(torch.float32)",
+          "old": "key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(16384,256,128,1));scale=resident.view(torch.float32)"
+        },
+        {
+          "new": "value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(6272,256,128,1),storage_offset=(f.GUARD+4352)//2)",
+          "old": "value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.GUARD+8192)//2)"
+        },
+        {
+          "new": "and value.data_ptr()==resident.data_ptr()+4352",
+          "old": "and value.data_ptr()==resident.data_ptr()+8192"
+        },
+        {
+          "new": "consumer_V_is_offset_bytes=",
+          "old": "initial_and_consumer_V_is_offset_bytes="
+        },
+        {
+          "new": "            initial_backs,initial_values=initial_sources(torch,gpu_source,f.PAGES,f.GUARD,rec,timed)\n            rec['compact_roles']=validate_roles(views,arenas,cases,f.PAGES,torch)\n            def reset(arm):",
+          "old": "            def reset(arm):"
+        },
+        {
+          "new": "writer.encode_append[(f.PAGES*16,2)](initial_values['key'],initial_values['value'],initial_values['slots'],arenas[arm]['raw'].view(torch.int8),cases[arm]['scale'],arenas[arm]['raw'].view(torch.bfloat16),256,256,f.PAGES*16,f.PAGES*16,f.PAGES*16,f.PAGES,num_warps=1,num_stages=1)",
+          "old": "support.encode_initial[(f.PAGES*32,)](gpu_source[:,0],gpu_source[:,1],cases[arm]['key'],cases[arm]['scale'],cases[arm]['value'],f.PAGES,num_warps=1,num_stages=1)"
+        },
+        {
+          "new": "writer.encode_append.warmup(initial_values['key'],initial_values['value'],initial_values['slots'],arenas['k8']['raw'].view(torch.int8),cases['k8']['scale'],arenas['k8']['raw'].view(torch.bfloat16),256,256,f.PAGES*16,f.PAGES*16,f.PAGES*16,f.PAGES,grid=(f.PAGES*16,2),num_warps=1,num_stages=1)",
+          "old": "support.encode_initial.warmup(gpu_source[:,0],gpu_source[:,1],cases['k8']['key'],cases['k8']['scale'],cases['k8']['value'],f.PAGES,grid=(f.PAGES*32,),num_warps=1,num_stages=1)"
+        },
+        {
+          "new": "existing_compact91_writer_initial_JIT_load_wall_seconds",
+          "old": "existing_initial_encoder_JIT_load_wall_seconds"
+        },
+        {
+          "new": "                validate_roles(views,arenas,cases,f.PAGES,torch)\n                z=controls[p];return contract.qualify(",
+          "old": "                z=controls[p];return contract.qualify("
+        },
+        {
+          "new": "writer.encode_append[(n,2)](nk,nv,slots,arenas[arm]['raw'].view(torch.int8),z['scale'],",
+          "old": "writer.encode_append[(n,2)](nk,nv,slots,z['key'],z['scale'],"
+        },
+        {
+          "new": "torch.ops.cjj_native_k8_compact_probe.produce",
+          "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+        },
+        {
+          "new": "z=arenas[arm];page_bytes=16384 if arm=='bf16' else 12544\n                guard=raw(z['full'].narrow(0,0,f.GUARD))+raw(z['full'].narrow(0,f.GUARD+f.PAGES*page_bytes,f.GUARD));assert guard==bytes([90])*(2*f.GUARD)",
+          "old": "z=arenas[arm];guard=raw(z['full'].narrow(0,0,f.GUARD))+raw(z['full'].narrow(0,f.GUARD+f.PAGES*16384,f.GUARD));assert guard==bytes([90])*(2*f.GUARD)"
+        },
+        {
+          "new": ";expected=compact_chunk(expected) if arm=='k8' else expected;actual=raw(z['raw'].narrow(0,start*page_bytes,count*page_bytes))",
+          "old": ";actual=raw(z['raw'].narrow(0,start*16384,count*16384))"
+        },
+        {
+          "new": "all_bytes_compared=f.PAGES*page_bytes,guards_exact=True,chunks=chunks",
+          "old": "all_bytes_compared=f.PAGES*16384,guards_exact=True,chunks=chunks"
+        },
+        {
+          "new": "            def check_source(stage):\n                check_initial_sources(initial_backs,cold,raw,f.PAGES,f.GUARD,rec,stage)",
+          "old": "            def check_source(stage):"
+        },
+        {
+          "new": "for role in ('initial_encoder','k8_append','bf16_append','reducer'):",
+          "old": "for role in ('k8_append','bf16_append','reducer'):"
+        },
+        {
+          "new": ";del initial_backs,initial_values;torch.cuda.empty_cache()",
+          "old": ";torch.cuda.empty_cache()"
+        }
+      ],
+      "inverse_byte_exact": true,
+      "parent_commit": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+      "parent_function_sha256": "3038f13b67e8c58280699ffaf71a76514b851d4ca5a691b90706ec54d0d84b77"
+    },
+    "parent_sha256": "3cc568c799bad941d12e6efc8259baadad4a123223e158fd9f97f462471e02bb"
+  },
+  "source_pins": {
+    "tools/biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+    "tools/biv150_konly_strided_writer_contract.py": "cdc1384ff4443bd577759592fa9aa3ea0ff79032507c7d6e63f4abc8db2569b9",
+    "tools/biv150_native_k8_codec_fixture.py": "490034bfe77b69a22d6109a03f422b60883e7791bc0c48eceecb44c31019044d",
+    "tools/biv150_native_k8_consumer_fixture.py": "1448f8e5bc6efa3941965a2bae9268f4eba48cc7468104871abb65a5d029b11c",
+    "tools/biv150_native_k8_fullstep_fixture.py": "4fa0ac8b28855fb5a4f398467fc0a67c239d5c286aad25efbd7183230ce9d528",
+    "tools/biv150_native_k8_pagewise_reference.py": "ac23913bdfa3f59025d2e66d09eee48da176f14fa8c41226e159bce1b9f5898a",
+    "vllm_fl/patches/biv150_gqa_decode.py": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40"
+  },
+  "table_columns": 8192,
+  "thresholds_changed": false,
+  "timing_clocks": [
+    "GPU event per append+producer+reducer",
+    "Graph launch+sync host wall per step"
+  ],
+  "timing_executed": false,
+  "timing_replays": 64,
+  "twoN32_is_not_performance_control": true,
+  "unroll": 8,
+  "warm_replays": 128,
+  "writer_commit": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+  "writer_source": {
+    "views": [
+      "vllm_fl/patches/biv150_konly_compact_views.py",
+      "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e"
+    ],
+    "writer": [
+      "vllm_fl/patches/biv150_konly_compact_writer.py",
+      "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+    ]
+  }
+}
