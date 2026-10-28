@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CPU-default direct old8k/new6k ABBA. New consumer qualification remains pending."""
+"""CPU-default direct old8k/new6k ABBA. Actual consumer bound; fullstep device results remain pending."""
 import argparse
 import hashlib
 import inspect
@@ -21,8 +21,10 @@ OLD_FULLSTEP_REVIEW='2d8d5b873eb30084da7dd0e25332088462dd5cfef62c45fe45c75bccd07
 CONSUMER_SOURCE='c91f1cac3b7e69e03cee8dab9f7aa7b313674d8b'
 # Only replace these with actual completed consumer evidence and a separately
 # issued full-array review. Unknown values intentionally block preflight/GPU.
-NEW_CONSUMER=dict(summary_sha256=None,review_sha256=None,manifest_sha256=None,
-                  owner=None,raw_files=None,raw_bytes=None)
+NEW_CONSUMER=dict(summary_sha256='17966c98d1f8056af1b35a70d5f8639ab46ce1a0fe723833898a4a8fc5dbfa59',
+                  review_sha256='eabf91480e6e9eb985f81d2b591241f2c68937689d00c8cc90b51146f19d25b9',
+                  manifest_sha256='1152d78231499303565697e5424f91b77e0102e1d899bc63e3f61de3c7c6ba56',
+                  owner=[78898,357135455],raw_files=175,raw_bytes=59716288)
 ORDER=('old8k','new6k','new6k','old8k')
 
 

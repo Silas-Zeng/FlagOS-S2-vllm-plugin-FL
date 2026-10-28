@@ -8,7 +8,7 @@ import biv150_native_k8_compact_n48_shared6k_fullstep_source as s
 
 
 def main():
-    plan=p.plan();assert plan['pending_fields']==list(p.NEW_CONSUMER) and not plan['fullstep_execution_allowed']
+    plan=p.plan();assert plan['pending_fields']==p.pending() and plan['fullstep_execution_allowed']==(not p.pending())
     assert plan['pages']==44769 and plan['query_pitch']==plan['new_KV_pitch']==2560
     assert plan['warm_replays']==128 and plan['timing_replays']==64 and plan['unroll']==8
     assert p.ORDER==('old8k','new6k','new6k','old8k')
@@ -32,7 +32,11 @@ def main():
         try:fn()
         except (AssertionError,KeyError) as exc:rejected.append(dict(case=name,error=type(exc).__name__))
         else:raise AssertionError('invalid adapter input accepted: '+name)
-    reject('unknown_real113_consumer_evidence',lambda:p.actual_consumer_gate(None))
+    actual_pins=dict(p.NEW_CONSUMER)
+    try:
+        p.NEW_CONSUMER.update({k:None for k in actual_pins})
+        reject('unknown_real113_consumer_evidence',lambda:p.actual_consumer_gate(None))
+    finally:p.NEW_CONSUMER.update(actual_pins)
     h=fresh();h['tl_producer']=h['reducer'];reject('unexpected_TL_handle',lambda:check(h))
     h=fresh();h['new6k_append'].n_spills=1;reject('new_writer_runtime_spill',lambda:check(h))
     h=fresh();h['old8k_append'].n_regs=None;reject('old_writer_unknown_registers',lambda:check(h))
@@ -43,7 +47,7 @@ def main():
       parent_source_pins=s.PINS,executed_fullstep_sha256=proof['executed_sha256'],seven_original_bodies_preserved=proof['seven_unchanged_body_hashes'],
       existing_consumer_gate_adapter=plan['candidate_consumer_gate_adapter'],remaining_JIT_adapter=hproof,
       mock_handle_positive_case_passed=True,mock_handles_are_not_actual_resources=True,refusals=rejected,
-      actual_consumer_pending=dict(p.NEW_CONSUMER),fullstep_execution_allowed=False,
+      actual_consumer_pins=dict(p.NEW_CONSUMER),fullstep_execution_allowed=plan['fullstep_execution_allowed'],
       GPU_executed=False,GPU_numeric_verified=False,Graph_verified=False,side_stream_verified=False,
       actual_resources_verified=False,performance_verified=False),indent=2,sort_keys=True))
 if __name__=='__main__':main()

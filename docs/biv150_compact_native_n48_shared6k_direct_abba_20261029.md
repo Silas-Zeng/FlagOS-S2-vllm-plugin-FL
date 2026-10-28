@@ -1,8 +1,9 @@
 # PR113：直接 2ad old8k / 5cf new6k 完整步骤 ABBA（待新 consumer）
 
-CPU 适配已完成，当前入口**拒绝执行设备测试**：新 113 consumer 的 summary、独立数组
-review、manifest、owner、原件数和字节数六项尚未产生，代码均为 `None`。只可在真实
-结果完成并由 Root 审查后填入对应 pin。不能借用 493e/c079 或模型资格。
+CPU 适配与实际准入检查已完成。113 consumer 原件 175 件 / 59716288 B 已完成
+独立数组复核，Root 重放报告 SHA `eabf9148…19d25b9` 与作者逐字相同，六个实际 pin
+已绑定；证据见 `docs/evidence/native113-direct-native-abba-admission-20261029/`。
+这只准入下一独占完整步骤实验，完整步骤和模型结果尚未产生；不能借用 493e/c079 的候选资格。
 
 两臂均为实际 Native N48/S4：旧库 `2ad51a98…b837b1` 使用 8192 B shared，新库
 `5cf698e8…521bed` 使用 6144 B。它们使用同一批 44769 页、同一组输入/物理页映射、Q/K/V
@@ -48,7 +49,7 @@ python3 -B tools/check_biv150_native_k8_compact_n48_shared6k_fullstep_cpu.py
 参数保留原 candidate consumer/compile/review/library 五类输入，并增加旧库的
 `--old-library --old-consumer-raw --old-consumer-review --old-compile-summary --old-assembly-review
 --old-fullstep-summary --old-fullstep-review`；所有路径必须绝对且输出目录必须不存在。
-当前没有合法的设备启动命令，因为新 consumer 的真实证据仍缺失。
+两份实际准入已通过 CPU preflight；设备命令仍须由 Root 填入真实绝对路径和新输出目录，并独占运行。
 
 如果这里的 shared 改动或后续 K pair 在直接组件对照中有收益，而 compact 模型整组仍为负，
 应再把可独立机制移植到已验收的 8b86/16KiB reader（N32/S4、N64/S2）单独验证；本提交没有
