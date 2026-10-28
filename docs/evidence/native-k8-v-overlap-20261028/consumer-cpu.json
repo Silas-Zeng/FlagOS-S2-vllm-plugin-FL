@@ -1,0 +1,62 @@
+{
+  "actual_parent_modules_SHA_verified": true,
+  "adapter": {
+    "adapter_run_sha256": "c4a859cf9d57c7bed48e642fbdc97efae864338f40154f924b13f02e7a2108cd",
+    "edits": [
+      {
+        "count": 2,
+        "new": "f.sha(args.library.read_bytes())==args.variant_sha256",
+        "old": "f.sha(args.library.read_bytes())==f.LIBRARY_SHA"
+      },
+      {
+        "count": 1,
+        "new": "torch.ops.cjj_native_k8_v_overlap_probe.produce",
+        "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+      },
+      {
+        "count": 1,
+        "new": "result=dict(variant_plan(),codec_precondition=receipt,",
+        "old": "result=dict(f.plan(),codec_precondition=receipt,"
+      }
+    ],
+    "inverse_byte_exact": true,
+    "parent_commit": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_run_sha256": "4b28dd919f5abdfb042fc0ccd053a820c2c0991a2fd443e116c6d900fa1a7991"
+  },
+  "compile_or_GPU_executed": false,
+  "fixtures_rewritten": false,
+  "incomplete_CLI_rejections": 4,
+  "parent_commit": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+  "precision_gate": false,
+  "reference_arrays_executed": false,
+  "resource_values_only_synthetic_CPU_fixture": true,
+  "review_field_rejections": [
+    "actual_K_then_V_issue_order_preserved",
+    "missing_actual_K_then_V_issue_order_preserved",
+    "actual_V_wait_after_QK_and_P_softmax_packing",
+    "missing_actual_V_wait_after_QK_and_P_softmax_packing",
+    "actual_wait_tail_clear_barrier_before_PV",
+    "missing_actual_wait_tail_clear_barrier_before_PV",
+    "original_QK_softmax_BF16_PV_preserved",
+    "missing_original_QK_softmax_BF16_PV_preserved",
+    "actual_SO_codec_equivalent_to_original22e",
+    "missing_actual_SO_codec_equivalent_to_original22e",
+    "resources_reviewed",
+    "missing_resources_reviewed",
+    "ambiguous_legacy_wait_field",
+    "2_unknown_vgpr",
+    "2_unknown_sgpr",
+    "2_unknown_shared_bytes",
+    "2_unknown_spill_bytes",
+    "4_unknown_vgpr",
+    "4_unknown_sgpr",
+    "4_unknown_shared_bytes",
+    "4_unknown_spill_bytes",
+    "invalid_spill_bytes",
+    "invalid_shared_bytes",
+    "invalid_vgpr",
+    "invalid_sgpr",
+    "missing_S4"
+  ],
+  "unknown_review_template_rejected": true
+}
