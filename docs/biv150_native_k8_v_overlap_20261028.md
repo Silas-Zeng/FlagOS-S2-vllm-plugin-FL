@@ -64,4 +64,30 @@ python tools/probe_biv150_native_k8_v_overlap_consumer.py \
   --out /ABS/NEW_CONSUMER_DIRECTORY
 ```
 
-这条入口不包括 fullstep、自动排队或模型服务。CPU 参数检查命令为 `python -B tools/check_biv150_native_k8_v_overlap_consumer_cpu.py --parent-source /ABS/FROZEN_3eb_CHECKOUT`；检查中的资源值是故障注入用的合成数据，不能作为设备回执。
+这条 consumer 入口不包括 fullstep、自动排队或模型服务。CPU 参数检查命令为 `python -B tools/check_biv150_native_k8_v_overlap_consumer_cpu.py --parent-source /ABS/FROZEN_3eb_CHECKOUT`；检查中的资源值是故障注入用的合成数据，不能作为设备回执。
+
+## 原完整步骤的 ABBA 入口
+
+`tools/probe_biv150_native_k8_v_overlap_fullstep.py` 复用冻结 `3eb` 的完整 fullstep。原 `run` 仅替换 K8 库 SHA、operator namespace 和结果来源计划；原 `require_consumer` 的独立适配仅替换新 consumer 的实际 summary SHA 和新 SO SHA，全部 saved-array、FP64、输入、guard、Graph、side 检查不改。新 consumer 必须绑定当前候选源码、真实 SO、同一独立审核记录及原四 case adapter；仅 JSON 中自报通过不够。其完整收据重放完成后，原 fullstep 仍会重放原 `c2e13e...` consumer 前提，然后才导入 Torch。
+
+保持 BF16 `aace693b...` 组件对照、34276 个 16 KiB 页、真实 scratch 宽度 16、4K `(64,4096,2,2048)` / 16K `(32,16384,4,2560)`、原 writer+producer+reducer、完整 cache/FP64/Graph/side 校验，以及 `UNROLL=8`、预热 128 replay、计时 64 replay 的 BF16/K8/K8/BF16 顺序。这里的 BF16 是原组件对照，不代表当前 main 的模型服务成绩。没有新增数值实现、修改容差或恢复 cache 容量。
+
+Root 确认新四 case consumer 真正通过、旧任务结束并独占设备后，使用实际路径和真实新收据 SHA：
+
+```bash
+python tools/probe_biv150_native_k8_v_overlap_fullstep.py \
+  --gpu --root-owned-exclusive --parent-source /ABS/FROZEN_3eb_CHECKOUT \
+  --compile-summary /ABS/compile-summary.json \
+  --assembly-review /ABS/root-reviewed.json --assembly-review-sha256 REVIEW_SHA256 \
+  --library /ABS/cjj_native_k8_v_overlap_probe.so \
+  --codec-summary /ABS/ORIGINAL_CODEC/codec-summary.json \
+  --codec-proof-sha256 3c9733ab79e69c77f70068cff2d3da553ad9c2b81b08ea3c396c6e0788b4f263 \
+  --variant-consumer-summary /ABS/NEW_V_OVERLAP_CONSUMER/consumer-summary.json \
+  --variant-consumer-sha256 ACTUAL_NEW_CONSUMER_SHA256 \
+  --consumer-summary /ABS/ORIGINAL_CONSUMER/consumer-summary.json \
+  --consumer-proof-sha256 c2e13e3766172e9b74342bbcf48b1b4729d1b9604bc249b6974740f7f90cc128 \
+  --bf16-library /ABS/ORIGINAL_BF16/corex_native_gqa_s2_probe.so \
+  --out /ABS/NEW_V_OVERLAP_FULLSTEP
+```
+
+默认执行两档；可沿用原 `--case 4k` 或 `--case 16k` 分开安排，每次必须指定新输出目录。无参数为 CPU 计划；窄身份/参数检查为 `python -B tools/check_biv150_native_k8_v_overlap_fullstep_cpu.py --parent-source /ABS/FROZEN_3eb_CHECKOUT`，不会重放收据、构造大 arena 或调用 GPU。CPU 检查只证明适配边界，不能授予 fullstep 数值或性能资格。
