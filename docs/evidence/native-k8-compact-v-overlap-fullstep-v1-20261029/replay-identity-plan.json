@@ -1,0 +1,87 @@
+{
+  "CPU_plan": true,
+  "proof": {
+    "adapted_review_sha256": "aec83cc60448c1c7d972f0c6a7a3e3110e854294e09e030410c37f8ba64835c2",
+    "edits": [
+      {
+        "new": "'/private/tmp/flagos-cjj-compact-native-v-overlap-validation-20261029'",
+        "old": "'/private/tmp/flagos-cjj-compact-fullstep-frozen-fa9-20261028'"
+      },
+      {
+        "new": "'/private/tmp/flagos-cjj-native-k8-fullstep-frozen-3eb-20261028'",
+        "old": "'/private/tmp/flagos-cjj-native-k8-fullstep-frozen-3eb-20261028'"
+      },
+      {
+        "new": "'/private/tmp/cjj-native110-fullstep-v1-raw-20261029'",
+        "old": "'/private/tmp/cjj-native-k8-compact-fullstep-v1-raw-20261028'"
+      },
+      {
+        "new": "'/Users/chenjunjie/Documents/flagos/artifacts/cjj-native110-consumer-v1-raw-20261029'",
+        "old": "'/private/tmp/cjj-native-k8-compact-consumer-v1-raw-20261028'"
+      },
+      {
+        "new": "'/private/tmp/cjj-native110-compile-v1-raw-20261029/out'",
+        "old": "'/private/tmp/cjj-native-k8-compact-compile-v1-raw-20261028/out'"
+      },
+      {
+        "new": "'/private/tmp/cjj-native-k8-codec-v1-raw-20261028/out/codec-summary.json'",
+        "old": "'/private/tmp/cjj-native-k8-codec-v1-raw-20261028/out/codec-summary.json'"
+      },
+      {
+        "new": "'/private/tmp/cjj-native-k8-compile-v1-raw-20261028/out/build/cjj_native_k8_qk_probe.so'",
+        "old": "'/private/tmp/cjj-native-k8-compile-v1-raw-20261028/out/build/cjj_native_k8_qk_probe.so'"
+      },
+      {
+        "new": "'/private/tmp/flagos-cjj-compact-native-v-overlap-fullstep-evidence-20261029/docs/evidence/native-k8-compact-fullstep-v1-20261028/original_fullstep_auditor.py'",
+        "old": "'/private/tmp/check_cjj_native_k8_fullstep_actual_20261028.py'"
+      },
+      {
+        "new": "COMMIT='4d1166792a5247b774d6b1977e60466574e6a34c'",
+        "old": "COMMIT='fa92060af9399e60938ddee6dd7e0a603610cd8c'"
+      },
+      {
+        "new": "sys.path.insert(0,str(SOURCE/'tools'));import probe_biv150_native_k8_compact_v_overlap_fullstep as variant\n c=types.SimpleNamespace(**vars(variant.base_module()))\n c.LIBRARY='7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4';c.CONSUMER='6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c'\n c.adapted_source=variant.adapted_source;c.replay_consumer=variant.replay_consumer",
+        "old": "sys.path.insert(0,str(SOURCE/'tools'));import probe_biv150_native_k8_compact_fullstep as c"
+      },
+      {
+        "new": "summary['namespace']=='cjj_native_k8_compact_v_overlap_probe'",
+        "old": "summary['namespace']=='cjj_native_k8_compact_probe'"
+      },
+      {
+        "new": "k8_library=compiled/'build/cjj_native_k8_compact_v_overlap_probe.so',assembly_review=Path('/Users/chenjunjie/Documents/flagos/artifacts/cjj-native110-consumer-v1-raw-20261029/out/actual-so-review-input.json'),assembly_review_sha256='90f6e18e142813e732694f453779b876048daaa8c122fd3e2d985dc2969cdb17',variant_consumer_sha256='6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c',variant_archive_manifest_sha256='4435696c50214a8ba60f6a4e4fbf7ff1970ce3f8fb202cb13f7b82b4c4c5613a')",
+        "old": "k8_library=compiled/'build/cjj_native_k8_compact_probe.so')"
+      },
+      {
+        "new": "ast.parse(variant.execute_source()[0])",
+        "old": "ast.parse((SOURCE/'tools/probe_biv150_native_k8_compact_fullstep.py').read_text())"
+      },
+      {
+        "new": "dict(pid=61630,start_ticks=355834758,same_start=True,state='Z')",
+        "old": "dict(pid=38381,start_ticks=354308715,same_start=True,state='Z')"
+      },
+      {
+        "new": "len(paths)==manifest['raw_files']==181 and total==manifest['raw_bytes']==145951897",
+        "old": "len(paths)==manifest['raw_files']==181 and total==manifest['raw_bytes']==145937040"
+      },
+      {
+        "new": "raw/'exports/cjj-native-k8-compact-v-overlap-fullstep-v1-20261029-owner.json'",
+        "old": "raw/'exports/cjj-native-k8-compact-fullstep-v1-20261028-owner.json'"
+      },
+      {
+        "new": "and owner['pid']==61630 and owner['start_ticks']==355834758",
+        "old": "and owner['pid']==38381 and owner['start_ticks']==354308715"
+      },
+      {
+        "new": "compact_frontend_sha256=sha(SOURCE/'tools/probe_biv150_native_k8_compact_v_overlap_fullstep.py')",
+        "old": "compact_frontend_sha256=sha(SOURCE/'tools/probe_biv150_native_k8_compact_fullstep.py')"
+      }
+    ],
+    "exact_variant_execute_source_used_for_nested_plan": true,
+    "inverse_byte_exact": true,
+    "numeric_reference_writer_cache_and_ABBA_bodies_unchanged": true,
+    "original_3eb_auditor_sha256": "1c527358d545110a462866c2cc675334e5ea9baf9ccf4a047bec1bcd1f6c060f",
+    "original_PR108_adapter_sha256": "f0922d1c5dff75619a3ccec0536e0559305756b26d0ff08d5b76c3571f6520f5"
+  },
+  "qualification_granted": false,
+  "review_executed": false
+}
