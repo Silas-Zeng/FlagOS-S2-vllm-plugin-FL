@@ -1,0 +1,47 @@
+{
+  "GPU_service_model_performance_run": false,
+  "N48_consumer_and_fullstep_qualification": "consumer independently reviewed; fullstep pending",
+  "N48_consumer_evidence": {
+    "Q_pitches": [
+      2048,
+      2560
+    ],
+    "independent_review": "c07937c3d6c3ffc78a5c7b213271e4f864a9463775fe932f9f2aadbff08ef4d0",
+    "max_context": 193,
+    "pages": 29,
+    "service_verified": false,
+    "summary": "493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272",
+    "valid_rows": [
+      41,
+      42
+    ]
+  },
+  "base": "acd6974733661fbde47c3ce76d87d514c0861fbe",
+  "fullstep_evidence": {
+    "independent_review": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+    "new_KV_pitch": 256,
+    "pages": 34276,
+    "service_source_pitch2560_covered": false,
+    "summary": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478"
+  },
+  "unchanged_compute_and_boundary_sources": {
+    "tools/kernels/biv150_native_k8_compact_n48_codec.cu": "ade703388d23b9ce3b6051924b531c8d04646903098f1c7770ee3a34b530e623",
+    "tools/kernels/biv150_native_k8_compact_n48_qk.cpp": "ee1ba1089978c8f53812884bf3b66dd85f1cf661db7789686abf6c95c745eadd",
+    "tools/kernels/biv150_native_k8_compact_n48_qk.cu": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+    "tools/kernels/biv150_native_k8_compact_v_overlap_codec.cu": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1",
+    "tools/kernels/biv150_native_k8_compact_v_overlap_qk.cpp": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750",
+    "tools/kernels/biv150_native_k8_compact_v_overlap_qk.cu": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+    "vllm_fl/patches/biv150_gqa_decode.py": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "vllm_fl/patches/biv150_konly_compact_decode.py": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+    "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9",
+    "vllm_fl/patches/biv150_konly_compact_multi2.py": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+    "vllm_fl/patches/biv150_konly_compact_normalized2d128.py": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+    "vllm_fl/patches/biv150_konly_compact_q32.py": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+    "vllm_fl/patches/biv150_konly_compact_q32_adapter.py": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d",
+    "vllm_fl/patches/biv150_konly_compact_raw3d.py": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+    "vllm_fl/patches/biv150_konly_compact_runtime.py": "1f8f8b60c2d75dda517a3abec56f1060500f3ade8866c3ca5a1f0437c9cc3c4b",
+    "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+    "vllm_fl/patches/biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+    "vllm_fl/patches/biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b"
+  }
+}

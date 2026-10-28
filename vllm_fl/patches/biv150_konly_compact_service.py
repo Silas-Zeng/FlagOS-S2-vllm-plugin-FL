@@ -129,6 +129,9 @@ def install(runner_class, *, environ=None):
              and generated['writer']['sha256']==compact_native_config['qualification']['writer_source_sha256']
              and generated['views']['sha256']==compact_native_config['qualification']['views_source_sha256'],
              'actual native/encoder/roles source qualification binding')
+        if compact_native_config.get('n48') is not None:
+            need(declared['n48_qualification_binding']==compact_native_config['n48']['qualification'],
+                 'actual N48 source qualification binding')
         need(hashlib.sha256(path.read_bytes()).hexdigest() == declared['adapter']['sha256'],
              'compact native adapter source SHA')
         native = importlib.import_module('vllm_fl.patches.biv150_konly_compact_native')

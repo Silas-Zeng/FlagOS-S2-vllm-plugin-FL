@@ -64,7 +64,8 @@ def verify_package():
              'binding source mismatch: ' + relative)
     native = record['native_decode']
     need(native['qualification_state'] in ('pending','component-reviewed') and native['format'] == FORMAT
-         and native['operator'] == 'cjj_native_k8_compact_probe::produce', 'explicit pending native provenance')
+         and native['operator'] == 'cjj_native_k8_compact_v_overlap_probe::produce'
+         and native['n48_operator'] == 'cjj_native_k8_compact_n48_s4_probe::produce', 'explicit pending native provenance')
     for key in ('adapter', 'qualification', 'early_import_gate'):
         item = native[key]
         path = (directory.parent.parent / item['path']).resolve()

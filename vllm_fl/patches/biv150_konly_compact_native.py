@@ -1,7 +1,8 @@
 """Default-off component-qualified compact12544 NativeK8 adapter, AFTER the private format fence.
 
 No compilation, Tensor-data reads, stock fallback, allocator or kernel changes.
-Only the reviewed40f9 library and dc5 writer/views are admitted.
+Actual7892 serves N64/S2 and N32/S4; opt-in actual2ad serves N48/S4.
+Both require their own complete component pins before any library load.
 Service/model/capacity qualification is separate from the component evidence.
 """
 import hashlib
@@ -10,12 +11,15 @@ import math
 import os
 from pathlib import Path
 
-from vllm_fl.compact_native_qualification import ENV, PATH_ENV, SHA_ENV, QUALIFICATION, preflight, pin
+from vllm_fl.compact_native_qualification import (ENV, PATH_ENV, SHA_ENV, QUALIFICATION,
+    N48_ENV, N48_PATH_ENV, N48_SHA_ENV, N48_QUALIFICATION, preflight, pin)
 import re
 LIBRARY_SHA=QUALIFICATION.get('library_sha256','PENDING_NO_SO_QUALIFICATION')
 FORMAT='cjj-konly-compact12544-rn32-rne-v1'
-OPERATOR='cjj_native_k8_compact_probe::produce'
-SCHEMA='cjj_native_k8_compact_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()'
+OPERATOR='cjj_native_k8_compact_v_overlap_probe::produce'
+SCHEMA='cjj_native_k8_compact_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()'
+N48_OPERATOR='cjj_native_k8_compact_n48_s4_probe::produce'
+N48_SCHEMA=SCHEMA.replace(OPERATOR,N48_OPERATOR)
 SCALE=128**-.5*1.4426950408889634
 
 
@@ -49,45 +53,70 @@ def geometry(t):
     return dict(dtype=str(t.dtype),shape=list(t.shape),strides=list(t.stride()),offset=t.storage_offset(),device=str(t.device))
 
 
+def select_route(rows,segments):
+    # Honor the incoming producer AND reducer split. Never rewrite SEGMENTS.
+    if type(rows) is not int or type(segments) is not int:return None
+    if (rows,segments) in ((64,2),(32,4)):return 'base'
+    if (rows,segments)==(48,4):return 'n48'
+    return None
+
+
+def qualification_binding():
+    return (preflight,pin,tuple((n,preflight.__globals__[n],preflight.__globals__[n].__code__)
+      for n in ('need','pin','preflight','library_pair')),json.dumps(QUALIFICATION,sort_keys=True),json.dumps(N48_QUALIFICATION,sort_keys=True))
+
+
 class Adapter:
-    def __init__(self,runtime,config):
-        need(type(LIBRARY_SHA) is str and re.fullmatch('[0-9a-f]{64}',LIBRARY_SHA) is not None,'PENDING library qualification')
-        need(config.get('qualification')==pin(),'actual source qualification record')
-        self.runtime=runtime;self.torch=runtime.torch;self.library=dict(config)
-        self.qualification_binding=(preflight,pin,tuple((n,preflight.__globals__[n],preflight.__globals__[n].__code__) for n in ('need','pin','preflight')),json.dumps(QUALIFICATION,sort_keys=True))
-        torch=self.torch
-        need(str(torch.__version__)=='2.10.0' and torch._C._GLIBCXX_USE_CXX11_ABI is False,'actual Torch ABI')
-        namespace=torch.ops.cjj_native_k8_compact_probe
+    def _load(self,config,operator,schema):
+        need(config['sha256']==config['qualification']['library_sha256'] and operator==config['qualification']['operator'],'pinned actual library/operator pair')
+        torch=self.torch;namespace=getattr(torch.ops,operator.split('::')[0])
         try:prior=namespace.produce.default
         except (AttributeError,RuntimeError):prior=None
         loaded={str(Path(p).resolve()) for p in torch.ops.loaded_libraries}
         need(prior is None or config['path'] in loaded,'operator preloaded from unknown library')
         torch.ops.load_library(config['path'])
-        need(hashlib.sha256(Path(config['path']).read_bytes()).hexdigest()==LIBRARY_SHA,'library changed during load')
-        self.op=torch.ops.cjj_native_k8_compact_probe.produce.default
-        need(str(self.op._schema)==SCHEMA,'exact registered produce ABI')
-        need(torch._C._dispatch_has_kernel_for_dispatch_key(OPERATOR,'CUDA'),'actual CUDA registration missing')
+        need(hashlib.sha256(Path(config['path']).read_bytes()).hexdigest()==config['sha256'],'library changed during load')
+        op=namespace.produce.default
+        need(str(op._schema)==schema,'exact registered produce ABI')
+        need(torch._C._dispatch_has_kernel_for_dispatch_key(operator,'CUDA'),'actual CUDA registration missing')
         need(config['path'] in {str(Path(p).resolve()) for p in torch.ops.loaded_libraries},'actual loaded-library set')
-        self.binding=(runtime,self.op,config['path'],config['sha256'])
-        self.code_binding=(type(self).try_produce.__code__,type(self).validate.__code__,type(self).verify.__code__)
-        self.helper_binding=tuple((globals()[n],globals()[n].__code__) for n in ('need','storage','overlaps','bounds','geometry'))
-        self.constant_binding=(ENV,PATH_ENV,SHA_ENV,LIBRARY_SHA,FORMAT,OPERATOR,SCHEMA,SCALE)
+        return op
+
+    def __init__(self,runtime,config):
+        need(config.get('qualification')==pin(),'actual base source qualification record')
+        if config.get('n48') is not None:need(config['n48']['qualification']==pin('n48'),'actual N48 source qualification record')
+        self.runtime=runtime;self.torch=runtime.torch;self.library=json.loads(json.dumps(config))
+        self.qualification_binding=qualification_binding()
+        torch=self.torch
+        need(str(torch.__version__)=='2.10.0' and torch._C._GLIBCXX_USE_CXX11_ABI is False,'actual Torch ABI')
+        self.ops={'base':self._load(config,OPERATOR,SCHEMA)}
+        if config.get('n48') is not None:self.ops['n48']=self._load(config['n48'],N48_OPERATOR,N48_SCHEMA)
+        self.op=self.ops['base']
+        self.binding=(runtime,tuple(sorted(self.ops.items())),json.dumps(self.library,sort_keys=True))
+        self.code_binding=tuple(getattr(type(self),n).__code__ for n in ('try_produce','validate','verify','_load'))
+        self.helper_binding=tuple((globals()[n],globals()[n].__code__) for n in ('need','storage','overlaps','bounds','geometry','select_route','qualification_binding'))
+        self.constant_binding=(ENV,PATH_ENV,SHA_ENV,LIBRARY_SHA,FORMAT,OPERATOR,SCHEMA,SCALE,N48_ENV,N48_PATH_ENV,N48_SHA_ENV,N48_OPERATOR,N48_SCHEMA)
         self.calls=0;self.fallbacks={};self.fallback_records={};self.records={};self.overflow=0
         self.imports=dict(installed=True,enabled=True,format=FORMAT,physical_page_bytes=12544,torch_file=str(torch.__file__),module_file=str(Path(__file__).resolve()),
-            module_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),library=dict(config),
-            operator=OPERATOR,schema=SCHEMA,loaded_library_confirmed=True,runtime_compile=False)
+            module_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),library=self.library,
+            operator=OPERATOR,schema=SCHEMA,loaded_library_confirmed=True,runtime_compile=False,
+            n48_operator=None if 'n48' not in self.ops else N48_OPERATOR,n48_schema=None if 'n48' not in self.ops else N48_SCHEMA)
         print('BIV150_KONLY_NATIVE_DECODE_INSTALL',json.dumps(self.imports,sort_keys=True),flush=True)
 
     def verify(self,runtime):
-        need(self.qualification_binding==(preflight,pin,tuple((n,preflight.__globals__[n],preflight.__globals__[n].__code__) for n in ('need','pin','preflight')),json.dumps(QUALIFICATION,sort_keys=True)), 'compact qualification/code changed')
-        need(preflight.__globals__['QUALIFICATION'] is QUALIFICATION and pin()==self.library['qualification'], 'qualification module identity changed')
-        if any(n in vars(self) for n in ('verify','validate','try_produce')):raise RuntimeError('NativeK8 instance method override')
-        if self.helper_binding!=tuple((globals()[n],globals()[n].__code__) for n in ('need','storage','overlaps','bounds','geometry')) or self.constant_binding!=(ENV,PATH_ENV,SHA_ENV,LIBRARY_SHA,FORMAT,OPERATOR,SCHEMA,SCALE):
-            raise RuntimeError('NativeK8 helper/constants changed')
-        need(self.runtime is runtime and self.binding==(runtime,self.op,self.library['path'],self.library['sha256']), 'adapter/library/op binding changed')
-        need(self.code_binding==(type(self).try_produce.__code__,type(self).validate.__code__,type(self).verify.__code__),'installed native code changed')
-        need(self.library['sha256']==LIBRARY_SHA and self.op is self.torch.ops.cjj_native_k8_compact_probe.produce.default,'dispatcher identity changed')
-        return dict(enabled=True,library=dict(self.library),operator=OPERATOR,stock_BF16_native_used_for_encoded=False)
+        need(self.qualification_binding==qualification_binding(),'compact qualification/code changed')
+        need(preflight.__globals__['QUALIFICATION'] is QUALIFICATION and preflight.__globals__['N48_QUALIFICATION'] is N48_QUALIFICATION,'qualification module identity changed')
+        need(pin()==self.library['qualification'],'base qualification changed')
+        if self.library.get('n48') is not None:need(pin('n48')==self.library['n48']['qualification'],'N48 qualification changed')
+        if any(n in vars(self) for n in ('verify','validate','try_produce','_load')):raise RuntimeError('NativeK8 instance method override')
+        need(self.helper_binding==tuple((globals()[n],globals()[n].__code__) for n in ('need','storage','overlaps','bounds','geometry','select_route','qualification_binding')),'NativeK8 helper changed')
+        need(self.constant_binding==(ENV,PATH_ENV,SHA_ENV,LIBRARY_SHA,FORMAT,OPERATOR,SCHEMA,SCALE,N48_ENV,N48_PATH_ENV,N48_SHA_ENV,N48_OPERATOR,N48_SCHEMA),'NativeK8 constants changed')
+        need(self.runtime is runtime and self.binding==(runtime,tuple(sorted(self.ops.items())),json.dumps(self.library,sort_keys=True)),'adapter/library/op binding changed')
+        need(self.code_binding==tuple(getattr(type(self),n).__code__ for n in ('try_produce','validate','verify','_load')),'installed native code changed')
+        need(self.op is self.ops['base'] and self.library['sha256']==LIBRARY_SHA,'base operator/library changed')
+        for name,operator in (('base',OPERATOR),('n48',N48_OPERATOR)):
+            if name in self.ops:need(self.ops[name] is getattr(self.torch.ops,operator.split('::')[0]).produce.default,'dispatcher identity changed')
+        return dict(enabled=True,library=self.library,operator=OPERATOR,stock_BF16_native_used_for_encoded=False)
 
     def validate(self,runtime,entry,kw):
         self.verify(runtime);r=runtime.registry
@@ -127,8 +156,8 @@ class Adapter:
         tensors=self.validate(runtime,entry,kw)
         q,k,scale,v,lens,table,partial,maximum,summation=tensors
         n=q.shape[0];s=kw.get('SEGMENTS')
-        reason=None
-        if (n,s) not in ((64,2),(32,4)):reason='shape_or_segments'
+        route=select_route(n,s);reason=None
+        if route not in self.ops:reason='shape_or_segments'
         elif tuple(q.stride()) not in ((2048,128,1),(2560,128,1)):reason='query_stride'
         elif tuple(grid)!=(n,2,s):reason='grid'
         elif any(kw.get(name)!=value for name,value in {'HEAD_SIZE':128,'PAGE_SIZE':16,'ROWS':8,'queries_per_kv':8,'num_warps':1,'num_stages':1}.items()):reason='launch_options'
@@ -152,13 +181,15 @@ class Adapter:
             return False
         # Existing SO, current-stream dispatcher, exactly one call. No exception
         # is caught here: a postlaunch error must never cause a second producer.
-        self.op(q,k,scale,v,lens,table,partial,maximum,summation,kw['softmax_scale_log2e'],s)
+        selected_library=self.library if route=='base' else self.library['n48']
+        selected_operator=OPERATOR if route=='base' else N48_OPERATOR
+        self.ops[route](q,k,scale,v,lens,table,partial,maximum,summation,kw['softmax_scale_log2e'],s)
         self.calls+=1;runtime.counts['selected']['native_decode']=runtime.counts['selected'].get('native_decode',0)+1
         capture=bool(self.torch.cuda.is_current_stream_capturing())
         info=dict(shape=n,segments=s,capture=capture,entry_generation=entry.generation,
             query=geometry(q),table=geometry(table),partial=geometry(partial),maximum=geometry(maximum),summation=geometry(summation),
-            cache_pages=k.shape[0],format=FORMAT,physical_page_bytes=12544,library=dict(self.library),operator=OPERATOR,
-            component_qualification='40f9 four-case consumer and 34276-page writer/reader fullstep; model/service pending',
+            cache_pages=k.shape[0],format=FORMAT,physical_page_bytes=12544,library=selected_library,operator=selected_operator,
+            component_qualification='pinned component consumer/fullstep; model/service pending',
             host_or_capture_event_not_Graph_replay_count=True,native_launch_returned=True,service_numeric_verified=False)
         key=json.dumps(info,sort_keys=True)
         # Epoch/layer identities are separate; bounded records retain complete

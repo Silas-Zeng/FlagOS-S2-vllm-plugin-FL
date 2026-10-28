@@ -41,7 +41,7 @@
     },
     "identity": {
       "path": "vllm_fl/patches/biv150_konly_compact_identity.py",
-      "sha256": "3f86528a442cb4e8bc599ae4e5f2f9d23721fab7a5c48077e49c6ece408a1f19"
+      "sha256": "e4108c8f185c139d9d2474b49af2d5c52b7d40b4960f99159316afac8a56c510"
     },
     "spec": {
       "path": "vllm_fl/patches/biv150_konly_compact_spec.py",
@@ -57,7 +57,7 @@
     },
     "service": {
       "path": "vllm_fl/patches/biv150_konly_compact_service.py",
-      "sha256": "47a17b65a15dc7dd39c5a7668cc86b11b72f823515f43d4fa0ec30ee771aa06c"
+      "sha256": "71c110cce235690464ca68c6481b90aba5cd8121cdaa66c43b4a4b2a0d673e27"
     },
     "hoist_proposal": {
       "path": "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py",
@@ -134,14 +134,14 @@
   "native_decode": {
     "qualification_state": "component-reviewed",
     "format": "cjj-konly-compact12544-rn32-rne-v1",
-    "operator": "cjj_native_k8_compact_probe::produce",
+    "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
     "adapter": {
       "path": "vllm_fl/patches/biv150_konly_compact_native.py",
-      "sha256": "4a577a890137ec0756ba70b91839580cfbca70f748dfc278e359fc25e25b8ca5"
+      "sha256": "2b5f0c333fdd701094c89bb033742d4bda6b9882b639d05d015646cb67682164"
     },
     "qualification": {
       "path": "vllm_fl/compact_native_qualification.py",
-      "sha256": "0b9813ee188943f3a956be87c03fdf16a8b836fa2fa32bd67c4aa926eef8e1e1"
+      "sha256": "e14331c09224693e8faec7a36f4b3dc232a93844e30471599a7d8bca40803db7"
     },
     "early_import_gate": {
       "path": "vllm_fl/__init__.py",
@@ -150,14 +150,15 @@
     "qualification_binding": {
       "state": "component-reviewed",
       "format": "cjj-konly-compact12544-rn32-rne-v1",
-      "operator": "cjj_native_k8_compact_probe::produce",
+      "operator": "cjj_native_k8_compact_v_overlap_probe::produce",
       "page_bytes": 12544,
-      "library_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
-      "actual_SO_review_sha256": "3b3e94c9af183b77df5be794746f2b783c1b925f643b5d1d450e13da3a3ddc28",
-      "consumer_summary_sha256": "9d2bcd2f803626fca16aae5c73533ce1436d8bb98010f00fa6583061dfa90df8",
-      "fullstep_summary_sha256": "53880d7cad7beb47a07a4551056b616afdba45e6fca4703da98aaea9816f036f",
-      "fullstep_review_sha256": "96262cd2414ce85a3648f0d45e1727f93b243e754310e31e1160fc30639ebdb0",
-      "source_CUDA_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+      "library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+      "actual_SO_review_sha256": "0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708",
+      "consumer_summary_sha256": "6f719fe84e83e547d0e42f7c2be5bdb408e64cdb107cc455994a681705e34c7c",
+      "consumer_review_sha256": "896c7c992aefcbfa36ed7445c3cf6fb1d40135bde610b5d83693ed27ec8fadf1",
+      "fullstep_summary_sha256": "f12332f0b2397ed17baaadbad5e5d189c326188e1b6b9a05c8d4084ef7667478",
+      "fullstep_review_sha256": "0cd4cb1682fa359f566ac7bf2f076c7861761a4cb8783600ea2cdf551acf051d",
+      "source_CUDA_sha256": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
       "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
       "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
       "scopes": [
@@ -181,7 +182,42 @@
           4,
           2560
         ]
-      ]
+      ],
+      "fullstep_geometry": {
+        "physical_pages": 34276,
+        "new_KV_row_pitch": 256,
+        "service_verified": false
+      }
+    },
+    "n48_operator": "cjj_native_k8_compact_n48_s4_probe::produce",
+    "n48_qualification_state": "pending",
+    "n48_qualification_binding": {
+      "state": "pending",
+      "format": "cjj-konly-compact12544-rn32-rne-v1",
+      "operator": "cjj_native_k8_compact_n48_s4_probe::produce",
+      "page_bytes": 12544,
+      "library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+      "actual_SO_review_sha256": "30c4c7daf2ccf3839bfabc9936f0a845400d26242fe93cc95bec99d270e8f398",
+      "consumer_summary_sha256": "493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272",
+      "consumer_review_sha256": "c07937c3d6c3ffc78a5c7b213271e4f864a9463775fe932f9f2aadbff08ef4d0",
+      "fullstep_summary_sha256": null,
+      "fullstep_review_sha256": null,
+      "source_CUDA_sha256": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+      "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+      "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "scopes": [
+        [
+          48,
+          4,
+          2048
+        ],
+        [
+          48,
+          4,
+          2560
+        ]
+      ],
+      "fullstep_geometry": null
     }
   },
   "integration_main": "a455a3de364051fbea80226870c239de3a48e716",
