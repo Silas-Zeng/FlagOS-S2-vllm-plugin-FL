@@ -1,0 +1,665 @@
+{
+  "CPU_only": true,
+  "CUDA_initialized_after": false,
+  "CUDA_initialized_before": false,
+  "ELF_helper_sha256": "09ac1c98f2f1a1ff25ad02fcc819b25fc00bdb442a55c2ec1ad69defc61ea6e7",
+  "GPU_numeric_verified": false,
+  "Graph_verified": false,
+  "IR_attributes_and_numbered_metadata_definitions_rename_only_equal": true,
+  "SO_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "actual_GPU_images": [
+    {
+      "kernels": [
+        {
+          ".group_segment_fixed_size": 8192,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 144,
+          ".max_flat_workgroup_size": 0,
+          ".name": "_Z34cjj_native_k8_compact_n48_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 66,
+          ".sgpr_spill_count": 0,
+          ".symbol": "_Z34cjj_native_k8_compact_n48_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+          ".vgpr_count": 100,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        },
+        {
+          ".group_segment_fixed_size": 8192,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 144,
+          ".max_flat_workgroup_size": 0,
+          ".name": "_Z34cjj_native_k8_compact_n48_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 66,
+          ".sgpr_spill_count": 0,
+          ".symbol": "_Z34cjj_native_k8_compact_n48_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+          ".vgpr_count": 100,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        }
+      ],
+      "sha256": "0648f3ed55c575d017af814b4360209295bbcb9c85e9fae7d187955028aa724b",
+      "text_bytes": 21936,
+      "text_sha256": "846096a1c2ff8f7b5bd484a3e1e7d63aa83ba9c3654e42e9ad02f20198782d70"
+    },
+    {
+      "kernels": [
+        {
+          ".group_segment_fixed_size": 0,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 28,
+          ".max_flat_workgroup_size": 0,
+          ".name": "_Z37cjj_native_k8_compact_n48_codec_probePK13__ix_bfloat16PaPfi",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 24,
+          ".sgpr_spill_count": 0,
+          ".symbol": "_Z37cjj_native_k8_compact_n48_codec_probePK13__ix_bfloat16PaPfi.kd",
+          ".vgpr_count": 8,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        }
+      ],
+      "sha256": "4aea9efee438a09b93a3fd86835abecfd7a27c6830935f08adf6b9fe7f1729b4",
+      "text_bytes": 944,
+      "text_sha256": "936ce115af95401dda3a37cf310b62baa606003a18910ff46de4707fbaba19cf"
+    }
+  ],
+  "actual_S4_resources": {
+    ".group_segment_fixed_size": 8192,
+    ".kernarg_segment_align": 8,
+    ".kernarg_segment_size": 144,
+    ".private_segment_fixed_size": 0,
+    ".sgpr_count": 66,
+    ".sgpr_spill_count": 0,
+    ".vgpr_count": 100,
+    ".vgpr_spill_count": 0,
+    ".warp_size": 64
+  },
+  "actual_embedded_ELFs_equal_to_built_GPU_objects": true,
+  "actual_full_metadata_including_argument_ABI_rename_only_equal": true,
+  "all_decoded_instruction_words_bound_to_actual_SO": true,
+  "capacity_reclaimed": false,
+  "compact_addresses": {
+    "K_page_bytes": 12544,
+    "SME_row_bytes": 512,
+    "V_external_offset_bytes_once": 4352,
+    "V_page_BF16": 6272,
+    "scale_internal_offset_F32_once": 1024,
+    "scale_page_F32": 3136
+  },
+  "compile_summary_sha256": "3e88b330dcbbafca6fb332760c5b28e2327a28577488bc906dee63983e6d7f78",
+  "compiler": {
+    "path": "/usr/local/corex-4.5.0/bin/clang-22",
+    "sha256": "8428e871501b05213d5b7ec0ecf796f4d04de24e5bf75c2539dc812f52ab3101",
+    "version_exit": 0
+  },
+  "frontend_launch_and_initialization_counts_zero": true,
+  "fullstep_verified": false,
+  "functions": [
+    {
+      "IR_body_rename_only_equal_to_actual7892": true,
+      "IR_body_sha256": "d9fa36262c5221678b334b61b13ba56c3dc905e3ee3d9ec6570e660946d5f3c8",
+      "IR_function_line": 23,
+      "SASS_first_line": 7,
+      "SASS_last_line": 1345,
+      "host_admitted": false,
+      "instructions": 1339,
+      "machine_equal_to_actual7892": true,
+      "machine_words_sha256": "14e0b48ecc72320bf6b3c1d1d88e4e42ba8734069a34df7fa2cf2f2747ea3935",
+      "metadata_including_args_equal": true,
+      "raw_IR_full_function_display_rename_only_equal": false,
+      "reference_symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "symbol": "_Z34cjj_native_k8_compact_n48_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "IR_body_rename_only_equal_to_actual7892": true,
+      "IR_body_sha256": "19d8d8b8f1ac55c4fc0bf83a3f5c26817c834fb36d88ef58ba93747dfe25c608",
+      "IR_function_line": 1646,
+      "SASS_first_line": 1348,
+      "SASS_last_line": 2686,
+      "host_admitted": true,
+      "instructions": 1339,
+      "machine_equal_to_actual7892": true,
+      "machine_words_sha256": "1de67287f377515b81e56ff3ac7a795a532f385c2ab97ba6c50a9c4d1196c485",
+      "metadata_including_args_equal": true,
+      "raw_IR_full_function_display_rename_only_equal": false,
+      "reference_symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "symbol": "_Z34cjj_native_k8_compact_n48_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "IR_body_rename_only_equal_to_actual7892": true,
+      "IR_body_sha256": "18d60c82de29c27516aa55eb1eeefbe460f4f1c81adc48dc22caf4e60e6bc87f",
+      "IR_function_line": 3304,
+      "SASS_first_line": 2692,
+      "SASS_last_line": 2777,
+      "host_admitted": true,
+      "instructions": 86,
+      "machine_equal_to_actual7892": true,
+      "machine_words_sha256": "f0fba3f70c1584453e2f15445f6ae78303c79b74e3329764f9f190c484766635",
+      "metadata_including_args_equal": true,
+      "raw_IR_full_function_display_rename_only_equal": true,
+      "reference_symbol": "_Z43cjj_native_k8_compact_v_overlap_codec_probePK13__ix_bfloat16PaPfi",
+      "symbol": "_Z37cjj_native_k8_compact_n48_codec_probePK13__ix_bfloat16PaPfi"
+    }
+  ],
+  "helper_sha256": "02fc4aff949091969a058bd1ffed64465b9a5baa73b1e7d57d6cf9178bcaa271",
+  "host_compiled_source_and_binary_guard_text_bound": true,
+  "host_machine_disassembled": false,
+  "inherited_CFG_line_numbers_refer_to_parent7892_raw": true,
+  "inherited_S4_CFG": {
+    "branch_targets_checked": 14,
+    "instructions": 1339,
+    "page_12544B_multiply_lines": [
+      2033,
+      2191
+    ],
+    "paths": [
+      {
+        "CFG_dominance_and_conditional_packing_paths_checked": true,
+        "K_global_loads": [
+          2035,
+          2036,
+          2037,
+          2038,
+          2039,
+          2050,
+          2051,
+          2052
+        ],
+        "K_ready_barrier": 2060,
+        "K_shared_stores": [
+          2041,
+          2043,
+          2045,
+          2047,
+          2049,
+          2054,
+          2056,
+          2058
+        ],
+        "PV_MMA": [
+          1982,
+          1986,
+          2000,
+          2004,
+          2010,
+          2014,
+          2018,
+          2020
+        ],
+        "PV_reads": [
+          1957,
+          1961,
+          1965,
+          1969,
+          1983,
+          1984,
+          1987,
+          1988,
+          2001,
+          2002,
+          2005,
+          2006,
+          2011,
+          2012,
+          2015,
+          2016
+        ],
+        "P_BF16_casts": [
+          2133,
+          2141
+        ],
+        "P_exp": [
+          2128,
+          2131
+        ],
+        "P_pack_ORs": [
+          2167,
+          2172
+        ],
+        "P_pack_shifts": [
+          2165,
+          2171
+        ],
+        "P_sums": [
+          2136,
+          2139,
+          2147,
+          2150,
+          2154,
+          2157,
+          2158,
+          2161
+        ],
+        "QK": [
+          2077,
+          2086,
+          2090,
+          2092
+        ],
+        "V_SME": [
+          2081,
+          2083,
+          2084,
+          2088
+        ],
+        "V_ready_barrier": 1956,
+        "V_wait": 1950,
+        "V_wait_pc": "0x15de8",
+        "all_softmax_before_wait": false,
+        "path": "full",
+        "physical_wait_before_QK_text": true,
+        "rho_exp_after_wait": [
+          1951
+        ],
+        "rho_exp_before_wait": [
+          1949
+        ],
+        "running_L_FMA_after_wait": [
+          1953,
+          1954
+        ],
+        "tail_clear_stores": []
+      },
+      {
+        "CFG_dominance_and_conditional_packing_paths_checked": true,
+        "K_global_loads": [
+          2198,
+          2206,
+          2216,
+          2227,
+          2240,
+          2251,
+          2264,
+          2275
+        ],
+        "K_ready_barrier": 2283,
+        "K_shared_stores": [
+          2202,
+          2211,
+          2222,
+          2233,
+          2246,
+          2257,
+          2270,
+          2281
+        ],
+        "PV_MMA": [
+          2516,
+          2520,
+          2535,
+          2539,
+          2547,
+          2551,
+          2555,
+          2557
+        ],
+        "PV_reads": [
+          2491,
+          2495,
+          2499,
+          2503,
+          2517,
+          2518,
+          2521,
+          2522,
+          2536,
+          2537,
+          2540,
+          2541,
+          2548,
+          2549,
+          2552,
+          2553
+        ],
+        "P_BF16_casts": [
+          2390,
+          2400
+        ],
+        "P_exp": [
+          2381,
+          2384
+        ],
+        "P_pack_ORs": [
+          2424,
+          2428
+        ],
+        "P_pack_shifts": [
+          2422,
+          2427
+        ],
+        "P_sums": [
+          2388,
+          2392,
+          2395,
+          2398,
+          2407,
+          2410,
+          2413,
+          2415
+        ],
+        "QK": [
+          2319,
+          2323,
+          2325,
+          2327
+        ],
+        "V_SME": [
+          2291,
+          2294,
+          2297,
+          2300
+        ],
+        "V_ready_barrier": 2489,
+        "V_wait": 2431,
+        "V_wait_pc": "0x16cf0",
+        "all_softmax_before_wait": false,
+        "path": "tail",
+        "physical_wait_before_QK_text": false,
+        "rho_exp_after_wait": [
+          2482,
+          2484
+        ],
+        "rho_exp_before_wait": [],
+        "running_L_FMA_after_wait": [
+          2485,
+          2487
+        ],
+        "tail_clear_stores": [
+          2466,
+          2478
+        ]
+      }
+    ],
+    "resources": {
+      ".group_segment_fixed_size": 8192,
+      ".kernarg_segment_align": 8,
+      ".kernarg_segment_size": 144,
+      ".max_flat_workgroup_size": 0,
+      ".name": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      ".private_segment_fixed_size": 0,
+      ".sgpr_count": 66,
+      ".sgpr_spill_count": 0,
+      ".symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+      ".vgpr_count": 100,
+      ".vgpr_spill_count": 0,
+      ".warp_size": 64
+    },
+    "segments": 4,
+    "symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+  },
+  "inherited_S4_IR_proof": {
+    "SME_512B_descriptor_lines": [
+      2223,
+      2762
+    ],
+    "addresses": [
+      {
+        "K_page_GEP": 2183,
+        "V_arg3_page_GEP": 2217,
+        "V_head_GEP": 2219,
+        "V_stride_BF16": 6272,
+        "page_multiply": 2182,
+        "page_sext": 2181,
+        "page_stride_bytes": 12544,
+        "path": "full",
+        "scale_4096B_once": 2253,
+        "scale_arg2_page_GEP": 2252,
+        "scale_stride_F32": 3136
+      },
+      {
+        "K_page_GEP": 2542,
+        "V_arg3_page_GEP": 2756,
+        "V_head_GEP": 2758,
+        "V_stride_BF16": 6272,
+        "page_multiply": 2541,
+        "page_sext": 2540,
+        "page_stride_bytes": 12544,
+        "path": "tail",
+        "scale_4096B_once": 2813,
+        "scale_arg2_page_GEP": 2812,
+        "scale_stride_F32": 3136
+      }
+    ],
+    "arithmetic_alpha_sha256": "a2bfd61e32fe13a6a2beac46e5f8751cfa3879f315c48bc47ac0c86c097ea8bc",
+    "arithmetic_including_constants_flags_and_operand_sharing_equal_to_actual40f9": true,
+    "arithmetic_lines": 291,
+    "paths": [
+      {
+        "IR_CFG_checked": true,
+        "K_dataflow": {
+          "K_barrier_lines_before_wait": [
+            2216
+          ],
+          "K_global_I32_load_lines": [
+            2186,
+            2190,
+            2194,
+            2198,
+            2202,
+            2206,
+            2210,
+            2214
+          ],
+          "K_shared_I32_store_lines": [
+            2187,
+            2191,
+            2195,
+            2199,
+            2203,
+            2207,
+            2211,
+            2215
+          ],
+          "V_SME_lines": [
+            2224,
+            2225,
+            2226,
+            2227
+          ],
+          "V_block": "527",
+          "V_dominates_all_K_loads_and_stores": false,
+          "V_post_wait_barrier_line": 2369,
+          "V_wait8_line": 2366,
+          "path": "full"
+        },
+        "K_ready_barrier": 2216,
+        "PV": [
+          2388,
+          2406,
+          2424,
+          2442,
+          2460,
+          2478,
+          2496,
+          2514
+        ],
+        "P_and_rho_exp": [
+          2302,
+          2304,
+          2338,
+          2340
+        ],
+        "QK": [
+          2233,
+          2239,
+          2245,
+          2251
+        ],
+        "V_SME": [
+          2224,
+          2225,
+          2226,
+          2227
+        ],
+        "V_ready_barrier": 2369,
+        "V_wait": 2366,
+        "path": "full",
+        "tail_clear_stores": []
+      },
+      {
+        "IR_CFG_checked": true,
+        "K_dataflow": {
+          "K_barrier_lines_before_wait": [
+            2755
+          ],
+          "K_global_I32_load_lines": [
+            2557,
+            2581,
+            2605,
+            2632,
+            2659,
+            2686,
+            2713,
+            2740
+          ],
+          "K_shared_I32_store_lines": [
+            2568,
+            2592,
+            2619,
+            2646,
+            2673,
+            2700,
+            2727,
+            2754
+          ],
+          "V_SME_lines": [
+            2763,
+            2764,
+            2765,
+            2766
+          ],
+          "V_block": "1062",
+          "V_dominates_all_K_loads_and_stores": false,
+          "V_post_wait_barrier_line": 2986,
+          "V_wait8_line": 2941,
+          "path": "tail"
+        },
+        "K_ready_barrier": 2755,
+        "PV": [
+          3007,
+          3028,
+          3048,
+          3068,
+          3088,
+          3108,
+          3128,
+          3148
+        ],
+        "P_and_rho_exp": [
+          2870,
+          2872,
+          2906,
+          2908
+        ],
+        "QK": [
+          2779,
+          2790,
+          2799,
+          2808
+        ],
+        "V_SME": [
+          2763,
+          2764,
+          2765,
+          2766
+        ],
+        "V_ready_barrier": 2986,
+        "V_wait": 2941,
+        "path": "tail",
+        "tail_clear_stores": [
+          2967,
+          2977
+        ]
+      }
+    ],
+    "segments": 4,
+    "static_counts": {
+      "BF16_PV": 16,
+      "BF16_P_casts": 4,
+      "I8_QK": 8,
+      "L_FMA": 4,
+      "Q_integer_RNE": 16,
+      "exp2_approx": 8,
+      "signed_I32_to_F32": 4,
+      "unflagged_F32_divides": 18
+    },
+    "symbol": "_Z40cjj_native_k8_compact_v_overlap_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+    "tail_and_output_slices": {
+      "final_PV_output_store": {
+        "alpha_sha256": "d64b0ba3ab298e139a1dfcd7a8f8cde50c91236f2a4ed96ddd365a948d5858a0",
+        "lines": 100,
+        "loop_metadata_preserved": true
+      },
+      "tail_clear_guard": {
+        "alpha_sha256": "5675894def0485486bad203449db96985547fe7ed15df243ea3c3ef633661588",
+        "lines": 1,
+        "loop_metadata_preserved": true
+      },
+      "tail_clear_loop": {
+        "alpha_sha256": "6dd3b9196e59bd7ae797fe38b7f732086ef9b5631a2c26a1bb42eb2681ad6196",
+        "lines": 38,
+        "loop_metadata_preserved": true
+      }
+    }
+  },
+  "inspection_sha256": "febf841cd66ce1b320fada9751609a86d3e15d766ed54b36fe99a26cb937454c",
+  "instructions_bound": 2764,
+  "manifest_sha256": "7408d3511902d8400a43dbb898ed0ac72441b94bbab2543fc55f9971e96bdb2e",
+  "manual_Root_approval": false,
+  "model_verified": false,
+  "original_owner": {
+    "pid": 61412,
+    "same_start": true,
+    "start_ticks": 355787063,
+    "state": "Z"
+  },
+  "parent_CFG_reused_for_S4": true,
+  "parent_report_sha256": "f5a40726b7ae1c1db122e710c1921815db887a1f06112901c842f976a1c9d0dc",
+  "performance_verified": false,
+  "precision_gate": false,
+  "proof_limits": [
+    "The prior CFG proof is transferred only after complete actual instruction words, per-function operations, full metadata including argument ABI and actual IR bodies/attributes/metadata definitions match modulo names.",
+    "Prior proof line numbers remain parent7892 locations; new actual IR/SASS ranges are in functions.",
+    "V issue remains after K load/store barrier. QK and P softmax/packing precede V wait; some rho exp/running-L FMA remain after wait. No claim that all softmax precedes wait.",
+    "Actual-SO IR is an ixobjdump export with hash-bound provenance, not independent bitcode decoding.",
+    "The raw printed producer signatures wrap/truncate differently after symbol renames (including a broken noundef token); these are retained as-is. Full printed functions are not equal and are not claimed reassemblable. Actual argument ABI is checked in complete ELF metadata.",
+    "Host guard checking is source/binary-text/compile provenance; no x86 disassembly or actual TORCH_CHECK execution.",
+    "Zero frontend kernels and CUDA_initialized=false do not prove absence of every CUDA API call.",
+    "No N48 numeric, Graph, side stream, fullstep, writer, capacity, 42-layer model, service, precision or throughput qualification. No S2 admission."
+  ],
+  "raw_bytes_rehashed": 1412002,
+  "raw_files_rehashed": 33,
+  "reference_SO_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "reference_manifest_sha256": "36fdbdda9dfa698fce4a2210da2685dcee35f13fe3ee2fa88a73f67e673f4c16",
+  "resources_scope": "Actual ELF metadata; not runtime occupancy or postlaunch observation",
+  "reviewed_admission_shapes": [
+    [
+      48,
+      4,
+      2048
+    ],
+    [
+      48,
+      4,
+      2560
+    ]
+  ],
+  "reviewer_GPU_SSH_JIT_compile_or_Torch_executed": false,
+  "schema": 1,
+  "script_sha256": "b7a95a64fe60ebb475a78e37505b8eeb563fcf47d1c7efeba1caa2c3c0cf3380",
+  "service_verified": false,
+  "side_stream_verified": false,
+  "source_and_actual_compile_review_passed": true,
+  "source_commit": "83b6c8c9282445219782ee1377680778a2aa8d3a",
+  "source_namespace": "cjj_native_k8_compact_n48_s4_probe",
+  "source_pins": {
+    "tools/kernels/biv150_native_k8_codec.cuh": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+    "tools/kernels/biv150_native_k8_compact_n48_codec.cu": "ade703388d23b9ce3b6051924b531c8d04646903098f1c7770ee3a34b530e623",
+    "tools/kernels/biv150_native_k8_compact_n48_qk.cpp": "ee1ba1089978c8f53812884bf3b66dd85f1cf661db7789686abf6c95c745eadd",
+    "tools/kernels/biv150_native_k8_compact_n48_qk.cu": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7"
+  },
+  "unused_S2_code_compared_but_admission_or_qualification_granted": false,
+  "zero_length": "Same actual GPU code as7892: early return leaves O/M/L poison; reducer separately owns final zero output"
+}
