@@ -1,0 +1,143 @@
+{
+  "main": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+  "parent89": "d8ef055422d9d5c45049f85468b486b47b993406",
+  "contract88": "65db624d39f554f2330fef578930c4048a109f06",
+  "format": "cjj-konly-compact12544-rn32-rne-v1",
+  "page_bytes": 12544,
+  "producer_boundary": "owned-compact-before-stock-native",
+  "native_producer_binding_ready": true,
+  "generated": {
+    "writer": {
+      "path": "vllm_fl/patches/biv150_konly_compact_writer.py",
+      "sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+    },
+    "decode": {
+      "path": "vllm_fl/patches/biv150_konly_compact_decode.py",
+      "sha256": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7"
+    },
+    "normalized2d128": {
+      "path": "vllm_fl/patches/biv150_konly_compact_normalized2d128.py",
+      "sha256": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a"
+    },
+    "q32": {
+      "path": "vllm_fl/patches/biv150_konly_compact_q32.py",
+      "sha256": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63"
+    },
+    "multi2": {
+      "path": "vllm_fl/patches/biv150_konly_compact_multi2.py",
+      "sha256": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047"
+    },
+    "raw3d": {
+      "path": "vllm_fl/patches/biv150_konly_compact_raw3d.py",
+      "sha256": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e"
+    },
+    "views": {
+      "path": "vllm_fl/patches/biv150_konly_compact_views.py",
+      "sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e"
+    },
+    "runtime": {
+      "path": "vllm_fl/patches/biv150_konly_compact_runtime.py",
+      "sha256": "6df50fb62e8dc15665a76c3a5802596068f97a8a296bc1c78343011ccf4f71e9"
+    },
+    "identity": {
+      "path": "vllm_fl/patches/biv150_konly_compact_identity.py",
+      "sha256": "37cb42a4d5f8b045dbb6560b4a615c9c9dcb8bfc140a1c283b87b00a2d140bd3"
+    },
+    "spec": {
+      "path": "vllm_fl/patches/biv150_konly_compact_spec.py",
+      "sha256": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528"
+    },
+    "manager": {
+      "path": "vllm_fl/patches/biv150_konly_compact_manager.py",
+      "sha256": "3a546d8ee570455686d28cc44ca36472ae98beecce13b2c712752e20172c75d2"
+    },
+    "host": {
+      "path": "vllm_fl/patches/biv150_konly_compact_host.py",
+      "sha256": "7724b2a06bb9d09f75aadf908692bd5bce41bbfd0ea415f327bafad167ec777b"
+    },
+    "service": {
+      "path": "vllm_fl/patches/biv150_konly_compact_service.py",
+      "sha256": "f24e1b11b56b3d79ce7643565a8b791bb5955c62c4cb3fcd60fef44939a1f558"
+    }
+  },
+  "address_source_proofs": {
+    "writer": {
+      "literal_edits": 4,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "decode": {
+      "literal_edits": 2,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "normalized2d128": {
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "q32": {
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "multi2": {
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "raw3d": {
+      "literal_edits": 1,
+      "inverse_byte_exact": true,
+      "codec_dot_softmax_masks_unchanged": true,
+      "actual_IR_verified": false
+    },
+    "views": {
+      "inverse_byte_exact": true,
+      "guard_code_unchanged": true,
+      "complete_service_binding": false
+    },
+    "runtime": {
+      "geometry_transform": {
+        "inverse_byte_exact": true,
+        "guard_code_unchanged": true,
+        "complete_service_binding": false
+      },
+      "metadata_only_allocation_export_added": true,
+      "complete_service_binding": false
+    }
+  },
+  "binding_files": {
+    "worker/model_runner.py": "9ee00d1facb70e942871a5780d467df14c8ded2dbfd7efdadf0106187fd6051d",
+    "patches/biv150_compute_order.py": "6ef4028e3be91f8b3f88c7b1fe021843389508cd349435ca5fa337173e9bc70a",
+    "compile_semantics.py": "1b4b2efb57fb7dde4653a4bc7f8c47e5e20b6d10e88e556fe5a9988b4e02d585"
+  },
+  "q32_hoist_supported": false,
+  "service_numeric_verified": false,
+  "capacity_reclaimed": false,
+  "actual_IR_verified": false,
+  "performance_verified": false,
+  "precision_gate": false,
+  "native_decode": {
+    "qualification_state": "pending",
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "operator": "cjj_native_k8_compact_probe::produce",
+    "adapter": {
+      "path": "vllm_fl/patches/biv150_konly_compact_native.py",
+      "sha256": "4fe9004d716d7d4711dd9e899f02f8c4af05b56d9baaa82d8b0213ad5023e4f7"
+    },
+    "qualification": {
+      "path": "vllm_fl/compact_native_qualification.py",
+      "sha256": "229a16351ee61e51e7cfe8ad15572e433eca013db7b83fe36a5bfb19d1a070ec"
+    },
+    "early_import_gate": {
+      "path": "vllm_fl/__init__.py",
+      "sha256": "6c67ead825c816b21db3c067b09fb4c223a3c0ae424768b22081584a78f62c19"
+    }
+  }
+}

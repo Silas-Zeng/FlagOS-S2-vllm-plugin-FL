@@ -1,0 +1,245 @@
+{
+  "CPU_only": true,
+  "GPU_sources_byte_exact": {
+    "vllm_fl/patches/biv150_konly_compact_decode.py": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+    "vllm_fl/patches/biv150_konly_compact_multi2.py": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+    "vllm_fl/patches/biv150_konly_compact_normalized2d128.py": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+    "vllm_fl/patches/biv150_konly_compact_q32.py": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+    "vllm_fl/patches/biv150_konly_compact_raw3d.py": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+    "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+    "vllm_fl/patches/biv150_konly_encoded_decode.py": "149f89b7869b017affce1651b894ae019a8c5c193d8ddf5352e73adac55fbe59",
+    "vllm_fl/patches/biv150_konly_encoded_multi2.py": "7046cf538bf06278982041d04b129c65c74bdb65531e528366fc62626c6adb19",
+    "vllm_fl/patches/biv150_konly_encoded_normalized2d128.py": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740",
+    "vllm_fl/patches/biv150_konly_encoded_q32.py": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+    "vllm_fl/patches/biv150_konly_encoded_raw3d.py": "190975053927d8f326e47ab0769369b5535524ff4f32e25156f5d16ab717c39c",
+    "vllm_fl/patches/biv150_konly_encoded_writer.py": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9"
+  },
+  "actual_new_SO_known": false,
+  "capacity_reclaimed": false,
+  "device_verified": false,
+  "guard_OFF_no_new_module_or_binding": true,
+  "library_loaded": false,
+  "model_verified": false,
+  "numeric_verified": false,
+  "old91_device_CPU_original_refusal": {
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/flagos-cjj-compact-native-service-20261028/tools/check_biv150_konly_compact_device_cpu.py\", line 101, in <module>\n    if __name__=='__main__':print(json.dumps(run(),indent=2))\n                                             ~~~^^\n  File \"/private/tmp/flagos-cjj-compact-native-service-20261028/tools/check_biv150_konly_compact_device_cpu.py\", line 14, in run\n    assert bootstrap_receipt({'vllm_fl':package},{})['package_imported']\n           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/flagos-cjj-compact-native-service-20261028/tools/biv150_konly_compact_device_contract.py\", line 110, in bootstrap_receipt\n    data=actual.read_bytes();assert sha(data)==sha(blob(relative)),'bootstrap source hash mismatch: '+name\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: bootstrap source hash mismatch: vllm_fl\n",
+    "stdout": ""
+  },
+  "original_checks": {
+    "check_biv150_konly_compact_install_cpu.py": {
+      "checker_unchanged": true,
+      "result": {
+        "CUDA_temporary_profile_cache_scope_excluded": true,
+        "GPU_executed": false,
+        "JIT_executed": false,
+        "RPC_serializer_test": false,
+        "actual_IR_verified": false,
+        "actual_Tensor_verified": false,
+        "actual_config_allocator_reshape_bind_methods_replayed": true,
+        "actual_installer_metadata_path": true,
+        "actual_worker_tail_switch_verified": true,
+        "allocation_metadata_export_checked": true,
+        "builtin_then_private_registration": true,
+        "capacity_reclaimed": false,
+        "cold_unowned_main_native_preserved": true,
+        "compact_receipt_and_parent_hooks_verified": true,
+        "compile_fingerprint_bound": true,
+        "cpu_passed": true,
+        "default_off_no_import_or_bind": true,
+        "frameworks_mocked": true,
+        "independent_child_module_export": true,
+        "model_verified": false,
+        "native_library_content_fingerprint_retained": true,
+        "native_receipt_mutants_rejected": true,
+        "no_spec_connector_offload_scope_verified": true,
+        "numeric_verified": false,
+        "old_format_hoist_reinit_late_getspec_rejected": true,
+        "owned_compact_before_native_verified": true,
+        "page_bytes": 12544,
+        "performance_verified": false,
+        "precision_gate": false,
+        "pure_full_attention_zeroer_not_activated": true,
+        "raw_buffers": 42,
+        "raw_bytes": 1053696,
+        "spec_transport": "UniProc direct string run_method; no serialization",
+        "uniproc_get_spec_object_identity_preserved": true,
+        "unknown_or_alias_cannot_reach_native": true,
+        "wrong_installed_source_rejected": true
+      },
+      "source_sha256": "89ea7180ac6118c6aca34a0ae3f20bfc77fdac2f09e0814750e55c56f93534e5"
+    },
+    "check_biv150_native_k8_service_cpu.py": {
+      "checker_unchanged": true,
+      "result": {
+        "CPU_dispatcher_is_recorder_only": true,
+        "CPU_only": true,
+        "GPU_or_SSH_executed": false,
+        "actual_22e_ELF_ABI": {
+          "ELF_host_machine": 62,
+          "actual_original_library_parsed_CPU": true,
+          "bytes": 221904,
+          "launch_symbols": [
+            "launch_corex_native_k8_gqa_s2_draft",
+            "launch_corex_native_k8_gqa_s4_draft"
+          ],
+          "library_loaded_or_executed": false,
+          "registered_schema_bytes": "produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+          "schema_offset": 106664,
+          "sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd"
+        },
+        "actual_attach_wrapper_and_C3_executed": true,
+        "cases": [
+          {
+            "actual_C3_receipt_and_identity_mutants": true,
+            "actual_native_attach_and_runtime_fence": true,
+            "batch": 64,
+            "capture_recording": true,
+            "postlaunch_error_no_retry": true,
+            "private_TL_fallback": true,
+            "query_stride": 2048,
+            "segments": 2,
+            "wrong_pointer_epoch_alias_scalars_refused": true
+          },
+          {
+            "actual_C3_receipt_and_identity_mutants": true,
+            "actual_native_attach_and_runtime_fence": true,
+            "batch": 64,
+            "capture_recording": true,
+            "postlaunch_error_no_retry": true,
+            "private_TL_fallback": true,
+            "query_stride": 2560,
+            "segments": 2,
+            "wrong_pointer_epoch_alias_scalars_refused": true
+          },
+          {
+            "actual_C3_receipt_and_identity_mutants": true,
+            "actual_native_attach_and_runtime_fence": true,
+            "batch": 32,
+            "capture_recording": true,
+            "postlaunch_error_no_retry": true,
+            "private_TL_fallback": true,
+            "query_stride": 2048,
+            "segments": 4,
+            "wrong_pointer_epoch_alias_scalars_refused": true
+          },
+          {
+            "actual_C3_receipt_and_identity_mutants": true,
+            "actual_native_attach_and_runtime_fence": true,
+            "batch": 32,
+            "capture_recording": true,
+            "postlaunch_error_no_retry": true,
+            "private_TL_fallback": true,
+            "query_stride": 2560,
+            "segments": 4,
+            "wrong_pointer_epoch_alias_scalars_refused": true
+          }
+        ],
+        "new_service_smoke_model_or_performance_verified": false,
+        "no_GPU_kernel_or_codec_changed": true,
+        "passed": true,
+        "stock_native_parent_boundary_preserved": true
+      },
+      "source_sha256": "2905a2fe73d3dda5e71543c829c459694a7065bf965548876715eaefdbf399e8"
+    }
+  },
+  "package_guard_exact_inverse": true,
+  "package_prefix_subprocess": "actual package rejected before Torch/worker",
+  "parent91_init_sha256": "e043b7893bfac27aee4f96cf7201cd6227053a261498e121245c3e63f2f2ebff",
+  "pending_qualification_explicit": true,
+  "performance_verified": false,
+  "rejected": [
+    {
+      "name": "missing_SO",
+      "reason": "Compact NativeK8: PENDING qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "missing_SHA_None",
+      "reason": "Compact NativeK8: PENDING qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "attempt_old22e",
+      "reason": "Compact NativeK8: PENDING qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "two_formats",
+      "reason": "Compact NativeK8: PENDING qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "incomplete_pin_None",
+      "reason": "Compact NativeK8: PENDING qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "incomplete_pin_{}",
+      "reason": "Compact NativeK8: PENDING qualification; compact-native ON is forbidden before worker/library loading"
+    },
+    {
+      "name": "incomplete_pin_{'state': 'component-reviewed'}",
+      "reason": "Compact NativeK8: complete reviewed source pin required"
+    },
+    {
+      "name": "incomplete_pin_{'state': 'component-reviewed', 'library_sha256': None}",
+      "reason": "Compact NativeK8: complete reviewed source pin required"
+    }
+  ],
+  "standalone_C3_subprocess": {
+    "compact-TL": {
+      "frameworks_imported": false,
+      "mode": "compact-TL",
+      "result": {
+        "konly_compact": {
+          "format": "cjj-konly-compact12544-rn32-rne-v1",
+          "implementation_sha256": "56e7ac5557d6ec809cf31e39df179d2f5f7333882d4dad64fed767e96dac4484",
+          "page_bytes": 12544,
+          "producer_boundary": "owned-compact-before-stock-native",
+          "q32_hoist_enabled": false
+        },
+        "native_enabled": false,
+        "schema": 1,
+        "sha256": "94a030dc772908f7825887df1725b63a5695984691b7eac06b588f951c6eb52e"
+      },
+      "without_parent_package": true
+    },
+    "encoded-native": {
+      "frameworks_imported": false,
+      "mode": "encoded-native",
+      "result": {
+        "konly_encoded": {
+          "format": "cjj-konly-rn32-rne-v2",
+          "implementation_sha256": "0e446f154c363c6eac4bd2d203c593a8bda9cbec4b2168717ecef6f598821602",
+          "native_decode": {
+            "enabled": true,
+            "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+            "operator": "cjj_native_k8_qk_probe::produce"
+          },
+          "producer_boundary": "owned-encoded-before-stock-native",
+          "q32_hoist_enabled": false
+        },
+        "native_enabled": false,
+        "schema": 1,
+        "sha256": "236d57208d15fc344081d3d762364b0d4e1229e4f3c76dcd3ae4d8f8f5fd3fff"
+      },
+      "without_parent_package": true
+    },
+    "pending-native": {
+      "frameworks_imported": false,
+      "mode": "pending-native",
+      "result": {
+        "reason": "Compact NativeK8: PENDING qualification; compact-native ON is forbidden before worker/library loading",
+        "rejected": true
+      },
+      "without_parent_package": true
+    },
+    "stock": {
+      "frameworks_imported": false,
+      "mode": "stock",
+      "result": {
+        "native_enabled": false,
+        "schema": 1,
+        "sha256": "415a4e0227af45939f574dd1c5c3ef063c07c0e2c1f771f2a432b540eb13e6c5"
+      },
+      "without_parent_package": true
+    }
+  },
+  "unique_guard_sha256": "8841abc6d6a7eab0a1cf6b40659ace48aa213899640640544e6882a1047eda0a"
+}

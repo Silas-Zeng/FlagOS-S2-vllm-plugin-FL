@@ -11,7 +11,7 @@ import types
 from pathlib import Path
 
 # Current team runner plus the opt-in Q32 installer; input/order code is unchanged.
-EXPECTED_RUNNER = "6e86acf3ee8329468278b0f708465ddf503eb7937a5cf24cbe43dcefd71e5517"
+EXPECTED_RUNNER = "9ee00d1facb70e942871a5780d467df14c8ded2dbfd7efdadf0106187fd6051d"
 _STATE = "_biv150_compute_order_buffers"
 SOURCES = {
     "vllm.v1.cudagraph_dispatcher": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
@@ -93,7 +93,13 @@ def _main_stack(torch):
         raise ValueError("normalized统一函数不是原generic的独立global克隆")
     raw_kernel = attention.kernel_unified_attention
     normalized_kernel = clone.__globals__.get("kernel_unified_attention")
-    if os.environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1":
+    if os.environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1":
+        compact = sys.modules.get("vllm_fl.patches.biv150_konly_compact_service")
+        if compact is None:
+            raise ValueError("compact dispatch installed source is missing")
+        receipt = compact.compute_order_receipt(attention, normalized_kernel)
+        raw_kernel, normalized_kernel = receipt["parent_raw"], receipt["parent_normalized"]
+    elif os.environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1":
         encoded = sys.modules.get("vllm_fl.patches.biv150_konly_encoded_service")
         if encoded is None:
             raise ValueError("encoded dispatch installed source is missing")
@@ -174,7 +180,7 @@ def _cold(runner, torch):
         or config.model_config.is_encoder_decoder
         or platform.vendor_name != "iluvatar"
         or torch.cuda.current_device() != 0
-        or type(spec) is not spec_module.FullAttentionSpec
+        or not _compact_or_stock_spec(spec, spec_module)
         or (spec.block_size, spec.num_kv_heads, spec.head_size, spec.dtype)
         != (16, 2, 128, torch.bfloat16)
         or len(runner.kv_cache_config.kv_cache_groups) != 1
@@ -456,3 +462,12 @@ def make_plan(runner, output, scheduled, max_query_len):
             except Exception:
                 pass
         return None
+
+
+def _compact_or_stock_spec(spec, spec_module):
+    if os.environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") != "1":
+        return type(spec) is spec_module.FullAttentionSpec
+    compact = sys.modules.get("vllm_fl.patches.biv150_konly_compact_service")
+    if compact is None:
+        raise ValueError("compact spec receipt unavailable")
+    return compact.compact_spec_is_owned(spec)

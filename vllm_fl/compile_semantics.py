@@ -66,6 +66,14 @@ def _runtime_abi():
 
 def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=None, abi=None):
     """只读文件和配置；不导入 runner、模型、算子或加载 SO。"""
+    env = os.environ if environ is None else environ
+    compact_native = None
+    if env.get('VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE', '0') == '1':
+        import importlib.util
+        qpath = Path(__file__).with_name('compact_native_qualification.py')
+        qspec = importlib.util.spec_from_file_location('_compact_native_qualification_fingerprint', qpath)
+        qmod = importlib.util.module_from_spec(qspec); qspec.loader.exec_module(qmod)
+        compact_native = qmod.preflight(env)
     model = getattr(getattr(vllm_config, "model_config", None), "hf_config", None)
     if vendor_name != "iluvatar" or not native_model_matches(model):
         return None
@@ -124,6 +132,18 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             path = package.parent / "csrc/iluvatar" / name
             sources[name] = _sha(path) if path.is_file() else None
         facts["native_gqa"] = {"library_sha256": _sha(library), "source": sources}
+    compact = None
+    if env.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1":
+        if features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] or env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1":
+            raise ValueError("compact format/old-hoist conflict")
+        directory = package / "patches"
+        compact_paths = sorted(directory.glob("biv150_konly_compact_*.py")) + [directory / "biv150_konly_compact_sources.json"]
+        compact = {"format": "cjj-konly-compact12544-rn32-rne-v1", "page_bytes": 12544, "producer_boundary": "owned-compact-before-stock-native", "q32_hoist_enabled": False,
+                   "implementation_sha256": _digest({path.name: _sha(path) for path in compact_paths})}
+        if compact_native is not None:
+            features['VLLM_FL_BIV150_KONLY_COMPACT_NATIVE_DECODE'] = True
+            compact['native_decode'] = dict(enabled=True, **compact_native)
+        facts["konly_compact"] = compact
     encoded = None
     if features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"]:
         directory = package / "patches"
@@ -148,6 +168,8 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
               "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
     if encoded is not None:
         result["konly_encoded"] = encoded
+    if compact is not None:
+        result["konly_compact"] = compact
     return result
 
 
