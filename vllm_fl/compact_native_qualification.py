@@ -57,7 +57,29 @@ def preflight(environ=None):
     need(env.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','0')=='1','requires compact12544 service')
     need(env.get('VLLM_FL_BIV150_KONLY_ENCODED_SERVICE','0')!='1','two cache formats enabled')
     need(env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE','0')!='1','16KiB native adapter is a different format')
-    need(env.get('VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST','0')!='1','old16KiB hoist proof is invalid')
+    if env.get('VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST','0')=='1':
+        # Source admission only. Every fresh JIT object must still pass the
+        # unchanged compact adapter's binder/IR/native/resource gates at runtime.
+        # Load standalone: C3 invokes this before any vllm_fl/framework import.
+        import importlib.util
+        source=Path(__file__).parent/'patches'/'biv150_konly_compact_identity.py'
+        spec=importlib.util.spec_from_file_location('_cjj_compact_hoist_source_gate',source)
+        identity=importlib.util.module_from_spec(spec);spec.loader.exec_module(identity)
+        record=identity.verify_package()
+        need(record.get('q32_hoist_opt_in_adapter_available') is True,
+             'compact Q32 source adapter unavailable; old16KiB proof is invalid')
+        for role,expected in {
+            'q32':'a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63',
+            'hoist_proposal':'1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9',
+            'q32_adapter':'68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d',
+        }.items():
+            item=record['generated'][role]
+            need(item['path']=='vllm_fl/patches/biv150_konly_compact_'+role+'.py'
+                 and item['sha256']==expected, 'unchanged 6c compact '+role+' source')
+        need(record['hoist_dependencies']=={
+            'biv150_konly_encoded_q32_adapter.py':'bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b',
+            'biv150_konly_encoded_hoist_native.py':'2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2',
+        }, 'unchanged fresh object/binder/native/resource admission sources')
     path=Path(env.get(PATH_ENV,''))
     need(path.is_absolute() and path.is_file(),'existing absolute compact library path')
     need(type(env.get(SHA_ENV)) is str and env[SHA_ENV]==q['library_sha256'],'explicit actual library SHA pair')

@@ -1,0 +1,232 @@
+{
+  "C3_fingerprints_distinct": true,
+  "CPU_only": true,
+  "GPU_sources_byte_exact": {
+    "tools/kernels/biv150_native_k8_compact_codec.cu": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b",
+    "tools/kernels/biv150_native_k8_compact_qk.cpp": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761",
+    "tools/kernels/biv150_native_k8_compact_qk.cu": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+    "vllm_fl/patches/biv150_konly_compact_decode.py": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+    "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9",
+    "vllm_fl/patches/biv150_konly_compact_multi2.py": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+    "vllm_fl/patches/biv150_konly_compact_normalized2d128.py": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+    "vllm_fl/patches/biv150_konly_compact_q32.py": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+    "vllm_fl/patches/biv150_konly_compact_q32_adapter.py": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d",
+    "vllm_fl/patches/biv150_konly_compact_raw3d.py": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+    "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+    "vllm_fl/patches/biv150_konly_encoded_decode.py": "149f89b7869b017affce1651b894ae019a8c5c193d8ddf5352e73adac55fbe59",
+    "vllm_fl/patches/biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+    "vllm_fl/patches/biv150_konly_encoded_multi2.py": "7046cf538bf06278982041d04b129c65c74bdb65531e528366fc62626c6adb19",
+    "vllm_fl/patches/biv150_konly_encoded_normalized2d128.py": "205b6a902b906b6a80af8db6246fc9a3fea5e73f6125a16dc809042dc1527740",
+    "vllm_fl/patches/biv150_konly_encoded_q32.py": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+    "vllm_fl/patches/biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b",
+    "vllm_fl/patches/biv150_konly_encoded_raw3d.py": "190975053927d8f326e47ab0769369b5535524ff4f32e25156f5d16ab717c39c",
+    "vllm_fl/patches/biv150_konly_encoded_writer.py": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9"
+  },
+  "actual_SO_read_not_loaded": true,
+  "actual_package_guard_before_Torch": true,
+  "capacity_reclaimed": false,
+  "cases": [
+    {
+      "V_offset4352": true,
+      "batch": 64,
+      "cache_page_bytes": 12544,
+      "native_recorded_calls": 3,
+      "postlaunch_error_not_retried": true,
+      "query_pitch": 2048,
+      "segments": 2
+    },
+    {
+      "V_offset4352": true,
+      "batch": 64,
+      "cache_page_bytes": 12544,
+      "native_recorded_calls": 3,
+      "postlaunch_error_not_retried": true,
+      "query_pitch": 2560,
+      "segments": 2
+    },
+    {
+      "V_offset4352": true,
+      "batch": 32,
+      "cache_page_bytes": 12544,
+      "native_recorded_calls": 3,
+      "postlaunch_error_not_retried": true,
+      "query_pitch": 2048,
+      "segments": 4
+    },
+    {
+      "V_offset4352": true,
+      "batch": 32,
+      "cache_page_bytes": 12544,
+      "native_recorded_calls": 3,
+      "postlaunch_error_not_retried": true,
+      "query_pitch": 2560,
+      "segments": 4
+    }
+  ],
+  "combined_ON_42_layer_mock": {
+    "CPU_only": true,
+    "actual_GPU_allocation": false,
+    "actual_Q32_compiler_pins_mocked": true,
+    "actual_manifest_adapter_and_host_C3_binding": true,
+    "both_C3_identity_tamper_checks": true,
+    "both_adapters_same_runtime": true,
+    "configured_blocks": 2,
+    "frameworks_mocked": true,
+    "library_loaded": false,
+    "model_verified": false,
+    "native_ON_actual_installer": true,
+    "q32_hoist_enabled": true,
+    "raw_buffers": 42,
+    "raw_bytes": 1053696
+  },
+  "combined_source_rejections": [
+    {
+      "case": "disabled_adapter",
+      "error": "Compact NativeK8: compact Q32 source adapter unavailable; old16KiB proof is invalid"
+    },
+    {
+      "case": "unrecorded_Q32",
+      "error": "K-only compact: private source mismatch: q32"
+    },
+    {
+      "case": "rewritten_Q32_and_manifest",
+      "error": "Compact NativeK8: unchanged 6c compact q32 source"
+    },
+    {
+      "case": "old16KiB_adapter",
+      "error": "Compact NativeK8: unchanged 6c compact q32_adapter source"
+    },
+    {
+      "case": "rewritten_native_auditor_and_manifest",
+      "error": "Compact NativeK8: unchanged fresh object/binder/native/resource admission sources"
+    },
+    {
+      "case": "changed_host_C3",
+      "error": "K-only compact: binding source mismatch: compile_semantics.py"
+    }
+  ],
+  "decode_does_not_consult_Q32_prefill_adapter": true,
+  "fixture_adapter": {
+    "inverse_byte_exact": true,
+    "original_fixture_sha256": "29b8e828726579d809616463d185a782ac5d37b05ec76277027c0b16a46cdbc5"
+  },
+  "library_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+  "model_verified": false,
+  "native_ON_42_layer_mock": {
+    "CPU_only": true,
+    "actual_GPU_allocation": false,
+    "actual_Q32_compiler_pins_mocked": false,
+    "actual_manifest_adapter_and_host_C3_binding": true,
+    "both_C3_identity_tamper_checks": false,
+    "both_adapters_same_runtime": false,
+    "configured_blocks": 2,
+    "frameworks_mocked": true,
+    "library_loaded": false,
+    "model_verified": false,
+    "native_ON_actual_installer": true,
+    "q32_hoist_enabled": false,
+    "raw_buffers": 42,
+    "raw_bytes": 1053696
+  },
+  "negative_cases": [
+    "no_format",
+    "two_formats",
+    "16KiB_native",
+    "missing_SHA",
+    "8b_library",
+    "wrong_page",
+    "wrong_writer",
+    "wrong_views",
+    "wrong_CUDA",
+    "40_native",
+    "missing_fullstep",
+    "scalar_mismatch",
+    "output_alias",
+    "stale_entry",
+    "postlaunch_no_retry",
+    "scalar_mismatch",
+    "output_alias",
+    "stale_entry",
+    "postlaunch_no_retry",
+    "scalar_mismatch",
+    "output_alias",
+    "stale_entry",
+    "postlaunch_no_retry",
+    "scalar_mismatch",
+    "output_alias",
+    "stale_entry",
+    "postlaunch_no_retry"
+  ],
+  "passed": true,
+  "performance_verified": false,
+  "precision_gate": false,
+  "private_fallbacks": [
+    {
+      "capture": false,
+      "format": "cjj-konly-compact12544-rn32-rne-v1",
+      "host_calls": 1,
+      "host_or_capture_event_not_Graph_replay_count": true,
+      "query_strides": [
+        2560,
+        128,
+        1
+      ],
+      "reason": "shape_or_segments",
+      "segments": 16,
+      "selected_reader": "private_compact_Triton",
+      "shape": 40
+    },
+    {
+      "capture": false,
+      "format": "cjj-konly-compact12544-rn32-rne-v1",
+      "host_calls": 1,
+      "host_or_capture_event_not_Graph_replay_count": true,
+      "query_strides": [
+        2560,
+        128,
+        1
+      ],
+      "reason": "shape_or_segments",
+      "segments": 16,
+      "selected_reader": "private_compact_Triton",
+      "shape": 48
+    }
+  ],
+  "qualification": {
+    "actual_SO_review_sha256": "3b3e94c9af183b77df5be794746f2b783c1b925f643b5d1d450e13da3a3ddc28",
+    "consumer_summary_sha256": "9d2bcd2f803626fca16aae5c73533ce1436d8bb98010f00fa6583061dfa90df8",
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "fullstep_review_sha256": "96262cd2414ce85a3648f0d45e1727f93b243e754310e31e1160fc30639ebdb0",
+    "fullstep_summary_sha256": "53880d7cad7beb47a07a4551056b616afdba45e6fca4703da98aaea9816f036f",
+    "library_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+    "operator": "cjj_native_k8_compact_probe::produce",
+    "page_bytes": 12544,
+    "scopes": [
+      [
+        64,
+        2,
+        2048
+      ],
+      [
+        64,
+        2,
+        2560
+      ],
+      [
+        32,
+        4,
+        2048
+      ],
+      [
+        32,
+        4,
+        2560
+      ]
+    ],
+    "source_CUDA_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d",
+    "state": "component-reviewed",
+    "views_source_sha256": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+    "writer_source_sha256": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+  },
+  "service_GPU_executed": false
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "cjj-compact-service-q32-combination-CPU-v1",
+  "passed": true,
+  "CPU_only": true,
+  "provenance": {
+    "base_PR109": "45321a9410885ed0fc6aa9be6aeeac13a7f7f89b",
+    "incoming_PR103": "d8690464b196ed251750ac4e75b6eaea32e95779",
+    "normal_merge": "c0bbdf0a9dcb44573eba8840b7f5804d467cc69d",
+    "main": "a455a3de364051fbea80226870c239de3a48e716",
+    "Q32_component": "6c08ec2561b1c3cee96838bffd4e296b757ad877",
+    "tested_source_note": "Post-merge host integration working tree; exact source bytes below are authoritative. No final commit SHA is invented.",
+    "no_PR110_stacked": true
+  },
+  "source_sha256": {
+    "vllm_fl/__init__.py": "6c67ead825c816b21db3c067b09fb4c223a3c0ae424768b22081584a78f62c19",
+    "vllm_fl/compact_native_qualification.py": "0b9813ee188943f3a956be87c03fdf16a8b836fa2fa32bd67c4aa926eef8e1e1",
+    "vllm_fl/compile_semantics.py": "175ea7f902cca85df3833b6d2cf523876cf457fd34f3360aa3932818f1224ba5",
+    "vllm_fl/patches/biv150_compute_order.py": "6ef4028e3be91f8b3f88c7b1fe021843389508cd349435ca5fa337173e9bc70a",
+    "vllm_fl/patches/biv150_konly_compact_decode.py": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+    "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9",
+    "vllm_fl/patches/biv150_konly_compact_host.py": "e2097b93e84a46ca9fe86e99d568f036ce40fa9fac86fd3246d5b0c6a29fd22d",
+    "vllm_fl/patches/biv150_konly_compact_identity.py": "3f86528a442cb4e8bc599ae4e5f2f9d23721fab7a5c48077e49c6ece408a1f19",
+    "vllm_fl/patches/biv150_konly_compact_manager.py": "3a546d8ee570455686d28cc44ca36472ae98beecce13b2c712752e20172c75d2",
+    "vllm_fl/patches/biv150_konly_compact_multi2.py": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+    "vllm_fl/patches/biv150_konly_compact_native.py": "4a577a890137ec0756ba70b91839580cfbca70f748dfc278e359fc25e25b8ca5",
+    "vllm_fl/patches/biv150_konly_compact_normalized2d128.py": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+    "vllm_fl/patches/biv150_konly_compact_q32.py": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+    "vllm_fl/patches/biv150_konly_compact_q32_adapter.py": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d",
+    "vllm_fl/patches/biv150_konly_compact_raw3d.py": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+    "vllm_fl/patches/biv150_konly_compact_runtime.py": "1f8f8b60c2d75dda517a3abec56f1060500f3ade8866c3ca5a1f0437c9cc3c4b",
+    "vllm_fl/patches/biv150_konly_compact_service.py": "47a17b65a15dc7dd39c5a7668cc86b11b72f823515f43d4fa0ec30ee771aa06c",
+    "vllm_fl/patches/biv150_konly_compact_sources.json": "80853a5c1792b35e98d3343de9f913a94f740a59c96edd8a0f303eee63e0d315",
+    "vllm_fl/patches/biv150_konly_compact_spec.py": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528",
+    "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+    "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+    "vllm_fl/patches/biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+    "vllm_fl/patches/biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b",
+    "vllm_fl/worker/model_runner.py": "d444d8f2b477a979a81a079087070f61d4785d646abe00d08c37d4afd93ec96a"
+  },
+  "artifacts": {
+    "native-and-combined-cpu.json": {
+      "sha256": "f6c535ece16d2b8161882e337d2f1177ee17f52c3cffaf2fd984996eeecafd01",
+      "bytes": 8316
+    },
+    "q32-routing-cpu.json": {
+      "sha256": "720c7ca045cc3694a54092fff2bce56f0b27e01915d8667b1fc863490a83471e",
+      "bytes": 1033
+    },
+    "compact-install-cpu.json": {
+      "sha256": "eb3309f0242870c01dea14d73931954e8cef75da8d8d3f3786d8bec63a6cb790",
+      "bytes": 1478
+    },
+    "standalone-C3-cpu.json": {
+      "sha256": "103a41f778828ed890ad04634f4ced87a1f002bc8758862b09ef00705fc8aae1",
+      "bytes": 1402
+    },
+    "q32-only-installer-cpu.json": {
+      "sha256": "5fd30e018e76a595aab5f98c3cea251fc9489c15477a72e5d1d77a5e5520377a",
+      "bytes": 360
+    },
+    "actual-owned-service-helper94db.py": {
+      "sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+      "bytes": 30445
+    }
+  },
+  "unchanged": {
+    "six_compact_GPU_kernels_equal_6c_dc5_109": true,
+    "proposal_and_adapter_and_fresh_native_auditor_equal_6c": true,
+    "native_qualification_record_equal_109": true,
+    "actual_SO_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+    "csrc_equal_109": true,
+    "existing_benchmark_math_and_throughput_scripts_unmodified": true,
+    "default_flags_OFF": true,
+    "quantized_reference_or_proxy_thresholds_unmodified": true
+  },
+  "checks": {
+    "combined_42_layer_host_metadata_only": true,
+    "two_C3_identity_rejections": true,
+    "six_source_gate_rejections": true,
+    "four_source_only_C3_fingerprints_distinct": true,
+    "one_compact_implementation_digest": true,
+    "decode_and_prefill_route_isolation": true,
+    "existing_Q32_source_epoch_role_checks": true
+  },
+  "limitations": {
+    "GPU": false,
+    "actual_current_JIT_binder": false,
+    "actual_current_IR_resources": false,
+    "actual_service": false,
+    "model_105": false,
+    "precision_gate": false,
+    "capacity_42_layers": false,
+    "throughput_TTFT": false,
+    "TP": false,
+    "Q32_hoist_Graph": false,
+    "PR103_all_12_BF16_proxy_failures_retained": true,
+    "PR103_Graph_only_normalized_2D128": true,
+    "PR109_model_or_service_result_not_inherited": true,
+    "every_fresh_Q32_object_still_requires_original_runtime_gates": true
+  },
+  "verification_notes": [
+    "A CPU route-poison fixture initially lacked by_hash metadata consumed by Runtime.note; the fixture was completed and rerun successfully. No production change or device failure.",
+    "Default git diff --check initially flagged CRLF on three touched worker guard lines. Only those three new lines use LF; surrounding legacy mixed endings are retained."
+  ]
+}

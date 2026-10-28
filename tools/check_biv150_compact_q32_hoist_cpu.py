@@ -105,6 +105,10 @@ def run():
     torch.empty=lambda n,*,dtype,device:Tensor(Storage(999,0,0),dtype,(0,),(1,))
     kernels={k:Kernel() for k in ('writer','decode','normalized2d128','multi2','raw3d')};kernels['q32']=fn
     runtime=runtime_mod.Runtime(torch,broker,kernels,S());runtime.registry.armed=True
+    class NoDecode:
+        def try_produce(self,*args):raise AssertionError('Prefill reached NativeK8 decode adapter')
+        def stats(self):return {'CPU_poison_route_only':True}
+    runtime.native_decode=NoDecode()
     storage=Storage(1,0x100000,3*12544+512)
     owner=Tensor(storage,'bfloat16',(3,2,16,2,128),(6272,2176,256,128,1),128)
     source_storage=Storage(2,0x1000000,32768)
@@ -210,17 +214,14 @@ def run():
         actual_facade_parameters_grid_and_parent_selection=True,
         prelaunch_retains_same_compact_call=True,postlaunch_exception_identity_and_one_launch=True,
         graph_capture_retains_private_normalized_route=True,
+        prefill_does_not_consult_native_decode_adapter=True,
         actual_compact_TTGIR_or_native_verified=False,actual_JIT_binder_verified=False,
         compiler_or_GPU_executed=False,numerical_verified=False,service_verified=False,
         precision_gate=False,performance_verified=False)
 
 
-def installer_on():
-    # Existing actual installer fixture injects CPU-only framework modules. The
-    # native JIT pin realization is a deliberate stand-in, never a device proof.
-    import check_biv150_konly_compact_install_cpu as f
-    torch,kv,_,_=f.foundation()
-    service,Runner,runner,kernels,backend,attention,parent=f.setup_install(torch,kv)
+def bind_CPU_mock_q32(kernels):
+    """Reused host fixture only: full actual CodeTypes, mocked JIT/compiler pins."""
     module=sys.modules['vllm_fl.patches.biv150_konly_compact_q32']
     code=compile(Path(module.__file__).read_bytes(),module.__file__,'exec',dont_inherit=True,optimize=sys.flags.optimize)
     adapter=load('compact_q32_adapter');proposal=load('compact_hoist_proposal')
@@ -231,6 +232,16 @@ def installer_on():
         setattr(module,name,wrapped)
     kernels['q32'].src='explicit CPU JIT-source stand-in, not compiled'
     sys.modules['triton'].runtime.driver.active.get_current_device=lambda:0
+    return adapter,proposal,module
+
+
+def installer_on():
+    # Existing actual installer fixture injects CPU-only framework modules. The
+    # native JIT pin realization is a deliberate stand-in, never a device proof.
+    import check_biv150_konly_compact_install_cpu as f
+    torch,kv,_,_=f.foundation()
+    service,Runner,runner,kernels,backend,attention,parent=f.setup_install(torch,kv)
+    adapter,proposal,module=bind_CPU_mock_q32(kernels)
     with tempfile.TemporaryDirectory(prefix='compact-hoist-install-') as temp:
         env={f.ENV:'1','VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1','TRITON_CACHE_DIR':temp}
         with patch.object(adapter.Adapter,'installed_pins',return_value=proposal.PINS):

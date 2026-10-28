@@ -52,9 +52,11 @@ def adapted_fixture():
     return ns['fixture'],dict(inverse_byte_exact=True,original_fixture_sha256=hashlib.sha256(original.encode()).hexdigest())
 
 
-def installation(path):
+def installation(path, *, hoist=False):
     """Reuse the original42-layer mock host with the real native ON installer."""
-    import atexit
+    import atexit, tempfile
+    from unittest.mock import patch
+    if hoist:import check_biv150_compact_q32_hoist_cpu as hoist_test
     import check_biv150_konly_compact_install_cpu as host_test
     torch,kv,registry,allocations=host_test.foundation()
     service,Runner,runner,kernels,backend,attention,base=host_test.setup_install(torch,kv)
@@ -64,11 +66,23 @@ def installation(path):
     torch.ops=old.Ops(native.SCHEMA);torch.ops.cjj_native_k8_compact_probe=torch.ops.cjj_native_k8_v_overlap_probe
     flags={native.ENV:'1','VLLM_FL_BIV150_KONLY_COMPACT_SERVICE':'1',native.PATH_ENV:str(path),
            native.SHA_ENV:native.LIBRARY_SHA}
+    stack=contextlib.ExitStack()
+    if hoist:
+        adapter,proposal,q32_module=hoist_test.bind_CPU_mock_q32(kernels)
+        cache=stack.enter_context(tempfile.TemporaryDirectory(prefix='compact-combined-CPU-'))
+        flags.update(VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST='1',TRITON_CACHE_DIR=cache)
+        stack.enter_context(patch.object(adapter.Adapter,'installed_pins',return_value=proposal.PINS))
     previous=os.environ.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE')
     os.environ['VLLM_FL_BIV150_KONLY_COMPACT_SERVICE']='1'
     try:
         installed=service.install(Runner,environ=flags);assert installed['installed']
         state=service._STATE;assert state.native_decode is not None
+        if hoist:
+            assert installed['q32_hoist_enabled'] and not installed['q32_I8_fragment_hoist_verified']
+            assert type(state.q32_hoist) is adapter.Adapter and state.q32_hoist.fn is kernels['q32']
+            assert state.q32_hoist.source_binding[0] is q32_module
+            assert state.q32_hoist.proposal.FORMAT==state.registry.broker.FORMAT
+        else:assert state.q32_hoist is None
         specs=runner.get_kv_cache_spec();assert len(specs)==42
         utils=sys.modules['vllm.v1.core.kv_cache_utils']
         groups=utils.create_kv_cache_group_specs(specs,[list(specs)])
@@ -82,16 +96,71 @@ def installation(path):
         assert len(allocations)==42 and kernels['writer'].calls
         receipt=service.compute_order_receipt(attention,base.holder[base.kernel_key])
         assert receipt['compact_native_registered']['library']['sha256']==native.LIBRARY_SHA
+        if hoist:
+            for field in ('q32_hoist_identity','native_decode_identity'):
+                saved=getattr(state,field);setattr(state,field,None)
+                try:service.compute_order_receipt(attention,base.holder[base.kernel_key])
+                except RuntimeError:pass
+                else:raise AssertionError('Changed '+field+' admitted by C3 receipt')
+                finally:setattr(state,field,saved)
+            service.compute_order_receipt(attention,base.holder[base.kernel_key])
         stats=state.compact_host.stats()
         assert stats['configured_num_blocks']==2 and stats['recorded_layers']==42 and stats['raw_storage_bytes']==42*2*12544
         assert all(getattr(sys.modules[k],'_CPU_mock',False) for k in ('torch','triton','vllm'))
         atexit.unregister(state.finalize)
         return dict(CPU_only=True,frameworks_mocked=True,native_ON_actual_installer=True,
-            actual_manifest_adapter_and_host_C3_binding=True,raw_buffers=42,raw_bytes=42*2*12544,
+            actual_manifest_adapter_and_host_C3_binding=True,q32_hoist_enabled=hoist,
+            both_adapters_same_runtime=hoist,both_C3_identity_tamper_checks=hoist,
+            actual_Q32_compiler_pins_mocked=hoist,raw_buffers=42,raw_bytes=42*2*12544,
             configured_blocks=2,actual_GPU_allocation=False,library_loaded=False,model_verified=False)
     finally:
+        stack.close()
         if previous is None:os.environ.pop('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE',None)
         else:os.environ['VLLM_FL_BIV150_KONLY_COMPACT_SERVICE']=previous
+
+
+def combined_source_rejections(flags):
+    """Actual cold preflight over isolated copies; no production/raw edits."""
+    import tempfile
+    manifest_path=Path('vllm_fl/patches/biv150_konly_compact_sources.json')
+    original=json.loads((ROOT/manifest_path).read_text())
+    names={manifest_path,*[Path(v['path']) for v in original['generated'].values()],
+           *[Path('vllm_fl')/p for p in original['binding_files']],
+           *[Path('vllm_fl/patches')/p for p in original['hoist_dependencies']],
+           *[Path(original['native_decode'][k]['path']) for k in ('adapter','qualification','early_import_gate')]}
+    originals={p:(ROOT/p).read_bytes() for p in names}
+    rejected=[]
+    with tempfile.TemporaryDirectory(prefix='compact-combined-source-CPU-') as temp:
+        root=Path(temp)
+        for kind,expected in [('disabled_adapter','adapter unavailable'),
+            ('unrecorded_Q32','private source mismatch: q32'),
+            ('rewritten_Q32_and_manifest','unchanged 6c compact q32 source'),
+            ('old16KiB_adapter','unchanged 6c compact q32_adapter source'),
+            ('rewritten_native_auditor_and_manifest','unchanged fresh object/binder/native/resource'),
+            ('changed_host_C3','binding source mismatch: compile_semantics.py')]:
+            for relative,raw in originals.items():
+                path=root/relative;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+            record=json.loads(originals[manifest_path])
+            if kind=='disabled_adapter':record['q32_hoist_opt_in_adapter_available']=False
+            elif kind in ('unrecorded_Q32','rewritten_Q32_and_manifest'):
+                item=record['generated']['q32'];path=root/item['path'];path.write_bytes(path.read_bytes()+b'\n# CPU rejection fixture\n')
+                if kind=='rewritten_Q32_and_manifest':item['sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
+            elif kind=='old16KiB_adapter':
+                name='biv150_konly_encoded_q32_adapter.py'
+                record['generated']['q32_adapter']=dict(path='vllm_fl/patches/'+name,sha256=record['hoist_dependencies'][name])
+            elif kind=='rewritten_native_auditor_and_manifest':
+                name='biv150_konly_encoded_hoist_native.py';path=root/'vllm_fl/patches'/name
+                path.write_bytes(path.read_bytes()+b'\n# CPU rejection fixture\n')
+                record['hoist_dependencies'][name]=hashlib.sha256(path.read_bytes()).hexdigest()
+            else:
+                path=root/'vllm_fl/compile_semantics.py';path.write_bytes(path.read_bytes()+b'\n# CPU rejection fixture\n')
+            (root/manifest_path).write_text(json.dumps(record))
+            qualification=load('_combined_source_rejection_qualification',root/'vllm_fl/compact_native_qualification.py')
+            try:qualification.preflight({**flags,'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'})
+            except RuntimeError as error:
+                assert expected in str(error),(kind,str(error));rejected.append(dict(case=kind,error=str(error)))
+            else:raise AssertionError('Invalid compact source admitted: '+kind)
+    return rejected
 
 
 def check(path):
@@ -103,6 +172,8 @@ def check(path):
         q.PATH_ENV:str(path),q.SHA_ENV:q.QUALIFICATION['library_sha256']}
     assert q.preflight({}) is None
     binding=q.preflight(flags);assert binding['qualification']==q.pin()
+    assert q.preflight({**flags,'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'})==binding
+    combined_rejections=combined_source_rejections(flags)
     refused=[]
     def reject(name,fn):
         try:fn()
@@ -111,7 +182,6 @@ def check(path):
     for name,change in [('no_format',{'VLLM_FL_BIV150_KONLY_COMPACT_SERVICE':'0'}),
         ('two_formats',{'VLLM_FL_BIV150_KONLY_ENCODED_SERVICE':'1'}),
         ('16KiB_native',{'VLLM_FL_BIV150_KONLY_NATIVE_DECODE':'1'}),
-        ('103_not_included',{'VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST':'1'}),
         ('missing_SHA',{q.SHA_ENV:None}),('8b_library',{q.PATH_ENV:str(old.SO)})]:
         reject(name,lambda change=change:q.preflight({**flags,**change}))
     original=q.QUALIFICATION
@@ -127,9 +197,15 @@ def check(path):
     assert raw[:6]==b'\x7fELF\x02\x01' and struct.unpack_from('<H',raw,18)[0]==62
     assert native.SCHEMA.split('::',1)[1].encode() in raw
     assert all(n.encode() in raw for n in ('launch_cjj_native_k8_compact_s2','launch_cjj_native_k8_compact_s4'))
+    class NoPrefill:
+        by_hash={}  # Runtime.note may inspect audit metadata for any private profile.
+        def validate_call(self,*args):raise AssertionError('GQA decode reached Q32 validation')
+        def prepare(self,*args,**kwargs):raise AssertionError('GQA decode reached Q32 preparation')
+        def stats(self):return {'CPU_poison_route_only':True}
     fixture,fixture_proof=adapted_fixture();cases=[]
     for n,s,pitch in ((64,2,2048),(64,2,2560),(32,4,2048),(32,4,2560)):
         runtime,entry,kw,producer,kernels,ops,capture,service,mod=fixture(native,n,s,pitch,path)
+        runtime.q32_hoist=NoPrefill()
         with contextlib.redirect_stdout(io.StringIO()):
             producer((n,2,s),**kw);capture[0]=True;producer((n,2,s),**kw);capture[0]=False
         assert len(ops.op.calls)==2 and not kernels['decode'].calls
@@ -150,6 +226,7 @@ def check(path):
     fallbacks=[]
     for n in (40,48):
         runtime,entry,kw,producer,kernels,ops,capture,service,mod=fixture(native,n,16,2560,path)
+        runtime.q32_hoist=NoPrefill()
         with contextlib.redirect_stdout(io.StringIO()):producer((n,2,16),**kw)
         assert not ops.op.calls and len(kernels['decode'].calls)==1
         record=runtime.native_decode.stats()['private_Triton_fallback_records']
@@ -182,15 +259,27 @@ def check(path):
         name='tools/kernels/biv150_native_k8_compact_'+role;data=(ROOT/name).read_bytes()
         assert data==subprocess.check_output(['git','-C',str(ROOT),'show','51da6fd73e7fff1513081fb330323ce72c00856c:'+name])
         unchanged[name]=hashlib.sha256(data).hexdigest()
+    for role in ('q32_adapter','hoist_proposal'):
+        name='vllm_fl/patches/biv150_konly_compact_'+role+'.py';data=(ROOT/name).read_bytes()
+        assert data==subprocess.check_output(['git','-C',str(ROOT),'show','6c08ec2561b1c3cee96838bffd4e296b757ad877:'+name])
+        unchanged[name]=hashlib.sha256(data).hexdigest()
+    for role in ('q32_adapter','hoist_native'):
+        name='vllm_fl/patches/biv150_konly_encoded_'+role+'.py';data=(ROOT/name).read_bytes()
+        assert data==subprocess.check_output(['git','-C',str(ROOT),'show','6c08ec2561b1c3cee96838bffd4e296b757ad877:'+name])
+        unchanged[name]=hashlib.sha256(data).hexdigest()
     identity=compact_load('identity');manifest=identity.verify_package()
     assert manifest['native_decode']['qualification_binding']==q.pin()
     assert not {'torch','triton','numpy','vllm'}.intersection(sys.modules)
     installed=subprocess.run([sys.executable,'-B',__file__,'--installation-only','--library',str(path)],
         text=True,capture_output=True,check=True)
+    combined=subprocess.run([sys.executable,'-B',__file__,'--installation-only','--hoist','--library',str(path)],
+        text=True,capture_output=True,check=True)
     return dict(passed=True,CPU_only=True,actual_SO_read_not_loaded=True,library_sha256=native.LIBRARY_SHA,
         qualification=q.pin(),fixture_adapter=fixture_proof,cases=cases,private_fallbacks=fallbacks,
-        negative_cases=refused,actual_package_guard_before_Torch=True,C3_fingerprints_distinct=True,
-        native_ON_42_layer_mock=json.loads(installed.stdout),
+        negative_cases=refused,combined_source_rejections=combined_rejections,
+        decode_does_not_consult_Q32_prefill_adapter=True,
+        actual_package_guard_before_Torch=True,C3_fingerprints_distinct=True,
+        native_ON_42_layer_mock=json.loads(installed.stdout),combined_ON_42_layer_mock=json.loads(combined.stdout),
         GPU_sources_byte_exact=unchanged,service_GPU_executed=False,model_verified=False,
         capacity_reclaimed=False,performance_verified=False,precision_gate=False)
 
@@ -198,6 +287,7 @@ def check(path):
 if __name__=='__main__':
     import argparse
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--library',type=Path,default=SO)
-    p.add_argument('--installation-only',action='store_true');a=p.parse_args()
-    with contextlib.redirect_stdout(io.StringIO()):result=installation(a.library) if a.installation_only else check(a.library)
+    p.add_argument('--installation-only',action='store_true');p.add_argument('--hoist',action='store_true');a=p.parse_args()
+    if a.hoist and not a.installation_only:p.error('--hoist requires --installation-only')
+    with contextlib.redirect_stdout(io.StringIO()):result=installation(a.library,hoist=a.hoist) if a.installation_only else check(a.library)
     print(json.dumps(result,sort_keys=True,indent=2))
