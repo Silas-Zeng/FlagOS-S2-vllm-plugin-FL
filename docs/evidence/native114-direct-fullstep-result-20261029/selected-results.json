@@ -1,0 +1,79 @@
+{
+  "source_commit": "34074fcd9e0bb168de2b1f53aaa2a3ce96cf3112",
+  "comparison": "same compact N48 Native old2ad versus K-pair ef73; not production-main or official model benchmark",
+  "summary_sha256": "401b2bd0a51b724e14e8359aff0c98f17840e46014890e97b3e7f042682242c1",
+  "independent_decision_sha256": "8723597e60e84b8fff48a4c26408ac148b3a33bdcac9cb9c2033fdeeb20b71d2",
+  "raw_archive_sha256": "627a124d9b833172e3517f2cc3419a128f8cde180c97f577dd718a268a984f27",
+  "raw_archive_publication": false,
+  "completed": true,
+  "errors": [],
+  "component_numeric_checks_reported_passed": true,
+  "current_fullstep_arrays_independently_recomputed": false,
+  "previous_independent_consumer_report_sha256": "ac96a07373c3d432cb9f1884b3916fc5b0a1961df2c49d976551fde7a828c84e",
+  "independent_performance_arithmetic_verified": true,
+  "warm_replays": 128,
+  "timing_replays": 64,
+  "unroll": 8,
+  "cases": {
+    "valid41": {
+      "old8k_ms": 1.3157761096954346,
+      "kpair_ms": 1.3163745403289795,
+      "ratio": 0.9995453948589773,
+      "latency_change_percent": 0.04548119008509488
+    },
+    "valid42": {
+      "old8k_ms": 1.2826907634735107,
+      "kpair_ms": 1.28413724899292,
+      "ratio": 0.9988735740509486,
+      "latency_change_percent": 0.11276962153310421
+    }
+  },
+  "timing_arms": {
+    "valid41": [
+      {
+        "arm": "old8k",
+        "gpu_ms_per_step": 1.3158410787582397,
+        "graph_launch_sync_wall_ms_per_step": 1.3159422769604134
+      },
+      {
+        "arm": "kpair",
+        "gpu_ms_per_step": 1.316260814666748,
+        "graph_launch_sync_wall_ms_per_step": 1.3163515586711583
+      },
+      {
+        "arm": "kpair",
+        "gpu_ms_per_step": 1.316488265991211,
+        "graph_launch_sync_wall_ms_per_step": 1.3165774125809548
+      },
+      {
+        "arm": "old8k",
+        "gpu_ms_per_step": 1.3157111406326294,
+        "graph_launch_sync_wall_ms_per_step": 1.3157994299035636
+      }
+    ],
+    "valid42": [
+      {
+        "arm": "old8k",
+        "gpu_ms_per_step": 1.2826900482177734,
+        "graph_launch_sync_wall_ms_per_step": 1.2827857026422862
+      },
+      {
+        "arm": "kpair",
+        "gpu_ms_per_step": 1.2842020988464355,
+        "graph_launch_sync_wall_ms_per_step": 1.28430026506976
+      },
+      {
+        "arm": "kpair",
+        "gpu_ms_per_step": 1.2840723991394043,
+        "graph_launch_sync_wall_ms_per_step": 1.2841601283071213
+      },
+      {
+        "arm": "old8k",
+        "gpu_ms_per_step": 1.282691478729248,
+        "graph_launch_sync_wall_ms_per_step": 1.282778746826807
+      }
+    ]
+  },
+  "official_model_accuracy_or_performance_claim": false,
+  "decision": "No clear gain; close this Draft without merging or additional model scoring. No claim that the small differences are statistically significant or proven noise."
+}
