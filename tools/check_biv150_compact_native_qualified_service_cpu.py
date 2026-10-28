@@ -52,6 +52,48 @@ def adapted_fixture():
     return ns['fixture'],dict(inverse_byte_exact=True,original_fixture_sha256=hashlib.sha256(original.encode()).hexdigest())
 
 
+def installation(path):
+    """Reuse the original42-layer mock host with the real native ON installer."""
+    import atexit
+    import check_biv150_konly_compact_install_cpu as host_test
+    torch,kv,registry,allocations=host_test.foundation()
+    service,Runner,runner,kernels,backend,attention,base=host_test.setup_install(torch,kv)
+    native=importlib.import_module('vllm_fl.patches.biv150_konly_compact_native')
+    torch.__version__='2.10.0';torch.__file__='<CPU metadata, not imported Torch>'
+    torch._C=NS(_GLIBCXX_USE_CXX11_ABI=False,_dispatch_has_kernel_for_dispatch_key=lambda *args:True)
+    torch.ops=old.Ops(native.SCHEMA);torch.ops.cjj_native_k8_compact_probe=torch.ops.cjj_native_k8_v_overlap_probe
+    flags={native.ENV:'1','VLLM_FL_BIV150_KONLY_COMPACT_SERVICE':'1',native.PATH_ENV:str(path),
+           native.SHA_ENV:native.LIBRARY_SHA}
+    previous=os.environ.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE')
+    os.environ['VLLM_FL_BIV150_KONLY_COMPACT_SERVICE']='1'
+    try:
+        installed=service.install(Runner,environ=flags);assert installed['installed']
+        state=service._STATE;assert state.native_decode is not None
+        specs=runner.get_kv_cache_spec();assert len(specs)==42
+        utils=sys.modules['vllm.v1.core.kv_cache_utils']
+        groups=utils.create_kv_cache_group_specs(specs,[list(specs)])
+        config=utils.get_kv_cache_config_from_groups(runner.vllm_config,groups,42*2*12544)
+        runner.initialize_kv_cache(config)
+        first=next(iter(runner.compilation_config.static_forward_context.values())).kv_cache
+        source=host_test.Tensor(torch.bfloat16,(1,2,128));slots=host_test.Tensor(torch.int64,(1,))
+        impl=backend.TritonAttentionImpl();impl.num_heads=16;impl.num_kv_heads=2;impl.head_size=128
+        impl._kv_quant_mode=0;impl._is_per_token_head_quant=False;impl.kv_sharing_target_layer_name=None
+        impl.do_kv_cache_update(None,source,source,first,slots)
+        assert len(allocations)==42 and kernels['writer'].calls
+        receipt=service.compute_order_receipt(attention,base.holder[base.kernel_key])
+        assert receipt['compact_native_registered']['library']['sha256']==native.LIBRARY_SHA
+        stats=state.compact_host.stats()
+        assert stats['configured_num_blocks']==2 and stats['recorded_layers']==42 and stats['raw_storage_bytes']==42*2*12544
+        assert all(getattr(sys.modules[k],'_CPU_mock',False) for k in ('torch','triton','vllm'))
+        atexit.unregister(state.finalize)
+        return dict(CPU_only=True,frameworks_mocked=True,native_ON_actual_installer=True,
+            actual_manifest_adapter_and_host_C3_binding=True,raw_buffers=42,raw_bytes=42*2*12544,
+            configured_blocks=2,actual_GPU_allocation=False,library_loaded=False,model_verified=False)
+    finally:
+        if previous is None:os.environ.pop('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE',None)
+        else:os.environ['VLLM_FL_BIV150_KONLY_COMPACT_SERVICE']=previous
+
+
 def check(path):
     # A fake package permits stdlib native source loading without running real
     # package bootstrap. Actual pre-Torch guard and C3 are checked separately.
@@ -143,15 +185,19 @@ def check(path):
     identity=compact_load('identity');manifest=identity.verify_package()
     assert manifest['native_decode']['qualification_binding']==q.pin()
     assert not {'torch','triton','numpy','vllm'}.intersection(sys.modules)
+    installed=subprocess.run([sys.executable,'-B',__file__,'--installation-only','--library',str(path)],
+        text=True,capture_output=True,check=True)
     return dict(passed=True,CPU_only=True,actual_SO_read_not_loaded=True,library_sha256=native.LIBRARY_SHA,
         qualification=q.pin(),fixture_adapter=fixture_proof,cases=cases,private_fallbacks=fallbacks,
         negative_cases=refused,actual_package_guard_before_Torch=True,C3_fingerprints_distinct=True,
+        native_ON_42_layer_mock=json.loads(installed.stdout),
         GPU_sources_byte_exact=unchanged,service_GPU_executed=False,model_verified=False,
         capacity_reclaimed=False,performance_verified=False,precision_gate=False)
 
 
 if __name__=='__main__':
     import argparse
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--library',type=Path,default=SO);a=p.parse_args()
-    with contextlib.redirect_stdout(io.StringIO()):result=check(a.library)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--library',type=Path,default=SO)
+    p.add_argument('--installation-only',action='store_true');a=p.parse_args()
+    with contextlib.redirect_stdout(io.StringIO()):result=installation(a.library) if a.installation_only else check(a.library)
     print(json.dumps(result,sort_keys=True,indent=2))

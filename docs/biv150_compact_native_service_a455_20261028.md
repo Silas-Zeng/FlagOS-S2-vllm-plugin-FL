@@ -83,3 +83,10 @@ Pending Root's serialized execution: real42-layer allocation and block counts,
 full service prefill/decoder/writer behavior (including KV source pitch2560),
 official105, supplemental quality, warmed fixed-CLI4K/16K throughput and TTFT.
 Default-off status, all numerical thresholds and precision gate remain unchanged.
+
+The qualified CPU checker also runs the native-ON installation in a fresh
+subprocess using the existing42-layer framework mocks. It executes the real
+installer, binds40f9, replays actual spec/config/allocator/reshape methods,
+registers a writer-owned cache and obtains the real combined host/native C3
+receipt. Its42 allocations and2 blocks/layer are mock metadata, not a device
+capacity result. The second CPU report is `qualified-cpu-v2.json`.
