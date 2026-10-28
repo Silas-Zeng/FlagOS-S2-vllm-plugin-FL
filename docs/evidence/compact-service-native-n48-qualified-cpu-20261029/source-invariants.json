@@ -1,0 +1,57 @@
+{
+  "CPU_check_sha256": "0957be485195badb8ab8fe5e9cbeb516821945ab827b7a1641e89591a1d768ce",
+  "GPU_or_service_executed": false,
+  "Graph_change_only_refusal_text": true,
+  "added_controller_functions": [
+    "component_qualification_status"
+  ],
+  "controller_sha256": "ae99bfb55c69dc1bf9464ffe0a1b7e627882bd4bc9d185d4177f9a902c29ea56",
+  "existing_controller_functions_changed": [
+    "graph_bootstrap_environment"
+  ],
+  "host_fixture_sha256": "2b4de0a6211e4b387e6d125fa9e99dc0ee5a1eca4a56dfa356fa654510aea1a8",
+  "parent": "26e3b198e131dc3b8c3c6389e822f5c4dbbc0845",
+  "preserved_existing_controller_functions": [
+    "OwnedBenchmarkAdapter",
+    "SupplementalMath64Adapter",
+    "clear_graph_environment",
+    "compact_allocation_evidence",
+    "compact_parent_evidence",
+    "component_source_preflight",
+    "concurrent_burst",
+    "evidence",
+    "full_geometry_throughput",
+    "full_workload_only_throughput",
+    "graceful_api_shutdown",
+    "native_env",
+    "native_events",
+    "private_cache_state",
+    "run",
+    "runtime_window",
+    "sha",
+    "supplemental64_command",
+    "torch_identity_probe",
+    "validate_score",
+    "warmup_plan_metadata"
+  ],
+  "unchanged_compute_and_boundary_sources": {
+    "tools/kernels/biv150_native_k8_compact_n48_codec.cu": "ade703388d23b9ce3b6051924b531c8d04646903098f1c7770ee3a34b530e623",
+    "tools/kernels/biv150_native_k8_compact_n48_qk.cpp": "ee1ba1089978c8f53812884bf3b66dd85f1cf661db7789686abf6c95c745eadd",
+    "tools/kernels/biv150_native_k8_compact_n48_qk.cu": "1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7",
+    "tools/kernels/biv150_native_k8_compact_v_overlap_codec.cu": "871861f0a272260dd12f3eb1ca7a2f2740a43eee6702918956fa9dd14dbbe6f1",
+    "tools/kernels/biv150_native_k8_compact_v_overlap_qk.cpp": "3c396691f89f7173ee86302df916dff07f84593fdedc49de10b18066fe1d7750",
+    "tools/kernels/biv150_native_k8_compact_v_overlap_qk.cu": "99a3f0a9868ed08d260956bef39315b99face6b1069ee23d8ebf6e58f6f1a3ce",
+    "vllm_fl/patches/biv150_gqa_decode.py": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "vllm_fl/patches/biv150_konly_compact_decode.py": "ea955c009c7b3810ac6e6332ca4ac3d01ef535281f4332bcc708f016aea5e8b7",
+    "vllm_fl/patches/biv150_konly_compact_hoist_proposal.py": "1289fed8303b438a4150778964e5980446389cf260ba4ce707eec68e3bcff3d9",
+    "vllm_fl/patches/biv150_konly_compact_multi2.py": "ffc90a7892958bdb4031ba81f8048a50b246fe77004f41566272385d63f00047",
+    "vllm_fl/patches/biv150_konly_compact_normalized2d128.py": "9cc6561d8db1e5aec29d3c61f23283147097e3a5d4af7588e96598dc924f870a",
+    "vllm_fl/patches/biv150_konly_compact_q32.py": "a991c573a699c85d3d5ec2e9e85442871cc36992b51385750062160992883a63",
+    "vllm_fl/patches/biv150_konly_compact_q32_adapter.py": "68c13b3c0635062df74fe64f34d16021eaebf1d4750d6d4e0cda2ae7eaa0868d",
+    "vllm_fl/patches/biv150_konly_compact_raw3d.py": "38b75f869be8152a40f8d8ff61de06814a1f7449c0efac3d6832858da6e9727e",
+    "vllm_fl/patches/biv150_konly_compact_runtime.py": "1f8f8b60c2d75dda517a3abec56f1060500f3ade8866c3ca5a1f0437c9cc3c4b",
+    "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f",
+    "vllm_fl/patches/biv150_konly_encoded_hoist_native.py": "2027e1ce4a489f6b47c97a5253c1482d2dc767e62e9b10ec029e3f192c559ef2",
+    "vllm_fl/patches/biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b"
+  }
+}

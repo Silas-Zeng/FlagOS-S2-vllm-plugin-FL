@@ -1,0 +1,77 @@
+{
+  "GPU_execution_record_erratum": {
+    "Graph_and_side_and_ABBA_clocks_independently_verified": true,
+    "actual_five_role_JIT_artifacts_verified": true,
+    "actual_library_load": {
+      "actual_schema": "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+      "loaded_library_set_confirmed": true,
+      "path": "/workspace/experiments/minicpm-s2/cjj-compact-native-n48-compile-v1-20261029/build/cjj_native_k8_compact_n48_s4_probe.so",
+      "sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1"
+    },
+    "full_saved_output_buffers_verified": 36,
+    "original_numeric_checks_verified": 144,
+    "owner_command_contains_gpu": true,
+    "owner_sha256": "4862186dd7f11208e999fcb0c4981c901424956649745236867c8ec6261ee1af",
+    "owner_source_commit": "e1c5a8fc3c267f1faf9aa790f3c8f80cc65c12a8",
+    "raw_GPU_executed": false,
+    "reason": "Frozen plan default was copied into the summary and never updated by run(). Original raw bytes are unchanged."
+  },
+  "actual_native2ad_static_resources_from_fixed_approved_SO": {
+    "S4": {
+      "private_segment_bytes": 0,
+      "sgpr": 66,
+      "sgpr_spills": 0,
+      "shared_bytes": 8192,
+      "vgpr": 100,
+      "vgpr_spills": 0
+    }
+  },
+  "evidence_limits": {
+    "GPU_cache": "Runtime complete-byte comparisons plus saved chunk digests; GPU cache payloads were not saved",
+    "GPU_input_guards_and_readonly": "Frozen runtime verify_inputs/fingerprints assertions; full actual input payloads are not among saved snapshots",
+    "SO_bytes": "Pinned identities and the frozen driver pre-Torch content-hash assertions; SO binaries are not part of this download",
+    "output_guards_and_inactive_scratch": "Independently replayed from every saved full output buffer"
+  },
+  "independent_review_sha256": "2d8d5b873eb30084da7dd0e25332088462dd5cfef62c45fe45c75bccd07ede5d",
+  "manifest_sha256": "c5e3d5dedccf320652a8b6519ec4532138d314bf7186cdeb5946818077702324",
+  "native_SO": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "qualification": {
+    "capacity": false,
+    "model": false,
+    "precision": false,
+    "service": false,
+    "stable_performance": false
+  },
+  "raw_bytes_verified": 91645512,
+  "raw_files_verified": 118,
+  "resource_review_erratum": {
+    "Root_confirmed_scope_correction": true,
+    "interpretation_limit": "Do not equate runtime n_spills with ELF scalar-register spill metadata or infer local-memory traffic/occupancy from one field.",
+    "numerical_gates_or_tolerances_changed": false,
+    "observed_TL": {
+      "ELF_SGPR": 104,
+      "ELF_SGPR_spills": 26,
+      "ELF_VGPR": 144,
+      "ELF_VGPR_spills": 0,
+      "ELF_private_bytes": 0,
+      "ELF_static_shared_bytes": 0,
+      "JIT_dynamic_shared_bytes": 6144,
+      "runtime_n_regs": 144,
+      "runtime_n_spills": 0
+    },
+    "original_failure_retained": true,
+    "original_gate": "Every loaded JIT handle has positive n_regs and n_spills==0; no frontend SGPR-zero rule.",
+    "rejected_extra_assumption": "The earlier offline assertion that every ELF SGPR spill count must be zero exceeded the frozen frontend gate."
+  },
+  "root_accepted_component_review": true,
+  "scope_limits": [
+    "Two same-shape TL48/native2ad compact arenas with44769 logical pages, not BF16 or twoN32 performance denominator.",
+    "Stride2560 Q/K/V are separate allocations; shared model QKV path is untested.",
+    "Three independently changed prefix snapshots, not a continuous-generation proof.",
+    "Complete GPU input/cache bodies are represented by runtime byte comparisons and reconstructible hashes, not a fresh GPU readback.",
+    "No42-layer capacity, service, model or stable end-to-end throughput qualification."
+  ],
+  "service_or_model_qualification": false,
+  "source_commit": "e1c5a8fc3c267f1faf9aa790f3c8f80cc65c12a8",
+  "summary_sha256": "5a6aefeb7befb777e890402fa9742774ea23ae5e696be67c74f04418df37b131"
+}

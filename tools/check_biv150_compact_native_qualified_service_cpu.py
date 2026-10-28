@@ -52,7 +52,7 @@ def adapted_fixture():
     return ns['fixture'],dict(inverse_byte_exact=True,original_fixture_sha256=hashlib.sha256(original.encode()).hexdigest())
 
 
-def installation(path, *, hoist=False):
+def installation(path, *, hoist=False, n48_path=None):
     """Reuse the original42-layer mock host with the real native ON installer."""
     import atexit, tempfile
     from unittest.mock import patch
@@ -66,6 +66,9 @@ def installation(path, *, hoist=False):
     torch.ops=old.Ops(native.SCHEMA);torch.ops.cjj_native_k8_compact_probe=torch.ops.cjj_native_k8_v_overlap_probe
     flags={native.ENV:'1','VLLM_FL_BIV150_KONLY_COMPACT_SERVICE':'1',native.PATH_ENV:str(path),
            native.SHA_ENV:native.LIBRARY_SHA}
+    if n48_path is not None:
+        flags.update({native.N48_ENV:'1',native.N48_PATH_ENV:str(n48_path),
+                      native.N48_SHA_ENV:native.N48_QUALIFICATION['library_sha256']})
     stack=contextlib.ExitStack()
     if hoist:
         adapter,proposal,q32_module=hoist_test.bind_CPU_mock_q32(kernels)
@@ -96,6 +99,10 @@ def installation(path, *, hoist=False):
         assert len(allocations)==42 and kernels['writer'].calls
         receipt=service.compute_order_receipt(attention,base.holder[base.kernel_key])
         assert receipt['compact_native_registered']['library']['sha256']==native.LIBRARY_SHA
+        if n48_path is not None:
+            assert state.native_decode.library['n48']['path']==str(n48_path.resolve())
+            assert state.native_decode.verify(state)['library']['n48']['qualification']==native.pin('n48')
+            assert set(state.native_decode.ops)=={'base','n48'}
         if hoist:
             for field in ('q32_hoist_identity','native_decode_identity'):
                 saved=getattr(state,field);setattr(state,field,None)
@@ -111,7 +118,7 @@ def installation(path, *, hoist=False):
         return dict(CPU_only=True,frameworks_mocked=True,native_ON_actual_installer=True,
             actual_manifest_adapter_and_host_C3_binding=True,q32_hoist_enabled=hoist,
             both_adapters_same_runtime=hoist,both_C3_identity_tamper_checks=hoist,
-            actual_Q32_compiler_pins_mocked=hoist,raw_buffers=42,raw_bytes=42*2*12544,
+            actual_Q32_compiler_pins_mocked=hoist,native_N48_enabled=n48_path is not None,raw_buffers=42,raw_bytes=42*2*12544,
             configured_blocks=2,actual_GPU_allocation=False,library_loaded=False,model_verified=False)
     finally:
         stack.close()

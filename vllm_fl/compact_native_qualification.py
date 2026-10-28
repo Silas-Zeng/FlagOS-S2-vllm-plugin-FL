@@ -30,7 +30,7 @@ QUALIFICATION={'state': 'component-reviewed',
  'views_source_sha256': '1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e',
  'scopes': [[64, 2, 2048], [64, 2, 2560], [32, 4, 2048], [32, 4, 2560]],
  'fullstep_geometry': {'physical_pages': 34276, 'new_KV_row_pitch': 256, 'service_verified': False}}
-N48_QUALIFICATION={'state': 'pending',
+N48_QUALIFICATION={'state': 'component-reviewed',
  'format': 'cjj-konly-compact12544-rn32-rne-v1',
  'operator': 'cjj_native_k8_compact_n48_s4_probe::produce',
  'page_bytes': 12544,
@@ -38,13 +38,13 @@ N48_QUALIFICATION={'state': 'pending',
  'actual_SO_review_sha256': '30c4c7daf2ccf3839bfabc9936f0a845400d26242fe93cc95bec99d270e8f398',
  'consumer_summary_sha256': '493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272',
  'consumer_review_sha256': 'c07937c3d6c3ffc78a5c7b213271e4f864a9463775fe932f9f2aadbff08ef4d0',
- 'fullstep_summary_sha256': None,
- 'fullstep_review_sha256': None,
+ 'fullstep_summary_sha256': '5a6aefeb7befb777e890402fa9742774ea23ae5e696be67c74f04418df37b131',
+ 'fullstep_review_sha256': '2d8d5b873eb30084da7dd0e25332088462dd5cfef62c45fe45c75bccd07ede5d',
  'source_CUDA_sha256': '1aca8c4be8d8d8e8d818cad529c0716d16b1e30a871ee3c8ec48b12d62338ab7',
  'writer_source_sha256': 'a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f',
  'views_source_sha256': '1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e',
  'scopes': [[48, 4, 2048], [48, 4, 2560]],
- 'fullstep_geometry': None}
+ 'fullstep_geometry': {'physical_pages': 44769, 'new_KV_row_pitch': 2560, 'service_verified': False}}
 
 
 def need(value,message):

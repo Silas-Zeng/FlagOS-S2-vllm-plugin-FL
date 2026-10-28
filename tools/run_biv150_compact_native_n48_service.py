@@ -313,7 +313,7 @@ def clear_graph_environment(original):
 
 def graph_bootstrap_environment(original,directory,out):
     if directory is not None:
-        raise RuntimeError('The 8b Graph bootstrap is not qualified for compact40f9; use normal service capture')
+        raise RuntimeError('The 8b Graph bootstrap is not qualified for compact Native7892/2ad; use normal service capture')
     return clear_graph_environment(original),dict(enabled=False,formal_score_eligible=False,quality_covered=False)
 
 
@@ -346,6 +346,16 @@ def component_source_preflight(a):
     env=native_env({ENABLE:'0' if a.baseline else '1'},a.native_k8_library,
       n48_library=a.native_k8_n48_library,q32_hoist=a.q32_hoist)
     return module.preflight(env)
+
+
+def component_qualification_status(source=None):
+    source=Path(__file__).resolve().parents[1] if source is None else Path(source).resolve()
+    path=source/'vllm_fl/compact_native_qualification.py'
+    spec=importlib.util.spec_from_file_location('_compact111_plan_qualification',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    state=module.N48_QUALIFICATION['state']
+    if state=='component-reviewed':module.pin('n48')
+    return dict(state=state,pending=state!='component-reviewed',service_verified=False)
 
 
 def torch_identity_probe(env,out):
@@ -783,7 +793,7 @@ if __name__ == '__main__':
     a = p.parse_args()
     try: warmup_plan_metadata(a)
     except ValueError as error: p.error(str(error))
-    if a.graph_coverage_bootstrap_dir is not None:p.error('8b Graph bootstrap is not qualified for compact40f9')
+    if a.graph_coverage_bootstrap_dir is not None:p.error('8b Graph bootstrap is not qualified for compact Native7892/2ad')
     if (a.native_k8_library is None)!=(a.native_k8_sha256 is None):p.error('Native K8 path/SHA must be pinned together')
     if (a.native_k8_n48_library is None)!=(a.native_k8_n48_sha256 is None):p.error('N48 path/SHA must be pinned together')
     if a.native_k8_n48_library is not None and (not a.native_k8_n48_library.is_absolute() or a.native_k8_n48_sha256!=N48_SHA or a.native_k8_library is None or a.baseline):p.error('N48 requires actual2ad path/SHA and base native candidate')
@@ -799,9 +809,10 @@ if __name__ == '__main__':
     if a.throughput_case != 'both' and not a.full_workload_warmup:
         p.error('A single-case run needs the explicit full-workload diagnostic mode')
     if not a.run_service:
+        qualification_status=component_qualification_status(a.source)
         print(json.dumps(dict(cpu_plan=True, gpu_executed=False, fixed_service_CLI=True,
               warmup_plan=a.warmup_plan, warmup_plan_metadata=warmup_plan_metadata(a),
-              private_smoke=True,native_decode_opt_in=True,native_n48_opt_in=True,n48_library_sha256=N48_SHA,n48_component_qualification_pending=True,graph_coverage_bootstrap_opt_in=False,graph_bootstrap_manifest_sha256=GRAPH_MANIFEST_SHA,native_library_sha256=K8_SHA,burst_counts=[32,64,40,48],native_quality_covered=False,official_Math105_parallel8_unchanged=True,supplemental_Math105_parallel64_prepared=True,optional_original_math105=True,formal_throughput=False)))
+              private_smoke=True,native_decode_opt_in=True,native_n48_opt_in=True,n48_library_sha256=N48_SHA,n48_component_qualification_pending=qualification_status['pending'],n48_component_qualification_state=qualification_status['state'],graph_coverage_bootstrap_opt_in=False,graph_bootstrap_manifest_sha256=GRAPH_MANIFEST_SHA,native_library_sha256=K8_SHA,burst_counts=[32,64,40,48],native_quality_covered=False,official_Math105_parallel8_unchanged=True,supplemental_Math105_parallel64_prepared=True,optional_original_math105=True,formal_throughput=False)))
     else:
         if any(getattr(a, name) is None for name in ('source', 'out', 'helper', 'gate_library', 'tuning_snapshot', 'commit')):
             p.error('All pinned source/helper/native/snapshot/output arguments are required')

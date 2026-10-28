@@ -1,0 +1,40 @@
+{
+  "burst_counts": [
+    32,
+    64,
+    40,
+    48
+  ],
+  "cpu_plan": true,
+  "fixed_service_CLI": true,
+  "formal_throughput": false,
+  "gpu_executed": false,
+  "graph_bootstrap_manifest_sha256": null,
+  "graph_coverage_bootstrap_opt_in": false,
+  "n48_component_qualification_pending": false,
+  "n48_component_qualification_state": "component-reviewed",
+  "n48_library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "native_decode_opt_in": true,
+  "native_library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "native_n48_opt_in": true,
+  "native_quality_covered": false,
+  "official_Math105_parallel8_unchanged": true,
+  "optional_original_math105": true,
+  "private_smoke": true,
+  "supplemental_Math105_parallel64_prepared": true,
+  "warmup_plan": "legacy",
+  "warmup_plan_metadata": {
+    "complete_full_workload_warmups_per_case": 0,
+    "complete_warm_request_finite_arithmetic_required": true,
+    "explicit_opt_in": false,
+    "formal_score_gates_unchanged": true,
+    "name": "legacy",
+    "official_score_function_sha256": "e236338934098fda2ea0a795b2ade845015123d8ea052806ca0062cc3035a66d",
+    "optional_short_warmups_requested": "original TPOT-stability loop",
+    "parent_controller_sha256": "4a35a01a38ddd7015dde533a24caed3ed914086f65a506c96c305e7c31e498aa",
+    "score_runs_per_case": 1,
+    "skipped_calls_are_not_faked_success": true,
+    "stability_guaranteed_by_plan": false,
+    "warm_formal_TTFT_or_TP_gate_applied": false
+  }
+}
