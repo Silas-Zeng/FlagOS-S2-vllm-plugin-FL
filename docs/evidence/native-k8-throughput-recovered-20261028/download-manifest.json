@@ -1,0 +1,418 @@
+{
+  "utc": "2026-10-28T10:08:36.661590+00:00",
+  "tag": "cjj-native-k8-service-throughput-v1-20261028",
+  "read_only": true,
+  "model_rerun": false,
+  "original_owner": {
+    "pid": 712697,
+    "start_ticks": 348367040,
+    "same_start": false,
+    "state": "missing"
+  },
+  "raw_files": 66,
+  "raw_bytes": 4039331,
+  "excluded_cache_prefixes": [
+    "triton-cache",
+    "flaggems-cache",
+    "inductor-cache"
+  ],
+  "scope": "all diagnostic records excluding generated private kernel/tuning caches; not a full out-directory snapshot",
+  "files": [
+    {
+      "relative": "exports/cjj-native-k8-service-throughput-v1-20261028-owner.json",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-native-k8-service-throughput-v1-20261028-owner.json",
+      "bytes": 2114,
+      "sha256": "a8bf2ddd2e2cadd5b8288b06116eb5c2c734ccd63c5a7adb06930ebfd1186c75"
+    },
+    {
+      "relative": "exports/cjj-native-k8-service-throughput-v1-20261028.log",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-native-k8-service-throughput-v1-20261028.log",
+      "bytes": 5884,
+      "sha256": "a526229bd847d972b8d677cdd5a79f27ef12b08fa770dded877d16bea73cb582"
+    },
+    {
+      "relative": "out/executed-controller.py",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/executed-controller.py",
+      "bytes": 40817,
+      "sha256": "4d597cd4b8d632a8ea928bbdc6be607dc02ed02f03ba241bcc1d47ddd6059a63"
+    },
+    {
+      "relative": "out/full-warm-16384/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/full-warm-16384/benchmark.log",
+      "bytes": 5495,
+      "sha256": "a28cb59004ec271fe7ec1f2012564cbd188b2a1fac3799644a93df96e414b0bc"
+    },
+    {
+      "relative": "out/full-warm-16384/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/full-warm-16384/command.json",
+      "bytes": 605,
+      "sha256": "3010c5f6e15bb1c47cc1b189ca7b234f5b90af68128656808a65f6e39ddbde57"
+    },
+    {
+      "relative": "out/full-warm-16384/full-warm-16384-infqps-concurrency64-minicpm-20261028-055213.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/full-warm-16384/full-warm-16384-infqps-concurrency64-minicpm-20261028-055213.json",
+      "bytes": 1030,
+      "sha256": "a20322728841204876e593cdbe7c81be2e444c0514240daa1400b3fe4a261340"
+    },
+    {
+      "relative": "out/full-warm-4096/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/full-warm-4096/benchmark.log",
+      "bytes": 5490,
+      "sha256": "4f0493d852e1702337a726b92d1506cce8e1f54df52f4304b3cd0899e7f9dee3"
+    },
+    {
+      "relative": "out/full-warm-4096/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/full-warm-4096/command.json",
+      "bytes": 602,
+      "sha256": "a62ae6622a81cf7da6e649813a8bb73d4d3decde8e3834200973ef4354d4a1eb"
+    },
+    {
+      "relative": "out/full-warm-4096/full-warm-4096-infqps-concurrency64-minicpm-20261028-053105.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/full-warm-4096/full-warm-4096-infqps-concurrency64-minicpm-20261028-053105.json",
+      "bytes": 1026,
+      "sha256": "b9eadf2c0f0744bf84a335a004963dfd381f3b0118f1d97fd7ece885f9ec0e4f"
+    },
+    {
+      "relative": "out/graceful-api-shutdown.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/graceful-api-shutdown.json",
+      "bytes": 150,
+      "sha256": "dd8fbe0ff755ece2e87359838a3c85d39bb55cb18baa26cf2bd1b6d1c7b096a6"
+    },
+    {
+      "relative": "out/idle-before.txt",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/idle-before.txt",
+      "bytes": 1284,
+      "sha256": "aeec0ec22b4f147ff05a2e7426bde910bec9550aa3756ae979193d025b3c3b58"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/binding.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/binding.json",
+      "bytes": 94332,
+      "sha256": "d27a7bd757d3b82a42c350e95bcaf6a93ba710a04ab01183a12f32be880fd7b8"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.asm",
+      "bytes": 304598,
+      "sha256": "9e7dc5ac50c27f2e7d273a07ec169e2d6acb87aad3ebb3b4c4d58a7d67ab6417"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.cubin",
+      "bytes": 47848,
+      "sha256": "67a4295f0ccb4aa9b8e5bc7c4ade59752452add1f2b8c4a87b1c15dd187a0308"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.jit_python_source.py",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.jit_python_source.py",
+      "bytes": 19850,
+      "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.llir",
+      "bytes": 217830,
+      "sha256": "7194abde30a3013a9939198bace8374c5e064503fd29c0a37f1a23eca475d689"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.source",
+      "bytes": 125620,
+      "sha256": "854cfdbf2fcb7b777ed774fbc54ad96133838ee941cfd270187fc485f1dfb250"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.ttgir",
+      "bytes": 90043,
+      "sha256": "863a4fa7c829c812e18fb254f7fb5345259de4e9c282a29e9678180f4985140a"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/actual.ttir",
+      "bytes": 65491,
+      "sha256": "ca249df1e1c788df5d2b5d984a5e14cc3ef3c1d252f4f4947b91ba833cb3295d"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/hoisted/record.json",
+      "bytes": 35807,
+      "sha256": "a004bf0a8143cce4609354fe3e3610917a567dd0d6f0e408155307b5acdc41c7"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/override.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/override.ttgir",
+      "bytes": 90056,
+      "sha256": "05e703d5778b07dd438543c38479090acb04f4f125fa3c363403cb0a875bdb1c"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.asm",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.asm",
+      "bytes": 304325,
+      "sha256": "310567a03b52a0da5fe0bfa3ed8cbfe3f724aa266977c432636b42e57c84b7e7"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.cubin",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.cubin",
+      "bytes": 47832,
+      "sha256": "839b4386680f8d08c88bef79d9c04d9336a139c153f9a446104ef14883b8ef0d"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.jit_python_source.py",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.jit_python_source.py",
+      "bytes": 19850,
+      "sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.llir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.llir",
+      "bytes": 217392,
+      "sha256": "6cc3ae5b3cdd996c6579632fdf9deb066d63a187b8da54fabd504e0ac156b3fd"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.source",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.source",
+      "bytes": 125620,
+      "sha256": "854cfdbf2fcb7b777ed774fbc54ad96133838ee941cfd270187fc485f1dfb250"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.ttgir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.ttgir",
+      "bytes": 90058,
+      "sha256": "753d9b8d902b71f5799537b1ff7517cdc7c137539c1572b3551fcce897af2901"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.ttir",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/actual.ttir",
+      "bytes": 65491,
+      "sha256": "ca249df1e1c788df5d2b5d984a5e14cc3ef3c1d252f4f4947b91ba833cb3295d"
+    },
+    {
+      "relative": "out/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/record.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/konly-q32-hoist/712741/88d4f60ea4bb4a51ac92c75ae8c0885dc4866d8f1638b368298318b5209b9022/unhoisted/record.json",
+      "bytes": 35807,
+      "sha256": "240f73b5959c68ff93a0a7ce45ee3490a195e04d799655bfabb08bbee0271584"
+    },
+    {
+      "relative": "out/manifest.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/manifest.json",
+      "bytes": 945393,
+      "sha256": "e4256f4e257b4cc1eb6f003d40ae15ff7367b7fa110d7315732890ad89e26fb0"
+    },
+    {
+      "relative": "out/native-burst64-requests.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/native-burst64-requests.json",
+      "bytes": 103271,
+      "sha256": "0c6df15ee2eed346f062ff4fcf162a183f1b7ab910c852d33b8b144d684d2ee2"
+    },
+    {
+      "relative": "out/native-burst64-runtime-window.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/native-burst64-runtime-window.log",
+      "bytes": 8132,
+      "sha256": "ebdc2edc1b53edfc0cfc7a71e139ebbc7292a97890d7841686eb98e5e9b33424"
+    },
+    {
+      "relative": "out/owned-cleanup.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/owned-cleanup.json",
+      "bytes": 3343,
+      "sha256": "8e707bd5c08a3a2098a4f9f6df56ab864240e7291f379c4d86bf7728da0f8d8c"
+    },
+    {
+      "relative": "out/score-16384-cache-before.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-16384-cache-before.json",
+      "bytes": 60552,
+      "sha256": "b0a92ff0a96e80ca7125c7324312e609657aa6c862d28851f39e127d54225d4d"
+    },
+    {
+      "relative": "out/score-16384-cache-observation.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-16384-cache-observation.json",
+      "bytes": 122875,
+      "sha256": "3d988b5decfcb7d6e3a233244d5f1a96500c0f150f432eb5a63b637731e49eab"
+    },
+    {
+      "relative": "out/score-16384/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-16384/benchmark.log",
+      "bytes": 5487,
+      "sha256": "75b30daed909e7a86b505787b5426ca0d21c7280cd3efa7d0ff5c6c3a02d6d49"
+    },
+    {
+      "relative": "out/score-16384/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-16384/command.json",
+      "bytes": 597,
+      "sha256": "743c9b3970b89c5dcbd9d3832ddcb81995eb48a2639773f6fa93d015fa196624"
+    },
+    {
+      "relative": "out/score-16384/score-16384-infqps-concurrency64-minicpm-20261028-060014.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-16384/score-16384-infqps-concurrency64-minicpm-20261028-060014.json",
+      "bytes": 1022,
+      "sha256": "2f1cfae83078897255ca5ac035be89854e103faf63b6c480c606f0176d3f9974"
+    },
+    {
+      "relative": "out/score-4096-cache-before.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-4096-cache-before.json",
+      "bytes": 56944,
+      "sha256": "3fe3adeb1c2ad331b873b87a22a81326d68ab5f5652bb46075038f301dfbe8dd"
+    },
+    {
+      "relative": "out/score-4096-cache-observation.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-4096-cache-observation.json",
+      "bytes": 116620,
+      "sha256": "51a1b76e547e362bdea122407634e17c36c05d5ec4172fcc59cab4015857fdc3"
+    },
+    {
+      "relative": "out/score-4096/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-4096/benchmark.log",
+      "bytes": 5482,
+      "sha256": "d1f9e126450ffb8b731c413b4ede86a49ddc6cc05ee57dba4925b0d64d5c4e17"
+    },
+    {
+      "relative": "out/score-4096/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-4096/command.json",
+      "bytes": 594,
+      "sha256": "626e98ec18cf3936ffe4d559fa0a6b89ece0a77e6c511aa083bf6492ac4247ea"
+    },
+    {
+      "relative": "out/score-4096/score-4096-infqps-concurrency64-minicpm-20261028-053452.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/score-4096/score-4096-infqps-concurrency64-minicpm-20261028-053452.json",
+      "bytes": 1018,
+      "sha256": "13d84cac516946db6d8ec50a16a9540c78f546e4765fa804985e580ea4d1c989"
+    },
+    {
+      "relative": "out/scores.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/scores.json",
+      "bytes": 2348,
+      "sha256": "387ae775783ae8f66b3ec1aa0336e4e9241e782961dd0ddf542892d4ace389ed"
+    },
+    {
+      "relative": "out/server.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/server.log",
+      "bytes": 478432,
+      "sha256": "439c150ee06c43292ddabe70847ae69fac0f6f644b86d72b21d2361b203a38bf"
+    },
+    {
+      "relative": "out/smoke-requests.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/smoke-requests.json",
+      "bytes": 9241,
+      "sha256": "a2080fc61c9e21d0f530192cf17af03e6e0ba03a4b09dc09f747870a7b15b941"
+    },
+    {
+      "relative": "out/state.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/state.json",
+      "bytes": 2977,
+      "sha256": "010da29d94f30bc7afe38efecae80af3eadc3c59e6bd628ca156f75383b18417"
+    },
+    {
+      "relative": "out/warm-16384-0/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-0/benchmark.log",
+      "bytes": 5490,
+      "sha256": "26d54711e65f95874ad04686f0e869d7f0f643eef741ae2420da7b65e2f99309"
+    },
+    {
+      "relative": "out/warm-16384-0/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-0/command.json",
+      "bytes": 602,
+      "sha256": "98de391b005ee1d061b6faa1e1f16c241f1f766e74b71040f0e0cfa5db556a1b"
+    },
+    {
+      "relative": "out/warm-16384-0/warm-16384-0-infqps-concurrency64-minicpm-20261028-053740.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-0/warm-16384-0-infqps-concurrency64-minicpm-20261028-053740.json",
+      "bytes": 1019,
+      "sha256": "cabd3d971507bc45928519416fb0bed0731f917700625cc921c171a22bf1d388"
+    },
+    {
+      "relative": "out/warm-16384-1/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-1/benchmark.log",
+      "bytes": 5490,
+      "sha256": "7adc5915579cf1c6daf2ce5f4ef3286044c10bf7d9643d7a9790a5b1edd33b06"
+    },
+    {
+      "relative": "out/warm-16384-1/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-1/command.json",
+      "bytes": 602,
+      "sha256": "57905adcb9220bbd88e1e8ffe9365d5f3f49d1c89401b567108404bc1c7ef686"
+    },
+    {
+      "relative": "out/warm-16384-1/warm-16384-1-infqps-concurrency64-minicpm-20261028-054027.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-1/warm-16384-1-infqps-concurrency64-minicpm-20261028-054027.json",
+      "bytes": 1015,
+      "sha256": "e80629b56e55b08f5fb65f88bda82063d0b163670e5501e4b2456f981a30df64"
+    },
+    {
+      "relative": "out/warm-16384-2/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-2/benchmark.log",
+      "bytes": 5490,
+      "sha256": "1a95471f08342c75ad1bbe0e8f6755bf692cd9d16020e6b932abbe91431fbd36"
+    },
+    {
+      "relative": "out/warm-16384-2/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-2/command.json",
+      "bytes": 602,
+      "sha256": "056f179af42f93ca4a81514da1a227dca99bcaea6ecfa0e98eb34209bf2a7edb"
+    },
+    {
+      "relative": "out/warm-16384-2/warm-16384-2-infqps-concurrency64-minicpm-20261028-054314.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-16384-2/warm-16384-2-infqps-concurrency64-minicpm-20261028-054314.json",
+      "bytes": 1019,
+      "sha256": "5d52e8c7d7a16aabe2c2eca112132de80f9d072cf42a4fdd447a817e1e59951b"
+    },
+    {
+      "relative": "out/warm-4096-0/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-0/benchmark.log",
+      "bytes": 5485,
+      "sha256": "70f2281604b455c1188ff3f16c8d3a20dc42aa0175346aea0bafe3f21d9f7cd2"
+    },
+    {
+      "relative": "out/warm-4096-0/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-0/command.json",
+      "bytes": 599,
+      "sha256": "f4ebf56171a986d6058726afabc9ab42a6571f68f278e5c281c308dc91c67d69"
+    },
+    {
+      "relative": "out/warm-4096-0/warm-4096-0-infqps-concurrency64-minicpm-20261028-052548.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-0/warm-4096-0-infqps-concurrency64-minicpm-20261028-052548.json",
+      "bytes": 1019,
+      "sha256": "4bdcd9237ddc72ba5e4717aec887cbbc8a6ff6ed018254c0abaf9bcb3b5b2c7f"
+    },
+    {
+      "relative": "out/warm-4096-1/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-1/benchmark.log",
+      "bytes": 5485,
+      "sha256": "d6c9e4670b052981005bd00c3a25dd5ac8f09b9a3bd37ad0e86796a2c584896a"
+    },
+    {
+      "relative": "out/warm-4096-1/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-1/command.json",
+      "bytes": 599,
+      "sha256": "2e4802cdc89f9e5fe6b8d608125fb7d0b10a8876a13e685f110791d6b1a9836a"
+    },
+    {
+      "relative": "out/warm-4096-1/warm-4096-1-infqps-concurrency64-minicpm-20261028-052632.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-1/warm-4096-1-infqps-concurrency64-minicpm-20261028-052632.json",
+      "bytes": 1011,
+      "sha256": "f71def98ebfac45d9efda97c968e6db000fd0b05c789db132784471c665f1bfd"
+    },
+    {
+      "relative": "out/warm-4096-2/benchmark.log",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-2/benchmark.log",
+      "bytes": 5485,
+      "sha256": "2be76b7143efcf51639774c55e702a48638a8d1f324f18f1c3aed303add51fa5"
+    },
+    {
+      "relative": "out/warm-4096-2/command.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-2/command.json",
+      "bytes": 599,
+      "sha256": "8576c645f228562d263b105c968ca7c209e8265c6ca4f4ab8298c93332e31e01"
+    },
+    {
+      "relative": "out/warm-4096-2/warm-4096-2-infqps-concurrency64-minicpm-20261028-052714.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warm-4096-2/warm-4096-2-infqps-concurrency64-minicpm-20261028-052714.json",
+      "bytes": 1019,
+      "sha256": "3dcc4f31afe67d854ca0024b5cd41c5cc9ed65cc60572e17b0359ab628466c8c"
+    },
+    {
+      "relative": "out/warmups.json",
+      "remote": "/workspace/experiments/minicpm-s2/cjj-native-k8-service-throughput-v1-20261028/warmups.json",
+      "bytes": 10026,
+      "sha256": "f19e9def8aac8c50077b45368b5c3b5064deef5649ee0182cc0fcd0ef2685824"
+    }
+  ]
+}
