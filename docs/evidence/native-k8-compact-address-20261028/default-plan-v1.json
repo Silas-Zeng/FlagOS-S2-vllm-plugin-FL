@@ -1,0 +1,139 @@
+{
+  "CPU_only": true,
+  "actual_SO_IR_SASS_verified": false,
+  "actual_compile_verified": false,
+  "actual_epoch_binding": false,
+  "attention_launches": 0,
+  "capacity_reclaimed": false,
+  "codec_launches": 0,
+  "compile_adapter": {
+    "adapter_body_sha256": "134b5dddaca7affe90cc9b9be4a2b98aac4bb99778cf1fb4e2592fb63bfac827",
+    "namespace_only_inverse_byte_exact": true,
+    "parent_compile_body_sha256": "8c8842c393f2799e5c446b45e6e864a14f331671b38e8e47374adfd18fec7bbb",
+    "standalone_flags_do_not_prove_extension_schedule": true
+  },
+  "component": "compact12544 NativeK8 address-only; explicit component compile stage",
+  "encoder_launches": 0,
+  "explicit_cuda_flags": [
+    "-O3",
+    "-std=c++17",
+    "-D__ILUVATAR__",
+    "-D__MR__",
+    "-DCOREX_NATIVE_GQA_V_OVERLAP=0",
+    "-x",
+    "ivcore",
+    "--cuda-gpu-arch=ivcore11",
+    "--cuda-path=/usr/local/corex"
+  ],
+  "input_initializations": 0,
+  "model_verified": false,
+  "next_gate": "Actual final SO instructions/IR and static resources, not standalone same-source only; then original22e vs compact full O/M/L/final BITWISE on identical logical cache/Q/table/lengths; later numerical frontend must enforce live compact format+epoch provenance before dispatch",
+  "numeric_bitexact_verified": false,
+  "performance_verified": false,
+  "precision_gate": false,
+  "private_source": {
+    "tools/kernels/biv150_native_k8_codec.cuh": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+    "tools/kernels/biv150_native_k8_compact_codec.cu": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b",
+    "tools/kernels/biv150_native_k8_compact_qk.cpp": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761",
+    "tools/kernels/biv150_native_k8_compact_qk.cu": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d"
+  },
+  "readonly_CPU_default": true,
+  "reducer_launches": 0,
+  "root_owned_exclusive_required_for_compile": true,
+  "service_installed": false,
+  "source_transform": {
+    "N40_S4_supported": false,
+    "N40_policy_S16_unchanged": true,
+    "V_preoffset_bytes": 4352,
+    "actual_SO_IR_SASS_verified": false,
+    "actual_compile_verified": false,
+    "actual_epoch_binding": false,
+    "address_proof": {
+      "SME_full_footprint_each_head_bytes": 4096,
+      "SME_row_pitch_bytes": 512,
+      "complete_page_bytes": 12544,
+      "key_bytes": 4096,
+      "last_value_byte": 12543,
+      "page_arithmetic_signed_I64": true,
+      "page_edge_ids": [
+        0,
+        1,
+        32767,
+        2147483646
+      ],
+      "reserved_bytes": 128,
+      "scale_bytes": 128,
+      "value_bytes": 8192
+    },
+    "capacity_reclaimed": false,
+    "compact_reference": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+    "compact_source_pins": {
+      "vllm_fl/patches/biv150_konly_compact_runtime.py": "ddfb92304e13b0d1b1b79f86574b95c168c775594b497372dfeae1542a05c9be",
+      "vllm_fl/patches/biv150_konly_compact_spec.py": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528",
+      "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+    },
+    "device_address_edits": 3,
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+        "variant_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+        "variant_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "variant_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d"
+      }
+    },
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "host_typed_layout_edits": 5,
+    "main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "namespace": "cjj_native_k8_compact_probe",
+    "numeric_bitexact_verified": false,
+    "original_parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_source_proof": {
+      "PV_online_and_partial_output_unchanged": true,
+      "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+      "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+      "codec_actual_IR_verified": false,
+      "device_compiled": false,
+      "inverse_byte_exact": true,
+      "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+      "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+      "reducer_source_not_modified": true
+    },
+    "performance_verified": false,
+    "scope": [
+      "N64/S2",
+      "N32/S4"
+    ],
+    "service_installed": false,
+    "shared_K_bytes": [
+      0,
+      2048
+    ],
+    "shared_V_bytes": [
+      4096,
+      8192
+    ],
+    "shared_bytes": 8192,
+    "wait_tail_Qcodec_QK_BF16P_PV_reducer_math_unchanged": true
+  },
+  "typed_ABI": {
+    "final": "same original reducer; not compiled/launched here",
+    "key_code": "I8 [P,16,2,128] stride12544,256,128,1, layer fullbase",
+    "lengths": "I32 [N], owned CPU content; nonnegative, within table and physical pages",
+    "maximum_and_sum": "F32 width16 storage [N,16,16] narrowed to S2/S4, strides256,16,1",
+    "partial": "F32 width16 storage [N,16,16,128] narrowed to S2/S4, strides32768,2048,128,1",
+    "query": "BF16 N64/S2 or N32/S4, 16 Q heads/D128; stride2048 or2560,128,1",
+    "scale_full": "F32 [P*3136] contiguous, same fullbase; internal +1024F32 once",
+    "table": "I32 [N,pitch], owned CPU content; physical IDs in compact allocation",
+    "value_offset": "BF16 [P,16,2,128] stride6272,256,128,1; fullbase+4352B once"
+  }
+}
