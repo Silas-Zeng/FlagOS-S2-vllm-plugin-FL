@@ -10,8 +10,8 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 HELPER=Path('/private/tmp/cjj-actual-owned-service-helper-94db-20261028.py')
 HELPER_SHA='94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976'
-LIBRARY=Path('/private/tmp/cjj-native-k8-compile-v1-raw-20261028/out/build/cjj_native_k8_qk_probe.so')
-LIBRARY_SHA='22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd'
+LIBRARY=Path('/private/tmp/cjj-native-k8-v-overlap-compile-v1-raw-20261028/out/build/cjj_native_k8_v_overlap_probe.so')
+LIBRARY_SHA='8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5'
 
 def run(helper,library):
     assert hashlib.sha256(helper.read_bytes()).hexdigest()==HELPER_SHA
@@ -31,7 +31,7 @@ def run(helper,library):
         env={**base,'VLLM_FL_BIV150_KONLY_NATIVE_DECODE':'1' if enabled else '0'}
         fp=owned.expected_fingerprint(ROOT,env,current)
         record=fp['konly_encoded'].get('native_decode')
-        if enabled:assert record==dict(enabled=True,library_sha256=LIBRARY_SHA,operator='cjj_native_k8_qk_probe::produce')
+        if enabled:assert record==dict(enabled=True,library_sha256=LIBRARY_SHA,operator='cjj_native_k8_v_overlap_probe::produce')
         else:assert record is None
         calls.append(dict(enabled=enabled,abi=current,result=fp))
     assert len({r['result']['sha256'] for r in calls})==4
@@ -41,11 +41,12 @@ def run(helper,library):
     for extra in [{'VLLM_FL_BIV150_KONLY_ENCODED_SERVICE':'0'},
                   {'VLLM_FL_BIV150_KONLY_COMPACT_SERVICE':'1'},
                   {'VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256':'0'*64},
+                  {'VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256':'22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd'},
                   {'VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY':'relative.so'}]:
         try:owned.expected_fingerprint(ROOT,{**base,'VLLM_FL_BIV150_KONLY_NATIVE_DECODE':'1',**extra},abi)
         except (ValueError,RuntimeError):rejected+=1
         else:raise AssertionError('bad NativeK8 identity accepted')
-    assert rejected==4 and not {'torch','triton','vllm','vllm_fl'}.intersection(sys.modules)
+    assert rejected==5 and not {'torch','triton','vllm','vllm_fl'}.intersection(sys.modules)
     assert not any(k.startswith('vllm_fl.patches.biv150_konly') for k in sys.modules)
     assert hashlib.sha256(helper.read_bytes()).hexdigest()==HELPER_SHA
     return dict(passed=True,CPU_only=True,actual_helper_sha256=HELPER_SHA,actual_expected_fingerprint_called=True,

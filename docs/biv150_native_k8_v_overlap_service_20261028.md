@@ -1,0 +1,28 @@
+# NativeK8 V-overlap 独立服务候选
+
+本分支从本人 PR98 `41f0f4c45fb87a824bdefaa39f91847fff96543b` 创建，正常合并本人 PR106 `6a85b304b920fb1efbfb4710e74aefdc58245713`，merge commit 为 `cdb9be1`。两边均包含团队 main `1cbac531ca9afaa0e9a68624d5d10cb1d0412055`。原 PR98 和原 `22e4a5...` 服务候选保留作对照；此次没有更新官方框架版本。
+
+生产代码只切换已测组件身份：`biv150_konly_encoded_native.py` 的固定 SO SHA、operator/schema namespace；`compile_semantics.py` 的对应 C3 指纹身份；`biv150_konly_encoded_sources.json` 中的 adapter 源码 SHA 与库 SHA。库固定为 `8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5`，namespace 为 `cjj_native_k8_v_overlap_probe`。源码逆变换检查恢复 PR98 两个 Python 文件的原字节和 manifest 原内容，PR106 的四个 GPU 源文件也逐字保持。
+
+默认仍关闭。保留已有环境变量名称、固定服务 CLI、原 KV 格式和 16384 B page、prefill/writer/decoder fallback、shape/stride 选择、C3 运行时绑定和全部数值规则；没有新增路由、通用接口或自动编译。旧 22e 的 SHA 对不能启用本候选，新的 SO 内容、精确 schema、CUDA registration、实际加载库集合和 adapter 源码身份仍按原规则校验。
+
+Root 后续按原服务启动流程显式提供：
+
+```text
+VLLM_FL_BIV150_KONLY_ENCODED_SERVICE=1
+VLLM_FL_BIV150_KONLY_NATIVE_DECODE=1
+VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY=/workspace/experiments/minicpm-s2/cjj-native-k8-v-overlap-compile-v1-20261028/build/cjj_native_k8_v_overlap_probe.so
+VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256=8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5
+```
+
+组件证据见合入的 [PR106 设备证据](evidence/native-k8-v-overlap-device-v1-20261028/README.md)：实际 SO 调度/资源检查、新库四 case 全数组 consumer、独立 CPU 收据重放已经完成。Root 已报告完整 writer+producer+reducer ABBA 通过，完整记录由 Root 归档；组件结果不授予此服务候选模型或吞吐资格。
+
+本候选只执行 CPU 检查，记录在 `docs/evidence/native-k8-v-overlap-service-20261028/`：
+
+- `service-cpu.json`：实际 8b86 ELF/schema/导出符号，四种 shape/pitch 的 attach、fence、C3、capture 记录、非法指针/epoch/alias/scalar 拒绝、原 private fallback、postlaunch error 不重试，以及身份逆变换通过。
+- `fingerprint-cpu.json`：未修改的实际 `94dbbb...` helper 调用新源码的 standalone fingerprint；开关、ABI 和五种拒绝情况通过，包括拒绝原 22e SHA。无框架或设备导入。
+- `encoded-cpu.json`：旧通用 `check_biv150_konly_encoded_cpu.py` 在未改的 PR98 `41f0f4c` 和本候选都失败于第 178 行 worker-tail import 列表断言。该历史检查还绑定旧 b3 补丁快照，此次未扩改它，也不把它记录为通过。
+
+CPU 检查可用 `python -B tools/check_biv150_native_k8_service_cpu.py --library /ABS/8b86.so` 及 `python -B tools/check_biv150_native_k8_fingerprint_cpu.py --library /ABS/8b86.so --helper /ABS/UNCHANGED_94db_HELPER.py` 重跑。没有 SSH、GPU、共享 site-packages 修改或实际服务启动。
+
+后续仍需要 Root 独立检查并部署候选，验证实际 import/C3/库命中、模型精度、真实 decode/Graph 路径和固定参数下 4K/16K 吞吐/TTFT。当前 `new_service_qualified=false`、`precision_gate=false`；不得将组件约 1.22× 当作模型收益。

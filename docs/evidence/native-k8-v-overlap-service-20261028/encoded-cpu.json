@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "CPU_only": true,
+  "status": "existing_historical_checker_failure_on_baseline_and_candidate",
+  "original_PR98_commit": "41f0f4c45fb87a824bdefaa39f91847fff96543b",
+  "records": [
+    {
+      "label": "original_PR98",
+      "repository": "/private/tmp/flagos-cjj-native98-resumed-evidence-20261028",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/flagos-cjj-native98-resumed-evidence-20261028/tools/check_biv150_konly_encoded_cpu.py\", line 240, in <module>\n    result=run()\n           ^^^^^\n  File \"/private/tmp/flagos-cjj-native98-resumed-evidence-20261028/tools/check_biv150_konly_encoded_cpu.py\", line 178, in run\n    assert imported==(['os','vllm_fl.patches.biv150_konly_encoded_service'] if on else ['os'])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "label": "candidate",
+      "repository": "/private/tmp/flagos-cjj-native-k8-v-overlap-service-20261028",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/flagos-cjj-native-k8-v-overlap-service-20261028/tools/check_biv150_konly_encoded_cpu.py\", line 240, in <module>\n    result=run()\n           ^^^^^\n  File \"/private/tmp/flagos-cjj-native-k8-v-overlap-service-20261028/tools/check_biv150_konly_encoded_cpu.py\", line 178, in run\n    assert imported==(['os','vllm_fl.patches.biv150_konly_encoded_service'] if on else ['os'])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+  ],
+  "GPU_or_SSH_executed": false
+}

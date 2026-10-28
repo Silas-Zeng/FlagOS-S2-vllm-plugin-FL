@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Actual native attachment/fence/C3 code with CPU metadata, plus actual22e ELF ABI proof."""
+"""Actual native attachment/fence/C3 code with CPU metadata, plus actual8b86 ELF ABI proof."""
 import argparse
 import ast
 import contextlib
@@ -16,15 +16,16 @@ from check_biv150_konly_native_boundary_cpu import tensor,DEVICE,run as old_boun
 
 ROOT=Path(__file__).resolve().parents[1]
 PARENT='2e3abf3f9bcae78e37d8cf3a63d8fcfc6a609db9'
-SO=Path('/private/tmp/cjj-native-k8-compile-v1-raw-20261028/out/build/cjj_native_k8_qk_probe.so')
+SO=Path('/private/tmp/cjj-native-k8-v-overlap-compile-v1-raw-20261028/out/build/cjj_native_k8_v_overlap_probe.so')
 
 def actual_elf(path,native):
     b=path.read_bytes();assert hashlib.sha256(b).hexdigest()==native.LIBRARY_SHA
     assert b[:6]==b'\x7fELF\x02\x01' and struct.unpack_from('<H',b,18)[0]==62
     schema=native.SCHEMA.split('::',1)[1].encode();assert schema in b
-    names=['launch_corex_native_k8_gqa_s2_draft','launch_corex_native_k8_gqa_s4_draft']
+    assert native.OPERATOR.split('::',1)[0].encode() in b
+    names=['launch_cjj_native_k8_v_overlap_s2','launch_cjj_native_k8_v_overlap_s4']
     assert all(n.encode() in b for n in names)
-    return dict(actual_original_library_parsed_CPU=True,bytes=len(b),sha256=native.LIBRARY_SHA,
+    return dict(actual_candidate_library_parsed_CPU=True,bytes=len(b),sha256=native.LIBRARY_SHA,
                 ELF_host_machine=62,registered_schema_bytes=schema.decode(),schema_offset=b.index(schema),launch_symbols=names,
                 library_loaded_or_executed=False)
 
@@ -42,7 +43,7 @@ class Namespace:
         return self.ops.op
 
 class Ops:
-    def __init__(self,schema):self.loaded_libraries=set();self.op=Op(schema);self.cjj_native_k8_qk_probe=Namespace(self)
+    def __init__(self,schema):self.loaded_libraries=set();self.op=Op(schema);self.cjj_native_k8_v_overlap_probe=Namespace(self)
     def load_library(self,path):self.loaded_libraries.add(path)
 
 def fixture(native,batch,segments,pitch,path):
@@ -81,6 +82,26 @@ def fixture(native,batch,segments,pitch,path):
 
 def check(path):
     native=load('native');assert native.library_config({}) is None
+    original_library='22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd'
+    for name in ('vllm_fl/patches/biv150_konly_encoded_native.py','vllm_fl/compile_semantics.py'):
+        original=subprocess.check_output(['git','-C',str(ROOT),'show','41f0f4c45fb87a824bdefaa39f91847fff96543b:'+name])
+        restored=(ROOT/name).read_text().replace(native.LIBRARY_SHA,original_library).replace(
+            'cjj_native_k8_v_overlap_probe','cjj_native_k8_qk_probe').replace(
+            'Default-off verified-8b86 V-overlap NativeK8 adapter','Default-off existing-22e NativeK8 adapter')
+        assert restored.encode()==original,'service change beyond identity: '+name
+    manifest=json.loads((ROOT/'vllm_fl/patches/biv150_konly_encoded_sources.json').read_text())
+    assert manifest['native_decode']['library_sha256']==native.LIBRARY_SHA
+    assert manifest['native_decode']['adapter']['sha256']==hashlib.sha256(Path(native.__file__).read_bytes()).hexdigest()
+    original=json.loads(subprocess.check_output(['git','-C',str(ROOT),'show','41f0f4c45fb87a824bdefaa39f91847fff96543b:vllm_fl/patches/biv150_konly_encoded_sources.json']))
+    manifest['native_decode']['library_sha256']=original['native_decode']['library_sha256']
+    manifest['native_decode']['adapter']['sha256']=original['native_decode']['adapter']['sha256']
+    assert manifest==original
+    for name in ('biv150_native_k8_codec.cuh','biv150_native_k8_v_overlap_codec.cu',
+                 'biv150_native_k8_v_overlap_qk.cpp','biv150_native_k8_v_overlap_qk.cu'):
+        name='tools/kernels/'+name
+        assert (ROOT/name).read_bytes()==subprocess.check_output(['git','-C',str(ROOT),'show','6a85b304b920fb1efbfb4710e74aefdc58245713:'+name])
+    rejected(lambda:native.library_config({native.ENV:'1','VLLM_FL_BIV150_KONLY_ENCODED_SERVICE':'1',
+                                          native.PATH_ENV:str(path),native.SHA_ENV:original_library}))
     from unittest.mock import patch
     import os
     worker=ast.parse((ROOT/'vllm_fl/worker/model_runner.py').read_bytes())
@@ -136,8 +157,8 @@ def check(path):
         p='vllm_fl/patches/biv150_konly_encoded_'+name+'.py'
         assert (ROOT/p).read_bytes()==subprocess.check_output(['git','-C',str(ROOT),'show',PARENT+':'+p])
     assert not {'torch','triton','vllm','numpy'}.intersection(sys.modules)
-    return dict(passed=True,CPU_only=True,actual_22e_ELF_ABI=proof,CPU_dispatcher_is_recorder_only=True,actual_attach_wrapper_and_C3_executed=True,
-        cases=cases,stock_native_parent_boundary_preserved=True,no_GPU_kernel_or_codec_changed=True,
+    return dict(passed=True,CPU_only=True,actual_8b86_ELF_ABI=proof,CPU_dispatcher_is_recorder_only=True,actual_attach_wrapper_and_C3_executed=True,
+        cases=cases,stock_native_parent_boundary_preserved=True,component_GPU_sources_unchanged=True,service_identity_only_inverse=True,
         new_service_smoke_model_or_performance_verified=False,GPU_or_SSH_executed=False)
 
 if __name__=='__main__':
