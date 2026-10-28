@@ -41,4 +41,33 @@ PYTHONDONTWRITEBYTECODE=1 python3 -B -W error tools/check_biv150_head_temperatur
 
 需在该独立worktree运行；输出路径必须不存在。检查完整真实模块加载／旧源逆变换、kernel字节、0..130行和坏类型、实际参数identity与grid、greedy／penalty／top-k／prompt-logprob／capture拒绝、metadata／grammar／开关失效回退、prelaunch拒绝和launch异常传播。GPU对象是明确的opaque替身；未执行实际SDK初始准入、GPU数学或采样RNG。另以独立无父包subprocess加载compile_semantics，禁止framework导入，验证开关指纹。
 
-当前没有可执行的device入口／实际设备结果；组件前端随后正常提交。该接口默认关闭且未安装服务，不能合并为已验收优化。
+当前已增加下面的独立组件入口，尚无新形状实际设备结果。该接口默认关闭且未安装服务，不能合并为已验收优化。
+
+## 独立组件入口（仅Root后续执行）
+
+默认两个命令只输出stdlib计划；GPU参数若不齐在framework import前拒绝：
+
+```sh
+python3 -B tools/compile_biv150_head_temperature_ragged.py
+python3 -B tools/bench_biv150_head_temperature_ragged.py
+python3 -B -W error tools/check_biv150_head_temperature_ragged_component_cpu.py --out /private/tmp/head-ragged-component-cpu-new.json
+```
+
+Root确认上一owner终态、端口关闭并独占设备后，可先只编译31行，再短数值；`HEAD`替换为本工具冻结commit，输出目录必须全新。
+
+```sh
+python3 -B tools/compile_biv150_head_temperature_ragged.py --compile-only --root-owned-exclusive --commit HEAD --row 31 --out /workspace/experiments/minicpm-s2/head-ragged-compile-NEW
+python3 -B tools/bench_biv150_head_temperature_ragged.py --run-gpu --root-owned-exclusive --commit HEAD --row 31 --model /workspace/MiniCPM5-2B --tuning-snapshot /ABSOLUTE/v6-SNAPSHOT --out /workspace/experiments/minicpm-s2/head-ragged-numeric-NEW
+```
+
+不传`--row`才依次执行31／41／42／43；任一失败即停止，不重试、不换tile。私有tuning副本要求输入目录`manifest.json`中的`databases`逐SHA匹配；不写回源DB。不加载无关W8A8／GQA SO；显式记录并拒绝变化的旧15份实际Sampler／FlagGems source pins，以及已取回的LibEntry414e／JIT66a源身份。没有借用旧native14f库身份。
+
+编译入口用实际JIT `warmup`，分配未初始化Q／W／output／temperature，允许CUDA context／allocator／编译，**零head／attention／writer／encoder launch、零输入初始化**。保存每个真实M的完整TTIR／TTGIR／LLVM／ASM／cubin及signature／constants／metadata；prelaunch字段不能称loaded资源或occupancy。实际hint是否安全仍须Root审真实产物及数值，源码地址枚举不授该资格。
+
+数值worker沿原R32十门参数化为真实M，另加一组逐行不同的正temperature检查，防止广播／索引错误被统一温度掩盖。9个原数值／RNG／observer helper AST及原PreScaledSampler类保持；check仅增加canary；原timed_batch字节不变。独立FP64原4行扩至所有真实行×同5列，阈值仍`.001/.01`；完整scaled／filtered／ID／RNG门仍零容差。新真实原F.linear配置必须恰好落在上述复用配置，否则首次候选launch前拒绝。
+
+额外guard在非零offset视图前后保留marker，保证数据指针16B对齐。完整storage先CPU读取、按物理行重排，再取边界；1D temperature／top_p检查完整4字节而非单字节。边界tensor保存前clone，防止PyTorch视图序列化意外保存0.5GB整W。逐阶段记录完整CPU storage SHA与前后guard；整W初始GPU字节须与CPU真权重一致，其完整storage SHA后续只读。没有保存全部中间logits／W原始大数组，不能把这些hash／程序检查声称事后独立全数组重算。
+
+canary检查、快照与哈希在ROI外；timing mode仍按真实M分配生产大小output，保留原完整eager head＋Sampler单ABBA／8调用及原6CPU quota检查。候选多一个诊断模式分支，其host成本仍计入，不能称零host成本。Graph仅确定性prefix；完整随机Sampler保持eager／原RNG。Graph新值先replay再核新值eager，readonly／边界在CPU核；不把prefix Graph当完整采样Graph资格。
+
+当前仅CPU源码／协议通过，真正SDK导入、JIT、尾行hint、loaded资源、10门、性能、服务、105均未验。Root可据独立编译或首case反例另提交精确mask／hint修复，原32／64与原硬门不动。

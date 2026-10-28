@@ -1,13 +1,21 @@
 {
-  "scope": "CPU interface plus original historical metadata/source subset; no device qualification",
+  "scope": "CPU-only new frontend plus exact historical source/metadata subset; no new device qualification",
   "files": {
+    "compile-plan.json": {
+      "bytes": 2130,
+      "sha256": "d86ffdd5c855e925ed11a217b7b32b8ced8fe23bd786de27c166f412f1d47ae8"
+    },
+    "component-cpu.json": {
+      "bytes": 3821,
+      "sha256": "f0d98f1ee9603456227be734c93ea16dc40ffa79569800779ccfa735b82b2316"
+    },
     "cpu.json": {
       "bytes": 3553,
       "sha256": "7b23cd423d6e0ff14186a26c6578a599b54c233893b70344ec330460260aab17"
     },
     "legacy/manifest.json": {
-      "bytes": 12205,
-      "sha256": "abbf47fd1d258ce1bcfb7045438518fa5dfd124628241a2075b9f4baa63333a4"
+      "bytes": 12852,
+      "sha256": "d486132233b0c549c5900e285cfa1854eb7a8ae11cc57b7d64272aec18535e5f"
     },
     "legacy/r32-archive-receipt.json": {
       "bytes": 10834,
@@ -20,6 +28,10 @@
     "legacy/r32-factory.py": {
       "bytes": 3607,
       "sha256": "bd2ef93b091d6064535f519e9dbe7affe3bef9e91c0dc9bcc0fc4f1e7eaf167d"
+    },
+    "legacy/r32-installed-manifest.json": {
+      "bytes": 3822,
+      "sha256": "f9c732bb9173aa3eaf4ea1c7cef8dc869b9b52301410873577502c587eb244b6"
     },
     "legacy/r32-result.json": {
       "bytes": 9847,
@@ -40,6 +52,10 @@
     "legacy/r64-result.json": {
       "bytes": 9859,
       "sha256": "1292b3c8a82e4722b26c27b2f874aa8c8d41b3f2066844d7049051fca329bfe1"
+    },
+    "numeric-plan.json": {
+      "bytes": 1877,
+      "sha256": "f0c73f81824b78dfc7060ec55b2181c73c79472333f23631ff511dd43b7553c9"
     }
   }
 }
