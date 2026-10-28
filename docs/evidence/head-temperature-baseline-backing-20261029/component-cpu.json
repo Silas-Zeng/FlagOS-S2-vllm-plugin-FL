@@ -1,0 +1,426 @@
+{
+  "CLI_refusals": [
+    {
+      "argv": [
+        "--run-gpu"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--worker"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--run-gpu",
+        "--root-owned-exclusive"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--row",
+        "31"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--compile-only"
+      ],
+      "rejected_before_framework": true,
+      "tool": "compile_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--compile-only",
+        "--root-owned-exclusive"
+      ],
+      "rejected_before_framework": true,
+      "tool": "compile_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--row",
+        "41"
+      ],
+      "rejected_before_framework": true,
+      "tool": "compile_biv150_head_temperature_ragged.py"
+    }
+  ],
+  "FP64_all_real_rows_five_columns": true,
+  "FP64_thresholds_unchanged": true,
+  "SDK_pin_count": 15,
+  "admission_refusals": 4,
+  "baseline_prelaunch_refusals": [
+    {
+      "launches": 0,
+      "reason": "cache_miss",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_cached_tile",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "dynamic_flagtune",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "forced_policy",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_table",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_key",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "single_config",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "short_backing",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_tile",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_grid",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "shared_hook",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "matching_pool_hook",
+      "rows": 31
+    },
+    {
+      "launches": 0,
+      "reason": "cache_miss",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_cached_tile",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "dynamic_flagtune",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "forced_policy",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_table",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_key",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "single_config",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "short_backing",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_tile",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_grid",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "shared_hook",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "matching_pool_hook",
+      "rows": 41
+    },
+    {
+      "launches": 0,
+      "reason": "cache_miss",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_cached_tile",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "dynamic_flagtune",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "forced_policy",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_table",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_key",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "single_config",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "short_backing",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_tile",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_grid",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "shared_hook",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "matching_pool_hook",
+      "rows": 42
+    },
+    {
+      "launches": 0,
+      "reason": "cache_miss",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_cached_tile",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "dynamic_flagtune",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "forced_policy",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_table",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "wrong_key",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "single_config",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "short_backing",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_tile",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "changed_launch_grid",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "shared_hook",
+      "rows": 43
+    },
+    {
+      "launches": 0,
+      "reason": "matching_pool_hook",
+      "rows": 43
+    }
+  ],
+  "factory_actual_argument_cases": [
+    31,
+    41,
+    42,
+    43
+  ],
+  "factory_and_compile_plan_RAGGED_M_true": true,
+  "fresh_IR_loaded_resources_numerics_RNG": false,
+  "gpu_executed": false,
+  "guard_CPU_complete_rows_and_cloned_boundaries": true,
+  "guard_layout": [
+    {
+      "padding": 4,
+      "physical_rows": 39,
+      "row_bytes": 4,
+      "rows": 31,
+      "tail_canary_rows": 4
+    },
+    {
+      "padding": 1,
+      "physical_rows": 34,
+      "row_bytes": 4096,
+      "rows": 31,
+      "tail_canary_rows": 2
+    },
+    {
+      "padding": 1,
+      "physical_rows": 33,
+      "row_bytes": 522240,
+      "rows": 31,
+      "tail_canary_rows": 1
+    },
+    {
+      "padding": 4,
+      "physical_rows": 49,
+      "row_bytes": 4,
+      "rows": 41,
+      "tail_canary_rows": 4
+    },
+    {
+      "padding": 1,
+      "physical_rows": 66,
+      "row_bytes": 4096,
+      "rows": 41,
+      "tail_canary_rows": 24
+    },
+    {
+      "padding": 1,
+      "physical_rows": 43,
+      "row_bytes": 522240,
+      "rows": 41,
+      "tail_canary_rows": 1
+    },
+    {
+      "padding": 4,
+      "physical_rows": 50,
+      "row_bytes": 4,
+      "rows": 42,
+      "tail_canary_rows": 4
+    },
+    {
+      "padding": 1,
+      "physical_rows": 66,
+      "row_bytes": 4096,
+      "rows": 42,
+      "tail_canary_rows": 23
+    },
+    {
+      "padding": 1,
+      "physical_rows": 44,
+      "row_bytes": 522240,
+      "rows": 42,
+      "tail_canary_rows": 1
+    },
+    {
+      "padding": 4,
+      "physical_rows": 51,
+      "row_bytes": 4,
+      "rows": 43,
+      "tail_canary_rows": 4
+    },
+    {
+      "padding": 1,
+      "physical_rows": 66,
+      "row_bytes": 4096,
+      "rows": 43,
+      "tail_canary_rows": 22
+    },
+    {
+      "padding": 1,
+      "physical_rows": 45,
+      "row_bytes": 522240,
+      "rows": 43,
+      "tail_canary_rows": 1
+    }
+  ],
+  "legacy_check_AST_unchanged_except_additional_canary": true,
+  "legacy_numeric_helpers_AST_unchanged": [
+    "save",
+    "worker.head",
+    "worker.bits",
+    "worker.rng",
+    "worker.reset",
+    "worker.equal_rng",
+    "worker.complete_a",
+    "worker.complete_b",
+    "worker.observe"
+  ],
+  "original_sampler_proxy_AST_unchanged": true,
+  "original_timing_helper_byte_identical": true,
+  "pad48_factory_rejected": true,
+  "physical_hidden_tail_all_rows_checked": true,
+  "row_varying_temperature_added": true,
+  "service_105_throughput": false,
+  "sources": {
+    "bench_biv150_head_temperature_ragged.py": "29eb32a23c99d880eadb8fb2ba6b68730c0ffa3da360546c40040f6dc105e287",
+    "biv150_head_temperature_ragged_factory.py": "61cd42f7c8d4f5afb42a55fecf5530838687b08af126e4f1bcc7bc4151ecff5a",
+    "biv150_head_temperature_ragged_timing.py": "6f0b86e84134e5e4c1efb43caa4bdc4cea135ee28aefa8e2a9f5b1af54d50e34",
+    "biv150_head_temperature_ragged_worker.py": "517d15470880d03c6a5880a66c8bbf470202d35a77ed5cf1497815ac14ad0abe",
+    "check_biv150_head_temperature_ragged_component_cpu.py": "c645a09a636cd2840dbdebcad3618548a0b466f063ddaf5c172f139c029e044e",
+    "check_biv150_head_temperature_ragged_cpu.py": "3efe35ddf2b3729201153cb27ac01d9b94f3651f7163b8ed74e06704111f4ed0",
+    "compile_biv150_head_temperature_ragged.py": "92af42a258c7328fb2cec66208fb59929467ea7f08a49dfb46c62d4f806ac4a4"
+  }
+}

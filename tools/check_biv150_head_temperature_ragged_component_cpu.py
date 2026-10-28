@@ -52,34 +52,57 @@ def main():
     assert (ROOT/'tools/biv150_head_temperature_ragged_timing.py').read_bytes()==(LEGACY/'r32-reused_helpers.py').read_bytes()
     worker=(ROOT/'tools/biv150_head_temperature_ragged_worker.py').read_text()
     assert "check('row_varying_temperature')" in worker
-    # The complete first/last physical rows are retained even for 1D F32,
-    # while all active pointers keep the original >=16-byte alignment.
+    # Hidden is still logical M, but the admitted baseline reads a full tile.
+    # The complete prefix and every row after logical M remain canaries.
     guard_layout=[]
     for rows in (31,41,42,43):
         for row_bytes in (4,4096,522240):
             padding=max(1,16//row_bytes);start=padding*row_bytes;end=(padding+rows)*row_bytes
-            assert start%16==0 and start>0 and end<(rows+2*padding)*row_bytes
+            tile=(32 if rows==31 else 64) if row_bytes==4096 else rows
+            tail=padding+tile-rows
+            assert start%16==0 and start>0 and end<(rows+padding+tail)*row_bytes
             assert end-start==rows*row_bytes
-            guard_layout.append(dict(rows=rows,row_bytes=row_bytes,padding=padding))
+            if row_bytes==4096:
+                raw=bytearray([71])*((rows+padding+tail)*row_bytes)
+                expected=bytes(raw[end:])
+                assert len(expected)==tail*row_bytes
+                for physical in range(padding+rows,rows+padding+tail):
+                    for offset in (0,row_bytes//2,row_bytes-1):
+                        pos=physical*row_bytes+offset;raw[pos]^=1
+                        assert bytes(raw[end:])!=expected
+                        raw[pos]^=1
+            guard_layout.append(dict(rows=rows,row_bytes=row_bytes,padding=padding,tail_canary_rows=tail,physical_rows=rows+padding+tail))
     assert 'atol=.001,rtol=.01' in worker and 'rows=list(range(row_count));cols=[0,1,127,65535,130559]' in worker
     assert "for arm in 'ABBA'" in worker and 'pair,8' in worker
-    assert 'authority[:padding].clone()' in worker and 'authority[-padding:].clone()' in worker
+    assert 'authority[:padding].clone()' in worker and 'authority[-tail:].clone()' in worker
     assert "reshape(item['storage'].shape[0],-1)" in worker
     assert "if timing_mode else buffer('candidate_output'" in worker
     fpath=ROOT/'tools/biv150_head_temperature_ragged_factory.py'
     fspec=importlib.util.spec_from_file_location('_factory_cpu',fpath);fm=importlib.util.module_from_spec(fspec);fspec.loader.exec_module(fm)
     from types import SimpleNamespace as NS
-    factory_cases=[]
+    factory_cases=[];prelaunch_refusals=[]
     for rows in (31,41,42,43):
         fm.configure(rows)
         config=dict(BLOCK_M=32,BLOCK_N=64,BLOCK_K=64,num_warps=8,num_stages=1,num_ctas=1,EVEN_K=True) if rows==31 else dict(BLOCK_M=64,BLOCK_N=256,BLOCK_K=32,num_warps=16,num_stages=2,num_ctas=1,EVEN_K=True)
         grid=(2040 if rows==31 else 510,1)
-        def tensor(shape):return NS(shape=shape,is_contiguous=lambda:True)
+        def tensor(shape):return NS(shape=shape,is_contiguous=lambda:True,stride=lambda:(2048,1),element_size=lambda:2,data_ptr=lambda:4096,
+            storage_offset=lambda:2048,untyped_storage=lambda:NS(nbytes=lambda:(config['BLOCK_M']+2)*4096))
         x,w,out,temp=tensor((rows,2048)),tensor((130560,2048)),tensor((rows,130560)),tensor((rows,))
         args=(x,w,w,out,rows,130560,2048,2048,1,2048,1,130560,1,0)
+        launches=[]
         class Entry:
-            arg_names=tuple('p'+str(i) for i in range(len(args)))
-            def __getitem__(self,g):return lambda *a,**kw:(object(),dict(config))
+            arg_names=('input_ptr','weight_ptr','bias_ptr','output_ptr','M','N','K','stride_im','stride_ik','stride_wn','stride_wk','stride_om','stride_on','stride_bn','BIAS','GROUP_M','SPLIT_K')
+            _has_flagtune_tuner=False
+            def __init__(self):
+                self.actual=dict(config)
+                cached=NS(pre_hook=None,all_kwargs=lambda:dict(config))
+                self.fn=NS(_run_mode='normal',config_table_name=fm.CONFIG_TABLE,keys=['M','N','K'],configs=[cached,cached],arg_names=self.arg_names,
+                    get_key=lambda bound:(((bound['M']+31)//32)*32,bound['N'],bound['K'])+('torch.bfloat16',)*4,cache=NS(get=lambda key:cached))
+            def __getitem__(self,g):
+                def call(*a,**kw):
+                    g(dict(self.actual,**kw));launches.append(True)
+                    return object(),dict(self.actual)
+                return call
         cap=fm.Capture(Entry());cap[grid](*args,BIAS=False,GROUP_M=8,SPLIT_K=1)
         calls=[]
         class Candidate:
@@ -91,6 +114,27 @@ def main():
         assert calls[0][1][4:7]==(rows,130560,2048)
         assert calls[0][2]['RAGGED_M'] is True
         assert {k:v for k,v in calls[0][2].items() if k!='RAGGED_M'}==dict(config,BIAS=False,GROUP_M=8,SPLIT_K=1)
+        assert len(launches)==1 and cap.prelaunch[0]['autotune_allowed'] is False
+        for bad in ('cache_miss','wrong_cached_tile','dynamic_flagtune','forced_policy','wrong_table','wrong_key','single_config','short_backing','changed_launch_tile','changed_launch_grid','shared_hook','matching_pool_hook'):
+            e=Entry();bad_args=list(args);bad_grid=grid
+            if bad=='cache_miss':e.fn.cache.get=lambda key:None
+            elif bad=='wrong_cached_tile':e.fn.cache.get=lambda key:NS(pre_hook=None,all_kwargs=lambda:dict(config,BLOCK_M=256))
+            elif bad=='dynamic_flagtune':e._has_flagtune_tuner=True
+            elif bad=='forced_policy':e.fn._run_mode='force_policy'
+            elif bad=='wrong_table':e.fn.config_table_name='unknown'
+            elif bad=='wrong_key':e.fn.get_key=lambda bound:(rows,)
+            elif bad=='single_config':e.fn.configs=[None]
+            elif bad=='short_backing':bad_args[0]=NS(**{**vars(x),'untyped_storage':lambda:NS(nbytes=lambda:(rows+2)*4096)})
+            elif bad=='changed_launch_tile':e.actual['BLOCK_M']=256
+            elif bad=='changed_launch_grid':bad_grid=(1,1)
+            elif bad=='shared_hook':e.fn.shared_config_pre_hook=lambda x:None
+            elif bad=='matching_pool_hook':e.fn.configs=[NS(pre_hook=lambda x:None,all_kwargs=lambda:dict(config)),e.fn.configs[0]]
+            before=len(launches)
+            try:fm.Capture(e)[bad_grid](*bad_args,BIAS=False,GROUP_M=8,SPLIT_K=1)
+            except AssertionError:pass
+            else:raise AssertionError(('unsafe baseline admitted',rows,bad))
+            assert len(launches)==before,(rows,bad,'device stand-in already launched')
+            prelaunch_refusals.append(dict(rows=rows,reason=bad,launches=0))
         factory_cases.append(rows)
     try:fm.configure(48)
     except AssertionError:pass
@@ -109,6 +153,7 @@ def main():
         FP64_all_real_rows_five_columns=True,guard_CPU_complete_rows_and_cloned_boundaries=True,guard_layout=guard_layout,row_varying_temperature_added=True,
         SDK_pin_count=len(sdk['files']),factory_actual_argument_cases=factory_cases,factory_and_compile_plan_RAGGED_M_true=True,
         pad48_factory_rejected=True,admission_refusals=len(cases),CLI_refusals=cli,
+        baseline_prelaunch_refusals=prelaunch_refusals,physical_hidden_tail_all_rows_checked=True,
         fresh_IR_loaded_resources_numerics_RNG=False,service_105_throughput=False,
         sources={p.name:sha(p) for p in sorted((ROOT/'tools').glob('*head_temperature_ragged*.py'))})
     assert 'torch' not in sys.modules and 'triton' not in sys.modules

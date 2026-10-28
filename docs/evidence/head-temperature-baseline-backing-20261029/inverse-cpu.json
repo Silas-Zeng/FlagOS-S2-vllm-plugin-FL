@@ -1,0 +1,42 @@
+{
+  "archived_config_rows": [
+    {
+      "BLOCK_K": 64,
+      "BLOCK_M": 32,
+      "BLOCK_N": 64,
+      "key_0": 32,
+      "key_1": 130560,
+      "key_2": 2048,
+      "num_ctas": 1,
+      "num_stages": 1,
+      "num_warps": 8
+    },
+    {
+      "BLOCK_K": 32,
+      "BLOCK_M": 64,
+      "BLOCK_N": 256,
+      "key_0": 64,
+      "key_1": 130560,
+      "key_2": 2048,
+      "num_ctas": 1,
+      "num_stages": 2,
+      "num_warps": 16
+    }
+  ],
+  "base": "00213bdd9afa75d7ea7ebdd851b2d4ed0061ce66",
+  "byte_identical_tools": [
+    "biv150_head_temperature_ragged_timing.py",
+    "compile_biv150_head_temperature_ragged.py"
+  ],
+  "gpu_executed": false,
+  "limitation": "Archived selector evidence plus source/opaque CPU gates; actual next-process cache/prelaunch and numerical qualification remain pending. No raw arrays or SDK source uploaded.",
+  "original_factory_launch_and_sampler_unchanged": true,
+  "production_and_GPU_sources_unchanged": true,
+  "source_sha256": {
+    "libentry": "414e8a3f74e2522e40659e7fccd84e301f4517220837a87af0311f050bbf3025",
+    "linear": "d431a4fa144ed67dc3deab46dd5beace3612858075f85c39e602447ba3bf768a"
+  },
+  "table": "linear_kernel_91df7045e2de13a4c456e8d13079eb7c-0f015d35c97293819201f206510edb40",
+  "tuning_db_sha256": "e34eb1cef611c463d5794f682e91405635fdf94ca2bd594b40f6c0ad59d042b5",
+  "worker_inverse_except_buffer_guard_and_receipt": true
+}

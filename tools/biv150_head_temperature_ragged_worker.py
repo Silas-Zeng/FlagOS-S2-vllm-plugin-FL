@@ -75,26 +75,28 @@ def worker(run,model,row_count):
             row_bytes=(2 if dtype==torch.bfloat16 else 4)
             for extent in shape[1:]:row_bytes*=extent
             padding=max(1,16//row_bytes)
-            storage=torch.full((shape[0]+2*padding,*shape[1:]),71,dtype=dtype,device='cuda')
-            view=storage[padding:-padding]
+            tail=padding+(factory.baseline_config()['BLOCK_M']-shape[0] if name=='hidden' else 0)
+            assert tail>=padding
+            storage=torch.full((shape[0]+padding+tail,*shape[1:]),71,dtype=dtype,device='cuda')
+            view=storage[padding:padding+shape[0]]
             if name not in guard_templates:
-                guard_templates[name]=torch.full((padding,*shape[1:]),71,dtype=dtype,device='cpu').contiguous().view(torch.uint8).reshape(padding,-1)
-            expected=guard_templates[name]
-            guarded[name]=dict(storage=storage,padding=padding,prefix=expected,suffix=expected)
+                guard_templates[name]=dict(prefix=torch.full((padding,*shape[1:]),71,dtype=dtype,device='cpu').contiguous().view(torch.uint8).reshape(padding,-1),
+                    suffix=torch.full((tail,*shape[1:]),71,dtype=dtype,device='cpu').contiguous().view(torch.uint8).reshape(tail,-1))
+            guarded[name]=dict(storage=storage,padding=padding,tail=tail,**guard_templates[name])
             return view
         def guard_check():
             record={}
             phase=len(result.setdefault('guard_records',[]))
             for name,item in guarded.items():
                 authority=item['storage'].cpu().contiguous().view(torch.uint8).reshape(item['storage'].shape[0],-1)
-                padding=item['padding']
-                ok=torch.equal(authority[:padding],item['prefix']) and torch.equal(authority[-padding:],item['suffix'])
+                padding,tail=item['padding'],item['tail']
+                ok=torch.equal(authority[:padding],item['prefix']) and torch.equal(authority[-tail:],item['suffix'])
                 record[name]=bool(ok)
                 digest=hashlib.sha256(authority.numpy().tobytes()).hexdigest()
                 if name=='weight':
                     expected=item.setdefault('readonly_full_sha256',digest)
                     assert digest==expected,'whole weight storage readonly失败'
-                torch.save(dict(shape=list(item['storage'].shape),full_sha256=digest,prefix=authority[:padding].clone(),suffix=authority[-padding:].clone(),whole_payload_saved=False),run/(str(phase)+'-'+name+'-full-storage-authority.pt'))
+                torch.save(dict(shape=list(item['storage'].shape),full_sha256=digest,prefix=authority[:padding].clone(),suffix=authority[-tail:].clone(),whole_payload_saved=False),run/(str(phase)+'-'+name+'-full-storage-authority.pt'))
             result['guard_records'].append(record);save(run/'result.json',result)
             assert all(record.values()),'CPU权威完整storage canary失败'
             return record
@@ -110,6 +112,7 @@ def worker(run,model,row_count):
         finally:module.linear_kernel=original
         torch.cuda.synchronize();assert len(capture.records)==1 and initial.dtype==torch.bfloat16
         record=capture.records[0]
+        result['baseline_prelaunch_admission']=capture.prelaunch
         result['identity']=dict(constants={k:str(v) for k,v in record['constants'].items()},kwargs=record['kwargs'],grid=record['grid'],linear_source_sha256=factory.LINEAR_SHA,
             head_source='actual UnquantizedLinearMethod.apply/F.linear default dispatch',weight_name=name,weight_sha256=hashlib.sha256(wc.view(torch.uint8).numpy().tobytes()).hexdigest(),output_dtype=str(initial.dtype),output_stride=list(initial.stride()))
         def preserve(label,kernel):
