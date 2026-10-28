@@ -1,0 +1,111 @@
+{
+  "CPU_only": true,
+  "GPU_executed": false,
+  "GPU_numeric_verified": false,
+  "Graph_verified": false,
+  "actual_consumer_pins": {
+    "manifest_sha256": "1152d78231499303565697e5424f91b77e0102e1d899bc63e3f61de3c7c6ba56",
+    "owner": [
+      78898,
+      357135455
+    ],
+    "raw_bytes": 59716288,
+    "raw_files": 175,
+    "review_sha256": "eabf91480e6e9eb985f81d2b591241f2c68937689d00c8cc90b51146f19d25b9",
+    "summary_sha256": "17966c98d1f8056af1b35a70d5f8639ab46ce1a0fe723833898a4a8fc5dbfa59"
+  },
+  "actual_resources_verified": false,
+  "completed": true,
+  "errors": [],
+  "executed_fullstep_sha256": "1456450bb06dd52452160a9c5c89c81a7ccd0043044558b490db95997176daed",
+  "existing_consumer_gate_adapter": {
+    "all_original_array_Graph_side_artifact_epoch_counts_and_threshold_gates_preserved": true,
+    "archive": {
+      "adapted_sha256": "f6dd9a5ae86d92f9de00a309ff2d29910cda45893be6322516067095f40c2959",
+      "edits": [
+        {
+          "new": "assert (owner['pid'],owner['start_ticks'])==tuple(NEW_CONSUMER['owner'])",
+          "old": "assert (owner['pid'],owner['start_ticks'])==(62050,355994499)"
+        }
+      ],
+      "inverse_byte_exact": true,
+      "parent_sha256": "b493cd0e9ed57104a762b1c0d117be5652ab4af82af27be4f92d1498cc9c9ead"
+    },
+    "review": {
+      "adapted_sha256": "4c49eecd39d11e642bf2614781ea547a8838f68ff429ec285559a52cc50c7bc3",
+      "edits": [
+        {
+          "new": "assert review['raw_files_rehashed']==NEW_CONSUMER['raw_files'] and review['raw_bytes_rehashed']==NEW_CONSUMER['raw_bytes']",
+          "old": "assert review['raw_files_rehashed']==170 and review['raw_bytes_rehashed']==59569068"
+        }
+      ],
+      "inverse_byte_exact": true,
+      "parent_sha256": "e0b89da9b5e4666823caadad3fcbc607eaa933011fbec59b1c9089a685c2723e"
+    }
+  },
+  "fullstep_execution_allowed": true,
+  "mock_handle_positive_case_passed": true,
+  "mock_handles_are_not_actual_resources": true,
+  "parent_source_pins": {
+    "tools/biv150_native_k8_compact_n48_fullstep_fixture.py": "95968c46dc749b6559dc1be8945dedc2cf81fefcb1dfdc058086b2c196c3014f",
+    "tools/biv150_native_k8_compact_n48_fullstep_source.py": "fa2b389b925fe6526c7cf42f179dab48794773386449481009815db6efbed9e9",
+    "tools/probe_biv150_native_k8_compact_n48_fullstep.py": "ad87f323c0b96b13920ab1fd725079a18dbc6153820db2b48efe02cb6d372443"
+  },
+  "performance_verified": false,
+  "refusals": [
+    {
+      "case": "unknown_real113_consumer_evidence",
+      "error": "AssertionError"
+    },
+    {
+      "case": "unexpected_TL_handle",
+      "error": "AssertionError"
+    },
+    {
+      "case": "new_writer_runtime_spill",
+      "error": "AssertionError"
+    },
+    {
+      "case": "old_writer_unknown_registers",
+      "error": "AssertionError"
+    },
+    {
+      "case": "wrong_2560_writer_typed_ABI",
+      "error": "AssertionError"
+    },
+    {
+      "case": "foreign_writer_function_identity",
+      "error": "AssertionError"
+    }
+  ],
+  "remaining_JIT_adapter": {
+    "adapted_sha256": "4f1e8232361e191e924358ecf432ef8bf724c342da6f097d4b87e945ca5baf62",
+    "edits": [
+      {
+        "new": "    expected=dict(initial_encoder=writer.encode_append,old8k_append=writer.encode_append,new6k_append=writer.encode_append,\n      reducer=base._reduce_partials)",
+        "old": "    expected=dict(initial_encoder=writer.encode_append,tl_append=writer.encode_append,native_append=writer.encode_append,\n      tl_producer=reader._gqa_decode_konly_i8,reducer=base._reduce_partials)"
+      },
+      {
+        "new": "    # Both Native producer identities are admitted by their actual SO receipts.\n",
+        "old": "    reader_signature=typed_signature(handles['tl_producer'])\n    assert [reader_signature[n] for n in ('segm_output_ptr','segm_max_ptr','segm_expsum_ptr','query_ptr','query_code_ptr','query_scale_ptr','key_scale_ptr','key_cache_ptr','value_cache_ptr','seq_lens_ptr','block_table_ptr')]==['*fp32']*3+['*bf16','*i8','*fp32','*fp32','*i8','*bf16','*i32','*i32']\n"
+      },
+      {
+        "new": "for role in ('old8k_append','new6k_append'):",
+        "old": "for role in ('tl_append','native_append'):"
+      }
+    ],
+    "inverse_byte_exact": true,
+    "parent_sha256": "407b724fcfe69179fb158f480b0ede7641e143e49f3599074c77cfc0b2980e5a"
+  },
+  "script_sha256": "f76c6d75d00c42252ac00c6cecab596841ff110553064ca29ea71155d527427f",
+  "seven_original_bodies_preserved": {
+    "capture": "e3fd8b19c2de33cc9c9574762ce42667b26e07cfaff73444d58828cbad9682a0",
+    "fingerprints": "f3cbd2a41e01a765f752323f63935aa6910bb39dc5b30f2de1c5045208812aad",
+    "poison": "a9a0e0b6957c2914c48977ed0985bb0286f3500313741be53baac0a648670757",
+    "reducer": "84ba74067e67c6c4997b751ed5af2c37981667fe48add5ca0d8329f2b27410f5",
+    "step": "9cc8b621305c4db32c47fa8ae19088369f45867f2f9a9dcacac839f72ddb6666",
+    "timed": "e84af79b3470db82a6c043a387c3bbfc59f2557aaf610c3af6716463c63574b9",
+    "verify_inputs": "425090b5936f9a290baef6f5e1a296589c655bb5275d08874867558cad7edf33"
+  },
+  "side_stream_verified": false
+}

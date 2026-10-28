@@ -1,0 +1,79 @@
+{
+  "schema": "native-N48-runtime-capacity-diagnostic-v1",
+  "status": "CPU_plan",
+  "query_requested": false,
+  "runtime_API_queried": false,
+  "runtime_capacity_queried": false,
+  "runtime_capacity_observed": false,
+  "helper_compiled": false,
+  "measured_residency": false,
+  "numeric_verified": false,
+  "performance_verified": false,
+  "blocks_other_validation": false,
+  "explicit_kernel_launch_calls": 0,
+  "explicit_device_allocation_calls": 0,
+  "attribute_set_calls": 0,
+  "device_switch_calls": 0,
+  "pid": 77785,
+  "python": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "source_sha256": "c51480908249a08d18b11aa642764a91cc50aae761c38a868f076a92e9bb8e57",
+  "helper_source_sha256": "b5ccb92f228a6dd95156d42ea975716d166483265aa7aad5ab062fbb95a1566b",
+  "bindings_sha256": "c6ab1f4b6c2cdcb3f26ba1fe486f555fa00cfadc765d793f240bd4fb70680b74",
+  "bindings": {
+    "scope": "Optional S4 N48 runtime attributes/capacity only;64 threads,0 dynamic shared;not measured residency or numerical/service admission",
+    "reference_geometry_commit": "a19e7a9051e4658d961fe5c8566023647bd3aee0",
+    "reference_plan_sha256": "765f5839a8486e464ea9b639661b916483c11f07c67ae74aa927087dc253cbce",
+    "candidate_static_admission_sha256": "b481ccf7ec5da72b3036b91d212ebdf02c97d906d93f0914d083df7b35d2d87f",
+    "runtime_queries_previously_verified": false,
+    "libraries": [
+      {
+        "label": "reference2ad",
+        "sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+        "host_stub": "_Z49__device_stub__cjj_native_k8_compact_n48_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+        "host_stub_virtual_offset": 100800,
+        "host_stub_bytes": 381,
+        "GOT_offset": "0x2df40",
+        "ELF_static_shared_bytes": 8192,
+        "ELF_VGPR": 100,
+        "ELF_SGPR": 66
+      },
+      {
+        "label": "candidate5cf",
+        "sha256": "5cf698e8a60272d86b2545364f580faf4c40114e0044e91557c1a137f2521bed",
+        "host_stub": "_Z58__device_stub__cjj_native_k8_compact_n48_shared6k_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+        "host_stub_virtual_offset": 100800,
+        "host_stub_bytes": 381,
+        "GOT_offset": "0x2de58",
+        "ELF_static_shared_bytes": 6144,
+        "ELF_VGPR": 100,
+        "ELF_SGPR": 66
+      }
+    ]
+  },
+  "results": [],
+  "errors": [],
+  "library_paths": [
+    "/private/tmp/cjj-native112-n48-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_n48_s4_probe.so",
+    "/private/tmp/cjj-native113-n48-shared6k-compile-v1-raw-20261029/out/build/cjj_native_k8_compact_n48_shared6k_probe.so"
+  ],
+  "compile_command": [
+    "/usr/local/corex/bin/clang++",
+    "-std=c++17",
+    "-O2",
+    "-shared",
+    "-fPIC",
+    "-D__ILUVATAR__",
+    "-I/usr/local/corex/include",
+    "/private/tmp/flagos-cjj-native113-runtime-capacity-query-20261029/tools/query_biv150_native_n48_runtime_capacity.cpp",
+    "-L/usr/local/corex/lib64",
+    "-lcudart",
+    "-ldl",
+    "-Wl,-rpath,/usr/local/corex/lib64",
+    "-o",
+    "/private/tmp/cjj-native113-runtime-capacity-CPU-plan-v2-20261029/host-runtime-capacity.so"
+  ],
+  "requested_threads": 64,
+  "requested_dynamic_shared_bytes": 0,
+  "visible_devices": null
+}
