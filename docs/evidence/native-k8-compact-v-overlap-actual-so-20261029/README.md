@@ -39,7 +39,7 @@ Expected output hashes:
 - `review.json`: `0b3d0098f3e8b01b553fc75b44dbe6c5eb4b898d61076149f96e02fc09697708`.
 - `consumer-review.json`: `23570370a001f0d5df4b2750b92b48a2b4e7492e2bdfa90a9939e45b86fbbe53`.
 
-The candidate receipt binds the actual compile summary, inspection, IR, SASS, library and source proof, and passes the unchanged CPU `contract.admission`. Exactly the six reviewed static flags are set true; an unknown review field fails closed. It explicitly records `manual_Root_approval=false`; Root must independently replay/review before using it for a GPU run. Root approval is not asserted by this artifact. Remaining device/service/performance fields stay false. Original raw artifacts remain read-only at their supplied locations; this commit includes no large raw copy and does not compile/load the library.
+The candidate receipt binds the actual compile summary, inspection, IR, SASS, library and source proof, and passes the unchanged CPU `contract.admission`. Exactly the six reviewed static flags are set true; an unknown review field fails closed. It explicitly records `manual_Root_approval=false`; Root must independently replay/review before using it for a GPU run. Root approval is not asserted by this artifact. Remaining device/service/performance fields stay false. Original raw artifacts remain read-only at their supplied locations. The follow-up capsule below shares the complete small compile originals and does not compile/load the library.
 
 Limitations: the IR is the hash-bound actual `ixobjdump --IR` export, not an independent bitcode decoder; the static comparison is not a whole-program equivalence proof. Embedded resource metadata does not establish loaded occupancy or latency hiding. The only prepared consumer scopes remain N64/S2 and N32/S4; N40/N48, writer/fullstep, 42-layer capacity and actual model accuracy require their own real runs.
 
@@ -50,3 +50,35 @@ Root independently read the actual IR/SASS and replayed the initial audit with P
 The approved chain is preserved as `initial-review-root-replayed.json` (`f5a40726b7ae1c1db122e710c1921815db887a1f06112901c842f976a1c9d0dc`) and `initial-consumer-review.json` (`70e1c29e51cb03c7ff9ca8f5eab925ad9b97ddf585d983e734d240d2a673e4f0`). The final script adds only an explicit six-field allowlist so a future unknown review field cannot be granted automatically. `initial-to-final-script.patch` records that complete change; reversing it reconstructs initial script SHA `02fc4aff949091969a058bd1ffed64465b9a5baa73b1e7d57d6cf9178bcaa271` exactly. The two audit JSONs differ only in `script_sha256`; the two unapproved receipt JSONs differ only in `independent_audit_report_sha256`. All actual SO checks, identities, resources, conclusions and limitations are identical. These equivalences were checked locally before this evidence was committed. Root approval remains a separate supplied record, never inferred by the agent's audit script.
 
 The complete original Root-replayed script is also archived verbatim as `original_root_replayed_review.py`, SHA `02fc4aff949091969a058bd1ffed64465b9a5baa73b1e7d57d6cf9178bcaa271`; its local CPU rerun reproduces the exact initial f5/70 report/receipt hashes. Use the same CPU command above with this filename and separate output paths to replay the original approved chain. Neither script mutates the supplied Root-approved receipt or the running device consumer.
+
+
+## Complete compile originals available in Git
+
+`compile-original-records.tar.gz` is the **unchanged** supplied transport archive: 354,008 bytes, SHA256 `98863c1a9f8066658820285290f174440d59c86172e44b6800bc8e61dca78ed3`. It contains all 33 compile originals (1,408,237 bytes) plus `download-manifest.json` (11,052 bytes): 34 regular files, 1,419,289 bytes expanded. The original final SO, object files, compiled source snapshots, build flags, logs, actual IR and SASS are included. `compile-package-index.json` lists every path, size and SHA256; no contents were regenerated or omitted.
+
+The old40f9 dependency is already shared in commit `ae734b954447d0e7074a862437f7b8a3c46d2b13` at `docs/evidence/native-k8-compact-device-v1-20261028/compile-original-records.tar.gz`, 293,274 bytes, SHA256 `7f4bc5abb44a5aec0b621eb5d8e5ae1054e96a833e59497892c24f6258bcf102`. This exact Git blob and its archived download manifest were checked against the original control inputs. It is referenced in the index and is not copied again.
+
+To verify the new package/index/collector manifest and the existing old40f9 package hash without unpacking:
+
+```sh
+python3 -B docs/evidence/native-k8-compact-v-overlap-actual-so-20261029/verify_unpack_compile.py
+```
+
+To obtain the new SO/IR/SASS, choose a **new** destination directory:
+
+```sh
+python3 -B docs/evidence/native-k8-compact-v-overlap-actual-so-20261029/verify_unpack_compile.py \
+  --destination /tmp/pr110-compile-raw
+```
+
+The helper checks the supplied archive hash, all 34 indexed files, the original 33-file manifest, exact member paths and regular-file types before creating the destination. It refuses an existing destination and re-reads each written file for byte equality. It never loads the SO or reruns the actual-SO audit. `compile-package-verification.json` records the verify-only result; a separate actual unpack/readback also passed locally. All device/model/performance qualifications remain unchanged.
+
+For a fresh clone that also needs the old comparison artifacts, after the verifier has checked that old package hash, extract the referenced old package into a separate new directory:
+
+```sh
+python3 -m tarfile -e \
+  docs/evidence/native-k8-compact-device-v1-20261028/compile-original-records.tar.gz \
+  /tmp/pr100-compile-raw
+```
+
+The existing audit commands then accept `--raw /tmp/pr110-compile-raw --control-raw /tmp/pr100-compile-raw`. No new compile or device test is required to reconstruct these exact review inputs.
