@@ -113,7 +113,7 @@ class _Runtime:
                               k_stride=list(kw["key_cache_ptr"].stride()),
                               v_stride=list(kw["value_cache_ptr"].stride()),
                               library_sha256=self.library_sha256,
-                              overlap_v=False, extra_KV_bytes=0,
+                              overlap_v=True, extra_KV_bytes=0,
                               proof="successful native launch; not a request coverage ratio")
                 if capturing:
                     self.captured.add(shape)
@@ -157,5 +157,5 @@ def create_runtime():
     print("BIV150_NATIVE_GQA_INSTALL", json.dumps(dict(
         installed=True, supported_shapes=[[64, 2], [32, 4]], q_strides=[[2048, 128, 1], [2560, 128, 1]],
         library_sha256=runtime.library_sha256, compile_at_runtime=False,
-        overlap_v=False, extra_KV_bytes=0), sort_keys=True), flush=True)
+        overlap_v=True, extra_KV_bytes=0), sort_keys=True), flush=True)
     return runtime
