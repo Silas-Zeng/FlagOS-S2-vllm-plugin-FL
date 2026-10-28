@@ -1,5 +1,8 @@
 # NativeK8 V-overlap 独立服务候选
 
+最新验收：受测b5d已完成同机正式对照，**4K6374.44（相对最新main持平）、16K5165.67（+7.276%）**；官方精度100/105、独立64补充102/105。TTFT3675.71/98573.61ms，4K相对main升11.145%，均满足官网固定门槛。完整原件与局限见[正式结果](evidence/native107-throughput-v1-20261028/README.md)。后续文字保留分阶段过程，不能把历史“待跑”当当前状态；组件1.22×不等于模型收益。
+
+
 本分支从本人 PR98 `41f0f4c45fb87a824bdefaa39f91847fff96543b` 创建，正常合并本人 PR106 `6a85b304b920fb1efbfb4710e74aefdc58245713`，merge commit 为 `cdb9be1`。两边均包含团队 main `1cbac531ca9afaa0e9a68624d5d10cb1d0412055`。原 PR98 和原 `22e4a5...` 服务候选保留作对照；此次没有更新官方框架版本。
 
 生产代码只切换已测组件身份：`biv150_konly_encoded_native.py` 的固定 SO SHA、operator/schema namespace；`compile_semantics.py` 的对应 C3 指纹身份；`biv150_konly_encoded_sources.json` 中的 adapter 源码 SHA 与库 SHA。库固定为 `8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5`，namespace 为 `cjj_native_k8_v_overlap_probe`。源码逆变换检查恢复 PR98 两个 Python 文件的原字节和 manifest 原内容，PR106 的四个 GPU 源文件也逐字保持。
