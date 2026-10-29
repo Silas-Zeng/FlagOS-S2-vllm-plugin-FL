@@ -1,4 +1,5 @@
 """Narrow CPU proof of timing suffix/diagnostic boundary; never starts transport."""
+import argparse
 import ast
 import json
 from pathlib import Path
@@ -9,7 +10,7 @@ from unittest.mock import patch
 import biv150_konly_multi2_timing_source as t
 c=t.c;f=t.f
 
-def main():
+def main(args):
     checks={}
     def ok(name,value):c.need(value,name);checks[name]=True
     def bad(name,fn):
@@ -41,7 +42,7 @@ def main():
         ok('no_writer',all(v not in code for v in ('writer.warmup','writer[','append_poison','writer_module=')))
         ok('compiled_source_and_loader_not_changed',not subprocess.check_output(['git','-C',str(c.ROOT),'diff',t.NUMERIC_SOURCE,'--','tools/biv150_konly_multi2_hoist_source.py','tools/biv150_konly_multi2_numeric_source.py','tools/biv150_konly_multi2_numeric_contract.py']))
         ok('production_main899_unchanged',not subprocess.check_output(['git','-C',str(c.ROOT),'diff',f.MAIN,'--','vllm_fl','csrc']))
-        with patch.object(Path,'read_bytes',side_effect=AssertionError('pending must not read a receipt')):
+        with patch.object(t,'NUMERIC_REVIEW',None),patch.object(Path,'read_bytes',side_effect=AssertionError('pending must not read a receipt')):
             bad('pending_numeric_admission_rejects_before_reads',lambda:t.numeric_admission(None,None))
         for name,value in (('NUMERIC_MANIFEST',True),('NUMERIC_SUMMARY','x'*64),('NUMERIC_REVIEW','0'*63)):
             with patch.object(t,name,value):bad('reject_invalid_pin_'+name,lambda:t.numeric_admission(None,None))
@@ -55,7 +56,14 @@ def main():
         bad('quality_failure_requires_diagnostic',lambda:policy(hard,False,False))
         admitted=policy(hard,False,True);ok('original_quality_failure_remains_false',admitted['original_BF16_quality_passed'] is False and admitted['precision_gate'] is False and admitted['service_verified'] is False)
         ok('original_quality_and_model_flags_preserved',"original_BF16_quality_passed=all(r['original_BF16_quality_passed'] for r in result['stages'])" in code and 'performance_measured=True,precision_gate=False,service_verified=False' in code)
-        ok('default_admission_and_device_false',t.plan()['actual_numeric_admission_pinned'] is False and all(t.plan()[k] is False for k in ('GPU_executed','performance_measured','precision_gate','service_verified')))
+        ok('actual_pin_format_does_not_grant_device_or_model',t.plan()['actual_numeric_admission_pinned'] is True and all(t.plan()[k] is False for k in ('GPU_executed','performance_measured','precision_gate','service_verified')))
+        actual=None
+        if args.numeric_raw is not None or args.numeric_review is not None:
+            c.need(args.numeric_raw is not None and args.numeric_review is not None,'both actual numeric inputs required')
+            actual=t.numeric_admission(args.numeric_raw,args.numeric_review)
+            ok('actual_complete_diagnostic_admission',actual['hard_numeric_Graph_side_verified'] is True and actual['original_BF16_quality_passed'] is False and actual['precision_gate'] is False)
         ok('no_framework_import',not {'torch','triton','numpy','vllm','vllm_fl'}.intersection(sys.modules))
-    return dict(completed=True,errors=[],check_count=len(checks),checks=checks,plan=t.plan(),source_edits=len(edits),driver_sha256=c.sha(code),timing_suffix=proof,CPU_only=True,GPU_executed=False,actual_numeric_admission_verified=False,source_root=str(c.ROOT))
-if __name__=='__main__':print(json.dumps(main(),sort_keys=True,indent=2))
+    return dict(completed=True,errors=[],check_count=len(checks),checks=checks,plan=t.plan(),source_edits=len(edits),driver_sha256=c.sha(code),timing_suffix=proof,CPU_only=True,GPU_executed=False,actual_numeric_admission_verified=actual is not None,actual_numeric_admission=actual,source_root=str(c.ROOT))
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--numeric-raw',type=Path);p.add_argument('--numeric-review',type=Path)
+    print(json.dumps(main(p.parse_args()),sort_keys=True,indent=2))

@@ -4,10 +4,10 @@ from pathlib import Path
 import biv150_konly_multi2_numeric_contract as f
 c=f.c
 NUMERIC_SOURCE='d39c76f4db8a37b89a4fafe43c714dbeff9506b2'
-# Root fills these only after independently reviewing the complete diagnostic run.
-NUMERIC_MANIFEST=None
-NUMERIC_SUMMARY=None
-NUMERIC_REVIEW=None
+# Complete d39 diagnostic arrays independently replayed by Root; model gate false.
+NUMERIC_MANIFEST='367689567f0d36f600dc2670a81c5281a040c7b0fc8af6406239fbb6818ebc17'
+NUMERIC_SUMMARY='bfe95889b93e0928721475e1b5357f605b7bfb05c16bafbbc0119bb9d8fd4eb3'
+NUMERIC_REVIEW='2792e7297e3fcd02aa9097bf5eded44703307b73e439f14a5c19ad2e0669a2e3'
 
 
 def plan():

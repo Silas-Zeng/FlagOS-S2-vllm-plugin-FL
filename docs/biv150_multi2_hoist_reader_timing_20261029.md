@@ -1,6 +1,6 @@
 # PR123: complete reader ABBA after diagnostic numeric review
 
-This independent child of d39 keeps main899 production, both actual compiled readers, codec, and all original numerical thresholds unchanged. It does not include a writer. Default execution only prints the CPU plan; three numeric evidence SHA pins remain `None` until Root independently reviews the complete d39 diagnostic run. The stopped v1 run cannot qualify this entry.
+This independent child of d39 keeps main899 production, both actual compiled readers, codec, and all original numerical thresholds unchanged. It does not include a writer. Default execution only prints the CPU plan. The three evidence SHA pins now bind the complete d39 diagnostic run (manifest367689, summarybfe958, review2792e7), independently replayed by Root with identical report bytes. The stopped v1 run cannot qualify this entry.
 
 The driver reversibly extends d39. It reruns unchanged eager A, Graph A, changed Graph B before fresh eager B, and side C. Every hard gate is mandatory. `--numeric-diagnostic` is required for this timing experiment: both readers share the observed BF16 proxy relative-RMSE failure, which is recorded without making a model-precision or service claim.
 
@@ -10,4 +10,4 @@ The timed input is original B: total Q2048, qlens `(31,2017)`, klens `(2079,4063
 
 CPU: `python -B -S tools/check_biv150_konly_multi2_timing_cpu.py`; plan: `python -B -S tools/probe_biv150_konly_multi2_timing.py`. Device mode additionally requires the original compile `--raw/--review/--references`, exact clean commit/new output/Root ownership, explicit `--numeric-diagnostic`, and new `--numeric-raw/--numeric-review` for the separately verified complete diagnostic result. Pending pins stop before framework imports; filling them is a separate reviewed change, not a command-line override.
 
-No source kernel, cache loader, alias/lifetime check, reference math, canary, Graph/side comparison or qualification in existing d39/f667 code is changed. Actual timing and any benefit remain unmeasured.
+Both readers passed all hard array/Graph/side gates in the complete diagnostic. Their original BF16 proxy relative RMSE remains0.00944397 in B and0.00952475 in C, above0.005; precision and service gates remain false. No source kernel, cache loader, alias/lifetime check, reference math, canary, Graph/side comparison or qualification in existing d39/f667 code is changed. Actual timing and any benefit remain unmeasured.
