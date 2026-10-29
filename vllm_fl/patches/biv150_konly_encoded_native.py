@@ -38,8 +38,8 @@ def storage(t):
     s=t.untyped_storage();return (int(s._cdata),int(s.data_ptr()),int(s.data_ptr())+int(s.nbytes()))
 
 
-def overlaps(a,b):
-    _,x,y=storage(a);_,u,v=storage(b);return x<v and u<y
+def overlaps(a,b,backing):
+    _,x,y=backing[id(a)];_,u,v=backing[id(b)];return x<v and u<y
 
 
 def bounds(t):
@@ -47,9 +47,10 @@ def bounds(t):
     need(str(t.dtype) in widths,'known operand dtype')
     width=widths[str(t.dtype)];shape=tuple(t.shape);strides=tuple(t.stride())
     need(len(shape)==len(strides) and all(type(n) is int and n>=0 for n in shape) and all(type(v) is int and v>0 for v in strides),'operand geometry')
-    _,start,end=storage(t);pointer=int(t.data_ptr());offset=int(t.storage_offset())
+    backing=storage(t);_,start,end=backing;pointer=int(t.data_ptr());offset=int(t.storage_offset())
     extent=0 if 0 in shape else 1+sum((n-1)*s for n,s in zip(shape,strides))
     need(pointer==start+offset*width and start<=pointer and pointer+extent*width<=end,'operand backing bounds')
+    return backing
 
 
 def geometry(t):
@@ -107,15 +108,17 @@ class Adapter:
         need(kw['query_code_ptr'] is role['key_cache_ptr'] and kw['query_scale_ptr'] is role['key_scale_ptr'],'foreign unused private-Q operands')
         tensors=[kw[k] for k in ('query_ptr','key_cache_ptr','key_scale_ptr','value_cache_ptr','seq_lens_ptr','block_table_ptr','segm_output_ptr','segm_max_ptr','segm_expsum_ptr')]
         q,k,scale,v,lens,table,partial,maximum,summation=tensors
-        for t in tensors:bounds(t)
+        # Only this call: tensors keeps every object alive; retain all bounds
+        # checks in order and reuse their observed whole-storage intervals.
+        backing={id(t):bounds(t) for t in tensors}
         need(all(str(t.device)=='cuda:0' for t in tensors),'single actual CUDA0 roles')
         need(str(q.dtype)=='torch.bfloat16' and tuple(q.shape[1:])==(16,128),'BF16 query heads/dim')
         need(str(lens.dtype)==str(table.dtype)=='torch.int32','I32 metadata')
         need(all(str(t.dtype)=='torch.float32' for t in (partial,maximum,summation)),'F32 scratch')
-        for src in (q,lens,table):need(not overlaps(src,k),'source/live-cache backing alias')
+        for src in (q,lens,table):need(not overlaps(src,k,backing),'source/live-cache backing alias')
         for i,out in enumerate((partial,maximum,summation)):
-            need(all(not overlaps(out,src) for src in (q,k,scale,v,lens,table)),'scratch/source backing alias')
-            need(all(not overlaps(out,other) for other in (partial,maximum,summation)[:i]),'scratch backing alias')
+            need(all(not overlaps(out,src,backing) for src in (q,k,scale,v,lens,table)),'scratch/source backing alias')
+            need(all(not overlaps(out,other,backing) for other in (partial,maximum,summation)[:i]),'scratch backing alias')
         need(tuple(maximum.stride())==tuple(summation.stride()),'scalar common strides')
         observed={'query_stride_token':q.stride(0),'query_stride_head':q.stride(1),'block_table_stride':table.stride(0),
             'k_stride_block':k.stride(0),'k_stride_slot':k.stride(1),'k_stride_head':k.stride(2),

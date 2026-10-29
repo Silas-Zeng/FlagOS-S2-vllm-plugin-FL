@@ -18,6 +18,31 @@ ROOT=Path(__file__).resolve().parents[1]
 PARENT='2e3abf3f9bcae78e37d8cf3a63d8fcfc6a609db9'
 SO=Path('/private/tmp/cjj-native-k8-v-overlap-compile-v1-raw-20261028/out/build/cjj_native_k8_v_overlap_probe.so')
 
+# Exact narrow inverse; all original wiring/fence/C3/ELF cases below remain.
+STORAGE_OBSERVATION_PATCHES = (('def overlaps(a,b):\n    _,x,y=storage(a);_,u,v=storage(b);return x<v and u<y',
+  'def overlaps(a,b,backing):\n    _,x,y=backing[id(a)];_,u,v=backing[id(b)];return x<v and u<y'),
+ ('    _,start,end=storage(t);pointer=int(t.data_ptr());offset=int(t.storage_offset())',
+  '    '
+  'backing=storage(t);_,start,end=backing;pointer=int(t.data_ptr());offset=int(t.storage_offset())'),
+ ("    need(pointer==start+offset*width and start<=pointer and pointer+extent*width<=end,'operand "
+  "backing bounds')",
+  "    need(pointer==start+offset*width and start<=pointer and pointer+extent*width<=end,'operand "
+  "backing bounds')\n"
+  '    return backing'),
+ ('        for t in tensors:bounds(t)',
+  '        # Only this call: tensors keeps every object alive; retain all bounds\n'
+  '        # checks in order and reuse their observed whole-storage intervals.\n'
+  '        backing={id(t):bounds(t) for t in tensors}'),
+ ('overlaps(src,k)', 'overlaps(src,k,backing)'),
+ ('overlaps(out,src)', 'overlaps(out,src,backing)'),
+ ('overlaps(out,other)', 'overlaps(out,other,backing)'))
+
+def restore_storage_observation(source):
+    for old,new in reversed(STORAGE_OBSERVATION_PATCHES):
+        assert source.count(new)==1, 'storage observation inverse drift: '+new
+        source=source.replace(new,old,1)
+    return source
+
 def actual_elf(path,native):
     b=path.read_bytes();assert hashlib.sha256(b).hexdigest()==native.LIBRARY_SHA
     assert b[:6]==b'\x7fELF\x02\x01' and struct.unpack_from('<H',b,18)[0]==62
@@ -85,7 +110,9 @@ def check(path):
     original_library='22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd'
     for name in ('vllm_fl/patches/biv150_konly_encoded_native.py','vllm_fl/compile_semantics.py'):
         original=subprocess.check_output(['git','-C',str(ROOT),'show','41f0f4c45fb87a824bdefaa39f91847fff96543b:'+name])
-        restored=(ROOT/name).read_text().replace(native.LIBRARY_SHA,original_library).replace(
+        restored=(ROOT/name).read_text()
+        if name.endswith('biv150_konly_encoded_native.py'):restored=restore_storage_observation(restored)
+        restored=restored.replace(native.LIBRARY_SHA,original_library).replace(
             'cjj_native_k8_v_overlap_probe','cjj_native_k8_qk_probe').replace(
             'Default-off verified-8b86 V-overlap NativeK8 adapter','Default-off existing-22e NativeK8 adapter')
         assert restored.encode()==original,'service change beyond identity: '+name
@@ -158,7 +185,8 @@ def check(path):
         assert (ROOT/p).read_bytes()==subprocess.check_output(['git','-C',str(ROOT),'show',PARENT+':'+p])
     assert not {'torch','triton','vllm','numpy'}.intersection(sys.modules)
     return dict(passed=True,CPU_only=True,actual_8b86_ELF_ABI=proof,CPU_dispatcher_is_recorder_only=True,actual_attach_wrapper_and_C3_executed=True,
-        cases=cases,stock_native_parent_boundary_preserved=True,component_GPU_sources_unchanged=True,service_identity_only_inverse=True,
+        cases=cases,stock_native_parent_boundary_preserved=True,component_GPU_sources_unchanged=True,service_identity_only_inverse=False,
+        service_inverse_restores_storage_observation_then_identity=True,
         new_service_smoke_model_or_performance_verified=False,GPU_or_SSH_executed=False)
 
 if __name__=='__main__':
