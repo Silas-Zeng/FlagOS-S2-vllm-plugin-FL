@@ -135,14 +135,14 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         if native_k8:
             # Also loaded standalone by the owned-service helper. Keep this
             # fingerprint stdlib-only; never import a package/private operator.
-            expected = '8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5'
+            expected = '5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b'
             library = Path(env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY', ''))
             if (not library.is_absolute() or not library.is_file()
                     or env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256') != expected):
                 raise ValueError('NativeK8 fingerprint requires absolute library and fixed SHA pair')
             if _sha(library) != expected:
                 raise ValueError('NativeK8 fingerprint library content differs')
-            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_v_overlap_probe::produce')
+            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_klookahead_probe::produce')
         facts["konly_encoded"] = encoded
     result = {"schema": 1, "sha256": _digest(facts),
               "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
