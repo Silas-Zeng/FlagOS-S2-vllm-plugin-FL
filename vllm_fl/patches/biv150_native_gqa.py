@@ -5,10 +5,14 @@ import json
 import os
 from pathlib import Path
 
-from vllm_fl.compile_semantics import native_gqa_library_path, native_model_matches
+from vllm_fl.compile_semantics import (native_gqa_library_path,
+                                       native_gqa_s8_library_path,
+                                       native_model_matches)
 
 _ENABLE = "VLLM_FL_BIV150_NATIVE_GQA"
+_S8_LIBRARY_SHA256 = "b2cd075343fe385603db6b1daf79e0f55678fde66e56a7f7b05d33f96cd3aea6"
 _LOADED = False
+_S8_LOADED = False
 
 
 def _sha(path):
@@ -16,17 +20,21 @@ def _sha(path):
 
 
 class _Runtime:
-    def __init__(self, torch, library):
+    def __init__(self, torch, library, s8_library=None):
         self.torch = torch
         self.device = torch.cuda.current_device()
         self.library_sha256 = _sha(library)
+        self.s8_library_sha256 = _sha(s8_library) if s8_library is not None else None
+        self.s8_enabled = s8_library is not None
         self.selected = set()
         self.captured = set()
 
     def _eligible(self, grid, kw):
-        if tuple(grid) not in ((64, 2, 2), (32, 2, 4)):
+        if tuple(grid) not in ((64, 2, 2), (32, 2, 4), (30, 2, 8)):
             return False
         rows, _, segments = grid
+        if segments == 8 and not self.s8_enabled:
+            return False
         values = {"queries_per_kv": 8, "ROWS": 8, "HEAD_SIZE": 128,
                   "PAGE_SIZE": 16, "SEGMENTS": segments, "num_warps": 1,
                   "num_stages": 1, "k_stride_block": 8192,
@@ -39,7 +47,8 @@ class _Runtime:
         if q is None or k is None or v is None:
             return False
         if (q.dtype != self.torch.bfloat16 or tuple(q.shape) != (rows, 16, 128)
-                or tuple(q.stride()) not in ((2048, 128, 1), (2560, 128, 1))
+                or tuple(q.stride()) not in (((2048, 128, 1),) if segments == 8
+                                             else ((2048, 128, 1), (2560, 128, 1)))
                 or not q.is_cuda or q.device.index != self.device
                 or q.requires_grad):
             return False
@@ -48,7 +57,7 @@ class _Runtime:
                     or len(tensor.shape) != 4 or tuple(tensor.shape[1:]) != (16, 2, 128)
                     or tuple(tensor.stride()) != (8192, 256, 128, 1)):
                 return False
-        if k.shape[0] != v.shape[0]:
+        if k.shape[0] != v.shape[0] or k.shape[0] <= 0:
             return False
         if k.data_ptr() % 64 or v.data_ptr() % 64:
             return False
@@ -56,7 +65,8 @@ class _Runtime:
         if (lengths is None or table is None or lengths.dtype != self.torch.int32
                 or tuple(lengths.shape) != (rows,) or not lengths.is_contiguous()
                 or table.dtype != self.torch.int32 or len(table.shape) != 2
-                or table.shape[0] != rows or table.stride(1) != 1):
+                or table.shape[0] != rows or table.stride(1) != 1
+                or (segments == 8 and table.shape[1] < 1024)):
             return False
         partial = kw.get("segm_output_ptr")
         if (partial is None or partial.dtype != self.torch.float32
@@ -97,8 +107,11 @@ class _Runtime:
         # Once an eligible native launch starts, never hide its error by running
         # the old kernel over partially written scratch.
         rows, _, segments = grid
-        operator = (self.torch.ops.corex_native_gqa_s2_probe.produce if segments == 2
-                    else self.torch.ops.corex_native_gqa_s4_probe.produce)
+        if segments == 8:
+            operator = self.torch.ops.corex_native_gqa_s8_shared4k_component.produce
+        else:
+            operator = (self.torch.ops.corex_native_gqa_s2_probe.produce if segments == 2
+                        else self.torch.ops.corex_native_gqa_s4_probe.produce)
         operator(
             kw["query_ptr"], kw["key_cache_ptr"], kw["value_cache_ptr"],
             kw["seq_lens_ptr"], kw["block_table_ptr"], kw["segm_output_ptr"],
@@ -113,19 +126,48 @@ class _Runtime:
                               k_stride=list(kw["key_cache_ptr"].stride()),
                               v_stride=list(kw["value_cache_ptr"].stride()),
                               library_sha256=self.library_sha256,
-                              overlap_v=False, extra_KV_bytes=0,
+                              s8_library_sha256=self.s8_library_sha256, s8_variant="shared4k",
+                              overlap_v=True, extra_KV_bytes=0,
                               proof="successful native launch; not a request coverage ratio")
+                if segments == 8:
+                    record.update(device_index=self.device,
+                        q_shape=list(kw["query_ptr"].shape),
+                        q_dtype=str(kw["query_ptr"].dtype),
+                        k_shape=list(kw["key_cache_ptr"].shape),
+                        k_dtype=str(kw["key_cache_ptr"].dtype),
+                        v_shape=list(kw["value_cache_ptr"].shape),
+                        v_dtype=str(kw["value_cache_ptr"].dtype),
+                        lengths_shape=list(kw["seq_lens_ptr"].shape),
+                        lengths_dtype=str(kw["seq_lens_ptr"].dtype),
+                        table_shape=list(kw["block_table_ptr"].shape),
+                        table_dtype=str(kw["block_table_ptr"].dtype),
+                        table_stride=list(kw["block_table_ptr"].stride()),
+                        partial_shape=list(kw["segm_output_ptr"].shape),
+                        partial_dtype=str(kw["segm_output_ptr"].dtype),
+                        partial_stride=list(kw["segm_output_ptr"].stride()),
+                        maximum_shape=list(kw["segm_max_ptr"].shape),
+                        maximum_dtype=str(kw["segm_max_ptr"].dtype),
+                        maximum_stride=list(kw["segm_max_ptr"].stride()),
+                        summation_shape=list(kw["segm_expsum_ptr"].shape),
+                        summation_dtype=str(kw["segm_expsum_ptr"].dtype),
+                        summation_stride=list(kw["segm_expsum_ptr"].stride()),
+                        page_size=kw.get("PAGE_SIZE"),
+                        num_warps=kw.get("num_warps"),
+                        num_stages=kw.get("num_stages"),
+                        softmax_scale_log2e=kw.get("softmax_scale_log2e"))
                 if capturing:
                     self.captured.add(shape)
-                    print("BIV150_NATIVE_GQA_CAPTURED", json.dumps(record, sort_keys=True), flush=True)
+                    prefix = "BIV150_NATIVE_S8_GQA_" if segments == 8 else "BIV150_NATIVE_GQA_"
+                    print(prefix + "CAPTURED", json.dumps(record, sort_keys=True), flush=True)
                 else:
                     self.selected.add(shape)
-                    print("BIV150_NATIVE_GQA_SELECTED", json.dumps(record, sort_keys=True), flush=True)
+                    prefix = "BIV150_NATIVE_S8_GQA_" if segments == 8 else "BIV150_NATIVE_GQA_"
+                    print(prefix + "SELECTED", json.dumps(record, sort_keys=True), flush=True)
         return True
 
 
 def create_runtime():
-    global _LOADED
+    global _LOADED, _S8_LOADED
     if os.environ.get(_ENABLE, "1") != "1":
         return None
     from vllm.platforms import current_platform
@@ -153,9 +195,22 @@ def create_runtime():
         for name in ("corex_native_gqa_s2_probe::produce", "corex_native_gqa_s4_probe::produce"):
             torch.library.register_fake(name)(fake)
         _LOADED = True
-    runtime = _Runtime(torch, library)
+    s8_enabled = os.environ.get("VLLM_FL_BIV150_NATIVE_GQA_S8", "0") == "1"
+    s8_library = native_gqa_s8_library_path() if s8_enabled else None
+    if s8_library is not None:
+        if not s8_library.is_file():
+            raise RuntimeError("请先独立构建 corex_native_gqa_s8.so")
+        if _sha(s8_library) != _S8_LIBRARY_SHA256:
+            raise RuntimeError("N30/S8 库与已验证组件成品 SHA 不符")
+        if not _S8_LOADED:
+            torch.ops.load_library(str(s8_library))
+            torch.library.register_fake("corex_native_gqa_s8_shared4k_component::produce")(lambda *args: None)
+            _S8_LOADED = True
+    runtime = _Runtime(torch, library, s8_library)
+    supported = [[64, 2], [32, 4]]
     print("BIV150_NATIVE_GQA_INSTALL", json.dumps(dict(
-        installed=True, supported_shapes=[[64, 2], [32, 4]], q_strides=[[2048, 128, 1], [2560, 128, 1]],
+        installed=True, supported_shapes=supported, q_strides=[[2048, 128, 1], [2560, 128, 1]],
         library_sha256=runtime.library_sha256, compile_at_runtime=False,
-        overlap_v=False, extra_KV_bytes=0), sort_keys=True), flush=True)
+        s8_enabled=s8_enabled, s8_supported_shapes=[[30, 8]] if s8_enabled else [],
+        s8_library_sha256=runtime.s8_library_sha256, s8_variant="shared4k", overlap_v=True, extra_KV_bytes=0), sort_keys=True), flush=True)
     return runtime

@@ -1,0 +1,100 @@
+{
+  "purpose": "PR105 814-tree N30/S8 isolated native-GQA production overlay; candidate only, not an official-score or merge claim",
+  "base": {
+    "tree": "f1658b690011d1a6568bd07210eed597af6ff516",
+    "source_count": 814,
+    "manifest_sha256": "f644fcdb35d02aa34647afa0f1e2cf887e23ba13d89d3d953b6af623e2812f8d",
+    "compile_semantics.py": "db70071554b24c33725a0548ce65ec5a089d7c38817f449811f729570a360148",
+    "biv150_native_gqa.py": "2f5e730a428548a235b7c1cee7f5222176cce6d840fb406079c042052a49b0e1",
+    "biv150_gqa_decode.py_unchanged": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "native_gqa_s2.cu_unchanged": "dc9bc915c9f5b165cbf0915fe653caa4dd727b48d6f94a50064c5d3c572f60bf",
+    "native_S2_S4_SO_unchanged": true
+  },
+  "tested_component": {
+    "run_id": "20261029T033802216533Z-native-gqa-s8-hotspot-component",
+    "component_archive_sha256": "3eef930b200c5ea727abe815024e5b93f01cbf6dda20fd560ef6f71adb5c7bc9",
+    "component_archive_files": 86,
+    "component_archive_bytes": 15486087,
+    "s8_library_sha256": "6c3cbdd34cc66be42d15e979780d2f5dfab833948b43aa9b45d5648301fd6333",
+    "s8_source_cpp_sha256": "087ea25d73df57de754a83615ef9e2b1adea3e869654964100b20877cc16aea3",
+    "s8_source_cu_sha256": "5d7b8c31c4850d96fb917faa927be1de7644446db2be21f22b0ac59ce2be2239",
+    "event_ms": {
+      "A_triton": 1.028207004070282,
+      "B_native": 0.764987587928772,
+      "fraction_saved": 0.2559984663589375
+    },
+    "wall_ms": {
+      "A_triton": 1.03124121875,
+      "B_native": 0.7675468437499999,
+      "fraction_saved": 0.25570581373738366
+    },
+    "gates": [
+      "9 correctness/boundary cases",
+      "partial/max/sum/full-output bitwise",
+      "FP64 sample",
+      "Graph",
+      "side-stream",
+      "inputs/RNG",
+      "source/library/DB restore"
+    ],
+    "termination": "capacity-v2 component correctness and cleanup passed",
+    "s8_build_receipt_sha256": "bd14b82d3488b4361d8e014bd822dbf868ad06d2173c65bb15db335db175444f",
+    "s8_build_receipt_path": "analysis/native-gqa-s8-20261029/component-capacity-v2/s8-build-receipt.json",
+    "source_sha256": {
+      "native_gqa_s8.cpp": "087ea25d73df57de754a83615ef9e2b1adea3e869654964100b20877cc16aea3",
+      "native_gqa_s8.cu": "5d7b8c31c4850d96fb917faa927be1de7644446db2be21f22b0ac59ce2be2239"
+    }
+  },
+  "candidate_scope": {
+    "grid": [
+      30,
+      2,
+      8
+    ],
+    "q_shape": [
+      30,
+      16,
+      128
+    ],
+    "q_stride": [
+      2048,
+      128,
+      1
+    ],
+    "dtype": "BF16",
+    "page_size": 16,
+    "S2_S4_reducer": "unchanged",
+    "production_feature_default": "disabled; explicit VLLM_FL_BIV150_NATIVE_GQA_S8=1 required",
+    "outside_scope": [
+      "N29/N31",
+      "S16",
+      "Q stride 2560",
+      "official accuracy/performance qualification"
+    ]
+  },
+  "logging_receipt": {
+    "existing_S2_S4_prefix_and_schema_unchanged": "BIV150_NATIVE_GQA_INSTALL/SELECTED/CAPTURED",
+    "new_prefix": "BIV150_NATIVE_S8_GQA_SELECTED/CAPTURED",
+    "fields": [
+      "device_index",
+      "q/k/v dtype/shape/stride",
+      "sequence/table dtype/shape/stride",
+      "partial/max/sum dtype/shape/stride",
+      "grid/threads/page_size/warps/stages",
+      "base and S8 library SHA",
+      "overlap_v/extra_KV_bytes"
+    ],
+    "validator": "tools/native_gqa_s8_activation.py; selected-only eager activation accepted; natural no-trigger is not_exercised",
+    "legacy_reader_fixture": "existing S2/S4 activation reader still covers its targets with S8 enabled and separate S8 markers"
+  },
+  "overlay_changes": [
+    "vllm_fl/patches/biv150_native_gqa.py",
+    "vllm_fl/compile_semantics.py (patch script against exact db700 base)",
+    "csrc/iluvatar/native_gqa_s8.cpp",
+    "csrc/iluvatar/native_gqa_s8.cu",
+    "tools/build_biv150_native_gqa_s8.py",
+    "tools/native_gqa_s8_activation.py",
+    "tools/native_gqa_s8_source_receipt.json"
+  ],
+  "no_ssh_gpu_or_production_apply_during_preparation": true
+}

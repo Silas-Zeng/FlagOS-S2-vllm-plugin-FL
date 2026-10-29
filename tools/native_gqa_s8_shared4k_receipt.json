@@ -1,0 +1,65 @@
+{
+  "actual_cuda_flags_line": "cuda_cflags = -DTORCH_EXTENSION_NAME=corex_native_gqa_s8_shared4k_component -DTORCH_API_INCLUDE_EXTENSION_H -isystem /usr/local/lib/python3.12/site-packages/torch/include -isystem /usr/local/lib/python3.12/site-packages/torch/include/torch/csrc/api/include -isystem /usr/local/corex/include -isystem /usr/local/include/python3.12 -D_GLIBCXX_USE_CXX11_ABI=0 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__ILUVATAR__ -D__ILUVATAR_WORKAROUND__ -D__ILUVATAR_DIAG__ -cl-single-precision-constant -fPIC -mllvm --bonus-inst-threshold=0 -mllvm --skip-double -fclang-abi-compat=16 -D__MR__ -O3 -std=c++17 -D__ILUVATAR__ -D__MR__ -DCOREX_NATIVE_GQA_SHARED4K=1 -x ivcore --cuda-gpu-arch=ivcore11 --cuda-path=/usr/local/corex",
+  "architecture": "7.1",
+  "build_ninja": "/workspace/experiments/minicpm-s2/framework/20261029T102155779456Z-native-gqa-s8-shared4k-component/shared4k-build/build.ninja",
+  "build_ninja_sha256": "e2077e7551ec5fd90fc138c200bb7ff7e801edc5ba09dc10e953bd8a46beabc0",
+  "compile_flags": [
+    "-O3",
+    "-std=c++17",
+    "-D__ILUVATAR__",
+    "-D__MR__",
+    "-DCOREX_NATIVE_GQA_SHARED4K=1",
+    "-x",
+    "ivcore",
+    "--cuda-gpu-arch=ivcore11",
+    "--cuda-path=/usr/local/corex"
+  ],
+  "corex_compiler": {
+    "path": "/usr/local/corex-4.5.0/bin/clang-22",
+    "sha256": "8428e871501b05213d5b7ec0ecf796f4d04de24e5bf75c2539dc812f52ab3101",
+    "version": "clang version 22.1.0git (4.5.0.20260707 a526c4d94919b0feb06f49a88a749e075a7f5cf3)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /usr/local/corex-4.5.0/bin"
+  },
+  "cpp_compiler": {
+    "path": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "sha256": "52f1ddb33fe78b9441e0f42e9cd22c571f1101938e046c8a26582494e041cc73",
+    "version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+  },
+  "cuda_compiler": {
+    "path": "/usr/local/corex-4.5.0/bin/clang-22",
+    "sha256": "8428e871501b05213d5b7ec0ecf796f4d04de24e5bf75c2539dc812f52ab3101",
+    "version": "clang version 22.1.0git (4.5.0.20260707 a526c4d94919b0feb06f49a88a749e075a7f5cf3)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: /usr/local/corex-4.5.0/bin"
+  },
+  "cxx11_abi": false,
+  "identity_sha256": "a0adc15e840a7ad1275a735a8697b2c338f9afa014a347b38e5c2a7c1a83f618",
+  "library_bytes": 168232,
+  "library_path": "/workspace/experiments/minicpm-s2/framework/20261029T102155779456Z-native-gqa-s8-shared4k-component/shared4k-build/corex_native_gqa_s8_shared4k_component.so",
+  "library_sha256": "b2cd075343fe385603db6b1daf79e0f55678fde66e56a7f7b05d33f96cd3aea6",
+  "max_jobs": "1",
+  "module": "corex_native_gqa_s8_shared4k_component",
+  "schema": 1,
+  "scope": {
+    "dtype": "bfloat16",
+    "grid": [
+      30,
+      2,
+      8
+    ],
+    "page_size": 16,
+    "q_stride": [
+      2048,
+      128,
+      1
+    ],
+    "shared_bytes_expected": 4096
+  },
+  "source_paths": [
+    "/workspace/experiments/minicpm-s2/scripts/shared4k-component-2ad36f29-control/entry/source/native_gqa_s8_shared4k_component.cpp",
+    "/workspace/experiments/minicpm-s2/scripts/shared4k-component-2ad36f29-control/entry/source/native_gqa_s8_shared4k.cu"
+  ],
+  "source_sha256": {
+    "native_gqa_s8_shared4k.cu": "95f01a1e342d996433550d08d603f111afac0e6deb27ab63056b5496c426165b",
+    "native_gqa_s8_shared4k_component.cpp": "bdea1a0803dde1ddea330549dab2d309725cf64696293d355034d04e7f0c83c0"
+  },
+  "torch_cuda_version": "10.2",
+  "torch_version": "2.10.0"
+}

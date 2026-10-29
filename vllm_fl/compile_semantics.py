@@ -10,7 +10,7 @@ import sys
 _KEY = "vllm_fl_compile_semantics"
 _GEOMETRY = dict(hidden_size=2048, intermediate_size=6144, num_hidden_layers=42,
                  num_attention_heads=16, num_key_value_heads=2, vocab_size=130560)
-_FEATURES = ("VLLM_FL_BIV150_NATIVE_W8A8", "VLLM_FL_BIV150_GQA_DECODE",
+_FEATURES = ("VLLM_FL_BIV150_NATIVE_W8A8", "VLLM_FL_BIV150_GQA_DECODE", "VLLM_FL_BIV150_NATIVE_GQA_S8",
              "VLLM_FL_BIV150_PREFILL_NORMALIZE", "VLLM_FL_BIV150_Q_FRAGMENT",
              "VLLM_FL_BIV150_STABLE_SMALL_O",
              "VLLM_FL_BIV150_HEAD_TEMPERATURE")
@@ -40,6 +40,14 @@ def native_gqa_library_path(*, package_root=None, environ=None) -> Path:
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
     return Path(env.get("BIV150_NATIVE_GQA_LIBRARY",
                         str(package.parent / "build-native-gqa/corex_native_gqa_s2_probe.so"))).resolve()
+
+
+def native_gqa_s8_library_path(*, package_root=None, environ=None) -> Path:
+    """独立 S8 SO；与现有 S2/S4 library 完全分开。"""
+    env = os.environ if environ is None else environ
+    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
+    return Path(env.get("BIV150_NATIVE_GQA_S8_LIBRARY",
+                        str(package.parent / "build-native-gqa-s8/corex_native_gqa_s8_component.so"))).resolve()
 
 
 def _sha(path: Path) -> str:
@@ -112,6 +120,9 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             path = package.parent / "csrc/iluvatar" / name
             native_sources[name] = _sha(path) if path.is_file() else None
         facts["native"] = {"library_sha256": _sha(library), "source": native_sources}
+    features["VLLM_FL_BIV150_NATIVE_GQA_S8"] = (
+        features["VLLM_FL_BIV150_NATIVE_GQA"]
+        and env.get("VLLM_FL_BIV150_NATIVE_GQA_S8", "0") == "1")
     if features["VLLM_FL_BIV150_NATIVE_GQA"]:
         library = native_gqa_library_path(package_root=package, environ=env)
         sources = {}
@@ -119,6 +130,18 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             path = package.parent / "csrc/iluvatar" / name
             sources[name] = _sha(path) if path.is_file() else None
         facts["native_gqa"] = {"library_sha256": _sha(library), "source": sources}
+    if features["VLLM_FL_BIV150_NATIVE_GQA_S8"]:
+        library = native_gqa_s8_library_path(package_root=package, environ=env)
+        if not library.is_file():
+            raise FileNotFoundError("独立 N30/S8 GQA 库不存在: " + str(library))
+        sources = {}
+        for name in ("native_gqa_s8_shared4k_component.cpp", "native_gqa_s8_shared4k.cu"):
+            path = package.parent / "csrc/iluvatar" / name
+            if not path.is_file():
+                raise FileNotFoundError("独立 N30/S8 源文件不存在: " + str(path))
+            sources[name] = _sha(path)
+        facts["native_gqa_s8_shared4k"] = {"library_sha256": _sha(library), "source": sources,
+                                   "grid": [30, 2, 8], "q_stride": [2048, 128, 1]}
     return {"schema": 1, "sha256": _digest(facts),
             "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
 
