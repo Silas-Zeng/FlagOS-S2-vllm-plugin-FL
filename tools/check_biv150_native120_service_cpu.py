@@ -1,5 +1,5 @@
 """Frozen PR120 source bridge and original protocol/C3 checks; no GPU/service."""
-import argparse,ast,contextlib,copy,hashlib,importlib.util,io,json,subprocess,sys,tarfile,tempfile
+import argparse,ast,contextlib,copy,hashlib,importlib.util,io,json,runpy,subprocess,sys,tarfile,tempfile
 from pathlib import Path
 from types import SimpleNamespace as NS
 from unittest.mock import patch
@@ -67,7 +67,7 @@ def main():
         ck('same_C3_features_libraries_and_qualification',stripped[0]==stripped[1])
         reject('wrong5898_fingerprint_rejected',lambda:helper.expected_fingerprint(ROOT,{**env,candidate.K8_HASH:'0'*64},{'torch':'2.10.0','cxx11_abi':False}))
         reject('wrong_mixed_fingerprint_rejected',lambda:helper.expected_fingerprint(ROOT,{**env,b.old.SHA_ENV:'0'*64},{'torch':'2.10.0','cxx11_abi':False}))
-        with patch.object(sys,'argv',[str(ROOT/b.CONTROLLER)]),contextlib.redirect_stdout(io.StringIO()) as out:candidate.main()
+        with patch.object(sys,'argv',[str(ROOT/b.CONTROLLER)]),contextlib.redirect_stdout(io.StringIO()) as out:runpy.run_path(str(ROOT/b.CONTROLLER),run_name='__main__')
         plan=json.loads(out.getvalue());ck('default_controller_no_service_or_GPU',plan['cpu_plan'] is True and plan['gpu_executed'] is False and plan['formal_throughput'] is False)
     ck('inputs_unchanged',all(b.sha(path)==digest for path,digest in before.items()))
     ck('no_GPU_framework_imported',not {'torch','triton','vllm','numpy'}.intersection(sys.modules))
