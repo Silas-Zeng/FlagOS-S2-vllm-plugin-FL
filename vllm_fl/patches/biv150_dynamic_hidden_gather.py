@@ -21,6 +21,13 @@ def _require(value, message):
         raise ValueError(message)
 
 
+def _validate_sizes(scheduled, total):
+    """The pre-cold acceptance gate; no discarded prefix/index construction."""
+    _require(type(total) is int and 0 < total <= 2048, 'input rows')
+    _require(0 < len(scheduled) <= 64 and all(type(x) is int and x > 0 for x in scheduled), 'positive scheduled rows')
+    _require(sum(scheduled) == total, 'scheduled total')
+
+
 def cpu_indices(scheduled, total, permutation=None):
     """Small integer-only copy of the two existing producer index expressions."""
     _require(type(total) is int and 0 < total <= 2048, 'input rows')
@@ -113,7 +120,7 @@ def prepare(runner, indices, scheduled, total, compute_order, spec_metadata):
                  and scheduled.shape == (n,) and scheduled.flags.c_contiguous, 'original scheduled CPU array')
         sizes = tuple(int(x) for x in scheduled)
         # Reject the shape/range before the one-time source/SDK scope audit.
-        cpu_indices(sizes, total)
+        _validate_sizes(sizes, total)
         state = getattr(runner, _STATE, None)
         if state is None:
             state = _cold(runner, torch)

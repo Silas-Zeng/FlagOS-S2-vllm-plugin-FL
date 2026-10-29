@@ -4,7 +4,7 @@ import contextlib,inspect,json,os,sys
 from pathlib import Path
 from types import SimpleNamespace as NS
 import run_biv150_dynamic_hidden_gather_helper as base
-c=base.c;ROOT=base.ROOT;PARENT='8e65fcc27ac26a6ab08403b9e2208d3acf9eeb39'
+c=base.c;ROOT=base.ROOT;PARENT='bfbbe8c318f474777386df617e538bbc4136d372'
 PINS={'vllm_fl/worker/worker.py':'a8de1780d1b41bf4889c26f3d593e6ec54e91a5f61996ce64b4d79f2a97efa24',
  'vllm_fl/utils.py':'1c841db50d0c4370d3d04fa0383a87eaa3ceba667df0ffe66aca8f482830c429',
  'vllm_fl/envs.py':'ecae13cf9bb3cbc83c0c411bd15420031a543743a94b0fe1d41dd959c803222f',
@@ -32,7 +32,7 @@ def transformed_execute():
 def plan():
  for path,digest in PINS.items():c.need(c.sha((ROOT/path).read_bytes())==digest,'service dispatch source '+path)
  text,edits=transformed_execute()
- return dict(default_CPU=True,parent=PARENT,production_feature_default='OFF',production_diff=False,cases=[[m,n,k] for m,n in base.bits.CASES for k in ('ordinary','Plan')],
+ return dict(default_CPU=True,parent=PARENT,production_feature_default='OFF',production_diff=True,production_delta='only equivalent pre-cold sizes gate in host helper',GPU_source_diff=False,helper_sha256=c.sha(base.spec.HELPER.read_bytes()),cases=[[m,n,k] for m,n in base.bits.CASES for k in ('ordinary','Plan')],
   service_policy_evidence=SERVICE,dispatch_source_pins=PINS,control='same actual Tensor; feature OFF executes original hidden_states[logits_indices] seam',candidate='same actual Tensor and original execute_model/_prepare_inputs/receipt/new output/_launch',
   FlagGems='same Worker rank0 default enable(record=True,once=True); output recording path isolated; vendor exclusions not overridden; actual index function/code/cache must be observed before timing',
   numeric_candidate_calls_planned=8,additional_real_Tensor_OFF_numeric_calls_planned=8,production_warmups_planned=4,timing_opt_in=True,order='ABBA',warmup_calls_per_block=8,measured_calls_per_block=32,private_loop_edits=len(edits),
