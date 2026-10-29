@@ -1,0 +1,128 @@
+{
+  "case": {
+    "KV_heads": 2,
+    "cache_bytes": 12664832,
+    "head_dim": 128,
+    "prefix_tokens": 4096,
+    "query_heads": 16,
+    "query_rows": 2048,
+    "total_KV_tokens": 6144,
+    "writer_source_row_stride": 2560
+  },
+  "evidence": {
+    "CPU_decoder_sha256": "920be668f6219b8afcdddb1f1d54ce3ca9184744836d194af64df1236a79a8c6",
+    "independent_auditor_sha256": "41ceafd73b979557546fce4206492fd3aa70f580f68316860adc9e3a3b26d786",
+    "independent_review_sha256": "4b12678708abaf0f3fea6d988af063e124d1a6648cdf37c9f1fc9d2b47c320ff",
+    "manifest_sha256": "f4e1ecb750b2f0e7548580c8cfb54eedea549d25d2eb11a39172c801e87d0108",
+    "raw_archive_sha256": "c291478908edc556e9ff4b9005ef8fd0687aafd11643b8e41a90bbbad44e55be",
+    "raw_bytes": 194024251,
+    "raw_files": 88,
+    "source_bundle_sha256": "dfdc6182fa4491cd7cc8103e1c3242ebb43487dbd98cf92c0f9b18a9809b7971",
+    "summary_sha256": "22f93a46e578695b996c7793a569ac18ac6242f0e9f6ce27650cbb0bd6de54e0"
+  },
+  "executable_sha256": {
+    "q32": "d101726655eeb9d815ebc748d310051a8fd3c98b299dd24ec09567738807aa2b",
+    "q64": "50a75f05a6eec2a5a8c3a55f58394ef195f5f3a87a417028a2f4421b782e7b96"
+  },
+  "limitations": [
+    "One warmed component ABBA per mode, not a stability estimate or formal service result.",
+    "Runtime n_spills=0 does not negate the separately recorded ELF SGPR spill fields.",
+    "Longer KV contexts and alternate Q64 schedules remain untested; this result does not rule out the whole direction.",
+    "The original BF16 diagnostic and precision_gate=false are retained.",
+    "Only selected metadata is published; raw arrays, IR, caches, logs and binaries remain private."
+  ],
+  "prior_stops": [
+    {
+      "Graph": 0,
+      "reader": 0,
+      "reason": "Only diagnostic ASM text differed; old full-snapshot admission rejected before any launches.",
+      "version": 1,
+      "writer": 0
+    },
+    {
+      "Graph": 0,
+      "reader": 0,
+      "reason": "Fresh Q32 loader produced a different executable cubin; correctly rejected before any launches.",
+      "version": 2,
+      "writer": 0
+    }
+  ],
+  "resources": {
+    "q32": {
+      "ELF_private_bytes": 0,
+      "ELF_sgpr_spills": 96,
+      "ELF_vgpr_spills": 0,
+      "n_regs": 122,
+      "n_spills": 0,
+      "shared": 33792
+    },
+    "q64": {
+      "ELF_private_bytes": 0,
+      "ELF_sgpr_spills": 485,
+      "ELF_vgpr_spills": 0,
+      "n_regs": 237,
+      "n_spills": 0,
+      "shared": 67584
+    }
+  },
+  "schema": "cjj-konly-q64-selected-component-result-v1",
+  "status": "negative_component_result_not_merged",
+  "team_base": "a455a3de364051fbea80226870c239de3a48e716",
+  "tested_source": "522c0b0617a8d2d862f60ebb03f05f6e08ccfcfe",
+  "timing": {
+    "append-reader": {
+      "captured_steps": 4,
+      "event_Q32_over_Q64": 0.9565383333083264,
+      "host_Q32_over_Q64": 0.9564573954182882,
+      "means": {
+        "q32": {
+          "event_ms_per_step": 2.2419283390045166,
+          "wall_ms_per_step": 2.244152201456018
+        },
+        "q64": {
+          "event_ms_per_step": 2.343793511390686,
+          "wall_ms_per_step": 2.3463169527531136
+        }
+      },
+      "replays": 16,
+      "steps_per_event": 64,
+      "warm_graph_replays_per_role": 8
+    },
+    "reader": {
+      "captured_steps": 4,
+      "event_Q32_over_Q64": 0.9547716724953893,
+      "host_Q32_over_Q64": 0.955498796526789,
+      "means": {
+        "q32": {
+          "event_ms_per_step": 2.2202560901641846,
+          "wall_ms_per_step": 2.2244503488764167
+        },
+        "q64": {
+          "event_ms_per_step": 2.3254314661026,
+          "wall_ms_per_step": 2.328051439690171
+        }
+      },
+      "replays": 16,
+      "steps_per_event": 64,
+      "warm_graph_replays_per_role": 8
+    }
+  },
+  "validation": {
+    "Graph_before_fresh_and_changed_input": true,
+    "all_Q32_Q64_complete_outputs_bitwise_equal": true,
+    "complete_outputs": 16,
+    "full_cache_reencoded_each_pattern": true,
+    "model_accuracy_or_service_run": false,
+    "no_new_tolerances": true,
+    "original_BF16_diagnostic_passed": false,
+    "original_quantized_reference_hard_checks_passed": true,
+    "output_elements_each": 4194304,
+    "precision_gate": false,
+    "reference_scope": {
+      "pattern0": "all 2048 rows",
+      "pattern1": "original 10 rows, including 63/64"
+    },
+    "side_stream": true,
+    "stages": 8
+  }
+}
