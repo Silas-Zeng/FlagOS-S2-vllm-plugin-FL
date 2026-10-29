@@ -7,7 +7,7 @@ import biv150_native_k8_mixed_factory as factory
 
 def plan():
     return {'source':factory.verify(),'phase':'compile-and-actual-object-review-first',
-      'next_compile':['python','tools/compile_biv150_native_k8_mixed.py','--compile-only','--root-owned-exclusive','--out','<fresh-absolute-directory>'],
+      'next_compile':['python','tools/compile_biv150_native_k8_mixed.py','--compile-only','--root-owned-exclusive','--expected-source-commit','<full-frozen-commit>','--out','<fresh-absolute-directory>'],
       'cases':[{'decode_rows':n,'prefill_rows':2048-n,'total_query_rows':2048,'context':ctx,
                 'current_main_TL_segments':old_s,'candidate_Native_segments':s,'diagnostic_TL_segments':s,
                 'bitwise_reference':{'library_sha256':'8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5',
