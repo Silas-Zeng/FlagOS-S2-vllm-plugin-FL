@@ -89,6 +89,23 @@ def run():
         rejected(lambda:build.verify_identifier_probe(proc.stdout.replace(next(iter(build.SYMBOL_RENAMES.values())),'wrong_symbol')))
         record['CPU_preprocessor']={'compiler':compiler,'stdout':proc.stdout,'stderr':proc.stderr,
           'host_identifier_probe_only':True,'not_actual_CoreX_or_full_translation_unit':True}
+        old_semantic=subprocess.run([compiler,*build.HOST_FLAGS,'-x','c++','-fsyntax-only','-'],input=build.identifier_probe_text(),capture_output=True,text=True)
+        assert old_semantic.returncode!=0 and "unknown type name 'CJJ_MIXED_SYMBOL_PROBE_BEGIN'" in old_semantic.stderr
+        device_source=build.device_identifier_probe_text();device_checks=[]
+        def syntax(flags):return subprocess.run([compiler,*flags,'-x','c++','-fsyntax-only','-'],input=device_source,capture_output=True,text=True)
+        positive=syntax(build.HOST_FLAGS);assert positive.returncode==0,positive.stderr
+        for number,(old,new) in enumerate(build.SYMBOL_RENAMES.items(),1):
+            flag='-D'+old+'='+new
+            for name,flags in [('missing',[x for x in build.HOST_FLAGS if x!=flag]),
+                               ('wrong',[('-D'+old+'=WRONG_CJJ_SYMBOL') if x==flag else x for x in build.HOST_FLAGS])]:
+                negative=syntax(flags);assert negative.returncode!=0 and f'error: CJJ_MIXED_DEVICE_RENAME_ASSERT_{number}' in negative.stderr
+                device_checks.append(dict(symbol=old,control=name,refused=True))
+        build.verify_device_identifier_proof('target triple = "bi-iluvatar-ilurt"',1,'error: CJJ_MIXED_DEVICE_RENAME_ASSERT_1')
+        rejected(lambda:build.verify_device_identifier_proof('target triple = "x86_64"',1,'error: CJJ_MIXED_DEVICE_RENAME_ASSERT_1'))
+        rejected(lambda:build.verify_device_identifier_proof('target triple = "bi-iluvatar-ilurt"',0,''))
+        rejected(lambda:build.verify_device_identifier_proof('target triple = "bi-iluvatar-ilurt"',1,'unrelated driver failure'))
+        record['device_mapping_assertion_CPU_semantics']=dict(old_bare_probe_rejects_semantic_parse=True,valid_empty_CXX_TU=True,all_seven_assertions_passed=True,
+            controls=device_checks,wrong_target_or_unrelated_failure_refused=True,actual_CoreX_verified=False)
         names=list(build.SYMBOL_RENAMES.values())[:5];elf=root/'not-executable-symbol-fixture.so'
         synthetic_elf(elf,names);inventory=build.elf_project_symbols(elf)
         assert inventory['old_project_symbol_count']==0

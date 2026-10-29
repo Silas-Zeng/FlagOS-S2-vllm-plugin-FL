@@ -81,6 +81,25 @@ def verify_identifier_probe(text):
     return list(SYMBOL_RENAMES.values())
 
 
+def device_identifier_probe_text():
+    # Valid empty C++ TU: CoreX device-only -E did semantic compilation on the
+    # real failed v1 run. Test preprocessing through known device LLVM mode.
+    rows=['#define CJJ_PROBE_CAT_RAW(a,b) a##b',
+          '#define CJJ_PROBE_CAT(a,b) CJJ_PROBE_CAT_RAW(a,b)']
+    for number,(old,new) in enumerate(SYMBOL_RENAMES.items(),1):
+        rows.extend([f'#define CJJ_EXPECT_{new} {number}',
+            f'#if CJJ_PROBE_CAT(CJJ_EXPECT_, {old}) != {number}',
+            f'#error CJJ_MIXED_DEVICE_RENAME_ASSERT_{number}', '#endif'])
+    return '\n'.join(rows+['enum { CJJ_MIXED_DEVICE_RENAME_ASSERTIONS = 7 };'])+'\n'
+
+
+def verify_device_identifier_proof(ir,negative_exit,negative_stderr):
+    if 'target triple = "bi-iluvatar-ilurt"' not in ir:
+        raise ValueError('Device symbol probe did not produce actual CoreX LLVM')
+    if type(negative_exit) is not int or negative_exit!=1 or 'error: CJJ_MIXED_DEVICE_RENAME_ASSERT_1' not in negative_stderr:
+        raise ValueError('Missing-rename device negative control did not refuse specifically')
+
+
 def elf_project_symbols(path):
     """Bounded ELF64 symbol-name inventory, not an instruction/math audit."""
     raw=Path(path).read_bytes()
@@ -149,10 +168,20 @@ def compile_only(args,plan):
         # Actual compiler preprocessor, identifier-only probe, both host and device
         # flag sets. These outputs do not replace final ELF/IR/SASS inspection.
         probe=out/'symbol-preprocessor-probe.cc';probe.write_text(identifier_probe_text())
-        for mode,flags in [('host',[*HOST_FLAGS,'-x','c++']),('device',[*CUDA_FLAGS,'--cuda-device-only'])]:
-            p=command(result,out,'symbol-preprocessor-'+mode,[str(compiler),*flags,'-E','-P',str(probe)])
-            if p.returncode:raise RuntimeError('Symbol preprocessor failed: '+mode)
-            verify_identifier_probe(p.stdout)
+        p=command(result,out,'symbol-preprocessor-host',[str(compiler),*HOST_FLAGS,'-x','c++','-E','-P',str(probe)])
+        if p.returncode:raise RuntimeError('Symbol preprocessor failed: host')
+        verify_identifier_probe(p.stdout)
+        device_probe=out/'symbol-device-probe.cc';device_probe.write_text(device_identifier_probe_text())
+        device_ir=out/'symbol-device-probe.ll'
+        p=command(result,out,'symbol-device-positive',[str(compiler),*CUDA_FLAGS,'--cuda-device-only','-S','-emit-llvm',str(device_probe),'-o',str(device_ir)])
+        if p.returncode or not device_ir.is_file():raise RuntimeError('Device symbol compile assertions failed')
+        missing=SYMBOL_FLAGS[0];negative_flags=[x for x in CUDA_FLAGS if x!=missing]
+        negative=command(result,out,'symbol-device-negative',[str(compiler),*negative_flags,'--cuda-device-only','-S','-emit-llvm',str(device_probe),'-o',str(out/'symbol-device-negative.ll')])
+        result['commands'][-1].update(expected_exit_code=1,expected_error_marker='CJJ_MIXED_DEVICE_RENAME_ASSERT_1')
+        verify_device_identifier_proof(device_ir.read_text(),negative.returncode,negative.stderr)
+        result['device_identifier_mapping_proof']=dict(source_sha256=sha(device_probe),LLVM_sha256=sha(device_ir),
+            assertions=len(SYMBOL_RENAMES),negative_removed_flag=missing,negative_expected_refusal=True,
+            positive_exit_code=p.returncode,negative_exit_code=negative.returncode,actual_CoreX_device_LLVM=True)
         result['actual_identifier_preprocessing_verified']=True
         os.environ.setdefault('MAX_JOBS','1');os.environ.setdefault('TORCH_CUDA_ARCH_LIST','7.1')
         import torch
