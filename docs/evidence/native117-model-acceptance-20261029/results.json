@@ -1,0 +1,126 @@
+{
+  "tested_source": "5ca2afaa91bc9133d4170a22410daef4e22f5e00",
+  "latest_main_before_merge": "8ba3bc18de50220943ab15d7269f59e24a59d013",
+  "library_sha256": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b",
+  "library_namespace": "cjj_native_k8_klookahead_probe",
+  "precision": {
+    "official_correct": 103,
+    "official_total": 105,
+    "supplemental_correct": 102,
+    "supplemental_total": 105,
+    "one_official_max_token_truncation_scored_correct": true
+  },
+  "latest_4K_pair": {
+    "duration": {
+      "A": 208.01767739234492,
+      "B": 198.28593186009675,
+      "B_relative_to_A_percent": -4.678326214503869
+    },
+    "mean_tpot_ms": {
+      "A": 46.891178438806925,
+      "B": 44.57108199175374,
+      "B_relative_to_A_percent": -4.947831392382074
+    },
+    "mean_ttft_ms": {
+      "A": 3695.3351486336032,
+      "B": 3637.5509998761117,
+      "B_relative_to_A_percent": -1.5637052238376192
+    },
+    "total_token_throughput": {
+      "A": 6301.002955281697,
+      "B": 6610.252112715671,
+      "B_relative_to_A_percent": 4.907935445019129
+    }
+  },
+  "retained_16K_pair": {
+    "duration": {
+      "A": 432.72673813905567,
+      "B": 427.8689986830577,
+      "B_relative_to_A_percent": -1.122588235912736
+    },
+    "mean_tpot_ms": {
+      "A": 92.3122119067098,
+      "B": 90.78408545199277,
+      "B_relative_to_A_percent": -1.655389274239638
+    },
+    "mean_ttft_ms": {
+      "A": 98910.55019702253,
+      "B": 97961.48096285833,
+      "B_relative_to_A_percent": -0.9595227529052508
+    },
+    "median_itl_ms": {
+      "A": 38.01864595152438,
+      "B": 36.81095642969012,
+      "B_relative_to_A_percent": -3.1765716311257353
+    },
+    "total_token_throughput": {
+      "A": 5149.263504220915,
+      "B": 5207.724810300052,
+      "B_relative_to_A_percent": 1.1353333545897515
+    }
+  },
+  "earlier_4K_pair": {
+    "duration": {
+      "A": 191.50370186194777,
+      "B": 195.73964603990316,
+      "B_relative_to_A_percent": 2.2119385352712406
+    },
+    "mean_tpot_ms": {
+      "A": 43.033514019585965,
+      "B": 44.00231652299179,
+      "B_relative_to_A_percent": 2.251274443832063
+    },
+    "mean_ttft_ms": {
+      "A": 3513.28105695211,
+      "B": 3583.4459547786537,
+      "B_relative_to_A_percent": 1.9971330698892231
+    },
+    "median_itl_ms": {
+      "A": 26.978673646226525,
+      "B": 26.442090282216668,
+      "B_relative_to_A_percent": -1.9889167682819342
+    },
+    "total_token_throughput": {
+      "A": 6844.358554201103,
+      "B": 6696.241801381406,
+      "B_relative_to_A_percent": -2.1640706232256446
+    }
+  },
+  "official_limits": {
+    "16384": {
+      "TTFT_ceiling": "605254.6503",
+      "TTFT_ms": 97961.48096285833,
+      "TTFT_pass": true,
+      "throughput_floor": "905.9985",
+      "throughput_pass": true,
+      "total_tok_s": 5207.724810300052
+    },
+    "4096": {
+      "TTFT_ceiling": "11689.2653",
+      "TTFT_ms": 3637.5509998761117,
+      "TTFT_pass": true,
+      "throughput_floor": "2007.7299",
+      "throughput_pass": true,
+      "total_tok_s": 6610.252112715671
+    }
+  },
+  "protocols_pooled": false,
+  "stable_gain_or_significance_claimed": false,
+  "review_sha256": "21049b066d46cd03d4a9e6fa820da78df1c6e8348b33b60e5f840f4a7024d55b",
+  "precision_review_sha256": "c7b55dd3cd9eddd0e6e0209613635ed2ca21258f042ee2d848b9319e79ab3b70",
+  "raw_archive_sha256": {
+    "4K_recheck_A": "5551873d083b852613a50db09cc62e7296dd2f5a6efa18bcc4cc2e14f338f63c",
+    "4K_recheck_B": "93e4d80edc7d568abced17b58a2fb3c957954956e82868a103a5b71004c42168",
+    "initial_A": "6400f86ec2a70395908666cdf4953f3132cf75e5ed08cb09fec1d2c3660066c1",
+    "initial_B": "618e43675ff05afda48a004d4cad4c649c86ca617fb7e973f84bf21082fa9a66"
+  },
+  "limitations": [
+    "4K warmup and statistics configuration differ between old and new pairs. Do not use their difference as proof of noise or pool them into an average.",
+    "Both new 4K arms still add six different index metadata variants and change selected tuning digests; equal counts do not imply equal costs.",
+    "The existing cache observer excludes benchmark-table history and its window includes client preflight.",
+    "No formal score is replaced by the higher unscored full-warm result; the negative older 4K pair remains evidence.",
+    "Official metric includes one max-token truncation; supplemental observed Native request coverage is a positive lower bound.",
+    "No final observer summary; do not claim full replay frequency or recording completeness. This report reuses prior review, not a new regrade."
+  ],
+  "raw_data_published": false
+}
