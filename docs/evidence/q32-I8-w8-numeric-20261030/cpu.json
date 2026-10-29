@@ -1,0 +1,88 @@
+{
+  "GPU_executed": false,
+  "Graph_verified": false,
+  "actual": {
+    "complete_typed_ABI_equal": true,
+    "cubins": {
+      "w16": "7eadbdbf854be149083065cb30f0f8c1bdc593aea6d2b9baf454502adb6fbb43",
+      "w8": "03d373323bef024b3dec81d76de9c19913d9a03d0c05f471e01178523110d1a8"
+    },
+    "hashes": {
+      "w16": "53ef08b799eddb1170100ca6a7fca2171a54443acbf5a5e88549b35ceffd1603",
+      "w8": "773d51c9821807457d71b7eb2a1a3701c1e3fc78410ce8f0d7b7ca39a338c51c"
+    },
+    "metadata_difference": [
+      "hash",
+      "ir_override",
+      "num_warps"
+    ],
+    "prepared_proof_sha256": "f4a39f32d89ca7cfe4d5a94251a562141494507335d347e23840d30cc6e09f9d",
+    "provenance": {
+      "w16": {
+        "manifest_sha256": "60476bbcbaf13ea4d44fcfc0770d586f2241c8bfdb67cff6dbe79124891589c1",
+        "owner": {
+          "pid": 206472,
+          "same_start": true,
+          "start_ticks": 364351602,
+          "state": "Z"
+        },
+        "raw_bytes": 84437304,
+        "raw_files": 3219
+      },
+      "w8": {
+        "manifest_sha256": "4b6af02abb6694ba736ce53e12e03b93f3a1aac26173b62c4eee6430347ba1f1",
+        "owner": {
+          "pid": 289827,
+          "same_start": true,
+          "start_ticks": 366265885,
+          "state": "Z"
+        },
+        "raw_bytes": 4325044,
+        "raw_files": 36
+      }
+    },
+    "static_review_sha256": "5409b37ec09961b1459fbab689fd7407ee610341250eeb48857b3761e8a8c18d"
+  },
+  "checks": [
+    "accepted w16/S1 versus fixed w8/S1 only",
+    "no timing or timing warmup",
+    "actual per-role launch geometry",
+    "unchanged changed Graph before fresh eager",
+    "complete output/cache/CPU inputs and readonly retained",
+    "cross-layout equality recorded outside hard gates",
+    "unchanged real causal tail and physical descriptors",
+    "diagnostic retains BF16 proxy failure",
+    "strict default rejects BF16 proxy failure",
+    "diagnostic cannot bypass finite",
+    "diagnostic cannot bypass codec",
+    "diagnostic cannot bypass output_canaries",
+    "diagnostic cannot bypass read_only_inputs",
+    "diagnostic cannot bypass actual_IR",
+    "diagnostic cannot bypass quantized_reference",
+    "different layout bits cannot replace FP64 gates",
+    "original codec and numerical metric AST unchanged",
+    "separate recorders load stdlib only",
+    "all actual3219+36 SHA and accepted S1 audit replayed",
+    "CPU metadata-stub loader geometry only w16",
+    "CPU metadata-stub loader geometry only w8",
+    "reject wrong candidate loader geometry (CPU stub)",
+    "reject actual w8/ABI",
+    "reject actual w16/hash",
+    "reject actual metadata use_sme",
+    "reject actual metadata num_warps",
+    "reject actual metadata shared",
+    "reject Root receipt Root_numeric_approved/False",
+    "reject Root receipt Root_numeric_approved/1",
+    "reject Root receipt num_seqs/2",
+    "reject Root receipt timing_allowed/True",
+    "CPU/no framework import"
+  ],
+  "count": 32,
+  "driver_sha256": "d62d5e0c9207c4f5cad2c3d281844ce01dc0a8b54e9a0e7b6e2ee38268a9029d",
+  "numeric_verified": false,
+  "performance_measured": false,
+  "plan_sha256": "0dda476464403a8f42024139baaa57499a4f35cb730b5026e32b885fee45aab8",
+  "precision_gate": false,
+  "schema": "cjj-w16-w8-numeric-cpu-v1",
+  "service_verified": false
+}
