@@ -1,0 +1,146 @@
+{
+  "CPU_read_real_IR": true,
+  "GPU_executed": false,
+  "actual_input_sha256": {
+    "raw-q32-stage2/raw-stage2/actual.asm": "6f20d35132c473a2843222a518e0aad2a91ce7ec2bb1600c1bea7e1ae78d694f",
+    "raw-q32-stage2/raw-stage2/actual.cubin": "d6264d6f480933a5d596339c464f97ad04be32d3e7625137a7c9fbae9637852f",
+    "raw-q32-stage2/raw-stage2/actual.llir": "440f3ac5e5b41585fa7ed31d50e9421786738f67c03ea5b1f563c5676fb04236",
+    "raw-q32-stage2/raw-stage2/actual.ttgir": "02e0549f8f01e154ad2f66ccbc6db43ec9d886578d8e5bbd70cf89c431f93444",
+    "summary.json": "6e5d4877056b3c11d86824d88bf905dcce27b5f3e1b4a16167cec85fb775ea09"
+  },
+  "checks": [
+    "unique IR inverse site",
+    "unique IR inverse site",
+    "unique IR inverse site",
+    "whole S2 TTGIR exact inverse including all pipeline and debug locations",
+    "direct preheader only, after complete K-scale-V prologue",
+    "same dot sole operand alias and module line count",
+    "all non-Q operations complete bytes unchanged",
+    "reject changed pipeline",
+    "reject changed V carry",
+    "reject changed async wait",
+    "reject mutable Q",
+    "reject already transformed or S1-like input",
+    "unchanged full descriptor/resource support allocate",
+    "unchanged full descriptor/resource support save",
+    "unchanged full descriptor/resource support git",
+    "whole generated frontend exact inverse to cb908 raw driver",
+    "one actual warmup site",
+    "no candidate launch/data initialization or timing/Graph added",
+    "own override path before warmup and actual metadata binding",
+    "new output cannot mutate readonly original tree",
+    "original evidence pinned before CUDA and unchanged after compile",
+    "original cold-JIT override guard retained",
+    "false Root ownership before device",
+    "wrong freeze before device",
+    "single original N1/Q2048 S2 scope",
+    "actual compilation/synchronization/resources/numeric remain pending",
+    "stdlib only no framework import"
+  ],
+  "count": 27,
+  "passed": true,
+  "plan": {
+    "GPU_executed": false,
+    "Graph_verified": false,
+    "JIT_executed": false,
+    "SDK_pins": {
+      "codec": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+      "helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+      "jit": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+      "sdk": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+    },
+    "actual_resources_verified": false,
+    "attention_launches": 0,
+    "base": "899ce77470b0b539aebc108fd122f668c2d5894d",
+    "candidate_source_sha256": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+    "config": {
+      "BLOCK_M": 256,
+      "BLOCK_Q": 32,
+      "IS_3D": false,
+      "TILE_SIZE": 64
+    },
+    "default_enabled": false,
+    "dependency": "844a69f10539c551500e29e2304061aef7d8671b",
+    "driver_sha256": "18c1893b20625e7886f33ab6658d832030c9a38072ab3493159bb98ab2262fb7",
+    "encoder_launches": 0,
+    "expected_override_sha256": "9f45fd740d0eca78f00e80f43b890a1a624301f12aee84664c3707a41e9326db",
+    "grid": [
+      65,
+      2
+    ],
+    "helper_pins": {
+      "biv150_konly_q64_compile_arguments.py": "b82f517b94b196822f00037773b1c80806716ac77d9ef44881829ef1fb8fa52f",
+      "probe_biv150_konly_q64_compile.py": "749a662b7e203640c43b4282ae70abed318792dff302c7ef88ecab534fc02c7a"
+    },
+    "hoist_proposal_used": true,
+    "hoist_qualification_inherited": false,
+    "initialized_tensor_elements": 0,
+    "logical_page_bytes": 16384,
+    "new_actual_Q_hoist_verified": false,
+    "new_sync_and_ELF_audit_pending": true,
+    "num_seqs": 1,
+    "num_stages": 2,
+    "num_warps": 16,
+    "numerical_verified": false,
+    "override_allowed": "only exact actual S2 module with sole Q-read relocation",
+    "pages": 773,
+    "parent": "cb9088cabef96615604a891089d76e2eadccdbb6",
+    "performance_verified": false,
+    "pipeline_byte_inverse_required": true,
+    "pipeline_verified": false,
+    "planned_warmups": 1,
+    "production_modified": false,
+    "query_rows": 2048,
+    "raw_stage2_artifact_pins": {
+      "raw-q32-stage2/raw-stage2/actual.asm": "6f20d35132c473a2843222a518e0aad2a91ce7ec2bb1600c1bea7e1ae78d694f",
+      "raw-q32-stage2/raw-stage2/actual.cubin": "d6264d6f480933a5d596339c464f97ad04be32d3e7625137a7c9fbae9637852f",
+      "raw-q32-stage2/raw-stage2/actual.llir": "440f3ac5e5b41585fa7ed31d50e9421786738f67c03ea5b1f563c5676fb04236",
+      "raw-q32-stage2/raw-stage2/actual.ttgir": "02e0549f8f01e154ad2f66ccbc6db43ec9d886578d8e5bbd70cf89c431f93444",
+      "summary.json": "6e5d4877056b3c11d86824d88bf905dcce27b5f3e1b4a16167cec85fb775ea09"
+    },
+    "schema": "cjj-q32-s2-preheader-compile-falsifier-v1",
+    "scope": "N1/Q2048 only; one warmup,0 reader/writer/encoder launches; compile receipt is not mechanism/numerical/performance/service admission",
+    "service_verified": false,
+    "snapshot_helper_sha256": "15d1382077fddcb389cdbd04aa45990920f5bb946944196827df5d07d9da0811",
+    "source_math_byte_identical": true,
+    "source_pins": {
+      "biv150_konly_encoded_hoist_proposal.py": "c0135ba632270b5d769cf3e53d5a5fc0dbde62a6e782daedc97422d2bbeff658",
+      "biv150_konly_encoded_q32.py": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+      "biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b"
+    },
+    "source_root_distinction": "new checkout generates original Q32 source; fixed override preserves cb908 original IR/debug locations",
+    "writer_launches": 0
+  },
+  "proof": {
+    "byte_exact_inverse": true,
+    "early_Q": false,
+    "edits": [
+      [
+        "    %acc_266:9 = scf.for %acc_274 = %c0_i32 to %num_tiles_176 step %c1_i32 iter_args(%arg27 = %cst_51, %arg28 = %cst_49, %arg29 = %cst_55, %arg30 = %c-1_i32, %K_load_275 = %K_load_247, %key_code_scale_276 = %key_code_scale_265, %tile_mask_277 = %tile_mask_199, %offs_t_278 = %offs_t_66, %V_load_279 = %V_load_254) -> (tensor<256xf32, #ttg.slice<{dim = 1, parent = #mma}>>, tensor<256x128xf32, #mma1>, tensor<256x16xf32, #mma>, i32, !ttg.async.token, !ttg.async.token, tensor<64xi1, #ttg.slice<{dim = 0, parent = #mma}>>, tensor<64xi32, #ttg.slice<{dim = 0, parent = #mma}>>, tensor<64x128xbf16, #blocked>)  : i32 {\n",
+        "    %cjj_s2_q_operand = ttg.local_load %5 : !ttg.memdesc<256x128xi8, #shared, #smem> -> tensor<256x128xi8, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 4, useSme = 0}>> loc(#loc298)\n    %acc_266:9 = scf.for %acc_274 = %c0_i32 to %num_tiles_176 step %c1_i32 iter_args(%arg27 = %cst_51, %arg28 = %cst_49, %arg29 = %cst_55, %arg30 = %c-1_i32, %K_load_275 = %K_load_247, %key_code_scale_276 = %key_code_scale_265, %tile_mask_277 = %tile_mask_199, %offs_t_278 = %offs_t_66, %V_load_279 = %V_load_254) -> (tensor<256xf32, #ttg.slice<{dim = 1, parent = #mma}>>, tensor<256x128xf32, #mma1>, tensor<256x16xf32, #mma>, i32, !ttg.async.token, !ttg.async.token, tensor<64xi1, #ttg.slice<{dim = 0, parent = #mma}>>, tensor<64xi32, #ttg.slice<{dim = 0, parent = #mma}>>, tensor<64x128xbf16, #blocked>)  : i32 {\n"
+      ],
+      [
+        "      %10 = ttg.local_load %5 : !ttg.memdesc<256x128xi8, #shared, #smem> -> tensor<256x128xi8, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 4, useSme = 0}>> loc(#loc298)\n      %K_load_293 = ttg.local_load %K_load_286 token %K_load_285 : !ttg.memdesc<128x64xi8, #shared1, #smem, mutable> -> tensor<128x64xi8, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 4, useSme = 0}>> loc(#loc329)\n",
+        "      %K_load_293 = ttg.local_load %K_load_286 token %K_load_285 : !ttg.memdesc<128x64xi8, #shared1, #smem, mutable> -> tensor<128x64xi8, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 4, useSme = 0}>> loc(#loc329)\n"
+      ],
+      [
+        "      %score_integer = tt.dot %10, %K_load_293, %cst_15, inputPrecision = tf32 : tensor<256x128xi8, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 4, useSme = 0}>> * tensor<128x64xi8, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 4, useSme = 0}>> -> tensor<256x64xi32, #mma> loc(#loc354)\n",
+        "      %score_integer = tt.dot %cjj_s2_q_operand, %K_load_293, %cst_15, inputPrecision = tf32 : tensor<256x128xi8, #ttg.dot_op<{opIdx = 0, parent = #mma, kWidth = 4, useSme = 0}>> * tensor<128x64xi8, #ttg.dot_op<{opIdx = 1, parent = #mma, kWidth = 4, useSme = 0}>> -> tensor<256x64xi32, #mma> loc(#loc354)\n"
+      ]
+    ],
+    "new_actual_hoist_verified": false,
+    "operation": "one Q local_load439 to directly before loop425 plus fresh SSA/one dot operand rename",
+    "original_sha256": "02e0549f8f01e154ad2f66ccbc6db43ec9d886578d8e5bbd70cf89c431f93444",
+    "override_sha256": "9f45fd740d0eca78f00e80f43b890a1a624301f12aee84664c3707a41e9326db",
+    "pipeline_operations_unchanged": true,
+    "synchronization_verified": false
+  },
+  "schema": "cjj-q32-s2-preheader-CPU-v1",
+  "source_files": {
+    "biv150_konly_q32_s2_preheader_source.py": "35a5e459f2473756808a93bbc49baeb5e13624d83ba7bd19676bf3575b8dd1f4",
+    "check_biv150_konly_q32_s2_preheader_cpu.py": "b14afb981930e02ff0917741b08b0e90e183d1aeb81dc5613105ae64f2e8c51c",
+    "probe_biv150_konly_q32_s2_preheader.py": "45efdb77e4f25e29d586068d17b537ba909905f2a5d35b4da1af125f60bf5566"
+  },
+  "target_MLIR_verifier_executed": false,
+  "target_compilation": false
+}
