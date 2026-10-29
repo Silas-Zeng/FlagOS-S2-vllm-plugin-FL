@@ -26,6 +26,9 @@ def main():
     ck('entire_controller_inverse637d',b.inverse(entry,edits)==(ROOT/b.PARENT_CONTROLLER).read_bytes())
     for name in ('tools/biv150_runtime_stats_snapshot.py','tools/biv150_runtime_stats_controller.py','tools/runtime_stats_bootstrap/sitecustomize.py'):
         ck('119_unchanged_'+name,(ROOT/name).read_bytes()==b.git(ROOT,'show',b.MAIN+':'+name))
+    ck('old_SME5_pins_preserved',(ROOT/'tools/biv150_hidden_gather_actual_pins.json').read_bytes()==b.git(ROOT,'show',b.NUMERIC_COMPONENT+':tools/biv150_hidden_gather_actual_pins.json'))
+    for name in (s.HELPER,s.KERNEL,s.RUNNER,'vllm_fl/patches/biv150_compute_order.py',b.CONTROLLER):
+        ck('unchanged7347_'+name,(ROOT/name).read_bytes()==b.git(ROOT,'show',b.NUMERIC_COMPONENT+':'+name))
     ck('new_bootstrap_default_OFF',s.install({})=={'enabled':False})
     refuse('bad_token_refused',lambda:s.configuration({s.ENABLE:'1',s.TOKEN:'short',s.RUN_ID:'cpu'}))
     dirty={b.ENV:'1',b.DIAGNOSTICS:'1',s.ENABLE:'1',s.TOKEN:'never-export',s.RUN_ID:'cpu','CJJ_RUNTIME_STATS_SNAPSHOT':'1',
@@ -81,7 +84,19 @@ def main():
     k=NS(src=src,hash=b.PINS['hash'],metadata=b.PINS['options'],n_regs=6,n_spills=0,
         asm={ext:(folder/('actual.'+ext)).read_bytes() for ext in ('source','ttir','ttgir','llir','asm','cubin')},
         _run=NS(launch=types.MethodType(lambda self:None,owner)))
-    row=s.compiled_record(k,function);ck('actual_artifact_schema_matches_review',observer.compiled_verdict(row))
+    binding=rec['actual_handler']['C_function_binding']
+    refuse('Python_function_is_not_C_pointer',lambda:s.loaded_launcher_binding(lambda:None))
+    # Actual Linux binding saved on device, injected ONLY at the resolver boundary.
+    # This CPU fixture does not load that ELF or claim a live device C pointer.
+    resolver=patch.object(s,'loaded_launcher_binding',lambda launch:copy.deepcopy(binding))
+    with resolver:row=s.compiled_record(k,function)
+    ck('actual_artifact_schema_matches_review_with_explicit_CPU_address_fixture',observer.compiled_verdict(row))
+    changed=copy.deepcopy(row);changed['launcher_binding']['legacy_module_path']='/CPU-fixture/foreign-module-label';changed['launcher_binding']['legacy_module_sha256']='0'*64
+    ck('legacy_module_label_does_not_define_C_ownership',observer.compiled_verdict(changed))
+    for field,value in [('DSO_sha256','0'*64),('DSO_offset',5217),('method_flags',True),('method_name','other'),('DSO_path','relative.so')]:
+        changed=copy.deepcopy(row);changed['launcher_binding'][field]=value;ck('C_binding_refuses_'+field,not observer.compiled_verdict(changed))
+    changed=copy.deepcopy(row);changed.pop('launcher_binding');ck('old_module_only_row_refused',not observer.compiled_verdict(changed))
+    changed=copy.deepcopy(row);changed['files']['asm']['sha256']='0'*64;ck('cold_ASM_byte_change_refused',not observer.compiled_verdict(changed))
     changed=copy.deepcopy(row);changed['files']['cubin']['sha256']='0'*64;ck('changed_cubin_refused',not observer.compiled_verdict(changed))
     changed=copy.deepcopy(row);changed['ABI']['constants']['5']=16;ck('changed_ABI_refused',not observer.compiled_verdict(changed))
     refuse('foreign_JIT_object_refused',lambda:s.compiled_record(k,object()))
@@ -98,7 +113,7 @@ def main():
         s.SERVICE:NS(__file__=str(ROOT/'vllm_fl/patches/biv150_konly_encoded_service.py'),_STATE=enc),
         'vllm_fl.patches.biv150_dynamic_hidden_gather_kernel':NS(__file__=str(ROOT/s.KERNEL),gather_hidden_bits=function)}
     args=dict(expected_run='cpu',source_sha256=b.sha(s.__file__),sdk_pins=s.SDK_PINS)
-    with patch.dict(sys.modules,modules),patch.dict(os.environ,{b.ENV:'1',b.DIAGNOSTICS:'1'}),patch.object(s,'process_identity',lambda:(101,201)):
+    with patch.dict(sys.modules,modules),patch.dict(os.environ,{b.ENV:'1',b.DIAGNOSTICS:'1'}),patch.object(s,'process_identity',lambda:(101,201)),patch.object(s,'loaded_launcher_binding',lambda launch:copy.deepcopy(binding)):
         refuse('worker_missing_refused',lambda:s.snapshot(NS(),'smoke-before','cpu',**args))
         before=json.loads(s.snapshot(wrapper,'smoke-before','cpu',**args));ck('before_real_cold_has_zero_not_fabricated_success',before['counts']==dict.fromkeys(s.COUNTERS,0) and not before['cold_initialized'])
         diagnostics={s.COUNTERS[0]:2,s.COUNTERS[1]:3,'compiled':{id(k):k},'overflow':0}
@@ -112,7 +127,7 @@ def main():
     ck('no_GPU_framework_import',not {'torch','triton','vllm'}.intersection(sys.modules))
     report=dict(passed=True,CPU_only=True,checks=checks,count=len(checks),source_commit=b.git(ROOT,'rev-parse','HEAD').decode().strip(),
         files={p:b.sha(ROOT/p) for p in (*b.PRODUCTION,*b.TOOLS)},script_sha256=b.sha(__file__),
-        CPU_fake_worker_and_compiled_objects=True,actual_saved_artifact_bytes_used=True,service_started=False,GPU_executed=False,service_verified=False,
+        CPU_fake_worker_and_compiled_objects=True,CPU_C_address_resolver_stub=True,actual_saved_artifact_bytes_used=True,service_started=False,GPU_executed=False,service_verified=False,
         scope='Actual post-launch counter fragment and snapshot function; fake worker/Tensor metadata are not natural service or CUDA execution.')
     assert a.out.is_absolute() and not a.out.exists();a.out.write_text(json.dumps(report,sort_keys=True,indent=2)+'\n');print(b.sha(a.out))
 if __name__=='__main__':main()

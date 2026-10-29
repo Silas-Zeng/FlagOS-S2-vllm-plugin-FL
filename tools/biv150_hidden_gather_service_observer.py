@@ -24,9 +24,20 @@ def delta(before,after):
                 Graph_replays_counted=False,model_precision_verified=False)
 
 def compiled_verdict(row):
-    return (row['hash']==b.PINS['hash'] and row['files']['cubin']['sha256']==b.PINS['cubin']
-            and row['ABI']==b.PINS['ABI'] and row['options']==b.PINS['options']
-            and row['resources']==b.PINS['resources'] and row['launcher_sha256']==b.PINS['launcher'])
+    binding=row.get('launcher_binding');expected=b.PINS['C_function']
+    if not isinstance(binding,dict):return False
+    ints=('C_address','DSO_base','DSO_offset','method_flags')
+    if not all(type(binding.get(k)) is int for k in ints):return False
+    path=binding.get('DSO_path')
+    if type(path) is not str or not Path(path).is_absolute():return False
+    return (binding['C_address']>binding['DSO_base']>0 and
+            binding['C_address']-binding['DSO_base']==binding['DSO_offset']==expected['DSO_offset'] and
+            binding['method_flags']==expected['method_flags'] and binding.get('method_name')==expected['method_name'] and
+            binding.get('DSO_sha256')==b.PINS['launcher'] and Path(path).name==expected['filename'] and
+            Path(path).parent.name==expected['cache_directory'] and
+            row['hash']==b.PINS['hash'] and row['files']==b.PINS['files'] and
+            row['ABI']==b.PINS['ABI'] and row['options']==b.PINS['options'] and
+            row['resources']==b.PINS['resources'] and row['launcher_sha256']==b.PINS['launcher'])
 
 class Session:
     def __init__(self,a,controller,expected):

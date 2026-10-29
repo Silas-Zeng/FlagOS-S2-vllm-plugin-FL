@@ -64,6 +64,14 @@ def process_identity():
     return os.getpid(),int(stat.read_text().rsplit(')',1)[1].split()[19])
 
 
+def loaded_launcher_binding(launch):
+    # Fixed readonly observer. Never invoke the C function or initialize handles.
+    path=ROOT/'tools/biv150_hidden_gather_launcher_address.py'
+    spec=importlib.util.spec_from_file_location('cjj_gather_launcher_address',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return module.builtin_binding(launch)
+
+
 def compiled_record(kernel, function):
     # Worker bootstrap need not put tools/ on sys.path; load this fixed local file.
     path=ROOT/'tools/compile_biv150_dynamic_hidden_gather.py'
@@ -75,10 +83,9 @@ def compiled_record(kernel, function):
         raw=kernel.asm[ext];raw=raw.encode() if isinstance(raw,str) else raw
         need(type(raw) is bytes,'compiled artifact type')
         files[ext]=dict(sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
-    launch=getattr(kernel._run,'launch',None);owner=getattr(launch,'__self__',None)
-    need(getattr(owner,'__file__',None),'actual loaded handler missing')
+    binding=loaded_launcher_binding(getattr(kernel._run,'launch',None))
     return dict(hash=str(kernel.hash),ABI=c.runtime_ABI(kernel),options=c.metadata(kernel),
-        resources=c.resources(kernel),files=files,launcher_sha256=sha(owner.__file__))
+        resources=c.resources(kernel),files=files,launcher_sha256=binding['DSO_sha256'],launcher_binding=binding)
 
 
 def snapshot(wrapper,phase,run_id,*,expected_run,source_sha256,sdk_pins):
