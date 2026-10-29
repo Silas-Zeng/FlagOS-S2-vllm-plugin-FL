@@ -85,6 +85,10 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] = env.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"
     native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'
     features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8
+    mixed_native = env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE','0') == '1'
+    features['VLLM_FL_BIV150_KONLY_MIXED_NATIVE'] = mixed_native
+    if mixed_native and not native_k8:
+        raise ValueError('Mixed Native requires the accepted owned16KiB native parent')
     if native_k8 and (not features['VLLM_FL_BIV150_KONLY_ENCODED_SERVICE'] or env.get('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','0')=='1'):
         raise ValueError('NativeK8 requires only the owned16384 encoded format')
     paths = {package / name for name in ("__init__.py", "platform.py", "utils.py",
@@ -143,6 +147,25 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             if _sha(library) != expected:
                 raise ValueError('NativeK8 fingerprint library content differs')
             encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_v_overlap_probe::produce')
+        if mixed_native:
+            # Parse only the literal qualification record; do not import a GPU
+            # package/private operator while deriving the compile fingerprint.
+            import ast
+            text=(directory/'biv150_konly_encoded_mixed_native.py').read_text()
+            declarations=[n for n in ast.parse(text).body if isinstance(n,ast.Assign)
+                          and any(isinstance(t,ast.Name) and t.id=='QUALIFICATION' for t in n.targets)]
+            if len(declarations)!=1:raise ValueError('Missing exact mixed qualification declaration')
+            pins=ast.literal_eval(declarations[0].value)
+            fields=('library_sha256','actual_so_review_sha256','consumer_review_sha256','fullstep_review_sha256')
+            if not all(type(pins.get(k)) is str and len(pins[k])==64 and all(c in '0123456789abcdef' for c in pins[k]) for k in fields):
+                raise ValueError('Mixed Native actual SO/consumer/fullstep qualification pending')
+            if pins.get('physical_page_bytes')!=16384 or pins.get('rows_segments')!=[[31,4],[63,2]]:
+                raise ValueError('Mixed Native qualification scope differs')
+            library=Path(env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY',''))
+            if (not library.is_absolute() or not library.is_file() or
+                    env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):
+                raise ValueError('Mixed Native exact library content required')
+            encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)
         facts["konly_encoded"] = encoded
     result = {"schema": 1, "sha256": _digest(facts),
               "native_enabled": features["VLLM_FL_BIV150_NATIVE_W8A8"]}
