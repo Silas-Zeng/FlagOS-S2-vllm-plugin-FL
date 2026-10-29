@@ -1,0 +1,29 @@
+{
+  "GPU_executed": false,
+  "Graph_verified": false,
+  "actual_review_sha256": "256c95d945b44bfdd3dc0acd1f6a83da791f1a72ab8b0ba3d5fc6f052606caa0",
+  "compile_manifest_sha256": "9711f65a2d260478292e5a1702f4de1be009b7930267f8d7d010b574c488d926",
+  "completed": true,
+  "errors": [],
+  "expanded_reference_sha256": "c3ced6e38f5e27492ee051c7804d0013a4f62ff1fb0d8a41d09eb540346f37d3",
+  "negative_cases_rejected": 32,
+  "numeric_verified": false,
+  "performance_verified": false,
+  "reference_commit": "e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4",
+  "reference_exact_inverse": true,
+  "reference_original_pins": {
+    "bench_biv150_konly_service_q32_bitwise.py": "985f07044f35a9d0496d642c0fe527912354596876be33e1212bc18650a08c7f",
+    "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+    "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+    "biv150_konly_q32_numeric_contract.py": "9c75e7a81c0d77fba0690d25db355cb4dfd669b9aed963930697b7951e6c46e8"
+  },
+  "resource_binding": "exact Q32/Q64 counts; runtime0 and ELF scalar spill96/485 separate",
+  "service_verified": false,
+  "side_stream_verified": false,
+  "sources": {
+    "biv150_konly_q64_screen_contract.py": "8a5294b62d52366e00e973fb01aa1b8843936bc4f6f0c5c056e82ad39ea46957",
+    "check_biv150_konly_q64_screen_cpu.py": "9dd693f0c15ab8bd276de44003a1f147c69904458a0b4eedf4c64b62bae85f44",
+    "probe_biv150_konly_q64_screen.py": "68fb469ac9247c6c1fd98273193428ef4d693c0b9e041fb457fc6b51b8794a3d"
+  },
+  "uniform_fullrow_math_AST_identical": true
+}
