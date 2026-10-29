@@ -55,10 +55,7 @@ NEW_LOOP = ''' int position=lower;
   while(position<full_upper){
    const int next_position=position+16;
    const bool has_next=next_position<full_upper;
-   int next_page=0;
-   if(has_next)next_page=row[next_position/16]; // No tail/next-segment speculation.
-   consume_page<COREX_NATIVE_GQA_V_OVERLAP!=0,true>(q,qscale0,qscale1,key,key_scale_full,value,page,h,16,lane,col,scale,stage,m0,m1,l0,l1,acc,has_next,next_page);
-   page=next_page;
+   page=consume_page<COREX_NATIVE_GQA_V_OVERLAP!=0,true>(q,qscale0,qscale1,key,key_scale_full,value,page,h,16,lane,col,scale,stage,m0,m1,l0,l1,acc,has_next,row,next_position);
    position=next_position;
   }
  }
@@ -68,14 +65,14 @@ EDITS = (
     ('__device__ __forceinline__ int signed_i32_word(unsigned bits){',
      HELPERS+'__device__ __forceinline__ int signed_i32_word(unsigned bits){'),
     ('template<bool OverlapV>\n__device__ __forceinline__ void consume_page(',
-     'template<bool OverlapV,bool KReady=false>\n__device__ __forceinline__ void consume_page('),
-    (' C<PVShape> (&acc)[8]){', ' C<PVShape> (&acc)[8],bool has_next=false,int next_page=0){'),
+     'template<bool OverlapV,bool KReady=false>\n__device__ __forceinline__ int consume_page('),
+    (' C<PVShape> (&acc)[8]){', ' C<PVShape> (&acc)[8],bool has_next=false,const int* next_row=nullptr,int next_position=0){'),
     (' issue_k_i8(stage,key,page,head,valid,lane);__syncthreads();',
      ' if constexpr(!KReady){issue_k_i8(stage,key,page,head,valid,lane);__syncthreads();}'),
     (' }\n #pragma unroll\n for(unsigned n=0;n<8;++n){\n  BRow<PVShape> b;',
-     ' }\n PackedNextK next;\n if(has_next)read_next_k(next,key,next_page,head,lane);\n #pragma unroll\n for(unsigned n=0;n<8;++n){\n  BRow<PVShape> b;'),
+     ' }\n int next_page=0;\n PackedNextK next;\n if(has_next){\n  next_page=next_row[next_position/16]; // Page-table read also follows V readiness.\n  read_next_k(next,key,next_page,head,lane);\n }\n #pragma unroll\n for(unsigned n=0;n<8;++n){\n  BRow<PVShape> b;'),
     (' running_m0=new_m0;running_m1=new_m1;\n __syncthreads(); // All shared fragment reads precede the next page overwrite.',
-     ' running_m0=new_m0;running_m1=new_m1;\n if(has_next)publish_next_k(stage,next,lane); // Current QK and PV readers have ended.\n __syncthreads(); // Publish dependent K stores; finish current PV before the next V issue.'),
+     ' running_m0=new_m0;running_m1=new_m1;\n if(has_next)publish_next_k(stage,next,lane); // Current QK and PV readers have ended.\n __syncthreads(); // Publish dependent K stores; finish current PV before the next V issue.\n return next_page;'),
     (OLD_LOOP, NEW_LOOP),
 )
 

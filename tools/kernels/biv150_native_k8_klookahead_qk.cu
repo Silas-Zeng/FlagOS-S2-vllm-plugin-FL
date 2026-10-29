@@ -106,11 +106,11 @@ __device__ __forceinline__ void issue_v(unsigned dst,Desc desc){
 }
 
 template<bool OverlapV,bool KReady=false>
-__device__ __forceinline__ void consume_page(
+__device__ __forceinline__ int consume_page(
  const AI8 (&q)[4],float qscale0,float qscale1,const signed char* key,const float* key_scale_full,const __nv_bfloat16* value,
  int page,unsigned head,unsigned valid,unsigned lane,unsigned col,float scale,
  unsigned* stage,float& running_m0,float& running_m1,float& running_l0,float& running_l1,
- C<PVShape> (&acc)[8],bool has_next=false,int next_page=0){
+ C<PVShape> (&acc)[8],bool has_next=false,const int* next_row=nullptr,int next_position=0){
  // Original ASM (not just its LLVM) fuses L*rho+page_sum with ml_fma_f32.
  const unsigned dst=static_cast<unsigned>(reinterpret_cast<std::uintptr_t>(stage));
  // K ordinary global loads complete through dependent shared stores/barrier;
@@ -151,8 +151,12 @@ __device__ __forceinline__ void consume_page(
   if(valid<16)clear_v_tail(stage,valid,lane);
   __syncthreads();
  }
+ int next_page=0;
  PackedNextK next;
- if(has_next)read_next_k(next,key,next_page,head,lane);
+ if(has_next){
+  next_page=next_row[next_position/16]; // Page-table read also follows V readiness.
+  read_next_k(next,key,next_page,head,lane);
+ }
  #pragma unroll
  for(unsigned n=0;n<8;++n){
   BRow<PVShape> b;nvcuda::wmma::load_matrix_sync_tcu(b,stage+1024,n,0);
@@ -164,6 +168,7 @@ __device__ __forceinline__ void consume_page(
  running_m0=new_m0;running_m1=new_m1;
  if(has_next)publish_next_k(stage,next,lane); // Current QK and PV readers have ended.
  __syncthreads(); // Publish dependent K stores; finish current PV before the next V issue.
+ return next_page;
 }
 }
 #endif
@@ -230,10 +235,7 @@ __global__ void cjj_native_k8_klookahead_gqa_producer(
   while(position<full_upper){
    const int next_position=position+16;
    const bool has_next=next_position<full_upper;
-   int next_page=0;
-   if(has_next)next_page=row[next_position/16]; // No tail/next-segment speculation.
-   consume_page<COREX_NATIVE_GQA_V_OVERLAP!=0,true>(q,qscale0,qscale1,key,key_scale_full,value,page,h,16,lane,col,scale,stage,m0,m1,l0,l1,acc,has_next,next_page);
-   page=next_page;
+   page=consume_page<COREX_NATIVE_GQA_V_OVERLAP!=0,true>(q,qscale0,qscale1,key,key_scale_full,value,page,h,16,lane,col,scale,stage,m0,m1,l0,l1,acc,has_next,row,next_position);
    position=next_position;
   }
  }

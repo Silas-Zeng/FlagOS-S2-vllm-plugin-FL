@@ -26,7 +26,7 @@ def trace(full_pages, tail):
     for i, page in enumerate(full_pages):
         events += [('Vissue',page),('QK',page),('P',page),('Vwait',page),('barrier',None)]
         if i+1 < len(full_pages):
-            events += [('Kread',full_pages[i+1])]
+            events += [('NextPageId',full_pages[i+1]),('Kread',full_pages[i+1])]
         events += [('PV',page)]
         if i+1 < len(full_pages):
             events += [('Kpublish',full_pages[i+1])]
@@ -40,7 +40,7 @@ def trace(full_pages, tail):
 
 def audit(events, expected):
     k = None; k_ready = False; pending = None; v = None; v_ready = False; v_completed = False
-    qk = None; pv = None; reads = []; consumed = []
+    qk = None; pv = None; next_id = None; reads = []; consumed = []
     for op, page in events:
         if op == 'Kdirect':
             assert pending is None and v is None
@@ -64,19 +64,23 @@ def audit(events, expected):
             v_completed = True
         elif op == 'Vclear':
             assert v_completed and v == page
+        elif op == 'NextPageId':
+            assert v_ready and qk == v and pv is None and pending is None and next_id is None
+            assert page in expected and page != v
+            next_id = page
         elif op == 'Kread':
             assert v_ready and qk == v and pv is None and pending is None
-            assert page in expected and page != v
+            assert page in expected and page != v and next_id == page
             pending = page; reads.append(page)
         elif op == 'PV':
             assert v_ready and v == page and k_ready and k == page and qk == page
             pv = page; consumed.append(page)
         elif op == 'Kpublish':
             assert pending == page and pv == v and qk == v
-            k = page; k_ready = False; pending = None
+            k = page; k_ready = False; pending = None; next_id = None
         else:
             raise AssertionError('Unknown stage transition')
-    assert pending is None and v is None
+    assert pending is None and v is None and next_id is None
     assert reads == expected and consumed == expected
 
 
@@ -95,18 +99,20 @@ def check():
     # Exact inverse protects *all* arithmetic, original tail and typed host ABI.
     for role in f.FILES:
         assert f.inverse(f.path(role).read_text(),role) == f.original(role)
-    body = source.split('__device__ __forceinline__ void consume_page(',1)[1]
+    body = source.split('__device__ __forceinline__ int consume_page(',1)[1]
     body = body.split('\n}\n}',1)[0]
     anchors = ['nvcuda::wmma::mma_sync_tcu(scores,q[k],b,scores);',
         'A<PVShape> probability;probability[0]=packed;probability[1]=packed;',
         '__ivcorex_sl_waitcnt(8ULL);','if(valid<16)clear_v_tail(stage,valid,lane);',
-        '  __syncthreads();','if(has_next)read_next_k(next,key,next_page,head,lane);',
+        '  __syncthreads();','next_page=next_row[next_position/16];',
+        'read_next_k(next,key,next_page,head,lane);',
         'BRow<PVShape> b;', 'nvcuda::wmma::mma_sync_tcu(acc[n],probability,b,acc[n]);',
         'if(has_next)publish_next_k(stage,next,lane);',
         '__syncthreads(); // Publish dependent K stores;']
     positions = [body.index(x) for x in anchors]
     assert positions == sorted(positions)
     assert body.count('__ivcorex_sl_waitcnt(8ULL);') == 1
+    assert 'row[next_position/16]' not in f.NEW_LOOP
     assert 'template<bool OverlapV,bool KReady=false>' in source
     old_tail = f.original('qk.cu').split(' if(full_upper<upper){',1)[1].split('\n }',1)[0]
     new_tail = source.split(' if(full_upper<upper){',1)[1].split('\n }',1)[0]
@@ -151,6 +157,8 @@ def check():
     faults = []
     good = trace([0,1],None)
     for name, mutate in (
+        ('page_id_before_V_wait',lambda e:e.insert(e.index(('Vwait',0)),e.pop(e.index(('NextPageId',1))))),
+        ('page_id_before_V_ready_barrier',lambda e:e.insert(e.index(('Vwait',0))+1,e.pop(e.index(('NextPageId',1))))),
         ('read_before_V_wait',lambda e:e.insert(e.index(('Vwait',0)),e.pop(e.index(('Kread',1))))),
         ('read_before_V_ready_barrier',lambda e:e.insert(e.index(('Vwait',0))+1,e.pop(e.index(('Kread',1))))),
         ('publish_before_PV',lambda e:e.insert(e.index(('PV',0)),e.pop(e.index(('Kpublish',1))))),
