@@ -197,3 +197,56 @@ def plan():
         reference_only_padding=True,reference_physical_rows={'S2':64,'S4':32},codec_receipt_sha256=CODEC_SHA,
         actual_SO_static_review_required=FLAGS,producer_math_source='unchanged main8b; no117 lookahead',
         default_CPU=True,numeric_verified=False,precision_gate=False,performance_verified=False,service_verified=False)
+
+
+def receipt_source(root):
+    import probe_biv150_native_k8_v_overlap_fullstep as old
+    root=old.parent_files(root);text=source_function(root,'biv150_native_k8_consumer_receipt','require_consumer')
+    changes=[("expected_sha=='c2e13e3766172e9b74342bbcf48b1b4729d1b9604bc249b6974740f7f90cc128' and f.sha(raw)==expected_sha","f.sha(raw)==expected_sha",1),
+        ("len(j['records'])==4","len(j['records'])==len(f.CASES)",1),('cases=4,','cases=len(f.CASES),',1),
+        ("('partial',(n,16,s,128)),('maximum',(n,16,s)),('summation',(n,16,s))",
+         "('partial',(n,16,16,128)),('maximum',(n,16,16)),('summation',(n,16,16))",1)]
+    a="""                    bits=np.frombuffer(middle,dtype='<u4').reshape(shape);active=np.broadcast_to(refs[p]['active'][:,None,:,None] if field=='partial' else refs[p]['active'][:,None,:],shape)
+                    assert bool((bits[~active]==f.F32_POISON).all());assert f.metrics(bits.view('<f4')[active],refs[p][field][active])['passed']"""
+    b="""                    bits=np.frombuffer(middle,dtype='<u4').reshape(shape);active=np.zeros(shape,dtype=bool)
+                    active[:,:,:s]=np.broadcast_to(refs[p]['active'][:,None,:,None] if field=='partial' else refs[p]['active'][:,None,:],active[:,:,:s].shape)
+                    wanted=active[:,:,:s]
+                    assert bool((bits[~active]==f.F32_POISON).all());assert f.metrics(bits.view('<f4')[:,:,:s][wanted],refs[p][field][wanted])['passed']"""
+    changes.append((a,b,1));return edit(text,changes)
+
+
+def consumer_plan(actual):
+    # JSON wire arrays are lists; the in-memory case declaration uses tuples.
+    need(actual==json.loads(json.dumps(plan())), 'consumer exact serialized plan')
+
+
+def require_actual_consumer(a,root,binding):
+    need(a.consumer_summary.is_absolute() and re.fullmatch('[0-9a-f]{64}',a.consumer_sha256 or '') and sha(a.consumer_summary)==a.consumer_sha256,'actual complete consumer summary SHA')
+    pair=json.loads(a.consumer_summary.read_text())
+    need(pair['completed'] and pair['errors']==[] and pair['implementation_hard_passed'] and pair['all_real_OML_final_bitwise'],'actual consumer completion')
+    same=lambda d:{k:v for k,v in d.items() if k!='validator_source_root'}
+    need(same(pair['binding'])==same(binding),'consumer dual-root/source binding');consumer_plan(pair['plan'])
+    need({tuple(x['case']) for x in pair['cases']}==set(CASES) and len(pair['cases'])==len(CASES),'complete twelve-case consumer scope')
+    text,proof=receipt_source(root);replayed=[]
+    for rec in pair['cases']:
+        n,s,pitch=rec['case'];summaries={};folders={}
+        for role,physical,digest in [('reference',32 if s==4 else 64,MAIN_SHA),('candidate',n,binding['library']['sha256'])]:
+            info=rec['arms'][role];rel=Path(info['summary']);need(not rel.is_absolute() and '..' not in rel.parts,'consumer sub-summary path')
+            path=a.consumer_summary.parent/rel;need(sha(path)==info['sha256'],'actual sub-summary SHA')
+            j=json.loads(path.read_text());need(j['mixed_consumer_binding']==pair['binding'] and j['role']==role and j['mixed_case']==[n,s,pitch],'actual role/case provenance')
+            namespace=MAIN_NAMESPACE if role=='reference' else factory.NAMESPACE
+            need(j['schema'].startswith(namespace+'::produce(') and j['table_columns']==8192 and j['scratch_physical_width']==16,'actual role schema/layout')
+            need(j['physical_rows']==physical and j['valid_rows']==n and j['reference_zero_length_rows']==physical-n,'actual physical/real row counts')
+            for label,wanted,nsname in [('reference',MAIN_SHA,MAIN_NAMESPACE),('candidate',binding['library']['sha256'],factory.NAMESPACE)]:
+                loaded=j['actual_dual_library_load'][label]
+                need(loaded['sha256']==wanted and loaded['namespace']==nsname and loaded['loaded_library_set_verified'] is True,'actual dual library receipt '+label)
+            module=load(root,'biv150_native_k8_consumer_receipt',f'cjj118_receipt_{n}_{pitch}_{role}')
+            proxy=fixture(module,physical,n,s,pitch);proxy.LIBRARY_SHA=digest
+            ns=dict(vars(module),f=proxy);exec(compile(text,'<118-exact-original-full-consumer-receipt>','exec'),ns)
+            replayed.append(ns['require_consumer'](path,info['sha256']))
+            summaries[role]=j;folders[role]=path.parent
+        compare_records(folders['candidate'],summaries['candidate'],folders['reference'],summaries['reference'],n,pitch)
+    need(not {'torch','triton'}.intersection(sys.modules),'receipt before Torch')
+    return dict(summary_sha256=a.consumer_sha256,original_receipt_inverse=proof,full_cases_replayed=len(CASES),
+        all_full_arrays_and_original_FP64_gates_replayed=True,old_validator_root=pair['binding']['validator_source_root'],
+        current_validator_root=binding['validator_source_root'],no_performance_or_service_qualification=True)
