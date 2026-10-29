@@ -21,6 +21,7 @@ COMPILE_COMMIT = '844a69f10539c551500e29e2304061aef7d8671b'
 EXECUTION_SOURCES = {
     'spec/iluvatar/triton/compiler/compiler.py':'a97f067023873acf2e348c28f61494e59170ca84c3ee2314f20e491d3e833dfd',
     'backends/iluvatar/compiler.py':'a0d2bbda2f779b528147a238ff6fc558d026478f72d3d12d51d27f48f1aa570a',
+    'runtime/cache.py':'faf84021196925228e20fdab44b3372c5ac40a57f653c212c0655e8fb97757d0',
 }
 LOADED_COMPILER = Path('/usr/local/lib/python3.12/site-packages/triton/spec/iluvatar/triton/compiler/compiler.py')
 FIXTURE = '289afc781f17e80465626eef045cd4bfb3db5ed7c516ce662d8e75c06a698132'
@@ -112,7 +113,8 @@ def execution_sources(root):
         c.need(c.sha((root/relative).read_bytes())==digest,'compiler/loader source changed '+relative)
     return dict(pins=EXECUTION_SOURCES,ASM_is_separate_translation=True,loaded_binary_extension='cubin',
         spec_stage_skip_lines=[392,393],backend_asm_lines=[460,466],backend_cubin_lines=[468,475],
-        binary_selection_lines=[474,480],load_binary_argument_lines=[517,518])
+        binary_selection_lines=[474,480],load_binary_argument_lines=[517,518],
+        cache_hit_lines=[301,312],cache_miss_add_stages_line=324,cache_group_absolute_paths_lines=[95,112])
 
 
 def execution_snapshot(snapshot):

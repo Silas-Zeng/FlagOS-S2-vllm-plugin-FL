@@ -14,6 +14,7 @@ import time
 sys.dont_write_bytecode=True
 import biv150_konly_q64_compile_source as c
 import biv150_konly_q64_screen_contract as f
+import biv150_konly_q64_reviewed_cache as reviewed_cache
 import probe_biv150_konly_q64_compile as compiler
 from biv150_konly_q64_compile_arguments import kwargs
 
@@ -48,6 +49,7 @@ def run(a,pre):
         for name in ('VLLM_FL_BIV150_KONLY_COMPACT_SERVICE','VLLM_FL_BIV150_KONLY_ENCODED_SERVICE','VLLM_FL_BIV150_KONLY_NATIVE_DECODE','VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST'):
             c.need(os.environ.get(name,'0')!='1','service activation prohibited '+name)
         os.environ['TRITON_CACHE_DIR']=str(a.out/'triton-cache')
+        result['reviewed_cache']=reviewed_cache.prepare(a.raw,a.out/'triton-cache',pre['records'],f.MANIFEST);save()
         import numpy as np
         import torch
         from vllm.triton_utils import triton
@@ -90,7 +92,8 @@ def run(a,pre):
             config,grid=c.geometry(2048,bq);grids[role]=grid
             calls[role]=kwargs(dict(profile=role,sequences=1,segments=1,config=config),dict(tensors,out=guarded[role][1:2049]),True)
             launch_options[role]=dict(num_warps=16,num_stages=1,ir_override=str(override))
-            kernel=fn.warmup(grid=grid,**calls[role],**launch_options[role]);handles[role]=kernel
+            kernel=reviewed_cache.warmup(fn,torch.cuda.current_device(),result['reviewed_cache'][role],
+                lambda:fn.warmup(grid=grid,**calls[role],**launch_options[role]));handles[role]=kernel
             snapshot=adapter.kernel_snapshot(kernel,fn);adapter.Adapter._preserve(a.out/role,kernel,snapshot)
             result.setdefault('actual_loader_paths',{})[role]=str(Path(inspect.getfile(type(kernel))).resolve());save()
             c.need(Path(result['actual_loader_paths'][role])==f.LOADED_COMPILER.resolve(),'actual CompiledKernel loader implementation')
