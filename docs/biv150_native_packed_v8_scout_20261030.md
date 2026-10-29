@@ -37,7 +37,20 @@ K0的普通load→shared store→原barrier、Knext在当前V-ready barrier之�
 
 新 V publisher 每个 shared word 只有一个线程拥有，成对写入有效值/零尾。旧 `clear_v_tail` 的 word-owner 不同；其odd-tail RMW若直接接在新store后，不能靠单warp假设证明跨lane顺序。因此仅删除该冗余调用（函数保留），CPU穷尽valid0…16证明原低/高半字清零语义相同，之后沿用原V-ready barrier。
 
-**原 wait8 暂作为待审编译指令保留，绝不当作普通global load完成证明。** 5898在该窗口有V-SME任务且没有新Knext global；本版移除了V-SME、增加packed V普通global，原5898等待准入已不适用。本地已保存的SDK头文件只有声明/入口，没有足以证明该新任务计数的正式语义。正确的数据流意图是 `global→code/scale→BF16→shared store→barrier→PV`；最终 SO 必须展示依赖/CFG，并独立解决 retained wait8 的任务语义与K完成条件。无法证明就停在compile-only，不用旧数值或一次小跑补证明。
+已共享的 `0c97589ba902696cddd9619fd6fdee3cb0bc1371` 原样保留。本后继只删除私有 ordinary-V 路径的显式 `__ivcorex_sl_waitcnt(8ULL)`，没有调整 barrier、Klookahead、V解包/存储或任何数学。CPU将两行新注释逆回旧注释及wait，完整CUDA字节恢复为0c的 `5de8bcd494e58a7a2ccbf43be807ca96b701d23105242e30f3c3ee5d28b89a41`。C++和codec未改。
+
+旧5898的实际降低证据与本分支的证明责任分开：CoreX 4.5.0.20260707 / clang22最终SO中，四处 `llvm.bi.sl.waitcnt(i64 8)` 对应 `sl_wait g2scnt(0)`，机器字均为 `200001A3 00000000`。不是“等待8个普通load”，也不是 `vmcnt(8)`。原件为117已存的 `out/compile/actual-SO-IR.stdout.txt`（SHA `0534a12cc282aaf573b1c27fb03e1c2b56e5095583ed01b1c37d1c465cfa58cc`）及 `actual-SO-sass.stdout.txt`（SHA `d069e13c52b3e424121293174191097cc2bd94629da41d4fca88fa5c14de6a38`）：
+
+| 5898路径 | LLVM行 | 最终SASS行 |
+| --- | --- | --- |
+| S2 full | 779 | 760 |
+| S2 tail | 1397 | 1161 |
+| S4 full | 2481 | 2172 |
+| S4 tail | 3099 | 2573 |
+
+这仅确定特定实际二进制的降低；SL selector位域、G2S计数单位/范围/跨类完成顺序仍无正式ISA依据。不能从示例SME数量推导这些规则，也不能把该等待当作K普通加载的完成条件。本分支不再使用此显式计数指令；正确性不依赖猜测其计数单位。
+
+设备准入仍false。编译后必须检查**整个S2实际CFG无G2S搬运及显式G2S等待**，并核普通 `global code/scale load→寄存器解包/乘法/BF16→paired b32 shared store→原CTA barrier→PV shared load` 依赖；K0及Knext的普通load→dependent shared store→原ready/end barrier→下一QK也必须成立。实际编译器的vmcnt/lmcnt与数据依赖另审，不能以源代码顺序或barrier数量替代。若后端引入G2S搬运、提前解包、丢失store/同步依赖或无法证明，就停在compile-only，不借旧5898数值资格或一次小跑补证明。
 
 ## CPU检查与编译计划
 
@@ -50,6 +63,6 @@ python3 -B tools/compile_biv150_native_k8_packed_v8.py --compile-only \
   --out /workspace/experiments/cjj-native-k8-packed-v8-scout-compile-v1/out
 ```
 
-CPU只做main899有限源变换的完整逆证、原K/PV/同步片段检查、完整V地址/word-owner/valid0…16零尾、I64页地址与signed byte/paired bit映射。没有镜像Torch验收、GPU数值或性能计时。编译入口窄适配原Native compiler并对父字节逆证；保存真实最终SO、IR/SASS、编译日志、文件SHA，检查Torch CUDA上下文未初始化；0 reader/writer/codec/reducer launch。不会安装依赖或修改site-packages。
+CPU只做main899有限源变换的完整逆证、0c私有父版本单wait删除的完整逆证、原K/PV/同步片段检查、完整V地址/word-owner/valid0…16零尾、I64页地址与signed byte/paired bit映射。没有镜像Torch验收、GPU数值或性能计时。编译入口窄适配原Native compiler并对父字节逆证；保存真实最终SO、IR/SASS、编译日志、文件SHA，检查Torch CUDA上下文未初始化；0 reader/writer/codec/reducer launch。不会安装依赖或修改site-packages。
 
-停止条件：实际提前展开大批标量、b16 store/额外byte stage、新同步或spill、Klookahead被破坏、PV坐标/依赖/等待语义不能证明。资源对照是实际5898 S2的85 VGPR/70 SGPR/8192B shared/两类spill0，并非旧8b的100reg。新资源、数值、Graph/side、完整writer成本、模型105和服务吞吐都保持未知；不准备性能或服务入口。
+停止条件：实际提前展开大批标量、b16 store/额外byte stage、新同步或spill、Klookahead被破坏、PV坐标/普通内存依赖不能证明或后端重新引入G2S搬运。资源对照是实际5898 S2的85 VGPR/70 SGPR/8192B shared/两类spill0，并非旧8b的100reg。新资源、数值、Graph/side、完整writer成本、模型105和服务吞吐都保持未知；不准备性能或服务入口。

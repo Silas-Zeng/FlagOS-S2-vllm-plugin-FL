@@ -170,9 +170,8 @@ __device__ __forceinline__ int consume_page(
  const unsigned packed=(lane&32)?pair_bits(from_bits(v),from_bits(u)):pair_bits(from_bits(u),from_bits(v));
  A<PVShape> probability;probability[0]=packed;probability[1]=packed;
  if constexpr(OverlapV){
-  // Kept only as a scout instruction, NOT proof of ordinary-load completion.
-  // No V SME task exists now: final-SO counter safety is an open gate.
-  __ivcorex_sl_waitcnt(8ULL);
+  // No explicit G2S wait: ordinary V values feed dependent pair stores.
+  // Final SO must prove their memory dependencies and the original PV barrier.
   publish_packed_v(stage,packed_v,key_scale_full,page,head,valid,lane);
   // Publisher owns both halves and already zeroes every invalid slot.
   // Do not run the old differently-owned shared tail RMW before this barrier.

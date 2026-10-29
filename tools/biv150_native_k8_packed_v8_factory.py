@@ -85,9 +85,8 @@ def edits(role):
             ('  // Deferred V wait: the unchanged PV consumer must see completed V.\n'
              '  // Actual compiler may force this wait earlier; LLVM/ASM must decide.\n'
              '  __ivcorex_sl_waitcnt(8ULL);',
-             '  // Kept only as a scout instruction, NOT proof of ordinary-load completion.\n'
-             '  // No V SME task exists now: final-SO counter safety is an open gate.\n'
-             '  __ivcorex_sl_waitcnt(8ULL);\n'
+             '  // No explicit G2S wait: ordinary V values feed dependent pair stores.\n'
+             '  // Final SO must prove their memory dependencies and the original PV barrier.\n'
              '  publish_packed_v(stage,packed_v,key_scale_full,page,head,valid,lane);'),
             ('  if(valid<16)clear_v_tail(stage,valid,lane);',
              '  // Publisher owns both halves and already zeroes every invalid slot.\n'
@@ -182,7 +181,8 @@ def verify():
         K_Q_codec_QK_softmax_PV_scratch_source_unchanged=True,
         V_SME_replaced_by_ordinary_packed_reads=True,
         V_writer_implemented=False, V_codec_or_model_precision_verified=False,
-        actual_wait8_counter_safety_verified=False, actual_late_unpack_verified=False,
+        explicit_G2S_wait_removed=True,
+        actual_no_G2S_and_ordinary_memory_dependencies_verified=False, actual_late_unpack_verified=False,
         actual_resources=None, device_compile=False, numeric_verified=False,
         performance_verified=False, service_enabled=False, capacity_recovered=False)
 
@@ -205,7 +205,7 @@ def frontend_source():
          "    if commit != args.expected_source_commit:\n        raise ValueError('Expected exact frozen source commit')\n    subprocess.run(['git','-C',str(factory.ROOT),'merge-base','--is-ancestor',factory.BASE,commit],check=True)"),
         ("library = load(name='cjj_native_k8_klookahead_probe'", "library = load(name='cjj_native_k8_packed_v8_probe'"),
         (old_review, '        S2_full_tail_empty_and_Klookahead_audited=False,\n'
-         '        no_V_SME_tasks_and_retained_wait8_counter_safety_verified=False,\n'
+         '        entire_S2_has_no_G2S_tasks_or_explicit_wait_verified=False,\n'
          '        packed_V_live_until_P_pack_then_dependent_pair_stores_verified=False,\n'
          '        pair_store_barrier_dominates_PV_and_Knext_publish_verified=False,\n'
          '        Q_K_codec_softmax_PV_unchanged_new_V_operand_verified=False,\n'

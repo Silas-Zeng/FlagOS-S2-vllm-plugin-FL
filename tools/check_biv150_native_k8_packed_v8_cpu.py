@@ -4,6 +4,7 @@ import ast
 import json
 from pathlib import Path
 import sys
+import subprocess
 import biv150_native_k8_packed_v8_factory as f
 
 
@@ -20,7 +21,18 @@ def main():
     parent = f.original('qk.cu')
     # Three unchanged CTA barrier sites in consume_page plus the K0 prologue.
     assert cu.count('__syncthreads();') == parent.count('__syncthreads();') == 4
-    assert cu.count('__ivcorex_sl_waitcnt(8ULL)') == 1
+    assert '__ivcorex_sl_waitcnt' not in cu
+    # The shared scout is preserved. Its only executable delta is removing wait8.
+    previous = subprocess.check_output(['git','-C',str(f.ROOT),'show',
+        '0c97589ba902696cddd9619fd6fdee3cb0bc1371:tools/kernels/biv150_native_k8_packed_v8_qk.cu']).decode()
+    assert f.sha(previous.encode()) == '5de8bcd494e58a7a2ccbf43be807ca96b701d23105242e30f3c3ee5d28b89a41'
+    old_wait = ('  // Kept only as a scout instruction, NOT proof of ordinary-load completion.\n'
+                '  // No V SME task exists now: final-SO counter safety is an open gate.\n'
+                '  __ivcorex_sl_waitcnt(8ULL);\n')
+    ordinary = ('  // No explicit G2S wait: ordinary V values feed dependent pair stores.\n'
+                '  // Final SO must prove their memory dependencies and the original PV barrier.\n')
+    assert cu.count(ordinary) == previous.count(old_wait) == 1
+    assert cu.replace(ordinary,old_wait) == previous
     assert '__ivcorex_sme_load_16x1b64_rowxfb16' not in cu
     assert 'if(valid<16)clear_v_tail(stage,valid,lane);' not in cu
     assert cu.count('producer<2><<<') == 1 and 'producer<4><<<' not in cu
@@ -91,7 +103,8 @@ def main():
         signed_byte_patterns=256,paired_bf16_bit_patterns=65536,
         invalid_slot_no_source_or_scale_read=True,old_tail_zero_semantics_equal=True,
         new_unique_word_owner_no_tail_RMW=True,original_Knext_PV_end_barrier_text_exact=True,
-        CTA_barrier_sites=4,wait8_semantics_verified=False,
+        CTA_barrier_sites=4,explicit_G2S_waits=0,private_parent_wait_only_inverse_byte_exact=True,
+        actual_ordinary_load_store_PV_and_Knext_dependencies_verified=False,
         actual_compiled_resources=None,device_compile=False,numeric_verified=False,
         writer_verified=False,performance_verified=False,service_enabled=False)
     print(json.dumps(result,sort_keys=True,indent=2))
