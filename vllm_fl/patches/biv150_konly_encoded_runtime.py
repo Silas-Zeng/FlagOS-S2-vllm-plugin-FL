@@ -112,6 +112,7 @@ class Runtime:
         self.shape_records = {}; self.kernel_records = {}; self.shape_overflow = 0
         self.stats_path = None; self.final_export = None
         self.q32_hoist = None
+        self.multi2_hoist = None
         self.native_decode = None; self.native_decode_identity = None
         self.mixed_native = None; self.mixed_native_identity = None
 
@@ -172,12 +173,18 @@ class Runtime:
                 item['fresh_Q32_hoist'] = dict(artifact_directory=binding['artifact_directory'],
                     override_sha256=binding['override_sha256'],actual_native_verified=True,
                     complete_actual_ABI_bound=True,numerical_verified=False,service_verified=False)
+            if self.multi2_hoist and kernel_hash in self.multi2_hoist.by_hash:
+                binding = self.multi2_hoist.by_hash[kernel_hash]
+                item['fresh_multi2_hoist'] = dict(artifact_directory=binding['artifact_directory'],
+                    override_sha256=binding['override_sha256'],actual_native_verified=True,
+                    complete_actual_ABI_bound=True,numerical_verified=False,service_verified=False)
             self.kernel_records[identity] = item
             print('BIV150_KONLY_ENCODED_SELECTED',json.dumps(dict(profile=profile,hash=kernel_hash,
                 implementation_sha256=getattr(self,'installed_digest',None),format=FORMAT,
                 query_rows=None if query is None else query.shape[0],
                 sequences=None if lengths is None else lengths.shape[0],
-                I8_fragment_hoist_verified=bool(self.q32_hoist and kernel_hash in self.q32_hoist.by_hash),
+                I8_fragment_hoist_verified=bool((self.q32_hoist and kernel_hash in self.q32_hoist.by_hash)
+                    or (self.multi2_hoist and kernel_hash in self.multi2_hoist.by_hash)),
                 hoist_numerical_verified=False,host_event_not_Graph_replay_count=True)),flush=True)
         if kernel_hash:
             self.counts.setdefault('actual_kernel_hashes',{}).setdefault(profile,set()).add(kernel_hash)
@@ -230,12 +237,14 @@ class Runtime:
         result = dict(self.counts); result['actual_kernel_hashes'] = {
             k: sorted(v) for k, v in self.counts.get('actual_kernel_hashes', {}).items()}
         result.update(format=FORMAT, claimed_allocations=len(self.registry.entries),
-            dynamic_I8_hoist_verified=bool(self.q32_hoist and self.q32_hoist.by_hash), all_service_shapes_verified=False,
+            dynamic_I8_hoist_verified=bool((self.q32_hoist and self.q32_hoist.by_hash)
+                or (self.multi2_hoist and self.multi2_hoist.by_hash)), all_service_shapes_verified=False,
             raw3d_enabled=self.raw3d_enabled, mixed_pair_enabled=self.mixed_pair_enabled,
             multi2_enabled=self.multi2_enabled, capacity_reclaimed=False, precision_gate=False)
         result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()
         result['mixed_native'] = dict(enabled=False) if self.mixed_native is None else self.mixed_native.verify(self)
         result['q32_hoist'] = dict(enabled=False) if self.q32_hoist is None else self.q32_hoist.stats()
+        if self.multi2_hoist is not None: result['multi2_hoist'] = self.multi2_hoist.stats()
         return result
 
     def initialize(self, original):
@@ -386,12 +395,13 @@ class KernelFacade:
                     target_grid = (qrows // bq + n, 2)
             fn = runtime.kernels[profile]
             override, binding = ({}, None)
-            if profile == 'q32' and runtime.q32_hoist is not None:
-                override, binding = runtime.q32_hoist.prepare(fn, selected, target_grid,
+            hoist = runtime.q32_hoist if profile == 'q32' else runtime.multi2_hoist if profile == 'multi2' else None
+            if hoist is not None:
+                override, binding = hoist.prepare(fn, selected, target_grid,
                     capture=runtime.torch.cuda.is_current_stream_capturing())
             # Exactly one reader launch. No postlaunch retry/fallback.
             handle = fn[target_grid](**selected, **override)
-            if binding is not None: runtime.q32_hoist.after_launch(handle, fn, binding)
+            if binding is not None: hoist.after_launch(handle, fn, binding)
             runtime.note(profile, handle, selected, target_grid)
             return handle
         return invoke

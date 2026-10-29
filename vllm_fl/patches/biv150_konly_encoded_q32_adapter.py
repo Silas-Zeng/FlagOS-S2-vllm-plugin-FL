@@ -77,6 +77,10 @@ def loaded(kernel):
 
 
 class Adapter:
+    PROFILE = 'q32'
+    BINDING_SCHEMA = 'cjj-encoded-q32-live-binding-v1'
+    LOG_PREFIX = 'BIV150_KONLY_Q32_HOIST'
+
     def __init__(self, proposal, native, *, directory, target, pins, implementation_digest, jit, device, fn):
         self.proposal, self.native = proposal, native
         self.directory = Path(directory)
@@ -140,7 +144,7 @@ class Adapter:
     def _meta(self, before, launch, grid):
         constants = {k: launch[k] for k in SCOPE_CONSTANTS}
         constants['KV_QUANT_MODE'] = int(constants['KV_QUANT_MODE'])
-        return dict(schema=self.proposal.SCHEMA, enabled=True, profile='q32',
+        return dict(schema=self.proposal.SCHEMA, enabled=True, profile=self.PROFILE,
             format=self.proposal.FORMAT, target=self.target,
             launch_options=dict(num_warps=launch['num_warps'], num_stages=launch['num_stages']),
             constants=constants, query_rows=int(launch['query_ptr'].shape[0]), grid=list(grid),
@@ -222,7 +226,7 @@ class Adapter:
                 self.counts['failures'][reason] = self.counts['failures'].get(reason, 0)+1
                 self.counts['fallback_host_calls'] += 1
                 if 'key' in locals(): self.calls[key] = None, locals().get('first', cached)
-                print('BIV150_KONLY_Q32_HOIST_PRELAUNCH_RETAIN', json.dumps(dict(reason=reason)), flush=True)
+                print(self.LOG_PREFIX+'_PRELAUNCH_RETAIN', json.dumps(dict(reason=reason)), flush=True)
                 return {}, None
 
     @staticmethod
@@ -250,7 +254,7 @@ class Adapter:
         need(first.asm['ttir'] == second.asm['ttir'], 'source TTIR changed beyond override')
         native = self.native.audit(override, *(second.asm[e] for e in ('ttgir', 'llir', 'asm')))
         resources = dict(unhoisted=loaded(first), hoisted=loaded(second))
-        binding = dict(schema='cjj-encoded-q32-live-binding-v1', implementation_sha256=self.implementation_digest,
+        binding = dict(schema=self.BINDING_SCHEMA, implementation_sha256=self.implementation_digest,
             native_binding_id=spec, actual_JIT_specialization_options_key=compiler_key,
             unhoisted_compiled_object_identity=id(first),
             actual_metadata=meta, unhoisted=before, hoisted=after, override_path=str(path),
@@ -265,7 +269,7 @@ class Adapter:
         binding['_ABI_objects'] = {k:getattr(second.src,k) for k in ('signature','constants','attrs')}
         self.by_hash[after['hash']] = binding
         self.counts['prepared'] += 1
-        print('BIV150_KONLY_Q32_HOIST_PREPARED', json.dumps(dict(unhoisted_hash=before['hash'],
+        print(self.LOG_PREFIX+'_PREPARED', json.dumps(dict(unhoisted_hash=before['hash'],
             hoisted_hash=after['hash'], override_sha256=binding['override_sha256'],
             artifact_directory=str(folder), actual_native_verified=True,
             loaded_resources=resources, numerical_verified=False, service_verified=False)), flush=True)

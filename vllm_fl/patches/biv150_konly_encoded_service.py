@@ -110,6 +110,24 @@ def install(runner_class, *, environ=None):
             implementation_digest=implementation_digest(), jit=inspect.getmodule(type(fn)),
             device=triton.runtime.driver.active.get_current_device(), fn=fn)
     runtime.q32_hoist_identity = runtime.q32_hoist
+    if env.get('VLLM_FL_BIV150_KONLY_SERVICE_MULTI2_HOIST', '0') == '1':
+        helpers = {}
+        for name in ('hoist_proposal','hoist_native','multi2_adapter'):
+            path = package / Path(generated[name]['path']).name
+            need(hashlib.sha256(path.read_bytes()).hexdigest() == generated[name]['sha256'],
+                 'fresh multi2 helper source '+name)
+            helpers[name] = importlib.import_module('vllm_fl.patches.'+path.stem)
+        adapter = helpers['multi2_adapter']
+        cache = env.get('TRITON_CACHE_DIR')
+        need(cache is not None and Path(cache).is_absolute(), 'multi2 hoist needs absolute private TRITON_CACHE_DIR')
+        fn = gpu['multi2']; source_path = package / Path(generated['multi2']['path']).name
+        runtime.multi2_hoist = adapter.Adapter(adapter.Proposal, helpers['hoist_native'],
+            directory=Path(cache).parent/'konly-multi2-hoist',
+            target=dict(backend=target.backend, arch=target.arch, warp_size=target.warp_size),
+            pins=adapter.Adapter.installed_pins(fn,source_path,PINS),
+            implementation_digest=implementation_digest(), jit=inspect.getmodule(type(fn)),
+            device=triton.runtime.driver.active.get_current_device(), fn=fn)
+    runtime.multi2_hoist_identity = runtime.multi2_hoist
     if env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE','0') == '1':
         declared = provenance['native_decode']; path = package/'biv150_konly_encoded_native.py'
         need(declared['physical_page_bytes']==16384 and declared['adapter']['path']=='vllm_fl/patches/'+path.name,
@@ -218,6 +236,7 @@ def compute_order_receipt(attention, normalized_kernel):
     need(state is not None and implementation_digest() == state.installed_digest, 'unregistered/stale encoded runtime')
     need(state.facade_type.__getitem__.__code__ is state.facade_code, 'encoded dispatch code changed')
     need(state.q32_hoist is getattr(state,'q32_hoist_identity',None), 'encoded Q32 adapter binding changed')
+    need(state.multi2_hoist is getattr(state,'multi2_hoist_identity',None), 'encoded multi2 adapter binding changed')
     native = state.native_decode
     need((native is None and state.native_decode_identity is None) or
          state.native_decode_identity == (native,type(native).verify.__code__,type(native).validate.__code__,type(native).try_produce.__code__),

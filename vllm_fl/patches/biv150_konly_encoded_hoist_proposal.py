@@ -9,6 +9,7 @@ import re
 from copy import deepcopy
 
 SCHEMA='cjj-konly-service-q32-hoist-v1'
+MULTI2_SCHEMA='cjj-konly-private-multi2-hoist-v1'
 FORMAT='cjj-konly-rn32-rne-v2'
 SSA=r'%[-.A-Za-z0-9_]+(?:#[0-9]+)?'
 PINS=dict(sdk='54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f',
@@ -171,20 +172,25 @@ def grammar(text,function_name,*,hoisted=False):
         no_Q_memory_alias_or_escape=True,operand_only_direct_QK_use=True,layout_aliases=list(layout.groups()))
 
 
-def validate_meta(text,meta):
+def validate_meta(text,meta,*,_multi2=False):
+    need(type(_multi2) is bool,'Boolean multi2 scope')
+    schema,profile,sequences = (MULTI2_SCHEMA,'multi2',2) if _multi2 else (SCHEMA,'q32',1)
     keys={'schema','enabled','profile','format','target','launch_options','constants','query_rows','grid',
           'kernel_hash','function_name','source_digest','ttgir_sha256','pins'}
     need(type(meta) is dict and set(meta)==keys,'complete exact actual compilation metadata schema')
-    need(meta['schema']==SCHEMA and meta['profile']=='q32' and meta['format']==FORMAT,'private Q32 format/schema')
+    need(meta['schema']==schema and meta['profile']==profile and meta['format']==FORMAT,
+         'private multi2 format/schema' if _multi2 else 'private Q32 format/schema')
     need(meta['enabled'] is True,'explicit proposal enable flag')
     need(meta['target']==dict(backend='corex',arch=71,warp_size=64),'actual compiler target')
     need(meta['launch_options']==dict(num_warps=16,num_stages=1),'Q32 w16/s1 options')
-    expected=dict(BLOCK_M=256,BLOCK_Q=32,TILE_SIZE=64,num_seqs=1,num_query_heads=16,num_queries_per_kv=8,
+    expected=dict(BLOCK_M=256,BLOCK_Q=32,TILE_SIZE=64,num_seqs=sequences,num_query_heads=16,num_queries_per_kv=8,
                   KV_QUANT_MODE=0,IS_3D=False)
     need(type(meta['constants']) is dict and set(meta['constants'])==set(expected)
-         and all(type(meta['constants'][k]) is type(v) and meta['constants'][k]==v for k,v in expected.items()),'single-sequence Q32 selected constants')
+         and all(type(meta['constants'][k]) is type(v) and meta['constants'][k]==v for k,v in expected.items()),
+         'two-sequence private Q32 selected constants' if _multi2 else 'single-sequence Q32 selected constants')
     q=meta['query_rows'];need(type(q) is int and 1024<=q<2**31,'CPU-visible Q32 query scope')
-    need(list(meta['grid'])==[q//32+1,2] and all(type(v) is int for v in meta['grid']),'complete single-sequence parent grid')
+    need(list(meta['grid'])==[q//32+sequences,2] and all(type(v) is int for v in meta['grid']),
+         'complete two-sequence parent grid' if _multi2 else 'complete single-sequence parent grid')
     for key in ('kernel_hash','source_digest','ttgir_sha256'):
         need(type(meta[key]) is str and re.fullmatch('[0-9a-f]{64}',meta[key]),'actual digest '+key)
     need(meta['ttgir_sha256']==sha(text),'actual metadata/input TTGIR binding')
@@ -192,7 +198,7 @@ def validate_meta(text,meta):
     need(meta['pins']==PINS,'SDK/helper/JIT/codec pins')
 
 
-def propose(actual_ttgir,actual_meta):
+def propose(actual_ttgir,actual_meta,*,_multi2=False):
     """Return (None, disabled-proof) by default; otherwise a fresh CPU proposal.
 
     Actual metadata must come from the caller's authenticated compiled object /
@@ -200,18 +206,19 @@ def propose(actual_ttgir,actual_meta):
     Unsupported only BEFORE launch to retain the same correct private unhoisted
     call; postlaunch errors must propagate, not become a BF16 cache fallback.
     """
+    need(type(_multi2) is bool,'Boolean multi2 scope')
     need(type(actual_meta) is dict,'metadata dictionary')
     enabled=actual_meta.get('enabled',False);need(type(enabled) is bool,'Boolean default-off flag')
     if not enabled:return None,dict(enabled=False,override_generated=False,actual_I8_hoist_verified=False)
     need(type(actual_ttgir) is str and actual_ttgir.endswith('\n'),'complete TTGIR text')
-    validate_meta(actual_ttgir,actual_meta)
+    validate_meta(actual_ttgir,actual_meta,_multi2=_multi2)
     before=grammar(actual_ttgir,actual_meta['function_name']);lines=actual_ttgir.splitlines(keepends=True)
     old=lines.pop(before['Q_operand_load']-1);indent=re.match(r' *',lines[before['KV_loop']-1])[0]
     lines.insert(before['KV_loop']-1,indent+old.lstrip(' '));override=''.join(lines)
     after=grammar(override,actual_meta['function_name'],hoisted=True)
     restored=lines.copy();del restored[after['Q_operand_load']-1];restored.insert(before['Q_operand_load']-1,old)
     need(''.join(restored)==actual_ttgir,'one-operation exact byte inverse')
-    return override,dict(schema=SCHEMA,enabled=True,override_generated=True,moved_operations=1,
+    return override,dict(schema=MULTI2_SCHEMA if _multi2 else SCHEMA,enabled=True,override_generated=True,moved_operations=1,
         input_sha256=sha(actual_ttgir),override_sha256=sha(override),actual_metadata=deepcopy(actual_meta),before=before,after=after,
         exact_byte_inverse=True,all_other_source_math_masks_stores_barriers_unchanged=True,
         old_overlay_or_hash_used_as_admission_predicate=False,caller_actual_metadata_attestation_required=True,

@@ -136,6 +136,8 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
                    "producer_boundary": "owned-encoded-before-stock-native",
                    "q32_hoist_enabled": env.get("VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST", "0") == "1",
                    "implementation_sha256": _digest({path.name: _sha(path) for path in encoded_paths})}
+        if env.get('VLLM_FL_BIV150_KONLY_SERVICE_MULTI2_HOIST', '0') == '1':
+            encoded['multi2_hoist_enabled'] = True
         if native_k8:
             # Also loaded standalone by the owned-service helper. Keep this
             # fingerprint stdlib-only; never import a package/private operator.
