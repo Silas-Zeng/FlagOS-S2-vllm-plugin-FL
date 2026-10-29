@@ -1,0 +1,514 @@
+{
+  "GPU_executed": false,
+  "Graph_verified": false,
+  "actual": {
+    "ELF_decoder_commit": "6b33cec889d9462dc3f167eff4be42a3c5108713",
+    "actual_ELF": {
+      "s1": {
+        "metadata": {
+          ".args": [
+            {
+              ".address_space": "global",
+              ".name": "KArg_0",
+              ".offset": 0,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_1",
+              ".offset": 8,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_2",
+              ".offset": 16,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_3",
+              ".offset": 24,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_4",
+              ".offset": 32,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_5",
+              ".offset": 40,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_6",
+              ".offset": 48,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_7",
+              ".offset": 56,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_8",
+              ".offset": 64,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_9",
+              ".offset": 72,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_10",
+              ".offset": 80,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_11",
+              ".offset": 84,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_12",
+              ".offset": 88,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_13",
+              ".offset": 96,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_14",
+              ".offset": 104,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_15",
+              ".offset": 112,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_16",
+              ".offset": 120,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_17",
+              ".offset": 128,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_18",
+              ".offset": 136,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_19",
+              ".offset": 144,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_20",
+              ".offset": 152,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_21",
+              ".offset": 160,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_22",
+              ".offset": 168,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_23",
+              ".offset": 176,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_24",
+              ".offset": 184,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_25",
+              ".offset": 192,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_26",
+              ".offset": 200,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_27",
+              ".offset": 208,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            }
+          ],
+          ".group_segment_fixed_size": 0,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 216,
+          ".max_flat_workgroup_size": 0,
+          ".name": "kernel_cjj_konly_q32",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 104,
+          ".sgpr_spill_count": 96,
+          ".symbol": "kernel_cjj_konly_q32.kd",
+          ".vgpr_count": 122,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        },
+        "text_sha256": "8baf4bd7f536ce543849456cae432f77ad343417843341a5a0482d7f0c832c24"
+      },
+      "s2": {
+        "metadata": {
+          ".args": [
+            {
+              ".address_space": "global",
+              ".name": "KArg_0",
+              ".offset": 0,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_1",
+              ".offset": 8,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_2",
+              ".offset": 16,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_3",
+              ".offset": 24,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_4",
+              ".offset": 32,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_5",
+              ".offset": 40,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_6",
+              ".offset": 48,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_7",
+              ".offset": 56,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_8",
+              ".offset": 64,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_9",
+              ".offset": 72,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_10",
+              ".offset": 80,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_11",
+              ".offset": 84,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_12",
+              ".offset": 88,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_13",
+              ".offset": 96,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_14",
+              ".offset": 104,
+              ".size": 4,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_15",
+              ".offset": 112,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_16",
+              ".offset": 120,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_17",
+              ".offset": 128,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_18",
+              ".offset": 136,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_19",
+              ".offset": 144,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".name": "KArg_20",
+              ".offset": 152,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_21",
+              ".offset": 160,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_22",
+              ".offset": 168,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_23",
+              ".offset": 176,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_24",
+              ".offset": 184,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".name": "KArg_25",
+              ".offset": 192,
+              ".size": 8,
+              ".value_kind": "by_value"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_26",
+              ".offset": 200,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            },
+            {
+              ".address_space": "global",
+              ".name": "KArg_27",
+              ".offset": 208,
+              ".size": 8,
+              ".value_kind": "global_buffer"
+            }
+          ],
+          ".group_segment_fixed_size": 0,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 216,
+          ".max_flat_workgroup_size": 0,
+          ".name": "kernel_cjj_konly_q32",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 104,
+          ".sgpr_spill_count": 93,
+          ".symbol": "kernel_cjj_konly_q32.kd",
+          ".vgpr_count": 124,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        },
+        "text_sha256": "775013588ea519d0641c5476a9c33163b674071a233d69feb8976a570c4d795c"
+      }
+    },
+    "baseline_native_audit_replayed": true,
+    "complete_typed_ABI_equal": true,
+    "cubins": {
+      "s1": "7eadbdbf854be149083065cb30f0f8c1bdc593aea6d2b9baf454502adb6fbb43",
+      "s2": "dab726c48cabe17bd795e2b35f094c5fefcb40db0e802f655bff51470b8715ce"
+    },
+    "hashes": {
+      "s1": "53ef08b799eddb1170100ca6a7fca2171a54443acbf5a5e88549b35ceffd1603",
+      "s2": "2d8938635879f904f3d844b27cb8919ec3d6d4e71cf9a5b990362059065d90e1"
+    },
+    "metadata_difference": [
+      "hash",
+      "ir_override",
+      "num_stages",
+      "shared"
+    ],
+    "original_proposal_and_numeric_pending_labels_preserved": true,
+    "prepared_proof_sha256": "1fec73ce1b965b82b33a4d1f27a6f051fadc34fb8448002707f63ca3c2a49f16",
+    "provenance": {
+      "s1": {
+        "manifest_sha256": "60476bbcbaf13ea4d44fcfc0770d586f2241c8bfdb67cff6dbe79124891589c1",
+        "owner": {
+          "pid": 206472,
+          "same_start": true,
+          "start_ticks": 364351602,
+          "state": "Z"
+        },
+        "raw_bytes": 84437304,
+        "raw_files": 3219
+      },
+      "s2": {
+        "manifest_sha256": "a7583d8afb11bf0614adbeaeeb05349716fc3f7793f827b5932da1d5f6c0316c",
+        "owner": {
+          "pid": 219924,
+          "same_start": true,
+          "start_ticks": 364718401,
+          "state": "Z"
+        },
+        "raw_bytes": 2227237,
+        "raw_files": 27
+      }
+    }
+  },
+  "checks": [
+    "both actual N1 Q32 roles",
+    "numeric only: timing and timing warmup removed",
+    "Graph B before fresh eager B unchanged",
+    "full cache/readonly/bitwise checks retained",
+    "independent original CPU cache/writer source",
+    "original miss-prohibiting warmup path retained",
+    "valid causal/write range pattern0",
+    "unchanged physical descriptor pattern0",
+    "valid causal/write range pattern1",
+    "unchanged physical descriptor pattern1",
+    "tail invalid lane is outside writer slots",
+    "reference length and causal prefix parameterized together",
+    "codec/metrics/gates/policy full AST unchanged",
+    "diagnostic retains original BF16 failure",
+    "strict default rejects BF16 quality failure",
+    "diagnostic cannot bypass finite",
+    "diagnostic cannot bypass codec",
+    "diagnostic cannot bypass output_canaries",
+    "diagnostic cannot bypass read_only_inputs",
+    "diagnostic cannot bypass actual_IR",
+    "diagnostic cannot bypass hoisted_unhoisted_bitwise",
+    "diagnostic cannot bypass quantized_reference",
+    "original S1/private S2 recorders load without framework",
+    "all actual3219+27 files SHA and S1 native replay",
+    "immutable existing ELF decoder",
+    "only two CPU decoder definitions reused",
+    "actual complete GPU ELF s1",
+    "unique actual GPU note s1",
+    "one actual N1 kernel s1",
+    "actual ELF resources s1",
+    "actual complete GPU ELF s2",
+    "unique actual GPU note s2",
+    "one actual N1 kernel s2",
+    "actual ELF resources s2",
+    "full actual ELF typed argument descriptors equal",
+    "reject role/typed ABI mutation s2/ABI",
+    "reject role/typed ABI mutation s1/hash",
+    "reject metadata mutation use_sme",
+    "reject metadata mutation num_stages",
+    "reject metadata mutation shared",
+    "Root receipt rejects Root_numeric_approved/False",
+    "Root receipt rejects Root_numeric_approved/1",
+    "Root receipt rejects num_seqs/2",
+    "Root receipt rejects timing_allowed/True",
+    "stdlib only/no framework"
+  ],
+  "count": 45,
+  "driver_sha256": "5b963f6807c6cea0f6cfdb2abb276cc86cc28c16da59457636d7d70c435061f5",
+  "numeric_verified": false,
+  "performance_measured": false,
+  "plan_sha256": "ef1c16ff2bd0ed088d2cbea07b52a2c5c2f8847059dc53788052bcfe869d5467",
+  "precision_gate": false,
+  "schema": "cjj-q32-s2-numeric-cpu-v1",
+  "service_verified": false
+}
