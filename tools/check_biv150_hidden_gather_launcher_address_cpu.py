@@ -37,11 +37,13 @@ def main():
  # A CPU builtin has a real C-address owner. Mutating its module label must not
  # change that owner. This demonstrates robust observation, not historic cause.
  import _json
- fn=_json.scanstring;before=h.builtin_binding(fn);original=_json.__file__
+ fn=_json.scanstring;before=h.builtin_binding(fn);had_file=hasattr(_json,'__file__');original=getattr(_json,'__file__',None)
  try:
   _json.__file__='/private/tmp/UNTRUSTED-module-label-not-a-loaded-function'
   after=h.builtin_binding(fn)
- finally:_json.__file__=original
+ finally:
+  if had_file:_json.__file__=original
+  else:del _json.__file__
  ok(before['C_address']==after['C_address'] and before['DSO_path']==after['DSO_path'] and before['DSO_sha256']==after['DSO_sha256'] and before['legacy_module_path']!=after['legacy_module_path'],'dladdr ownership survives mutable module label; C builtin never invoked')
  try:h.builtin_binding(lambda:None)
  except ValueError:ok(True,'nonbuiltin refused before C API')

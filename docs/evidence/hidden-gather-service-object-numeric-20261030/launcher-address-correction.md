@@ -27,3 +27,5 @@
 原服务 ACK 中的4105仍照原字节验证，作为历史模块标签保留；新复制的执行目标改为同份服务原件中、由真实ABI生成器支持的5124。这不是同时接受任意launcher，也不是以文件名代替函数地址。生产源码、GPU源码、原 observer 与原 actual_pins 文件全部不变。
 
 新增 CPU 审查器 `tools/check_biv150_hidden_gather_launcher_address_cpu.py` 核全21原件、SDK/ABI/C/cache键、两个原host文件，并用 CPU builtin 验证修改模块文件标签不改变C地址归属；此测试不证明历史串写原因。设备数值仍未通过，Root 未授权新的 GPU 续跑；本提交只交本地审查，不更新服务资格。
+
+CPU 审稿记录：系统 Python 的39项初检通过；指定 Python 3.12 的 `_json` 为内建模块、原本没有 `__file__`，首次 fixture 假设该属性存在而停止。后继仅令测试完整恢复“属性缺失”状态；绑定实现本来就允许旧模块路径缺失，没有改变设备身份或数值门。
