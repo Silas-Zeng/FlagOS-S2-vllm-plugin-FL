@@ -1,6 +1,10 @@
 # Dynamic hidden-state gather: CPU candidate
 
-Base: team main `8ba3bc18de50220943ab15d7269f59e24a59d013`.
+Started from team main `8ba3bc18de50220943ab15d7269f59e24a59d013`, frozen
+as `4a303031b0961a20c5c94353f48d84d3b49ebec8`, then normally merged accepted
+PR117 main `56f88737fcf3b940760b9ca3027a925cd5a7d77d`. The current inverse
+proof is relative to that new main and preserves its 5898 Native identities.
+Historical `*-8ba.json` reports are retained with their original commit context.
 The opt-in is `VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER=1`; it defaults to OFF.
 There is no device result, service eligibility result, or measured performance
 gain for this candidate yet. It does not include the unmerged 118/120/121 work.
