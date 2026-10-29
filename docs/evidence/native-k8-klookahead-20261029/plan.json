@@ -1,0 +1,94 @@
+{
+  "actual_SO_instruction_order_verified": false,
+  "actual_counter_scope_verified": false,
+  "default_stdlib_only": true,
+  "explicit_cuda_flags": [
+    "-O3",
+    "-std=c++17",
+    "-D__ILUVATAR__",
+    "-D__MR__",
+    "-DCOREX_NATIVE_GQA_V_OVERLAP=1",
+    "-x",
+    "ivcore",
+    "--cuda-gpu-arch=ivcore11",
+    "--cuda-path=/usr/local/corex"
+  ],
+  "frontend_explicit_kernel_launches": 0,
+  "input_initializations": 0,
+  "numeric_verified": false,
+  "performance_verified": false,
+  "precision_gate": false,
+  "requested": "only packed K-next read after original V wait+barrier; publish after current PV",
+  "service_installed": false,
+  "source_transform": {
+    "K_words_per_thread": 8,
+    "Kpair_or_shared6K_combined": false,
+    "actual_CoreX_counter_scope_verified": false,
+    "actual_SO_schedule_verified": false,
+    "base": "a455a3de364051fbea80226870c239de3a48e716",
+    "codec_QK_softmax_PV_reducer_math_unchanged": true,
+    "device_compile": false,
+    "device_source": "a1eb7deee5e8ef99136128984256762096a3657f",
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "8c4d67925f9d731f9fda36c82b75d35da8372ffbb9579b1c2891898a19c371b3",
+        "variant_sha256": "783d7b5e78c8b0c5c19cc3ea0b588b27a7e869997f98e920c9470a74cd4f809e"
+      },
+      "codec.cuh": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+        "variant_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "5b71b43807c8e5f57a4f495a2733f1738ee1248ebec91f4a2f8e26b84b18e0ef",
+        "variant_sha256": "8b672b6f1d02ec3420eaa11186735f10c7cb235d083b1379275fe227c26a1ed9"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "8f22c9464b4595caf0059e9571e92d1ede83abe1430fda8f95a7e8b649efe3bf",
+        "variant_sha256": "7534b3012560b3698f0bcafbc9ff89fc9d1f5899829be162c0a9abbd49e71a05"
+      }
+    },
+    "namespace": "cjj_native_k8_klookahead_probe",
+    "numeric_verified": false,
+    "page_bytes": 16384,
+    "performance_verified": false,
+    "precision_gate": false,
+    "publish_scope": "after current PV; before original page-end barrier; next QK after barrier",
+    "read_scope": "only later full page of this segment; after original V wait8 + barrier",
+    "reference_SO": "8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5",
+    "scopes": [
+      [
+        64,
+        2,
+        2048
+      ],
+      [
+        64,
+        2,
+        2560
+      ],
+      [
+        32,
+        4,
+        2048
+      ],
+      [
+        32,
+        4,
+        2560
+      ]
+    ],
+    "service_enabled": false,
+    "shared_bytes": 8192,
+    "tail_original_default_KReady_false": true
+  },
+  "sources": {
+    "tools/kernels/biv150_native_k8_codec.cuh": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+    "tools/kernels/biv150_native_k8_klookahead_codec.cu": "783d7b5e78c8b0c5c19cc3ea0b588b27a7e869997f98e920c9470a74cd4f809e",
+    "tools/kernels/biv150_native_k8_klookahead_qk.cpp": "8b672b6f1d02ec3420eaa11186735f10c7cb235d083b1379275fe227c26a1ed9",
+    "tools/kernels/biv150_native_k8_klookahead_qk.cu": "7534b3012560b3698f0bcafbc9ff89fc9d1f5899829be162c0a9abbd49e71a05"
+  }
+}
