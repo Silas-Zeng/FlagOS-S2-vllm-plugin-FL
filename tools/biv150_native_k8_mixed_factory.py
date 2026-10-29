@@ -5,6 +5,9 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE='a455a3de364051fbea80226870c239de3a48e716'
+# GPU provenance stays at a455; only the integration-side host inverse follows
+# accepted main117. This does not transfer old compile/consumer qualification.
+HOST_BASE='56f88737fcf3b940760b9ca3027a925cd5a7d77d'
 NAMESPACE='cjj_native_k8_mixed_probe'
 OLD_NAMESPACE='cjj_native_k8_v_overlap_probe'
 FILES={'qk.cpp':'biv150_native_k8_v_overlap_qk.cpp','qk.cu':'biv150_native_k8_v_overlap_qk.cu',
@@ -38,8 +41,8 @@ def verify():
         assert b.count(new)==1,'missing exact host edit: '+row['path']
         restored[row['path']]=b.replace(new,old)
     for name,b in restored.items():
-        assert b==subprocess.check_output(['git','-C',str(ROOT),'show',BASE+':'+name]),'unreviewed host change: '+name
-    return {'base':BASE,'namespace':NAMESPACE,'host_reverse_byte_exact':sorted(restored),'files':records,'new_rows_segments':[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]],
+        assert b==subprocess.check_output(['git','-C',str(ROOT),'show',HOST_BASE+':'+name]),'unreviewed host change: '+name
+    return {'base':BASE,'host_reverse_base':HOST_BASE,'namespace':NAMESPACE,'host_reverse_byte_exact':sorted(restored),'files':records,'new_rows_segments':[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]],
             'existing_rows_segments':[[32,4],[64,2]],'CUDA_and_codec_bytes_unchanged':True,
             'no_new_valid_rows_or_padding':True,'physical_page_bytes':16384,
             'actual_SO_verified':False,'numeric_verified':False,'performance_verified':False,'service_verified':False}
