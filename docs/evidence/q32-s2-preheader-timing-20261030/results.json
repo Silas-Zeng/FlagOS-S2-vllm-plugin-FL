@@ -1,0 +1,219 @@
+{
+  "actual_bindings": {
+    "s1": {
+      "ELF_private_bytes": 0,
+      "ELF_sgpr_spills": 96,
+      "ELF_vgpr_spills": 0,
+      "VGPR": 122,
+      "cubin_sha256": "7eadbdbf854be149083065cb30f0f8c1bdc593aea6d2b9baf454502adb6fbb43",
+      "dynamic_shared_bytes": 33792,
+      "kernel_hash": "53ef08b799eddb1170100ca6a7fca2171a54443acbf5a5e88549b35ceffd1603",
+      "role": "accepted main899 N1 Q32 hoisted stage1",
+      "runtime_n_spills": 0,
+      "threads": 1024
+    },
+    "s2": {
+      "ELF_private_bytes": 0,
+      "ELF_sgpr_spills": 93,
+      "ELF_vgpr_spills": 0,
+      "VGPR": 124,
+      "cubin_sha256": "dab726c48cabe17bd795e2b35f094c5fefcb40db0e802f655bff51470b8715ce",
+      "dynamic_shared_bytes": 41216,
+      "kernel_hash": "2d8938635879f904f3d844b27cb8919ec3d6d4e71cf9a5b990362059065d90e1",
+      "role": "private same-source Q32 preheader-hoisted stage2",
+      "runtime_n_spills": 0,
+      "threads": 1024
+    }
+  },
+  "base": "899ce77470b0b539aebc108fd122f668c2d5894d",
+  "decision": "Close this preheader stage2 variant: no gain over the accepted hoisted S1 in either diagnostic mode.",
+  "evidence": {
+    "Root_replay_byte_identical": true,
+    "all_raw_SHA_verified": true,
+    "independent_auditor_sha256": "24cc506fe8bb45db316ecbd4dfe75b2d592286aaccbcbb0111c50b34516d625b",
+    "independent_report_sha256": "ba88f548000b7538ded3e2e8b9091a402529860888b34c72ec5a3034dd3c0493",
+    "manifest_sha256": "d7f53c62c32d192aaeb3fa43555ff06dd1c676aa763ea5182261dde6555fbb9c",
+    "owner_pid": 267007,
+    "owner_same_start_terminal": "Z",
+    "owner_sha256": "5490dcf0e4fe86a4cfd61fee5f69546a75d282cbf961f7a279bcedde70198861",
+    "owner_start_ticks": 365746448,
+    "prior_numeric_review_sha256": "fbf84f3552b2eb7350252c95d881e94eba38ec8775a42b85051ea9602274276d",
+    "raw_arrays_caches_binaries_and_full_audit_retained_privately": true,
+    "raw_bytes": 193296438,
+    "raw_files": 92,
+    "ready_spec_sha256": "c9cbca27663f7bbf61f26d9fa80e845a1ffefd0930ebe9c36f916b158b46af8b",
+    "summary_sha256": "c6bcce3357fa2a7b448100bb26353f2bab990dbfc2047a9739915b21ee2b4318",
+    "timing_Root_receipt_sha256": "15f9512fc61e4c9fa9991abf3685a8fb2a341e392ed57157c02c5def070fbb53"
+  },
+  "numerical": {
+    "Graph_B_before_fresh_eager_B": true,
+    "Graph_changed_input": true,
+    "arms": 2,
+    "full_BF16_output_elements_per_arm_per_stage": 4194304,
+    "full_S1_S2_bitwise": true,
+    "full_encoded_cache_bytes_per_arm_per_stage": 12664832,
+    "implementation_hard_checks_passed": true,
+    "independent_CPU_codes_scales_full_cache_bits_exact": true,
+    "independent_reference_max_abs_difference": {
+      "0": {
+        "original": 0.0,
+        "quantized": 0.0
+      },
+      "1": {
+        "original": 7.355227538141662e-16,
+        "quantized": 7.216449660063518e-16
+      }
+    },
+    "nondefault_stream": true,
+    "numeric_diagnostic_flag": true,
+    "original_BF16_quality_passed": false,
+    "original_BF16_relative_RMSE_limit": 0.005,
+    "original_pointwise_relative_gates_unchanged": true,
+    "output_canaries": true,
+    "random6143_original_BF16": {
+      "finite": true,
+      "max_abs": 0.0011444201346989258,
+      "pointwise_passed": true,
+      "pointwise_violations": 0,
+      "relative_rmse": 0.009618575519632055,
+      "rms": 0.0002431607083405901
+    },
+    "random6143_quantized_FP64": {
+      "finite": true,
+      "max_abs": 0.0003504170611494939,
+      "pointwise_passed": true,
+      "pointwise_violations": 0,
+      "relative_rmse": 0.002283783103268205,
+      "rms": 5.773660107887933e-05
+    },
+    "random_FP64_reference_rows": 10,
+    "readonly_worker_readbacks_verified": true,
+    "reference_definition": "Ideal global FP64 softmax; does not model BF16-P or online-softmax intermediate rounding.",
+    "saved_metric_recompute_max_abs_delta": 0.0,
+    "stages": 8,
+    "uniform_FP64_reference_rows": 2048
+  },
+  "post_timing_evidence": {
+    "all_eight_blocks_match_archived_fresh_B_output_guard_cache_and_input_hashes": true,
+    "limitation": "Frozen worker synchronously read back and compared complete results/cache/readonly, then saved hashes. Independent auditor hashes archived freshB arrays and original inputs; it cannot independently decode unarchived per-block or readonly-after arrays. Raw timer endpoints are not archived.",
+    "readonly_after_GPU_tensors_separately_archived": false,
+    "separate_per_block_GPU_arrays_archived": false
+  },
+  "protocol": {
+    "ABBA_order": [
+      "s1",
+      "s2",
+      "s2",
+      "s1"
+    ],
+    "ABBA_rounds": 1,
+    "captured_complete_steps": 4,
+    "complete_steps_per_event_block": 64,
+    "component_scope": "Full N1 2D reader; append-reader also includes unchanged writer. No Python JIT/helper, host dispatcher or service cost. Warm repeated fixture; no cache flush.",
+    "counts_are_not_hardware_profiler": true,
+    "event_blocks": 8,
+    "host_scope": "16 graph replay submissions plus end-event synchronization, divided by64; validation/readback excluded",
+    "observed_Python_counts": {
+      "Graph_replay": 168,
+      "reader": 36,
+      "reader_cache_warmups": 2,
+      "scope": "Python launches include capture; graph replays counted separately, not measured kernel profiling",
+      "writer": 18,
+      "writer_warmups": 1
+    },
+    "observed_graph_replays_split": {
+      "numeric": 8,
+      "timed": 128,
+      "warm": 32
+    },
+    "timed_graph_replays_per_block": 16,
+    "warm_graph_replays_per_arm_per_mode": 8
+  },
+  "qualification": {
+    "capacity_gain": false,
+    "component_implementation_verified": true,
+    "diagnostic_timing_measured": true,
+    "model_verified": false,
+    "precision_gate": false,
+    "service_verified": false,
+    "statistical_stability_claimed": false
+  },
+  "schema": "cjj-124-q32-S1-S2-selected-result-v1",
+  "scope": {
+    "BLOCK_M": 256,
+    "BLOCK_Q": 32,
+    "TILE_SIZE": 64,
+    "aligned6144_timing": false,
+    "context16k_tested": false,
+    "fixture_cache_bytes": 12664832,
+    "num_seqs": 1,
+    "num_warps": 16,
+    "numerical_total_KV": [
+      6144,
+      6143
+    ],
+    "pages": 773,
+    "physical_page_bytes": 16384,
+    "query_pitch": 2048,
+    "query_rows": 2048,
+    "table_pitch": 8192,
+    "timing_prefix": 4095,
+    "timing_total_KV": 6143,
+    "writer_pitch": 2560
+  },
+  "source_commit": "887217375d113d62829e19b5794fce6f70458a88",
+  "timing": {
+    "append-reader": {
+      "S1_over_S2": 0.9815082826847978,
+      "S2_extra_ms": 0.04225337505340576,
+      "S2_latency_increase_fraction": 0.018840103177346856,
+      "event_ABBA_ms": [
+        2.24135684967041,
+        2.28641414642334,
+        2.283564329147339,
+        2.244114875793457
+      ],
+      "event_means_ms": {
+        "s1": 2.2427358627319336,
+        "s2": 2.2849892377853394
+      },
+      "host_ABBA_ms": [
+        2.2442096887971275,
+        2.28903485549381,
+        2.2861892357468605,
+        2.2472410928457975
+      ],
+      "host_S1_over_S2": 0.9816897909420151,
+      "host_means_ms": {
+        "s1": 2.2457253908214625,
+        "s2": 2.2876120456203353
+      }
+    },
+    "reader": {
+      "S1_over_S2": 0.9822630188774778,
+      "S2_extra_ms": 0.04008960723876953,
+      "S2_latency_increase_fraction": 0.018057262445644984,
+      "event_ABBA_ms": [
+        2.2208588123321533,
+        2.2599313259124756,
+        2.2605230808258057,
+        2.219416379928589
+      ],
+      "event_means_ms": {
+        "s1": 2.220137596130371,
+        "s2": 2.2602272033691406
+      },
+      "host_ABBA_ms": [
+        2.2255892763496377,
+        2.2622288452112116,
+        2.262929374410305,
+        2.2218991216504946
+      ],
+      "host_S1_over_S2": 0.9828359986873827,
+      "host_means_ms": {
+        "s1": 2.223744199000066,
+        "s2": 2.2625791098107584
+      }
+    }
+  }
+}
