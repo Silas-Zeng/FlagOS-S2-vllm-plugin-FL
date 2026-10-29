@@ -24,7 +24,7 @@
 设备由 Root 单独协调，仍需 closed-owner、端口/GPU 独占和干净冻结提交。参数沿原 helper：
 
 ```text
-python -B -S -W error tools/run_biv150_hidden_gather_service_object_numeric.py
+python -B -u tools/run_biv150_hidden_gather_service_object_numeric.py
   --run-helper --root-owned-exclusive --expected-source-commit <本工具冻结提交>
   --compile-out /workspace/experiments/minicpm-s2/cjj-dynamic-hidden-gather-compile-v1-20261029
   --actual-review <旧 bdb0fb89 编译报告>
@@ -35,3 +35,5 @@ python -B -S -W error tools/run_biv150_hidden_gather_service_object_numeric.py
 ```
 
 设备 Python 必须使用既有正确环境及原 overlay/PYTHONPATH；上面的换行只是参数展示，不能用本地 stdlib-only CPU 环境代替设备环境。`--timing` 不存在。原 failed smoke、完整 raw、三版审查失败/修正记录均留本地，不随本提交上传。输出仍为 `helper-summary.json` 与全部数值/guard 原件，Root 回收后独立重算再决定后续服务资格。
+
+CPU 冻结检查已实际完成：`3d59ec8` 上58项通过，包含真实 execute 前置检查到首次 Torch import 的主动停止；未加载 Torch、未 warmup、未运行 GPU。此后仅把设备命令示例去掉 CPU 使用的 `-S`，确保保留正常 SDK site-packages；数值工具字节未变。初次开发中的 seam 计数断言将原字段出现次数误写为3（实际2），已在冻结前修正；没有设备尝试。
