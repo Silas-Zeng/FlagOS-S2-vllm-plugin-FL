@@ -113,6 +113,7 @@ class Runtime:
         self.stats_path = None; self.final_export = None
         self.q32_hoist = None
         self.native_decode = None; self.native_decode_identity = None
+        self.mixed_native = None; self.mixed_native_identity = None
 
     @staticmethod
     def typed(value):
@@ -233,6 +234,7 @@ class Runtime:
             raw3d_enabled=self.raw3d_enabled, mixed_pair_enabled=self.mixed_pair_enabled,
             multi2_enabled=self.multi2_enabled, capacity_reclaimed=False, precision_gate=False)
         result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()
+        result['mixed_native'] = dict(enabled=False) if self.mixed_native is None else self.mixed_native.verify(self)
         result['q32_hoist'] = dict(enabled=False) if self.q32_hoist is None else self.q32_hoist.stats()
         return result
 
@@ -361,6 +363,8 @@ class KernelFacade:
                 views = entry.roles['decode79']
                 selected.update(views, query_code_ptr=views['key_cache_ptr'], query_scale_ptr=views['key_scale_ptr'])
                 profile = 'decode'; target_grid = grid
+                if runtime.mixed_native is not None and runtime.mixed_native.try_produce(runtime,entry,selected,target_grid):
+                    return None
                 if runtime.native_decode is not None and runtime.native_decode.try_produce(runtime,entry,selected,target_grid):
                     return None
             else:

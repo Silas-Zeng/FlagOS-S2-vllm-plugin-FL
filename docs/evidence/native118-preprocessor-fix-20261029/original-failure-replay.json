@@ -1,0 +1,43 @@
+{
+  "actual_SO_created": false,
+  "actual_device_argv": [
+    "/usr/local/corex-4.5.0/bin/clang-22",
+    "-O3",
+    "-std=c++17",
+    "-D__ILUVATAR__",
+    "-D__MR__",
+    "-DCOREX_NATIVE_GQA_V_OVERLAP=1",
+    "-x",
+    "ivcore",
+    "--cuda-gpu-arch=ivcore11",
+    "--cuda-path=/usr/local/corex",
+    "-Dlaunch_cjj_native_k8_v_overlap_s2=launch_cjj_native_k8_mixed_s2",
+    "-Dlaunch_cjj_native_k8_v_overlap_s4=launch_cjj_native_k8_mixed_s4",
+    "-Dcjj_launch_native_k8_v_overlap_codec=cjj_launch_native_k8_mixed_codec",
+    "-Dcjj_native_k8_v_overlap_gqa_producer=cjj_native_k8_mixed_gqa_producer",
+    "-Dcjj_native_k8_v_overlap_codec_probe=cjj_native_k8_mixed_codec_probe",
+    "-Dcjj_k8_scale_rn32=cjj_mixed_k8_scale_rn32",
+    "-Dcjj_k8_code_rne=cjj_mixed_k8_code_rne",
+    "--cuda-device-only",
+    "-E",
+    "-P",
+    "/workspace/experiments/minicpm-s2/cjj-native118-mixed-compile-v1-20261029/symbol-preprocessor-probe.cc"
+  ],
+  "actual_device_stderr_sha256": "811fb91e8b09eb29ffd576dc70ce4d3cafd65832041548070ace5f52284e98ff",
+  "all_artifacts_rehashed": true,
+  "failure_before_frontend_Torch_import": true,
+  "manifest_sha256": "50fa313e7400323a2e9ff96f2a58d1f765a4df34e7302c30028a43d110c75730",
+  "original_completed": false,
+  "original_errors": [
+    "RuntimeError('Symbol preprocessor failed: device')"
+  ],
+  "original_files_unchanged": true,
+  "original_source_commit": "ff10718980f35a2275771b12eb02b9d4adf20d24",
+  "raw_bytes": 53379,
+  "raw_files": 17,
+  "raw_path": "/private/tmp/cjj-native118-mixed-compile-v1-raw-20261029",
+  "torch_state_recorded": {
+    "cuda_initialized_after": null,
+    "cuda_initialized_before": null
+  }
+}

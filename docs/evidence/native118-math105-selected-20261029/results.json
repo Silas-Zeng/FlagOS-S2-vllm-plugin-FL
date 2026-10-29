@@ -1,0 +1,200 @@
+{
+  "audit_correction": {
+    "audit_v1_extra_nonempty_extraction_gate": false,
+    "change": "Replace the extra all-extractions-nonempty assertion with a requirement that an empty extraction retains original accuracy0; count empty extractions instead of hardcoding zero. Nonempty original response and no request error remain required.",
+    "diagnostic": {
+      "completion_tokens": 12,
+      "extracted_prediction_empty": true,
+      "index": 16,
+      "original_accuracy": 0,
+      "original_evaluator_status": "success",
+      "original_response_characters": 42,
+      "original_response_nonempty": true,
+      "question_id": "test/prealgebra/1761.json",
+      "request_error": null,
+      "retained_in105_denominator": true,
+      "stage": "official",
+      "stop_reason": "stop"
+    },
+    "effective_result_block_sha256": "a89e6929a62470395d5ec3f91de7051ab87f4f28e01523433bbd36995ae915db",
+    "exact_reverse_to_original_block_verified": true,
+    "grader_threshold_or_denominator_changed": false,
+    "original_failure_receipt_sha256": "5c741af3763d8e478c30d5bb95004efb1ecfcff6f99792f0752561abe8b38fd2",
+    "original_result_block_sha256": "9d8f03dc304e0efe6ac7e71303b2da5b29ea444788f9616973e12e895dedf046",
+    "original_v1_review_completed": false,
+    "original_v1_script_sha256": "57b01dfadc38f6585082071a528f415350fdbfd3098ce7c2ec904133dde1017f",
+    "question_filtered_or_rescored": false
+  },
+  "closed_run": {
+    "all277_response_IDs_unique": true,
+    "extra96_plain_overlap_requests_run": false,
+    "math_requests": 210,
+    "original_smoke_requests": 67,
+    "owned_cleanup_verified": true,
+    "owner": {
+      "pid": 138836,
+      "same_start": true,
+      "start_ticks": 361752704,
+      "state": "Z"
+    }
+  },
+  "identities": {
+    "C3_implementation_sha256": "ed27276ed10fed835690db099ff83ecb311055c3ae989010837f542a2cdc0713",
+    "Root_source_bridge_sha256": "c14c70a59e889e6abe1f93b766cd358fe97b7416a3f7b8859f52c3b80c44cf91",
+    "controller_sha256": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+    "download_manifest_sha256": "da57b0f9a33197b765ddbd22311af713f85f1fe253fa0d2b2108d6065c5a6a3c",
+    "independent_review_and_Root_exact_replay_sha256": "15e48733f2f94120d65f5bbb3bfb828480f9419c2dc022e0256b85c1ed7f7e7c",
+    "independent_v2_script_sha256": "bfc3b73ecbd524ac9bb534a31f6825b1d3fb8ea38effa7d8a1be2a9af2a38ba7",
+    "independent_worker_and_amendment_note_sha256": "afaeaf7c23c496f4289d69454b8dd8f45a256de67e0e8a95a794b56e2e9418fc",
+    "mixed_library_sha256": "ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba",
+    "native5898_library_sha256": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b",
+    "official_accuracy_function_sha256": "27937c1566e4b8680fc4feb2e18d6f12e0a4c157416ac9840fab6cc19b221bd2",
+    "original_owner_export_sha256": "a8e3eda30e69a4158b1ad2abfdc4c618e310e36937332475efa354a15662cb56",
+    "original_state_sha256": "521536dd560d6d74ee0ccb70c4963813883eeca522694f22f11e59f002aa39d8",
+    "service_manifest_sha256": "2ce50a08e2531426d54863b1bd5d66f6210a978226a1bcac51edb009b0598d47"
+  },
+  "kind": "Selected PR118 Math105 and supplemental64 results; model throughput pending",
+  "limitations": [
+    "Official8 and supplemental64 are independently counted protocols; their scores are not pooled or substituted.",
+    "Original evaluator labels were resummed after binding each response, prompt and reference metadata. This is not a new mathematical judge.",
+    "The one empty extraction remains an original incorrect response, not a failed HTTP request or a maximum-token truncation.",
+    "Mixed host markers have no response IDs; neither per-question Native paths nor Graph replay frequency is proved.",
+    "No FINAL_STATS was saved; all original false coverage flags and the absent lifetime counter remain unchanged.",
+    "Sampling is unchanged; differences from other runs are not causally attributed to a kernel.",
+    "Only selected scalars, one diagnostic question ID and hashes are included; no full question/response bodies, original event lists, arrays, binaries or complete audit are shared."
+  ],
+  "local_archive_identity_only": {
+    "all_original_file_SHA_and_sizes_verified": true,
+    "files": 4091,
+    "raw_or_full_review_included": false,
+    "uncompressed_bytes": 102130418
+  },
+  "observed_dispatch": {
+    "Graph_replays_or_frequency_proven": false,
+    "S4_math_request_coverage_proven": false,
+    "absence_of_new_marker_proves_no_execution": false,
+    "actual_response_ID_linkage": false,
+    "epoch_source": "archived controller owned.members; marker itself carries PID only",
+    "native5898_buckets": [
+      32,
+      64
+    ],
+    "native5898_selected_or_captured_counts": {
+      "32/BIV150_KONLY_NATIVE_DECODE_CAPTURED": 42,
+      "32/BIV150_KONLY_NATIVE_DECODE_SELECTED": 42,
+      "64/BIV150_KONLY_NATIVE_DECODE_CAPTURED": 42,
+      "64/BIV150_KONLY_NATIVE_DECODE_SELECTED": 42
+    },
+    "official_interval_new_mixed_host_markers": 0,
+    "same_PID_native5898_installer_and_encoded_implementation_digest_verified": true,
+    "supplemental64_window_mixed_host_marker_count": 3,
+    "supplemental64_window_mixed_pairs": [
+      [
+        60,
+        2
+      ],
+      [
+        61,
+        2
+      ],
+      [
+        63,
+        2
+      ]
+    ],
+    "worker": {
+      "pid": 139146,
+      "sid": 139118,
+      "start_ticks": 361755827
+    }
+  },
+  "original_results_preserved": {
+    "controller_state": {
+      "cleanup_complete": true,
+      "completed": true,
+      "errors": [],
+      "mixed_same_worker_smoke_verified": false,
+      "model_precision_verified": true,
+      "native_model_precision_verified": false,
+      "native_quality_covered": false,
+      "throughput_measured": false
+    },
+    "final_counter_available": false,
+    "mixed_final_evidence": {
+      "Graph_replays_counted": false,
+      "counts_are_lifetime_not_smoke_or_score_window": true,
+      "coverage_missing": true,
+      "mixed_same_worker_smoke_verified": false,
+      "service_verified": false,
+      "workers": []
+    }
+  },
+  "protocol": {
+    "formal_service_CLI_unchanged": true,
+    "max_tokens": 32768,
+    "minimum_correct_of105": 100,
+    "new_independent_mathematical_regrading": false,
+    "official_batch_size": 8,
+    "original_grader_and_scores_preserved": true,
+    "same105_question_ids_prompts_and_reference_metadata_verified": true,
+    "supplemental_batch_size": 64,
+    "supplemental_is_official_score": false,
+    "temperature": 1.0,
+    "threshold": 0.95,
+    "top_p": 0.95
+  },
+  "qualification_boundary": {
+    "full_service_acceptance": false,
+    "model_throughput_verified": false,
+    "official_math105_metric_passed": true,
+    "per_question_native_precision_proven": false,
+    "production_or_runtime_results_modified": false,
+    "supplemental64_is_diagnostic_only": true,
+    "supplemental64_metric_passed": true
+  },
+  "results": {
+    "official": {
+      "JSON_parse_error_count": 0,
+      "correct": 101,
+      "diagnostic_only": false,
+      "empty_extracted_count": 1,
+      "empty_final_text_count": 0,
+      "exact_accuracy": 0.9619047619047619,
+      "incorrect": 4,
+      "input_tokens": 8230,
+      "max_token_truncation_count": 0,
+      "metric_gate_095_passed": true,
+      "official_protocol": true,
+      "output_tokens": 317525,
+      "parallel": 8,
+      "predictions": 105,
+      "reported_rounded_accuracy": 0.9619,
+      "request_error_count": 0,
+      "reviews": 105,
+      "unique_questions": 105
+    },
+    "supplemental64": {
+      "JSON_parse_error_count": 0,
+      "correct": 102,
+      "diagnostic_only": true,
+      "empty_extracted_count": 0,
+      "empty_final_text_count": 0,
+      "exact_accuracy": 0.9714285714285714,
+      "incorrect": 3,
+      "input_tokens": 8230,
+      "max_token_truncation_count": 0,
+      "metric_gate_095_passed": true,
+      "official_protocol": false,
+      "output_tokens": 359119,
+      "parallel": 64,
+      "predictions": 105,
+      "reported_rounded_accuracy": 0.9714,
+      "request_error_count": 0,
+      "reviews": 105,
+      "unique_questions": 105
+    }
+  },
+  "schema": 1,
+  "source_commit": "69827253756a0ef9e618ae0322e9ff361e93504f",
+  "tag": "cjj-native118-service-math105-v1-20261029"
+}
