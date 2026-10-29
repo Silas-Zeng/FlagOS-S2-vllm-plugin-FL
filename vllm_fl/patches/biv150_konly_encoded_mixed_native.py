@@ -18,8 +18,8 @@ SCHEMA=OPERATOR+'(Tensor query, Tensor key_code, Tensor scale_full, Tensor value
 PAIRS={29:4,30:4,31:4,60:2,61:2,63:2}
 # These are deliberately unknown. A source-reviewed qualification update must
 # bind the actual new SO and both new component reports before service opt-in.
-QUALIFICATION={'library_sha256':None,'actual_so_review_sha256':None,
-               'consumer_review_sha256':None,'fullstep_review_sha256':None,
+QUALIFICATION={'library_sha256':'ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba','actual_so_review_sha256':'f75044d8f636157ab2a64392ba8e09ead013e671b11f9cfab0c25246f4ccbeb7',
+               'consumer_review_sha256':'458cd7638ad5b9df8efb3d3f72f626a3414ee947da5cc12f0524c7c1fc97d653','fullstep_review_sha256':'db7a21308aa07b89b8e35493a9c05d2ccf8fc3028c173d1dbd2df37824b0cc49',
                'physical_page_bytes':16384,'rows_segments':[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]],
                'service_verified':False}
 _STATE=None
