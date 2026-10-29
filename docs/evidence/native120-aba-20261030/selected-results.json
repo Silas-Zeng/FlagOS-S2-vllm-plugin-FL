@@ -1,0 +1,208 @@
+{
+  "arms": [
+    {
+      "arm": "A1",
+      "completed_and_owned_cleanup": true,
+      "controller_sha256": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+      "download_manifest_sha256": "084f00a864460baa74ebc8bfd35b6194afa92501c0a4ba10b2c5427087753b68",
+      "errors": [],
+      "fullwarm_unscored": {
+        "completed": 256,
+        "duration": 189.98402501037344,
+        "failed": 0,
+        "mean_ttft_ms": 3596.2652777598123,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6899.106385015438
+      },
+      "raw_bytes": 84464912,
+      "raw_files": 3217,
+      "report_sha256": "aa403d262930183d0b8070e4f4fb8b4f4d307064c1227e3d005e460ed8170c54",
+      "score": {
+        "completed": 256,
+        "duration": 200.50501821702346,
+        "failed": 0,
+        "mean_ttft_ms": 3567.526923261539,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6537.093244126675
+      },
+      "score_new_index_input_rows": [
+        1782,
+        1922,
+        1755,
+        1755,
+        1782
+      ],
+      "source_commit": "899ce77470b0b539aebc108fd122f668c2d5894d"
+    },
+    {
+      "arm": "B",
+      "completed_and_owned_cleanup": true,
+      "controller_sha256": "bbdebbbd640a3643316798610a3446b41ee2d398c92d0c2fb3500bee0c3e51c8",
+      "download_manifest_sha256": "35c4a7abb3b444a2ca9ae1a058203d6c5e25cec1dc89ab3825701f4eee3bf0e4",
+      "errors": [],
+      "fullwarm_unscored": {
+        "completed": 256,
+        "duration": 194.04688207479194,
+        "failed": 0,
+        "mean_ttft_ms": 3592.0325134266022,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6754.65632833413
+      },
+      "raw_bytes": 84449901,
+      "raw_files": 3219,
+      "report_sha256": "43c319956a131683c046907303968d1e05132124a5b871c18302f6f538b07b4f",
+      "score": {
+        "completed": 256,
+        "duration": 192.6727906637825,
+        "failed": 0,
+        "mean_ttft_ms": 3546.0242278059013,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6802.828751711133
+      },
+      "score_new_index_input_rows": [
+        1774,
+        1420,
+        1861,
+        469
+      ],
+      "source_commit": "2a7fab6e705f5bf044d236d12e544c5dc388125f"
+    },
+    {
+      "arm": "A2",
+      "completed_and_owned_cleanup": true,
+      "controller_sha256": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+      "download_manifest_sha256": "60476bbcbaf13ea4d44fcfc0770d586f2241c8bfdb67cff6dbe79124891589c1",
+      "errors": [],
+      "fullwarm_unscored": {
+        "completed": 256,
+        "duration": 194.04212451307103,
+        "failed": 0,
+        "mean_ttft_ms": 3672.78593832998,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6754.821940282907
+      },
+      "raw_bytes": 84437304,
+      "raw_files": 3219,
+      "report_sha256": "77b2c77e90bf63a31093bffa7c24e71b02921a88a274036ede6cf64d550adb25",
+      "score": {
+        "completed": 256,
+        "duration": 191.02573060803115,
+        "failed": 0,
+        "mean_ttft_ms": 3569.0494820773893,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6861.484030596318
+      },
+      "score_new_index_input_rows": [
+        1774,
+        1420,
+        1861,
+        469
+      ],
+      "source_commit": "899ce77470b0b539aebc108fd122f668c2d5894d"
+    }
+  ],
+  "cache_observation_boundary": {
+    "B_A2_added_index_metadata_keys_and_bytes_equal": true,
+    "B_A2_selected_tuning_after_equal": false,
+    "B_A2_selected_tuning_before_equal": false,
+    "TTIR_bytes_may_differ": true,
+    "compilation_time_isolated": false,
+    "every_score_changed_existing_metadata": false,
+    "every_score_selected_tuning_rows_changed": true,
+    "scope": "Boundary observation may include benchmark-client preflight and does not cover entire benchmark-table history; index counts or matching metadata are not a duration measurement."
+  },
+  "component_result_preserved": {
+    "Graph_replay_bypasses_Python": true,
+    "full_validate_only": true,
+    "groups": 8,
+    "report_sha256": "bd03aa5f2dd7d805eb87929a69707329a7a261361c33af054671e7fb5bbea591",
+    "samples": 96,
+    "saved_us_range": [
+      48.310224609375,
+      49.2072568359375
+    ],
+    "source_commit": "071232aa3641a378fc709d21b5e5c4b6c90a6e7f"
+  },
+  "date": "2026-10-30",
+  "decision": {
+    "GitHub_action_performed_by_this_submission": false,
+    "continue16K": false,
+    "merge_qualified": false,
+    "pure_noise_proven": false,
+    "requested_disposition": "record_and_close_current_draft_without_merge",
+    "stable_whole_model_gain_demonstrated": false
+  },
+  "evidence": {
+    "A1_A2_production_and_C3_equal": true,
+    "ABA_local_audit_sha256": "333555c53846715f73fd56629d05db1ff8e9b9fb8e6aa9eb57f6760681469bd5",
+    "ABA_local_script_sha256": "9067c259fca8879bd4ae2872b6185a534ec0301131e95e9c4f96794836f05a75",
+    "B_production_diff_limited_to": [
+      "vllm_fl/patches/biv150_konly_encoded_native.py",
+      "vllm_fl/patches/biv150_konly_encoded_sources.json"
+    ],
+    "all_five_benchmark_commands_equal_except_result_directory": true,
+    "all_three_download_manifests_and_raw_file_SHA_verified": true,
+    "checks_passed": 106,
+    "contains_raw_arrays_logs_binaries_or_full_audit": false
+  },
+  "limitations": [
+    "One ordered ABA, not random repeated trials or a confidence interval. B improves against A1 but trails A2; do not call the differences proven pure noise.",
+    "All score boundary cache observations include client preflight; selected tuning rows changed in every run. File counts/shape lists are not compilation times. Matching B/A2 metadata does not prove identical runtime cost or scheduling.",
+    "Host first-selected/captured records do not give score-window or Graph replay frequency. Original FINAL_STATS/strict coverage false flags remain.",
+    "Fullwarm results are unscored and cannot replace score. Component host savings cannot be multiplied across42layers to claim model throughput."
+  ],
+  "original_observation_limits": {
+    "FINAL_STATS_present": false,
+    "host_first_selected_and_capture_are_not_score_replay_frequency": true,
+    "mixed_same_worker_smoke_verified": false,
+    "native_model_precision_verified": false,
+    "native_quality_covered": false
+  },
+  "parent_commit": "2a7fab6e705f5bf044d236d12e544c5dc388125f",
+  "production_scope": "A1/A2 main899; B2a7 storage identity cache. Both Native readers and Q32 remain ON. No gather or operand-hoist candidates added.",
+  "protocol": {
+    "Graph_observer": false,
+    "benchmark_function_sha256": "e236338934098fda2ea0a795b2ade845015123d8ea052806ca0062cc3035a66d",
+    "case_input_tokens": 4096,
+    "formal_CLI_and_benchmark_unchanged": true,
+    "max_concurrency": 64,
+    "model105_tested": false,
+    "one_complete_fullwarm": {
+      "output_tokens_each": 1024,
+      "requests": 256,
+      "seed": 0
+    },
+    "one_score": {
+      "output_tokens_each": 1024,
+      "requests": 256,
+      "seed": 0
+    },
+    "source94db_helper_and_v6_snapshot_same": true,
+    "statistics_RPC": false,
+    "tested16K": false,
+    "three_short_warmups": {
+      "output_tokens_each": 128,
+      "requests_each": 64,
+      "seeds": [
+        920000,
+        920001,
+        920002
+      ]
+    },
+    "warm_scores_used_for_acceptance": false
+  },
+  "schema": "PR120 selected ABA evidence v1",
+  "score_and_fullwarm_comparisons_percent": {
+    "A2_vs_A1": 4.962309307138857,
+    "B_vs_A1": 4.065040801172759,
+    "B_vs_A1_fullwarm": -2.093750242713277,
+    "B_vs_A2": -0.8548482897232312,
+    "B_vs_A2_fullwarm": -0.0024517589100270243
+  }
+}
