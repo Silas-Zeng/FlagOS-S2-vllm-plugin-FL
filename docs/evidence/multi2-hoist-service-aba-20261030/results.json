@@ -1,0 +1,220 @@
+{
+  "arms": [
+    {
+      "arm": "A",
+      "benchmark_source_cleanup_verified": true,
+      "cache": {
+        "changed_metadata_count": 0,
+        "metadata_after": 362,
+        "metadata_before": 359,
+        "new_index_input_rows": [
+          1774,
+          1420,
+          469
+        ],
+        "new_metadata_count": 3,
+        "removed_metadata_count": 0,
+        "selected_tuning_rows_changed": true,
+        "timed_compile_cost_measured": false
+      },
+      "controller_sha256": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+      "download_manifest_sha256": "1858e412b1c4913f0e662fddc7add1b527575e0893c240478ba70778c1c6ba5f",
+      "full_review_passed": true,
+      "full_warmup": {
+        "scored": false,
+        "total_token_throughput": 6939.336835703402
+      },
+      "implementation_sha256": "ed27276ed10fed835690db099ff83ecb311055c3ae989010837f542a2cdc0713",
+      "independent_review_sha256": "54bb24a2fd298195b12c5c38de0cd35e46af1978b92f0ea19d4e1f66e9905dfd",
+      "raw_bytes": 84194346,
+      "raw_files": 3201,
+      "review_script_sha256": "e062b796a347e02b4608d966f235b8dc19bb10d488a95a868eace1e1a8b402e4",
+      "score": {
+        "completed": 256,
+        "duration_seconds": 187.24987814575434,
+        "failed": 0,
+        "mean_tpot_ms": 41.97843388224541,
+        "mean_ttft_ms": 3530.98631841749,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6999.84434157945
+      },
+      "source_commit": "899ce77470b0b539aebc108fd122f668c2d5894d"
+    },
+    {
+      "arm": "B",
+      "benchmark_source_cleanup_verified": true,
+      "cache": {
+        "changed_metadata_count": 0,
+        "metadata_after": 363,
+        "metadata_before": 360,
+        "new_index_input_rows": [
+          1774,
+          1420,
+          469
+        ],
+        "new_metadata_count": 3,
+        "removed_metadata_count": 0,
+        "selected_tuning_rows_changed": true,
+        "timed_compile_cost_measured": false
+      },
+      "controller_sha256": "eb1cd254b62f76914394239e7bb00714a3b52bf95717a50094af1963b7eaa69b",
+      "download_manifest_sha256": "0ea5855fa5faab5e39587e0ac0ac347779a2f480ce7a8bb59211083135b1da1d",
+      "full_review_passed": false,
+      "full_warmup": {
+        "scored": false,
+        "total_token_throughput": 6853.6864077542305
+      },
+      "implementation_sha256": "6ca0be90ca27736c3fbbd3b4554a71d1932e7a689a3709f50d85c688f18f6afc",
+      "independent_review_sha256": "461d35dcbefc6a5e3171dd6a1bd043ef8c9ae3aea12d0529b10e01374bde120a",
+      "raw_bytes": 87289644,
+      "raw_files": 3227,
+      "review_script_sha256": "c7c082145b475686ed2afb30a7819fcf822dfb05a734e4a8d4fe1b65b853cdea",
+      "score": {
+        "completed": 256,
+        "duration_seconds": 190.63078605616465,
+        "failed": 0,
+        "mean_tpot_ms": 42.75235994300192,
+        "mean_ttft_ms": 3583.003828603978,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6875.699498053944
+      },
+      "source_commit": "3e43fc40753a13000f52b967ff8f9d9456622e29"
+    },
+    {
+      "arm": "A2",
+      "benchmark_source_cleanup_verified": true,
+      "cache": {
+        "changed_metadata_count": 0,
+        "metadata_after": 364,
+        "metadata_before": 358,
+        "new_index_input_rows": [
+          1420,
+          1800,
+          469,
+          1800,
+          1714,
+          1714
+        ],
+        "new_metadata_count": 6,
+        "removed_metadata_count": 0,
+        "selected_tuning_rows_changed": true,
+        "timed_compile_cost_measured": false
+      },
+      "controller_sha256": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+      "download_manifest_sha256": "0f927c28754d39ed4f5d79843b349779d164ee5eb91c19e056836005e41ebb8b",
+      "full_review_passed": true,
+      "full_warmup": {
+        "scored": false,
+        "total_token_throughput": 6988.007729792072
+      },
+      "implementation_sha256": "ed27276ed10fed835690db099ff83ecb311055c3ae989010837f542a2cdc0713",
+      "independent_review_sha256": "cfc560ae0ba490d1537f29ee8650d90764f2c639e0e840bba995faa9ffb0550f",
+      "raw_bytes": 84522293,
+      "raw_files": 3217,
+      "review_script_sha256": "fa4a87694569732583c1c98b00013c429b541e02ce0c7a523e862023a0c079bd",
+      "score": {
+        "completed": 256,
+        "duration_seconds": 202.63667247770354,
+        "failed": 0,
+        "mean_tpot_ms": 45.61062261106216,
+        "mean_ttft_ms": 3662.1895237349236,
+        "total_input_tokens": 1048576,
+        "total_output_tokens": 262144,
+        "total_token_throughput": 6468.325718012473
+      },
+      "source_commit": "899ce77470b0b539aebc108fd122f668c2d5894d"
+    }
+  ],
+  "baseline_commit": "899ce77470b0b539aebc108fd122f668c2d5894d",
+  "candidate_commit": "3e43fc40753a13000f52b967ff8f9d9456622e29",
+  "candidate_scope": {
+    "actual_binding_sha256": "864c2106c3ff921ca40b41aa4ac8403b70f9106918b18a2fc8f9bd73a899f9c5",
+    "actual_grid": [
+      65,
+      2
+    ],
+    "actual_hoisted_cubin_sha256": "8955350f20a8e4bb8a78e2a7f458ec4efc0384ad08f97a0a65688e42811f168d",
+    "actual_num_sequences": 2,
+    "actual_query_rows": 2047,
+    "current_worker_Graph_verified": false,
+    "current_worker_hard_numeric_verified": false,
+    "final_ELF_equivalence_check_completed": false,
+    "old_component_grid": [
+      66,
+      2
+    ],
+    "old_component_query_rows": 2048,
+    "original_scope_rejection_preserved": true,
+    "reason": "The original Q2048/grid66 comparison rejected actual Q2047/grid65 before its final ELF comparison. The separate benchmark/source/cleanup review passed; this scope gap is not a benchmark failure or a numerical failure."
+  },
+  "comparison": {
+    "A2_score_vs_full_warmup_percent": -7.436769274939858,
+    "A2_vs_A_percent": -7.5932920452206005,
+    "B_between_baseline_endpoints": true,
+    "B_vs_A2_percent": 6.297978762990386,
+    "B_vs_A_percent": -1.773537202650055,
+    "B_vs_endpoint_arithmetic_mean_percent": 2.102950402785053,
+    "mean_ratio_is_descriptive_not_a_causal_estimate": true
+  },
+  "docs_parent": "3e43fc40753a13000f52b967ff8f9d9456622e29",
+  "limitations": [
+    "A/B/A2 is one chronological sequence, not a distribution or proof of stable treatment effect. B is below A and above A2.",
+    "The A2 baseline changed -7.59% from A; no trace establishes whether scheduling, compilation, hardware variation or other effects caused it.",
+    "Every arm observed score-window new index metadata and tuning changes. That window includes client preflight, so it is not an isolated measure of scored compilation cost.",
+    "Full warmups are unscored and cannot replace any formal score or be averaged into it.",
+    "No raw arrays, caches, binaries, logs, complete audit JSON, or target-local manifests are added here. SHA references identify local retained evidence only."
+  ],
+  "prior_component": {
+    "all_original_hard_numeric_Graph_side_gates_passed": true,
+    "event_unhoisted_over_hoisted": 1.4568768085023982,
+    "hoisted_ms": 1.4651484489440918,
+    "independent_review_sha256": "4af8992dfac2670a394f3319a0393a1f0e2bf6e29f7ee3a5350368cea14c12f0",
+    "num_sequences": 2,
+    "original_BF16_proxy_passed": false,
+    "precision_gate": false,
+    "query_rows": 2048,
+    "scope": "One complete-reader ABBA, Q quantization/loading/staging/QK/softmax/PV/epilogue included; writer excluded; not service throughput.",
+    "service_qualification": false,
+    "source_commit": "ce905346a0bd6938cd8478cde34c1bcc52eaeed7",
+    "unhoisted_ms": 2.1345407962799072
+  },
+  "production_changed_by_this_evidence": false,
+  "protocol": {
+    "Graph_observer": false,
+    "extra_plain_smoke_pair_requests": false,
+    "full_workload_warmups": 1,
+    "input_tokens": 4096,
+    "max_concurrency": 64,
+    "output_tokens": 1024,
+    "precheck_requests": 67,
+    "requests": 256,
+    "scored_rounds_per_arm": 1,
+    "seed": 0,
+    "service_parameters_unchanged": true,
+    "short_warmups": 3,
+    "statistics_RPC": false,
+    "throughput_function_sha256": "e236338934098fda2ea0a795b2ade845015123d8ea052806ca0062cc3035a66d"
+  },
+  "schema": "pr123-selected-service-ABA-4K-v1",
+  "selection_scope": {
+    "Graph_replay_frequency_measured": false,
+    "actual_multi2_binding_present": true,
+    "call_frequency_measured": false,
+    "exact_score_stage_attribution": false,
+    "first_postlaunch_selection_present": true,
+    "note": "Sparse same-worker timestamps do not locate the first selection precisely. Combined-log ordering brackets it within short warmup 0 only as a coarse inference; this does not prove score-window frequency. The separate 103/105 Math run had no multi2-hoist selection."
+  },
+  "verdict": {
+    "all_differences_proven_random_noise": false,
+    "merge_eligible": false,
+    "model_math105_correct": 103,
+    "model_math105_review_sha256": "dfcd7ef28961be4becc79660915cdeab08262aaf63d850fbd354e219794ec292",
+    "model_math105_total": 105,
+    "recommendation": "Do not merge this service version; retain the bounded positive component evidence and close this version after Root review. No further long run requested.",
+    "regression_magnitude_established": false,
+    "stable_service_gain_demonstrated": false,
+    "tested_16K": false
+  }
+}
