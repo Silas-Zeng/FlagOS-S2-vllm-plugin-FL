@@ -44,7 +44,7 @@ def run_source():
         ('        # No timing or timing warmups in this numerical-only frontend.\n',timing_block()),
         ('completed=True,performance_measured=False,','completed=True,performance_measured=True,'),
         ('timing_scope=None,reader_ABBA_pending=True,full_service_verified=False',
-         "timing_scope='CUDA Graph complete-reader or unchanged-writer+complete-reader; no Python helper/service cost',reader_ABBA_pending=False,full_service_verified=False"),
+         "timing_scope='CUDA Graph complete-reader or unchanged-writer+complete-reader; no Python helper/service cost',reader_ABBA_pending=False,ABBA_pending=False,full_service_verified=False"),
         ('Root_numeric_admission=True,Root_numeric_admission_receipt_sha256=a.admission_sha256,',
          'Root_numeric_admission=True,Root_timing_admission=True,Root_final_numeric_review_confirmed=True,Root_A4K_B4K_pair_closed_confirmed=True,timing_requested=True,Root_timing_receipt_sha256=a.admission_sha256,Root_final_numeric_review_sha256=a.numeric_review_sha256,')])
 
