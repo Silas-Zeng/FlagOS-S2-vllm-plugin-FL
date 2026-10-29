@@ -500,9 +500,9 @@ def run(a):
     if a.native_k8_library is not None and sha(a.native_k8_library)!=K8_SHA:raise RuntimeError('Fixed existing native K8 library changed')
     bridge=mixed_bridge.validate(source,a.commit,a.mixed_source_bridge,a.mixed_source_bridge_sha256,a.mixed_native_library)
     tool=source/'tools/biv150_native120_service_bridge.py'
-    if Path(mixed_bridge.__file__).resolve()!=tool or tool.read_bytes()!=subprocess.check_output(['git','-C',str(source),'show',a.commit+':tools/biv150_native118_service_bridge.py']):raise RuntimeError('Mixed bridge tool differs from frozen source')
+    if Path(mixed_bridge.__file__).resolve()!=tool or tool.read_bytes()!=subprocess.check_output(['git','-C',str(source),'show',a.commit+':tools/biv150_native120_service_bridge.py']):raise RuntimeError('Mixed bridge tool differs from frozen source')
     entry=source/'tools/run_biv150_native120_service.py'
-    if Path(__file__).resolve()!=entry or entry.read_bytes()!=subprocess.check_output(['git','-C',str(source),'show',a.commit+':tools/run_biv150_native118_service.py']):raise RuntimeError('Mixed controller is not frozen source entry')
+    if Path(__file__).resolve()!=entry or entry.read_bytes()!=subprocess.check_output(['git','-C',str(source),'show',a.commit+':tools/run_biv150_native120_service.py']):raise RuntimeError('Mixed controller is not frozen source entry')
     bridge_tool_sha=sha(tool)
     tuning = m.snapshot_inventory(snapshot)
     before_idle = m.idle()

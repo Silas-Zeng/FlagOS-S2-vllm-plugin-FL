@@ -23,7 +23,9 @@ CONTROLLER='tools/run_biv150_native120_service.py'
 BRIDGE='tools/biv150_native120_service_bridge.py'
 EDITS=[('import biv150_native118_service_bridge as mixed_bridge','import biv150_native120_service_bridge as mixed_bridge'),
  ("tool=source/'tools/biv150_native118_service_bridge.py'","tool=source/'tools/biv150_native120_service_bridge.py'"),
- ("entry=source/'tools/run_biv150_native118_service.py'","entry=source/'tools/run_biv150_native120_service.py'")]
+ ("entry=source/'tools/run_biv150_native118_service.py'","entry=source/'tools/run_biv150_native120_service.py'"),
+ ("a.commit+':tools/biv150_native118_service_bridge.py'","a.commit+':tools/biv150_native120_service_bridge.py'"),
+ ("a.commit+':tools/run_biv150_native118_service.py'","a.commit+':tools/run_biv150_native120_service.py'")]
 # These unchanged118 functions keep their original module globals. No rebinding
 # of old.current_identity/prepare/validate and no reuse of an old Root receipt.
 MIXED=old.MIXED;PARENT=old.PARENT;QUALIFICATION=old.QUALIFICATION
