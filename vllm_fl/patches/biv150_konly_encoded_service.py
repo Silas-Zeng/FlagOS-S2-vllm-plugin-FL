@@ -119,6 +119,13 @@ def install(runner_class, *, environ=None):
         need(Path(native.__file__).resolve()==path.resolve() and native.LIBRARY_SHA==declared['library_sha256'],
              'actual native module/library identity')
         native.attach(runtime,env)
+    if env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE','0') == '1':
+        mixed_native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_mixed_native')
+        mixed = importlib.import_module('vllm_fl.patches.biv150_mixed_decode')
+        parent_native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_native')
+        mixed_native.attach(runtime,env,parent_native,mixed)
+        item=runtime.mixed_native
+        runtime.mixed_native_identity=(item,type(item).verify.__code__,type(item).forward.__code__,type(item).try_produce.__code__)
     runtime.stats_path = env.get('VLLM_FL_BIV150_KONLY_ENCODED_STATS_PATH')
     if runtime.stats_path is None and env.get('TRITON_CACHE_DIR'):
         runtime.stats_path = str(Path(env['TRITON_CACHE_DIR']).parent/'konly-encoded-final-{pid}.json')
@@ -217,6 +224,11 @@ def compute_order_receipt(attention, normalized_kernel):
          'encoded NativeK8 installed code/binding changed')
     need(native is None or not any(n in vars(native) for n in ('verify','validate','try_produce')), 'native instance wrapper override')
     native_receipt = dict(enabled=False) if native is None else native.verify(state)
+    mixed_native=state.mixed_native
+    need((mixed_native is None and state.mixed_native_identity is None) or
+         state.mixed_native_identity==(mixed_native,type(mixed_native).verify.__code__,type(mixed_native).forward.__code__,type(mixed_native).try_produce.__code__),
+         'mixed Native installed code/binding changed')
+    if mixed_native is not None:mixed_native.verify(state)
     boundary = getattr(state,'producer_binding',None)
     need(type(boundary) is tuple and len(boundary)==5, 'new main producer boundary receipt absent')
     gqa,producer,parent,native_parent,code = boundary

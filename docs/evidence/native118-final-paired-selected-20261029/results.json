@@ -1,0 +1,398 @@
+{
+  "cases": [
+    {
+      "B_vs_A_mean_TTFT_percent": -3.000119692985781,
+      "B_vs_A_total_tok_s_percent": 6.9328990181587224,
+      "cache_observation": {
+        "A": {
+          "changed_existing_metadata_count": 0,
+          "final_cache_matches_after": true,
+          "new_index_metadata_count": 6,
+          "new_input_rows": [
+            1695,
+            1782,
+            1860
+          ],
+          "selected_tuning_rows_changed": true
+        },
+        "B": {
+          "changed_existing_metadata_count": 0,
+          "final_cache_matches_after": true,
+          "new_index_metadata_count": 3,
+          "new_input_rows": [
+            469,
+            1420,
+            1774
+          ],
+          "selected_tuning_rows_changed": true
+        }
+      },
+      "evidence_gates": {
+        "A_5898_library": true,
+        "A_all_call_success_token_arithmetic": true,
+        "A_final_cache_matches_recorded_after": true,
+        "A_fixed_source_controller_C3": true,
+        "A_fixed_warm_and_one_score": true,
+        "A_independent_integrity_and_cleanup": true,
+        "A_observers_off_and_no105_in_throughput": true,
+        "B_5898_library": true,
+        "B_actual_ebbc_host_binding": true,
+        "B_all_call_success_token_arithmetic": true,
+        "B_final_cache_matches_recorded_after": true,
+        "B_fixed_source_controller_C3": true,
+        "B_fixed_warm_and_one_score": true,
+        "B_independent_integrity_and_cleanup": true,
+        "B_observers_off_and_no105_in_throughput": true,
+        "same_benchmark_commands_except_private_output_directory": true,
+        "same_official_service_CLI": true,
+        "same_warmup_plan": true
+      },
+      "fullwarm_unscored": {
+        "A": {
+          "completed": 256,
+          "date": "20261029-192243",
+          "duration": 188.57371054776013,
+          "failed": 0,
+          "mean_tpot_ms": 42.2950189645257,
+          "mean_ttft_ms": 3538.730415304599,
+          "total_input_tokens": 1048576,
+          "total_output_tokens": 262144,
+          "total_token_throughput": 6950.70376561336
+        },
+        "B": {
+          "completed": 256,
+          "date": "20261029-194735",
+          "duration": 189.47406506584957,
+          "failed": 0,
+          "mean_tpot_ms": 42.508179392838144,
+          "mean_ttft_ms": 3545.3173453224736,
+          "total_input_tokens": 1048576,
+          "total_output_tokens": 262144,
+          "total_token_throughput": 6917.674983879583
+        }
+      },
+      "input_tokens_per_request": 4096,
+      "max_concurrency": 64,
+      "observed_B_post_ready_host_shapes": [
+        {
+          "rows": 29,
+          "segments": 4
+        },
+        {
+          "rows": 30,
+          "segments": 4
+        },
+        {
+          "rows": 31,
+          "segments": 4
+        },
+        {
+          "rows": 60,
+          "segments": 2
+        },
+        {
+          "rows": 61,
+          "segments": 2
+        },
+        {
+          "rows": 63,
+          "segments": 2
+        }
+      ],
+      "official_mean_TTFT_ceiling_ms": "11689.2653",
+      "official_total_tok_s_floor": "2007.7299",
+      "original_B_final_evidence": {
+        "Graph_replays_counted": false,
+        "counts_are_lifetime_not_smoke_or_score_window": true,
+        "coverage_missing": true,
+        "mixed_same_worker_smoke_verified": false,
+        "service_verified": false,
+        "workers": []
+      },
+      "original_B_mixed_same_worker_smoke_verified": false,
+      "output_tokens_per_request": 1024,
+      "quantitative_gates": {
+        "A_official_TTFT_ceiling": true,
+        "A_official_throughput_floor": true,
+        "B_official_TTFT_ceiling": true,
+        "B_official_throughput_floor": true,
+        "B_score_throughput_above_A": true
+      },
+      "score": {
+        "A": {
+          "completed": 256,
+          "date": "20261029-192632",
+          "duration": 201.3443202408962,
+          "failed": 0,
+          "mean_tpot_ms": 45.32508900319154,
+          "mean_ttft_ms": 3632.2045138076646,
+          "total_input_tokens": 1048576,
+          "total_output_tokens": 262144,
+          "total_token_throughput": 6509.843428569545
+        },
+        "B": {
+          "completed": 256,
+          "date": "20261029-195112",
+          "duration": 188.29034103592858,
+          "failed": 0,
+          "mean_tpot_ms": 42.24023251084365,
+          "mean_ttft_ms": 3523.2340308994026,
+          "total_input_tokens": 1048576,
+          "total_output_tokens": 262144,
+          "total_token_throughput": 6961.164299712513
+        }
+      },
+      "warm_protocol": "3 short:64requests/128output/seeds920000..2; 1 full:256requests/1024output/seed0; 1 score"
+    },
+    {
+      "B_vs_A_mean_TTFT_percent": -1.076548374326014,
+      "B_vs_A_total_tok_s_percent": 1.115093217367713,
+      "cache_observation": {
+        "A": {
+          "changed_existing_metadata_count": 0,
+          "final_cache_matches_after": true,
+          "new_index_metadata_count": 0,
+          "new_input_rows": [],
+          "selected_tuning_rows_changed": false
+        },
+        "B": {
+          "changed_existing_metadata_count": 0,
+          "final_cache_matches_after": true,
+          "new_index_metadata_count": 0,
+          "new_input_rows": [],
+          "selected_tuning_rows_changed": false
+        }
+      },
+      "evidence_gates": {
+        "A_5898_library": true,
+        "A_all_call_success_token_arithmetic": true,
+        "A_final_cache_matches_recorded_after": true,
+        "A_fixed_source_controller_C3": true,
+        "A_fixed_warm_and_one_score": true,
+        "A_independent_integrity_and_cleanup": true,
+        "A_observers_off_and_no105_in_throughput": true,
+        "B_5898_library": true,
+        "B_actual_ebbc_host_binding": true,
+        "B_all_call_success_token_arithmetic": true,
+        "B_final_cache_matches_recorded_after": true,
+        "B_fixed_source_controller_C3": true,
+        "B_fixed_warm_and_one_score": true,
+        "B_independent_integrity_and_cleanup": true,
+        "B_observers_off_and_no105_in_throughput": true,
+        "same_benchmark_commands_except_private_output_directory": true,
+        "same_official_service_CLI": true,
+        "same_warmup_plan": true
+      },
+      "fullwarm_unscored": {
+        "A": {
+          "completed": 128,
+          "date": "20261029-201105",
+          "duration": 525.2392843011767,
+          "failed": 0,
+          "mean_tpot_ms": 109.62360361938848,
+          "mean_ttft_ms": 119437.19221553329,
+          "total_input_tokens": 2097152,
+          "total_output_tokens": 131072,
+          "total_token_throughput": 4242.30263538764
+        },
+        "B": {
+          "completed": 128,
+          "date": "20261029-203327",
+          "duration": 519.841624438297,
+          "failed": 0,
+          "mean_tpot_ms": 108.49876540888062,
+          "mean_ttft_ms": 118594.12979007902,
+          "total_input_tokens": 2097152,
+          "total_output_tokens": 131072,
+          "total_token_throughput": 4286.351641055401
+        }
+      },
+      "input_tokens_per_request": 16384,
+      "max_concurrency": 64,
+      "observed_B_post_ready_host_shapes": [
+        {
+          "rows": 29,
+          "segments": 4
+        },
+        {
+          "rows": 30,
+          "segments": 4
+        },
+        {
+          "rows": 31,
+          "segments": 4
+        }
+      ],
+      "official_mean_TTFT_ceiling_ms": "605254.6503",
+      "official_total_tok_s_floor": "905.9985",
+      "original_B_final_evidence": {
+        "Graph_replays_counted": false,
+        "counts_are_lifetime_not_smoke_or_score_window": true,
+        "coverage_missing": true,
+        "mixed_same_worker_smoke_verified": false,
+        "service_verified": false,
+        "workers": []
+      },
+      "original_B_mixed_same_worker_smoke_verified": false,
+      "output_tokens_per_request": 1024,
+      "quantitative_gates": {
+        "A_official_TTFT_ceiling": true,
+        "A_official_throughput_floor": true,
+        "B_official_TTFT_ceiling": true,
+        "B_official_throughput_floor": true,
+        "B_score_throughput_above_A": true
+      },
+      "score": {
+        "A": {
+          "completed": 128,
+          "date": "20261029-201851",
+          "duration": 427.928894138895,
+          "failed": 0,
+          "mean_tpot_ms": 91.16766130965736,
+          "mean_ttft_ms": 97988.63691375664,
+          "total_input_tokens": 2097152,
+          "total_output_tokens": 131072,
+          "total_token_throughput": 5206.995906373115
+        },
+        "B": {
+          "completed": 128,
+          "date": "20261029-204108",
+          "duration": 423.20971135236323,
+          "failed": 0,
+          "mean_tpot_ms": 90.07821869422698,
+          "mean_ttft_ms": 96933.74183603737,
+          "total_input_tokens": 2097152,
+          "total_output_tokens": 131072,
+          "total_token_throughput": 5265.058764553696
+        }
+      },
+      "warm_protocol": "1 full:128requests/1024output/seed0; 1 score"
+    }
+  ],
+  "common_protocol": {
+    "Graph_observer": false,
+    "official_service_command": [
+      "/usr/local/bin/vllm",
+      "serve",
+      "/workspace/MiniCPM5-2B",
+      "--port",
+      "9031",
+      "--compilation-config",
+      "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+      "--served-model-name",
+      "minicpm",
+      "--gpu-memory-utilization",
+      "0.85",
+      "--max-model-len",
+      "131072"
+    ],
+    "one_scored_run_per_case_per_arm": true,
+    "same_frozen_v6_initial_tuning_snapshot": true,
+    "score_function_sha256": "e236338934098fda2ea0a795b2ade845015123d8ea052806ca0062cc3035a66d",
+    "startup_smoke_requests": 67,
+    "statistics_RPC": false,
+    "throughput_runs_contain_Math105": false,
+    "warm_scores_used_for_qualification": false
+  },
+  "limitations": [
+    "Each case is one scored A/B pair; warmup values are unscored and never substituted.",
+    "4K compilation/cache/tuning differences remain in both original reports; file counts are not compilation time and do not establish causal gain.",
+    "Missing FINAL_STATS and original coverage false values remain; host first-selection records are not per-request or Graph replay frequency.",
+    "A16K post-score shutdown EngineDeadError and original warnings remain in the separate audited shutdown note.",
+    "Parent must freshly verify latest team main before any merge; this summary does not perform or authorize a merge.",
+    "16K +1.115% is a single-pair observation near the published 1% variation reference, not proof of a stable gain.",
+    "Zero observed 16K metadata/tuning changes does not prove zero unobserved runtime or compilation cost.",
+    "These files contain selected counts/hashes only; full raw, responses, arrays, binaries and complete auditors remain local."
+  ],
+  "math105": {
+    "empty_raw_responses_both": 0,
+    "gates": {
+      "fixed_B_source_controller_bridge": true,
+      "independent_evidence_cleanup_complete": true,
+      "official105_parallel8": true,
+      "official_accuracy_ge_095": true,
+      "official_score_exact_recount_consistent": true
+    },
+    "max_token_truncations_both": 0,
+    "official_accuracy": 0.9619047619047619,
+    "official_correct": 101,
+    "official_denominator": 105,
+    "official_empty_extracted_scored_wrong": 1,
+    "official_parallel": 8,
+    "original_coverage_flags": {
+      "mixed_same_worker_smoke_verified": false,
+      "native_model_precision_verified": false,
+      "native_quality_covered": false
+    },
+    "original_v1_extra_extraction_gate": false,
+    "request_errors_both": 0,
+    "supplemental_correct": 102,
+    "supplemental_denominator": 105,
+    "supplemental_is_diagnostic": true,
+    "supplemental_parallel": 64,
+    "v2_changed_official_grader_or_threshold": false
+  },
+  "official_rule_source": {
+    "image_sha256": "f9e5514103e98da39444f995754edc104b9968ffc0a74276350ec5cdc80c0275",
+    "review_sha256": "9ad528e08f3a15ed6075cfa6552c73e9fac556168e7a3e9ad326b7efc8a84248",
+    "url": "https://flagos.ks3-cn-beijing.ksyuncs.com/images/QlVfSLuI/image.png"
+  },
+  "review": {
+    "B16_report_sha256": "ec847a562a4d509e4000be609b2f9fe63a6bba607e56bc12653141eee56a3797",
+    "evidence_and_protocol_gates_met": true,
+    "individual_reports_sha256": {
+      "a16": "33b40de1062b8c354430c7f87f8fd206ae8777d6c29d80fc206f15a5039e0044",
+      "a4": "0dad60f079be111bfbb3f63eeca3efd5e5d59e3400b1a11dc27afe7056a055eb",
+      "b4": "d6d399f70453a8580dee09e74681a87076d9ccb86f0cf0b1393847a7a3d7e1a9",
+      "math": "15e48733f2f94120d65f5bbb3bfb828480f9419c2dc022e0256b85c1ed7f7e7c"
+    },
+    "latest_main_checked_by_this_summary": false,
+    "merge_performed_by_this_summary": false,
+    "paired_report_sha256": "7323df5752029ca8b7ab8a69b45b4d4691c28d0f60742b4773696e19a0d3da51",
+    "paired_script_sha256": "eb8e7c5837703e03e6947a83a69836582c97e78bfa4c7b8fefb40e857ecd3b66",
+    "quantitative_gates_met": true,
+    "ready_for_parent_latest_main_recheck": true
+  },
+  "schema": "PR118-final-paired-selected-20261029",
+  "selected_summary_not_full_raw": true,
+  "shutdown_notes": {
+    "API_returncode_both": 0,
+    "A_owned_shutdown_time": "2026-10-29 20:18:55",
+    "A_review_sha256": "6a84effbb65cc9f8184e89054fd1a50d73f396549ccdc4a3be01732857b22fae",
+    "A_score_time": "2026-10-29 20:18:51",
+    "B_owned_shutdown_time": "2026-10-29 20:41:16",
+    "B_review_sha256": "86d008cdddf0b06e4d0206bcce97c6e9c2e5e84a90b516e96e7fb46d4124dc6b",
+    "B_score_time": "2026-10-29 20:41:08",
+    "EngineDeadError_observed_only_after_owned_shutdown": true,
+    "original_ZMQ_and_78_semaphore_warnings_retained": true,
+    "owned_cleanup_complete_both": true,
+    "zero_resource_leak_claim": false
+  },
+  "sixteen_k_raw_index_only": {
+    "A": {
+      "bytes": 85594690,
+      "download_manifest_sha256": "3f5f6e96a02f2d9c02e516161454f26a21979a249b36422f3cf90e4ed2de16ff",
+      "files": 3261,
+      "gzip_sha256": "e90f54f2fcdc8fb34c5df4e4664a6c1343828000a577198b4b05b7ecb94d92ff"
+    },
+    "B": {
+      "bytes": 85774261,
+      "download_manifest_sha256": "fdece501e396aee93b49eeef52cd3a26e8ac40c125293d0780755137cf1c3b8c",
+      "files": 3262,
+      "gzip_sha256": "7996f746dcc72a4479f958378aa613ceafe3e9c6e4a51ba5f0a0539e16cb6c75"
+    }
+  },
+  "source": {
+    "A": "56f88737fcf3b940760b9ca3027a925cd5a7d77d",
+    "A_C3": "884733ad72e8cfaf55dc9e5cd7bcd2aa1568d133e67ed688c0ca0298a38e2177",
+    "A_controller_sha256": "2cfc74c98e366015fe7bf3d6227ad06f8c1bcf87a341b72bd68fbf42062dcb7c",
+    "B": "69827253756a0ef9e618ae0322e9ff361e93504f",
+    "B_C3": "ed27276ed10fed835690db099ff83ecb311055c3ae989010837f542a2cdc0713",
+    "B_approved_bridge_sha256": "c14c70a59e889e6abe1f93b766cd358fe97b7416a3f7b8859f52c3b80c44cf91",
+    "B_controller_sha256": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+    "B_mixed_native_SO": "ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba",
+    "docs_parent": "67a69f258af29ad2aad262cc7f74b11bbeac59e4",
+    "helper_sha256": "94dbbb0fbc8f3c8837ea239ec18fc0ec4872a2b0049a1843d96a3e6a9701e976",
+    "pure_native_SO": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b"
+  }
+}

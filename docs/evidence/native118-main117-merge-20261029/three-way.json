@@ -1,0 +1,36 @@
+{
+  "CPU_report_sha256": "44f163fa95024874d7d5dde93fec193ec6a28398bade82a6eb0ed4a5df475af2",
+  "device_executed": false,
+  "merge": "d09840e3267f0205aab177b2fd7d036838225fe4",
+  "production_changed": {
+    "common": [
+      "vllm_fl/compile_semantics.py",
+      "vllm_fl/patches/biv150_compute_order.py",
+      "vllm_fl/patches/biv150_konly_encoded_mixed_native.py",
+      "vllm_fl/patches/biv150_konly_encoded_native.py",
+      "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+      "vllm_fl/patches/biv150_konly_encoded_service.py",
+      "vllm_fl/patches/biv150_konly_encoded_sources.json",
+      "vllm_fl/patches/biv150_mixed_decode.py"
+    ],
+    "frozen118": [
+      "vllm_fl/compile_semantics.py",
+      "vllm_fl/patches/biv150_konly_encoded_native.py",
+      "vllm_fl/patches/biv150_konly_encoded_sources.json"
+    ],
+    "main117": [
+      "vllm_fl/compile_semantics.py",
+      "vllm_fl/patches/biv150_compute_order.py",
+      "vllm_fl/patches/biv150_konly_encoded_mixed_native.py",
+      "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+      "vllm_fl/patches/biv150_konly_encoded_service.py",
+      "vllm_fl/patches/biv150_mixed_decode.py"
+    ]
+  },
+  "production_qualification_changed": false,
+  "refs": {
+    "common": "8ba3bc18de50220943ab15d7269f59e24a59d013",
+    "frozen118": "01dfe84028560b1a982dac33bc788e875ce9cf1b",
+    "main117": "56f88737fcf3b940760b9ca3027a925cd5a7d77d"
+  }
+}

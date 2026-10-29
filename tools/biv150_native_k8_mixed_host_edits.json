@@ -1,0 +1,52 @@
+[
+  {
+    "path": "vllm_fl/patches/biv150_mixed_decode.py",
+    "old": "_MARKER = \"_biv150_natural_prefix_wrapper\"",
+    "new": "_MARKER = \"_biv150_natural_prefix_wrapper\"\n_NATIVE_MIXED = None # Cold-installed default-OFF, independently qualified exact-row adapter."
+  },
+  {
+    "path": "vllm_fl/patches/biv150_mixed_decode.py",
+    "old": "        original_forward(self, layer, query[:boundary], key[:boundary], value[:boundary],\n                         kv_cache, plan.decode, output[:boundary],\n                         output_scale=output_scale, output_block_scale=output_block_scale)",
+    "new": "        if _NATIVE_MIXED is None:\n            original_forward(self, layer, query[:boundary], key[:boundary], value[:boundary],\n                             kv_cache, plan.decode, output[:boundary],\n                             output_scale=output_scale, output_block_scale=output_block_scale)\n        else:\n            _NATIVE_MIXED.forward(original_forward, self, layer, query, key, value,\n                                  kv_cache, plan, output, output_scale, output_block_scale)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+    "old": "        self.native_decode = None; self.native_decode_identity = None",
+    "new": "        self.native_decode = None; self.native_decode_identity = None\n        self.mixed_native = None; self.mixed_native_identity = None"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+    "old": "        result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()",
+    "new": "        result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()\n        result['mixed_native'] = dict(enabled=False) if self.mixed_native is None else self.mixed_native.verify(self)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+    "old": "                if runtime.native_decode is not None and runtime.native_decode.try_produce(runtime,entry,selected,target_grid):",
+    "new": "                if runtime.mixed_native is not None and runtime.mixed_native.try_produce(runtime,entry,selected,target_grid):\n                    return None\n                if runtime.native_decode is not None and runtime.native_decode.try_produce(runtime,entry,selected,target_grid):"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_service.py",
+    "old": "        native.attach(runtime,env)",
+    "new": "        native.attach(runtime,env)\n    if env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE','0') == '1':\n        mixed_native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_mixed_native')\n        mixed = importlib.import_module('vllm_fl.patches.biv150_mixed_decode')\n        parent_native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_native')\n        mixed_native.attach(runtime,env,parent_native,mixed)\n        item=runtime.mixed_native\n        runtime.mixed_native_identity=(item,type(item).verify.__code__,type(item).forward.__code__,type(item).try_produce.__code__)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_service.py",
+    "old": "    native_receipt = dict(enabled=False) if native is None else native.verify(state)",
+    "new": "    native_receipt = dict(enabled=False) if native is None else native.verify(state)\n    mixed_native=state.mixed_native\n    need((mixed_native is None and state.mixed_native_identity is None) or\n         state.mixed_native_identity==(mixed_native,type(mixed_native).verify.__code__,type(mixed_native).forward.__code__,type(mixed_native).try_produce.__code__),\n         'mixed Native installed code/binding changed')\n    if mixed_native is not None:mixed_native.verify(state)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_compute_order.py",
+    "old": "\"vllm_fl.patches.biv150_mixed_decode\": \"a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42\"",
+    "new": "\"vllm_fl.patches.biv150_mixed_decode\": \"12ab3cfdc02cb464af5bdceb785c8ba58146502b43b00a844247ee5e3034996e\""
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8",
+    "new": "    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8\n    mixed_native = env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE','0') == '1'\n    features['VLLM_FL_BIV150_KONLY_MIXED_NATIVE'] = mixed_native\n    if mixed_native and not native_k8:\n        raise ValueError('Mixed Native requires the accepted owned16KiB native parent')"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_klookahead_probe::produce')",
+    "new": "            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_klookahead_probe::produce')\n        if mixed_native:\n            # Parse only the literal qualification record; do not import a GPU\n            # package/private operator while deriving the compile fingerprint.\n            import ast\n            text=(directory/'biv150_konly_encoded_mixed_native.py').read_text()\n            declarations=[n for n in ast.parse(text).body if isinstance(n,ast.Assign)\n                          and any(isinstance(t,ast.Name) and t.id=='QUALIFICATION' for t in n.targets)]\n            if len(declarations)!=1:raise ValueError('Missing exact mixed qualification declaration')\n            pins=ast.literal_eval(declarations[0].value)\n            fields=('library_sha256','actual_so_review_sha256','consumer_review_sha256','fullstep_review_sha256')\n            if not all(type(pins.get(k)) is str and len(pins[k])==64 and all(c in '0123456789abcdef' for c in pins[k]) for k in fields):\n                raise ValueError('Mixed Native actual SO/consumer/fullstep qualification pending')\n            if pins.get('physical_page_bytes')!=16384 or pins.get('rows_segments')!=[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]]:\n                raise ValueError('Mixed Native qualification scope differs')\n            library=Path(env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY',''))\n            if (not library.is_absolute() or not library.is_file() or\n                    env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):\n                raise ValueError('Mixed Native exact library content required')\n            encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)"
+  }
+]
