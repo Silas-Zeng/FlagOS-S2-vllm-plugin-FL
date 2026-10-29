@@ -69,6 +69,9 @@ def run():
         failed=json.loads((failure_out/'compile-summary.json').read_bytes())
         assert status==1 and not failed['completed'] and not failed['compile_passed'] and failed['errors']
         assert failed['torch']=={'cuda_initialized_before':None,'cuda_initialized_after':None}
+        template=json.loads((failure_out/'assembly-review-template.json').read_bytes())
+        assert template['required_new_rows_segments'] is None and template['approved'] is False
+        assert template['new_rows60_61_host_ABI_verified'] is template['new_rows29_30_host_ABI_verified'] is False
         assert failed['commands'][0]['exit_code']==7 and (failure_out/'failure.txt').is_file()
         assert 'CPU stderr retained' in (failure_out/'compiler-version.stderr.txt').read_text()
         assert 'torch' not in sys.modules

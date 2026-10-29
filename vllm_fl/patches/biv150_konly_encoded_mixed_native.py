@@ -15,12 +15,12 @@ SHA_ENV=ENV+'_LIBRARY_SHA256'
 NAMESPACE='cjj_native_k8_mixed_probe'
 OPERATOR=NAMESPACE+'::produce'
 SCHEMA=OPERATOR+'(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()'
-PAIRS={31:4,63:2}
+PAIRS={29:4,30:4,31:4,60:2,61:2,63:2}
 # These are deliberately unknown. A source-reviewed qualification update must
 # bind the actual new SO and both new component reports before service opt-in.
 QUALIFICATION={'library_sha256':None,'actual_so_review_sha256':None,
                'consumer_review_sha256':None,'fullstep_review_sha256':None,
-               'physical_page_bytes':16384,'rows_segments':[[31,4],[63,2]],
+               'physical_page_bytes':16384,'rows_segments':[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]],
                'service_verified':False}
 _STATE=None
 
@@ -39,7 +39,7 @@ def library_config(env):
              all(c in '0123456789abcdef' for c in pins[k]) for k in
              ('library_sha256','actual_so_review_sha256','consumer_review_sha256','fullstep_review_sha256')),
          'actual SO, consumer and complete-step qualification pending')
-    need(pins['physical_page_bytes']==16384 and pins['rows_segments']==[[31,4],[63,2]],'exact qualification scope')
+    need(pins['physical_page_bytes']==16384 and pins['rows_segments']==[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]],'exact qualification scope')
     path=Path(env.get(PATH_ENV,''));need(path.is_absolute() and path.is_file(),'explicit existing library')
     need(env.get(SHA_ENV)==pins['library_sha256'],'explicit exact new library pin')
     need(hashlib.sha256(path.read_bytes()).hexdigest()==pins['library_sha256'],'new library bytes')
@@ -53,7 +53,7 @@ def signature(t):
 def scratch_metadata(plan,segments,parent):
     """Independent dataclass and strided prefix views; original metadata intact."""
     md=plan.decode;n=plan.prefix_tokens
-    need((n,segments) in ((31,4),(63,2)) and md.num_par_softmax_segments==16,'original mixed scratch width16')
+    need((n,segments) in ((29,4),(30,4),(31,4),(60,2),(61,2),(63,2)) and md.num_par_softmax_segments==16,'original mixed scratch width16')
     originals=(md.softmax_segm_output,md.softmax_segm_max,md.softmax_segm_expsum)
     for t in originals:parent.bounds(t)
     p,m,l=originals
@@ -110,7 +110,7 @@ class Adapter:
         need(runtime.mixed_native is self and _STATE is self,'runtime/module hook changed')
         runtime.native_decode.verify(runtime)
         return {'enabled':True,'library':dict(self.library),'host_calls_not_graph_replays':self.calls,
-                'service_verified':False,'rows_segments':[[31,4],[63,2]]}
+                'service_verified':False,'rows_segments':[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]]}
 
     def forward(self,original,impl,layer,q,k,v,cache,plan,out,output_scale,output_block_scale):
         self.verify(self.runtime);r=self.runtime.registry;n=plan.prefix_tokens

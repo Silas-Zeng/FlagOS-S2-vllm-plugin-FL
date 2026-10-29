@@ -197,7 +197,9 @@ def compile_only(args,plan):
     write(out/'assembly-review-template.json',{'compile_summary_sha256':sha(out/'compile-summary.json'),
         'source_commit':frozen['source_commit'],'library':result.get('library'),'symbol_renames':SYMBOL_RENAMES,
         'approved':False,'actual_SO_ELF_IR_SASS_bound':False,'normalized_GPU_math_matches_accepted8b':False,
-        'new_rows31_63_host_ABI_verified':False,'dual_library_coexistence_verified':False,
+        'new_rows31_63_host_ABI_verified':False,'new_rows60_61_host_ABI_verified':False,
+        'new_rows29_30_host_ABI_verified':False,
+        'required_new_rows_segments':plan.get('source_transform',{}).get('new_rows_segments'),'dual_library_coexistence_verified':False,
         'full_tail_wait_and_codec_verified':False,'resources':{'S2':None,'S4':None},
         'numeric_verified':False,'service_verified':False})
     print(json.dumps(result,indent=2,sort_keys=True));return 0 if result['compile_passed'] else 1

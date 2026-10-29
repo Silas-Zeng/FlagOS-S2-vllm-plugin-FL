@@ -159,7 +159,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             fields=('library_sha256','actual_so_review_sha256','consumer_review_sha256','fullstep_review_sha256')
             if not all(type(pins.get(k)) is str and len(pins[k])==64 and all(c in '0123456789abcdef' for c in pins[k]) for k in fields):
                 raise ValueError('Mixed Native actual SO/consumer/fullstep qualification pending')
-            if pins.get('physical_page_bytes')!=16384 or pins.get('rows_segments')!=[[31,4],[63,2]]:
+            if pins.get('physical_page_bytes')!=16384 or pins.get('rows_segments')!=[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]]:
                 raise ValueError('Mixed Native qualification scope differs')
             library=Path(env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY',''))
             if (not library.is_absolute() or not library.is_file() or

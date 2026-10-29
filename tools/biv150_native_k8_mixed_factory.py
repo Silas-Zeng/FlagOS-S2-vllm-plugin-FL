@@ -11,8 +11,8 @@ FILES={'qk.cpp':'biv150_native_k8_v_overlap_qk.cpp','qk.cu':'biv150_native_k8_v_
        'codec.cu':'biv150_native_k8_v_overlap_codec.cu','codec.cuh':'biv150_native_k8_codec.cuh'}
 OLD=' const std::int64_t rows=segments==2?64:32;'
 NEW=(' const std::int64_t rows=q.dim()==3?q.size(0):0;\n'
-     ' TORCH_CHECK((segments==2 && (rows==64 || rows==63)) ||\n'
-     '             (segments==4 && (rows==32 || rows==31)),"exact accepted or mixed rows/S only");')
+     ' TORCH_CHECK((segments==2 && (rows==64 || rows==63 || rows==61 || rows==60)) ||\n'
+     '             (segments==4 && (rows==32 || rows==31 || rows==30 || rows==29)),"exact accepted or mixed rows/S only");')
 
 def sha(b):return hashlib.sha256(b).hexdigest()
 def original(role):return subprocess.check_output(['git','-C',str(ROOT),'show',BASE+':tools/kernels/'+FILES[role]])
@@ -39,7 +39,7 @@ def verify():
         restored[row['path']]=b.replace(new,old)
     for name,b in restored.items():
         assert b==subprocess.check_output(['git','-C',str(ROOT),'show',BASE+':'+name]),'unreviewed host change: '+name
-    return {'base':BASE,'namespace':NAMESPACE,'host_reverse_byte_exact':sorted(restored),'files':records,'new_rows_segments':[[31,4],[63,2]],
+    return {'base':BASE,'namespace':NAMESPACE,'host_reverse_byte_exact':sorted(restored),'files':records,'new_rows_segments':[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]],
             'existing_rows_segments':[[32,4],[64,2]],'CUDA_and_codec_bytes_unchanged':True,
             'no_new_valid_rows_or_padding':True,'physical_page_bytes':16384,
             'actual_SO_verified':False,'numeric_verified':False,'performance_verified':False,'service_verified':False}

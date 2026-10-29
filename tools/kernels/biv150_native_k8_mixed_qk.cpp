@@ -30,8 +30,8 @@ void produce(const at::Tensor& q,const at::Tensor& k,const at::Tensor& scale_ful
  const at::Tensor& maximum,const at::Tensor& summation,double scale,std::int64_t segments){
  TORCH_CHECK(segments==2 || segments==4,"S2/S4 only");
  const std::int64_t rows=q.dim()==3?q.size(0):0;
- TORCH_CHECK((segments==2 && (rows==64 || rows==63)) ||
-             (segments==4 && (rows==32 || rows==31)),"exact accepted or mixed rows/S only");
+ TORCH_CHECK((segments==2 && (rows==64 || rows==63 || rows==61 || rows==60)) ||
+             (segments==4 && (rows==32 || rows==31 || rows==30 || rows==29)),"exact accepted or mixed rows/S only");
  TORCH_CHECK(q.is_cuda() && q.scalar_type()==at::kBFloat16 && q.sizes()==at::IntArrayRef({rows,16,128}),"Q BF16 shape");
  TORCH_CHECK(q.strides()==at::IntArrayRef({2048,128,1}) || q.strides()==at::IntArrayRef({2560,128,1}),"original Q stride");
  for(const auto& t:{k,scale_full,v,lengths,table,partial,maximum,summation})same_device(t,q);

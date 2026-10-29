@@ -78,8 +78,10 @@ def make(n,pitch,directory):
     adapter=runtime.mixed_native;impl=next(iter(runtime.registry.impl_references.values()))
     q=tensor(Storage(40,0x90000000,2048*pitch*2+512),'bfloat16',(2048,16,128),(pitch,128,1),64)
     out=tensor(Storage(41,0xa0000000,2048*2048*2+512),'bfloat16',(2048,16,128),(2048,128,1),64)
-    k=tensor(Storage(42,0xb0000000,2048*2560*2+512),'bfloat16',(2048,2,128),(2560,128,1),2048)
-    v=tensor(k.storage,'bfloat16',(2048,2,128),(2560,128,1),2304)
+    # Actual sealed service scope has contiguous K and stride2560 V;
+    # separate source allocations remain readonly and outside encoded backing.
+    k=tensor(Storage(42,0xb0000000,2048*256*2+512),'bfloat16',(2048,2,128),(256,128,1),64)
+    v=tensor(Storage(45,0xe0000000,2048*2560*2+512),'bfloat16',(2048,2,128),(2560,128,1),64)
     starts=tensor(Storage(43,0xc0000000,(n+1)*4),'int32',(n+1,),(1,))
     slots=tensor(Storage(44,0xd0000000,n*8),'int64',(n,),(1,))
     md=Metadata(16,kw['segm_output_ptr'],kw['segm_max_ptr'],kw['segm_expsum_ptr'],starts,kw['seq_lens_ptr'],kw['block_table_ptr'],slots)
@@ -110,11 +112,11 @@ def run():
     results=[];negative=[]
     with tempfile.TemporaryDirectory(prefix='cjj-mixed-native-cpu-') as directory:
         directory=Path(directory)
-        for n in (31,63):
+        for n in (29,30,31,60,61,63):
             for pitch in (2048,2560):
                 x=make(n,pitch,directory);original=dict(vars(x.md));suffix=dict(vars(x.suffix))
                 with contextlib.redirect_stdout(io.StringIO()):x.call();x.call()
-                s={31:4,63:2}[n];assert len(x.op.calls)==2 and x.adapter.active is None
+                s={29:4,30:4,31:4,60:2,61:2,63:2}[n];assert len(x.op.calls)==2 and x.adapter.active is None
                 assert not x.kernels['decode'].calls and len(x.reducers.calls)==2
                 assert vars(x.md)==original and vars(x.suffix)==suffix and x.plan.prefill is x.suffix
                 assert x.records[0][0] is x.records[1][0] and x.records[0][0] is not x.md
@@ -136,7 +138,8 @@ def run():
                 assert x.out[:n].data_ptr()+n*2048*2==x.out[n:].data_ptr()
                 results.append({'rows':n,'segments':s,'baseline_segments':pick(n,2,16),'pitch':pitch,'partial_scalar_addresses_verified':addresses,
                                 'actual_original_launch_AST':True,'same_scratch_objects_for_Native_and_reducer':True,'metadata_reused_across_layers':True,
-                                'suffix_unchanged':True,'only_real_rows_launched':True,'new_SO_loaded':False})
+                                'suffix_unchanged':True,'only_real_rows_launched':True,'new_SO_loaded':False,
+                                'new_K_source_pitch':x.k.stride(0),'new_V_source_pitch':x.v.stride(0)})
         mutations={
             'partial_wrong_width':lambda x:setattr(x.md.softmax_segm_output,'shape',(x.n,16,8,128)),
             'partial_wrong_stride':lambda x:setattr(x.md.softmax_segm_output,'strides',(36864,2304,128,1)),
@@ -149,11 +152,11 @@ def run():
             'foreign_op':lambda x:setattr(x.adapter,'op',Op(x.mixed.SCHEMA)),
         }
         for name,mutation in mutations.items():
-            x=make(31,2560,directory);mutation(x);rejected(x.call)
+            x=make(61,2560,directory);mutation(x);rejected(x.call)
             assert len(x.op.calls)==0 and not x.kernels['decode'].calls and x.adapter.active is None
             negative.append(name)
         for name in ('producer','reducer','double'):
-            x=make(63,2560,directory);x.fault[name]=True
+            x=make(60,2560,directory);x.fault[name]=True
             with contextlib.redirect_stdout(io.StringIO()):rejected(x.call)
             assert len(x.op.calls)==1 and not x.kernels['decode'].calls and x.adapter.active is None
             negative.append(name+'_no_retry')
@@ -164,9 +167,25 @@ def run():
             assert not x.op.calls and len(x.ops.op.calls)==1 and not x.kernels['decode'].calls
             assert x.records[0][0] is x.md and x.reducers.calls[0][2]['num_segments']==pick(n,2,16)
             inherited.append({'rows':n,'original_Native_selected':True,'segments':pick(n,2,16)})
-        x=make(29,2560,directory);x.call()
-        assert not x.op.calls and len(x.kernels['decode'].calls)==1 and x.records[0][0] is x.md
-        assert x.reducers.calls[0][2]['num_segments']==8 and not hasattr(x.plan,'_native_mixed_scratch')
+        unknown=[]
+        for n in (28,40,48,59,62):
+            x=make(n,2560,directory)
+            with contextlib.redirect_stdout(io.StringIO()):x.call()
+            assert not x.op.calls and len(x.kernels['decode'].calls)==1 and x.records[0][0] is x.md
+            assert x.reducers.calls[0][2]['num_segments']==pick(n,2,16) and not hasattr(x.plan,'_native_mixed_scratch')
+            unknown.append({'rows':n,'original_TL_selected':True,'segments':pick(n,2,16)})
+    from probe_biv150_native_k8_mixed_component import plan as component_plan
+    component=component_plan()
+    assert len(component['cases'])==6
+    for case in component['cases']:
+        n,s=case['decode_rows'],case['candidate_Native_segments'];ref=case['bitwise_reference']
+        assert n+case['prefill_rows']==case['total_query_rows']==2048
+        assert case['current_main_TL_segments']==pick(n,2,16)
+        assert (n,s) in [(29,4),(30,4),(31,4),(60,2),(61,2),(63,2)]
+        assert ref['physical_rows']==(32 if s==4 else 64)
+        assert ref['extra_zero_length_rows']==ref['physical_rows']-n and ref['all_extra_lengths']==0
+    assert component['minimum_physical_pages']==34276 and component['writer_row_pitch_elements']=={'K':256,'V':2560}
+
     assert all(v is None for k,v in pending.QUALIFICATION.items() if k.endswith('sha256'))
     from check_biv150_native_k8_fingerprint_cpu import run as fingerprint_check,HELPER,LIBRARY
     fingerprint=fingerprint_check(HELPER,LIBRARY)
@@ -180,7 +199,8 @@ def run():
     rejected(lambda:helper.expected_fingerprint(ROOT,env,{'torch':'2.10.0','cxx11_abi':False}))
     return {'passed':True,'scope':'CPU opaque dispatch/storage fixtures; production qualification remains pending; fixture receipts are not GPU evidence',
             'source_transform':transform,'cases':results,'negative':negative,'inherited_Native_routes':inherited,
-            'actual94db_fingerprint_regression':fingerprint,'mixed_pending_fingerprint_rejected':True,'unknown_shape_original_fallback':True,
+            'actual94db_fingerprint_regression':fingerprint,'mixed_pending_fingerprint_rejected':True,'unknown_shape_original_fallback':unknown,
+            'component_reference_geometry_verified':component['cases'],
             'default_OFF_and_pending_rejection':True,'new_library_or_GPU_executed':False,'numeric_verified':False,'service_verified':False}
 
 if __name__=='__main__':print(json.dumps(run(),sort_keys=True,indent=2))
