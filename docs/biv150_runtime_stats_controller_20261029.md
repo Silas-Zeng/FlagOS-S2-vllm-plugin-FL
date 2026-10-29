@@ -40,3 +40,5 @@ python tools/check_biv150_runtime_stats_controller_cpu.py
 CPU测试使用原558文件、真实冻结Git对象，以及opaque HTTP/owner/benchmark fixture。实际运行新full-only控制流、原validate_score、六份快照/四份增量逻辑；验证ACK严格先于benchmark，错SHA/来源/owner/超时均拒绝、无覆盖、token不出私有env/header。另逐字核所有未改顶层函数/class和run内Math105、supplemental64、cleanup片段，逆变换闭合父SHA，默认关闭的CPU计划仅增加disabled字段。其余真实FastAPI/Msgpack/ZMQ/worker启动及服务结果仍待Root串行验证。
 
 准备期间可给测试 `--freeze-ref <已暂存的Git tree>` 检查源码对象；正式controller仍要求真实commit等于HEAD且工作区干净，不以tree替代服务准入。最终随提交报告使用同一代码对象；未上传任何GPU raw、私密token或SDK原文。
+
+冻结后再次对真实HEAD运行47项CPU检查，Python3.12/3.14报告逐字一致，与准备阶段tree检查也一致。报告见 `docs/evidence/runtime-stats-controller-20261029/cpu.json`，SHA `6ccfdde9e4b6b9f48f83b7329d5f99287e620e7e18b8e912369323dd9e1b4908`；生成controller SHA `6556a609261372769bf9e3e638e2771ceef3dffabd90df7a06093035f2df9f36`。这两项SHA不代表真机执行。
