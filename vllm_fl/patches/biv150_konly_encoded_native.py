@@ -1,4 +1,4 @@
-"""Default-off verified-8b86 V-overlap NativeK8 adapter, AFTER the private format fence.
+"""Default-off verified-5898 K-lookahead NativeK8 adapter, AFTER the private format fence.
 
 No compilation, Tensor-data reads, stock fallback, allocator or kernel changes.
 Service qualification is separate from the recorded component evidence.
@@ -12,10 +12,10 @@ from pathlib import Path
 ENV='VLLM_FL_BIV150_KONLY_NATIVE_DECODE'
 PATH_ENV='VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY'
 SHA_ENV='VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256'
-LIBRARY_SHA='8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5'
+LIBRARY_SHA='5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b'
 FORMAT='cjj-konly-rn32-rne-v2'
-OPERATOR='cjj_native_k8_v_overlap_probe::produce'
-SCHEMA='cjj_native_k8_v_overlap_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()'
+OPERATOR='cjj_native_k8_klookahead_probe::produce'
+SCHEMA='cjj_native_k8_klookahead_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()'
 SCALE=128**-.5*1.4426950408889634
 
 
@@ -38,8 +38,8 @@ def storage(t):
     s=t.untyped_storage();return (int(s._cdata),int(s.data_ptr()),int(s.data_ptr())+int(s.nbytes()))
 
 
-def overlaps(a,b,backing):
-    _,x,y=backing[id(a)];_,u,v=backing[id(b)];return x<v and u<y
+def overlaps(a,b):
+    _,x,y=storage(a);_,u,v=storage(b);return x<v and u<y
 
 
 def bounds(t):
@@ -62,14 +62,14 @@ class Adapter:
         self.runtime=runtime;self.torch=runtime.torch;self.library=dict(config)
         torch=self.torch
         need(str(torch.__version__)=='2.10.0' and torch._C._GLIBCXX_USE_CXX11_ABI is False,'actual Torch ABI')
-        namespace=torch.ops.cjj_native_k8_v_overlap_probe
+        namespace=torch.ops.cjj_native_k8_klookahead_probe
         try:prior=namespace.produce.default
         except (AttributeError,RuntimeError):prior=None
         loaded={str(Path(p).resolve()) for p in torch.ops.loaded_libraries}
         need(prior is None or config['path'] in loaded,'operator preloaded from unknown library')
         torch.ops.load_library(config['path'])
         need(hashlib.sha256(Path(config['path']).read_bytes()).hexdigest()==LIBRARY_SHA,'library changed during load')
-        self.op=torch.ops.cjj_native_k8_v_overlap_probe.produce.default
+        self.op=torch.ops.cjj_native_k8_klookahead_probe.produce.default
         need(str(self.op._schema)==SCHEMA,'exact registered produce ABI')
         need(torch._C._dispatch_has_kernel_for_dispatch_key(OPERATOR,'CUDA'),'actual CUDA registration missing')
         need(config['path'] in {str(Path(p).resolve()) for p in torch.ops.loaded_libraries},'actual loaded-library set')
@@ -89,7 +89,7 @@ class Adapter:
             raise RuntimeError('NativeK8 helper/constants changed')
         need(self.runtime is runtime and self.binding==(runtime,self.op,self.library['path'],self.library['sha256']), 'adapter/library/op binding changed')
         need(self.code_binding==(type(self).try_produce.__code__,type(self).validate.__code__,type(self).verify.__code__),'installed native code changed')
-        need(self.library['sha256']==LIBRARY_SHA and self.op is self.torch.ops.cjj_native_k8_v_overlap_probe.produce.default,'dispatcher identity changed')
+        need(self.library['sha256']==LIBRARY_SHA and self.op is self.torch.ops.cjj_native_k8_klookahead_probe.produce.default,'dispatcher identity changed')
         return dict(enabled=True,library=dict(self.library),operator=OPERATOR,stock_BF16_native_used_for_encoded=False)
 
     def validate(self,runtime,entry,kw):
@@ -111,14 +111,16 @@ class Adapter:
         # Only this call: tensors keeps every object alive; retain all bounds
         # checks in order and reuse their observed whole-storage intervals.
         backing={id(t):bounds(t) for t in tensors}
+        def observed_overlap(a,b):
+            _,x,y=backing[id(a)];_,u,v=backing[id(b)];return x<v and u<y
         need(all(str(t.device)=='cuda:0' for t in tensors),'single actual CUDA0 roles')
         need(str(q.dtype)=='torch.bfloat16' and tuple(q.shape[1:])==(16,128),'BF16 query heads/dim')
         need(str(lens.dtype)==str(table.dtype)=='torch.int32','I32 metadata')
         need(all(str(t.dtype)=='torch.float32' for t in (partial,maximum,summation)),'F32 scratch')
-        for src in (q,lens,table):need(not overlaps(src,k,backing),'source/live-cache backing alias')
+        for src in (q,lens,table):need(not observed_overlap(src,k),'source/live-cache backing alias')
         for i,out in enumerate((partial,maximum,summation)):
-            need(all(not overlaps(out,src,backing) for src in (q,k,scale,v,lens,table)),'scratch/source backing alias')
-            need(all(not overlaps(out,other,backing) for other in (partial,maximum,summation)[:i]),'scratch backing alias')
+            need(all(not observed_overlap(out,src) for src in (q,k,scale,v,lens,table)),'scratch/source backing alias')
+            need(all(not observed_overlap(out,other) for other in (partial,maximum,summation)[:i]),'scratch backing alias')
         need(tuple(maximum.stride())==tuple(summation.stride()),'scalar common strides')
         observed={'query_stride_token':q.stride(0),'query_stride_head':q.stride(1),'block_table_stride':table.stride(0),
             'k_stride_block':k.stride(0),'k_stride_slot':k.stride(1),'k_stride_head':k.stride(2),
