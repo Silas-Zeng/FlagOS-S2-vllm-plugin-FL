@@ -22,6 +22,7 @@ EXPECTED_HELPERS_SHA256 = "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45
 EXPECTED_RUNTIME_SHA256 = "e5f68a303f991f1e5ce1145941d44350d280a85090db94045b653e3828c3ed5f"
 _PLAN = "_biv150_natural_prefix_plan"
 _MARKER = "_biv150_natural_prefix_wrapper"
+_NATIVE_MIXED = None # Cold-installed default-OFF, independently qualified exact-row adapter.
 
 
 def _require_source(module, expected):
@@ -218,9 +219,13 @@ def _wrap_backend(backend, torch):
                                     output_block_scale=output_block_scale)
         plan.prepare_consumer(torch)
         boundary, total = plan.prefix_tokens, plan.total_tokens
-        original_forward(self, layer, query[:boundary], key[:boundary], value[:boundary],
-                         kv_cache, plan.decode, output[:boundary],
-                         output_scale=output_scale, output_block_scale=output_block_scale)
+        if _NATIVE_MIXED is None:
+            original_forward(self, layer, query[:boundary], key[:boundary], value[:boundary],
+                             kv_cache, plan.decode, output[:boundary],
+                             output_scale=output_scale, output_block_scale=output_block_scale)
+        else:
+            _NATIVE_MIXED.forward(original_forward, self, layer, query, key, value,
+                                  kv_cache, plan, output, output_scale, output_block_scale)
         original_forward(self, layer, query[boundary:total], key[boundary:total],
                          value[boundary:total], kv_cache, plan.prefill, output[boundary:total],
                          output_scale=output_scale, output_block_scale=output_block_scale)

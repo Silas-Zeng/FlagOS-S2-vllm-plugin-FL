@@ -1,0 +1,218 @@
+{
+  "CPU_only": true,
+  "case_metadata": [
+    {
+      "case": [
+        29,
+        4,
+        2048
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 32,
+      "source_only": true,
+      "zero_dummy_rows": 3
+    },
+    {
+      "case": [
+        29,
+        4,
+        2560
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 32,
+      "source_only": true,
+      "zero_dummy_rows": 3
+    },
+    {
+      "case": [
+        30,
+        4,
+        2048
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 32,
+      "source_only": true,
+      "zero_dummy_rows": 2
+    },
+    {
+      "case": [
+        30,
+        4,
+        2560
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 32,
+      "source_only": true,
+      "zero_dummy_rows": 2
+    },
+    {
+      "case": [
+        31,
+        4,
+        2048
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 32,
+      "source_only": true,
+      "zero_dummy_rows": 1
+    },
+    {
+      "case": [
+        31,
+        4,
+        2560
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 32,
+      "source_only": true,
+      "zero_dummy_rows": 1
+    },
+    {
+      "case": [
+        60,
+        2,
+        2048
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 64,
+      "source_only": true,
+      "zero_dummy_rows": 4
+    },
+    {
+      "case": [
+        60,
+        2,
+        2560
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 64,
+      "source_only": true,
+      "zero_dummy_rows": 4
+    },
+    {
+      "case": [
+        61,
+        2,
+        2048
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 64,
+      "source_only": true,
+      "zero_dummy_rows": 3
+    },
+    {
+      "case": [
+        61,
+        2,
+        2560
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 64,
+      "source_only": true,
+      "zero_dummy_rows": 3
+    },
+    {
+      "case": [
+        63,
+        2,
+        2048
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 64,
+      "source_only": true,
+      "zero_dummy_rows": 1
+    },
+    {
+      "case": [
+        63,
+        2,
+        2560
+      ],
+      "real_table_pitch": 8192,
+      "reference_dummy_table_all_invalid": true,
+      "reference_rows": 64,
+      "source_only": true,
+      "zero_dummy_rows": 1
+    }
+  ],
+  "consumer_source_inverse": {
+    "adapted_sha256": "bf670ed9e891dbd51a6f2b41eb29c8afe27210d70359f3b171f45f34f6b6228f",
+    "edits": [
+      {
+        "count": 2,
+        "new": "f.sha(args.library.read_bytes())==args.role_sha256",
+        "old": "f.sha(args.library.read_bytes())==f.LIBRARY_SHA"
+      },
+      {
+        "count": 1,
+        "new": "getattr(torch.ops,args.namespace).produce",
+        "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+      },
+      {
+        "count": 1,
+        "new": "result=dict(role_plan(),codec_precondition=receipt,",
+        "old": "result=dict(f.plan(),codec_precondition=receipt,"
+      },
+      {
+        "count": 1,
+        "new": "shapes={'partial':(n,16,16,128),'maximum':(n,16,16),'summation':(n,16,16),'output':(n,16,128)}",
+        "old": "shapes={'partial':(n,16,s,128),'maximum':(n,16,s),'summation':(n,16,s),'output':(n,16,128)}"
+      },
+      {
+        "count": 1,
+        "new": "wide=full[field].narrow(0,f.GUARD_ELEMENTS,count).reshape(shape)\n                views[field]=wide if field=='output' else wide.narrow(2,0,s)",
+        "old": "views[field]=full[field].narrow(0,f.GUARD_ELEMENTS,count).reshape(shape)"
+      },
+      {
+        "count": 1,
+        "new": "for field,tensor in full.items():tensor.narrow(0,f.GUARD_ELEMENTS,tensor.numel()-2*f.GUARD_ELEMENTS).view(torch.int16 if field=='output' else torch.int32).fill_(f.BF16_POISON if field=='output' else f.F32_POISON)",
+        "old": "for field,tensor in views.items():tensor.view(torch.int16 if field=='output' else torch.int32).fill_(f.BF16_POISON if field=='output' else f.F32_POISON)"
+      },
+      {
+        "count": 1,
+        "new": "                        mask=np.zeros(shape,dtype=bool)\n                        mask[:,:,:s]=np.broadcast_to(g['active'][:,None,:,None] if field=='partial' else g['active'][:,None,:],mask[:,:,:s].shape)\n                        wanted=mask[:,:,:s]\n                        checks[field+'_inactive_poison']=bool((bits[~mask]==f.F32_POISON).all())\n                        metrics[field]=f.metrics(actual[:,:,:s][wanted],g[field][wanted]);checks[field+'_FP64']=metrics[field]['passed']\n                        if field=='partial':metrics['ideal_partial_diagnostic']=f.metrics(actual[:,:,:s][wanted],g['ideal_partial_diagnostic'][wanted])",
+        "old": "                        mask=np.broadcast_to(g['active'][:,None,:,None] if field=='partial' else g['active'][:,None,:],shape)\n                        checks[field+'_inactive_poison']=bool((bits[~mask]==f.F32_POISON).all())\n                        metrics[field]=f.metrics(actual[mask],g[field][mask]);checks[field+'_FP64']=metrics[field]['passed']\n                        if field=='partial':metrics['ideal_partial_diagnostic']=f.metrics(actual[mask],g['ideal_partial_diagnostic'][mask])"
+      },
+      {
+        "count": 1,
+        "new": "            assert key.data_ptr()==scale.data_ptr()==inputs['cache'].data_ptr()+f.LAYER_OFFSET and value.data_ptr()==key.data_ptr()+8192\n            assert tuple(table.stride())==(8192,1)\n            assert tuple(views['partial'].stride())==(32768,2048,128,1)\n            assert all(tuple(views[k].stride())==(256,16,1) for k in ('maximum','summation'))\n            record['binding']['actual_output_strides']={k:list(v.stride()) for k,v in views.items()}\n            record['binding']['physical_rows']=n\n            record['binding']['valid_rows']=args.valid_rows",
+        "old": "            assert key.data_ptr()==scale.data_ptr()==inputs['cache'].data_ptr()+f.LAYER_OFFSET and value.data_ptr()==key.data_ptr()+8192"
+      }
+    ],
+    "inverse_byte_exact": true,
+    "original_sha256": "4b28dd919f5abdfb042fc0ccd053a820c2c0991a2fd443e116c6d900fa1a7991",
+    "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46"
+  },
+  "device_executed": false,
+  "new_library_loaded": false,
+  "numeric_verified": false,
+  "parent_fixture": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+  "passed": true,
+  "performance_verified": false,
+  "review_refusals": [
+    "unknown_regs",
+    "bool_regs",
+    "missing_spill",
+    "unapproved",
+    "old_scope",
+    "actual_SO_ELF_IR_SASS_bound",
+    "normalized_GPU_math_matches_accepted8b",
+    "new_rows31_63_host_ABI_verified",
+    "new_rows29_30_host_ABI_verified",
+    "new_rows60_61_host_ABI_verified",
+    "full_tail_wait_and_codec_verified"
+  ],
+  "review_schema_fixture_not_actual_approval": true,
+  "service_verified": false
+}
