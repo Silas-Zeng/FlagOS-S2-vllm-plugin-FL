@@ -98,7 +98,7 @@ def pair_requests():
     """Only plain smoke: two queued prefill requests before any decode keeper."""
     tag='cjj-multi2-pair-'+uuid.uuid4().hex;gate=threading.Barrier(2);began=time.monotonic();deadline=began+180
     def one(i):
-        request_id=tag+'-'+str(i);payload=dict(model='minicpm',messages=[dict(role='user',content='1 2 3 4 5 '*300+'请回答最后一个数。')],max_tokens=16,temperature=0,top_p=1)
+        request_id=tag+'-'+str(i);payload=dict(model='minicpm',messages=[dict(role='user',content=('1 2 3 4 5 ','6 7 8 9 0 ')[i]*300+'请回答最后一个数。')],max_tokens=16,temperature=0,top_p=1)
         row=dict(request_id=request_id,request=payload,complete=False,response=None,error=None)
         try:
             gate.wait(timeout=10)

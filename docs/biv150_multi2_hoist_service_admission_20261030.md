@@ -55,3 +55,23 @@ executes the original controller through real Git/source/receipt/library/v6
 checks, replacing **only the first helper.idle** with a stop before any device
 query or output allocation. Temporary CPU approval flags are never saved as
 Root approval. Device/service verification is pending.
+
+## Distinct-prefix smoke follow-up
+
+The first f46/355c run completed all165 requests, including both3013-token pair
+requests, but produced no multi2 preparation or selection. Its first observed
+N2 normalized reader had970 query rows, below the1024-row multi2 threshold.
+The two full prompts were identical. Aggregate prefix-cache rates are recorded
+but per-request cached tokens are absent; exact2048-token reuse is an inference,
+not an established scheduler trace. Readonly full2417-file review:
+`a7ebbab70453a6da31c54d7991cb6143aaa9c21c0cc5b699a7f732526716d77c`.
+
+This follow-up changes only the plain-smoke prompt expression: one starts with
+the1..5 digit cycle, the other6..0, each repeated300 times. Their content differs
+from the first character; the common chat template is unchanged. Request count,
+concurrency2, approximate token length, output16, all controller/production
+bytes and formal parameters remain. Added CPU checks verify both exact distinct
+strings in successful and error-handling concurrent requests. New source/tool
+identity needs a new pending Root bridge; oldf46/355c is retained and ineligible.
+This still does not force a scheduler shape, establish numeric/service quality,
+or qualify Math105. A fresh real hit and binding must be observed.

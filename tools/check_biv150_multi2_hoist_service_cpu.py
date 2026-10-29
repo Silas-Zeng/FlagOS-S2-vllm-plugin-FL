@@ -79,6 +79,7 @@ def main():
             ck('response_cleanup_'+failure,sorted(opened)==sorted(closed))
             ck('preserved_error_result_'+failure,result['completed']==(2 if failure=='none' else 1) and bool(result['coverage_gaps'])==(failure!='none'))
             ck('IDs_and_payload_'+failure,len({x[0].get_header('X-request-id') for x in requests})==2 and all(json.loads(x[0].data)['max_tokens']==16 for x in requests))
+            ck('distinct_first_content_and_equal_digit_length_'+failure,{json.loads(x[0].data)['messages'][0]['content'] for x in requests}=={cycle*300+'请回答最后一个数。' for cycle in ('1 2 3 4 5 ','6 7 8 9 0 ')})
         # Actual compiled artifacts copied into a synthetic local evidence path;
         # only path fields are relocated. This does not claim a service execution.
         binding=json.loads(a.actual_binding.read_bytes());dest=folder/'konly-multi2-hoist'/'205019'/binding['native_binding_id'];shutil.copytree(a.actual_binding.parent,dest)
