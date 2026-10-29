@@ -150,14 +150,20 @@ def run(a,pre):
             slots.copy_(slot_cpu);torch.cuda.synchronize()
             c.need(byte_cpu(owner)==encoded,'uploaded full cache differs from CPU codec')
             immutable=fingerprints();references[pattern]=refs
+            expected_readonly=dict(q=cpu['q'],table=cpu['table'],lengths=cpu['lengths'],cu_q=cpu['cu_q'],k_descale=cpu['k_scale'],v_descale=cpu['v_scale'],writer_key=source_cpu['key'],writer_value=source_cpu['value'],slots=slot_cpu)
+            c.need(immutable=={k:c.sha(byte_cpu(v)) for k,v in expected_readonly.items()},'complete uploaded inputs differ from CPU originals')
             inputs[pattern]=persist('pattern-'+str(pattern)+'-inputs',dict(original_CPU=cpu,expected_encoded_bytes=uploaded[pattern],append_poison_bytes=append_poison[pattern],expected_codes=codes,expected_scales=scales,reference=refs,writer_sources=source_cpu,writer_slots=slot_cpu,codec=codec,readonly=immutable))
             def stage(label,mode,use_graph=False):
-                outputs={};record=dict(label=label,pattern=pattern,mode=mode,actual_roles='hoisted Q32 and hoisted Q64',metrics={},artifacts={},readonly={},cache_after={})
+                outputs={};record=dict(label=label,pattern=pattern,mode=mode,actual_roles='hoisted Q32 and hoisted Q64',metrics={},artifacts={},prelaunch_artifacts={},readonly={},cache_after={})
                 result['stages'].append(record);save()
                 for role in f.ROLES:
                     owner.copy_(append_poison[pattern] if mode=='append-reader' else uploaded[pattern])
                     guarded[role].fill_(71);calls[role]['output_ptr'].fill_(float('nan'));torch.cuda.synchronize()
-                    before=snapshot(guarded[role]);c.need(bool((before[0]==71).all() and (before[2049]==71).all() and torch.isnan(before[1:2049]).all()),'poison/canary setup')
+                    before=snapshot(guarded[role]);cache_before_sha=c.sha(byte_cpu(owner))
+                    record['prelaunch_artifacts'][role]=persist(str(pattern)+'-'+label+'-'+mode+'-'+role+'-prelaunch',dict(before=before,cache_before_sha256=cache_before_sha,input_archive=inputs[pattern]))
+                    save()
+                    c.need(cache_before_sha==c.sha(byte_cpu(append_poison[pattern] if mode=='append-reader' else uploaded[pattern])),'complete prelaunch cache differs')
+                    c.need(bool((before[0]==71).all() and (before[2049]==71).all() and torch.isnan(before[1:2049]).all()),'poison/canary setup')
                     with torch.cuda.stream(stream):
                         if use_graph:replay(role,mode)
                         else:step(role,mode)
