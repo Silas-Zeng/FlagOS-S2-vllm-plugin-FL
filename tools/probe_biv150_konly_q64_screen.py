@@ -37,6 +37,7 @@ def run(a,pre):
     save()
     try:
         h=c.proposal(32);base=Path('/usr/local/lib/python3.12/site-packages')
+        result['execution_path_source_proof']=f.execution_sources(base/'triton');save()
         installed=dict(sdk=base/'vllm/v1/attention/ops/triton_unified_attention.py',helpers=base/'vllm/v1/attention/ops/triton_attention_helpers.py',jit=base/'triton/spec/iluvatar/triton/runtime/jit.py')
         for name,path in installed.items():c.need(c.sha(path.read_bytes())==h.PINS[name],'installed pin '+name)
         smi=subprocess.run(['/usr/local/corex/bin/ixsmi','-i','0'],capture_output=True,text=True,timeout=15)
@@ -91,6 +92,8 @@ def run(a,pre):
             launch_options[role]=dict(num_warps=16,num_stages=1,ir_override=str(override))
             kernel=fn.warmup(grid=grid,**calls[role],**launch_options[role]);handles[role]=kernel
             snapshot=adapter.kernel_snapshot(kernel,fn);adapter.Adapter._preserve(a.out/role,kernel,snapshot)
+            result.setdefault('actual_loader_paths',{})[role]=str(Path(inspect.getfile(type(kernel))).resolve());save()
+            c.need(Path(result['actual_loader_paths'][role])==f.LOADED_COMPILER.resolve(),'actual CompiledKernel loader implementation')
             resources=f.check_loaded(role,kernel,snapshot,pre['records'][role])
             result['records'][role]=dict(snapshot=snapshot,loaded=resources,actual_source_path=str(source),actual_source_sha256=c.sha(source.read_bytes()))
             save()

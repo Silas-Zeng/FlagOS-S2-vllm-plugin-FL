@@ -11,8 +11,10 @@ The independently replayed actual compile review is SHA
 Q32 binds122 VGPR/33792B dynamic shared/runtime spill0/ELF scalar spill96;
 Q64 binds237/67584/runtime0/ELF scalar485. This explicitly replaces the old
 Q32-only `shared<=65536` admission for this private pair. The exact full
-source/typed ABI/kernel hash/TTIR/TTGIR/LLVM/ASM/cubin snapshot must match the
-reviewed compile before the first reader launch. The original absolute source
+source/typed ABI/kernel hash/TTIR/TTGIR/LLVM/cubin snapshot must match the
+reviewed compile before the first reader launch. Supplemental ASM is separately
+retained as diagnostic evidence; its text SHA may differ only while every
+execution identity and the complete final cubin remain exactly equal. The original absolute source
 and override paths from the actual compile owner are reused to avoid changing
 path-dependent compile identity. Unknown or changed identities stop.
 
@@ -56,7 +58,8 @@ CPU commands (no frameworks/GPU imports):
 ```sh
 python3 -B -W error tools/probe_biv150_konly_q64_screen.py
 python3 -B -W error tools/check_biv150_konly_q64_screen_cpu.py \
-  --raw ACTUAL_COMPILE_RAW --review ACTUAL_256C_REVIEW --references ORIGINAL_REFERENCE_FOLDER
+  --raw ACTUAL_COMPILE_RAW --review ACTUAL_256C_REVIEW --references ORIGINAL_REFERENCE_FOLDER \
+  --execution-sources ACTUAL_SDK_SOURCE_FOLDER --failed-raw ORIGINAL_FIRST_STOP_RAW
 python3 -B -W error tools/probe_biv150_konly_q64_screen.py --cpu-preflight \
   --raw ACTUAL_COMPILE_RAW --review ACTUAL_256C_REVIEW --references ORIGINAL_REFERENCE_FOLDER
 ```
@@ -83,8 +86,47 @@ python3 -B -W error tools/probe_biv150_konly_q64_screen.py \
   --references ORIGINAL_REFERENCE_FOLDER --out NEW_PRIVATE_OUTPUT
 ```
 
-CPU checks exercise32 negative resource/identity/policy cases, reference exact
+CPU checks exercise48 negative resource/identity/policy cases, reference exact
 inverse, original uniform mathematics, Graph-B ordering and no-framework import.
 GPU compilation, reader/writer numerics, Graph, side stream and ABBA for this new
 frontend are **pending**. Long-context and1985/2017-row work is conditional on a
 positive result here; no production qualification is granted.
+
+## First execution stopped before readers; execution/diagnostic correction
+
+The original `898076dd85788f678c664db07dbb0ba74a0baced` run stopped with
+`fresh compiled identity differs for q32`, reader/writer/Graph counters all0.
+Its22 original files (1895627 bytes) remain unchanged at the private raw path;
+manifest `c05a64453e02915ce67b4062c3778a64b8c9fc7c94450c3414cbaed9037eff45`,
+summary `9e88abb22aac73d2ac7f3ae8bc4815ec44b423d529bc8445303c15ad36a592e4`.
+All fields and artifacts were equal except the supplemental ASM text:13 lines
+changed constant/register/select allocation. It was not just a filename change.
+The complete final cubin remained byte-identical (`d1017266…`), as did all LLVM,
+TTIR/TTGIR, source, kernel hash and typed ABI. No reader numerics, timing, or new
+runtime resource observation was reached. This is not a measured regression.
+
+Read-only installed source establishes the execution boundary:
+
+- `spec/iluvatar/triton/compiler/compiler.py`, SHA `a97f0670…`, lines361–393
+  saves each stage but392–393 deliberately do not advance `module` for `asm`.
+- `backends/iluvatar/compiler.py`, SHA `a0d2bbda…`, lines460–475 separately
+  translate the same LLVM into ASM and cubin; line192 sets `binary_ext=cubin`.
+- The same spec `CompiledKernel`, lines474–480, reads that binary into
+  `self.kernel`; lines517–518 pass it to `load_binary`. The generic compiler is
+  a different implementation and is not silently substituted for this proof.
+
+The frontend now checks those actual installed file SHAs before framework
+imports and records/checks the actual `CompiledKernel` implementation path.
+It removes only `artifacts.asm` from execution-snapshot equality, requires that
+its actual SHA still be present, and records both ASM identities. It verifies
+that the actual loader argument `kernel.kernel` hashes to the exact reviewed
+cubin, then retains every original resource check. There is no per-run ASM hash
+allowlist. Changed LLVM/cubin/ABI/resources or missing diagnostic ASM still stop.
+The real first-stop snapshot is replayed by the CPU checker; new negative cases
+confirm that executable changes cannot use this diagnostic exception.
+
+The first-stop audit remains preserved with its original pending-source-proof
+status; the selected source evidence here supplements it rather than rewriting
+history. The cause of the two independent ASM translations choosing different
+register allocation was not separately reproduced. No device retry or new
+numeric/performance claim is included in this correction.

@@ -1,0 +1,109 @@
+{
+  "artifacts": {
+    "asm": {
+      "actual_bytes": 304592,
+      "actual_sha256": "d4a43634d14708ca58948512efa49e5abd6ed5ba319149cb4cf4801695144552",
+      "bytes_identical": false,
+      "original_bytes": 304592,
+      "original_sha256": "022a0bcdd3b186f1f831d9ae29ae9855db3c0058d40a912c54ca36af8b7918f3"
+    },
+    "cubin": {
+      "actual_bytes": 47840,
+      "actual_sha256": "d101726655eeb9d815ebc748d310051a8fd3c98b299dd24ec09567738807aa2b",
+      "bytes_identical": true,
+      "original_bytes": 47840,
+      "original_sha256": "d101726655eeb9d815ebc748d310051a8fd3c98b299dd24ec09567738807aa2b"
+    },
+    "llir": {
+      "actual_bytes": 217827,
+      "actual_sha256": "fa2ed07b3c21fba3c5985a252e0c5aa574bea950a3d779abfafeb8abe834ca08",
+      "bytes_identical": true,
+      "original_bytes": 217827,
+      "original_sha256": "fa2ed07b3c21fba3c5985a252e0c5aa574bea950a3d779abfafeb8abe834ca08"
+    },
+    "source": {
+      "actual_bytes": 124966,
+      "actual_sha256": "db2123fe2882d585d1a86f4039d87333ab4cf87a15f32ee1be9a45c642d7bb5b",
+      "bytes_identical": true,
+      "original_bytes": 124966,
+      "original_sha256": "db2123fe2882d585d1a86f4039d87333ab4cf87a15f32ee1be9a45c642d7bb5b"
+    },
+    "ttgir": {
+      "actual_bytes": 89626,
+      "actual_sha256": "d7670d3df307607e062a3b84f67db27cee98be281a1c9773e9aa25388bbd0063",
+      "bytes_identical": true,
+      "original_bytes": 89626,
+      "original_sha256": "d7670d3df307607e062a3b84f67db27cee98be281a1c9773e9aa25388bbd0063"
+    },
+    "ttir": {
+      "actual_bytes": 65071,
+      "actual_sha256": "7e3e134f17851ee57583d4f1cbb22dddeaf628f26331e6dd28d1f4ade2d0f8ff",
+      "bytes_identical": true,
+      "original_bytes": 65071,
+      "original_sha256": "7e3e134f17851ee57583d4f1cbb22dddeaf628f26331e6dd28d1f4ade2d0f8ff"
+    }
+  },
+  "diagnostic_ASM_changed_line_numbers": [
+    3648,
+    3649,
+    3660,
+    3661,
+    3665,
+    3666,
+    3667,
+    5189,
+    5400,
+    5401,
+    5402,
+    5403,
+    5404
+  ],
+  "execution_source_proof": {
+    "binary_ext": 192,
+    "corex_backend_sha256": "a0d2bbda2f779b528147a238ff6fc558d026478f72d3d12d51d27f48f1aa570a",
+    "loader_call": [
+      517,
+      518
+    ],
+    "loader_select": [
+      474,
+      480
+    ],
+    "separate_translation": [
+      460,
+      475
+    ],
+    "spec_compiler_sha256": "a97f067023873acf2e348c28f61494e59170ca84c3ee2314f20e491d3e833dfd",
+    "stage_skip": [
+      392,
+      393
+    ]
+  },
+  "failure_manifest_sha256": "c05a64453e02915ce67b4062c3778a64b8c9fc7c94450c3414cbaed9037eff45",
+  "failure_summary_sha256": "9e88abb22aac73d2ac7f3ae8bc4815ec44b423d529bc8445303c15ad36a592e4",
+  "launch_counters": {
+    "Graph_replays": 0,
+    "reader_launch_attempts": 0,
+    "writer_launch_attempts": 0
+  },
+  "numeric_verified": false,
+  "original_failure": [
+    {
+      "message": "fresh compiled identity differs for q32",
+      "type": "ValueError"
+    }
+  ],
+  "original_failure_preserved": true,
+  "original_private_review_sha256": "ed862044ba0464dc7c8cb75392777687302551866000c3449d02fea3a0d2c30b",
+  "performance_verified": false,
+  "raw_bytes": 1895627,
+  "raw_files": 22,
+  "snapshot_core_equal": {
+    "ABI": true,
+    "function_name": true,
+    "hash": true,
+    "launch_geometry": true,
+    "source_digest": true
+  },
+  "source_commit": "898076dd85788f678c664db07dbb0ba74a0baced"
+}

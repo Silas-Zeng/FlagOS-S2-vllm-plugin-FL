@@ -1,12 +1,41 @@
 {
   "GPU_executed": false,
   "Graph_verified": false,
+  "actual_failed_ASM_only_snapshot_replayed": true,
   "actual_review_sha256": "256c95d945b44bfdd3dc0acd1f6a83da791f1a72ab8b0ba3d5fc6f052606caa0",
   "compile_manifest_sha256": "9711f65a2d260478292e5a1702f4de1be009b7930267f8d7d010b574c488d926",
   "completed": true,
   "errors": [],
+  "execution_path_source_proof": {
+    "ASM_is_separate_translation": true,
+    "backend_asm_lines": [
+      460,
+      466
+    ],
+    "backend_cubin_lines": [
+      468,
+      475
+    ],
+    "binary_selection_lines": [
+      474,
+      480
+    ],
+    "load_binary_argument_lines": [
+      517,
+      518
+    ],
+    "loaded_binary_extension": "cubin",
+    "pins": {
+      "backends/iluvatar/compiler.py": "a0d2bbda2f779b528147a238ff6fc558d026478f72d3d12d51d27f48f1aa570a",
+      "spec/iluvatar/triton/compiler/compiler.py": "a97f067023873acf2e348c28f61494e59170ca84c3ee2314f20e491d3e833dfd"
+    },
+    "spec_stage_skip_lines": [
+      392,
+      393
+    ]
+  },
   "expanded_reference_sha256": "c3ced6e38f5e27492ee051c7804d0013a4f62ff1fb0d8a41d09eb540346f37d3",
-  "negative_cases_rejected": 32,
+  "negative_cases_rejected": 48,
   "numeric_verified": false,
   "performance_verified": false,
   "reference_commit": "e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4",
@@ -21,9 +50,9 @@
   "service_verified": false,
   "side_stream_verified": false,
   "sources": {
-    "biv150_konly_q64_screen_contract.py": "8a5294b62d52366e00e973fb01aa1b8843936bc4f6f0c5c056e82ad39ea46957",
-    "check_biv150_konly_q64_screen_cpu.py": "9dd693f0c15ab8bd276de44003a1f147c69904458a0b4eedf4c64b62bae85f44",
-    "probe_biv150_konly_q64_screen.py": "fadf5815071a2704f308e6ba8e0d30607c1d1587dc6f652614dc6d2c558a873b"
+    "biv150_konly_q64_screen_contract.py": "752314d5e87021e6b745e25262aa10a8919a2faf15dfb4500ec7120826be039f",
+    "check_biv150_konly_q64_screen_cpu.py": "e6b16ce88455e11075954793f028a9629fe2f601c178ef3244173ae6cac8bca9",
+    "probe_biv150_konly_q64_screen.py": "0dbe005b40936548ebfdc30b5db8c4d761663bc677fe5c27728fc373efbbfe9a"
   },
   "uniform_fullrow_math_AST_identical": true
 }
