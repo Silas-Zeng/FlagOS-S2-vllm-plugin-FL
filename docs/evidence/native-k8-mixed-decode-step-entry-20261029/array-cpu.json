@@ -2,11 +2,11 @@
   "CPU_only": true,
   "actual_main_TL_files": {
     "codec": {
-      "path": "/private/tmp/flagos-cjj-main-mixed-native-decode-step-20261029/vllm_fl/patches/biv150_konly_encoded_writer.py",
+      "path": "/private/tmp/flagos-cjj-native118-decode-step-reducer-evidence-20261029/vllm_fl/patches/biv150_konly_encoded_writer.py",
       "sha256": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9"
     },
     "tl": {
-      "path": "/private/tmp/flagos-cjj-main-mixed-native-decode-step-20261029/vllm_fl/patches/biv150_konly_encoded_decode.py",
+      "path": "/private/tmp/flagos-cjj-native118-decode-step-reducer-evidence-20261029/vllm_fl/patches/biv150_konly_encoded_decode.py",
       "sha256": "149f89b7869b017affce1651b894ae019a8c5c193d8ddf5352e73adac55fbe59"
     }
   },
@@ -14,6 +14,112 @@
   "consumer_plan_JSON_roundtrip_and_wrong_case_refusal": true,
   "full_mixed_step_timing": null,
   "host_ticket_included": false,
+  "independent_reducer_exports_CPU_only": {
+    "mixed_reducer": {
+      "actual_generated_source": {
+        "bytes": 19,
+        "sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+      },
+      "actual_metadata": {
+        "name": "mixed_reducer"
+      },
+      "artifacts": {
+        "cubin": {
+          "bytes": 13,
+          "sha256": "2bfb59e6d9cdd9a7c503fc69d1928b70ffcc666db9fd6fc7f72c5f0de780ebf4"
+        },
+        "llir": {
+          "bytes": 16,
+          "sha256": "50b16c7b5fe9badd242e29c9a05bb83e161c5c9523595916026df20eef1b9d3f"
+        }
+      },
+      "hash": "mixed_reducer",
+      "n_regs": 1,
+      "n_spills": 0,
+      "signature": {
+        "0": "*fp32"
+      },
+      "source_sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+    },
+    "tl_reducer": {
+      "actual_generated_source": {
+        "bytes": 19,
+        "sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+      },
+      "actual_metadata": {
+        "name": "tl_reducer"
+      },
+      "artifacts": {
+        "cubin": {
+          "bytes": 10,
+          "sha256": "f35bb63d2f1297cde5b7b6510f580187e97effecc10fbc935fb7ed9fb9403ff6"
+        },
+        "llir": {
+          "bytes": 13,
+          "sha256": "1323a607f49b38ea8dbff7138f92392c37a696d54371f1e11d639515c2bcf49e"
+        }
+      },
+      "hash": "tl_reducer",
+      "n_regs": 1,
+      "n_spills": 0,
+      "signature": {
+        "0": "*fp32"
+      },
+      "source_sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+    }
+  },
+  "independent_reducer_resource_refusals": [
+    [
+      "tl_reducer",
+      "n_regs",
+      null
+    ],
+    [
+      "tl_reducer",
+      "n_regs",
+      0
+    ],
+    [
+      "tl_reducer",
+      "n_spills",
+      1
+    ],
+    [
+      "tl_reducer",
+      "n_spills",
+      null
+    ],
+    [
+      "tl_reducer",
+      "n_spills",
+      false
+    ],
+    [
+      "mixed_reducer",
+      "n_regs",
+      null
+    ],
+    [
+      "mixed_reducer",
+      "n_regs",
+      0
+    ],
+    [
+      "mixed_reducer",
+      "n_spills",
+      1
+    ],
+    [
+      "mixed_reducer",
+      "n_spills",
+      null
+    ],
+    [
+      "mixed_reducer",
+      "n_spills",
+      false
+    ]
+  ],
   "loaded_metadata_export_and_unknown_refusal": true,
   "major_cases": {
     "16k": [
@@ -29,6 +135,7 @@
       2048
     ]
   },
+  "missing_TL_reducer_refused": true,
   "numeric_verified": false,
   "optional_NumPy_helper_consistency": {
     "K256_V2560_input_layout": true,
@@ -85,11 +192,12 @@
     "inverse_byte_exact": true,
     "original_sha256": "4938a1ec98a9fa6a696f141f675aa04365bfdae109f111b81f3fa622196017cb"
   },
+  "reducer_call_inverse_byte_exact": true,
   "service_verified": false,
   "source_adapter": {
-    "adapted_sha256": "5b6a73c07633f92dc838a83a192d8510ed7a0417c189d385580981c44811365a",
+    "adapted_sha256": "13a0074b5401e3d603bec150cb0538fc700ab9dbf09da7dc8c787efd1899caae",
     "arm_literal_rename": {
-      "adapted_sha256": "ecbff6843658da17b282ece14dae4b5b5a03a77cc5a649bd660c4cde755e931c",
+      "adapted_sha256": "60f6da199f05be5c9a75a865c0edb0f08050b8fd0b601f586de181b674537fb2",
       "edits": [
         {
           "count": 11,
@@ -103,7 +211,7 @@
         }
       ],
       "inverse_byte_exact": true,
-      "original_sha256": "5b6a73c07633f92dc838a83a192d8510ed7a0417c189d385580981c44811365a"
+      "original_sha256": "13a0074b5401e3d603bec150cb0538fc700ab9dbf09da7dc8c787efd1899caae"
     },
     "edits": [
       {
@@ -168,7 +276,7 @@
       },
       {
         "count": 1,
-        "new": "s=SPLITS[arm][case];z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles['reducer']",
+        "new": "s=SPLITS[arm][case];z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles[arm+'_reducer']",
         "old": "z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles['reducer']"
       },
       {
@@ -203,7 +311,7 @@
       },
       {
         "count": 1,
-        "new": "for role in ('tl_append','mixed_append','tl_producer','reducer'):",
+        "new": "for role in ('tl_append','mixed_append','tl_producer','tl_reducer','mixed_reducer'):",
         "old": "for role in ('k8_append','bf16_append','reducer'):"
       },
       {
@@ -237,7 +345,7 @@
         "old": "K8_GPU_full_encode"
       }
     ],
-    "final_adapted_sha256": "ecbff6843658da17b282ece14dae4b5b5a03a77cc5a649bd660c4cde755e931c",
+    "final_adapted_sha256": "60f6da199f05be5c9a75a865c0edb0f08050b8fd0b601f586de181b674537fb2",
     "inverse_byte_exact": true,
     "original_sha256": "3038f13b67e8c58280699ffaf71a76514b851d4ca5a691b90706ec54d0d84b77"
   }

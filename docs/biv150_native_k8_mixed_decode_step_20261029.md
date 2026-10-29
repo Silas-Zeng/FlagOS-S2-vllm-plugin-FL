@@ -37,6 +37,13 @@ must have known positive n_regs and integer n_spills=0. ELF scalar spill fields
 are not silently equated to runtime n_spills. Native static resources come only
 from the actual externally hash-pinned Root SO review.
 
+The review child of18cff retains `tl_reducer` and `mixed_reducer` separately:
+`num_segments` is a reducer constexpr, so these are distinct actual JIT handles.
+Both final artifact/metadata exports and both original resource gates are kept;
+the TL handle can no longer be overwritten by the candidate. CPU checks exercise
+both exports and reject missing/unknown/nonzero-spill reducer records. The reducer
+call, numerical work and timing body are unchanged.
+
 Timing remains one TL/Native/Native/TL event+host-wall ABBA, unroll8, warm128,
 64 timed replays. It measures **decode-N append + producer + reducer only**.
 Initial CPU construction, encoding/upload and JIT are recorded separately.

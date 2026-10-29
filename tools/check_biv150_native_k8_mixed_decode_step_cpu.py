@@ -2,6 +2,7 @@
 """CPU source/protocol checks; optional tiny NumPy oracle-layout consistency, never GPU."""
 import argparse,ast,hashlib,json,sys
 from pathlib import Path
+from types import SimpleNamespace
 import probe_biv150_native_k8_mixed_decode_step as b
 
 def fn(text,name):
@@ -14,10 +15,44 @@ def run(root,arrays=False):
     assert fn(source,'timed')==fn(original,'timed')
     assert "for arm in f.ORDER:" in source and "f.REPLAYS" in source
     assert 'graphB' not in source or 'changed_graph_before_eager' in source
-    assert "for role in ('tl_append','mixed_append','tl_producer','reducer')" in source
+    roles=('tl_append','mixed_append','tl_producer','tl_reducer','mixed_reducer')
+    assert 'for role in '+repr(roles)+':' in source.replace("','", "', '")
     assert "s=SPLITS[arm][case]" in fn(source,'capture') and "s=SPLITS[arm][case]" in fn(source,'reducer')
     assert 'SPLITS[arm][case]' in source and "current_s=SPLITS[arm][case]" in fn(source,'producer')
     assert 'original_BF16_proxy' in fn(source,'capture')
+    # Only the per-arm S selection and handle bookkeeping differ from3eb.
+    assert fn(source,'reducer').replace('s=SPLITS[arm][case];','').replace("handles[arm+'_reducer']","handles['reducer']")==fn(original,'reducer')
+    assert "handles['reducer']" not in source
+    # Exercise the unchanged compiled exporter with two distinct fake JITs.
+    # These are CPU evidence of bookkeeping, never device artifact receipts.
+    def blob(raw):return dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+    def handle(name):
+        return SimpleNamespace(hash=name,n_regs=1,n_spills=0,metadata={'name':name},
+            src=SimpleNamespace(fn=SimpleNamespace(src='same reducer source'),signature={0:'*fp32'}),
+            asm={'cubin':name.encode(),'llir':('IR '+name).encode()})
+    namespace=dict(f=SimpleNamespace(sha=lambda raw:hashlib.sha256(raw).hexdigest()),blob=blob,actual_metadata=b.actual_metadata)
+    exec(fn(source,'compiled'),namespace)
+    handles={role:handle(role) for role in roles};exports={role:namespace['compiled'](value) for role,value in handles.items()}
+    assert exports['tl_reducer']['artifacts']['cubin']!=exports['mixed_reducer']['artifacts']['cubin']
+    for role in ('tl_reducer','mixed_reducer'):
+        assert exports[role]['actual_metadata']['name']==role
+        assert exports[role]['actual_generated_source']==blob(b'same reducer source')
+    gate=next(n for n in ast.walk(ast.parse(source)) if isinstance(n,ast.For) and isinstance(n.target,ast.Name)
+        and n.target.id=='role' and isinstance(n.iter,ast.Tuple) and ast.literal_eval(n.iter)==roles)
+    gate_code=compile(ast.fix_missing_locations(ast.Module(body=[gate],type_ignores=[])),'<original-resource-gate>','exec')
+    exec(gate_code,{'handles':handles})
+    rejections=[]
+    for role in ('tl_reducer','mixed_reducer'):
+        for field,value in [('n_regs',None),('n_regs',0),('n_spills',1),('n_spills',None),('n_spills',False)]:
+            old=getattr(handles[role],field);setattr(handles[role],field,value)
+            try:exec(gate_code,{'handles':handles})
+            except AssertionError:rejections.append([role,field,value])
+            else:raise AssertionError('unknown/nonzero reducer resource accepted')
+            finally:setattr(handles[role],field,old)
+    del handles['tl_reducer']
+    try:exec(gate_code,{'handles':handles})
+    except KeyError:pass
+    else:raise AssertionError('missing TL reducer accepted')
     assert 'all2048_token_writer_included=False' in Path(b.__file__).read_text()
     b.c.consumer_plan(json.loads(json.dumps(b.c.plan())))
     mutant=json.loads(json.dumps(b.c.plan()));mutant['cases'][0][0]=59
@@ -32,6 +67,8 @@ def run(root,arrays=False):
     record=dict(passed=True,CPU_only=True,source_adapter=proof,receipt_adapter=receipt_proof,
         original_timed_function_byte_exact=True,consumer_plan_JSON_roundtrip_and_wrong_case_refusal=True,
         loaded_metadata_export_and_unknown_refusal=True,actual_main_TL_files=source_pins,major_cases=b.CASES,per_arm_splits=b.SPLITS,
+        reducer_call_inverse_byte_exact=True,independent_reducer_exports_CPU_only={k:exports[k] for k in ('tl_reducer','mixed_reducer')},
+        independent_reducer_resource_refusals=rejections,missing_TL_reducer_refused=True,
         actual_new_SO_or_GPU_verified=False,numeric_verified=False,performance_verified=False,service_verified=False,
         paired_prefill_included=False,host_ticket_included=False,full_mixed_step_timing=None)
     if arrays:

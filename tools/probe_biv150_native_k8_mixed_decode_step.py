@@ -83,7 +83,7 @@ def adapted_source(root):
                 if arm=='bf16':handles['tl_producer']=tl_produce(tl_kernel,z,q,lens,table,current_s)
                 else:getattr(torch.ops,NEW_NAMESPACE).produce(q,z['key'],z['scale'],z['value'],lens,table,z['partial'],z['maximum'],z['summation'],128**-.5*1.4426950408889634,current_s)"""
     change(a,b)
-    change("z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles['reducer']", "s=SPLITS[arm][case];z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles['reducer']")
+    change("z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles['reducer']", "s=SPLITS[arm][case];z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles[arm+'_reducer']")
     change("initial=cold[start:start+count] if arm=='bf16' else packed[start:start+count]","initial=packed[start:start+count]")
     a="z=controls[p];return contract.qualify(descriptor(nk),descriptor(nv),descriptor(slots),descriptor(arenas['k8']['raw']),f.PAGES,contract.SlotSnapshot(tuple(int(x) for x in z['slots']),'component-owned-cpu-preupload',p))"
     change(a,"z=controls[p];return {arm:contract.qualify(descriptor(nk),descriptor(nv),descriptor(slots),descriptor(arenas[arm]['raw']),f.PAGES,contract.SlotSnapshot(tuple(int(x) for x in z['slots']),'component-owned-cpu-preupload',p)) for arm in ('bf16','k8')}")
@@ -93,7 +93,7 @@ def adapted_source(root):
     start=original.index('            signature={};names=');end=original.index('            for role in (',start);block=original[start:end]
     wrapped=block.replace("handles['k8_append']","handles[writer_arm+'_append']")
     change(block,"            for writer_arm in ('bf16','k8'):\n"+''.join('    '+line+'\n' for line in wrapped.splitlines()))
-    change("for role in ('k8_append','bf16_append','reducer'):","for role in ('tl_append','mixed_append','tl_producer','reducer'):")
+    change("for role in ('k8_append','bf16_append','reducer'):","for role in ('tl_append','mixed_append','tl_producer','tl_reducer','mixed_reducer'):")
     change("type(handle.n_regs) is int and handle.n_regs>0 and handle.n_spills==0", "type(handle.n_regs) is int and handle.n_regs>0 and type(handle.n_spills) is int and handle.n_spills==0")
     change("record['artifacts']={ext:blob(","record['actual_metadata']=actual_metadata(k);record['actual_generated_source']=blob(k.src.fn.src.encode())\n            record['artifacts']={ext:blob(")
     change('event_ratio_BF16_over_K8','event_ratio_TL_over_mixed');change('host_wall_ratio_BF16_over_K8','host_wall_ratio_TL_over_mixed')
