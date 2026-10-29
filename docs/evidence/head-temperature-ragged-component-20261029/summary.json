@@ -1,0 +1,561 @@
+{
+  "source_main": "a455a3de364051fbea80226870c239de3a48e716",
+  "source_commit": "9cc1d9ecef63c0282dcd88b84786596a2075a294",
+  "scope": "real model head weight, synthetic hidden, full eager head plus original Sampler; one ABBA per shape",
+  "model_qualified": false,
+  "official_qualified": false,
+  "production_weight_tail_qualified": false,
+  "rows": [
+    {
+      "rows": 31,
+      "result_sha256": "e49c35a3496d1a237e4c800008268bd36b917736a4280edc6e8b7913cea97a87",
+      "download_manifest_sha256": "18566524e21b17393e086076a30373492cd8058a6feb6eb4be5eb78f1d8777bf",
+      "job_tag": "cjj-head115-ragged-r31-logical-backed-component-v2-20261029",
+      "cases": [
+        {
+          "label": "normal_real_head",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "independent_fp64",
+          "passed": true,
+          "max_abs": 0.0
+        },
+        {
+          "label": "changed",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "zero",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "extreme",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "row_varying_temperature",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "per_request_generators",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "side_stream",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_0",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_1",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "after_timing",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        }
+      ],
+      "median": {
+        "A": {
+          "event_per_call_ms": 2.6785519123077393,
+          "wall_per_call_ms": 3.2083595625
+        },
+        "B": {
+          "event_per_call_ms": 2.5680092573165894,
+          "wall_per_call_ms": 3.0475879375
+        }
+      },
+      "event_speed_ratio": 1.043046050039033,
+      "host_speed_ratio": 1.0527537279635923,
+      "event_ms_saved": 0.1105426549911499,
+      "resources": [
+        {
+          "arm": "original-head",
+          "hash": "a5a62f847a087c4d7c57ebdccf6eda4f21104ac67ed16e564decadc71251b97d",
+          "shared": 12288,
+          "n_regs": 21,
+          "n_spills": 0
+        },
+        {
+          "arm": "candidate-head",
+          "hash": "2e4d3fb74213652ae109a2766f6f9ccfe7e2fda0474d4248e0fe382719002723",
+          "shared": 12288,
+          "n_regs": 26,
+          "n_spills": 0
+        }
+      ]
+    },
+    {
+      "rows": 41,
+      "result_sha256": "0e70059d9a4fb203e1fca38d8c04754de72f5cbe9b8758d8c0753c484da55184",
+      "download_manifest_sha256": "fb3dc2983aa91f1e7db41f91be36d1e8d882af73ec417f5bf4777a17af0f06b6",
+      "job_tag": "cjj-head115-ragged-r41-r43-protected-component-v3-20261029",
+      "cases": [
+        {
+          "label": "normal_real_head",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "independent_fp64",
+          "passed": true,
+          "max_abs": 0.0
+        },
+        {
+          "label": "changed",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "zero",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "extreme",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "row_varying_temperature",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "per_request_generators",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "side_stream",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_0",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_1",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "after_timing",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        }
+      ],
+      "median": {
+        "A": {
+          "event_per_call_ms": 3.3583457469940186,
+          "wall_per_call_ms": 3.864657875
+        },
+        "B": {
+          "event_per_call_ms": 3.226235270500183,
+          "wall_per_call_ms": 3.68072175
+        }
+      },
+      "event_speed_ratio": 1.0409488042306827,
+      "host_speed_ratio": 1.0499728416036882,
+      "event_ms_saved": 0.13211047649383545,
+      "resources": [
+        {
+          "arm": "original-head",
+          "hash": "a4d74c082b1d174fea96e4d212f901ee890499bd05005b58fcc6e71cc7dc541d",
+          "shared": 40960,
+          "n_regs": 31,
+          "n_spills": 0
+        },
+        {
+          "arm": "candidate-head",
+          "hash": "353fd173bd65d34b514ac5eb275c59448a9d197025b9996dc567626864998be6",
+          "shared": 36864,
+          "n_regs": 37,
+          "n_spills": 0
+        }
+      ]
+    },
+    {
+      "rows": 42,
+      "result_sha256": "71a442f2b4258bd98c42568146ea003c0eb97666429a43ec4862d18797eee99c",
+      "download_manifest_sha256": "fb3dc2983aa91f1e7db41f91be36d1e8d882af73ec417f5bf4777a17af0f06b6",
+      "job_tag": "cjj-head115-ragged-r41-r43-protected-component-v3-20261029",
+      "cases": [
+        {
+          "label": "normal_real_head",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "independent_fp64",
+          "passed": true,
+          "max_abs": 0.0
+        },
+        {
+          "label": "changed",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "zero",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "extreme",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "row_varying_temperature",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "per_request_generators",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "side_stream",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_0",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_1",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "after_timing",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        }
+      ],
+      "median": {
+        "A": {
+          "event_per_call_ms": 3.4768089056015015,
+          "wall_per_call_ms": 3.78273625
+        },
+        "B": {
+          "event_per_call_ms": 3.18317449092865,
+          "wall_per_call_ms": 3.49236125
+        }
+      },
+      "event_speed_ratio": 1.0922457802767789,
+      "host_speed_ratio": 1.0831457513165341,
+      "event_ms_saved": 0.29363441467285156,
+      "resources": [
+        {
+          "arm": "original-head",
+          "hash": "a4d74c082b1d174fea96e4d212f901ee890499bd05005b58fcc6e71cc7dc541d",
+          "shared": 40960,
+          "n_regs": 31,
+          "n_spills": 0
+        },
+        {
+          "arm": "candidate-head",
+          "hash": "353fd173bd65d34b514ac5eb275c59448a9d197025b9996dc567626864998be6",
+          "shared": 36864,
+          "n_regs": 37,
+          "n_spills": 0
+        }
+      ]
+    },
+    {
+      "rows": 43,
+      "result_sha256": "1e8490b893fa578a5cb7a7e8a00ac030d3c9caa836e473c97756d45fe295074e",
+      "download_manifest_sha256": "fb3dc2983aa91f1e7db41f91be36d1e8d882af73ec417f5bf4777a17af0f06b6",
+      "job_tag": "cjj-head115-ragged-r41-r43-protected-component-v3-20261029",
+      "cases": [
+        {
+          "label": "normal_real_head",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "independent_fp64",
+          "passed": true,
+          "max_abs": 0.0
+        },
+        {
+          "label": "changed",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "zero",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "extreme",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "row_varying_temperature",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "per_request_generators",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "side_stream",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_0",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "changed_graph_1",
+          "bitwise": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        },
+        {
+          "label": "after_timing",
+          "scaled_bitwise": true,
+          "filtered_bitwise": true,
+          "ids_bitwise": true,
+          "rng_equal": true,
+          "finite": true,
+          "input_unchanged": true,
+          "CPU_full_storage_canaries": true
+        }
+      ],
+      "median": {
+        "A": {
+          "event_per_call_ms": 3.3084620237350464,
+          "wall_per_call_ms": 3.873540625
+        },
+        "B": {
+          "event_per_call_ms": 3.154723286628723,
+          "wall_per_call_ms": 3.6328206874999998
+        }
+      },
+      "event_speed_ratio": 1.048732875481645,
+      "host_speed_ratio": 1.066262543133021,
+      "event_ms_saved": 0.15373873710632324,
+      "resources": [
+        {
+          "arm": "original-head",
+          "hash": "a4d74c082b1d174fea96e4d212f901ee890499bd05005b58fcc6e71cc7dc541d",
+          "shared": 40960,
+          "n_regs": 31,
+          "n_spills": 0
+        },
+        {
+          "arm": "candidate-head",
+          "hash": "353fd173bd65d34b514ac5eb275c59448a9d197025b9996dc567626864998be6",
+          "shared": 36864,
+          "n_regs": 37,
+          "n_spills": 0
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "One short ABBA, 8 calls per leg; not a confidence interval or model speedup.",
+    "FP64 independently checks only 5 vocab columns per row; runtime full tensors compare bitwise, no full-array offline replay is claimed.",
+    "Graph checks deterministic prefix only; complete eager Sampler tests include sampled IDs and RNG state.",
+    "Protected fixture has physical hidden backing and W suffix4096B. R41/42/43 final unused W prefetch can exceed logical W by64B; unguarded production is not qualified.",
+    "No changed service dispatch or official accuracy/4K/16K score in this run."
+  ]
+}
