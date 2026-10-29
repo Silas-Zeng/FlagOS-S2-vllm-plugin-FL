@@ -3,6 +3,7 @@ import argparse,inspect,json,os,types
 from pathlib import Path
 import run_biv150_dynamic_hidden_gather_helper as base
 import biv150_hidden_gather_service_object_cache as cache
+import biv150_hidden_gather_launcher_address as host_address
 c=base.c
 PARENT_SHA='bc3ff1848c9c11968549d1d63eadfc03da520114ca951088e2c39fdd0be9000f'
 REUSED={
@@ -14,7 +15,7 @@ REUSED={
 def plan():
  return dict(device_executed=False,service_verified=False,performance_verified=False,timing_executed=False,
   original_failed_service_source=cache.SOURCE,actual_group=cache.HASH,actual_cubin=cache.CUBIN,actual_launcher=cache.LAUNCHER,
-  original_service_Plan_host_submits=0,natural_seed=[18,1],seed_warmup_only_no_kernel=True,
+  original_service_Plan_host_submits=0,original_module_path_SHA_not_C_ownership=cache.REPORTED_MODULE_SHA,natural_seed=[18,1],seed_warmup_only_no_kernel=True,
   helper_cases=[dict(M=m,N=n,kind=k) for m,n in base.bits.CASES for k in ('ordinary','Plan')],
   helper_phases='AB',constructed_Plan_not_service_coverage=True,additional_direct_guard_launches=4,
   expected_total_warmups=5,expected_helper_numeric_launches=8,private_cache_only=True,backend_compile_prohibited=True,
@@ -36,10 +37,8 @@ def seed(fn,torch,result,out,save):
  folder=out/'actual-seed-18-1';folder.mkdir();files={}
  for ext in ('source','ttir','ttgir','llir','asm','cubin'):
   b=compiled.asm[ext];b=b.encode() if isinstance(b,str) else b;(folder/('actual.'+ext)).write_bytes(b);files[ext]=dict(bytes=len(b),sha256=c.sha(b))
- owner=getattr(getattr(compiled._run,'launch',None),'__self__',None)
- c.need(isinstance(owner,types.ModuleType) and getattr(owner,'__file__',None),'seed actual loaded host extension')
- c.need(Path(owner.__file__).resolve()==Path(result['reviewed_production_cache']['host'][0]['path']).resolve(),'actual private original launcher path')
- lb=Path(owner.__file__).read_bytes();(folder/'actual-launcher.so').write_bytes(lb)
+ binding=host_address.verify(compiled,dict(hash=cache.HASH),result['reviewed_production_cache'],folder)
+ record['launcher_binding']=binding;lb=Path(binding['DSO_path']).read_bytes()
  record.update(python_object_id=id(compiled),hash=str(compiled.hash),ABI=c.runtime_ABI(compiled),options=c.metadata(compiled),resources=c.resources(compiled),files=files,launcher_sha256=c.sha(lb));save()
  expected=result['service_actual_object']
  c.need(record['hash']==cache.HASH and record['ABI']==expected['ABI'] and record['options']==expected['options'] and record['resources']==expected['resources'] and files==expected['files'] and c.sha(lb)==cache.LAUNCHER,'exact original service object and launcher before numeric launch')
@@ -76,7 +75,8 @@ EDITS=[
  ('     # Two actual production warmups only per M/N; no84-shape sweep. Export before gate.', '     # Existing case warmups must reuse the naturally seeded exact SME1 object.'),
  ("record['natural_SME_prediction']", "record['cold_SME_prediction_if_uncached']"),
  ("     result['production_warmups_completed']+=1;compiled._init_handles()", "     result['production_warmups_completed']+=1;compiled._init_handles();c.need(compiled is seeded,'same actual service object for every original helper case')"),
- ("'actual loaded launcher differs from5124 review'", "'actual loaded launcher differs from service4105'"),
+ ("     launcher=Path(owner.__file__).resolve();lb=launcher.read_bytes();(folder/'actual-launcher.so').write_bytes(lb);record['actual_handler'].update(path=str(launcher),sha256=c.sha(lb));save()", "     binding=host_address.verify(compiled,record['actual_compiled'],group,folder);record['actual_handler']['C_function_binding']=binding;launcher=Path(binding['DSO_path']);lb=launcher.read_bytes();record['actual_handler'].update(path=str(launcher),sha256=c.sha(lb));save()"),
+ ("'actual loaded launcher differs from5124 review'", "'actual loaded C function differs from reviewed5124'"),
  ("   # No profiling inside timed original frames. All numeric modes passed first.", "   output_guards(seeded,torch,result,blob,save)\n   c.need(result['production_warmups_completed']==5,'one seed plus four original warmups');result['service_actual_object_numeric_verified']=True\n   # Timing code retained byte-for-byte but this entry forbids timing.")]
 
 def expanded():
@@ -94,7 +94,7 @@ def execute(a):
  c.need(a.timing is False,'this entry is numeric only, no cost repeats')
  c.need(not c.git('diff',cache.SOURCE,'--','vllm_fl','csrc'),'all production/GPU bytes remain frozen8b7')
  c.need(os.environ.get('CJJ_HIDDEN_GATHER_DIAGNOSTICS','0')=='0','component diagnostics stay OFF')
- namespace=dict(vars(base),cache=cache,bits=types.SimpleNamespace(**dict(vars(base.bits),LAUNCHER_SHA=cache.LAUNCHER)),seed=seed,output_guards=output_guards,plan=plan)
+ namespace=dict(vars(base),cache=cache,bits=types.SimpleNamespace(**dict(vars(base.bits),LAUNCHER_SHA=cache.LAUNCHER)),seed=seed,output_guards=output_guards,plan=plan,host_address=host_address)
  exec(compile(expanded(),str(Path(__file__).resolve())+':exact-parent-execute','exec'),namespace)
  return namespace['execute'](a)
 

@@ -1,5 +1,7 @@
 # PR122：服务实际 SME1 编译组的独立数值入口
 
+> 以下保留 d74 的历史准备说明。其首次设备尝试在 launcher 路径门前停止；当前子提交的 C 函数地址归属修正见 [更正说明](launcher-address-correction.md)。不能继续把 4105 模块文件记录称为 gather C 函数的已证归属。
+
 这是以已共享 `8b7ea7a876f01e059f35fa7e2f266ba248af03ef` 为父的 tools-only 准备；没有新设备结果，没有改变生产/GPU 源码、原 observer、PINS、receipt 或精度门。原服务 smoke 保持 failed：163 个请求完成，但实际编译组不匹配旧 SME5 资格；19 个 ordinary host submit、0 个 Plan，不能将构造的 Plan fixture 当自然服务覆盖。
 
 实际目标为 `b0fa4a52f87904075643190bf02047cdd59bd288aff4a1c1cd62a6416ed0976f`，cubin `4a9f93b84bd32f725d101ffb15f081f6b7345af149ba64abcc4e117369ef928e`，host launcher `4105509e003b73dd782a52edfb86254c751201e42485c09b757cfb1fa7ad9c59`。准入绑定 Root 已逐字重放的 71 项证据报告 `5f3f7f73…`、原 failed state、两份真实 worker ACK、原 bridge、七个缓存 child 和真实 launcher。该报告只证明证据链，不提前授予新数值资格。

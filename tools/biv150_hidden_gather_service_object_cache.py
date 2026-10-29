@@ -7,9 +7,10 @@ SOURCE='8b7ea7a876f01e059f35fa7e2f266ba248af03ef'
 REVIEW='5f3f7f734d5ea01e7b82c084b79b4b3e1309cf90c1ce1968df5d27962f23694a'
 HASH='b0fa4a52f87904075643190bf02047cdd59bd288aff4a1c1cd62a6416ed0976f'
 CUBIN='4a9f93b84bd32f725d101ffb15f081f6b7345af149ba64abcc4e117369ef928e'
-LAUNCHER='4105509e003b73dd782a52edfb86254c751201e42485c09b757cfb1fa7ad9c59'
+REPORTED_MODULE_SHA='4105509e003b73dd782a52edfb86254c751201e42485c09b757cfb1fa7ad9c59'
+LAUNCHER='512414b6fbfae2135b62153619ef1f5919bd2fd07018058cd45035de1d83e361'
 DIRECTORY=base64.b32encode(bytes.fromhex(HASH)).decode().rstrip('=')
-HANDLER='BWNUEQYDUA2UCX5OVOXXXGXFGKQMTEK6QO3ONMXK6GVLAZSEISPQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so'
+HANDLER='H7POXA2W3X5GQEOXOQQOM2VCB5S6HLHVZLJF3SAXLAJPDJFQOIOA/__triton_launcher.cpython-312-x86_64-linux-gnu.so'
 NAME='gather_hidden_bits'
 ROOT='/workspace/experiments/minicpm-s2/code/cjj-native122-service-smoke-v1-20261030'
 PINS={
@@ -20,7 +21,8 @@ PINS={
  'root-source-bridge.json':'451d7a5858141049e61317fb2c5e3c75c6a92df432e37cb4168a370c2f2bc27c',
  'triton-cache/'+DIRECTORY+'/gather_hidden_bits.json':'335b11ba830c40e6ab53650aad16d54b17b28ca5c5413252a74d5318990df590',
  'triton-cache/'+DIRECTORY+'/__grp__gather_hidden_bits.json':'7bc1e07e00bf2ccdfe1311705bd17a170775e5c81c41ede458579f8044863cb7',
- 'triton-cache/'+HANDLER:LAUNCHER}
+ 'triton-cache/'+HANDLER:LAUNCHER,
+ 'triton-cache/BWNUEQYDUA2UCX5OVOXXXGXFGKQMTEK6QO3ONMXK6GVLAZSEISPQ/__triton_launcher.cpython-312-x86_64-linux-gnu.so':REPORTED_MODULE_SHA}
 
 def read(root,relative,digest):
  p=root/relative;c.need(not p.is_symlink() and p.resolve().is_relative_to(root.resolve()),'contained regular original '+relative)
@@ -33,7 +35,7 @@ def proof(original,review):
  state=json.loads(data['state.json']);c.need(state['completed'] is False and state['smoke_passed'] is False and state['cleanup_complete'] is True,'preserve original failed service')
  ack=json.loads(data['gather-smoke-snapshots/smoke-after.json']);before=json.loads(data['gather-smoke-snapshots/smoke-before.json'])
  c.need((ack['pid'],ack['start_ticks'])==(215193,364667701)==(before['pid'],before['start_ticks']) and ack['compiled_overflow']==0 and len(ack['compiled'])==1,'same actual worker and one object')
- a=ack['compiled'][0];c.need(a['hash']==HASH and a['launcher_sha256']==LAUNCHER and a['files']['cubin']['sha256']==CUBIN and a['options']['use_sme']==1,'actual SME1 object, no inheritance from5')
+ a=ack['compiled'][0];c.need(a['hash']==HASH and a['launcher_sha256']==REPORTED_MODULE_SHA and a['files']['cubin']['sha256']==CUBIN and a['options']['use_sme']==1,'actual SME1 object, no inheritance from5')
  for ext,item in a['files'].items():
   b=read(original,'triton-cache/'+DIRECTORY+'/'+NAME+'.'+ext,item['sha256']);c.need(len(b)==item['bytes'],'actual child length')
  return dict(source_commit=SOURCE,original_failed_state=state,review_sha256=REVIEW,actual_ACK=ack),a
