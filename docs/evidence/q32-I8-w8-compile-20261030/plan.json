@@ -1,0 +1,67 @@
+{
+  "GPU_executed": false,
+  "Graph_verified": false,
+  "JIT_executed": false,
+  "SDK_pins": {
+    "codec": "d73af8368193e1cab4ba9e74132d056d5b61d0c0950d600d494d75c3151f4cf7",
+    "helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+    "jit": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+    "sdk": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f"
+  },
+  "actual_I8_operand_hoist_verified": false,
+  "actual_handle_spills": "record nonnegative actual count, including nonzero; not a qualification gate",
+  "actual_resources_verified": false,
+  "attention_launches": 0,
+  "base": "899ce77470b0b539aebc108fd122f668c2d5894d",
+  "candidate_source_sha256": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+  "config": {
+    "BLOCK_M": 256,
+    "BLOCK_Q": 32,
+    "IS_3D": false,
+    "TILE_SIZE": 64
+  },
+  "default_enabled": false,
+  "dependency_helpers": {
+    "2e0929793d9e744a964c719e27d253927bcb52f3": {
+      "tools/biv150_konly_q32_s2_compile_source.py": "ddeb922f473e54d446d915c8429ac1595f191d34641853b8f3088f4c61ee1445"
+    },
+    "844a69f10539c551500e29e2304061aef7d8671b": {
+      "biv150_konly_q64_compile_arguments.py": "b82f517b94b196822f00037773b1c80806716ac77d9ef44881829ef1fb8fa52f",
+      "probe_biv150_konly_q64_compile.py": "749a662b7e203640c43b4282ae70abed318792dff302c7ef88ecab534fc02c7a"
+    }
+  },
+  "driver_sha256": "fc9a8f06b1524d0789e8508e7f7afc68fc243d235dd168c9674c6164463a88c1",
+  "encoder_launches": 0,
+  "function_sha256": "308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23",
+  "grid": [
+    65,
+    2
+  ],
+  "hoist_grammar_applied": false,
+  "hoist_qualification_inherited": false,
+  "initialized_tensor_elements": 0,
+  "kernel_change_from_accepted_Q32_S1": "launch num_warps16 to8 only; fresh raw lowering, no inherited override",
+  "model_verified": false,
+  "num_seqs": 1,
+  "num_stages": 1,
+  "num_warps": 8,
+  "numerical_verified": false,
+  "override_allowed": false,
+  "pages": 773,
+  "performance_verified": false,
+  "physical_page_bytes": 16384,
+  "planned_JIT_warmups": 1,
+  "production_modified": false,
+  "query_rows": 2048,
+  "schema": "cjj-private-I8-q32-w8-stage1-compile-v1",
+  "scope": "one raw w8/s1 actual compilation for independent hoist/layout/resources analysis; no launches or performance comparison",
+  "service_verified": false,
+  "snapshot_helper_sha256": "f8a15e9f8effa501ddbb48b6f177c44d3e1c5099e1d27142585ac63fd7b17cfb",
+  "source_math_byte_identical": true,
+  "source_pins": {
+    "biv150_konly_encoded_hoist_proposal.py": "c0135ba632270b5d769cf3e53d5a5fc0dbde62a6e782daedc97422d2bbeff658",
+    "biv150_konly_encoded_q32.py": "ac0ee4caaeed8dfd211a57cd4d3d130d8437a2a0129c1c915e1b19ed4fc66b4b",
+    "biv150_konly_encoded_q32_adapter.py": "bb19f67d4e9ff80ca8510fe01ca5b1ad023d639ec267e5b51cc2d0d17bbfa04b"
+  },
+  "writer_launches": 0
+}
