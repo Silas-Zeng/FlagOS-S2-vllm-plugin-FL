@@ -1,0 +1,41 @@
+{
+  "Graph_verified": false,
+  "IR_compile_API_calls": 0,
+  "actual_review_sha256": "bdb0fb8908506630c01e45323a921c4aa1d2adcb522405d28c2ce30e0dfb6a05",
+  "candidate_launches_planned": 4,
+  "cases": [
+    [
+      65,
+      9
+    ],
+    [
+      2018,
+      61
+    ]
+  ],
+  "change_B": "same GPU storages; replace hidden and indices, poison every output payload word with expected XOR65535 before launch",
+  "compile_summary_sha256": "08b4dcded55b22c871b64b9eb9c362b70893e3e6f47db1681f01108c91a4aa57",
+  "compiled_hash": "8a67dfc845796a7902db88222df5c2d589f211312a91537ff44523c59ca35042",
+  "cubin_sha256": "e40cfa77a95208fa593748561da6e02b8bd376a28f3bbb153cb127ca6cc1728c",
+  "default_CPU": true,
+  "device_numeric_verified": false,
+  "direct_cached_CompiledKernel": true,
+  "guards": "128 uint16 prefix/suffix on hidden/output;64 int32 prefix/suffix on indices; full input bytes readonly",
+  "helper_hit_verified": false,
+  "hidden_output_guard_uint16_words": 128,
+  "index_guard_int32_words": 64,
+  "kernel_sha256": "c5613dc8645e862fee10be013f2238d436aa5760d3f5501be560c257b8d3ece5",
+  "oracle": "full independent CPU uint16 row indexing, exact bits including +/-0, Inf and distinct NaN payloads",
+  "parent": "8d1959a443964b8d0789f9dac23bcb4945729dc1",
+  "performance_verified": false,
+  "phases": [
+    "A",
+    "B"
+  ],
+  "production_feature_enabled": false,
+  "service_verified": false,
+  "side_stream_verified": false,
+  "timing_executed": false,
+  "warmup_calls": 0,
+  "width": 2048
+}
