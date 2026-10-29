@@ -3,6 +3,7 @@
 import array,hashlib,importlib.util,json,sys
 from pathlib import Path
 import run_biv150_dynamic_hidden_gather_bits as bits
+import biv150_dynamic_hidden_gather_reviewed_cache as cache
 ROOT=Path(__file__).resolve().parents[1]
 HELPER=ROOT/'vllm_fl/patches/biv150_dynamic_hidden_gather.py'
 sha=lambda b:hashlib.sha256(b).hexdigest()
@@ -35,7 +36,7 @@ def producer_case(m,n,mode):
 def plan():
  cases=[producer_case(m,n,mode) for m,n in bits.CASES for mode in ('ordinary','Plan')]
  bits.need(not {'torch','triton','numpy'}.intersection(sys.modules),'stdlib preparation never imports device runtime')
- return dict(stage='CPU-prepared actual-frame device frontend; main899 synchronized; SDK constructor, real ingress and cost all untested',default_production_feature='OFF',parent=bits.PARENT,worker_parent='22ba8b7cdc3be4e9619f4fa3f4e91c9cca6cfdfc',main_dependency='899ce77470b0b539aebc108fd122f668c2d5894d',
+ return dict(reviewed_production_specialization=dict(hash=cache.HASH,cubin=cache.CUBIN,SME=5,summary=cache.SUMMARY,static_review=cache.REVIEW,all7children_byte_exact=True,backend_compile_miss_prohibited=True,candidate_memory_cache_miss_prohibited=True,actual_helper_numeric_verified=False),stage='CPU-prepared actual-frame device frontend; main899 synchronized; SDK constructor, real ingress and cost all untested',default_production_feature='OFF',parent=bits.PARENT,worker_parent='22ba8b7cdc3be4e9619f4fa3f4e91c9cca6cfdfc',main_dependency='899ce77470b0b539aebc108fd122f668c2d5894d',
   helper_sha256=sha(HELPER.read_bytes()),cases=cases,
   invariants=['do not replace helper._cold, _codes, _Receipt, _SEAL or state scope/caller guards','prepare and try_gather must be called by exact unwrapped execute_model code','original _prepare_inputs and _get_cumsum_and_arange remain exact','real CpuGpuBuffer pinnedCPU/NumPy alias and original GPU index-producing operations','component-built exact Plan is explicit and cannot prove make_plan/C3; never preinstall a fake helper cold state'],
   ingress_proposal='isolated exact ModelRunnerFL execution frame with synthetic scheduler/model fixture; any non-production surrounding stubs must be enumerated, never presented as actual service qualification',

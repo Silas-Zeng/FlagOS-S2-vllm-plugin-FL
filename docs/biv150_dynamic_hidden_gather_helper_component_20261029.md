@@ -21,3 +21,24 @@ python tools/run_biv150_dynamic_hidden_gather_helper.py --run-helper --root-owne
 ```
 
 The original compile directory is read-only and copied into an independent cache. Four bounded production warmup calls (two geometries × two producer fixtures) export all actual artifacts, ABI/options/resources and loaded launcher before any helper numeric launch. Exact actual8a/e40c/5124 and typed ABI/resources must match the reviewed artifacts; unknown specialization is saved and stops before launch. This does not repeat the84-shape sweep. The new worker source itself has no GPU, SSH, queue or publication authorization.
+
+## Reviewed production cache after preserved v1 refusal
+
+The04fa actual run179729/start362922962 stopped after one production warmup, with **zero candidate launches**, on unknown specialization. It was not a numeric failure. Natural production metadata wasSME5/hash `afcbb980637dd36ccf51c124652c41efc8de8f99f2bff21f7904beb586a51b58`/cubin `805a6fa835b60270ddbcd0c059afad9d44d553cfe80b1600e17c3cdbb5da0cce`. Full typed ABI remained identical to8a/e40c; all loadable ELF sections, symbols and `.text` machine bytes were identical. Only nonloadable DWARF source-root text/unit length changed. Exact path normalization restores the complete four IR forms; ASM instructions are unchanged. Static comparison39efd376 was independently replayed byRoot. This is a new explicit805a static binding; helper cold/receipt/numeric still have no device result.
+
+SDK's first-miss `get_corex_sme` naturally permits BF16 contiguous hidden/output operand bits0+2=5. It does not add any SME instructions in this bitcast-to-u16 kernel. The old0 run did not save `torch.corex`/`TRITON_DISABLE_SME`; its branch cause cannot be asserted. The new private driver records those values before/after runner import and predicts the natural5 from actual binder metadata. It never forces either0 or5, and does not change production options.
+
+The new private `biv150_dynamic_hidden_gather_reviewed_cache.py` follows the already-used116 cache loader: original JIT/binder constructs ASTSource and actual ABI, all7 original afc cache children are verified and copied byte-exact, and only the index paths relocate. Original helperv1 summary29ab and static report39ef are required. The actual compiler/cache implementation, standard cache manager/knobs and absolute cache root are checked. Backend `add_stages` is prohibited during the initial cache load. Afterwards only this JITFunction's compiler entry is guarded so a candidate memory-cache miss stops rather than compiling; it restores the compiler on exit. Other framework/control kernels may compile, so this is not a claim of globally zeroJIT. Actual options/typed ABI/resources/805a and actual5124 handler/packed metadata remain strict prelaunch gates. Cached DWARF continues to name the original04fa/v1 source root, separately recorded from the new validator checkout. Thev1 summary has no `source_root` field; provenance is pinned from its actual TTIR path instead of inventing it.
+
+Add the following readonly inputs to the previously documentedRoot-only numeric command:
+
+```bash
+--production-out ORIGINAL_HELPER_V1_OUT --production-review ROOT_REPLAYED_39EF_JSON
+```
+
+Default remains CPU; no helper/production bytes, receipt guards or numeric gates changed. Do not pass `--timing` for the first revised numeric run. The actual new cache-hit path and SDK constructor are pending. Reproduce cache byte/refusal CPU checks with:
+
+```bash
+python3 -B -S tools/check_biv150_dynamic_hidden_gather_reviewed_cache_cpu.py
+python3 -B -S tools/check_biv150_dynamic_hidden_gather_helper_cpu.py
+```

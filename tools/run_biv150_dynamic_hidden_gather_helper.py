@@ -5,6 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace as NS
 from unittest.mock import patch
 import run_biv150_dynamic_hidden_gather_bits as bits
+import biv150_dynamic_hidden_gather_reviewed_cache as cache
 import plan_biv150_dynamic_hidden_gather_helper as spec
 c=bits.c;ROOT=Path(__file__).resolve().parents[1]
 HELPER='vllm_fl.patches.biv150_dynamic_hidden_gather'
@@ -105,13 +106,16 @@ def execute(a):
  c.need(not {'torch','triton','numpy'}.intersection(sys.modules),'pre-framework admission')
  c.need(os.environ.get(c.ENV,'0')=='0' and not any(os.environ.get(k) for k in ('TRITON_KERNEL_OVERRIDE','TRITON_OVERRIDE_DIR')),'production defaults OFF, no foreign override')
  with socket.socket() as s:c.need(s.connect_ex(('127.0.0.1',9031))!=0,'service9031 active')
- c.need(a.out.is_absolute() and not a.out.exists() and not a.out.resolve().is_relative_to(ROOT) and not a.out.resolve().is_relative_to(a.compile_out),'fresh isolated out')
+ c.need(a.out.is_absolute() and not a.out.exists() and not a.out.resolve().is_relative_to(ROOT) and not a.out.resolve().is_relative_to(a.compile_out) and not a.out.resolve().is_relative_to(a.production_out),'fresh isolated out')
  c.need(c.sha(a.bits_review.read_bytes())=='9fe896614a0ace0320be69dc0e91d8a933bda6279c9629d6cb3bf055a93ee58f','accepted direct-bit review identity')
  br=json.loads(a.bits_review.read_text());c.need(br['passed'] is True and br['source_commit']=='22ba8b7cdc3be4e9619f4fa3f4e91c9cca6cfdfc' and br['boundaries']['direct_kernel_device_bitcopy_verified'] is True,'prior direct bits scope')
- c.need(all(p.is_absolute() for p in (a.compile_out,a.actual_review,a.bits_review)),'absolute readonly proof paths')
- s,old=bits.proof(a.compile_out,a.actual_review)
+ c.need(all(p.is_absolute() for p in (a.compile_out,a.actual_review,a.bits_review,a.production_out,a.production_review)),'absolute readonly proof paths')
+ s,reference=bits.proof(a.compile_out,a.actual_review)
+ production_summary,actual=cache.proof(a.production_out,a.production_review)
+ old=dict(runtime_ABI=actual['ABI'],actual_options=actual['options'],resources=actual['resources'])
  a.out.mkdir(parents=True);out=a.out;result=dict(source_commit=a.expected_source_commit,main_dependency=MAIN,completed=False,errors=[],records=[],timings=[],
   actual_helper_entry_verified=False,actual_helper_cold_verified=False,Plan_make_plan_or_C3_verified=False,Graph_numeric_verified=False,performance_verified=False,service_verified=False,timing_executed=False,production_warmups_attempted=0,production_warmups_completed=0,numeric_candidate_launches_profile_observed=0,helper_output_canary_allocation_not_injected=True)
+ candidate_guard=None
  def save():c.save(out/'helper-summary.json',result)
  def blob(b):
   p=out/'arrays'/('sha256-'+c.sha(b)+'.bin.gz');p.parent.mkdir(exist_ok=True)
@@ -121,16 +125,17 @@ def execute(a):
  try:
   os.environ['TRITON_CACHE_DIR']=str(out/'triton-cache');os.environ['VLLM_FL_BIV150_HEAD_TEMPERATURE']='0'
   # Copy the reviewed cache, never mutate the original compile directory.
-  import shutil
-  shutil.copytree(a.compile_out/'triton-cache',out/'triton-cache')
+  group=cache.prepare(a.production_out,out/'triton-cache',a.production_review);result['reviewed_production_cache']=group;result['binary_source_root']=group['original_source_root'];save()
   import torch,numpy as np,triton
   c.need(torch.__version__=='2.10.0' and not torch.cuda.is_initialized(),'actual fresh Torch2.10 context')
   c.need(not torch.are_deterministic_algorithms_enabled(),'unknown deterministic empty auto-fill policy; do not change global state')
   result['CUDA_initialized_before']=False
+  result['SME_before_runner_import']=dict(torch_corex=c.typed(getattr(torch,'corex',None)),TRITON_DISABLE_SME=os.environ.get('TRITON_DISABLE_SME'))
   module=importlib.import_module(RUNNER);helper=importlib.import_module(HELPER);order=importlib.import_module('vllm_fl.patches.biv150_compute_order')
   importlib.import_module('vllm.v1.worker.gpu_input_batch');importlib.import_module('vllm.v1.utils')
   c.need(Path(module.__file__).resolve()==ROOT/'vllm_fl/worker/model_runner.py' and c.sha(Path(module.__file__).read_bytes())==order.EXPECTED_RUNNER,'actual runner source/pin')
   c.need(c.sha(Path(helper.__file__).read_bytes())==spec.sha(spec.HELPER.read_bytes()),'actual production helper bytes')
+  result['SME_after_runner_import']=dict(torch_corex=c.typed(getattr(torch,'corex',None)),TRITON_DISABLE_SME=os.environ.get('TRITON_DISABLE_SME'))
   kernel=importlib.import_module('vllm_fl.patches.biv150_dynamic_hidden_gather_kernel');fn=kernel.gather_hidden_bits
   result['actual_JIT_function_cache_key']=str(fn.cache_key);c.need(str(fn.cache_key)==s['actual_JIT_function_cache_key'],'production function key differs: stop for actual review')
   result['actual_helper_sha256']=c.sha(Path(helper.__file__).read_bytes());result['actual_runner_sha256']=order.EXPECTED_RUNNER;save()
@@ -143,13 +148,20 @@ def execute(a):
      x=fixture(module,helper,torch,np,m,n,kind,hidden);record=dict(M=m,N=n,kind=kind,stubs=x.stubs,Plan_constructed_fixture_not_make_plan_or_C3=x.Plan_constructed_fixture_not_make_plan_or_C3,phases=[]);result['records'].append(record);save()
      # Two actual production warmups only per M/N; no84-shape sweep. Export before gate.
      ii=torch.tensor(x.case['logits_indices'],dtype=torch.int32,device='cuda');oo=torch.empty((n,2048),dtype=torch.bfloat16,device='cuda')
+     jit=importlib.import_module('triton.runtime.jit');c.need(c.sha(Path(jit.__file__).read_bytes())==c.JIT_SHA,'actual SME-selection JIT source')
+     memory,_,_,backend,binder=fn.device_caches[torch.cuda.current_device()];bound,specialization,_=binder(hidden,ii,oo,m,n,**c.OPTIONS)
+     record['natural_SME_prediction']=jit.get_corex_sme(bound.values(),specialization);save();c.need(record['natural_SME_prediction']==5,'natural production SME differs; never force5 or0')
      result['production_warmups_attempted']+=1;save()
-     compiled=fn.warmup(hidden,ii,oo,m,n,grid=((n+7)//8,16),**c.OPTIONS);result['production_warmups_completed']+=1;compiled._init_handles()
+     call=lambda:fn.warmup(hidden,ii,oo,m,n,grid=((n+7)//8,16),**c.OPTIONS)
+     if candidate_guard is None:
+      compiled=cache.warmup(fn,torch.cuda.current_device(),group,call);guard=cache.prohibit_candidate_compile(fn);guard.__enter__();candidate_guard=guard
+     else:compiled=call()
+     result['production_warmups_completed']+=1;compiled._init_handles()
      folder=out/('actual-'+str(m)+'-'+kind);folder.mkdir();files={}
      for ext in ('source','ttir','ttgir','llir','asm','cubin'):
       b=compiled.asm[ext];b=b.encode() if isinstance(b,str) else b;(folder/('actual.'+ext)).write_bytes(b);files[ext]=dict(bytes=len(b),sha256=c.sha(b))
      record['actual_compiled']=dict(python_object_id=id(compiled),hash=str(compiled.hash),options=c.metadata(compiled),ABI=c.runtime_ABI(compiled),resources=c.resources(compiled),files=files);save()
-     c.need(str(compiled.hash)==bits.HASH and files['cubin']['sha256']==bits.CUBIN_SHA and c.runtime_ABI(compiled)==old['runtime_ABI'] and c.metadata(compiled)==old['actual_options'] and c.resources(compiled)==old['resources'],'actual production specialization differs; saved evidence, stop review before launch')
+     c.need(str(compiled.hash)==cache.HASH and files['cubin']['sha256']==cache.CUBIN and c.runtime_ABI(compiled)==old['runtime_ABI'] and c.metadata(compiled)==old['actual_options'] and c.resources(compiled)==old['resources'],'actual production specialization differs; saved evidence, stop review before launch')
      record.update(bits.packed(compiled.packed_metadata));launch=getattr(compiled._run,'launch',None);owner=getattr(launch,'__self__',None)
      record['actual_handler']=dict(type=type(compiled._run).__module__+'.'+type(compiled._run).__qualname__,owner_type=type(owner).__name__)
      c.need(getattr(owner,'__file__',None),'actual handler extension missing')
@@ -221,18 +233,19 @@ def execute(a):
  except Exception as error:
   result['errors'].append(repr(error));(out/'failure.txt').write_text(traceback.format_exc())
  finally:
+  if candidate_guard is not None:candidate_guard.__exit__(None,None,None)
   os.environ[c.ENV]='0'
   if 'torch' in sys.modules:result['CUDA_initialized_after']=sys.modules['torch'].cuda.is_initialized()
   result['artifacts']=[dict(path=str(p.relative_to(out)),bytes=p.stat().st_size,sha256=c.sha(p.read_bytes())) for p in sorted(out.rglob('*')) if p.is_file() and p.name!='helper-summary.json'];save()
  return result
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run-helper',action='store_true');p.add_argument('--root-owned-exclusive',action='store_true');p.add_argument('--expected-source-commit');p.add_argument('--compile-out',type=Path);p.add_argument('--actual-review',type=Path);p.add_argument('--bits-review',type=Path);p.add_argument('--out',type=Path);p.add_argument('--timing',action='store_true');a=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run-helper',action='store_true');p.add_argument('--root-owned-exclusive',action='store_true');p.add_argument('--expected-source-commit');p.add_argument('--compile-out',type=Path);p.add_argument('--actual-review',type=Path);p.add_argument('--bits-review',type=Path);p.add_argument('--production-out',type=Path);p.add_argument('--production-review',type=Path);p.add_argument('--out',type=Path);p.add_argument('--timing',action='store_true');a=p.parse_args()
  if not a.run_helper:
-  if any((a.root_owned_exclusive,a.expected_source_commit,a.compile_out,a.actual_review,a.bits_review,a.out,a.timing)):p.error('device arguments require explicit --run-helper')
+  if any((a.root_owned_exclusive,a.expected_source_commit,a.compile_out,a.actual_review,a.bits_review,a.production_out,a.production_review,a.out,a.timing)):p.error('device arguments require explicit --run-helper')
   result=spec.plan()
  else:
-  if not all((a.root_owned_exclusive,a.expected_source_commit,a.compile_out,a.actual_review,a.bits_review,a.out)):p.error('Root/source/original-proof/fresh-out admission required')
+  if not all((a.root_owned_exclusive,a.expected_source_commit,a.compile_out,a.actual_review,a.bits_review,a.production_out,a.production_review,a.out)):p.error('Root/source/original-proof/fresh-out admission required')
   result=execute(a)
  print(json.dumps(result,sort_keys=True,indent=2));return int(a.run_helper and not result['completed'])
 if __name__=='__main__':raise SystemExit(main())
