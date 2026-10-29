@@ -12,6 +12,7 @@ import sys
 
 ENV = 'VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER'
 _STATE = '_biv150_dynamic_hidden_gather_runtime'
+DIAGNOSTICS = 'CJJ_HIDDEN_GATHER_DIAGNOSTICS'
 _KERNEL_SHA = 'c5613dc8645e862fee10be013f2238d436aa5760d3f5501be560c257b8d3ece5'
 _SEAL = object()
 
@@ -73,7 +74,11 @@ def _cold(runner, torch):
     _require(hashlib.sha256(kernel.read_bytes()).hexdigest() == _KERNEL_SHA, 'kernel source identity')
     return dict(codes=_codes(runner), scope=metadata._scope, order=order,
                 buffer_type=sys.modules['vllm.v1.utils'].CpuGpuBuffer,
-                query_buffer=runner.query_start_loc, event=runner.prepare_inputs_event)
+                query_buffer=runner.query_start_loc, event=runner.prepare_inputs_event,
+                diagnostics=({'original_query_start_loc_minus_one': 0,
+                              'original_compute_order_logits_copy': 0,
+                              'compiled': {}, 'overflow': 0}
+                             if os.environ.get(DIAGNOSTICS, '0') == '1' else None))
 
 
 def _description(tensor):
@@ -172,7 +177,7 @@ def prepare(runner, indices, scheduled, total, compute_order, spec_metadata):
 
 def _launch(hidden, indices, output, input_rows, selected_rows):
     from .biv150_dynamic_hidden_gather_kernel import gather_hidden_bits
-    gather_hidden_bits[((selected_rows + 7) // 8, 16)](
+    return gather_hidden_bits[((selected_rows + 7) // 8, 16)](
         hidden, indices, output, input_rows, selected_rows,
         BLOCK_R=8, BLOCK_D=128, num_warps=4, num_stages=1)
 
@@ -213,5 +218,14 @@ def try_gather(runner, hidden, indices, receipt, graph_none, spec_metadata):
     # Preserve new-output and current-stream allocation semantics. No try/retry
     # surrounds allocation, JIT or launch; the local receipt is already consumed.
     output = torch.empty((n, 2048), dtype=hidden.dtype, device=hidden.device)
-    _launch(hidden, indices, output, hidden.shape[0], n)
+    compiled = _launch(hidden, indices, output, hidden.shape[0], n)
+    # Optional host-return observation only; never GPU completion or correctness.
+    observed = state.get('diagnostics')
+    if observed is not None:
+        observed[receipt.source] += 1
+        key = id(compiled)
+        if key in observed['compiled'] or len(observed['compiled']) < 4:
+            observed['compiled'][key] = compiled
+        else:
+            observed['overflow'] += 1
     return output
