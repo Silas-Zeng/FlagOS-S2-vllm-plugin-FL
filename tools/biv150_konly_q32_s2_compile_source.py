@@ -8,7 +8,7 @@ import sys
 import types
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = '56f88737fcf3b940760b9ca3027a925cd5a7d77d'
+BASE = '899ce77470b0b539aebc108fd122f668c2d5894d'
 DEPENDENCY = '844a69f10539c551500e29e2304061aef7d8671b'
 NAME = 'kernel_cjj_konly_q32'
 FUNCTION_SHA = '308a02ba6bef2e50c4c3d439809fd73eb2ca1e9fe87d47d4772f5fcef7ebde23'
@@ -33,7 +33,7 @@ def sha(data):
 
 def original(name):
     data = (ROOT / 'vllm_fl/patches' / name).read_bytes()
-    need(sha(data) == FILES[name], 'main56 source pin ' + name)
+    need(sha(data) == FILES[name], 'main899 source pin ' + name)
     return data.decode()
 
 
@@ -108,7 +108,7 @@ def driver_edits(text):
         ('Root-owned Q32/Q64 warm compiles, zero launches.', 'Root-owned raw Q32/stage2 single warm compile, zero launches.'),
         ('import biv150_konly_q64_compile_source as c', 'import biv150_konly_q32_s2_compile_source as c'),
         ('from biv150_konly_q64_compile_arguments import kwargs', 'from biv150_konly_q32_s2_compile_source import kwargs'),
-        ("'production must equal a455'", "'production must equal main56'"),
+        ("'production must equal a455'", "'production must equal main899'"),
         ('h32 = c.proposal(32)', 'expected_pins = c.expected_sdk_pins()'),
         ('h32.PINS[key]', 'expected_pins[key]'),
         ("h32.PINS['sdk']", "expected_pins['sdk']"),
@@ -129,7 +129,7 @@ def driver_edits(text):
         ("fn = getattr(modules[bq], 'kernel_cjj_konly_q32' if bq == 32 else c.NAME)", 'fn = getattr(modules[bq], c.NAME)'),
         ('launch.update(num_warps=16, num_stages=1)', 'launch.update(num_warps=16, num_stages=2)'),
         ("role = 'q' + str(bq)", "role = 'raw-q32-stage2'"),
-        ('            h = c.proposal(bq)', "            c.need('ir_override' not in launch, 'raw scout forbids an override argument')\n            compiler_knobs = getattr(fn.compile, '__globals__', {}).get('knobs')\n            c.need(compiler_knobs is not None and compiler_knobs.compilation.override is False,\n                'actual compiler override manager must be disabled')"),
+        ('            h = c.proposal(bq)', "            c.need('ir_override' not in launch, 'raw scout forbids an override argument')\n            compiler_knobs = getattr(c.importlib.import_module('..compiler', package=type(fn).create_binder.__globals__['__package__']).compile, '__globals__', {}).get('knobs')\n            c.need(compiler_knobs is not None and compiler_knobs.compilation.override is False,\n                'actual compiler override manager must be disabled')"),
         ("before = preserve(first,'unhoisted')", "before = preserve(first,'raw-stage2')"),
         (removed, "            c.need(before['function_name'] == c.NAME and before['source_digest'] == c.FUNCTION_SHA,\n                'actual original Q32 function identity')\n            c.need(hasattr(first.metadata,'ir_override') and first.metadata.ir_override is None,\n                'actual compiled metadata must explicitly contain no override')\n            record['actual_metadata_ir_override'] = first.metadata.ir_override\n"),
         ("for label, kernel in (('unhoisted',first),('hoisted',second)):", "for label, kernel in (('raw-stage2',first),):"),

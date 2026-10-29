@@ -20,7 +20,7 @@ def run():
         else:raise AssertionError('not rejected: '+label)
     plan=c.plan()
     check(not subprocess.check_output(['git','-C',str(c.ROOT),'diff',c.BASE,'--','vllm_fl','csrc']),
-          'main56 production unchanged')
+          'main899 production unchanged')
     check(c.candidate_source()==c.original('biv150_konly_encoded_q32.py'),'complete original Q32 math/source bytes')
     parent=c.parent('probe_biv150_konly_q64_compile.py'); source=c.driver_source()
     check(len(c.driver_edits(parent))==24,'24 exact-count edits and complete byte inverse')
@@ -68,11 +68,28 @@ def run():
     guard=next(n for n in ast.walk(tree) if isinstance(n,ast.Expr) and isinstance(n.value,ast.Call)
         and any(isinstance(a,ast.Constant) and a.value=='actual compiler override manager must be disabled' for a in n.value.args))
     body=compile(ast.fix_missing_locations(ast.Module(body=[assign,guard],type_ignores=[])),'<prewarmup guard only>','exec')
-    def guard_fake(value):
-        fn=NS(compile=NS(__globals__={'knobs':NS(compilation=NS(override=value))}))
-        exec(body,dict(fn=fn,c=c))
-    guard_fake(False);checks.append('actual guard accepts explicit disabled manager in CPU fixture')
+    def guard_fake(value, *, missing_knobs=False, missing_compile=False):
+        # Cold JIT has no .compile: actual SDK assigns it lazily in create_binder.
+        # Its own knobs deliberately differ; only the imported compiler is checked.
+        jit_globals={'__package__':'cpu_fixture.runtime','knobs':NS(compilation=NS(override=True))}
+        exec('def create_binder(self): raise AssertionError("binder must not execute")',jit_globals)
+        fn=type('ColdJit',(),{'create_binder':jit_globals['create_binder']})()
+        assert not hasattr(fn,'compile')
+        compiler_globals={} if missing_knobs else {'knobs':NS(compilation=NS(override=value))}
+        exec('def compile(): raise AssertionError("compiler must not execute")',compiler_globals)
+        compiler=NS() if missing_compile else NS(compile=compiler_globals['compile'])
+        imports=[]
+        def import_same_package(name, *, package):
+            assert (name,package)==('..compiler','cpu_fixture.runtime')
+            imports.append((name,package));return compiler
+        fake_c=NS(need=c.need,importlib=NS(import_module=import_same_package))
+        exec(body,dict(fn=fn,c=fake_c))
+        assert imports==[('..compiler','cpu_fixture.runtime')] and not hasattr(fn,'compile')
+    guard_fake(False);checks.append('cold SDK lifecycle: same relative compiler import, no binder/compile call')
     for value in (True,None,0):reject(lambda value=value:guard_fake(value),'reject unknown/enabled manager '+repr(value))
+    reject(lambda:guard_fake(False,missing_knobs=True),'reject compiler without knobs')
+    reject(lambda:guard_fake(False,missing_compile=True),'reject package without compile export')
+    check(hasattr(c.importlib,'import_module'),'stdlib relative import API available')
     check("hasattr(first.metadata,'ir_override') and first.metadata.ir_override is None" in source,
           'actual postcompile metadata must explicitly have no override')
     check(not {'torch','triton','vllm','vllm_fl'}.intersection(sys.modules),'no framework imports')
