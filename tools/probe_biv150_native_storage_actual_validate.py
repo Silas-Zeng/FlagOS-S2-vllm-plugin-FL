@@ -81,7 +81,9 @@ def device(args,reference):
   with socket.socket() as sock:need(sock.connect_ex(('127.0.0.1',9031))==111,'service9031 must be closed')
   result['prelaunch_ixsmi']=before
   import torch
-  result['CUDA_initialized_after_import']=torch.cuda.is_initialized();need(str(torch.__version__)=='2.10.0' and torch._C._GLIBCXX_USE_CXX11_ABI is False,'actual Torch ABI')
+  result['CUDA_initialized_after_import']=torch.cuda.is_initialized();result['GPU_executed']=result['CUDA_initialized_after_import']
+  need(str(torch.__version__)=='2.10.0' and torch._C._GLIBCXX_USE_CXX11_ABI is False,'actual Torch ABI')
+  result['CUDA_API_entered']=True;result['GPU_executed']=True
   need(torch.cuda.is_available() and torch.cuda.device_count()==1,'single CUDA device');torch.cuda.set_device(0)
   prop=torch.cuda.get_device_properties(0);need('BI-V150' in prop.name and (prop.major,prop.minor)==(7,1),'actual BI-V150/71')
   result['GPU_executed']=True;result['device']=dict(name=prop.name,major=prop.major,minor=prop.minor,total_memory=prop.total_memory);result['torch']=dict(version=str(torch.__version__),file=str(Path(torch.__file__).resolve()),cxx11_abi=False)

@@ -45,6 +45,10 @@ def run(library):
  check('mixed_and_pure_shapes_both_present',{row[:3] for row in p.CASES}=={(64,2,2048),(32,4,2560),(61,2,2560),(30,4,2560)})
  allcalls=[n.func for n in ast.walk(tree) if isinstance(n,ast.Call)]
  check('no_producer_kernel_data_initialization_or_readback_call',not any(isinstance(f,ast.Attribute) and f.attr in ('try_produce','op','item','cpu','numpy','zero_','fill_','copy_','cudaGraphLaunch') for f in allcalls) and not any(isinstance(f,ast.Subscript) for f in allcalls))
+ gqa=ast.parse((p.ROOT/'vllm_fl/patches/biv150_gqa_decode.py').read_bytes());picker=next(n for n in gqa.body if isinstance(n,ast.FunctionDef) and n.name=='_pick_segments');env=dict(TARGET_PROGRAMS=256);exec(compile(ast.Module(body=[picker],type_ignores=[]),'<actual current segment picker>','exec'),env)
+ check('actual_picker_keeps_mixed_owned_scratch_width',all(env['_pick_segments'](n,2,s if n in (30,61) else 16)==s for n,s,pitch,index in p.CASES))
+ mixed=(p.ROOT/'vllm_fl/patches/biv150_konly_encoded_mixed_native.py').read_text()
+ check('actual_mixed_receives_narrowed_metadata_then_full_parent_validate',all(x in mixed for x in ('md=scratch_metadata(plan,PAIRS[n],self.parent)','result=ordinary(md)','runtime.native_decode.validate(runtime,entry,kw)')))
  check('Torch_import_only_in_device_function',not any(isinstance(n,(ast.Import,ast.ImportFrom)) and ('torch' in ast.unparse(n)) for n in tree.body))
  check('actual_registry_and_adapters_constructed',all(x in source for x in ('runtime_mod.Runtime(torch,broker,{},None)','runtime.registry.claim(object(),owner,source,source)','mod.Adapter(runtime,config)')))
  with patch.object(p,'device',side_effect=AssertionError('device reached')),patch.object(sys,'argv',[p.__file__,'--actual-cuda']):rejects('missing_explicit_device_arguments_rejected',p.main)
