@@ -154,8 +154,10 @@ def window_evidence(log,start,end,out,expected):
         for arm in PAIR_CUBINS:
             snap=value[arm];need(json.loads((folder/arm/'record.json').read_bytes())==snap,'preserved actual snapshot')
             for ext,digest in snap['artifacts'].items():
-                path=folder/arm/('actual.jit_python_source.py' if ext=='source' else 'actual.'+ext)
+                path=folder/arm/('actual.'+ext)
                 need(sha(path)==digest,'actual preserved artifact '+arm+'/'+ext);files[str(path.relative_to(out))]=digest
+            jit_source=folder/arm/'actual.jit_python_source.py'
+            need(sha(jit_source)==snap['source_digest'],'actual typed JIT function source');files[str(jit_source.relative_to(out))]=sha(jit_source)
         files[str((folder/'binding.json').relative_to(out))]=sha(folder/'binding.json');files[str((folder/'override.ttgir').relative_to(out))]=sha(folder/'override.ttgir')
         need(item['pid'] is not None and str(item['pid'])==folder.parent.name,'binding worker PID')
         matched=[x for x in window if x['pid']==item['pid'] and x['event']['hash']==value['hoisted']['hash'] and x['event'].get('I8_fragment_hoist_verified') is True and x['event'].get('implementation_sha256')==expected['konly_encoded']['implementation_sha256'] and x['event'].get('sequences')==2]
