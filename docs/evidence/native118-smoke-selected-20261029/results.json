@@ -1,0 +1,164 @@
+{
+  "identities": {
+    "C3_implementation_sha256": "ed27276ed10fed835690db099ff83ecb311055c3ae989010837f542a2cdc0713",
+    "Root_source_bridge_sha256": "c14c70a59e889e6abe1f93b766cd358fe97b7416a3f7b8859f52c3b80c44cf91",
+    "controller_sha256": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+    "download_manifest_sha256": "389fa018e3001523c6dde64e7fec0120966b6e59265f21aedbc72311a7215351",
+    "independent_review_and_Root_exact_replay_sha256": "b3103957e8f34ba29439ef20b0cd813f8380eada54c22856758bf48466c96a06",
+    "independent_review_script_sha256": "dfb3f313d0e4f97d14dec59085f10420c0f33d110a0399426ae2865e4c569cfb",
+    "mixed_library_sha256": "ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba",
+    "native5898_library_sha256": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b",
+    "original_state_sha256": "e4c0734b95f0c8fc01b21ea477cb1dfff544e7f4627d3b79dc9243fa83fb7262",
+    "service_manifest_sha256": "88892833652341ed104d523a21ebe5fc6496f9833ec41f11a4cf67ea576e6a62"
+  },
+  "kind": "Selected PR118 plain-service smoke observations; precision and throughput pending",
+  "layout_boundary": {
+    "adjacent_geometry_transferred_to_mixed": false,
+    "direct_mixed_full_QKV_descriptor_saved": false,
+    "independent_shared_QKV_output_oracle": false,
+    "pure_native_capture_and_eager_recorded": true,
+    "pure_native_query_offsets": [
+      0
+    ],
+    "pure_native_query_pitches": [
+      2048
+    ],
+    "pure_native_query_shapes": [
+      32,
+      64
+    ],
+    "source_bounds_alias_stride_checks_preserved": true
+  },
+  "limitations": [
+    "Positive post-op host markers and successful requests establish scoped operational dispatch, not independent numerical precision.",
+    "The original missing-final verdict stays false; independent log closure is a separate result and does not supply the absent lifetime count.",
+    "Native5898 counts include capture records and cannot be interpreted as request frequency or GPU replay counts.",
+    "Mixed bypasses Runtime.note, so its full Q/K/V allocation descriptors were not exported. Pure-decode descriptors are only adjacent evidence.",
+    "Only selected scalar observations and hashes are shared here; no response contents, complete event list, arrays, binaries or full audit are included."
+  ],
+  "local_archive_identity_only": {
+    "files": 2374,
+    "gzip_bytes": 12784254,
+    "gzip_sha256": "fad8c540cc2e5993a16ec14f42be1bd08fbd7dccd4d77e88467845a8ec7c2f13",
+    "raw_or_full_review_included": false,
+    "uncompressed_bytes": 98894562
+  },
+  "observed_dispatch": {
+    "both_S2_and_S4_observed": true,
+    "epoch_source": "archived controller owned.members; marker itself has PID only",
+    "independent_two_library_dispatch_verified": true,
+    "native5898_selected_or_captured_counts": [
+      {
+        "capture": false,
+        "host_records": 42,
+        "rows": 32,
+        "segments": 4
+      },
+      {
+        "capture": true,
+        "host_records": 42,
+        "rows": 32,
+        "segments": 4
+      },
+      {
+        "capture": false,
+        "host_records": 42,
+        "rows": 64,
+        "segments": 2
+      },
+      {
+        "capture": true,
+        "host_records": 42,
+        "rows": 64,
+        "segments": 2
+      }
+    ],
+    "native_cache_generation_max": 42,
+    "native_cache_generation_min": 1,
+    "post_ready_log_window_pairs": [
+      [
+        30,
+        4
+      ],
+      [
+        31,
+        4
+      ],
+      [
+        61,
+        2
+      ]
+    ],
+    "request_to_specific_overlap_group_attribution_proven": false,
+    "request_window_operational_checks_passed": true,
+    "same_PID_native5898_installer_and_encoded_implementation_digest_verified": true,
+    "same_worker": {
+      "pid": 132998,
+      "sid": 132970,
+      "start_ticks": 361618503
+    },
+    "score_frequency_or_Graph_replays_proven": false
+  },
+  "original_results_preserved": {
+    "controller_state": {
+      "cleanup_complete": true,
+      "completed": true,
+      "errors": [],
+      "mixed_same_worker_smoke_verified": false,
+      "smoke_passed": true
+    },
+    "independent_audit_strict_smoke_observation_passed": false,
+    "lifetime_counter_available": false,
+    "manifest_mixed_final_evidence_workers": []
+  },
+  "qualification_boundary": {
+    "full_service_acceptance": false,
+    "model105_verified": false,
+    "model_throughput_verified": false,
+    "production_or_runtime_results_modified": false,
+    "smoke_outputs_checked_against_numeric_reference": false,
+    "statistical_performance_claimed": false
+  },
+  "requests": {
+    "added_errors": [],
+    "added_overlap": 96,
+    "all_response_IDs_unique": true,
+    "new_client_IDs_unique": true,
+    "original_burst": 64,
+    "original_errors": [],
+    "original_sequential": 3,
+    "overlap_groups": [
+      {
+        "arrival_completion_tokens": 16,
+        "complete_requests": 64,
+        "coverage_gaps": [],
+        "keeper_completion_tokens": 512,
+        "keepers": 61,
+        "new_long_prompts": 3
+      },
+      {
+        "arrival_completion_tokens": 16,
+        "complete_requests": 32,
+        "coverage_gaps": [],
+        "keeper_completion_tokens": 512,
+        "keepers": 30,
+        "new_long_prompts": 2
+      }
+    ],
+    "saved_usage_arithmetic_verified": true,
+    "total_successful": 163
+  },
+  "schema": 1,
+  "shutdown": {
+    "API_exit_code": 0,
+    "final_stats_marker_or_artifact_found": false,
+    "interpretation": "Zero shutdown allowance and forced termination plausibly prevented final export; the exact interrupted or uncalled statement is not established.",
+    "observed_API_and_EngineCore_mode": "abort",
+    "observed_timeout_seconds": 0,
+    "owned_cleanup_verified": true,
+    "process_manager_reported_force_kill_count": 1,
+    "resource_tracker_semaphore_warning_count": 69
+  },
+  "source_commit": "69827253756a0ef9e618ae0322e9ff361e93504f",
+  "tag": "cjj-native118-service-smoke-v1-20261029"
+}
