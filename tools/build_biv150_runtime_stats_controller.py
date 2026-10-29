@@ -1,4 +1,4 @@
-"""Exact additive transform of reviewed 558579 controller; never edits parent."""
+"""Exact additive seams for reviewed 558579/2cfc74 controllers; no other parents."""
 import argparse
 import ast
 import hashlib
@@ -7,6 +7,9 @@ from pathlib import Path
 
 PARENT_SHA='558579df4ebd3ac359167a429e9b3c6905952509de5910ebf843162ba0346600'
 OUTPUT='run_biv150_parent107_stats_service.py'
+B_PARENT_SHA='2cfc74c98e366015fe7bf3d6227ad06f8c1bcf87a341b72bd68fbf42062dcb7c'
+B_OUTPUT='run_biv150_native117_stats_service.py'
+PARENTS={PARENT_SHA:OUTPUT,B_PARENT_SHA:B_OUTPUT}
 # scope=None selects whole module; named scopes use exact AST line extents.
 PATCHES=[
  (None,'import threading\n','import threading\nimport biv150_runtime_stats_controller as stats_hook\n'),
@@ -37,10 +40,11 @@ def replace(text,scope,old,new):
 
 
 def build(raw):
-    if hashlib.sha256(raw).hexdigest()!=PARENT_SHA:raise ValueError('Parent controller SHA differs')
+    digest=hashlib.sha256(raw).hexdigest()
+    if digest not in PARENTS:raise ValueError('Parent controller SHA differs')
     text=raw.decode()
     for scope,old,new in PATCHES:text=replace(text,scope,old,new)
-    compile(text,OUTPUT,'exec')
+    compile(text,PARENTS[digest],'exec')
     return text.encode()
 
 
@@ -48,7 +52,7 @@ def inverse(raw):
     text=raw.decode()
     for scope,old,new in reversed(PATCHES):text=replace(text,scope,new,old)
     value=text.encode()
-    if hashlib.sha256(value).hexdigest()!=PARENT_SHA:raise ValueError('Inverse does not recover exact reviewed parent')
+    if hashlib.sha256(value).hexdigest() not in PARENTS:raise ValueError('Inverse does not recover either exact reviewed parent')
     return value
 
 
@@ -60,4 +64,4 @@ if __name__=='__main__':
         if a.output.read_bytes()!=result:raise ValueError('Generated controller differs')
     else:
         with a.output.open('xb') as stream:stream.write(result)
-    print(json.dumps(dict(parent_sha256=PARENT_SHA,generated_sha256=hashlib.sha256(result).hexdigest(),inverse_exact=True,GPU_executed=False)))
+    print(json.dumps(dict(parent_sha256=hashlib.sha256(a.parent.read_bytes()).hexdigest(),generated_sha256=hashlib.sha256(result).hexdigest(),inverse_exact=True,GPU_executed=False)))

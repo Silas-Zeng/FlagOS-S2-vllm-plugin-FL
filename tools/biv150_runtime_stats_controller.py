@@ -11,9 +11,20 @@ import biv150_runtime_stats_snapshot as snapshot
 
 FILES=('tools/biv150_runtime_stats_controller.py','tools/biv150_runtime_stats_snapshot.py',
        'tools/biv150_runtime_stats_sdk_pins.json','tools/runtime_stats_bootstrap/sitecustomize.py',
-       'tools/build_biv150_runtime_stats_controller.py','tools/run_biv150_parent107_stats_service.py')
+       'tools/build_biv150_runtime_stats_controller.py','tools/run_biv150_native117_stats_service.py',
+       'tools/run_biv150_parent107_stats_service.py')
 PHASES=tuple(f'{kind}-{length}' for length in (4096,16384) for kind in ('warm-before','warm-after','score-after'))
 NATIVE_SHA='8b86cb688ad72dcf9859994ed2092620312cdd5ae96d194904b2bde7926aacc5'
+CONTROLLERS={
+    'tools/run_biv150_parent107_stats_service.py':dict(library_sha256=NATIVE_SHA,
+        controller_sha256='6556a609261372769bf9e3e638e2771ceef3dffabd90df7a06093035f2df9f36',
+        operator='cjj_native_k8_v_overlap_probe::produce'),
+    'tools/run_biv150_native117_stats_service.py':dict(
+        library_sha256='5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b',
+        controller_sha256='3208684e9c64b66855478e4dc3ed2548eac2bd342b1f98aabe55deee74d0e237',
+        operator='cjj_native_k8_klookahead_probe::produce'),
+}
+NATIVE_SHAS=frozenset(x['library_sha256'] for x in CONTROLLERS.values())
 
 
 def need(value,message):
@@ -24,8 +35,8 @@ def plan(a):
     if not getattr(a,'runtime_stats_bootstrap',False):return dict(enabled=False)
     need(a.throughput and a.full_workload_warmup and a.warmup_plan=='full-only' and a.throughput_case=='both',
          'requires throughput, full-only, full-workload-warmup, both lengths')
-    need(not a.baseline and a.q32_hoist and a.native_k8_library is not None and a.native_k8_sha256==NATIVE_SHA,
-         'requires current main Native8b and Q32 ON; --baseline is not main A')
+    need(not a.baseline and a.q32_hoist and a.native_k8_library is not None and a.native_k8_sha256 in NATIVE_SHAS,
+         'requires reviewed Native8b or Native5898 with Q32 ON; --baseline is not main A')
     need(not a.math105 and not a.supplemental_native_math105_64 and a.graph_coverage_bootstrap_dir is None,
          'throughput only, no Math105 or Graph bootstrap combination')
     return dict(enabled=True,phases=list(PHASES),readonly_existing_counters=True,
@@ -49,7 +60,10 @@ class Session:
     def __init__(self,a,controller,expected):
         need(plan(a)['enabled'],'not enabled')
         self.source=a.source.resolve();self.out=a.out.resolve();self.commit=a.commit
-        need(Path(controller).resolve()==self.source/FILES[-1],'controller is not in the same source')
+        self.entry=next((name for name in CONTROLLERS if Path(controller).resolve()==self.source/name),None)
+        need(self.entry is not None,'unknown controller or not in the same source')
+        binding=CONTROLLERS[self.entry]
+        need(a.native_k8_sha256==binding['library_sha256'],'controller/library argument mismatch')
         need(Path(__file__).resolve()==self.source/FILES[0] and snapshot.ROOT==self.source,'observer/tool source differs')
         self.hashes={}
         for name in FILES:
@@ -59,19 +73,20 @@ class Session:
             frozen=subprocess.check_output(['git','-C',str(self.source),'show',self.commit+':'+name])
             need(raw==frozen,'observer is not frozen in source commit: '+name)
             self.hashes[name]=hashlib.sha256(raw).hexdigest()
+        need(self.hashes[self.entry]==binding['controller_sha256'],'controller bytes differ from the reviewed entry')
         self.run_id=self.out.name
         # Validate the public run id without generating/storing any real token.
         snapshot.configuration({snapshot.ENABLE:'1',snapshot.TOKEN:'x'*32,snapshot.RUN_ID:self.run_id})
         encoded=expected['konly_encoded'];native=encoded['native_decode']
-        need(encoded.get('q32_hoist_enabled') is True and native.get('enabled') is True and native.get('library_sha256')==NATIVE_SHA,'expected active semantics differ')
+        need(encoded.get('q32_hoist_enabled') is True and native.get('enabled') is True and native.get('library_sha256')==binding['library_sha256'] and native.get('operator')==binding['operator'],'expected active semantics differ')
         self.implementation=encoded['implementation_sha256']
-        self.library=dict(path=str(a.native_k8_library.resolve()),sha256=NATIVE_SHA)
+        self.library=dict(path=str(a.native_k8_library.resolve()),sha256=binding['library_sha256'])
         self.directory=self.out/'runtime-stats';self.directory.mkdir()
         self.rows=[];self.previous=None;self._token=None
 
     def public(self):
         return dict(enabled=True,run_id=self.run_id,source_commit=self.commit,source_hashes=self.hashes,
-            implementation_sha256=self.implementation,native_library=self.library,
+            implementation_sha256=self.implementation,native_library=self.library,controller=self.entry,
             phases=list(PHASES),snapshots=list(self.rows),Graph_replays_counted=False,
             model_precision_verified=False,includes_benchmark_client_preflight=True)
 

@@ -34,8 +34,26 @@ def arguments(out,ref):
         native_k8_sha256=c.NATIVE_SHA,math105=False,supplemental_native_math105_64=False,
         graph_coverage_bootstrap_dir=None,source=ROOT,out=out,commit=ref)
 
-def main(ref):
-    raw=PARENT.read_bytes();made=GENERATED.read_bytes();ok('parent_SHA',hashlib.sha256(raw).hexdigest()==b.PARENT_SHA)
+def main(ref,arm):
+    global PARENT,GENERATED
+    parent_sha=b.PARENT_SHA
+    if arm=='B':
+        PARENT=Path('/private/tmp/cjj-agent-native117-service-controller-v1-20261029.py');GENERATED=ROOT/'tools'/b.B_OUTPUT;parent_sha=b.B_PARENT_SHA
+    entry=str(GENERATED.relative_to(ROOT));binding=c.CONTROLLERS[entry]
+    previous='d9c91e011915396754efe8023c817831c733bdae'
+    for name in ('tools/biv150_runtime_stats_snapshot.py','tools/runtime_stats_bootstrap/sitecustomize.py','tools/run_biv150_parent107_stats_service.py'):
+        ok('historical_bytes_preserved_'+Path(name).name,(ROOT/name).read_bytes()==subprocess.check_output(['git','-C',str(ROOT),'show',previous+':'+name]))
+    prior_builder=subprocess.check_output(['git','-C',str(ROOT),'show',previous+':tools/build_biv150_runtime_stats_controller.py'])
+    original_patches=next(n.value for n in ast.parse(prior_builder).body if isinstance(n,ast.Assign) and isinstance(n.targets[0],ast.Name) and n.targets[0].id=='PATCHES')
+    ok('same_fourteen_additive_seams',len(b.PATCHES)==14 and b.PATCHES==ast.literal_eval(original_patches))
+    command=[sys.executable,str(GENERATED),'--runtime-stats-bootstrap','--throughput','--full-workload-warmup',
+        '--warmup-plan','full-only','--q32-hoist','--native-k8-library','/cpu-fixture/native.so','--native-k8-sha256',binding['library_sha256']]
+    valid=json.loads(subprocess.check_output(command,text=True))
+    ok('actual_parser_own_arm_CPU_plan',valid['runtime_stats_snapshot']['enabled'] and valid['native_library_sha256']==binding['library_sha256'] and valid['gpu_executed'] is False)
+    command[-1]=next(sha for sha in c.NATIVE_SHAS if sha!=binding['library_sha256'])
+    crossed=subprocess.run(command,text=True,capture_output=True)
+    ok('actual_parser_rejects_other_allowed_arm',crossed.returncode!=0 and 'Native K8 requires' in crossed.stderr)
+    raw=PARENT.read_bytes();made=GENERATED.read_bytes();ok('parent_SHA',hashlib.sha256(raw).hexdigest()==parent_sha)
     ok('generated_exact',made==b.build(raw));ok('inverse_byte_exact',b.inverse(made)==raw)
     refuse('wrong_parent_rejected',lambda:b.build(raw+b'\n'))
     def top(data):
@@ -58,12 +76,24 @@ def main(ref):
     ok('client_scrub_precedes_original_adapter',source.index('client=stats_hook.clean_environment(client,source)')<source.index('namespace = dict(json=json, subprocess=OwnedBenchmarkAdapter'))
     module=load(GENERATED)
     with tempfile.TemporaryDirectory(prefix='cjj-stats-controller-cpu-') as tmp:
-        out=Path(tmp)/'cpu-stats-run';out.mkdir();a=arguments(out,ref)
+        out=Path(tmp)/'cpu-stats-run';out.mkdir();a=arguments(out,ref);a.native_k8_sha256=binding['library_sha256']
         for key,value in (('throughput',False),('full_workload_warmup',False),('warmup_plan','legacy'),('throughput_case','4096'),('baseline',True),('q32_hoist',False),('native_k8_sha256','0'*64),('math105',True),('supplemental_native_math105_64',True),('graph_coverage_bootstrap_dir',Path('/graph'))):
             bad=copy.copy(a);setattr(bad,key,value);refuse('reject_mode_'+key,lambda:c.plan(bad))
-        expected={'konly_encoded':dict(q32_hoist_enabled=True,implementation_sha256='f'*64,native_decode=dict(enabled=True,library_sha256=c.NATIVE_SHA))}
+        expected={'konly_encoded':dict(q32_hoist_enabled=True,implementation_sha256='f'*64,native_decode=dict(enabled=True,library_sha256=binding['library_sha256'],operator=binding['operator']))}
         # This calls actual git show on the given frozen commit/tree, not a
         # canned success. It does not replace the original service HEAD/clean gate.
+        def identity_refusal(label,arg,semantics,needle,controller=GENERATED):
+            try:c.Session(arg,controller,semantics)
+            except ValueError as error:ok(label,needle in str(error));return
+            raise AssertionError(label+' did not reject')
+        other_sha=next(sha for sha in c.NATIVE_SHAS if sha!=a.native_k8_sha256)
+        crossed=copy.copy(a);crossed.native_k8_sha256=other_sha
+        identity_refusal('controller_rejects_other_allowed_library_arg',crossed,expected,'controller/library argument mismatch')
+        bad_c3=copy.deepcopy(expected);bad_c3['konly_encoded']['native_decode']['library_sha256']=other_sha
+        identity_refusal('C3_rejects_other_allowed_library',a,bad_c3,'expected active semantics differ')
+        bad_op=copy.deepcopy(expected);bad_op['konly_encoded']['native_decode']['operator']='foreign::produce'
+        identity_refusal('C3_rejects_foreign_operator',a,bad_op,'expected active semantics differ')
+        identity_refusal('unknown_same_source_entry_rejected',a,expected,'unknown controller',ROOT/'tools/unknown_controller.py')
         session=c.Session(a,GENERATED,expected)
         ok('actual_git_object_binding',set(session.hashes)==set(c.FILES))
         refuse('foreign_controller_path',lambda:c.Session(a,Path('/foreign/controller.py'),expected))
@@ -91,6 +121,7 @@ def main(ref):
             def __init__(self,request):
                 self.url=request.full_url;phase=json.loads(request.data)['phase'];value=payload(phase)
                 if fault[0]=='wrong_source':value['implementation_sha256']='0'*64
+                if fault[0]=='wrong_library':value['stats']['native_decode']['library']=dict(session.library,sha256=other_sha)
                 self.raw=json.dumps(value,sort_keys=True).encode();self.headers={'x-cjj-stats-sha256':hashlib.sha256(self.raw).hexdigest() if fault[0]!='bad_SHA' else '0'*64}
                 self.phase=phase
             def __enter__(self):return self
@@ -123,7 +154,7 @@ def main(ref):
         # Restore only the opaque test session state to replay rejection cases;
         # the production observer never resets counters or truncates real files.
         saved_rows=session.rows;session.rows=[];session.previous=None
-        for failure in ('timeout','bad_SHA','wrong_source'):
+        for failure in ('timeout','bad_SHA','wrong_source','wrong_library'):
             fault[0]=failure
             with patch.object(c.urllib.request,'build_opener',opener):refuse('RPC_'+failure,lambda:session.capture(c.PHASES[0],owner,server))
             ok('no_progress_after_'+failure,session.rows==[])
@@ -137,7 +168,7 @@ def main(ref):
         refuse('missing_ACK_stops_before_benchmark',lambda:module.full_workload_only_throughput(out,lambda *args:(_ for _ in ()).throw(AssertionError('benchmark must not start')),'both',snapshot=no_ack))
         ok('only_initial_missing_ACK_attempt',stopped==['warm-before-4096'])
     ok('no_GPU_modules_imported',not {'torch','triton'}&set(sys.modules))
-    report=dict(passed=True,checks=checks,unchanged_functions_classes=unchanged,parent_sha256=b.PARENT_SHA,
+    report=dict(passed=True,checks=checks,unchanged_functions_classes=unchanged,parent_sha256=parent_sha,arm=arm,library_sha256=binding['library_sha256'],
         generated_sha256=hashlib.sha256(made).hexdigest(),source_hashes={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in (Path(__file__),ROOT/'tools/biv150_runtime_stats_controller.py',ROOT/'tools/build_biv150_runtime_stats_controller.py')},
         actual_HTTP_GPU_worker_or_service_verified=False,Math105_or_throughput_result_produced=False,
         CPU_limitations=['Opaque HTTP, owner and benchmark fixtures; actual existing control-flow/validation/delta code executed.',
@@ -146,4 +177,4 @@ def main(ref):
     print(json.dumps(report,sort_keys=True,indent=2))
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--freeze-ref',default='HEAD');a=p.parse_args();main(a.freeze_ref)
+    p=argparse.ArgumentParser();p.add_argument('--freeze-ref',default='HEAD');p.add_argument('--arm',choices=('A','B'),default='A');a=p.parse_args();main(a.freeze_ref,a.arm)
