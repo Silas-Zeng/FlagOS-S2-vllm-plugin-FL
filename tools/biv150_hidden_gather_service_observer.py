@@ -3,6 +3,7 @@ import hashlib,json,os,secrets,subprocess,urllib.request
 from pathlib import Path
 import biv150_hidden_gather_service_bridge as b
 import biv150_hidden_gather_snapshot as s
+import biv150_hidden_gather_path_identity as identity
 PRIVATE_KEYS=(s.ENABLE,s.TOKEN,s.RUN_ID,b.DIAGNOSTICS)
 
 def need(ok,message):
@@ -25,6 +26,12 @@ def delta(before,after):
 
 def compiled_verdict(row):
     binding=row.get('launcher_binding');expected=b.PINS['C_function']
+    proof=row.get('source_path_identity',{})
+    if not isinstance(proof,dict):return False
+    if not (proof.get('verified') is True and proof.get('rule')==identity.RULE and
+            proof.get('reference_root')==identity.OLD_ROOT and
+            proof.get('source_root')==str(b.ROOT) and proof.get('raw_files')==row['files'] and
+            proof.get('canonical_files')==b.PINS['files']):return False
     if not isinstance(binding,dict):return False
     ints=('C_address','DSO_base','DSO_offset','method_flags')
     if not all(type(binding.get(k)) is int for k in ints):return False
@@ -35,7 +42,7 @@ def compiled_verdict(row):
             binding['method_flags']==expected['method_flags'] and binding.get('method_name')==expected['method_name'] and
             binding.get('DSO_sha256')==b.PINS['launcher'] and Path(path).name==expected['filename'] and
             Path(path).parent.name==expected['cache_directory'] and
-            row['hash']==b.PINS['hash'] and row['files']==b.PINS['files'] and
+            row['hash']==b.PINS['hash'] and
             row['ABI']==b.PINS['ABI'] and row['options']==b.PINS['options'] and
             row['resources']==b.PINS['resources'] and row['launcher_sha256']==b.PINS['launcher'])
 

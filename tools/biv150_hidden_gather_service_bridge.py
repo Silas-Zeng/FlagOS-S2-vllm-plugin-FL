@@ -20,7 +20,7 @@ PINS=json.loads((ROOT/'tools/biv150_hidden_gather_sme1_pins.json').read_text())
 PRODUCTION=('vllm_fl/compile_semantics.py','vllm_fl/patches/biv150_compute_order.py',snapshot.HELPER,snapshot.KERNEL,snapshot.RUNNER)
 TOOLS=(BRIDGE,CONTROLLER,'tools/biv150_hidden_gather_service_observer.py','tools/biv150_hidden_gather_snapshot.py',
        'tools/hidden_gather_bootstrap/sitecustomize.py','tools/biv150_hidden_gather_sme1_pins.json',
-       'tools/biv150_hidden_gather_launcher_address.py',
+       'tools/biv150_hidden_gather_launcher_address.py','tools/biv150_hidden_gather_path_identity.py',
        'tools/biv150_hidden_gather_diagnostic_edits.json','tools/biv150_hidden_gather_controller_edits.json',
        'tools/compile_biv150_dynamic_hidden_gather.py','tools/biv150_runtime_stats_sdk_pins.json')
 MIXED=old.MIXED;PARENT=old.PARENT;QUALIFICATION=old.QUALIFICATION

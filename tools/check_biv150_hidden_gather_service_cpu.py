@@ -1,15 +1,35 @@
 """Finite source/counter/RPC payload CPU fixtures; never CUDA or service qualification."""
-import argparse,ast,copy,hashlib,importlib.util,json,os,sys,types
+import argparse,ast,copy,hashlib,importlib.util,json,os,re,struct,sys,types
 from pathlib import Path
 from types import SimpleNamespace as NS
 from unittest.mock import patch
 import biv150_hidden_gather_service_bridge as b
 import biv150_hidden_gather_snapshot as s
 import biv150_hidden_gather_service_observer as observer
+import biv150_hidden_gather_path_identity as identity
 ROOT=b.ROOT
 
 def load(path,name):
     spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
+
+def relocate_artifacts(original,root):
+    """Explicit synthetic CPU fixture, independently rewrite original ELF headers.
+
+    This is NOT a compiled artifact or runtime admission path; no file is modified.
+    """
+    old=identity.OLD_ROOT.encode();new=root.encode();raw=original['cubin']
+    h=list(struct.unpack_from('<16sHHIQQQIHHHHHH',raw));rows=[list(struct.unpack_from('<IIQQQQIIQQ',raw,h[6]+i*h[11])) for i in range(h[12])]
+    data=[raw[r[4]:r[4]+r[5]] for r in rows];info=data[5].replace(old,new);data[5]=struct.pack('<I',len(info)-4)+info[4:]
+    pos=h[5]+h[9]*h[10]
+    for i,row in enumerate(rows[1:],1):
+        pos+=(-pos)%row[8];row[4]=pos;row[5]=len(data[i]);pos+=row[5]
+    h[6]=pos+(-pos)%8;out=bytearray(h[6]+h[11]*h[12]);out[:64]=struct.pack('<16sHHIQQQIHHHHHH',*h)
+    out[h[5]:h[5]+h[9]*h[10]]=raw[h[5]:h[5]+h[9]*h[10]]
+    for i,(row,d) in enumerate(zip(rows,data)):
+        out[row[4]:row[4]+row[5]]=d;struct.pack_into('<IIQQQQIIQQ',out,h[6]+i*h[11],*row)
+    result={k:v.replace(old,new) for k,v in original.items() if k!='cubin'};result['cubin']=bytes(out)
+    result['asm']=re.sub(rb'(?m)^(\s*\.long\s+)171([ \t]+; Length of Unit)$',lambda m:m[1]+str(len(data[5])-4).encode()+m[2],result['asm'])
+    return result
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--component-out',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args();checks=[]
@@ -77,12 +97,26 @@ def main():
         if t in ('tuple','list'):return tuple(untype(x) for x in v['items']) if t=='tuple' else [untype(x) for x in v['items']]
         if t=='dict':return {untype(k):untype(x) for k,x in v['items']}
         return v['value']
-    function=object();src=NS(fn=function,**{k:untype(v) for k,v in b.PINS['ABI']['typed'].items()})
+    function=NS(fn=NS(__code__=NS(co_filename=str(ROOT/s.KERNEL))));src=NS(fn=function,**{k:untype(v) for k,v in b.PINS['ABI']['typed'].items()})
     folder=a.component_out/'actual-8-ordinary'
     if not folder.is_dir():folder=next(p.parent for p in a.component_out.glob('actual-*-ordinary/actual.cubin'))
+    original={ext:(folder/('actual.'+ext)).read_bytes() for ext in identity.EXTS}
+    ck('original_reference_self_identity',identity.describe(original,identity.OLD_ROOT)['verified'])
+    for name,root in [('same_length',identity.OLD_ROOT[:-1]+'x'),('longer','/CPU-fixture/'+'x'*100),('actual_source_directory',str(ROOT))]:
+        proof=identity.describe(relocate_artifacts(original,root),root)
+        ck('synthetic_path_only_'+name,proof['verified'] and proof['canonical_files']==b.PINS['files'])
+    synthetic=relocate_artifacts(original,str(ROOT));proof=identity.describe(synthetic,str(ROOT));ck('raw_SHA_not_overwritten',proof['raw_files']!=proof['canonical_files'])
+    h=struct.unpack_from('<16sHHIQQQIHHHHHH',synthetic['cubin']);rows=[struct.unpack_from('<IIQQQQIIQQ',synthetic['cubin'],h[6]+i*64) for i in range(12)]
+    for name,offset in [('text',rows[3][4]),('descriptor',rows[2][4]),('note',rows[1][4]),('symbols',rows[9][4]),('debug_frame',rows[6][4]),('debug_line',rows[7][4]),('debug_abbrev',rows[4][4]),('padding',1224),('debug_ALLOC',h[6]+5*64+8),('PH',64+56+4),('section_offset',h[6]+8*64+24)]:
+        changed=dict(synthetic);data=bytearray(changed['cubin']);data[offset]^=1;changed['cubin']=bytes(data)
+        ck('reject_nonpath_ELF_'+name,not identity.describe(changed,str(ROOT))['verified'])
+    changed=dict(synthetic);changed['cubin']+=b'\0';ck('reject_ELF_trailing_byte',not identity.describe(changed,str(ROOT))['verified'])
+    changed=dict(synthetic);changed['asm']=changed['asm'].replace(b'; Length of Unit',b'; wrong length marker');ck('reject_ASM_length_disagreement',not identity.describe(changed,str(ROOT))['verified'])
+    changed=dict(synthetic);changed['ttir']+=b'\n';ck('reject_other_IR_difference',not identity.describe(changed,str(ROOT))['verified'])
+    ck('reject_wrong_source_root',not identity.describe(synthetic,str(ROOT)+'-wrong')['verified'])
     owner=NS(__file__=str(folder/'actual-launcher.so'))
     k=NS(src=src,hash=b.PINS['hash'],metadata=b.PINS['options'],n_regs=6,n_spills=0,
-        asm={ext:(folder/('actual.'+ext)).read_bytes() for ext in ('source','ttir','ttgir','llir','asm','cubin')},
+        asm=synthetic,
         _run=NS(launch=types.MethodType(lambda self:None,owner)))
     binding=rec['actual_handler']['C_function_binding']
     refuse('Python_function_is_not_C_pointer',lambda:s.loaded_launcher_binding(lambda:None))
@@ -90,6 +124,10 @@ def main():
     # This CPU fixture does not load that ELF or claim a live device C pointer.
     resolver=patch.object(s,'loaded_launcher_binding',lambda launch:copy.deepcopy(binding))
     with resolver:row=s.compiled_record(k,function)
+    function.fn.__code__.co_filename='/CPU-fixture/foreign_kernel.py'
+    with patch.object(s,'loaded_launcher_binding',lambda launch:copy.deepcopy(binding)):rejected=s.compiled_record(k,function)
+    ck('actual_source_path_reject_keeps_raw_fields',not rejected['source_path_identity']['verified'] and rejected['files']==row['files'])
+    function.fn.__code__.co_filename=str(ROOT/s.KERNEL)
     ck('actual_artifact_schema_matches_review_with_explicit_CPU_address_fixture',observer.compiled_verdict(row))
     changed=copy.deepcopy(row);changed['launcher_binding']['legacy_module_path']='/CPU-fixture/foreign-module-label';changed['launcher_binding']['legacy_module_sha256']='0'*64
     ck('legacy_module_label_does_not_define_C_ownership',observer.compiled_verdict(changed))
@@ -127,7 +165,7 @@ def main():
     ck('no_GPU_framework_import',not {'torch','triton','vllm'}.intersection(sys.modules))
     report=dict(passed=True,CPU_only=True,checks=checks,count=len(checks),source_commit=b.git(ROOT,'rev-parse','HEAD').decode().strip(),
         files={p:b.sha(ROOT/p) for p in (*b.PRODUCTION,*b.TOOLS)},script_sha256=b.sha(__file__),
-        CPU_fake_worker_and_compiled_objects=True,CPU_C_address_resolver_stub=True,actual_saved_artifact_bytes_used=True,service_started=False,GPU_executed=False,service_verified=False,
+        CPU_fake_worker_and_compiled_objects=True,CPU_C_address_resolver_stub=True,actual_saved_artifact_bytes_used=True,synthetic_debug_path_fixtures_not_device_compile=True,service_started=False,GPU_executed=False,service_verified=False,
         scope='Actual post-launch counter fragment and snapshot function; fake worker/Tensor metadata are not natural service or CUDA execution.')
     assert a.out.is_absolute() and not a.out.exists();a.out.write_text(json.dumps(report,sort_keys=True,indent=2)+'\n');print(b.sha(a.out))
 if __name__=='__main__':main()

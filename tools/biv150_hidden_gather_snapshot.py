@@ -84,8 +84,20 @@ def compiled_record(kernel, function):
         need(type(raw) is bytes,'compiled artifact type')
         files[ext]=dict(sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw))
     binding=loaded_launcher_binding(getattr(kernel._run,'launch',None))
+    path=ROOT/'tools/biv150_hidden_gather_path_identity.py'
+    spec=importlib.util.spec_from_file_location('cjj_gather_path_identity',path)
+    identity=importlib.util.module_from_spec(spec);spec.loader.exec_module(identity)
+    try:
+        filename=function.fn.__code__.co_filename
+        need(type(filename) is str and Path(filename).is_absolute() and Path(filename).resolve()==ROOT/KERNEL,'actual JIT source module/code path')
+        need(sha(ROOT/KERNEL)==identity.PINS['kernel_source_sha256'],'actual kernel source bytes')
+        artifacts={ext:(v.encode() if isinstance(v,str) else v) for ext,v in kernel.asm.items() if ext in identity.EXTS}
+        path_identity=identity.describe(artifacts,str(ROOT))
+    except (AttributeError,ValueError) as error:
+        path_identity=dict(verified=False,raw_files=files,reason=str(error))
     return dict(hash=str(kernel.hash),ABI=c.runtime_ABI(kernel),options=c.metadata(kernel),
-        resources=c.resources(kernel),files=files,launcher_sha256=binding['DSO_sha256'],launcher_binding=binding)
+        resources=c.resources(kernel),files=files,launcher_sha256=binding['DSO_sha256'],launcher_binding=binding,
+        source_path_identity=path_identity)
 
 
 def snapshot(wrapper,phase,run_id,*,expected_run,source_sha256,sdk_pins):
