@@ -110,6 +110,7 @@ class Runtime:
         self.raw3d_enabled = True; self.mixed_pair_enabled = False; self.multi2_enabled = True
         self.q32_enabled = True
         self.shape_records = {}; self.kernel_records = {}; self.shape_overflow = 0
+        self.shape_json_keys = {}
         self.stats_path = None; self.final_export = None
         self.q32_hoist = None
         self.native_decode = None; self.native_decode_identity = None
@@ -131,6 +132,27 @@ class Runtime:
         return dict(dtype=str(value.dtype),shape=list(value.shape),strides=list(value.stride()),
                     storage_offset=value.storage_offset(),device=str(value.device))
 
+    @staticmethod
+    def shape_key(record):
+        # Keep exported JSON keys unchanged. Only exact primitive metadata can
+        # use this internal index; other values retain json.dumps semantics.
+        if (type(record['profile']) is not str or type(record['hash']) not in (str,type(None))
+                or type(record['capture']) is not bool):return None
+        grid=record['grid']
+        if grid is not None and any(type(x) is not int for x in grid):return None
+        pointers=[]
+        for name,v in record['pointers'].items():
+            shape=tuple(v['shape']);strides=tuple(v['strides']);offset=v['storage_offset']
+            if (type(name) is not str or type(v['dtype']) is not str or type(v['device']) is not str
+                    or any(type(x) is not int for x in shape+strides+(offset,))):return None
+            pointers.append((name,v['dtype'],v['device'],shape,strides,offset))
+        scalars=[]
+        for name,v in record['selected_scalars'].items():
+            if 'value' not in v or type(v['value']) not in (str,int,bool,type(None)):return None
+            scalars.append((name,v['type'],type(v['value']),v['value']))
+        return (record['profile'],record['hash'],record['capture'],None if grid is None else tuple(grid),
+                tuple(sorted(pointers)),tuple(scalars))
+
     def note(self, profile, handle, launch=None, grid=None):
         launch = {} if launch is None else launch
         self.counts['selected'][profile] = self.counts['selected'].get(profile,0)+1
@@ -144,10 +166,15 @@ class Runtime:
         scalars = {k:self.typed(launch[k]) for k in scalar_names if k in launch}
         record = dict(profile=profile,hash=kernel_hash,grid=list(grid) if grid is not None else None,
             capture=self.torch.cuda.is_current_stream_capturing(),pointers=pointers,selected_scalars=scalars)
-        key = json.dumps(record,sort_keys=True,separators=(',',':'))
+        fast_key = self.shape_key(record)
+        key = self.shape_json_keys.get(fast_key) if fast_key is not None else None
+        missing = key is None
+        if missing: key = json.dumps(record,sort_keys=True,separators=(',',':'))
         if key in self.shape_records: self.shape_records[key]['host_calls'] += 1
         elif len(self.shape_records)<4096: self.shape_records[key] = dict(**record,host_calls=1)
         else: self.shape_overflow += 1
+        if missing and fast_key is not None and key in self.shape_records and len(self.shape_json_keys)<4096:
+            self.shape_json_keys[fast_key] = key
         identity = (profile,kernel_hash)
         if identity not in self.kernel_records:
             src = getattr(handle,'src',None); fn = getattr(src,'fn',None)
