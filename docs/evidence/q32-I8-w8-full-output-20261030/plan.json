@@ -1,0 +1,137 @@
+{
+  "ABBA_future": "not permitted by this frontend; any later timing must compare accepted hoisted w16/S1",
+  "ABBA_pending": true,
+  "GPU_executed": false,
+  "Graph_B_before_fresh_eager_B": true,
+  "Graph_verified": false,
+  "Root_numeric_admission": false,
+  "base": "899ce77470b0b539aebc108fd122f668c2d5894d",
+  "captured_steps": 4,
+  "cases": [
+    {
+      "KV_tile_tail": 0,
+      "pattern": 0,
+      "prefix": 4096,
+      "total_KV": 6144,
+      "valid_tail": 0
+    },
+    {
+      "KV_tile_tail": 63,
+      "pattern": 1,
+      "prefix": 4095,
+      "total_KV": 6143,
+      "valid_tail": 15
+    }
+  ],
+  "compile_source": "e8b62f0c91d3ecca54749f55c07174aa9a4c18ef",
+  "context16k_tested": false,
+  "cross_layout_bitwise_required": false,
+  "cubins": {
+    "w16": "7eadbdbf854be149083065cb30f0f8c1bdc593aea6d2b9baf454502adb6fbb43",
+    "w8": "03d373323bef024b3dec81d76de9c19913d9a03d0c05f471e01178523110d1a8"
+  },
+  "default_enabled": false,
+  "derived_numeric_driver_sha256": "50c02352594d31a7e8be87e9c1d48571ba4850dfbaa11e4c243e7ab3e10cf759",
+  "full_output_elements": 4194304,
+  "full_output_pointwise_hard_gate": true,
+  "full_output_reference": "accepted w16/S1, not full random FP64",
+  "grid": [
+    65,
+    2
+  ],
+  "hashes": {
+    "w16": "53ef08b799eddb1170100ca6a7fca2171a54443acbf5a5e88549b35ceffd1603",
+    "w8": "773d51c9821807457d71b7eb2a1a3701c1e3fc78410ce8f0d7b7ca39a338c51c"
+  },
+  "heads": {
+    "D": 128,
+    "KV": 2,
+    "Q": 16
+  },
+  "immutable_screen": "522c0b0617a8d2d862f60ebb03f05f6e08ccfcfe",
+  "limits": [
+    "Isolated original N1 descriptor only; no service/host/paired-prefill/capacity qualification.",
+    "Pattern0 is aligned, pattern1 is a valid 6143-token tail with 2048 queries/prefix4095; invalid page lanes are poisoned.",
+    "All outputs/cache/inputs saved. Random FP64 references are selected rows; uniform FP64 reference covers all rows.",
+    "Reader warmups must hit the reviewed cache; no candidate IR compilation. Writer warmup may compile the unchanged writer."
+  ],
+  "modes": [
+    "reader",
+    "append-reader"
+  ],
+  "num_seqs": 1,
+  "numeric_verified": false,
+  "original_BF16_diagnostic_failure_allowed_only_with_explicit_flag": true,
+  "page_bytes": 16384,
+  "pages": 773,
+  "pattern0_all_rows": true,
+  "pattern1_rows": [
+    0,
+    1,
+    15,
+    16,
+    31,
+    32,
+    63,
+    64,
+    1024,
+    2047
+  ],
+  "performance_measured": false,
+  "planned_reader_cache_warmups": 2,
+  "planned_writer_warmups": 1,
+  "precision_gate": false,
+  "query_pitch": 2048,
+  "query_rows": 2048,
+  "reader_cache_miss_compile_prohibited": true,
+  "reference_commit": "e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4",
+  "reference_is_ideal_FP64_not_pagewise_BF16P": true,
+  "reference_pins": {
+    "bench_biv150_konly_service_q32_bitwise.py": "985f07044f35a9d0496d642c0fe527912354596876be33e1212bc18650a08c7f",
+    "biv150_konly_decode_quant_reference.py": "38807ab17bf28e64afee6fb581af92d4e715856d954dc42db4fdd1dd6d91bc18",
+    "biv150_konly_i8_qk_reference.py": "63d8f901b3648dad52f9dceab251e1d451def2aaa96f2bc30bd0aaff102e64e3",
+    "biv150_konly_q32_numeric_contract.py": "9c75e7a81c0d77fba0690d25db355cb4dfd669b9aed963930697b7951e6c46e8"
+  },
+  "resources": {
+    "w16": {
+      "ELF_sgpr_spills": 96,
+      "n_regs": 122,
+      "n_spills": 0,
+      "shared": 33792
+    },
+    "w8": {
+      "ELF_sgpr_spills": 478,
+      "n_regs": 237,
+      "n_spills": 0,
+      "shared": 33792
+    }
+  },
+  "roles": [
+    "w16",
+    "w8"
+  ],
+  "schema": "cjj-q32-w16-w8-preheader-numeric-v1",
+  "screen_source_pins": {
+    "biv150_konly_q64_compile_arguments.py": "b82f517b94b196822f00037773b1c80806716ac77d9ef44881829ef1fb8fa52f",
+    "biv150_konly_q64_compile_source.py": "1ed4e3e752b1c43a31fafa8e6ace5802ee932409aa3e8bc9f1423ffed3f1621d",
+    "biv150_konly_q64_reviewed_cache.py": "9d38d2a69946e7ba9c8670714e732c9ba1cb5d04834e40b595bda04195812a1f",
+    "biv150_konly_q64_screen_contract.py": "912e485d189f611c571a4439e6356c72fd699c80a88eb8f8db92bea23a67ac31",
+    "probe_biv150_konly_q64_compile.py": "749a662b7e203640c43b4282ae70abed318792dff302c7ef88ecab534fc02c7a",
+    "probe_biv150_konly_q64_screen.py": "c186982bc964a1eef66c9d5edd228b6d13978b4a129a850bb38bdc03c293efea"
+  },
+  "seed": 20261025,
+  "service_verified": false,
+  "side_stream_required": true,
+  "side_stream_verified": false,
+  "stages": {
+    "w16": 1,
+    "w8": 1
+  },
+  "table_pitch": 8192,
+  "unchanged_gate": "original pointwise .005+.005*abs(reference); original BF16 relative RMSE <=.005",
+  "warps": {
+    "w16": 16,
+    "w8": 8
+  },
+  "writer_pitch": 2560
+}

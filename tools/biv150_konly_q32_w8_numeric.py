@@ -2,6 +2,7 @@
 import ast
 import hashlib
 import json
+import math
 from pathlib import Path
 import subprocess
 import sys
@@ -52,6 +53,7 @@ def source_text():
       ('dict(num_warps=16,num_stages=f.STAGES[role],ir_override=str(override))',
        'dict(num_warps=f.WARPS[role],num_stages=1,ir_override=str(override))'),
       ("output_s1=guarded['w16'],output_s2=guarded['w8']","output_w16=guarded['w16'],output_w8=guarded['w8']"),
+      ('run_edits()+[(timing,','run_edits()+run_extra_edits()+[(timing,'),
       ("actual_roles='main899 N1 hoisted S1 and preheader N1 hoisted S2'",
        "actual_roles='accepted main899 N1 w16/S1 and exact-preheader N1 w8/S1'"),
       ("legacy_policy_bitwise_key_means='actual N1 hoisted S1 versus actual N1 hoisted S2'",
@@ -75,7 +77,7 @@ def contract_text():
       ('c35d0001e07b2b0e59879eee790d32e9745aeecff98d5dca0823c45991eeac32','ba0b4d0b7dda3db06f25bf6a9baeb39f3cbb09aa756fc269f7c82dfdd7bdd26d'),
       ('80f1b3388822eb50c7db1d953430d726d15b0269dd927a02638c5c2328cc58a0','5409b37ec09961b1459fbab689fd7407ee610341250eeb48857b3761e8a8c18d'),
       ("schema='cjj-q32-S1-S2-preheader-numeric-v1'","schema='cjj-q32-w16-w8-preheader-numeric-v1'"),
-      ('roles=list(ROLES),stages=STAGES,hashes=HASHES,','roles=list(ROLES),stages=STAGES,warps=WARPS,cross_layout_bitwise_required=False,hashes=HASHES,'),
+      ('roles=list(ROLES),stages=STAGES,hashes=HASHES,','roles=list(ROLES),stages=STAGES,warps=WARPS,cross_layout_bitwise_required=False,full_output_pointwise_hard_gate=True,full_output_reference="accepted w16/S1, not full random FP64",full_output_elements=4194304,hashes=HASHES,'),
       ("ABBA_future='same complete S1/S2 reader and unchanged-writer+reader; no raw-S2 or N2 control'",
        "ABBA_future='not permitted by this frontend; any later timing must compare accepted hoisted w16/S1'"),
       ('[16,STAGES[role],64] and (m[\'num_warps\'],m[\'num_stages\'],m[\'warp_size\'])==(16,STAGES[role],64)',
@@ -93,7 +95,7 @@ def contract_text():
       ("schema='cjj-124-N1-S1-S2-numeric-root-admission-v1'","schema='cjj-126-N1-w16-w8-numeric-root-admission-v1'"),
       ('hashes=HASHES,cubins=CUBINS,query_rows=2048,num_seqs=1,stages=STAGES,','hashes=HASHES,cubins=CUBINS,query_rows=2048,num_seqs=1,stages=STAGES,warps=WARPS,'),
       ("    ns={'h':types.SimpleNamespace(need=need)};exec(compile(ast.Module(body=[fn],type_ignores=[]),'unchanged-e4dd-policy','exec'),ns)",
-       "    policy_source=layout_policy(fn)\n    ns={'h':types.SimpleNamespace(need=need)};exec(compile(policy_source,'e4dd-policy-minus-cross-layout-bitwise','exec'),ns)"),
+       "    policy_source=layout_policy(fn)\n    ns={'h':types.SimpleNamespace(need=need)};exec(compile(policy_source,'e4dd-policy-with-full-output-reference','exec'),ns)"),
       ('import biv150_konly_q32_s2_preheader_source as candidate','import biv150_konly_q32_w8_preheader_source as candidate'),
       ("after=s.replace(before,[(\"==(16,1,64),'loaded geometry'\",\"==(16,STAGES[role],64),'loaded geometry'\")])",
        "after=s.replace(before,[(\"==(16,1,64),'loaded geometry'\",\"==(WARPS[role],1,64),'loaded geometry'\"),('threads=1024','threads=kernel.metadata.num_warps*kernel.metadata.warp_size')])"),
@@ -106,9 +108,39 @@ def layout_policy(fn):
     need(isinstance(required,ast.Set) and {n.value for n in required.elts}==
          {'finite','codec','output_canaries','read_only_inputs','actual_IR','hoisted_unhoisted_bitwise','quantized_reference'},'exact original policy set')
     index=next(i for i,n in enumerate(required.elts)if n.value=='hoisted_unhoisted_bitwise')
-    item=required.elts.pop(index);result=ast.unparse(fn)
-    required.elts.insert(index,item);need(ast.dump(fn)==before,'policy single-element inverse')
+    item=required.elts[index];required.elts[index]=ast.Constant(value='full_output_reference');result=ast.unparse(fn)
+    required.elts[index]=item;need(ast.dump(fn)==before,'policy single-key inverse')
     return result
+
+def full_output_metrics(chunks,np,expected_size):
+    """Original pointwise rule; bounded float64 chunks, w16 reference values."""
+    need(type(expected_size) is int and expected_size>0,'full output expected geometry')
+    count=violations=0;error2=reference2=maximum=0.;finite=True
+    for actual,reference in chunks:
+        a=np.asarray(actual,dtype=np.float64);r=np.asarray(reference,dtype=np.float64)
+        need(a.ndim==r.ndim==1 and a.size==r.size and 0<a.size<=262144,'equal nonempty bounded flat output chunks')
+        count+=int(a.size)
+        good=bool(np.isfinite(a).all() and np.isfinite(r).all());finite=finite and good
+        if not good:continue
+        error=a-r;absolute=np.abs(error)
+        violations+=int(np.count_nonzero(absolute>.005+.005*np.abs(r)))
+        maximum=max(maximum,float(absolute.max()))
+        error2+=float(np.sum(error*error,dtype=np.float64));reference2+=float(np.sum(r*r,dtype=np.float64))
+    need(count==expected_size,'complete output comparison geometry')
+    if not finite:return dict(elements=count,finite=False,pointwise_passed=False,pointwise_violations=None,relative_rmse=None,rms=None,max_abs=None)
+    rms=math.sqrt(error2/count);rrms=math.sqrt(reference2/count)
+    return dict(elements=count,finite=True,pointwise_passed=violations==0,pointwise_violations=violations,
+        relative_rmse=rms/rrms if rrms else (0. if maximum==0 else math.inf),rms=rms,max_abs=maximum)
+
+def run_extra_edits():
+    header='                hard=dict(finite=True,codec=True,output_canaries=True,read_only_inputs=True,actual_IR=True,\n'
+    before=header
+    after="""                c.need(all(tuple(outputs[r].shape)==(2048,16,128) for r in f.ROLES),'full output comparison shape')
+                flat={r:outputs[r].reshape(-1) for r in f.ROLES}
+                full=f.full_output_metrics(((flat['w8'][i:i+262144].double().numpy(),flat['w16'][i:i+262144].double().numpy()) for i in range(0,4194304,262144)),np,4194304)
+                record['full_output_comparison']=dict(full,actual_role='w8',reference_role='accepted w16/S1',reference_is_full_random_FP64=False,arithmetic='CPU float64 bounded chunks',pointwise_atol=.005,pointwise_rtol=.005)
+"""+header+"                    full_output_reference=full['finite'] and full['pointwise_passed'],\n"
+    return [(before,after)]
 
 _FRAMEWORK=None
 def framework():
@@ -117,7 +149,8 @@ def framework():
     modules=[]
     for name,text in (('biv150_konly_q32_s2_numeric_source',source_text()),('biv150_konly_q32_s2_numeric_contract',contract_text())):
         need(name not in sys.modules,'private numeric namespace already occupied')
-        m=types.ModuleType(name);m.__file__=str(ROOT/'tools'/(name+'.py'));m.layout_policy=layout_policy;sys.modules[name]=m
+        m=types.ModuleType(name);m.__file__=str(ROOT/'tools'/(name+'.py'))
+        m.layout_policy=layout_policy;m.run_extra_edits=run_extra_edits;m.full_output_metrics=full_output_metrics;sys.modules[name]=m
         exec(compile(text,'<efd-w16-w8/'+name+'>','exec'),vars(m));modules.append(m)
     _FRAMEWORK=types.SimpleNamespace(source=modules[0],contract=modules[1])
     return _FRAMEWORK

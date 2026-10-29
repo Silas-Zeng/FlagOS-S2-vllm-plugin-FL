@@ -4,6 +4,7 @@ import argparse
 import ast
 import copy
 import json
+import math
 from pathlib import Path
 import sys
 import tempfile
@@ -13,7 +14,8 @@ import biv150_konly_q32_w8_numeric as adapter
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--control-raw',type=Path);p.add_argument('--candidate-raw',type=Path);p.add_argument('--static-review',type=Path);a=p.parse_args()
+    p.add_argument('--control-raw',type=Path);p.add_argument('--candidate-raw',type=Path);p.add_argument('--static-review',type=Path)
+    p.add_argument('--arrays',action='store_true',help='explicit CPU NumPy metric checks, no Torch/JIT');a=p.parse_args()
     f=adapter.framework();s=f.source;c=f.contract;checks=[]
     def check(ok,label):adapter.need(ok,label);checks.append(label)
     def reject(fn,label):
@@ -27,10 +29,11 @@ def main():
     check("graph_b={mode:stage('Graph-B-first'" in worker and worker.index("graph_b={mode:stage('Graph-B-first'")<worker.index("stage('eager-B-after-Graph'"),'unchanged changed Graph before fresh eager')
     check("c.need(readonly==immutable and byte_cpu(cache_after)==encoded" in worker and "persist('pattern-'" in worker,'complete output/cache/CPU inputs and readonly retained')
     check('cross_layout_full_output_bitwise=' in worker and 'cross_layout_bitwise_required=False' in worker and 'hoisted_unhoisted_bitwise=' not in worker,'cross-layout equality recorded outside hard gates')
+    check("full_output_reference=full['finite'] and full['pointwise_passed']" in worker and "reference_is_full_random_FP64=False" in worker,'every stage has complete w16-reference hard gate')
     check(c.LENGTHS=={0:6144,1:6143} and c.LENGTHS[1]%16==15 and c.LENGTHS[1]%64==63,'unchanged real causal tail and physical descriptors')
     with tempfile.TemporaryDirectory(prefix='cjj-w8-numeric-policy-') as tmp:
         folder=Path(tmp)/'references';c.export_references(folder);ref,policy,expanded=c.load_reference(folder)
-        hard={k:True for k in ('finite','codec','output_canaries','read_only_inputs','actual_IR','quantized_reference')}
+        hard={k:True for k in ('finite','codec','output_canaries','read_only_inputs','actual_IR','quantized_reference','full_output_reference')}
         check(policy(hard,False,True)['original_BF16_quality_passed'] is False,'diagnostic retains BF16 proxy failure')
         reject(lambda:policy(hard,False,False),'strict default rejects BF16 proxy failure')
         for key in hard:reject(lambda k=key:policy(dict(hard,**{k:False}),False,True),'diagnostic cannot bypass '+key)
@@ -40,6 +43,23 @@ def main():
         funcs=lambda t:{n.name:ast.dump(n) for n in t.body if isinstance(n,ast.FunctionDef) and n.name!='references'}
         check(funcs(old)==funcs(new),'original codec and numerical metric AST unchanged')
         check(c.snapshot_module('w16') is not None and c.snapshot_module('w8') is not None,'separate recorders load stdlib only')
+        if a.arrays:
+            import numpy as np
+            def metric(actual,reference):
+                return adapter.full_output_metrics([(np.array(actual),np.array(reference))],np,len(actual))
+            at=[.005,-.005,np.nextafter(.005,0.)];zero=[0.,0.,0.]
+            check(metric(at,zero)['pointwise_passed'] is True,'exact zero-reference threshold and below pass')
+            above=metric([np.nextafter(.005,np.inf)],[0.])
+            check(above['pointwise_violations']==1 and above['pointwise_passed'] is False,'one FP64 step above threshold rejects')
+            actual=[1.01001,-.5,2.0078125,0.];reference=[1.,-.5,2.,0.]
+            full=metric(actual,reference);gold=ref.metrics(actual,reference)
+            check(all(full[k]==gold[k] for k in ('finite','pointwise_passed','pointwise_violations','max_abs')) and
+                  all(math.isclose(full[k],gold[k],rel_tol=1e-14,abs_tol=0.) for k in ('rms','relative_rmse')),'vectorized metrics agree with immutable original on finite fixture')
+            check(all(metric([v],[0.])['finite'] is False for v in (np.nan,np.inf)),'NaN and Inf refuse full-output gate')
+            chunk=np.zeros(262144);changed=chunk.copy();changed[2*16*128+3]=.0078125
+            full=adapter.full_output_metrics(((changed if i==0 else chunk,chunk) for i in range(16)),np,4194304)
+            check(2 not in plan['pattern1_rows'] and full['elements']==4194304 and full['pointwise_violations']==1 and not full['pointwise_passed'],'non-sampled row2 perturbation rejects over complete tensor')
+            reject(lambda:adapter.full_output_metrics([(chunk,chunk)],np,4194304),'incomplete full-output geometry rejects')
     actual=None
     if any((a.control_raw,a.candidate_raw,a.static_review)):
         adapter.need(all((a.control_raw,a.candidate_raw,a.static_review)),'all actual archives/review required')
@@ -67,7 +87,8 @@ def main():
         actual=dict(provenance=pre['provenance'],hashes=c.HASHES,cubins=c.CUBINS,complete_typed_ABI_equal=True,
             metadata_difference=['hash','ir_override','num_warps'],static_review_sha256=c.REVIEW_SHA,
             prepared_proof_sha256=adapter.sha(json.dumps(pre,sort_keys=True,indent=2,allow_nan=False)+'\n'))
-    check(not {'torch','triton','numpy','vllm','vllm_fl'}.intersection(sys.modules),'CPU/no framework import')
+    forbidden={'torch','triton','vllm','vllm_fl'}|({'numpy'} if not a.arrays else set())
+    check(not forbidden.intersection(sys.modules),'CPU explicit NumPy only/no Torch or JIT' if a.arrays else 'CPU/no framework import')
     print(json.dumps(dict(schema='cjj-w16-w8-numeric-cpu-v1',checks=checks,count=len(checks),actual=actual,
         driver_sha256=adapter.sha(worker),plan_sha256=adapter.sha(json.dumps(plan,sort_keys=True,indent=2,allow_nan=False)+'\n'),
         GPU_executed=False,numeric_verified=False,Graph_verified=False,precision_gate=False,performance_measured=False,service_verified=False),sort_keys=True,indent=2,allow_nan=False))
