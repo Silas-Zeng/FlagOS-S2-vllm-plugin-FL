@@ -32,3 +32,5 @@ python3 -B tools/probe_biv150_native_storage_actual_validate.py \
 ```
 
 此准备尚无设备结果。若完整validate无明显收益，就不凭57→9升级整机；即使host成本降低，也需后续独立服务桥绑定新adapter/manifest/C3与完整源，保留当前5898及mixed ebbc，不冒充原controller接受的生产身份。已有source/94db CPU检查不能替代自然服务导入或吞吐验收。组件不修改现有C3或controller，也不输出服务资格。
+
+实际入口记录deterministic algorithms与fill_uninitialized_memory；两者同时开启会使empty写入数据，因此在任何Tensor分配前明确拒绝，绝不更改全局设置。out必须是绝对且未存在的路径、父目录已存在，并且不在source、library父目录或检测到的旧compile-summary/download-manifest证明目录下。

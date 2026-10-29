@@ -33,6 +33,22 @@ def preflight(commit,library):
  need(library.is_absolute() and library.is_file() and sha(library.read_bytes())==LIBRARY_SHA,'exact existing5898 library')
  return reference
 
+def output_admission(out,library):
+ need(out.is_absolute() and not out.exists() and out.parent.is_dir(),'absolute new output with existing parent')
+ roots=[ROOT.resolve(),library.resolve().parent]
+ roots += [parent for parent in library.resolve().parents if any((parent/name).is_file() for name in ('compile-summary.json','download-manifest.json'))]
+ resolved=out.resolve()
+ need(not any(resolved.is_relative_to(root) for root in roots),'output must not be inside source/library/old proof directory')
+ return sorted({str(root) for root in roots})
+
+def no_empty_auto_fill(torch):
+ enabled=torch.are_deterministic_algorithms_enabled()
+ fill=torch.utils.deterministic.fill_uninitialized_memory
+ need(type(enabled) is bool and type(fill) is bool,'known deterministic empty settings')
+ observation=dict(deterministic_algorithms_enabled=enabled,fill_uninitialized_memory=fill,auto_fill_active=enabled and fill,global_settings_changed=False)
+ need(not observation['auto_fill_active'],'deterministic empty auto-fill would invalidate metadata-only scope')
+ return observation
+
 def load(name,path):
  spec=importlib.util.spec_from_file_location(name,path);mod=importlib.util.module_from_spec(spec);sys.modules[name]=mod;spec.loader.exec_module(mod);return mod
 
@@ -81,8 +97,11 @@ def device(args,reference):
   with socket.socket() as sock:need(sock.connect_ex(('127.0.0.1',9031))==111,'service9031 must be closed')
   result['prelaunch_ixsmi']=before
   import torch
+  import torch.utils.deterministic
   result['CUDA_initialized_after_import']=torch.cuda.is_initialized();result['GPU_executed']=result['CUDA_initialized_after_import']
   need(str(torch.__version__)=='2.10.0' and torch._C._GLIBCXX_USE_CXX11_ABI is False,'actual Torch ABI')
+  result['empty_allocation_policy']=dict(deterministic_algorithms_enabled=torch.are_deterministic_algorithms_enabled(),fill_uninitialized_memory=torch.utils.deterministic.fill_uninitialized_memory,global_settings_changed=False)
+  result['empty_allocation_policy']=no_empty_auto_fill(torch)
   result['CUDA_API_entered']=True;result['GPU_executed']=True
   need(torch.cuda.is_available() and torch.cuda.device_count()==1,'single CUDA device');torch.cuda.set_device(0)
   prop=torch.cuda.get_device_properties(0);need('BI-V150' in prop.name and (prop.major,prop.minor)==(7,1),'actual BI-V150/71')
@@ -151,6 +170,6 @@ def main():
  if not a.actual_cuda:
   need(not a.root_owned_exclusive and a.commit is None and a.library is None and a.out is None,'default plan takes no device arguments');print(json.dumps(plan(),indent=2,sort_keys=True));return
  need(a.root_owned_exclusive and a.commit and a.library and a.out,'explicit exclusive, frozen commit, actual library and new output required')
- need(not a.out.exists() and a.out.parent.is_dir(),'new output with existing parent')
+ output_admission(a.out,a.library)
  reference=preflight(a.commit,a.library);device(a,reference)
 if __name__=='__main__':main()

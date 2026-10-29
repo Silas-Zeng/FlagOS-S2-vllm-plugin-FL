@@ -3,6 +3,7 @@
 import argparse,ast,hashlib,json,subprocess,sys
 from pathlib import Path
 from unittest.mock import patch
+from types import SimpleNamespace as NS
 import probe_biv150_native_storage_actual_validate as p
 from check_biv150_native_storage_main56_cpu import restore
 checks={}
@@ -53,6 +54,15 @@ def run(library):
  check('actual_registry_and_adapters_constructed',all(x in source for x in ('runtime_mod.Runtime(torch,broker,{},None)','runtime.registry.claim(object(),owner,source,source)','mod.Adapter(runtime,config)')))
  with patch.object(p,'device',side_effect=AssertionError('device reached')),patch.object(sys,'argv',[p.__file__,'--actual-cuda']):rejects('missing_explicit_device_arguments_rejected',p.main)
  with patch.object(p,'device',side_effect=AssertionError('device reached')),patch.object(sys,'argv',[p.__file__,'--root-owned-exclusive']):rejects('authorization_alone_does_not_enable_device',p.main)
+ for enabled,fill,accepted in ((False,False,True),(False,True,True),(True,False,True),(True,True,False)):
+  fake=NS(are_deterministic_algorithms_enabled=lambda enabled=enabled:enabled,utils=NS(deterministic=NS(fill_uninitialized_memory=fill)))
+  if accepted:check('empty_policy_accept_'+str(enabled)+'_'+str(fill),p.no_empty_auto_fill(fake)['global_settings_changed'] is False)
+  else:rejects('deterministic_empty_auto_fill_rejected',lambda:p.no_empty_auto_fill(fake))
+  check('empty_flags_preserved_'+str(enabled)+'_'+str(fill),fake.are_deterministic_algorithms_enabled() is enabled and fake.utils.deterministic.fill_uninitialized_memory is fill)
+ rejects('relative_output_rejected',lambda:p.output_admission(Path('relative-output'),library))
+ rejects('output_in_source_rejected',lambda:p.output_admission(p.ROOT/'uncreated-component-output',library))
+ rejects('output_in_library_parent_rejected',lambda:p.output_admission(library.resolve().parent/'uncreated-component-output',library))
+ check('fresh_external_absolute_output_admitted',bool(p.output_admission(Path('/private/tmp/cjj-pr120-component-out-must-not-exist-cpu'),library)))
  head=p.git('rev-parse','HEAD').decode().strip();check('positive_actual_frozen_preflight',p.preflight(head,library)==reference)
  rejects('wrong_frozen_commit_rejected',lambda:p.preflight('0'*40,library))
  with patch.object(p,'device',side_effect=RuntimeError('CPU_READY_TRIPWIRE')) as trap,patch.object(sys,'argv',[p.__file__,'--actual-cuda','--root-owned-exclusive','--commit',head,'--library',str(library),'--out',str(Path('/private/tmp/cjj-pr120-component-out-must-not-exist-cpu'))]):
