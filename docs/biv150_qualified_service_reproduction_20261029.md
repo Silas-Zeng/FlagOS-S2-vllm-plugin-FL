@@ -1,6 +1,6 @@
 # BI-V150 已验收服务：复现条件与入口
 
-本文记录 PR117 / main `56f88737fcf3b940760b9ca3027a925cd5a7d77d` 的受测配置。完整成绩、精度、不同预热协议和原负结果见[验收记录](evidence/native117-model-acceptance-20261029/README.md)。PR118尚未完成双档验收，不能把它的单档成绩当成主干默认成绩。
+本文记录 PR118 冻结候选 `69827253756a0ef9e618ae0322e9ff361e93504f` 及其 PR117 / main `56f88737fcf3b940760b9ca3027a925cd5a7d77d` 对照的受测配置。PR118 的4K / 16K单轮成绩为6961.16 / 5265.06 total tok/s，官方Math105为101/105；完整边界见[两档精选验收记录](evidence/native118-final-paired-selected-20261029/README.md)。[PR117历史验收](evidence/native117-model-acceptance-20261029/README.md)仍保留。
 
 ## 功能与环境
 
@@ -19,12 +19,13 @@ Encoded K-only 服务、其 Q32 hoist 和 NativeK8 分别默认关闭。受测�
 | W8A8 library | `5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe` |
 | stock NativeGQA library | `0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8` |
 | PR117 NativeK8 library | `5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b` |
+| PR118 mixed NativeK8 library | `ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba` |
 | 初始v6 `TunedConfig_iluvatar_triton_3_2.db` | `5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55` |
 | 初始v6 `TunedConfig_iluvatar_triton_3_6.db` | `2c5aa448065453188f1ff1794d8e929bacb63dcad84a600e086ae05165821314` |
 
 构建入口分别是 `tools/build_biv150_native_w8a8.py`、`tools/build_biv150_native_gqa.py`、`tools/compile_biv150_native_k8_klookahead.py`。重建不保证得到相同ELF SHA；不同成品需要重新检查实际代码与数值，不能只改校验常量继承资格。`tools/snapshot_biv150_tuning_cache.py` 也不会把任意当前缓存变成受测v6。
 
-## 从已共享源码恢复原控制器和 helper
+## 从已共享源码恢复PR117对照控制器和 helper
 
 以下仅在CPU读取已共享源码，输出到一个全新目录；不会启动服务或GPU。将两个绝对路径替换成实际源码目录和新的准备目录。控制器固定为2cfc版本，不开启统计RPC；helper只读取已共享归档的唯一指定成员，不解包其他内容。
 
@@ -55,6 +56,14 @@ PYCODE
 ```
 
 `tools/build_biv150_runtime_stats_controller.py` 的命令行是正向生成接口；上面直接调用已有 `inverse()` 恢复原受测文件，没有另造反向CLI。
+
+## PR118候选的受测入口
+
+PR118直接使用仓库中的 `tools/run_biv150_native118_service.py`（SHA `637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199`），不需要逆变换。helper仍为上面的94db版本，纯decode仍用5898；mixed库的构建入口是 `tools/compile_biv150_native_k8_mixed.py`。
+
+除下节共同参数外，候选须传入 `--mixed-native-library`、`--mixed-native-sha256`、`--mixed-source-bridge`、`--mixed-source-bridge-sha256`。受测mixed库SHA为上表ebbc；完整已审bridge SHA为 `c14c70a59e889e6abe1f93b766cd358fe97b7416a3f7b8859f52c3b80c44cf91`，原实例路径为 `/workspace/experiments/minicpm-s2/exports/cjj-native118-service-smoke-v1-20261029-root-source-bridge.json`。它属于完整原件包，未放入精选JSON，不能用精选摘要替代。
+
+原成绩对应干净的6982725源码checkout、`--commit 69827253756a0ef9e618ae0322e9ff361e93504f` 和 `--base 56f88737fcf3b940760b9ca3027a925cd5a7d77d`。后续文档提交不改变生产代码；在不同提交或重建库上重新运行时，仍须核对实际源码、C3与库身份，不能只替换校验常量绕过验证。
 
 ## 运行参数如何对应验收
 
