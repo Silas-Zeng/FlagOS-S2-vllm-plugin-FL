@@ -10,14 +10,13 @@ n,numeric=_framework.source,_framework.contract
 ROOT=n.ROOT
 BASE=n.BASE
 PARENT='618acfef826acfcf2eaff6293d3fd3252681e94d'
-# Fill only in a later reviewed commit after actual numeric originals and
-# Root's independent array audit exist. None must never qualify None.
-NUMERIC_REVIEW_SHA=None
-NUMERIC_MANIFEST_SHA=None
-NUMERIC_SUMMARY_SHA=None
-NUMERIC_RECEIPT_SHA=None
-NUMERIC_RAW_FILES=None
-NUMERIC_RAW_BYTES=None
+# Actual618 originals and Root's independent full-array review; no timing grant.
+NUMERIC_REVIEW_SHA='b9f32e2ab2e81edd2b54129f42a5fd0efb4bbab8c4d183378c82a599f6fffacf'
+NUMERIC_MANIFEST_SHA='3251b74a5f82c067edbc5c2ba314b3f2703877d91be75baa0bd068dcf8651bac'
+NUMERIC_SUMMARY_SHA='46b213ed4cf55a087bfd38fa0cb4e7b2cdba74d19e446cfbc8dc5698b365e2ee'
+NUMERIC_RECEIPT_SHA='f3d1f42fbfede9f416d97c80a52819762952ddf965a4a22ef9086e5e1ca85ad1'
+NUMERIC_RAW_FILES=92
+NUMERIC_RAW_BYTES=194116802
 PREFLIGHT_SHA='9a7832afadd9dd0ace1104ccc28773e9273b854cc95662f884b58735cbe53db6'
 need=n.need
 sha=n.sha
@@ -96,7 +95,12 @@ def evidence(pre,review):
     need(review['Graph_before_fresh_and_changed_counterexample'] is True and review['side_nondefault_stream'] is True,'reviewed Graph/side')
     need(len(review['stage_checks'])==8 and all(v['all_hard_data_checks'] is True for v in review['stage_checks']),'all numeric hard checks')
     need(type(review['original_BF16_quality_passed']) is bool and all(review[k] is False for k in ('precision_gate','model_verified','service_verified','performance_measured')),'actual BF16 diagnostic and qualification labels preserved')
-    need(all(v['full_output_reference'] is True for v in review['stage_checks']),'independently reviewed complete w16-control comparisons for every stage')
+    for stage in review['stage_checks']:
+        metric=stage['full_output_reference']
+        need(type(metric) is dict and type(metric.get('elements')) is int and metric['elements']==4194304
+             and metric.get('finite') is True and metric.get('pointwise_passed') is True
+             and type(metric.get('pointwise_violations')) is int and metric['pointwise_violations']==0,
+             'independently reviewed complete w16-control comparisons for every stage')
     for role in ROLES:
         item=review['executable_binding'][role]
         need(item['kernel_hash']==numeric.HASHES[role] and item['cubin_sha256']==numeric.CUBINS[role],'same actual executable '+role)
