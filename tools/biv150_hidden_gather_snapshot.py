@@ -108,7 +108,10 @@ def snapshot(wrapper,phase,run_id,*,expected_run,source_sha256,sdk_pins):
     need(type(runner).__module__=='vllm_fl.worker.model_runner' and type(runner).__name__=='ModelRunnerFL','foreign runner')
     module=sys.modules.get('vllm_fl.patches.biv150_dynamic_hidden_gather')
     need(module is not None and Path(module.__file__).resolve()==ROOT/HELPER,'actual gather helper path')
-    need(os.environ.get(module.ENV)=='1' and os.environ.get(module.DIAGNOSTICS)=='1','gather/diagnostic disabled')
+    feature_environment=dict(name=module.ENV,present=module.ENV in os.environ,
+        raw_value=os.environ.get(module.ENV),effective_enabled=os.environ.get(module.ENV,'1')=='1')
+    need(feature_environment['present'] is False and feature_environment['raw_value'] is None and
+         feature_environment['effective_enabled'] is True and os.environ.get(module.DIAGNOSTICS)=='1','default-only gather/diagnostic scope')
     source=sys.modules.get('vllm_fl.worker.model_runner');order=sys.modules.get('vllm_fl.patches.biv150_compute_order')
     need(source is not None and order is not None and Path(source.__file__).resolve()==ROOT/RUNNER and sha(source.__file__)==order.EXPECTED_RUNNER,'actual runner bytes/pin')
     service=sys.modules.get(SERVICE);encoded=None if service is None else vars(service).get('_STATE')
@@ -136,6 +139,7 @@ def snapshot(wrapper,phase,run_id,*,expected_run,source_sha256,sdk_pins):
         helper_module=str(ROOT/HELPER),runner_module=str(ROOT/RUNNER),kernel_module=str(ROOT/KERNEL),
         implementation_sha256=encoded.installed_digest,native_library=native['library'],mixed_library=encoded.mixed_native.library,
         cold_initialized=state is not None,counts=counts,compiled=objects,compiled_overflow=0,
+        feature_environment=feature_environment,
         host_submit_not_GPU_completion=True,Graph_replays_counted=False,model_precision_verified=False)
     data=json.dumps(payload,sort_keys=True,separators=(',',':'),allow_nan=False)
     need(len(data.encode())<=MAX_JSON_BYTES,'snapshot exceeds size bound');return data

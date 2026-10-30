@@ -17,7 +17,7 @@ def main():
     ck('clean_frozen_ref',b.git(ROOT,'rev-parse','HEAD').decode().strip()==a.commit and not b.git(ROOT,'status','--porcelain'))
     entry=ROOT/b.CONTROLLER;source=entry.read_text();inverse=source
     edits=json.loads((ROOT/'tools/biv150_hidden_gather_controller_edits.json').read_text())
-    ck('five_exact_identity_sites_plus_observation_seams',len(edits)==10)
+    ck('five_exact_identity_sites_plus_observation_and67_request_seams',len(edits)==11)
     for before,after in reversed(edits):ck('inverse_'+after,inverse.count(after)==1);inverse=inverse.replace(after,before,1)
     ck('entire_controller_inverse637d',inverse.encode()==(ROOT/b.PARENT_CONTROLLER).read_bytes())
 

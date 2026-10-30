@@ -8,6 +8,7 @@ import biv150_hidden_gather_snapshot as s
 import biv150_hidden_gather_service_observer as observer
 import biv150_hidden_gather_path_identity as identity
 ROOT=b.ROOT
+DEFAULT_POLICY_PARENT='a1b23be76074a20e2cabd53387f4bc90bb469c68'
 
 def load(path,name):
     spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
@@ -39,6 +40,12 @@ def main():
         except (ValueError,RuntimeError,AssertionError):checks.append(name)
         else:raise AssertionError('accepted '+name)
     helper=load(ROOT/s.HELPER,'cpu122_helper');raw=(ROOT/s.HELPER).read_bytes()
+    ck('production_zero_diff_from_default_policy_parent',not b.git(ROOT,'diff',DEFAULT_POLICY_PARENT,'--','vllm_fl','csrc'))
+    ck('complete_ELF_and_path_admission_unchanged',(ROOT/'tools/biv150_hidden_gather_path_identity.py').read_bytes()==b.git(ROOT,'show',DEFAULT_POLICY_PARENT+':tools/biv150_hidden_gather_path_identity.py'))
+    for name,path in (('compiled_record',Path(s.__file__)),('compiled_verdict',Path(observer.__file__))):
+        old=b.git(ROOT,'show',DEFAULT_POLICY_PARENT+':'+str(path.relative_to(ROOT))).decode();new=path.read_text()
+        get=lambda source:ast.get_source_segment(source,next(n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef) and n.name==name))
+        ck('actual_compile_gate_function_unchanged_'+name,get(new)==get(old))
     parent_raw=b.inverse_default_on(s.HELPER,raw)
     ck('only_two_helper_defaults_from_tested5b',parent_raw==b.git(ROOT,'show',b.DEFAULT_PARENT+':'+s.HELPER))
     restored=b.inverse(parent_raw,json.loads((ROOT/'tools/biv150_hidden_gather_diagnostic_edits.json').read_text()))
@@ -93,6 +100,19 @@ def main():
     ck('empty_probe_environment_also_explicit_OFF',b.clear_environment({})[b.ENV]=='0')
     enabled=b.service_environment(dirty,Path('/private/tmp/exact-reviewed-ebbc-placeholder.so'))
     ck('service_enables_gather_and_preserves_native',enabled[b.ENV]=='1' and enabled[b.old.ENV]=='1' and enabled['VLLM_FL_BIV150_KONLY_NATIVE_DECODE']=='1' and not any(k in enabled for k in observer.PRIVATE_KEYS))
+    # Actual environment method; only constructor inputs are finite CPU fixtures.
+    def session_fixture():
+        session=observer.Session.__new__(observer.Session);session._token=None;session.source=ROOT;session.run_id='cpu-default-worker'
+        session.hashes={name:b.sha(ROOT/name) for name in b.TOOLS};session.source_hashes={name:b.sha(ROOT/name) for name in b.PRODUCTION}
+        return session
+    worker_env=session_fixture().service_environment(enabled)
+    ck('actual_observer_returns_unset_worker_env_without_mutating_explicit_ON_input',b.ENV not in worker_env and enabled[b.ENV]=='1' and worker_env[b.DIAGNOSTICS]=='1')
+    for key in ('VLLM_FL_BIV150_KONLY_NATIVE_DECODE',b.old.ENV):ck('unset_worker_keeps_accepted_native_'+key,worker_env[key]==enabled[key])
+    refuse('observer_setup_explicit_zero_refused',lambda:session_fixture().service_environment(dict(enabled,**{b.ENV:'0'})))
+    guard=next(n.test for n in ast.walk(ast.parse(entry)) if isinstance(n,ast.If) and isinstance(n.test,ast.UnaryOp) and 'a.gather_diagnostics' in ast.unparse(n.test))
+    for mode in ('plain','math','supplemental','throughput'):
+        flags=NS(math105=mode=='math',supplemental_native_math105_64=mode=='supplemental',throughput=mode=='throughput',gather_diagnostics=mode=='plain')
+        ck('no_added96_requests_'+mode,eval(compile(ast.Expression(guard),'actual_controller_guard','eval'),{'a':flags}) is False)
     args=NS(baseline=False,q32_hoist=True,native_gqa_library=Path('/CPU-fixture/0c66.so'),native_gqa_sha256='0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8',native_k8_library=Path('/CPU-fixture/5898.so'),native_k8_sha256=b.PARENT,
         mixed_native_library=Path('/CPU-fixture/ebbc.so'),mixed_native_sha256=b.MIXED,graph_coverage_bootstrap_dir=None,
         mixed_source_bridge=Path('/CPU-fixture/bridge.json'),mixed_source_bridge_sha256='0'*64,
@@ -187,13 +207,18 @@ def main():
         s.SERVICE:NS(__file__=str(ROOT/'vllm_fl/patches/biv150_konly_encoded_service.py'),_STATE=enc),
         'vllm_fl.patches.biv150_dynamic_hidden_gather_kernel':NS(__file__=str(ROOT/s.KERNEL),gather_hidden_bits=function)}
     args=dict(expected_run='cpu',source_sha256=b.sha(s.__file__),sdk_pins=s.SDK_PINS)
-    with patch.dict(sys.modules,modules),patch.dict(os.environ,{b.ENV:'1',b.DIAGNOSTICS:'1'}),patch.object(s,'process_identity',lambda:(101,201)),patch.object(s,'loaded_launcher_binding',lambda launch:copy.deepcopy(binding)):
+    with patch.dict(sys.modules,modules),patch.dict(os.environ,{b.DIAGNOSTICS:'1'},clear=True),patch.object(s,'process_identity',lambda:(101,201)),patch.object(s,'loaded_launcher_binding',lambda launch:copy.deepcopy(binding)):
         refuse('worker_missing_refused',lambda:s.snapshot(NS(),'smoke-before','cpu',**args))
+        for value in ('0','1'):
+            with patch.dict(os.environ,{b.ENV:value}):refuse('explicit_worker_feature_refused_'+value,lambda:s.snapshot(wrapper,'smoke-before','cpu',**args))
         before=json.loads(s.snapshot(wrapper,'smoke-before','cpu',**args));ck('before_real_cold_has_zero_not_fabricated_success',before['counts']==dict.fromkeys(s.COUNTERS,0) and not before['cold_initialized'])
+        ck('snapshot_records_raw_absence_and_effective_default_ON',before['feature_environment']==observer.DEFAULT_ENVIRONMENT)
         diagnostics={s.COUNTERS[0]:2,s.COUNTERS[1]:3,'compiled':{id(k):k},'overflow':0}
         setattr(runner,helper._STATE,dict(codes=helper._codes(runner),event=runner.prepare_inputs_event,diagnostics=diagnostics))
         after=json.loads(s.snapshot(wrapper,'smoke-after','cpu',**args));d=observer.delta(before,after)
-        ck('same_worker_both_sources_delta',d['both_sources_submitted'] and d['counts']==dict(zip(s.COUNTERS,(2,3))))
+        ck('same_worker_both_sources_delta',d['both_sources_submitted'] and d['counts']==dict(zip(s.COUNTERS,(2,3))) and d['default_worker_environment_verified'])
+        wrong=copy.deepcopy(after);wrong['feature_environment']['present']=True;wrong['feature_environment']['raw_value']='1'
+        refuse('environment_change_between_snapshots_refused',lambda:observer.delta(before,wrong))
         ck('snapshot_reads_only_supplied_compiled_object',after['compiled']==[row])
         wrong=copy.deepcopy(after);wrong['start_ticks']+=1;refuse('worker_epoch_change_refused',lambda:observer.delta(before,wrong))
         wrong=copy.deepcopy(after);wrong['counts'][s.COUNTERS[0]]=-1;refuse('counter_regression_refused',lambda:observer.delta(before,wrong))

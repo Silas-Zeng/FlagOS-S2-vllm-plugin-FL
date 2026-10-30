@@ -622,7 +622,7 @@ def run(a):
         burst=concurrent_burst64();m.atomic(out/'native-burst64-requests.json',burst);owned.remember()
         manifest['native_burst64']=dict(completed=burst['completed'],diagnostic_only=True,quality_covered=False)
         manifest['native_burst64_window']=runtime_window(out/'server.log',offset,out,'native-burst64',a.native_k8_library)
-        if not (a.math105 or a.supplemental_native_math105_64 or a.throughput):
+        if not (a.math105 or a.supplemental_native_math105_64 or a.throughput or a.gather_diagnostics):
             save('mixed_overlap_smoke')
             mixed_smoke=mixed_bridge.mixed_smoke_requests();m.atomic(out/'mixed-overlap-smoke-requests.json',mixed_smoke);owned.remember()
         manifest['mixed_smoke_window']=mixed_bridge.smoke_window(out/'server.log',smoke_start,(out/'server.log').stat().st_size)

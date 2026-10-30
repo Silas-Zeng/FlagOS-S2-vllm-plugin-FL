@@ -38,5 +38,9 @@
   [
     "    p.add_argument('--q32-hoist', action='store_true')\n",
     "    p.add_argument('--q32-hoist', action='store_true')\n    p.add_argument('--gather-diagnostics',action='store_true',help='Plain smoke only: fixed worker submit counters; prohibited for Math/throughput')\n"
+  ],
+  [
+    "        if not (a.math105 or a.supplemental_native_math105_64 or a.throughput):",
+    "        if not (a.math105 or a.supplemental_native_math105_64 or a.throughput or a.gather_diagnostics):"
   ]
 ]

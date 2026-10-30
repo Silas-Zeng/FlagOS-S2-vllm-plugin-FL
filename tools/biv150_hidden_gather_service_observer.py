@@ -5,16 +5,18 @@ import biv150_hidden_gather_service_bridge as b
 import biv150_hidden_gather_snapshot as s
 import biv150_hidden_gather_path_identity as identity
 PRIVATE_KEYS=(s.ENABLE,s.TOKEN,s.RUN_ID,b.DIAGNOSTICS)
+DEFAULT_ENVIRONMENT=dict(name=b.ENV,present=False,raw_value=None,effective_enabled=True)
 
 def need(ok,message):
     if not ok:raise ValueError('Gather smoke observer: '+message)
 
 def delta(before,after):
     for key in ('schema','run_id','pid','start_ticks','rpc_rank','implementation_sha256','tool_source_sha256','sdk_pins',
-                'source_files','helper_module','runner_module','kernel_module','native_library','mixed_library'):
+                'source_files','helper_module','runner_module','kernel_module','native_library','mixed_library','feature_environment'):
         need(before[key]==after[key],'worker/source changed: '+key)
     need(before['phase']=='smoke-before' and after['phase']=='smoke-after' and before['schema']==s.SCHEMA,'fixed phase/schema')
     need(after['monotonic_ns']>=before['monotonic_ns'],'snapshot order')
+    need(after['feature_environment']==DEFAULT_ENVIRONMENT,'worker must use the exact default, not explicit ON/OFF')
     values={}
     for name in s.COUNTERS:
         x,y=before['counts'][name],after['counts'][name]
@@ -22,7 +24,7 @@ def delta(before,after):
     need(before['compiled_overflow']==after['compiled_overflow']==0,'compiled overflow')
     return dict(counts=values,ordinary_submitted=values[s.COUNTERS[0]]>0,Plan_submitted=values[s.COUNTERS[1]]>0,
                 both_sources_submitted=all(v>0 for v in values.values()),host_submit_not_GPU_completion=True,
-                Graph_replays_counted=False,model_precision_verified=False)
+                default_worker_environment_verified=True,Graph_replays_counted=False,model_precision_verified=False)
 
 def compiled_verdict(row):
     binding=row.get('launcher_binding');expected=b.PINS['C_function']
@@ -78,6 +80,7 @@ class Session:
         self._token=secrets.token_urlsafe(32)
         result.update({s.ENABLE:'1',s.TOKEN:self._token,s.RUN_ID:self.run_id,b.DIAGNOSTICS:'1',
                        'PYTHONPATH':str(self.source/'tools/hidden_gather_bootstrap')+os.pathsep+result.get('PYTHONPATH','')})
+        result.pop(b.ENV) # Only the plain-smoke observer removes the validated ON key.
         return result
 
     def capture(self,phase,owned,server_owner):
@@ -97,7 +100,8 @@ class Session:
         expected=dict(schema=s.SCHEMA,phase=phase,run_id=self.run_id,rpc_rank=0,tool_source_sha256=self.hashes['tools/biv150_hidden_gather_snapshot.py'],
             sdk_pins=s.SDK_PINS,implementation_sha256=self.implementation,source_files=self.source_hashes,
             helper_module=str(self.source/s.HELPER),runner_module=str(self.source/s.RUNNER),kernel_module=str(self.source/s.KERNEL),
-            native_library=self.native,mixed_library=self.mixed,host_submit_not_GPU_completion=True,Graph_replays_counted=False,model_precision_verified=False)
+            native_library=self.native,mixed_library=self.mixed,feature_environment=DEFAULT_ENVIRONMENT,
+            host_submit_not_GPU_completion=True,Graph_replays_counted=False,model_precision_verified=False)
         for key,want in expected.items():need(value.get(key)==want,'RPC identity '+key)
         owned.remember();pid=value.get('pid');ticks=value.get('start_ticks')
         need(type(pid) is int and pid>0 and type(ticks) is int and ticks>0,'worker identity missing')
@@ -113,11 +117,13 @@ class Session:
         if self.previous is not None:
             self.verdict=delta(self.previous,value)
             self.verdict['actual_compile_identity_verified']=bool(value['compiled']) and all(compiled_verdict(row) for row in value['compiled'])
+            self.verdict['default_worker_gather_verified']=self.verdict['default_worker_environment_verified'] and bool(any(self.verdict['counts'].values())) and self.verdict['actual_compile_identity_verified']
         self.previous=value;self._index()
 
     def public(self):
         return dict(enabled=True,source_commit=self.commit,source_hashes=self.hashes,run_id=self.run_id,
-                    snapshots=list(self.rows),delta=self.verdict,host_submit_not_GPU_completion=True,model_precision_verified=False)
+                    snapshots=list(self.rows),delta=self.verdict,worker_environment_required=DEFAULT_ENVIRONMENT,
+                    host_submit_not_GPU_completion=True,model_precision_verified=False)
 
     def _index(self):
         path=self.directory/'index.json';temp=self.directory/'index.next'

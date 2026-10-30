@@ -30,7 +30,9 @@ DEFAULT_EDITS={
         "    features['VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER'] = env.get('VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER', '1') == '1'"),),
     CONTROLLER:((
         "    if env.get(mixed_bridge.ENV)!='1' or mixed_bridge.ENV in off_env or expected==gather_off:",
-        "    if env.get(mixed_bridge.ENV)!='1' or off_env.get(mixed_bridge.ENV)!='0' or expected==gather_off:"),),
+        "    if env.get(mixed_bridge.ENV)!='1' or off_env.get(mixed_bridge.ENV)!='0' or expected==gather_off:"),(
+        "        if not (a.math105 or a.supplemental_native_math105_64 or a.throughput):",
+        "        if not (a.math105 or a.supplemental_native_math105_64 or a.throughput or a.gather_diagnostics):")),
 }
 TOOLS=(BRIDGE,CONTROLLER,'tools/biv150_hidden_gather_service_observer.py','tools/biv150_hidden_gather_snapshot.py',
        'tools/hidden_gather_bootstrap/sitecustomize.py','tools/biv150_hidden_gather_sme1_pins.json',
@@ -70,7 +72,7 @@ def current_identity(root,ref):
         need(sha(root/name)==pin and (root/name).read_bytes()==git(root,'show',MAIN+':'+name),'unchanged118 protocol/support')
     need(Path(old.__file__).resolve()==root/LEGACY,'actual118 support import')
     edits=json.loads((root/'tools/biv150_hidden_gather_controller_edits.json').read_text())
-    need(inverse_default_on(CONTROLLER,(root/CONTROLLER).read_bytes())==git(root,'show',DEFAULT_PARENT+':'+CONTROLLER),'only explicit OFF fingerprint check from tested5b controller')
+    need(inverse_default_on(CONTROLLER,(root/CONTROLLER).read_bytes())==git(root,'show',DEFAULT_PARENT+':'+CONTROLLER),'only explicit OFF check and67-request default smoke from tested5b controller')
     need(inverse((root/CONTROLLER).read_bytes(),edits)==(root/PARENT_CONTROLLER).read_bytes(),'whole controller reverse to637d')
     for name in TOOLS:need((root/name).read_bytes()==git(root,'show',ref+':'+name),'actual frozen tool '+name)
     return dict(source_commit=ref,production=old.production(root,ref),main_dependency=MAIN,component_source=COMPONENT,
@@ -79,6 +81,7 @@ def current_identity(root,ref):
         original118_bridge_sha256=LEGACY_SHA,parent_controller_sha256=PARENT_SHA,
         only_default_enable_and_optional_diagnostic_host_delta_from_component=True,controller_inverse_to118=True,
         default_enable_parent=DEFAULT_PARENT,default_on_inverse_exact_tested_parent=True,
+        plain_smoke_unset_worker_environment=True,plain_smoke_requests=67,
         accepted_native_sha256=PARENT,accepted_mixed_sha256=MIXED,qualification=QUALIFICATION,
         unchanged_main899_other_production=True,service_verified=False)
 
