@@ -83,6 +83,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         features["VLLM_FL_BIV150_GQA_DECODE"]
         and env.get("VLLM_FL_BIV150_NATIVE_GQA", "1") == "1")
     features["VLLM_FL_BIV150_KONLY_ENCODED_SERVICE"] = env.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"
+    features['VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER'] = env.get('VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER', '1') == '1'
     native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'
     features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8
     mixed_native = env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE','0') == '1'
