@@ -27,6 +27,10 @@ from vllm_fl.patches.biv150_lm_head_temperature import (
 from vllm_fl.patches.biv150_cpu_metadata import try_cpu_metadata as _biv150_try_cpu_metadata
 from vllm_fl.patches.biv150_async_token_update import fused_sampled_token_update as _biv150_fused_sampled_token_update
 from vllm_fl.patches.biv150_compute_order import make_plan as _biv150_compute_order_plan
+from vllm_fl.patches.biv150_dynamic_hidden_gather import (
+    prepare as _biv150_prepare_hidden_gather,
+    try_gather as _biv150_try_hidden_gather,
+)
 import torch.distributed
 import torch.nn as nn
 from tqdm import tqdm
@@ -4282,6 +4286,14 @@ class ModelRunnerFL(
             if compute_order is not None:
                 compute_order.check_dispatch(cudagraph_mode, batch_desc, should_ubatch, num_tokens_across_dp)
 
+            # CPU provenance stays inside the original input-prep event domain.
+            _biv150_hidden_gather_receipt = (
+                _biv150_prepare_hidden_gather(
+                    self, logits_indices, num_scheduled_tokens_np,
+                    num_tokens_unpadded, compute_order, spec_decode_metadata,
+                ) if cudagraph_mode == CUDAGraphMode.NONE and not should_ubatch else None
+            )
+
             logger.debug(
                 "Running batch with cudagraph_mode: %s, batch_descriptor: %s, "
                 "should_ubatch: %s, num_tokens_across_dp: %s",
@@ -4483,7 +4495,12 @@ class ModelRunnerFL(
                         kv_connector_output,
                     )
 
-                sample_hidden_states = hidden_states[logits_indices]
+                sample_hidden_states = _biv150_try_hidden_gather(
+                    self, hidden_states, logits_indices, _biv150_hidden_gather_receipt,
+                    cudagraph_mode == CUDAGraphMode.NONE, spec_decode_metadata,
+                )
+                if sample_hidden_states is None:
+                    sample_hidden_states = hidden_states[logits_indices]
                 logits, head_temperature_state = _biv150_head_compute_logits(
                     self, sample_hidden_states, scheduler_output, spec_decode_metadata
                 )

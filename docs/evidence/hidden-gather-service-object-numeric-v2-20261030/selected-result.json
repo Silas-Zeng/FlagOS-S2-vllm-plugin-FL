@@ -1,0 +1,184 @@
+{
+  "SDK_sources": {
+    "/usr/local/lib/python3.12/site-packages/triton/backends/iluvatar/driver.py": {
+      "bytes": 27682,
+      "sha256": "5023c317de1c2f3370d254320849a2013f68b353fd35884c60d857823c424f50"
+    },
+    "/usr/local/lib/python3.12/site-packages/triton/runtime/build.py": {
+      "bytes": 5095,
+      "sha256": "d6d0c78e98a1fba75923337af6e2b45df17033c90295303941b2a47d4cfca00c"
+    }
+  },
+  "actual_C_function": {
+    "ELF_bytes": 4889,
+    "ELF_offset": 5216,
+    "actual_platform_key": "x86_64,Linux,64bit,",
+    "all5_binding_records_identical": true,
+    "cache_directory": "H7POXA2W3X5GQEOXOQQOM2VCB5S6HLHVZLJF3SAXLAJPDJFQOIOA",
+    "generated_C_sha256": "16b5948ce5a3d75dd077147571f2c544cc6d99e6c6890c988652ef26bb2c6f0f",
+    "name": "launch"
+  },
+  "actual_cubin_sha256": "4a9f93b84bd32f725d101ffb15f081f6b7345af149ba64abcc4e117369ef928e",
+  "actual_gpu_hash": "b0fa4a52f87904075643190bf02047cdd59bd288aff4a1c1cd62a6416ed0976f",
+  "actual_launcher_sha256": "512414b6fbfae2135b62153619ef1f5919bd2fd07018058cd45035de1d83e361",
+  "boundaries": {
+    "Graph_numeric_verified": false,
+    "all12_full_output_arrays_independently_replayed": true,
+    "candidate_backend_compile": "source-enforced initial backend and later candidate-cache-miss barriers; byte-exact7-child group retained; other framework compile permitted",
+    "capture_is_external_early_refusal_only": true,
+    "component_numeric_passed": true,
+    "constructed_Plan_not_actual_service_Plan": true,
+    "current_numeric_process_C_binding_proven": true,
+    "direct_guards_separate_protocol_same_loaded_object": true,
+    "direct_hidden_indices_output_after": "all4 direct guard cases full after buffers independently replayed",
+    "helper_hidden_after": "8 helper calls had original synchronized full hidden-after equality assertion; after bytes not separately saved, no offline after-array replay claimed",
+    "helper_output_canary_injected": false,
+    "historical_service_C_binding_proven": false,
+    "model_precision_verified": false,
+    "natural_seed18_1_warmup_only": true,
+    "performance_verified": false,
+    "service_verified": false,
+    "side_stream_verified": false,
+    "timing_executed": false
+  },
+  "candidate_counts": {
+    "helper_launches": 8,
+    "natural18_1_seed_launches": 0,
+    "other_framework_or_control_GPU_operations_not_counted_here": true,
+    "separate_direct_guard_launches": 4,
+    "warmups": 5
+  },
+  "cases": [
+    {
+      "M": 65,
+      "N": 9,
+      "kind": "ordinary",
+      "output_sha256": "57b82231263a9eb7da9dae478df3ccf08d69754756af1f30b36f07b7a2882c22",
+      "output_uint16_words": 18432,
+      "phase": "A"
+    },
+    {
+      "M": 65,
+      "N": 9,
+      "kind": "ordinary",
+      "output_sha256": "4e0db324f8e06d68664da5523e7e4434b2301e7e72f95b38f5bac18633eee73a",
+      "output_uint16_words": 18432,
+      "phase": "B"
+    },
+    {
+      "M": 65,
+      "N": 9,
+      "kind": "Plan",
+      "output_sha256": "015518992b6a529591b4b3fb87013bfc7ceb5b67c01fa53368c3509f4634da76",
+      "output_uint16_words": 18432,
+      "phase": "A"
+    },
+    {
+      "M": 65,
+      "N": 9,
+      "kind": "Plan",
+      "output_sha256": "fa7b81bfa92f14a8f1d3651f560f08350c522390ff426fa91f29504479edf9eb",
+      "output_uint16_words": 18432,
+      "phase": "B"
+    },
+    {
+      "M": 2018,
+      "N": 61,
+      "kind": "ordinary",
+      "output_sha256": "048f076e0f60812022d90f21177aadbd28db5d31a74d775af0b766ed636a81bb",
+      "output_uint16_words": 124928,
+      "phase": "A"
+    },
+    {
+      "M": 2018,
+      "N": 61,
+      "kind": "ordinary",
+      "output_sha256": "dc788cf50bba592a8f2cd1a53911d8152da6c2d516c2d1ab1d9b2a1c6dc61443",
+      "output_uint16_words": 124928,
+      "phase": "B"
+    },
+    {
+      "M": 2018,
+      "N": 61,
+      "kind": "Plan",
+      "output_sha256": "fad91f0209ff27e9cad41205bb3a6741ce6057f5f9425084ae7a667340840170",
+      "output_uint16_words": 124928,
+      "phase": "A"
+    },
+    {
+      "M": 2018,
+      "N": 61,
+      "kind": "Plan",
+      "output_sha256": "6eb8b51cde84b4c7786ba511f88026e5ee65d94ff8ef389ec8dec38a5142ca3e",
+      "output_uint16_words": 124928,
+      "phase": "B"
+    }
+  ],
+  "direct_guard_cases": [
+    {
+      "M": 65,
+      "N": 9,
+      "all7_original_checks_passed": true,
+      "phase": "A"
+    },
+    {
+      "M": 65,
+      "N": 9,
+      "all7_original_checks_passed": true,
+      "phase": "B"
+    },
+    {
+      "M": 2018,
+      "N": 61,
+      "all7_original_checks_passed": true,
+      "phase": "A"
+    },
+    {
+      "M": 2018,
+      "N": 61,
+      "all7_original_checks_passed": true,
+      "phase": "B"
+    }
+  ],
+  "full_uint16_outputs": {
+    "all_equal_to_independent_oracle": true,
+    "direct_guard_words": 286720,
+    "helper_words": 573440
+  },
+  "independent_auditor_sha256": "27d1e2b0c5fee808bcd9ae9e49d8aea6307f3b18ee8e14c216eb96a73cd52b54",
+  "independent_review_sha256": "e8d90e577201fb6c1d90e673cb6f30c1cdb8a25f87efbc8544df19ab496d4fb5",
+  "kind": "selected_component_numeric_evidence_only",
+  "main_dependency": "899ce77470b0b539aebc108fd122f668c2d5894d",
+  "manifest_sha256": "59547837a9ed8e4fceb9b0aafcc218fe31ca8a1d19513dd76c2399da73814008",
+  "next_step_pending": "Narrow service snapshot C-pointer ownership observation and new exact SME1 qualification; require new bridge and actual smoke ACK. Fresh compilation byte differences must be recorded/reviewed; no automatic allowlist expansion.",
+  "old_5f3_historical_module_label_not_rewritten": true,
+  "old_d74_failure_preserved": true,
+  "owner": {
+    "pid": 241672,
+    "same_start": true,
+    "start_ticks": 365280939,
+    "state": "Z"
+  },
+  "raw_bytes": 20747155,
+  "raw_files": 90,
+  "resources": {
+    "known": true,
+    "n_regs": 6,
+    "n_spills": 0,
+    "num_stages": 1,
+    "num_warps": 4,
+    "shared": 0,
+    "use_sme": 1,
+    "warp_size": 64
+  },
+  "shared_raw_arrays_logs_or_binaries": false,
+  "summary_sha256": "15209402270d6ac6c03e11c431716dec975b29bf9b9b2b7e8c097ea0fb1786f7",
+  "tested_source": "73470bbcc28f63cba715a64b94766fbd550301b4",
+  "warnings": {
+    "empty_CUDA_Graph_warning": true,
+    "libentry_replay_benchmarker_fallback_warning": true,
+    "original_log_sha256": "efb85f7fa9bb5dd4e6c3ceee6e5c59459609e39d6dbad28a2d2a9e190ca0ca9f",
+    "original_warning_lines_retained_in_private_review": true,
+    "temporary_directory_ResourceWarnings": 3
+  }
+}

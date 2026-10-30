@@ -1,0 +1,332 @@
+{
+  "ABI": {
+    "constants": {
+      "5": 8,
+      "6": 128
+    },
+    "signature": {
+      "0": "*bf16",
+      "1": "*i32",
+      "2": "*bf16",
+      "3": "i32",
+      "4": "i32",
+      "5": "constexpr",
+      "6": "constexpr"
+    },
+    "supported": true,
+    "typed": {
+      "attrs": {
+        "items": [
+          [
+            {
+              "items": [
+                {
+                  "type": "int",
+                  "value": 0
+                }
+              ],
+              "type": "tuple"
+            },
+            {
+              "items": [
+                {
+                  "items": [
+                    {
+                      "type": "str",
+                      "value": "tt.divisibility"
+                    },
+                    {
+                      "type": "int",
+                      "value": 4
+                    }
+                  ],
+                  "type": "list"
+                }
+              ],
+              "type": "list"
+            }
+          ],
+          [
+            {
+              "items": [
+                {
+                  "type": "int",
+                  "value": 1
+                }
+              ],
+              "type": "tuple"
+            },
+            {
+              "items": [
+                {
+                  "items": [
+                    {
+                      "type": "str",
+                      "value": "tt.divisibility"
+                    },
+                    {
+                      "type": "int",
+                      "value": 4
+                    }
+                  ],
+                  "type": "list"
+                }
+              ],
+              "type": "list"
+            }
+          ],
+          [
+            {
+              "items": [
+                {
+                  "type": "int",
+                  "value": 2
+                }
+              ],
+              "type": "tuple"
+            },
+            {
+              "items": [
+                {
+                  "items": [
+                    {
+                      "type": "str",
+                      "value": "tt.divisibility"
+                    },
+                    {
+                      "type": "int",
+                      "value": 4
+                    }
+                  ],
+                  "type": "list"
+                }
+              ],
+              "type": "list"
+            }
+          ]
+        ],
+        "type": "dict"
+      },
+      "constants": {
+        "items": [
+          [
+            {
+              "items": [
+                {
+                  "type": "int",
+                  "value": 5
+                }
+              ],
+              "type": "tuple"
+            },
+            {
+              "type": "int",
+              "value": 8
+            }
+          ],
+          [
+            {
+              "items": [
+                {
+                  "type": "int",
+                  "value": 6
+                }
+              ],
+              "type": "tuple"
+            },
+            {
+              "type": "int",
+              "value": 128
+            }
+          ]
+        ],
+        "type": "dict"
+      },
+      "signature": {
+        "items": [
+          [
+            {
+              "type": "str",
+              "value": "hidden"
+            },
+            {
+              "type": "str",
+              "value": "*bf16"
+            }
+          ],
+          [
+            {
+              "type": "str",
+              "value": "indices"
+            },
+            {
+              "type": "str",
+              "value": "*i32"
+            }
+          ],
+          [
+            {
+              "type": "str",
+              "value": "output"
+            },
+            {
+              "type": "str",
+              "value": "*bf16"
+            }
+          ],
+          [
+            {
+              "type": "str",
+              "value": "input_rows"
+            },
+            {
+              "type": "str",
+              "value": "i32"
+            }
+          ],
+          [
+            {
+              "type": "str",
+              "value": "selected_rows"
+            },
+            {
+              "type": "str",
+              "value": "i32"
+            }
+          ],
+          [
+            {
+              "type": "str",
+              "value": "BLOCK_R"
+            },
+            {
+              "type": "str",
+              "value": "constexpr"
+            }
+          ],
+          [
+            {
+              "type": "str",
+              "value": "BLOCK_D"
+            },
+            {
+              "type": "str",
+              "value": "constexpr"
+            }
+          ]
+        ],
+        "type": "dict"
+      }
+    },
+    "verified": true
+  },
+  "C_function": {
+    "DSO_offset": 5216,
+    "cache_directory": "H7POXA2W3X5GQEOXOQQOM2VCB5S6HLHVZLJF3SAXLAJPDJFQOIOA",
+    "filename": "__triton_launcher.cpython-312-x86_64-linux-gnu.so",
+    "method_flags": 1,
+    "method_name": "launch"
+  },
+  "component_source": "73470bbcc28f63cba715a64b94766fbd550301b4",
+  "cubin": "4a9f93b84bd32f725d101ffb15f081f6b7345af149ba64abcc4e117369ef928e",
+  "files": {
+    "asm": {
+      "bytes": 13936,
+      "sha256": "e397e75e5c7601af6757a1eb0945427d7e61961cdba7579b50dd97689e31e3dc"
+    },
+    "cubin": {
+      "bytes": 3976,
+      "sha256": "4a9f93b84bd32f725d101ffb15f081f6b7345af149ba64abcc4e117369ef928e"
+    },
+    "llir": {
+      "bytes": 9143,
+      "sha256": "5bbb23594f70514dbff7aa310c2b7fad9483881b152f5e9cc4ca1033e4a49e69"
+    },
+    "source": {
+      "bytes": 15961,
+      "sha256": "5e5d73eec44d15caa62bf0294ba906511e9e537b5c369c4a508910cbaa1838fe"
+    },
+    "ttgir": {
+      "bytes": 12689,
+      "sha256": "bad5a7c27855eb23494fe4240482452889fe124dfe2614ef025f824b259a330f"
+    },
+    "ttir": {
+      "bytes": 11023,
+      "sha256": "16f4fd874b65cfe432cea4383b22b527b4c504fb192ccb059ceb00c75323a929"
+    }
+  },
+  "hash": "b0fa4a52f87904075643190bf02047cdd59bd288aff4a1c1cd62a6416ed0976f",
+  "kernel_source_sha256": "c5613dc8645e862fee10be013f2238d436aa5760d3f5501be560c257b8d3ece5",
+  "launcher": "512414b6fbfae2135b62153619ef1f5919bd2fd07018058cd45035de1d83e361",
+  "numeric_scope": {
+    "constructed_Plan": true,
+    "direct_guard_launches": 4,
+    "helper_launches": 8,
+    "historical_service_C_binding_proven": false,
+    "performance_verified": false,
+    "service_verified": false
+  },
+  "options": {
+    "allowed_dot_input_precisions": [
+      "tf32",
+      "tf32x3",
+      "ieee",
+      "bf16x3",
+      "bf16x6"
+    ],
+    "arch": "sm71",
+    "backend_name": "corex",
+    "debug": false,
+    "default_dot_input_precision": "tf32",
+    "deprecated_fp8_dot_operand_dtypes": [],
+    "enable_fp_fusion": true,
+    "enable_reflect_ftz": true,
+    "extern_libs": [
+      [
+        "libdevice",
+        "/usr/local/corex-4.5.0/nvvm/libdevice/libdevice.compute_bi.10.bc"
+      ]
+    ],
+    "global_scratch_align": 1,
+    "global_scratch_size": 0,
+    "hash": "b0fa4a52f87904075643190bf02047cdd59bd288aff4a1c1cd62a6416ed0976f",
+    "instrumentation_mode": "",
+    "ir_override": null,
+    "launch_cooperative_grid": false,
+    "launch_pdl": false,
+    "max_num_imprecise_acc_default": 0,
+    "maxnreg": null,
+    "name": "gather_hidden_bits",
+    "num_ctas": 1,
+    "num_stages": 1,
+    "num_warps": 4,
+    "profile_scratch_align": 1,
+    "profile_scratch_size": 0,
+    "ptx_options": null,
+    "ptx_version": null,
+    "sanitize_overflow": true,
+    "shared": 0,
+    "supported_fp8_dtypes": [
+      "fp8e4nv",
+      "fp8e5"
+    ],
+    "target": "GPUTarget(backend='corex', arch=71, warp_size=64)",
+    "tensordesc_meta": [],
+    "tmem_size": null,
+    "triton_version": "3.6.0",
+    "use_sme": 1,
+    "warp_size": 64
+  },
+  "resources": {
+    "known": true,
+    "n_regs": 6,
+    "n_spills": 0,
+    "num_stages": 1,
+    "num_warps": 4,
+    "shared": 0,
+    "use_sme": 1,
+    "warp_size": 64
+  },
+  "review_sha256": "e8d90e577201fb6c1d90e673cb6f30c1cdb8a25f87efbc8544df19ab496d4fb5",
+  "summary_sha256": "15209402270d6ac6c03e11c431716dec975b29bf9b9b2b7e8c097ea0fb1786f7"
+}

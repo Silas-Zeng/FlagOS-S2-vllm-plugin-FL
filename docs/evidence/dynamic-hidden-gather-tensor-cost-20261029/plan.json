@@ -1,0 +1,62 @@
+{
+  "FlagGems": "same Worker rank0 default enable(record=True,once=True); output recording path isolated; vendor exclusions not overridden; actual index function/code/cache must be observed before timing",
+  "Graph_numeric": false,
+  "actual_device_work": 0,
+  "additional_real_Tensor_OFF_numeric_calls_planned": 8,
+  "candidate": "same actual Tensor and original execute_model/_prepare_inputs/receipt/new output/_launch",
+  "cases": [
+    [
+      65,
+      9,
+      "ordinary"
+    ],
+    [
+      65,
+      9,
+      "Plan"
+    ],
+    [
+      2018,
+      61,
+      "ordinary"
+    ],
+    [
+      2018,
+      61,
+      "Plan"
+    ]
+  ],
+  "control": "same actual Tensor; feature OFF executes original hidden_states[logits_indices] seam",
+  "default_CPU": true,
+  "dispatch_source_pins": {
+    "vllm_fl/dispatch/config/__init__.py": "2493096111a4a51548ae9d1c7f3fae7e89ecdf16c226f0dcaef37759d067bc90",
+    "vllm_fl/dispatch/config/iluvatar.yaml": "e37660b6cd5b8dbe0b927e03c9f3bc4e130e42ed643d099eb20981b9afdf95a7",
+    "vllm_fl/envs.py": "ecae13cf9bb3cbc83c0c411bd15420031a543743a94b0fe1d41dd959c803222f",
+    "vllm_fl/utils.py": "1c841db50d0c4370d3d04fa0383a87eaa3ceba667df0ffe66aca8f482830c429",
+    "vllm_fl/worker/worker.py": "a8de1780d1b41bf4889c26f3d593e6ec54e91a5f61996ce64b4d79f2a97efa24"
+  },
+  "first_baseline_compile_outside_timing": true,
+  "full_call_scope": "controlled original execute_model, original input preparation/H2D/event wait, receipt, allocation and host/launch; model/head arithmetic excluded; not service",
+  "measured_calls_per_block": 32,
+  "numeric_candidate_calls_planned": 8,
+  "order": "ABBA",
+  "parent": "8e65fcc27ac26a6ab08403b9e2208d3acf9eeb39",
+  "performance_verified": false,
+  "private_loop_edits": 3,
+  "production_diff": false,
+  "production_feature_default": "OFF",
+  "production_warmups_planned": 4,
+  "real_make_plan_or_C3": false,
+  "service_policy_evidence": {
+    "controller": "637d29e30c86a56e0536548b5678067954c8900046dc2d1a9dd78a96f4fa7199",
+    "manifest": "bff4dcb835c5c0de0bf9eeef29829da6f777059558f402aaa1b7e33bce2da16e",
+    "server_log": "e13480803a70ce788665ff2820cadae2b4fdc6b0ad04d974d5755a33afce27c2",
+    "source": "69827253756a0ef9e618ae0322e9ff361e93504f"
+  },
+  "service_verified": false,
+  "side_stream": false,
+  "timed_backend_compile_prohibited": true,
+  "timed_memory_cache_and_file_inventory_must_be_unchanged": true,
+  "timing_opt_in": true,
+  "warmup_calls_per_block": 8
+}
