@@ -1,0 +1,126 @@
+{
+  "K_Q_codec": "unchanged rational RN32/RNE",
+  "Root_exclusive_scheduling_required": true,
+  "V_codes_byte_offset": 8192,
+  "V_scale_FP32_page_stride": 4096,
+  "V_scales_byte_offset": 12288,
+  "actual_compile_source": "fcf11f11f1d3d241784d292b7970c3d2fd862594",
+  "cache_pages": 389,
+  "capacity_recovered": false,
+  "cases": [
+    [
+      64,
+      2,
+      2048
+    ],
+    [
+      64,
+      2,
+      2560
+    ]
+  ],
+  "component": "isolated packed V8 N64/S2 consumer; no writer or timing",
+  "control_V": "BF16_RNE(F32(signed_I8_code*F32scale))",
+  "cross_arm": "full guarded partial/maximum/summation/output bitwise; input caches intentionally have different typed roles",
+  "default_stdlib_only": true,
+  "development_base": "5f0086be50f1d6d115c1ebb25b9d3c7250470372",
+  "final_reference": "original ideal quantized-QK FP64 over dequantized BF16 V",
+  "lengths": [
+    0,
+    1,
+    15,
+    16,
+    17,
+    31,
+    32,
+    33,
+    63,
+    64,
+    65,
+    127,
+    128,
+    129,
+    191,
+    192,
+    193,
+    6143,
+    6144
+  ],
+  "library_sha256": null,
+  "model_verified": false,
+  "numeric_verified": false,
+  "original_BF16_proxy": "unquantized BF16 Q/K/V; separate diagnostic, unchanged .005 gates",
+  "page_bytes": 16384,
+  "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+  "partial_reference": "original3eb page16 BF16-P; extent-only decoder adapter",
+  "performance_verified": false,
+  "phases": [
+    "eagerA",
+    "captureA",
+    "changedB+poison Graph before freshB",
+    "sideC"
+  ],
+  "precision_gate": false,
+  "role": null,
+  "roles": {
+    "control": {
+      "library_sha256": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b",
+      "namespace": "cjj_native_k8_klookahead_probe"
+    },
+    "packed_v8": {
+      "library_sha256": "138cac22acc33d5a632d7156d0d3366af84697900d0a6c0593874bb71bf34e43",
+      "namespace": "cjj_native_k8_packed_v8_probe"
+    }
+  },
+  "scratch": "original3eb consumer compact S2; not service width16 fullstep",
+  "service_verified": false,
+  "source_inverse": {
+    "K_Q_codec_QK_softmax_PV_scratch_source_unchanged": true,
+    "V_SME_replaced_by_ordinary_packed_reads": true,
+    "V_codec_or_model_precision_verified": false,
+    "V_writer_implemented": false,
+    "actual_late_unpack_verified": false,
+    "actual_no_G2S_and_ordinary_memory_dependencies_verified": false,
+    "actual_resources": null,
+    "base": "899ce77470b0b539aebc108fd122f668c2d5894d",
+    "capacity_recovered": false,
+    "contract": "Vop=BF16_RNE(F32(signed_I8_code * F32_scale)); P remains BF16_RNE(p)",
+    "device_compile": false,
+    "explicit_G2S_wait_removed": true,
+    "files": {
+      "codec.cuh": {
+        "candidate_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+        "inverse_byte_exact": true,
+        "parent_sha256": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79"
+      },
+      "qk.cpp": {
+        "candidate_sha256": "c70261756b0267fe6b38e11084b40d2aed538cad5a071aa8175319207055f806",
+        "inverse_byte_exact": true,
+        "parent_sha256": "8b672b6f1d02ec3420eaa11186735f10c7cb235d083b1379275fe227c26a1ed9"
+      },
+      "qk.cu": {
+        "candidate_sha256": "38d544512f017841882e91819a6b15a2c5924faf2bc4a81a8273e3acb0b1c5ae",
+        "inverse_byte_exact": true,
+        "parent_sha256": "a491757fff161436a323305f75c3223d12d2d91bd8420b2332e633012f72dd4c"
+      }
+    },
+    "namespace": "cjj_native_k8_packed_v8_probe",
+    "numeric_verified": false,
+    "performance_verified": false,
+    "reference_SO": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b",
+    "scope": {
+      "N": 64,
+      "Q_pitches": [
+        2048,
+        2560
+      ],
+      "S": 2,
+      "page_bytes": 16384,
+      "shared_bytes": 8192
+    },
+    "service_enabled": false
+  },
+  "static_Root_review_sha256": "1c9bf67eaa92a25865c2ffdf62270f8bb91c40391e959f541ec86560c7e0f352",
+  "static_review_is_numeric_admission": false,
+  "table_columns": 384
+}

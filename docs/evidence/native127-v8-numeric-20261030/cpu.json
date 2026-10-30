@@ -1,0 +1,68 @@
+{
+  "GPU_executed": false,
+  "Root_exclusive_flag_was_CPU_stub_only": true,
+  "Root_static_review_sha256": "1c9bf67eaa92a25865c2ffdf62270f8bb91c40391e959f541ec86560c7e0f352",
+  "V_I8_patterns": 256,
+  "actual_compile_SO_static_and_codec_files_replayed": true,
+  "completed": true,
+  "consumer_adapter": {
+    "adapted_sha256": "597a6e086232e4f17e0e410bb2e17f9c8056083a4085574a5d1759d256221597",
+    "edits": [
+      {
+        "count": 2,
+        "new": "f.sha(args.library.read_bytes())==args.role_sha256",
+        "old": "f.sha(args.library.read_bytes())==f.LIBRARY_SHA"
+      },
+      {
+        "count": 1,
+        "new": "getattr(torch.ops,args.namespace).produce",
+        "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+      },
+      {
+        "count": 1,
+        "new": "record=dict(case=[n,s,pitch],snapshots={},checks=[],golden={});result['records'].append(record)\n            record['CPU_oracles']=f.cpu_oracles(cases,blob)",
+        "old": "record=dict(case=[n,s,pitch],snapshots={},checks=[],golden={});result['records'].append(record)"
+      },
+      {
+        "count": 1,
+        "new": "value=(inputs['cache'].view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.LAYER_OFFSET+8192)//2) if args.role=='control' else inputs['cache'].view(torch.int8).as_strided((f.PAGES,16,2,128),(16384,256,128,1),storage_offset=f.LAYER_OFFSET+8192))",
+        "old": "value=inputs['cache'].view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.LAYER_OFFSET+8192)//2)"
+      },
+      {
+        "count": 1,
+        "new": "            assert key.data_ptr()==scale.data_ptr()==inputs['cache'].data_ptr()+f.LAYER_OFFSET and value.data_ptr()==key.data_ptr()+8192\n            record['binding'].update(V_dtype=str(value.dtype),V_shape=list(value.shape),V_stride=list(value.stride()),V_offset=value.storage_offset(),scale_shape=list(scale.shape),scale_stride=list(scale.stride()),scale_offset=scale.storage_offset())",
+        "old": "            assert key.data_ptr()==scale.data_ptr()==inputs['cache'].data_ptr()+f.LAYER_OFFSET and value.data_ptr()==key.data_ptr()+8192"
+      }
+    ],
+    "inverse_byte_exact": true,
+    "original_sha256": "4b28dd919f5abdfb042fc0ccd053a820c2c0991a2fd443e116c6d900fa1a7991",
+    "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46"
+  },
+  "framework_imported": false,
+  "full_fixture_or_FP64_executed": false,
+  "negative_checks": [
+    "cross_arm_partial",
+    "cross_arm_maximum",
+    "cross_arm_summation",
+    "cross_arm_output",
+    "missing_Graph",
+    "admission_root_owned_exclusive",
+    "admission_static_review_sha256",
+    "admission_library",
+    "admission_control_library",
+    "admission_codec_proof_sha256",
+    "missing_static_Root_pin"
+  ],
+  "numeric_verified": false,
+  "one_page_codec_and_explicit_RN32_BF16_bits_checked": true,
+  "pagewise_extent_only_inverse": true,
+  "performance_verified": false,
+  "phases": 3,
+  "precision_gate": false,
+  "query_pitches": [
+    2048,
+    2560
+  ],
+  "service_verified": false,
+  "unique_tail_invalid_source_not_shared_with_full_rows": true
+}
