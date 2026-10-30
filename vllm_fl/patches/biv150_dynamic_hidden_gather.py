@@ -1,4 +1,4 @@
-"""Default-off gather at the exact non-spec, common Graph-NONE runner seam.
+"""Scoped gather at the exact non-spec, common Graph-NONE runner seam.
 
 The local receipt proves bounds from the existing CPU producer, not GPU data.
 No stream, H2D, event, request order, or sampled-token buffer is replaced.
