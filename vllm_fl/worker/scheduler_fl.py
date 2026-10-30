@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM-FL project
 
+import json
+import os
+import time
 from typing import Any
 
 from vllm.logger import init_logger
@@ -140,6 +143,14 @@ class AsyncSchedulerFL(_AsyncScheduler):
     """vLLM async scheduler with plugin-owned MTP xGrammar batching."""
 
     def __init__(self, *args, **kwargs):
+        self._phase_aware = os.environ.get("VLLM_FL_PHASE_AWARE_SCHED", "0") == "1"
+        self._phase_cadence = max(
+            2,
+            int(os.environ.get("VLLM_FL_PHASE_AWARE_CADENCE", "2")),
+        )
+        self._phase_step = 0
+        self._sched_probe_path = os.environ.get("VLLM_FL_SCHED_PROBE")
+
         vllm_config = kwargs.get("vllm_config")
         manager = kwargs.get("structured_output_manager")
         if (
@@ -153,3 +164,66 @@ class AsyncSchedulerFL(_AsyncScheduler):
                 "(max_threads=8)."
             )
         super().__init__(*args, **kwargs)
+
+    def schedule(self, throttle_prefills: bool = False):
+        started_ns = time.monotonic_ns()
+        running_before = len(self.running)
+        waiting_before = len(self.waiting) + len(self.skipped_waiting)
+
+        phase_tick = self._phase_step % self._phase_cadence == (
+            self._phase_cadence - 1
+        )
+        phase_throttle = throttle_prefills or (self._phase_aware and phase_tick)
+
+        # Prevent a new waiting prefill from being appended to a pure decode
+        # batch on phase steps. The existing running requests remain eligible;
+        # the budget is restored immediately after this scheduling call.
+        original_budget = self.max_num_scheduled_tokens
+        cap_budget = (
+            self._phase_aware
+            and phase_tick
+            and waiting_before > 0
+            and running_before > 0
+            and all(not request.is_prefill_chunk for request in self.running)
+        )
+        if cap_budget:
+            self.max_num_scheduled_tokens = min(original_budget, running_before)
+
+        try:
+            output = super().schedule(throttle_prefills=phase_throttle)
+        finally:
+            self.max_num_scheduled_tokens = original_budget
+        self._phase_step += 1
+
+        if self._sched_probe_path:
+            prefill_tokens = 0
+            decode_tokens = 0
+            for request_id, num_tokens in output.num_scheduled_tokens.items():
+                request = self.requests[request_id]
+                computed_after = request.num_computed_tokens
+                computed_before = computed_after - num_tokens
+                request_prefill_tokens = min(
+                    num_tokens,
+                    max(0, request.num_prompt_tokens - computed_before),
+                )
+                prefill_tokens += request_prefill_tokens
+                decode_tokens += num_tokens - request_prefill_tokens
+
+            record = {
+                "timestamp_ns": time.monotonic_ns(),
+                "schedule_ns": time.monotonic_ns() - started_ns,
+                "phase_aware": self._phase_aware,
+                "phase_throttle": phase_throttle,
+                "budget_capped": cap_budget,
+                "running_before": running_before,
+                "waiting_before": waiting_before,
+                "scheduled_prefill_tokens": prefill_tokens,
+                "scheduled_decode_tokens": decode_tokens,
+                "total_tokens": output.total_num_scheduled_tokens,
+                "running_after": len(self.running),
+                "waiting_after": len(self.waiting) + len(self.skipped_waiting),
+            }
+            with open(self._sched_probe_path, "a", encoding="utf-8") as probe:
+                probe.write(json.dumps(record, separators=(",", ":")) + "\n")
+
+        return output

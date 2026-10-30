@@ -192,6 +192,18 @@ def memory_profiling_fl(
     )
 
 
+def _use_async_scheduler_fl(vllm_config: VllmConfig) -> bool:
+    scheduler_config = vllm_config.scheduler_config
+    return bool(
+        scheduler_config.async_scheduling
+        and (
+            vllm_config.num_speculative_tokens == 1
+            or os.environ.get("VLLM_FL_PHASE_AWARE_SCHED", "0") == "1"
+            or os.environ.get("VLLM_FL_SCHED_PROBE")
+        )
+    )
+
+
 class WorkerFL(WorkerBase):
     def __init__(
         self,
@@ -202,10 +214,7 @@ class WorkerFL(WorkerBase):
         is_driver_worker: bool = False,
     ):
 
-        if (
-            vllm_config.num_speculative_tokens == 1
-            and vllm_config.scheduler_config.async_scheduling
-        ):
+        if _use_async_scheduler_fl(vllm_config):
             vllm_config.scheduler_config.scheduler_cls = (
                 "vllm_fl.worker.scheduler_fl.AsyncSchedulerFL"
             )
