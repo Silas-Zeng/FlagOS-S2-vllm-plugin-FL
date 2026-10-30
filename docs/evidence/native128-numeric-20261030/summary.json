@@ -1,0 +1,66 @@
+{
+  "Graph_B_before_fresh_B_verified": true,
+  "Root_replayed_review_sha256": "57bc147def00db9c3d7b1c0421835f9e9d23e3ae2b91129b172cf71040775958",
+  "actual": {
+    "bundle_sha256": "dd46c7b4faae13e709d1a0e93b8bbded4f04436765ba03a2de61bfb8ee2d8776",
+    "launcher_sha256": "3965a08891c7be36bdda2196e25333ac6f266d98b155ed29d8c3f23f13e1fc63",
+    "manifest_sha256": "e4c47a4f18872c2cacad7a4665ea93aa45502abab7a93122569af7ea9260503d",
+    "owner_sha256": "71518ff4b75369cf3eda54334d749e69a014b235aa195a77c8c2150c439339b8",
+    "raw_bytes": 188976810,
+    "raw_files": 19,
+    "summary_sha256": "eb90ad81af65aeb086ec1beb7015bdca30a80566a9ab7c9d1d599a0b95522b7f"
+  },
+  "candidate_library_sha256": "8eefb1b8012b62e6849eeaf5fc43f9600746a39f19354532255ba899d1c9e592",
+  "compile_source": "fbc6858bdccf7688936f9d0887b65e855762ab83",
+  "model_precision_verified": false,
+  "numeric_verified": true,
+  "performance_verified": false,
+  "raw_arrays_shared": false,
+  "reference_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "service_verified": false,
+  "side_C_verified": true,
+  "source_commit": "5de17dea9195f6643f651b1d1c6196af7f4e3503",
+  "stages": [
+    {
+      "epoch": 0,
+      "full_elements_per_output": 12582912,
+      "guards": true,
+      "readonly": true,
+      "stage": "eagerA",
+      "unequal_elements": 0
+    },
+    {
+      "epoch": 0,
+      "full_elements_per_output": 12582912,
+      "guards": true,
+      "readonly": true,
+      "stage": "graphA",
+      "unequal_elements": 0
+    },
+    {
+      "epoch": 1,
+      "full_elements_per_output": 12582912,
+      "guards": true,
+      "readonly": true,
+      "stage": "graphB",
+      "unequal_elements": 0
+    },
+    {
+      "epoch": 1,
+      "full_elements_per_output": 12582912,
+      "guards": true,
+      "readonly": true,
+      "stage": "eagerB",
+      "unequal_elements": 0
+    },
+    {
+      "epoch": 2,
+      "full_elements_per_output": 12582912,
+      "guards": true,
+      "readonly": true,
+      "stage": "sideC",
+      "unequal_elements": 0
+    }
+  ],
+  "synthetic_weights_only": true
+}
