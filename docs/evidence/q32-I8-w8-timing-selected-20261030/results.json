@@ -1,0 +1,319 @@
+{
+  "schema": "cjj-pr126-w8-selected-component-result-v1",
+  "date": "2026-10-30",
+  "decision": {
+    "recommendation": "close_this_measured_variant_after_review",
+    "promote_to_service": false,
+    "reason": "w8 is slower than accepted hoisted w16/S1 in both measured component modes; original BF16 quality gate also remains false",
+    "applies_to": "this BM256/BQ32/w8/S1 exact-preheader configuration only"
+  },
+  "provenance": {
+    "source_commit": "edbd30da11c6d56f2e16c9d2b0c6f3722935c55e",
+    "accepted_control_base": "899ce77470b0b539aebc108fd122f668c2d5894d",
+    "tag": "cjj-q32-i8-w8-preheader-timing-v1-20261030",
+    "owner": {
+      "pid": 322147,
+      "start_ticks": 366942236,
+      "same_start": true,
+      "state": "Z"
+    },
+    "source_bundle_sha256": "ae1424ee6c9cd74082d777ca8279a2e88e3bd982db6713ee4c96506d7fd8068d",
+    "raw_files": 92,
+    "raw_bytes": 194141359,
+    "manifest_sha256": "8fbd44684e83f4522be0cbaf2811a313c88fd04ec2d7eba0bbfd82ec03d5988d",
+    "summary_sha256": "7ba8856c5b21b882d67fd2a5d26a46f960873a5334af03d05717de24d4963f79",
+    "Root_independent_review_sha256": "93e7d0d5f0ba8d9966c91fa902b0a740050e95280d11c1d35dc65b43ab7984ff",
+    "auditor_sha256": "d92c5df1394345c7cee5cfd15c6972163384ccf720311df208ce813bd6270019",
+    "prior_numeric_Root_review_sha256": "b9f32e2ab2e81edd2b54129f42a5fd0efb4bbab8c4d183378c82a599f6fffacf",
+    "Root_timing_receipt_sha256": "69c84f42ac512c9fc9c974a6d4ed9efb4d0867e3871c2689eac34e6647d69a36",
+    "launch_ready_sha256": "af1d11f9b1db7ae24a450f1774f5448570b84d4ab5021d95029ec4970580e739",
+    "publication": "selected text only; complete arrays, caches, binary, logs and full independent report remain private"
+  },
+  "scope": {
+    "num_seqs": 1,
+    "query_rows": 2048,
+    "query_heads": 16,
+    "KV_heads": 2,
+    "head_dim": 128,
+    "BM": 256,
+    "BQ": 32,
+    "K_tile": 64,
+    "warps": {
+      "w16": 16,
+      "w8": 8
+    },
+    "num_stages": 1,
+    "query_pitch": 2048,
+    "table_pitch": 8192,
+    "writer_pitch": 2560,
+    "physical_page_bytes": 16384,
+    "pages": 773,
+    "fixture_cache_bytes": 12664832,
+    "timed_total_KV": 6143,
+    "timed_prefix": 4095,
+    "timed_pattern": 1,
+    "aligned6144_numeric_only": true,
+    "event_scope": "complete reader, or unchanged append writer plus complete reader, in CUDA Graph",
+    "excludes": "normal Python helper/JIT/host dispatch, paired prefill, other model operators and service scheduling"
+  },
+  "protocol": {
+    "ABBA_rounds_per_mode": 1,
+    "ABBA_order": [
+      "w16",
+      "w8",
+      "w8",
+      "w16"
+    ],
+    "event_blocks_total": 8,
+    "captured_complete_steps_per_graph": 4,
+    "warm_graph_replays_per_arm_mode": 8,
+    "timed_graph_replays_per_block": 16,
+    "complete_steps_per_timing_sample": 64,
+    "Graph_replays_observed": 168,
+    "source_derived_replay_steps": {
+      "numeric": 32,
+      "timed": 512,
+      "total": 672,
+      "warm": 128
+    },
+    "hardware_profiler_launch_count_claimed": false,
+    "Python_launch_attempts": {
+      "Graph_replay": 168,
+      "reader": 36,
+      "reader_cache_warmups": 2,
+      "scope": "Python launches include capture; graph replays counted separately, not measured kernel profiling",
+      "writer": 18,
+      "writer_warmups": 1
+    },
+    "host_wall_scope": "16 replay submissions plus end-event synchronization, divided by64; validation/readback excluded",
+    "cache_is_warm_repeated_fixture": true,
+    "statistical_stability_claimed": false
+  },
+  "timing": {
+    "reader": {
+      "ABBA_event_ms_per_step": [
+        2.220839023590088,
+        2.4834139347076416,
+        2.482165575027466,
+        2.2163808345794678
+      ],
+      "ABBA_host_wall_ms_per_step": [
+        2.225486379757058,
+        2.4859995901351795,
+        2.484751574229449,
+        2.2189325318322517
+      ],
+      "event_means_ms": {
+        "w16": 2.218609929084778,
+        "w8": 2.4827897548675537
+      },
+      "event_w16_over_w8": 0.8935955711655219,
+      "host_wall_means_ms": {
+        "w16": 2.222209455794655,
+        "w8": 2.4853755821823142
+      },
+      "host_wall_w16_over_w8": 0.8941141418326065,
+      "w8_extra_event_ms": 0.2641798257827759,
+      "w8_event_latency_increase_fraction": 0.1190744809709543,
+      "post_timing_full_output_guard_cache_readonly_hashes_match": true
+    },
+    "append-reader": {
+      "ABBA_event_ms_per_step": [
+        2.2420246601104736,
+        2.5062713623046875,
+        2.506592035293579,
+        2.2422730922698975
+      ],
+      "ABBA_host_wall_ms_per_step": [
+        2.2439635431510396,
+        2.508785175450612,
+        2.5091101706493646,
+        2.244965777208563
+      ],
+      "event_means_ms": {
+        "w16": 2.2421488761901855,
+        "w8": 2.5064316987991333
+      },
+      "event_w16_over_w8": 0.8945581390725431,
+      "host_wall_means_ms": {
+        "w16": 2.2444646601798013,
+        "w8": 2.5089476730499882
+      },
+      "host_wall_w16_over_w8": 0.8945840857060723,
+      "w8_extra_event_ms": 0.26428282260894775,
+      "w8_event_latency_increase_fraction": 0.11787032761981964,
+      "post_timing_full_output_guard_cache_readonly_hashes_match": true
+    }
+  },
+  "actual_resources": {
+    "w16": {
+      "n_regs": 122,
+      "n_spills": 0,
+      "shared": 33792,
+      "threads": 1024,
+      "ELF_sgpr_spills": 96,
+      "ELF_vgpr_spills": 0,
+      "ELF_private_bytes": 0,
+      "kernel_hash": "53ef08b799eddb1170100ca6a7fca2171a54443acbf5a5e88549b35ceffd1603",
+      "cubin_sha256": "7eadbdbf854be149083065cb30f0f8c1bdc593aea6d2b9baf454502adb6fbb43",
+      "source_ABI_options_IR_executable_exact": true
+    },
+    "w8": {
+      "n_regs": 237,
+      "n_spills": 0,
+      "shared": 33792,
+      "threads": 512,
+      "ELF_sgpr_spills": 478,
+      "ELF_vgpr_spills": 0,
+      "ELF_private_bytes": 0,
+      "kernel_hash": "773d51c9821807457d71b7eb2a1a3701c1e3fc78410ce8f0d7b7ca39a338c51c",
+      "cubin_sha256": "03d373323bef024b3dec81d76de9c19913d9a03d0c05f471e01178523110d1a8",
+      "source_ABI_options_IR_executable_exact": true
+    }
+  },
+  "numerical": {
+    "implementation_hard_checks_passed": true,
+    "stages": [
+      {
+        "pattern": 0,
+        "label": "eager-A",
+        "mode": "reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": true
+      },
+      {
+        "pattern": 0,
+        "label": "eager-A",
+        "mode": "append-reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": true
+      },
+      {
+        "pattern": 0,
+        "label": "Graph-A",
+        "mode": "reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": true
+      },
+      {
+        "pattern": 0,
+        "label": "Graph-A",
+        "mode": "append-reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": true
+      },
+      {
+        "pattern": 1,
+        "label": "Graph-B-first",
+        "mode": "reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": false
+      },
+      {
+        "pattern": 1,
+        "label": "Graph-B-first",
+        "mode": "append-reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": false
+      },
+      {
+        "pattern": 1,
+        "label": "eager-B-after-Graph",
+        "mode": "reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": false
+      },
+      {
+        "pattern": 1,
+        "label": "eager-B-after-Graph",
+        "mode": "append-reader",
+        "all_hard_data_checks": true,
+        "cross_layout_full_output_bitwise": true,
+        "original_BF16_quality_passed": false
+      }
+    ],
+    "full_output_control_gate": {
+      "RRMSE_descriptive_only": true,
+      "elements_per_stage": 4194304,
+      "finite_required": true,
+      "independently_recomputed": true,
+      "reference_is_full_random_FP64": false,
+      "rule": "abs(w8-w16)<=.005+.005*abs(w16)",
+      "stages": 8
+    },
+    "full_output_max_abs_all8_stages": 0.0,
+    "full_output_relative_RMSE_all8_stages": 0.0,
+    "cross_layout_bitwise_diagnostic_only": true,
+    "independent_codec_code_scale_bits_exact_both_patterns": true,
+    "full_cache_bytes_checked_per_stage": 12664832,
+    "Graph_changed_B_before_fresh_eager_B": true,
+    "side_nondefault_stream": true,
+    "canary_and_readonly_checks_passed": true,
+    "independent_FP64_metrics": [
+      {
+        "pattern": 0,
+        "total_KV": 6144,
+        "FP64_query_rows": 2048,
+        "same_both_arms_and_all_saved_stages": true,
+        "original_BF16": {
+          "finite": true,
+          "max_abs": 0.0009763503421681419,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0017247786112862535,
+          "rms": 0.0002443520560013095
+        },
+        "quantized_operand": {
+          "finite": true,
+          "max_abs": 0.0009763503421681419,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.0017247786112862535,
+          "rms": 0.0002443520560013095
+        }
+      },
+      {
+        "pattern": 1,
+        "total_KV": 6143,
+        "FP64_query_rows": 10,
+        "same_both_arms_and_all_saved_stages": true,
+        "original_BF16": {
+          "finite": true,
+          "max_abs": 0.0011444201346987384,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.009618575519632048,
+          "rms": 0.00024316070834058985
+        },
+        "quantized_operand": {
+          "finite": true,
+          "max_abs": 0.00035041706114938287,
+          "pointwise_passed": true,
+          "pointwise_violations": 0,
+          "relative_rmse": 0.002283783103268182,
+          "rms": 5.773660107887876e-05
+        }
+      }
+    ],
+    "original_BF16_relative_RMSE_limit": 0.005,
+    "numeric_diagnostic": true,
+    "original_BF16_quality_passed": false,
+    "precision_gate": false,
+    "model_verified": false,
+    "service_verified": false
+  },
+  "limitations": [
+    "FP64 is ideal global softmax; BF16-P and online-softmax intermediate rounding are not modeled. Random FP64 is10 selected rows, not the full output; the full4M control is accepted w16/S1.",
+    "Post-timing output/guards/cache/readonly are synchronized frozen-worker checks and saved hashes matched to full archived freshB arrays and original inputs. Separate per-block arrays and readonly-after tensors are not archived.",
+    "Event/wall per-step samples are archived; division by64 and loop scope are source-bound. Raw timer endpoints are not separately archived.",
+    "Runtime n_spills0 is distinct from actual ELF scalar spills96/478. Resource counts alone do not establish occupancy or a slowdown cause.",
+    "One warm6143 ABBA per mode; no6144 timing,16K,N2,model,service,capacity or statistical-stability qualification. This negative result does not reject all w8 layouts."
+  ]
+}
