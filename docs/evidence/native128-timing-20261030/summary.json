@@ -1,0 +1,234 @@
+{
+  "decision": {
+    "fused_gate_direction_disproved": false,
+    "reason": "Both full gate component modes are substantially slower than the accepted reference.",
+    "recommendation": "close this implementation without merging",
+    "service_installation_requested": false
+  },
+  "libraries": {
+    "candidate_sha256": "8eefb1b8012b62e6849eeaf5fc43f9600746a39f19354532255ba899d1c9e592",
+    "reference_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe"
+  },
+  "limitations": [
+    "No raw elapsed event endpoints or per-replay values were saved. Original source divides by64=16x4; only recorded per-step clocks and ABBA means/ratios can be independently recomputed.",
+    "Each timing check stores readonly/descriptors booleans, not its full fingerprints/descriptors. Full A/B input blobs are recomputed and source enforces all per-check comparisons.",
+    "Timing outputs are unguarded allocations. Exact complete bytes link to57bc numeric guarded output; no new guard or side-stream test is claimed.",
+    "Graph batches measure a device component; eager includes actual host calls/allocation. Neither is an actual model throughput or service/34layer-weight qualification."
+  ],
+  "numeric": {
+    "Graph_B_before_fresh_B": true,
+    "Root_independent_review_sha256": "57bc147def00db9c3d7b1c0421835f9e9d23e3ae2b91129b172cf71040775958",
+    "complete_guarded_output_snapshots": 10,
+    "download_manifest_sha256": "e4c47a4f18872c2cacad7a4665ea93aa45502abab7a93122569af7ea9260503d",
+    "elements_per_output": 12582912,
+    "owner_sha256": "71518ff4b75369cf3eda54334d749e69a014b235aa195a77c8c2150c439339b8",
+    "side_C_verified": true,
+    "stages": [
+      "eagerA",
+      "graphA",
+      "graphB",
+      "eagerB",
+      "sideC"
+    ],
+    "summary_sha256": "eb90ad81af65aeb086ec1beb7015bdca30a80566a9ab7c9d1d599a0b95522b7f",
+    "synthetic_weights_only": true,
+    "unequal_elements_each": 0
+  },
+  "protocol": {
+    "activation_quantization_included": true,
+    "all_blocks": 8,
+    "cold_initial_calls_excluded": true,
+    "modes": [
+      "graph",
+      "eager"
+    ],
+    "order": [
+      "reference",
+      "candidate",
+      "candidate",
+      "reference"
+    ],
+    "reference_extra_validation_copy": false,
+    "roles": {
+      "candidate": "5cbb quantize_rows_probe(x,256) + output allocation + 8eef gate_out",
+      "reference": "5cbb gate_silu_cached_probe(x,wq,cols,marker,256)"
+    },
+    "samples_per_role_per_mode": 2,
+    "scope": {
+      "K": 2048,
+      "M": 2048,
+      "N": 12288,
+      "output": [
+        2048,
+        6144
+      ]
+    },
+    "timed_batches_per_sample": 16,
+    "timed_steps_per_sample": 64,
+    "unroll": 4,
+    "vendor_weight_packing_cache_hits_observed": false,
+    "warm_batches_per_role_per_mode": 128,
+    "warm_steps_per_role_per_mode": 512,
+    "weights_and_input_pointers_fixed": true
+  },
+  "qualification": {
+    "component_timing_records_verified": true,
+    "model_precision_verified": false,
+    "numeric_component_verified": true,
+    "performance_gain_demonstrated": false,
+    "real_34_layer_weight_coverage": false,
+    "service_verified": false
+  },
+  "schema": "cjj_native128_selected_negative_timing_v1",
+  "selection": "Small result summary only; original arrays, logs, binaries and full reports remain private.",
+  "source": {
+    "GPU_compile": "fbc6858bdccf7688936f9d0887b65e855762ab83",
+    "development_main": "5f0086be50f1d6d115c1ebb25b9d3c7250470372",
+    "numeric_frontend": "5de17dea9195f6643f651b1d1c6196af7f4e3503",
+    "timing_frontend": "bee62b9e9a6daf849862dd303968dc0ae0a95725"
+  },
+  "timing": {
+    "Root_independent_review_sha256": "6ce6c0363af2042191349e02eac869c60c3a6612bffb3031fe3ae7cf2edd7838",
+    "actual": {
+      "bundle_sha256": "fde9a2844247700a00b63dffe28e0e17e17442c4f980c0a4e64f3cbfc9e9002d",
+      "launcher_sha256": "5eb6286f6756d86b892dc695abf5035a7fcce569124222dbb954964fc7ea6f37",
+      "manifest_sha256": "ed8786394755b7473eaca818686615e8bc1c98c6ad7f7a0794770f1f3f3eb9ec",
+      "owner_sha256": "6653a4580f59f489d66d94f41d8827a1365c4320ec9a2794ca6934c4d73c334d",
+      "pid": 330288,
+      "raw_bytes": 92440624,
+      "raw_files": 10,
+      "start_ticks": 367736574,
+      "summary_sha256": "9255af68309995f1640f1425691ed76e831a4ef4677b81f4b0b95b04f8bd6e0d"
+    },
+    "all_file_hashes_checked": true,
+    "candidate_latency_change_percent": {
+      "eager": {
+        "event_ms_per_step": 921.7141005108004,
+        "wall_ms_per_step": 909.3218460008475
+      },
+      "graph": {
+        "event_ms_per_step": 930.7163117628113,
+        "wall_ms_per_step": 925.6797868450816
+      }
+    },
+    "errors": [],
+    "means_ms_per_step": {
+      "eager": {
+        "event_ms_per_step": {
+          "candidate": 7.309234380722046,
+          "reference": 0.7153894007205963
+        },
+        "wall_ms_per_step": {
+          "candidate": 7.323611655010609,
+          "reference": 0.7255972595885396
+        }
+      },
+      "graph": {
+        "event_ms_per_step": {
+          "candidate": 7.30075740814209,
+          "reference": 0.7083187997341156
+        },
+        "wall_ms_per_step": {
+          "candidate": 7.303427675651619,
+          "reference": 0.7120572881831322
+        }
+      }
+    },
+    "owner_same_start_state": "Z",
+    "reference_over_candidate": {
+      "eager": {
+        "event_ms_per_step": 0.09787473809944049,
+        "wall_ms_per_step": 0.0990764248254625
+      },
+      "graph": {
+        "event_ms_per_step": 0.09701990631056591,
+        "wall_ms_per_step": 0.09749631540228838
+      }
+    },
+    "reviewer_sha256": "fa99da57a917d8145633737ace20897660dd58b5e3b3b41ff1c30c08d59a428c",
+    "timing_records": [
+      {
+        "event_ms_per_step": 0.7080116868019104,
+        "index": 0,
+        "mode": "graph",
+        "role": "reference",
+        "timed_steps": 64,
+        "wall_ms_per_step": 0.7130214507924393,
+        "warm_steps_per_role": 512
+      },
+      {
+        "event_ms_per_step": 7.298935413360596,
+        "index": 1,
+        "mode": "graph",
+        "role": "candidate",
+        "timed_steps": 64,
+        "wall_ms_per_step": 7.301324330910575,
+        "warm_steps_per_role": 512
+      },
+      {
+        "event_ms_per_step": 7.302579402923584,
+        "index": 2,
+        "mode": "graph",
+        "role": "candidate",
+        "timed_steps": 64,
+        "wall_ms_per_step": 7.305531020392664,
+        "warm_steps_per_role": 512
+      },
+      {
+        "event_ms_per_step": 0.7086259126663208,
+        "index": 3,
+        "mode": "graph",
+        "role": "reference",
+        "timed_steps": 64,
+        "wall_ms_per_step": 0.7110931255738251,
+        "warm_steps_per_role": 512
+      },
+      {
+        "event_ms_per_step": 0.715757429599762,
+        "index": 0,
+        "mode": "eager",
+        "role": "reference",
+        "timed_steps": 64,
+        "wall_ms_per_step": 0.7266390166478232,
+        "warm_steps_per_role": 512
+      },
+      {
+        "event_ms_per_step": 7.311607837677002,
+        "index": 1,
+        "mode": "eager",
+        "role": "candidate",
+        "timed_steps": 64,
+        "wall_ms_per_step": 7.325937353016343,
+        "warm_steps_per_role": 512
+      },
+      {
+        "event_ms_per_step": 7.30686092376709,
+        "index": 2,
+        "mode": "eager",
+        "role": "candidate",
+        "timed_steps": 64,
+        "wall_ms_per_step": 7.321285957004875,
+        "warm_steps_per_role": 512
+      },
+      {
+        "event_ms_per_step": 0.7150213718414307,
+        "index": 3,
+        "mode": "eager",
+        "role": "reference",
+        "timed_steps": 64,
+        "wall_ms_per_step": 0.724555502529256,
+        "warm_steps_per_role": 512
+      }
+    ]
+  },
+  "timing_checks": {
+    "all_full_outputs_bitwise": true,
+    "complete_A_B_inputs_linked_to_original_numeric": true,
+    "full_output_snapshots": 16,
+    "full_output_values_compared": 201326592,
+    "new_composed_Graph_B_before_fresh_B_verified": true,
+    "new_guard_test": false,
+    "new_side_test": false,
+    "recorded_all_readonly_and_fixed_descriptors": true
+  }
+}
