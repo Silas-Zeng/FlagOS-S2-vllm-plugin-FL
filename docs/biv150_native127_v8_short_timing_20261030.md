@@ -1,17 +1,26 @@
 # PR127 conditional short consumer timing (pending)
 
 This child keeps cd2f numeric, fcf CUDA/host and the two actual SOs unchanged.
-The known parent job is328892/start367406093; its complete independently
-reviewed result is not bound here. All five `NUMERIC` result pins areNone.
-The GPU entry refuses before a framework import, even with Root flags set,
-until a later reviewed pin/schema commit. No timing result or device license
-is supplied by this draft. Source remains on main5f development ancestry;
-actual compile/source/library identities retain their immutable meanings.
+Root independently replayed parent328892/start367406093: report260414601892
+(full SHA in the selected results) binds190originals/175022287B,40snapshots,
+88FP64 hard checks and80cross-arm OML/final comparisons. All16original BF16
+proxy checks pass; max RRMSE0.0048402022 is below the unchanged.005 component
+gate. The24ideal-partial diagnostics still fail and are preserved separately
+from the pagewise-BF16-P implementation reference. Selected text only is in
+[evidence/native127-v8-numeric-selected-20261030/README.md](evidence/native127-v8-numeric-selected-20261030/README.md).
+
+The source now binds the actual summary, manifest, Root review113107B and
+Root's df52 timing-scope receipt. Exact real schema/counts/owner/source/roles
+are checked. Root's receipt still requires review of this timing source and
+an explicit serial launch. Default GPU admission is false; caller Root flags
+and all exact proof inputs remain mandatory. No timing or service result is
+supplied by this child. Development ancestry is main5f, and actual compile/
+source/library identities retain their immutable meanings.
 
 Reuse is narrow: `biv150_native127_v8_numeric.adapted_run` supplies the original
 consumer definitions. Blob/snapshot/readonly/canary/FP64/producer/reducer
 functions remain byte-exact. The full A/GraphB/sideC matrix is not rerun: its
-future Root-replayed original result is a prerequisite. The finite adapter
+Root-replayed original result is a prerequisite. The finite adapter
 replaces that phase block with only the new timing-capture validation. It
 constructs A/B inputs, saves only the B golden and current input/snapshot
 blobs, and references original CPU-oracle authority from the prior numeric
@@ -48,7 +57,7 @@ for host wall and excluding setup/validation/readback. Arm means and A/B ratios
 are arithmetic; a gain is not a correctness requirement. Warm/capture/counter
 scope is explicit; Python graph-replay counts are not hardware-profiler counts.
 
-After each block, reuse the original check/snapshot on the same B data and
+After each block, reuse the original snapshot on the same B data and
 require all guarded output/OML/cache/readonly bytes equal that arm's fresh B
 reference. Content-addressed blobs deduplicate repeated identical snapshots.
 Raw timer endpoints are not independently saved; per-replay original timer
@@ -60,22 +69,25 @@ N64/S2, with empty/short rows and exactly one6143+one6144 row per phase. It is
 not64long requests, width16 fullstep, writer-inclusive, model or service. One
 warm resident-fixture ABBA does not show stable throughput/HBM behavior or
 capacity savings. This screen only decides whether the measured operand
-path merits later full-width integration. Original BF16 approximation failure,
-if present in the actual parent result, is preserved and does not become a
-model acceptance failure or pass by relabeling.
+path merits later full-width integration. The parent's16BF16 proxies passed, with max RRMSE0.0048402022; that component
+result still does not grant model precision. The ideal-partial diagnostics
+remain separately visible and never replace the pagewise partial hard gate.
 
 CPU replay (no framework/GPU):
 
 ```sh
 python3 -B -S tools/check_biv150_native127_v8_timing_cpu.py \
-  --parent-source /private/tmp/flagos-cjj-native-k8-fullstep-frozen-3eb-20261028
+  --parent-source /private/tmp/flagos-cjj-native-k8-fullstep-frozen-3eb-20261028 \
+  --numeric-summary /private/tmp/cjj-native127-packed-v8-numeric-raw-20261030/out/v8-consumer-summary.json \
+  --numeric-review /private/tmp/cjj-root-native127-v8-numeric-independent-review-20261030.json \
+  --timing-admission /private/tmp/cjj-root-native127-timing-admission-20261030.json
 python3 -B -S tools/probe_biv150_native127_v8_timing.py
 ```
 
 The eventual GPU entry adds `--gpu --timing --root-owned-exclusive
 --root-timing-approved`, all original127 source/compile/static/two-library/
 codec arguments, and exact prior `--numeric-summary`, `--numeric-review`,
-`--numeric-review-sha256`. It presently refuses because result pins areNone.
-Root must review/bind actual numeric originals and the real report schema,
-then make a separate serial timing decision. No SSH/GPU/JIT/network/GitHub
+`--numeric-review-sha256`, `--timing-admission`, `--timing-admission-sha256`.
+Root must review this source and separately confirm the real serial slot;
+the scope receipt is not automatic scheduling permission. No SSH/GPU/JIT/network/GitHub
 operation was performed to prepare this child.

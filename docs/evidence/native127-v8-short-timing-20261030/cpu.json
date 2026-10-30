@@ -1,5 +1,31 @@
 {
   "GPU_executed": false,
+  "Root_flag_was_CPU_stub_only": true,
+  "actual_evidence": {
+    "Root_numeric_review_sha256": "260414601892fdf8997e9978bcd3761bb77c5e9c67295961ce76663b07177a5e",
+    "Root_timing_scope_sha256": "df52edece78b5f047b6b22d46b5f81c4b4fe1fde48a233fa52ae6ade95ee340f",
+    "counts": {
+      "BF16_proxy": 16,
+      "CPU_oracle_arrays": 48,
+      "FP64_hard": 88,
+      "cross_arm_pairs": 80,
+      "golden_arrays": 96,
+      "ideal_partial": 24,
+      "ideal_partial_failed": 24,
+      "readonly": 160,
+      "snapshots": 40
+    },
+    "ideal_partial_diagnostic_failed": 24,
+    "numeric_manifest_sha256": "cfc7de650e89ec664e6341643ace0d87f0f987f4e7a2ea84cbc0c2f1fec88f66",
+    "numeric_summary_sha256": "9ce384c64e2fe03aded001837bfe5851b833d417e711d339c4288928fce103b2",
+    "original_BF16_proxy_max_RRMSE": 0.004840202200510765,
+    "original_BF16_proxy_passed": true,
+    "parent_source": "cd2f4ab846b79e4ab32a545d8c276bd802ed66d5",
+    "raw_bytes": 175022287,
+    "raw_files": 190,
+    "side_inherited_not_rerun": true
+  },
+  "actual_numeric_and_scope_receipt_replayed": true,
   "adapter": {
     "adapted_sha256": "e833af264816abfd7e0c12169369a5065f2e23848247dcb5ef95fb9533c9ebdd",
     "edits": [
@@ -70,7 +96,7 @@
   "clock_source_sha256": "e84af79b3470db82a6c043a387c3bbfc59f2557aaf610c3af6716463c63574b9",
   "complete_steps_per_event_block": 512,
   "default_stdlib_only": true,
-  "device_refused_before_framework": true,
+  "missing_pin_and_unapproved_device_refused_before_framework": true,
   "model_verified": false,
   "new_capture_only_B_validation": true,
   "no_same_full_numeric_matrix_rerun": true,
@@ -96,6 +122,5 @@
   "per_role_case_separate_run_frame": true,
   "performance_verified": false,
   "precision_gate": false,
-  "prior_numeric_pins_all_None": true,
   "service_verified": false
 }

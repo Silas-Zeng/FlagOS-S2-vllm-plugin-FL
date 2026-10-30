@@ -50,8 +50,8 @@ def execute(a):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--gpu',action='store_true');p.add_argument('--timing',action='store_true')
     p.add_argument('--root-owned-exclusive',action='store_true');p.add_argument('--root-timing-approved',action='store_true')
-    for name in ('parent-source','compile-summary','static-review','control-library','library','codec-summary','numeric-summary','numeric-review','out'):p.add_argument('--'+name,type=Path)
-    for name in ('static-review-sha256','codec-proof-sha256','numeric-review-sha256'):p.add_argument('--'+name)
+    for name in ('parent-source','compile-summary','static-review','control-library','library','codec-summary','numeric-summary','numeric-review','timing-admission','out'):p.add_argument('--'+name,type=Path)
+    for name in ('static-review-sha256','codec-proof-sha256','numeric-review-sha256','timing-admission-sha256'):p.add_argument('--'+name)
     a=p.parse_args()
     if a.gpu:
         if not all(v for k,v in vars(a).items() if k!='gpu'):p.error('explicit Root timing/serial flags and exact previous numeric/static/source/library/codec inputs required')

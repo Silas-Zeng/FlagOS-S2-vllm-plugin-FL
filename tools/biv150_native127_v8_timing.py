@@ -10,9 +10,12 @@ import biv150_native127_v8_numeric as c
 import biv150_native127_v8_fixture as fixture
 
 PARENT='cd2f4ab846b79e4ab32a545d8c276bd802ed66d5'
-# Actual result identities/schema will be pinned only after Root's full review.
-NUMERIC=dict(summary_sha256=None,manifest_sha256=None,Root_review_sha256=None,
-             raw_files=None,raw_bytes=None)
+# Root's actual complete saved-array replay; this is not final timing/slot permission.
+NUMERIC=dict(summary_sha256='9ce384c64e2fe03aded001837bfe5851b833d417e711d339c4288928fce103b2',
+ manifest_sha256='cfc7de650e89ec664e6341643ace0d87f0f987f4e7a2ea84cbc0c2f1fec88f66',
+ Root_review_sha256='260414601892fdf8997e9978bcd3761bb77c5e9c67295961ce76663b07177a5e',
+ raw_files=190,raw_bytes=175022287,review_bytes=113107)
+TIMING_ADMISSION_SHA='df52edece78b5f047b6b22d46b5f81c4b4fe1fde48a233fa52ae6ade95ee340f'
 UNROLL=8
 WARM=128
 REPLAYS=64
@@ -23,26 +26,41 @@ FIELDS=('partial','maximum','summation','output')
 def ready():
     for key in ('summary_sha256','manifest_sha256','Root_review_sha256'):
         assert type(NUMERIC[key]) is str and re.fullmatch('[0-9a-f]{64}',NUMERIC[key]),'actual independently reviewed numeric originals still pending'
-    for key in ('raw_files','raw_bytes'):assert type(NUMERIC[key]) is int and NUMERIC[key]>0,'actual numeric scope pending'
+    for key in ('raw_files','raw_bytes','review_bytes'):assert type(NUMERIC[key]) is int and NUMERIC[key]>0,'actual numeric scope pending'
 
 
 def evidence(a):
-    ready() # Always before reading evidence/importing a framework.
-    assert a.root_timing_approved is True,'separate Root timing/serial decision required'
+    ready() # Missing/unknown actual result pins refuse before framework imports.
+    assert a.root_timing_approved is True,'final reviewed-source and serial timing decision required'
     assert a.numeric_review_sha256==NUMERIC['Root_review_sha256'] and c.sha(a.numeric_review)==NUMERIC['Root_review_sha256']
-    assert c.sha(a.numeric_summary)==NUMERIC['summary_sha256']
-    actual=json.loads(a.numeric_summary.read_text())
-    assert actual['completed'] is True and actual['errors']==[] and actual['plan']==c.plan()
+    assert a.numeric_review.stat().st_size==NUMERIC['review_bytes'] and c.sha(a.numeric_summary)==NUMERIC['summary_sha256']
+    actual=json.loads(a.numeric_summary.read_text());review=json.loads(a.numeric_review.read_text())
+    assert actual['completed'] is True and actual['errors']==[] and actual['plan']==json.loads(json.dumps(c.plan()))
     assert actual['numeric_verified'] is actual['full_OML_final_bitwise'] is True
     assert actual['Graph_verified'] is actual['side_stream_verified'] is True
     assert all(actual[k] is False for k in ('performance_verified','precision_gate','model_verified','service_verified','capacity_recovered'))
-    # The exact independently replayed Root report is the authority for complete
-    # arrays/FP64/codec, not those summary booleans alone. Its real schema is not
-    # guessed here while all pins remainNone; the pinning commit must review it.
+    assert review['completed'] is True and review['errors']==[] and review['source_commit']==PARENT
+    assert review['summary_sha256']==NUMERIC['summary_sha256'] and review['download_manifest_sha256']==NUMERIC['manifest_sha256']
+    assert (review['raw_files'],review['raw_bytes'])==(NUMERIC['raw_files'],NUMERIC['raw_bytes'])
+    for key in ('component_numeric_verified','full_OML_final_bitwise','Graph_verified','side_stream_verified','all_input_and_CPU_oracle_bytes_recomputed'):assert review[key] is True
+    for key in ('performance_verified','precision_gate','model_verified','service_verified','capacity_recovered','writer_verified'):assert review[key] is False
+    assert review['binding']==actual['binding'] and review['binding']['libraries']=={role:value[0] for role,value in c.ROLES.items()}
+    assert review['counts']==dict(BF16_proxy=16,CPU_oracle_arrays=48,FP64_hard=88,cross_arm_pairs=80,golden_arrays=96,ideal_partial=24,ideal_partial_failed=24,readonly=160,snapshots=40)
+    assert review['owner']==dict(pid=328892,start_ticks=367406093,state='Z')
+    assert actual['original_BF16_proxy_passed'] is review['original_BF16_proxy_passed'] is True
+    assert a.timing_admission_sha256==TIMING_ADMISSION_SHA and c.sha(a.timing_admission)==TIMING_ADMISSION_SHA
+    receipt=json.loads(a.timing_admission.read_text())
+    assert receipt==dict(schema='root_numeric_to_component_timing_scope_v1',source_commit=PARENT,
+      development_main=c.DEVELOPMENT_BASE,actual_numeric_review_sha256=NUMERIC['Root_review_sha256'],
+      actual_numeric_summary_sha256=NUMERIC['summary_sha256'],Root_read_and_replayed_numeric_auditor=True,
+      approved_component_timing_only=True,requires_reviewed_timing_source_and_explicit_serial_launch=True,
+      scope=dict(N=64,S=2,Q_pitches=[2048,2560],consumer_only=True,order=list(ORDER),unroll=8,warm_graph_replays=128),
+      model_precision_verified=False,performance_verified=False,service_verified=False)
     return dict(parent_source=PARENT,numeric_summary_sha256=NUMERIC['summary_sha256'],
       numeric_manifest_sha256=NUMERIC['manifest_sha256'],Root_numeric_review_sha256=NUMERIC['Root_review_sha256'],
-      raw_files=NUMERIC['raw_files'],raw_bytes=NUMERIC['raw_bytes'],
-      original_BF16_proxy_passed=actual['original_BF16_proxy_passed'],side_inherited_not_rerun=True)
+      raw_files=NUMERIC['raw_files'],raw_bytes=NUMERIC['raw_bytes'],Root_timing_scope_sha256=TIMING_ADMISSION_SHA,
+      original_BF16_proxy_passed=True,original_BF16_proxy_max_RRMSE=review['original_BF16_proxy_max_RRMSE'],
+      ideal_partial_diagnostic_failed=24,counts=review['counts'],side_inherited_not_rerun=True)
 
 
 def clock_source(parent):
@@ -53,7 +71,7 @@ def clock_source(parent):
 
 def plan():
     return dict(component='conditional producer+original reducer short component; no writer',
-      numeric_source=PARENT,numeric_evidence=NUMERIC,static_review_sha256=c.STATIC_REVIEW_SHA,
+      numeric_source=PARENT,numeric_evidence=NUMERIC,Root_timing_scope_receipt_sha256=TIMING_ADMISSION_SHA,static_review_sha256=c.STATIC_REVIEW_SHA,
       roles=c.plan()['roles'],cases=fixture.CASES,page_bytes=16384,fixture_pages=389,fixture_cache_bytes=6373632,
       timed_phase='B mixed0/short/one6143/one6144; not64long requests',scratch='original consumer compactS2',
       capture_steps=UNROLL,warm_replays_per_arm=WARM,timed_replays_per_block=REPLAYS,
@@ -107,7 +125,7 @@ def prepare_case(torch,args,record,result,producer,reducer,change,poison,check,s
     poison();step();torch.cuda.synchronize();fresh=check('timingFreshB-after',1)
     assert first==fresh,'new8-step Graph B must match fresh1-step eager B, full inputs/OML/guards'
     record['timing_capture']=dict(unroll=UNROLL,Graph_B_before_fresh=True,full_parity=True,side_newly_executed=False)
-    return dict(graph=graph,reference=fresh,check=check,record=record,result=result)
+    return dict(graph=graph,reference=fresh,snapshot=snapshot,record=record,result=result)
 
 
 def run_pair(a,torch,states,timed,case):
@@ -124,7 +142,7 @@ def run_pair(a,torch,states,timed,case):
         item=dict(role=role,gpu_ms_per_step=clocks['gpu_ms']/UNROLL,
           host_wall_ms_per_step=clocks['host_wall_ms']/UNROLL,original_timer_per_replay=clocks,
           graph_replays=REPLAYS,complete_steps=REPLAYS*UNROLL)
-        after=state['check']('post-timing-block'+str(len(record['samples'])),1)
+        after=state['snapshot']('post-timing-block'+str(len(record['samples'])))
         assert after==state['reference'],'complete post-block OML/cache/readonly/guards differ from freshB'
         item['full_snapshot_sha256']={key:c.factory.sha(raw) for key,raw in after.items()}
         record['samples'].append(item);state['checkpoint']()
