@@ -1,4 +1,4 @@
-# PR127: one dense4K reader falsifier (device pending)
+# PR127: one dense4K reader falsifier (Root scope bound; device not run)
 
 Parent8393 and its two-pitch negative short-fixture result remain unchanged. This
 is the single additional bandwidth screen requested by Root: N64/S2, Q pitch2048,
@@ -10,10 +10,20 @@ does not itself prove HBM traffic or bandwidth limitation.
 Native libraries are the existing5898 BF16-V control and138cac packed-V8 variant;
 no native compilation or GPU encoder is added. Actual sourcefcf, Root static1c9,
 and the earlier independently reviewed numeric260414 evidence stay immutable.
-The new dense Root receipt pin is `None`: an explicit device invocation refuses
-before importing a framework until Root reviews this source and supplies a
-new scope-specific receipt. The old389-page permission cannot authorize this
-fixture. Production and GPU source bytes are unchanged.
+Root independently read ead4107 and replayed CPU report d790, then issued the new
+dense-only receipt SHA5824ff9fffa96fd0b8442f7b16f9deb5b60b1a87eb994c864a74ce27082bb8c9.
+This receipt permits only a future single component falsifier after Root again
+confirms a fresh serial launch. This round was **not run**: no new GPU job was
+started after11:50 before the scheduled12:00 shutdown. Default execution remains
+CPU-only with Root/device flags false. The old389-page permission cannot
+authorize this fixture. Production and GPU source bytes are unchanged.
+
+The never-launched ead version compared Python tuple-valued `cases` directly
+against JSON lists and would refuse this valid receipt. The bound follow-up
+normalizes only the expected scope through JSON, retaining complete strict dict
+equality. Actual5824 CPU preflight passes; changed pitch, old arena and writer
+scope still refuse even with CPU-test fault pins. The original CPU refusal is
+retained locally; it was not a numeric failure or a GPU run.
 
 The generator reuses original3eb `chunk_sources`, `codebook`, `encode_chunk` and
 `fixed_table` seed20261028. Its finite V alphabet uses the original rational
@@ -73,14 +83,26 @@ cache data needs re-uploading.
 python3 -B -S tools/probe_biv150_native127_v8_dense_timing.py
 ```
 
+To replay actual bound5824 preflight as well, add these CPU-check arguments:
+
+```sh
+  --dense-admission /private/tmp/cjj-root-native127-dense-reader-admission-20261030.json \
+  --numeric-summary /private/tmp/cjj-native127-packed-v8-numeric-raw-20261030/out/v8-consumer-summary.json \
+  --numeric-review /private/tmp/cjj-root-native127-v8-numeric-independent-review-20261030.json \
+  --timing-admission /private/tmp/cjj-root-native127-timing-admission-20261030.json
+```
+
+The original tuple/list preflight refusal is preserved at
+`/private/tmp/cjj-native127-dense-reader-ead-json-scope-refusal-20261030.txt`.
+
 The CPU test allocates only two source pages, checks the finite V conversion
 alphabet, exact scalar-source and original codec bytes, neutral last-KV
 reference behavior, whole-cache mismatch rejection, source inverse and original
 numeric/clock bodies. It does not generate the full arena or execute a device.
 Future run uses the previous short timing CLI/evidence plus `--dense-admission`
 and `--dense-admission-sha256`, explicit `--gpu --timing --root-owned-exclusive
---root-timing-approved`, and a fresh output directory. The pending receipt
-currently prevents this command from reaching framework/device code.
+--root-timing-approved`, and a fresh output directory. Scope binding is not
+automatic launch permission, a numeric pass or a performance observation.
 
 If this screen is nonpositive, stop this exact prototype. A positive result
 only justifies considering a later complete component; capacity remains16KiB

@@ -2,6 +2,7 @@
 """Finite source/descriptor checks; optional tiny NumPy codec/reference checks."""
 import argparse
 import ast
+import copy
 import json
 from pathlib import Path
 import subprocess
@@ -104,13 +105,33 @@ def check(a):
       original_consumer_nested_functions_byte_exact=list(names),prepare_capture_and_pair_clock_byte_exact=True,
       all16384_active_physical_pages_unique=True,A_B_same_cache_lengths_different_Q_table=True,
       full_cache_mutation_and_guard_refused_bad_chunk_saved=True,
-      pending_dense_receipt_refused_before_framework=True,default_stdlib_only=True,
+      missing_dense_receipt_refused_before_framework=True,default_stdlib_only=True,
       GPU_executed=False,numeric_verified=False,performance_verified=False,service_verified=False)
     assert not {'torch','triton','numpy'}.intersection(sys.modules)
+    evidence_paths=(a.dense_admission,a.numeric_summary,a.numeric_review,a.timing_admission)
+    assert all(evidence_paths) or not any(evidence_paths)
+    if all(evidence_paths):
+        args=SimpleNamespace(root_timing_approved=True,dense_admission=a.dense_admission,dense_admission_sha256=d.DENSE_ADMISSION_SHA,
+          numeric_summary=a.numeric_summary,numeric_review=a.numeric_review,numeric_review_sha256=d.short.NUMERIC['Root_review_sha256'],
+          timing_admission=a.timing_admission,timing_admission_sha256=d.short.TIMING_ADMISSION_SHA)
+        result['actual5824_preflight']=d.evidence(args)
+        with tempfile.TemporaryDirectory() as folder:
+            pin=d.DENSE_ADMISSION_SHA
+            try:
+                for key,value in [('cases',[[64,2,2560]]),('pages',389),('writer',True)]:
+                    receipt=json.loads(a.dense_admission.read_text());receipt['scope'][key]=value
+                    path=Path(folder)/(key+'.json');path.write_text(json.dumps(receipt))
+                    bad=copy.copy(args);bad.dense_admission=path;bad.dense_admission_sha256=d.c.sha(path)
+                    d.DENSE_ADMISSION_SHA=bad.dense_admission_sha256 # CPU fault pin only; test strict schema beyond SHA.
+                    refuse(lambda:d.evidence(bad))
+            finally:d.DENSE_ADMISSION_SHA=pin
+        result['actual_receipt_scope_mutants_refused']=['second_pitch','old389page_arena','writer']
+        result['Root_flag_in_positive_preflight_was_CPU_stub_only']=True
     if a.numpy_oracles:result['tiny_CPU_oracles']=numpy_checks(parent)
     assert not {'torch','triton'}.intersection(sys.modules)
     return result
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--parent-source',type=Path,required=True);p.add_argument('--numpy-oracles',action='store_true')
+    for name in ('dense-admission','numeric-summary','numeric-review','timing-admission'):p.add_argument('--'+name,type=Path)
     print(json.dumps(check(p.parse_args()),indent=2,sort_keys=True))

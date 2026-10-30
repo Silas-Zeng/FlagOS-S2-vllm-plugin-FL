@@ -8,7 +8,7 @@ import biv150_native127_v8_dense_fixture as fixture
 
 c=short.c
 PARENT='8393f2799dd926820d5db4cde7a553bdb757bd8b'
-DENSE_ADMISSION_SHA=None # Root must review this source and issue a new scoped receipt.
+DENSE_ADMISSION_SHA='5824ff9fffa96fd0b8442f7b16f9deb5b60b1a87eb994c864a74ce27082bb8c9' # Root-reviewed source scope; future serial launch still required.
 clock_source=short.clock_source
 prepare_case=short.prepare_case
 run_pair=short.run_pair
@@ -36,7 +36,7 @@ def evidence(a):
     assert receipt==dict(schema='root_native127_dense_reader_scope_v1',parent_source=PARENT,
       actual_static_review_sha256=c.STATIC_REVIEW_SHA,prior_numeric_review_sha256=short.NUMERIC['Root_review_sha256'],
       Root_read_source_and_checked_CPU_plan=True,approved_component_dense_falsifier_only=True,
-      requires_explicit_serial_launch=True,scope=fixture.layout(),order=list(short.ORDER),
+      requires_explicit_serial_launch=True,scope=json.loads(json.dumps(fixture.layout())),order=list(short.ORDER),
       unroll=8,warm_replays_per_arm=128,timed_replays_per_block=64,
       precision_verified=False,service_verified=False,capacity_recovered=False)
     # Old small-fixture evidence is a prerequisite, never dense fixture permission.
