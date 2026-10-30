@@ -21,7 +21,7 @@
   ],
   [
     "    off = m.expected_fingerprint(source,off_env,abi)\n",
-    "    off = m.expected_fingerprint(source,off_env,abi)\n    gather_off = m.expected_fingerprint(source,dict(env,**{mixed_bridge.ENV:'0'}),abi)\n    if env.get(mixed_bridge.ENV)!='1' or mixed_bridge.ENV in off_env or expected==gather_off:\n        raise RuntimeError('Gather ON/OFF source fingerprint separation failed')\n"
+    "    off = m.expected_fingerprint(source,off_env,abi)\n    gather_off = m.expected_fingerprint(source,dict(env,**{mixed_bridge.ENV:'0'}),abi)\n    if env.get(mixed_bridge.ENV)!='1' or off_env.get(mixed_bridge.ENV)!='0' or expected==gather_off:\n        raise RuntimeError('Gather ON/OFF source fingerprint separation failed')\n"
   ],
   [
     "    shutil.copy2(__file__, out / 'executed-controller.py')\n",

@@ -7,6 +7,7 @@ import biv150_hidden_gather_snapshot as snapshot
 MAIN='899ce77470b0b539aebc108fd122f668c2d5894d'
 COMPONENT='a10145e173e27fd27c798452701b101c8cdcf69d' # unchanged production-math parent
 NUMERIC_COMPONENT='73470bbcc28f63cba715a64b94766fbd550301b4'
+DEFAULT_PARENT='5b109cb146aa3968ce9b718e6110dc4419db0224'
 CONTROLLER='tools/run_biv150_hidden_gather_service.py'
 BRIDGE='tools/biv150_hidden_gather_service_bridge.py'
 LEGACY='tools/biv150_native118_service_bridge.py'
@@ -18,6 +19,19 @@ ENV='VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER'
 DIAGNOSTICS='CJJ_HIDDEN_GATHER_DIAGNOSTICS'
 PINS=json.loads((ROOT/'tools/biv150_hidden_gather_sme1_pins.json').read_text())
 PRODUCTION=('vllm_fl/compile_semantics.py','vllm_fl/patches/biv150_compute_order.py',snapshot.HELPER,snapshot.KERNEL,snapshot.RUNNER)
+DEFAULT_EDITS={
+    snapshot.HELPER:(
+        ("    if os.environ.get(ENV, '0') != '1' or spec_metadata is not None:",
+         "    if os.environ.get(ENV, '1') != '1' or spec_metadata is not None:"),
+        ("        _require(os.environ.get(ENV, '0') == '1' and graph_none is True and spec_metadata is None",
+         "        _require(os.environ.get(ENV, '1') == '1' and graph_none is True and spec_metadata is None")),
+    'vllm_fl/compile_semantics.py':((
+        "    features['VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER'] = env.get('VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER', '0') == '1'",
+        "    features['VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER'] = env.get('VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER', '1') == '1'"),),
+    CONTROLLER:((
+        "    if env.get(mixed_bridge.ENV)!='1' or mixed_bridge.ENV in off_env or expected==gather_off:",
+        "    if env.get(mixed_bridge.ENV)!='1' or off_env.get(mixed_bridge.ENV)!='0' or expected==gather_off:"),),
+}
 TOOLS=(BRIDGE,CONTROLLER,'tools/biv150_hidden_gather_service_observer.py','tools/biv150_hidden_gather_snapshot.py',
        'tools/hidden_gather_bootstrap/sitecustomize.py','tools/biv150_hidden_gather_sme1_pins.json',
        'tools/biv150_hidden_gather_launcher_address.py','tools/biv150_hidden_gather_path_identity.py',
@@ -35,14 +49,19 @@ def inverse(raw,edits):
         need(raw.count(after.encode())==1,'one source inverse seam');raw=raw.replace(after.encode(),before.encode(),1)
     return raw
 
+def inverse_default_on(name,raw):
+    return inverse(raw,DEFAULT_EDITS.get(name,()))
+
 def current_identity(root,ref):
     root=Path(root).resolve();need(root==ROOT and snapshot.ROOT==ROOT,'same-source tools')
     need(git(root,'rev-parse','HEAD').decode().strip()==ref and not git(root,'status','--porcelain','--untracked-files=all'),'exact clean frozen source')
     git(root,'merge-base','--is-ancestor',COMPONENT,ref);git(root,'merge-base','--is-ancestor',MAIN,ref)
     git(root,'merge-base','--is-ancestor',NUMERIC_COMPONENT,ref)
+    git(root,'merge-base','--is-ancestor',DEFAULT_PARENT,ref)
     need(git(root,'diff','--name-only',MAIN,ref,'--','vllm_fl','csrc').decode().splitlines()==list(PRODUCTION),'only five gather production files')
     for name in PRODUCTION:
-        raw=(root/name).read_bytes()
+        raw=inverse_default_on(name,(root/name).read_bytes())
+        need(raw==git(root,'show',DEFAULT_PARENT+':'+name),'only exact three default literals from tested5b: '+name)
         if name==snapshot.HELPER:
             raw=inverse(raw,json.loads((root/'tools/biv150_hidden_gather_diagnostic_edits.json').read_text()))
         need(raw==git(root,'show',COMPONENT+':'+name),'component bytes plus only diagnostic inverse: '+name)
@@ -51,13 +70,15 @@ def current_identity(root,ref):
         need(sha(root/name)==pin and (root/name).read_bytes()==git(root,'show',MAIN+':'+name),'unchanged118 protocol/support')
     need(Path(old.__file__).resolve()==root/LEGACY,'actual118 support import')
     edits=json.loads((root/'tools/biv150_hidden_gather_controller_edits.json').read_text())
+    need(inverse_default_on(CONTROLLER,(root/CONTROLLER).read_bytes())==git(root,'show',DEFAULT_PARENT+':'+CONTROLLER),'only explicit OFF fingerprint check from tested5b controller')
     need(inverse((root/CONTROLLER).read_bytes(),edits)==(root/PARENT_CONTROLLER).read_bytes(),'whole controller reverse to637d')
     for name in TOOLS:need((root/name).read_bytes()==git(root,'show',ref+':'+name),'actual frozen tool '+name)
     return dict(source_commit=ref,production=old.production(root,ref),main_dependency=MAIN,component_source=COMPONENT,
         numeric_component_source=NUMERIC_COMPONENT,
         source_sha256={name:sha(root/name) for name in PRODUCTION},tool_sha256={name:sha(root/name) for name in TOOLS},
         original118_bridge_sha256=LEGACY_SHA,parent_controller_sha256=PARENT_SHA,
-        only_optional_diagnostic_host_delta_from_component=True,controller_inverse_to118=True,
+        only_default_enable_and_optional_diagnostic_host_delta_from_component=True,controller_inverse_to118=True,
+        default_enable_parent=DEFAULT_PARENT,default_on_inverse_exact_tested_parent=True,
         accepted_native_sha256=PARENT,accepted_mixed_sha256=MIXED,qualification=QUALIFICATION,
         unchanged_main899_other_production=True,service_verified=False)
 
@@ -97,6 +118,7 @@ def clear_environment(original):
         env.pop(key,None)
     paths={ROOT/'tools/hidden_gather_bootstrap',ROOT/'tools/runtime_stats_bootstrap'}
     if 'PYTHONPATH' in env:env['PYTHONPATH']=os.pathsep.join(x for x in env['PYTHONPATH'].split(os.pathsep) if not x or Path(x).resolve() not in paths)
+    env[ENV]='0' # OFF probes must not inherit the new default ON.
     return env
 
 def service_environment(original,library):

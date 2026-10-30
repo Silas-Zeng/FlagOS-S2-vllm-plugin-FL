@@ -539,7 +539,7 @@ def run(a):
     expected = m.expected_fingerprint(source, env, abi)
     off = m.expected_fingerprint(source,off_env,abi)
     gather_off = m.expected_fingerprint(source,dict(env,**{mixed_bridge.ENV:'0'}),abi)
-    if env.get(mixed_bridge.ENV)!='1' or mixed_bridge.ENV in off_env or expected==gather_off:
+    if env.get(mixed_bridge.ENV)!='1' or off_env.get(mixed_bridge.ENV)!='0' or expected==gather_off:
         raise RuntimeError('Gather ON/OFF source fingerprint separation failed')
     mixed_bridge.fingerprint(expected)
     if a.native_k8_library is not None:

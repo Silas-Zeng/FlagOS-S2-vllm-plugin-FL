@@ -39,7 +39,9 @@ def main():
         except (ValueError,RuntimeError,AssertionError):checks.append(name)
         else:raise AssertionError('accepted '+name)
     helper=load(ROOT/s.HELPER,'cpu122_helper');raw=(ROOT/s.HELPER).read_bytes()
-    restored=b.inverse(raw,json.loads((ROOT/'tools/biv150_hidden_gather_diagnostic_edits.json').read_text()))
+    parent_raw=b.inverse_default_on(s.HELPER,raw)
+    ck('only_two_helper_defaults_from_tested5b',parent_raw==b.git(ROOT,'show',b.DEFAULT_PARENT+':'+s.HELPER))
+    restored=b.inverse(parent_raw,json.loads((ROOT/'tools/biv150_hidden_gather_diagnostic_edits.json').read_text()))
     ck('helper_exact_inverse_a101',restored==b.git(ROOT,'show',b.COMPONENT+':'+s.HELPER))
     ck('GPU_kernel_bytes_unchanged',b.sha(ROOT/s.KERNEL)==b.PINS['kernel_source_sha256'])
     entry=(ROOT/b.CONTROLLER).read_bytes();edits=json.loads((ROOT/'tools/biv150_hidden_gather_controller_edits.json').read_text())
@@ -48,13 +50,47 @@ def main():
         ck('119_unchanged_'+name,(ROOT/name).read_bytes()==b.git(ROOT,'show',b.MAIN+':'+name))
     ck('old_SME5_pins_preserved',(ROOT/'tools/biv150_hidden_gather_actual_pins.json').read_bytes()==b.git(ROOT,'show',b.NUMERIC_COMPONENT+':tools/biv150_hidden_gather_actual_pins.json'))
     for name in (s.HELPER,s.KERNEL,s.RUNNER,'vllm_fl/patches/biv150_compute_order.py',b.CONTROLLER):
-        ck('unchanged7347_'+name,(ROOT/name).read_bytes()==b.git(ROOT,'show',b.NUMERIC_COMPONENT+':'+name))
+        ck('exact_inverse7347_'+name,b.inverse_default_on(name,(ROOT/name).read_bytes())==b.git(ROOT,'show',b.NUMERIC_COMPONENT+':'+name))
+    for name in b.PRODUCTION:
+        ck('exact_production_inverse5b_'+name,b.inverse_default_on(name,(ROOT/name).read_bytes())==b.git(ROOT,'show',b.DEFAULT_PARENT+':'+name))
+    for name,edits in b.DEFAULT_EDITS.items():
+        for before,after in edits:
+            reverted=(ROOT/name).read_bytes().replace(after.encode(),before.encode(),1)
+            refuse('missing_default_or_OFF_edit_refused_'+after,lambda name=name,reverted=reverted:b.inverse_default_on(name,reverted))
+    # Execute the real prepare path up to the existing pre-cold boundary.
+    # These are explicitly fake CPU metadata, never SDK/cold/device qualification.
+    parent=types.ModuleType('cpu122_tested5b_helper');parent.__file__=str(ROOT/s.HELPER);sys.modules[parent.__name__]=parent
+    exec(compile(parent_raw,parent.__file__,'exec'),parent.__dict__)
+    int32=object()
+    class Array:
+        dtype=int32;shape=(2,);flags=NS(c_contiguous=True)
+        def __iter__(self):return iter((2,3))
+    np=NS(ndarray=Array,int32=int32);torch=NS(cuda=NS(is_current_stream_capturing=lambda:False))
+    branches=[]
+    for module,flag,expected in ((parent,'1',1),(helper,None,1),(helper,'1',1),(helper,'0',0),(helper,'',0),(helper,'true',0)):
+        calls=[]
+        def cold(*args):calls.append('cold attempted');raise ValueError('CPU sentinel; not real cold')
+        runner=NS(speculative_config=None,input_batch=NS(num_reqs=2))
+        environment={} if flag is None else {helper.ENV:flag}
+        with patch.dict(os.environ,environment,clear=True),patch.dict(sys.modules,torch=torch,numpy=np),patch.object(module,'_cold',cold):
+            ck('prepare_branch_'+module.__name__+'_'+str(flag),module.prepare(runner,None,Array(),5,None,None) is None and len(calls)==expected)
+        branches.append(dict(module=module.__name__,flag=flag,cold_attempts=len(calls)))
+    with patch.dict(os.environ,{helper.ENV:'0'},clear=True):
+        ck('explicit_OFF_does_not_touch_prepare_metadata',helper.prepare(object(),object(),object(),8,None,None) is None)
+        receipt=helper._Receipt(object(),object(),(),8,(),'',{},0,helper._SEAL)
+        ck('explicit_OFF_before_consumer_tensor_checks_or_launch',helper.try_gather(object(),object(),object(),receipt,True,None) is None and receipt.consumed)
+    semantics=load(ROOT/'vllm_fl/compile_semantics.py','cpu122_default_semantics')
+    config=NS(model_config=NS(hf_config=NS(**semantics._GEOMETRY)))
+    env={'VLLM_FL_BIV150_NATIVE_W8A8':'0','VLLM_FL_BIV150_NATIVE_GQA':'0'}
+    fingerprints=[semantics.build_fingerprint(config,'iluvatar',environ={**env,**extra},abi={'CPU':True}) for extra in ({},{helper.ENV:'1'},{helper.ENV:'0'})]
+    ck('actual_default_and_explicit_ON_C3_equal_OFF_distinct',fingerprints[0]==fingerprints[1]!=fingerprints[2])
     ck('new_bootstrap_default_OFF',s.install({})=={'enabled':False})
     refuse('bad_token_refused',lambda:s.configuration({s.ENABLE:'1',s.TOKEN:'short',s.RUN_ID:'cpu'}))
     dirty={b.ENV:'1',b.DIAGNOSTICS:'1',s.ENABLE:'1',s.TOKEN:'never-export',s.RUN_ID:'cpu','CJJ_RUNTIME_STATS_SNAPSHOT':'1',
            'PYTHONPATH':os.pathsep.join((str(ROOT/'tools/hidden_gather_bootstrap'),str(ROOT/'tools/runtime_stats_bootstrap'),str(ROOT))),
            'VLLM_FL_BIV150_KONLY_ENCODED_SERVICE':'1','VLLM_FL_BIV150_KONLY_NATIVE_DECODE':'1'}
-    clean=b.clear_environment(dirty);ck('OFF_client_clear_all_gather_private_keys',not any(k in clean for k in (b.ENV,*observer.PRIVATE_KEYS,'CJJ_RUNTIME_STATS_SNAPSHOT')) and clean['PYTHONPATH']==str(ROOT))
+    clean=b.clear_environment(dirty);ck('OFF_client_explicit_zero_and_clear_private_keys',clean[b.ENV]=='0' and not any(k in clean for k in (*observer.PRIVATE_KEYS,'CJJ_RUNTIME_STATS_SNAPSHOT')) and clean['PYTHONPATH']==str(ROOT))
+    ck('empty_probe_environment_also_explicit_OFF',b.clear_environment({})[b.ENV]=='0')
     enabled=b.service_environment(dirty,Path('/private/tmp/exact-reviewed-ebbc-placeholder.so'))
     ck('service_enables_gather_and_preserves_native',enabled[b.ENV]=='1' and enabled[b.old.ENV]=='1' and enabled['VLLM_FL_BIV150_KONLY_NATIVE_DECODE']=='1' and not any(k in enabled for k in observer.PRIVATE_KEYS))
     args=NS(baseline=False,q32_hoist=True,native_gqa_library=Path('/CPU-fixture/0c66.so'),native_gqa_sha256='0c66098b0f293c7e02b098517fae9a995402f7dc74f629e78c36a830903e87b8',native_k8_library=Path('/CPU-fixture/5898.so'),native_k8_sha256=b.PARENT,
@@ -166,6 +202,7 @@ def main():
     report=dict(passed=True,CPU_only=True,checks=checks,count=len(checks),source_commit=b.git(ROOT,'rev-parse','HEAD').decode().strip(),
         files={p:b.sha(ROOT/p) for p in (*b.PRODUCTION,*b.TOOLS)},script_sha256=b.sha(__file__),
         CPU_fake_worker_and_compiled_objects=True,CPU_C_address_resolver_stub=True,actual_saved_artifact_bytes_used=True,synthetic_debug_path_fixtures_not_device_compile=True,service_started=False,GPU_executed=False,service_verified=False,
+        default_parent=b.DEFAULT_PARENT,pre_cold_branches=branches,default_equals_explicit_ON_fingerprint=True,real_unset_worker_verified=False,
         scope='Actual post-launch counter fragment and snapshot function; fake worker/Tensor metadata are not natural service or CUDA execution.')
     assert a.out.is_absolute() and not a.out.exists();a.out.write_text(json.dumps(report,sort_keys=True,indent=2)+'\n');print(b.sha(a.out))
 if __name__=='__main__':main()

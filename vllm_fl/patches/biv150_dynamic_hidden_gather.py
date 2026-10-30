@@ -113,7 +113,7 @@ class _Receipt:
 
 def prepare(runner, indices, scheduled, total, compute_order, spec_metadata):
     """After original preparation/dispatch, inside the existing input event domain."""
-    if os.environ.get(ENV, '0') != '1' or spec_metadata is not None:
+    if os.environ.get(ENV, '1') != '1' or spec_metadata is not None:
         return None
     torch, np = sys.modules.get('torch'), sys.modules.get('numpy')
     if torch is None or np is None:
@@ -193,7 +193,7 @@ def try_gather(runner, hidden, indices, receipt, graph_none, spec_metadata):
     receipt.consumed = True
     torch = sys.modules.get('torch')
     try:
-        _require(os.environ.get(ENV, '0') == '1' and graph_none is True and spec_metadata is None
+        _require(os.environ.get(ENV, '1') == '1' and graph_none is True and spec_metadata is None
                  and runner.speculative_config is None and receipt.owner is runner
                  and receipt.indices is indices and torch is not None, 'same non-spec common call')
         state = receipt.runtime
