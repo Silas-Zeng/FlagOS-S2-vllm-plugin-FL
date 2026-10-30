@@ -14,7 +14,7 @@ OLD_ROOT='/workspace/experiments/minicpm-s2/code/cjj-native122-service-smoke-v1-
 SUFFIX='/vllm_fl/patches'
 EXTS=('source','ttir','ttgir','llir','asm','cubin')
 COUNTS=dict(source=37,ttir=34,ttgir=34,llir=1,asm=2)
-RULE='gather-4a9f-source-directory-only-v1'
+RULE='gather-4a9f-source-directory-dwarf-comment-v2'
 HEADER=(b'\x7fELF\x02\x01\x01B\x01\x00\x00\x00\x00\x00\x00\x00',2,248,1,70976,64,3208,2,64,56,5,64,12,10)
 PH=((6,4,64,65600,65600,280,280,8),(1,4,0,65536,65536,1344,1344,4096),(1,5,1344,70976,70976,1040,1040,4096),(1685382481,6,0,0,0,0,0,0),(4,4,344,65880,65880,880,880,4))
 # Exact original section headers, including names/order, flags, VA and links.
@@ -78,7 +78,7 @@ def canonical_cubin(raw,root):
 def describe(artifacts,source_root):
     # Call only with a root obtained from the already verified Python module/code.
     raw_files={k:file_id(v) for k,v in artifacts.items()}
-    result=dict(rule=RULE,source_root=source_root,reference_root=OLD_ROOT,raw_files=raw_files,verified=False)
+    result=dict(rule=RULE,rule_source_sha256=file_id(Path(__file__).read_bytes())['sha256'],source_root=source_root,reference_root=OLD_ROOT,raw_files=raw_files,verified=False)
     try:
         need(set(artifacts)==set(EXTS) and all(type(v) is bytes and len(v)<1048576 for v in artifacts.values()),'bounded exact artifact set')
         prefix=root_bytes(source_root);binary,unit_length=canonical_cubin(artifacts['cubin'],source_root)
@@ -87,13 +87,19 @@ def describe(artifacts,source_root):
             data=artifacts[ext];data.decode('utf-8');counts[ext]=data.count(prefix)
             need(counts[ext]==COUNTS[ext],'exact source path count: '+ext)
             if ext=='asm':
+                comment=re.compile(rb'(?m)^(\t.byte\t1 +; Abbrev \[1\] 0xb:)(0x[0-9a-f]+)( DW_TAG_compile_unit)$')
+                found=list(comment.finditer(data))
+                need(len(found)==1 and int(found[0][2],16)==unit_length-7,'ASM unique compile-unit comment must equal actual ELF unit_length-7')
+                comment_proof=dict(original=found[0][2].decode(),reference='0xa4',actual_ELF_unit_length=unit_length,
+                                   derivation='unit_length-7',changed=found[0][2]!=b'0xa4')
+                data=comment.sub(lambda m:m[1]+b'0xa4'+m[3],data)
                 matches=list(re.finditer(rb'(?m)^([ \t]*\.long[ \t]+)([0-9]+)([ \t]+; Length of Unit)$',data))
                 need(len(matches)==1 and int(matches[0][2])==unit_length,'ASM unit length must equal actual ELF')
                 a,b=matches[0].span(2);data=data[:a]+b'171'+data[b:]
             normalized[ext]=file_id(data.replace(prefix,OLD_ROOT.encode()))
         normalized['cubin']=file_id(binary)
         need(normalized==PINS['files'],'complete normalized text/ELF differs')
-        result.update(verified=True,canonical_files=normalized,path_counts=counts,ELF_actual_unit_length=unit_length)
+        result.update(verified=True,canonical_files=normalized,path_counts=counts,ELF_actual_unit_length=unit_length,ASM_compile_unit_comment=comment_proof)
     except (ValueError,struct.error) as error:
         result['reason']=str(error)
     return result

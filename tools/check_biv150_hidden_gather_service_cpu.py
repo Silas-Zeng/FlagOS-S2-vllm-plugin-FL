@@ -30,10 +30,11 @@ def relocate_artifacts(original,root):
         out[row[4]:row[4]+row[5]]=d;struct.pack_into('<IIQQQQIIQQ',out,h[6]+i*h[11],*row)
     result={k:v.replace(old,new) for k,v in original.items() if k!='cubin'};result['cubin']=bytes(out)
     result['asm']=re.sub(rb'(?m)^(\s*\.long\s+)171([ \t]+; Length of Unit)$',lambda m:m[1]+str(len(data[5])-4).encode()+m[2],result['asm'])
+    result['asm']=result['asm'].replace(b'0xb:0xa4 DW_TAG_compile_unit',b'0xb:'+hex(len(data[5])-11).encode()+b' DW_TAG_compile_unit')
     return result
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--component-out',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args();checks=[]
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--component-out',type=Path,required=True);p.add_argument('--actual-b16-cache',type=Path);p.add_argument('--out',type=Path,required=True);a=p.parse_args();checks=[]
     def ck(name,value):assert value,name;checks.append(name)
     def refuse(name,fn):
         try:fn()
@@ -41,7 +42,16 @@ def main():
         else:raise AssertionError('accepted '+name)
     helper=load(ROOT/s.HELPER,'cpu122_helper');raw=(ROOT/s.HELPER).read_bytes()
     ck('production_zero_diff_from_default_policy_parent',not b.git(ROOT,'diff',DEFAULT_POLICY_PARENT,'--','vllm_fl','csrc'))
-    ck('complete_ELF_and_path_admission_unchanged',(ROOT/'tools/biv150_hidden_gather_path_identity.py').read_bytes()==b.git(ROOT,'show',DEFAULT_POLICY_PARENT+':tools/biv150_hidden_gather_path_identity.py'))
+    identity_old=b.git(ROOT,'show',b.DEFAULT_PARENT+':tools/biv150_hidden_gather_path_identity.py').decode()
+    identity_new=Path(identity.__file__).read_text()
+    identity_edits=[
+        ("RULE='gather-4a9f-source-directory-only-v1'", "RULE='gather-4a9f-source-directory-dwarf-comment-v2'"),
+        ('result=dict(rule=RULE,source_root=', "result=dict(rule=RULE,rule_source_sha256=file_id(Path(__file__).read_bytes())['sha256'],source_root="),
+        ("            if ext=='asm':\n", "            if ext=='asm':\n"+"                comment=re.compile(rb'(?m)^(\\t.byte\\t1 +; Abbrev \\[1\\] 0xb:)(0x[0-9a-f]+)( DW_TAG_compile_unit)$')\n                found=list(comment.finditer(data))\n                need(len(found)==1 and int(found[0][2],16)==unit_length-7,'ASM unique compile-unit comment must equal actual ELF unit_length-7')\n                comment_proof=dict(original=found[0][2].decode(),reference='0xa4',actual_ELF_unit_length=unit_length,\n                                   derivation='unit_length-7',changed=found[0][2]!=b'0xa4')\n                data=comment.sub(lambda m:m[1]+b'0xa4'+m[3],data)\n"),
+        ('ELF_actual_unit_length=unit_length)', 'ELF_actual_unit_length=unit_length,ASM_compile_unit_comment=comment_proof)')]
+    for old,new in reversed(identity_edits):
+        ck('unique_identity_delta_'+str(len(new)),identity_new.count(new)==1);identity_new=identity_new.replace(new,old)
+    ck('entire_identity_inverse_to_original5b',identity_new==identity_old)
     for name,path in (('compiled_record',Path(s.__file__)),('compiled_verdict',Path(observer.__file__))):
         old=b.git(ROOT,'show',DEFAULT_POLICY_PARENT+':'+str(path.relative_to(ROOT))).decode();new=path.read_text()
         get=lambda source:ast.get_source_segment(source,next(n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef) and n.name==name))
@@ -170,6 +180,38 @@ def main():
     changed=dict(synthetic);changed['asm']=changed['asm'].replace(b'; Length of Unit',b'; wrong length marker');ck('reject_ASM_length_disagreement',not identity.describe(changed,str(ROOT))['verified'])
     changed=dict(synthetic);changed['ttir']+=b'\n';ck('reject_other_IR_difference',not identity.describe(changed,str(ROOT))['verified'])
     ck('reject_wrong_source_root',not identity.describe(synthetic,str(ROOT)+'-wrong')['verified'])
+    comment=re.compile(rb'(?m)^(\t.byte\t1 +; Abbrev \[1\] 0xb:)(0x[0-9a-f]+)( DW_TAG_compile_unit)$')
+    found=list(comment.finditer(synthetic['asm']));ck('synthetic_one_derived_comment',len(found)==1)
+    for label,asm in (
+        ('wrong_derived_length',comment.sub(lambda m:m[1]+hex(int(m[2],16)+1).encode()+m[3],synthetic['asm'])),
+        ('duplicate',synthetic['asm']+found[0][0]+b'\n'),
+        ('different_tag',synthetic['asm'].replace(b'DW_TAG_compile_unit',b'DW_TAG_subprogram')),
+        ('other_ASM_byte',synthetic['asm']+b'\n')):
+        ck('reject_ASM_comment_'+label,not identity.describe(dict(synthetic,asm=asm),str(ROOT))['verified'])
+    actual_cache=None
+    if a.actual_b16_cache is not None:
+        r=a.actual_b16_cache;mp=r/'download-manifest.json'
+        ck('actual_B16_manifest_pin',b.sha(mp)=='5924c0a60d5bae231224decfe633def6d12ec38afcdd0d947eff0d31537a7fd8')
+        dm=json.loads(mp.read_bytes());index={x['relative']:x for x in dm['files']}
+        def checked(p):
+            data=p.read_bytes();item=index[str(p.relative_to(r))];assert identity.file_id(data)==dict(sha256=item['sha256'],bytes=item['bytes']);return data
+        manifest=json.loads(checked(r/'out/manifest.json'))
+        ck('actual_B16_source',manifest['source']=='/workspace/experiments/minicpm-s2/code/cjj-native122-service-throughput-16k-v1-20261030')
+        old_module=types.ModuleType('CPU_original5b_identity');old_module.__file__=identity.__file__
+        exec(compile(identity_old,'git-5b-original-path-identity','exec'),old_module.__dict__)
+        records=[]
+        for p in sorted((r/'out/triton-cache').rglob('gather_hidden_bits.json')):
+            metadata=json.loads(checked(p));ck('actual_B16_target',metadata['target']==dict(backend='corex',arch=71,warp_size=64))
+            ck('actual_B16_options',dict(metadata,target="GPUTarget(backend='corex', arch=71, warp_size=64)")==b.PINS['options'])
+            artifacts={ext:checked(p.with_suffix('.'+ext)) for ext in identity.EXTS}
+            original_proof=old_module.describe(artifacts,manifest['source']);new_proof=identity.describe(artifacts,manifest['source'])
+            ck('actual_B16_preserves_original5b_strict_false',original_proof['verified'] is False and original_proof['reason']=='complete normalized text/ELF differs')
+            ck('actual_B16_precise_rule_passes',new_proof['verified'] is True and new_proof['canonical_files']==b.PINS['files'] and new_proof['rule_source_sha256']==b.sha(identity.__file__))
+            records.append(dict(cache=str(p.relative_to(r)),original5b=original_proof,new_rule=new_proof,raw_artifacts_modified=False))
+        ck('actual_B16_cache_present',bool(records))
+        actual_cache=dict(raw_root=str(r),download_manifest_sha256=b.sha(mp),original5b_rule_source_sha256=hashlib.sha256(identity_old.encode()).hexdigest(),records=records,
+                          scope='Only manifest-pinned cache artifacts and metadata replay; no whole-service re-review or new worker qualification.')
+
     owner=NS(__file__=str(folder/'actual-launcher.so'))
     k=NS(src=src,hash=b.PINS['hash'],metadata=b.PINS['options'],n_regs=6,n_spills=0,
         asm=synthetic,
@@ -226,7 +268,7 @@ def main():
     ck('no_GPU_framework_import',not {'torch','triton','vllm'}.intersection(sys.modules))
     report=dict(passed=True,CPU_only=True,checks=checks,count=len(checks),source_commit=b.git(ROOT,'rev-parse','HEAD').decode().strip(),
         files={p:b.sha(ROOT/p) for p in (*b.PRODUCTION,*b.TOOLS)},script_sha256=b.sha(__file__),
-        CPU_fake_worker_and_compiled_objects=True,CPU_C_address_resolver_stub=True,actual_saved_artifact_bytes_used=True,synthetic_debug_path_fixtures_not_device_compile=True,service_started=False,GPU_executed=False,service_verified=False,
+        actual_B16_cache_replay=actual_cache,CPU_fake_worker_and_compiled_objects=True,CPU_C_address_resolver_stub=True,actual_saved_artifact_bytes_used=True,synthetic_debug_path_fixtures_not_device_compile=True,service_started=False,GPU_executed=False,service_verified=False,
         default_parent=b.DEFAULT_PARENT,pre_cold_branches=branches,default_equals_explicit_ON_fingerprint=True,real_unset_worker_verified=False,
         scope='Actual post-launch counter fragment and snapshot function; fake worker/Tensor metadata are not natural service or CUDA execution.')
     assert a.out.is_absolute() and not a.out.exists();a.out.write_text(json.dumps(report,sort_keys=True,indent=2)+'\n');print(b.sha(a.out))
