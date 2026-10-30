@@ -11,9 +11,10 @@ COMPILE_SOURCE = 'fbc6858bdccf7688936f9d0887b65e855762ab83'
 LIBRARY = '8eefb1b8012b62e6849eeaf5fc43f9600746a39f19354532255ba899d1c9e592'
 REFERENCE = '5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe'
 COMPILE_SUMMARY = 'd7254573f698cb04fd66f389c4d3746c87752ba14c8f0357df85b41d302dc54c'
-# Actual static review is independently pending. No --override or user hash bypass.
-STATIC_REVIEW_SHA256 = None
-ROOT_ADMISSION_SHA256 = None
+# Root independently replayed the actual SO review; isolated numerical scope only.
+# No --override or user hash bypass. Scheduling still requires Root exclusivity.
+STATIC_REVIEW_SHA256 = '6939c47aa9e572ccc8cc4206cb703b3a64ad8a9daffef7d00dc1eb242a779fc9'
+ROOT_ADMISSION_SHA256 = '0419ec33452ba1272e43cab98b03ed1fd2162610d3d3d1563a48ebb8db3f410a'
 SOURCE_PINS = {
  'tools/kernels/biv150_native_i8_gate2048.cpp':'68d458a4f20ffd7c7f82597249ca8cdb916efe7eb8546a7215ecd9c7670ab509',
  'tools/kernels/biv150_native_i8_gate2048.cu':'d47c27e721c2d54d73e23e4a936bcb517eaee81bc5882bda333bc4d4b532e624',
@@ -65,7 +66,7 @@ def require_admissions(review_bytes,approval_bytes):
  need(sha(review_bytes)==STATIC_REVIEW_SHA256 and sha(approval_bytes)==ROOT_ADMISSION_SHA256,'frozen review/approval hash')
  r=json.loads(review_bytes);a=json.loads(approval_bytes);review_fields(r)
  # The actual reviewer schema is checked above; exact approved file hashes
- # remain pending until Root's separate review and narrow receipt commit.
+ # bind Root's separate review and narrow receipt, not device qualification.
  need(a['approved_numeric_only'] is True and a['source_commit']==COMPILE_SOURCE,'Root numeric-only source admission')
  need(a['actual_static_review_sha256']==STATIC_REVIEW_SHA256 and a['library_sha256']==LIBRARY,'Root exact review/SO binding')
  need(a['numeric_verified'] is False and a['performance_verified'] is False and a['service_verified'] is False,'no inherited numeric/service qualification')

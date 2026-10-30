@@ -6,9 +6,11 @@
 本提交只有工具和本文，不注册生产路由、不安装服务、不计时。
 
 实际已编译库固定为 `8eefb1b8012b62e6849eeaf5fc43f9600746a39f19354532255ba899d1c9e592`。
-它仍归属于 fbc 编译，而非新工具 HEAD。静态审查 SHA 与 Root 独立批准 SHA
-目前均为 `None`，实际 CLI 在导入 Torch、创建输出或接触设备前拒绝。
-报告必须完整独立审核后才能用小后继提交绑定，不能传任意命令行 hash 放行。
+它仍归属于 fbc 编译，而非新工具 HEAD。Root 已独立重放实际静态审查，
+本后继绑定报告 `6939c47aa9e572ccc8cc4206cb703b3a64ad8a9daffef7d00dc1eb242a779fc9`
+与仅准受限数值的批准 `0419ec33452ba1272e43cab98b03ed1fd2162610d3d3d1563a48ebb8db3f410a`。
+数值/模型/性能/服务仍未通过，串行设备安排仍须 Root 显式授权；
+不能传任意命令行 hash 放行，缺失或错误收据在导入 Torch 前拒绝。
 
 ## 参考与范围
 
@@ -46,9 +48,9 @@ python3 -B -S -W error tools/probe_biv150_native_i8_gate2048_numeric.py
 
 CPU 重用原完整 panel/fragment 检查，仅将其本次内存中的 host 基线由899换成
 已经正常合入的5f；原 checker/数学/编译代码没有改。另检查真实参考调用、
-固定权重、Graph 顺序以及真实 CLI 的 pending tripwire。CPU通过不是设备资格。
+固定权重、Graph 顺序以及未知收据反例、两份真实收据及真实 CLI 的排他 tripwire。CPU通过不是设备资格。
 
-待 Root 绑定真实静态报告与批准、安排独占窗口后，先运行以下命令加
+待 Root 安排独占窗口后，先运行以下命令加
 `--preflight-only`（将 `--run-numeric` 替换掉），再由 Root 显式启动：
 
 ```sh
@@ -62,4 +64,6 @@ python3 -B tools/probe_biv150_native_i8_gate2048_numeric.py --run-numeric \
 ```
 
 原完整 compile-out 的工件必须齐全且 SHA 匹配；不重新编译、不更新依赖、不修改
-原编译路径或 site-packages。上述是待填的协议模板，当前没有可运行的设备准入。
+原编译路径或 site-packages。上述是待填的协议模板；静态审查只允许这项隔离数值，当前串行调度仍 pending。
+CPU 可附 `--static-review REAL_REPORT.json --root-admission REAL_APPROVAL.json`
+验证两份真实文件；该检查不加载库、不执行设备。
