@@ -150,6 +150,8 @@ class AsyncSchedulerFL(_AsyncScheduler):
         )
         self._phase_step = 0
         self._sched_probe_path = os.environ.get("VLLM_FL_SCHED_PROBE")
+        self._shape_hist_path = os.environ.get("VLLM_FL_SCHED_SHAPE_HIST")
+        self._shape_hist = {}
 
         vllm_config = kwargs.get("vllm_config")
         manager = kwargs.get("structured_output_manager")
@@ -194,6 +196,14 @@ class AsyncSchedulerFL(_AsyncScheduler):
         finally:
             self.max_num_scheduled_tokens = original_budget
         self._phase_step += 1
+
+        if self._shape_hist_path:
+            size = output.total_num_scheduled_tokens
+            self._shape_hist[size] = self._shape_hist.get(size, 0) + 1
+            # Aggregate without per-step file I/O on the scheduling thread.
+            if self._phase_step % 256 == 0:
+                with open(self._shape_hist_path, "w", encoding="utf-8") as hist:
+                    json.dump(self._shape_hist, hist, sort_keys=True)
 
         if self._sched_probe_path:
             prefill_tokens = 0

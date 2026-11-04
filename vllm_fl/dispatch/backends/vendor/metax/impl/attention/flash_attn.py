@@ -24,6 +24,7 @@ from vllm.v1.attention.ops.common import cp_lse_ag_out_rs
 # Note: use Maca's merge_attn_states to get cuda kernel invoked
 # --------------------------------------------------------------
 from .ops.merge_attn_states import merge_attn_states
+from .utils.flash_attn_out import flash_attn_kvcache_into, flash_attn_varlen_into
 from .utils.fa_utils import (
     flash_attn_supports_fp8,
     get_flash_attn_version,
@@ -36,7 +37,6 @@ if is_flash_attn_varlen_func_available():
         flash_attn_varlen_func,
         get_scheduler_metadata,
         reshape_and_cache_flash,
-        flash_attn_with_kvcache,  # used for prefill decode split
     )
 from vllm.config import VllmConfig, get_current_vllm_config, get_layers_from_vllm_config
 from vllm.config.cache import CacheDType
@@ -56,7 +56,6 @@ from vllm.v1.attention.backends.utils import (
     get_dcp_local_seq_lens,
     get_kv_cache_layout,
     split_decodes_and_prefills,  # used for prefill decode split
-    reshape_attn_output_for_spec_decode,  # used for prefill decode split with mtp
     reshape_query_for_spec_decode,  # used for prefill decode split with mtp
 )
 from vllm.v1.attention.backends.registry import AttentionBackendEnum, register_backend
@@ -767,6 +766,11 @@ class FlashAttentionImpl(AttentionImpl):
             and key is not None
             and value is not None
         ):
+            skip_cache_update = False
+            if getattr(layer, "_metax_rope_cache_enabled", False):
+                from vllm_fl.patches.metax_rope_cache import consume_marker
+
+                skip_cache_update = consume_marker(layer.layer_name)
             # Reshape the input keys and values and store them in the cache.
             # Skip this if sharing KV cache with an earlier attention layer.
             # NOTE(woosuk): Here, key and value are padded while slot_mapping is
@@ -774,16 +778,17 @@ class FlashAttentionImpl(AttentionImpl):
             # and value[:num_actual_tokens] because the reshape_and_cache_flash
             # op uses the slot_mapping's shape to determine the number of
             # actual tokens.
-            reshape_and_cache_flash(
-                key,
-                value,
-                key_cache,
-                value_cache,
-                attn_metadata.slot_mapping,
-                self.kv_cache_dtype,
-                layer._k_scale,
-                layer._v_scale,
-            )
+            if not skip_cache_update:
+                reshape_and_cache_flash(
+                    key,
+                    value,
+                    key_cache,
+                    value_cache,
+                    attn_metadata.slot_mapping,
+                    self.kv_cache_dtype,
+                    layer._k_scale,
+                    layer._v_scale,
+                )
 
         if self.kv_cache_dtype.startswith("fp8"):
             # queries are quantized in the attention layer
@@ -823,23 +828,22 @@ class FlashAttentionImpl(AttentionImpl):
                 num_decode_tokens = attn_metadata.num_decode_tokens
                 if attn_metadata.num_prefills > 0:
                     assert attn_metadata.prefill_cu_seqlens_k is not None
-                    output[num_decode_tokens:num_actual_tokens] = (
-                        flash_attn_varlen_func(
-                            q=query[num_decode_tokens:num_actual_tokens],
-                            k=key_cache,
-                            v=value_cache,
-                            block_table=attn_metadata.prefill_block_table,
-                            cu_seqlens_q=attn_metadata.prefill_query_start_loc,
-                            cu_seqlens_k=attn_metadata.prefill_cu_seqlens_k,
-                            max_seqlen_q=attn_metadata.max_query_len,
-                            max_seqlen_k=attn_metadata.prefill_max_seq_len,
-                            softmax_scale=self.scale,
-                            causal=attn_metadata.causal,
-                            window_size=self.sliding_window,
-                            alibi_slopes=self.alibi_slopes,
-                            softcap=self.logits_soft_cap,
-                            s_aux=self.sinks,
-                        )
+                    flash_attn_varlen_into(
+                        q=query[num_decode_tokens:num_actual_tokens],
+                        k=key_cache,
+                        v=value_cache,
+                        out=output[num_decode_tokens:num_actual_tokens],
+                        block_table=attn_metadata.prefill_block_table,
+                        cu_seqlens_q=attn_metadata.prefill_query_start_loc,
+                        cu_seqlens_k=attn_metadata.prefill_cu_seqlens_k,
+                        max_seqlen_q=attn_metadata.max_query_len,
+                        max_seqlen_k=attn_metadata.prefill_max_seq_len,
+                        softmax_scale=self.scale,
+                        causal=attn_metadata.causal,
+                        window_size=self.sliding_window,
+                        alibi_slopes=self.alibi_slopes,
+                        softcap=self.logits_soft_cap,
+                        s_aux=self.sinks,
                     )
                 if attn_metadata.num_decodes > 0:
                     # Use flash_attn_with_kvcache for normal decoding.
@@ -847,10 +851,11 @@ class FlashAttentionImpl(AttentionImpl):
                     decode_query = reshape_query_for_spec_decode(
                         decode_query, attn_metadata.num_decodes
                     )
-                    output_unreshape = flash_attn_with_kvcache(
+                    flash_attn_kvcache_into(
                         q=decode_query,
                         k_cache=key_cache,
                         v_cache=value_cache,
+                        out=output[:num_decode_tokens].view_as(decode_query),
                         block_table=attn_metadata.decode_block_table,
                         cache_seqlens=attn_metadata.decode_seq_lens,
                         softmax_scale=self.scale,
@@ -859,9 +864,6 @@ class FlashAttentionImpl(AttentionImpl):
                         alibi_slopes=self.alibi_slopes,
                         softcap=self.logits_soft_cap,
                         s_aux=self.sinks,
-                    )
-                    output[:num_decode_tokens] = reshape_attn_output_for_spec_decode(
-                        output_unreshape
                     )
                 return output
             # └------------------------- Metax Modification -------------------------┘

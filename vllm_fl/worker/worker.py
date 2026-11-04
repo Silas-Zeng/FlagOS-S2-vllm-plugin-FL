@@ -200,6 +200,7 @@ def _use_async_scheduler_fl(vllm_config: VllmConfig) -> bool:
             vllm_config.num_speculative_tokens == 1
             or os.environ.get("VLLM_FL_PHASE_AWARE_SCHED", "0") == "1"
             or os.environ.get("VLLM_FL_SCHED_PROBE")
+            or os.environ.get("VLLM_FL_SCHED_SHAPE_HIST")
         )
     )
 
