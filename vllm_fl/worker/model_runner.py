@@ -5292,6 +5292,12 @@ class ModelRunnerFL(
                 if load_dummy_weights:
                     self.load_config.load_format = "dummy"
                 model_loader = get_model_loader(self.load_config)
+                if (getattr(current_platform, "vendor_name", None) == "metax"
+                        and self.lora_config is None and not self.model_config.enforce_eager
+                        and self.compilation_config.mode == CompilationMode.VLLM_COMPILE):
+                    from vllm_fl.patches.metax_linear_norm_fusion import install as install_linear_norm
+
+                    install_linear_norm(self.compilation_config)
                 self.model = model_loader.load_model(
                     vllm_config=self.vllm_config, model_config=self.model_config
                 )

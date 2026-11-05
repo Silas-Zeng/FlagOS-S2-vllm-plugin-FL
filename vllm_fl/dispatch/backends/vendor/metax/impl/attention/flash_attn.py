@@ -3,6 +3,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 """Attention layer with FlashAttention."""
 
+import os
 from dataclasses import dataclass
 from typing import ClassVar
 
@@ -74,6 +75,31 @@ class MacaFlashAttentionBackend(AttentionBackend):
     accept_output_buffer: bool = True
     supported_dtypes: ClassVar[list[torch.dtype]] = [torch.float16, torch.bfloat16]
 
+    @classmethod
+    def get_required_kv_cache_layout(cls) -> str | None:
+        # Keep each head's tokens together within a page. The cache allocation,
+        # fused RoPE writer and FlashAttention all consume the resulting strides.
+        if (os.environ.get("VLLM_FL_METAX_HND_KV", "1") != "1"
+                or os.environ.get("VLLM_KV_CACHE_LAYOUT") is not None):
+            return None
+        try:
+            config = get_current_vllm_config()
+        except AssertionError:
+            # Backend inspection may happen without an active engine config.
+            return None
+        model = config.model_config
+        if (model is None or model.dtype != torch.bfloat16 or model.is_hybrid
+                or config.parallel_config.tensor_parallel_size != 1
+                or config.cache_config.cache_dtype != "auto"
+                or config.kv_transfer_config is not None):
+            return None
+        text = model.hf_text_config
+        if (getattr(text, "num_attention_heads", None) == 16
+                and getattr(text, "num_key_value_heads", None) == 2
+                and model.get_head_size() == 128):
+            return "HND"
+        return None
+
     @staticmethod
     def get_supported_kernel_block_sizes() -> list[int | MultipleOf]:
         vllm_config = get_current_vllm_config()
@@ -144,7 +170,12 @@ class MacaFlashAttentionBackend(AttentionBackend):
             # (num_blocks, num_kv_heads, num_layers, 2, block_size, head_size)
             return (2, 4, 0, 1, 3, 5)
         elif cache_layout == "HND":
-            stride_order = (0, 1, 3, 2, 4)
+            # Put a head's K/V pages next to each other as well as making the
+            # tokens contiguous. Preserve the established connector/user layout.
+            if MacaFlashAttentionBackend.get_required_kv_cache_layout() == "HND":
+                stride_order = (1, 3, 0, 2, 4)
+            else:
+                stride_order = (0, 1, 3, 2, 4)
         else:
             raise ValueError(f"Unknown cache layout format {cache_layout}.")
         return stride_order
