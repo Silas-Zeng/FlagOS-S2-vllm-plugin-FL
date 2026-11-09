@@ -1,0 +1,25 @@
+{
+  "cache_clear": false,
+  "default": "stdlib-only plan; no framework import",
+  "device_calls_added": 0,
+  "diagnostic_only": true,
+  "formal_score_eligible": false,
+  "hooks": [
+    "LibTuner.run",
+    "inherited _bench",
+    "lazy do_bench callback",
+    "SQL build_sql_model_by_db"
+  ],
+  "phase_assignment": "join monotonic/wall timestamps to existing fullwarm/score commands",
+  "protocol_pins": {
+    "flag_gems.flagtune.runtime._benchmark_protocol": "15ea6ad8e120764c2ad529528aeec2e52e45792db69eb443ab5d75f05b26c0e5",
+    "triton.flagtune.runtime.benchmark_protocol": "0bf6ef0eaba3f50094c99b7e9573fa0a115c89f3ccade968cd40c12b9623c7ce"
+  },
+  "source_files_changed": false,
+  "source_pins": {
+    "flag_gems.utils.libentry": "414e8a3f74e2522e40659e7fccd84e301f4517220837a87af0311f050bbf3025",
+    "flag_gems.utils.models.sql": "6dc19cb581d70154f14b95ed9112d682c6b5919b6cf3f8dea01a78a75ec0efd7",
+    "triton.runtime.autotuner": "631052b97f5807f9179fa72f339c0aaef1caae8f6c63e07083b29fcdd54094ed"
+  },
+  "trace_limits": "8192 events per process; overflow explicitly invalidates completeness"
+}
