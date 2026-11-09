@@ -1,0 +1,73 @@
+{
+  "CPU_only": true,
+  "source": "9d4f4e6d33b3365ac3628c2d09d71472ac809b70",
+  "all_original_files_verified": 110,
+  "all_full_FP64_references_independently_regenerated": true,
+  "full_element_metrics": [
+    {
+      "rows": 48,
+      "control": 0,
+      "arm": "triton",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0020425120542408104
+    },
+    {
+      "rows": 48,
+      "control": 0,
+      "arm": "native",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0020425120542408104
+    },
+    {
+      "rows": 48,
+      "control": 1,
+      "arm": "triton",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0014949855384087218
+    },
+    {
+      "rows": 48,
+      "control": 1,
+      "arm": "native",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0014949855384087218
+    },
+    {
+      "rows": 56,
+      "control": 0,
+      "arm": "triton",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0020269329186580155
+    },
+    {
+      "rows": 56,
+      "control": 0,
+      "arm": "native",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0020269329186580155
+    },
+    {
+      "rows": 56,
+      "control": 1,
+      "arm": "triton",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0015080310052915911
+    },
+    {
+      "rows": 56,
+      "control": 1,
+      "arm": "native",
+      "pointwise_violations": 0,
+      "relative_RMSE": 0.0015080310052915911
+    }
+  ],
+  "all_saved_partial_and_output_native_Triton_bits_equal": true,
+  "original_run_guards": true,
+  "outer_guard_snapshots_independently_replayed": false,
+  "readonly_snapshots_independently_replayed": false,
+  "library_SHA": "06c5228e1feb0b26cb71dfcf703d60693bd65926491fd7fa5f916d970f879a89",
+  "driver_identity_claimed": false,
+  "Root_explicit_serial_admission_required": true,
+  "service_activation": false,
+  "Graph_side_performance_or_model_qualified": false
+}
