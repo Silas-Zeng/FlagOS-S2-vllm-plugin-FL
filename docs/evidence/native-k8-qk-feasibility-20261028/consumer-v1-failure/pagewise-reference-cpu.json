@@ -1,0 +1,63 @@
+{
+  "active_full_partial_elements": 221184,
+  "actual_final_output_unverified": true,
+  "actual_reducer_calls": 0,
+  "actual_v1_status": "failed, preserved",
+  "all34_original_SHA_verified": true,
+  "final_max_once_round_negative_control": {
+    "finite": true,
+    "maximum_absolute_error": 0.03135871887207031,
+    "passed": false,
+    "pointwise_005": false,
+    "relative_RMSE": 0.0010176279217301114,
+    "relative_RMSE_005": true
+  },
+  "implementation_pagewise_BF16_P_FP64": {
+    "finite": true,
+    "maximum_absolute_error": 2.4667626927765696e-06,
+    "passed": true,
+    "pointwise_005": true,
+    "relative_RMSE": 3.965681533237753e-08,
+    "relative_RMSE_005": true
+  },
+  "new_consumer_case_Graph_side_device_qualification": false,
+  "original_ideal_FP64_partial_diagnostic": {
+    "finite": true,
+    "maximum_absolute_error": 0.02647874583792209,
+    "passed": false,
+    "pointwise_005": false,
+    "relative_RMSE": 0.0012921875567715507,
+    "relative_RMSE_005": true
+  },
+  "original_ideal_pointwise_failures": 4080,
+  "precision_gate": false,
+  "reference_frontend_inverse": {
+    "final_FP64_hard_gate_unchanged": true,
+    "frozen52c_source_sha256": "82091d73dc73434494a037c9a6eef0baf5f457cec6ec4af89e83b9b7c0d8adaf",
+    "native_or_dtype_or_threshold_changed": false,
+    "reference_only_inverse_byte_exact": true,
+    "v2_sha256": "4d83297d4a1848faf1e880895c485ecac144df48f8800940e66986f6f70a14ac"
+  },
+  "source_dtype_kernel_changed": false,
+  "source_inverse": {
+    "PV_online_and_partial_output_unchanged": true,
+    "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+    "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+    "codec_actual_IR_verified": false,
+    "device_compiled": false,
+    "inverse_byte_exact": true,
+    "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+    "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+    "reducer_source_not_modified": true
+  },
+  "thresholds_changed": false,
+  "unrounded_online_equivalence_to_original_ideal_max_error": 1.021405182655144e-14,
+  "without_P_round_negative_control": {
+    "finite": true,
+    "maximum_absolute_error": 0.02647874583792209,
+    "passed": false,
+    "pointwise_005": false,
+    "relative_RMSE": 0.0012921875567715507,
+    "relative_RMSE_005": true
+  }
+}

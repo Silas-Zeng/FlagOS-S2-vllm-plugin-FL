@@ -1,0 +1,295 @@
+{
+  "CPU_does_not_simulate_GPU_FTZ_rounding_or_register_allocation": true,
+  "CPU_only": true,
+  "GPU_numeric_verified": false,
+  "Q_readonly_precondition": true,
+  "actual_reload_or_resource_reduction_verified": false,
+  "address_coordinates": 16384,
+  "empty_and_tail_cases": [
+    {
+      "entered": [],
+      "extra_requested_Q_bytes_per_head": 0,
+      "length": 0,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0
+      ],
+      "extra_requested_Q_bytes_per_head": 2048,
+      "length": 1,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0
+      ],
+      "extra_requested_Q_bytes_per_head": 2048,
+      "length": 15,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0
+      ],
+      "extra_requested_Q_bytes_per_head": 2048,
+      "length": 16,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 17,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 31,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 32,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 33,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 4095,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 4096,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 16383,
+      "segments": 2
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 16384,
+      "segments": 2
+    },
+    {
+      "entered": [],
+      "extra_requested_Q_bytes_per_head": 0,
+      "length": 0,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0
+      ],
+      "extra_requested_Q_bytes_per_head": 2048,
+      "length": 1,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0
+      ],
+      "extra_requested_Q_bytes_per_head": 2048,
+      "length": 15,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0
+      ],
+      "extra_requested_Q_bytes_per_head": 2048,
+      "length": 16,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 17,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 31,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1
+      ],
+      "extra_requested_Q_bytes_per_head": 4096,
+      "length": 32,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1,
+        2
+      ],
+      "extra_requested_Q_bytes_per_head": 6144,
+      "length": 33,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "extra_requested_Q_bytes_per_head": 8192,
+      "length": 4095,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "extra_requested_Q_bytes_per_head": 8192,
+      "length": 4096,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "extra_requested_Q_bytes_per_head": 8192,
+      "length": 16383,
+      "segments": 4
+    },
+    {
+      "entered": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "extra_requested_Q_bytes_per_head": 8192,
+      "length": 16384,
+      "segments": 4
+    }
+  ],
+  "finite_input_precondition": true,
+  "fullstep_future_reference": "9695 pagewise BF16 P and 3eb full-final ideal gate; thresholds unchanged",
+  "geometries": [
+    {
+      "Q_pitch": 2048,
+      "extra_requested_Q_bytes": 524288,
+      "rows": 64,
+      "segments": 2
+    },
+    {
+      "Q_pitch": 2560,
+      "extra_requested_Q_bytes": 524288,
+      "rows": 64,
+      "segments": 2
+    },
+    {
+      "Q_pitch": 2048,
+      "extra_requested_Q_bytes": 524288,
+      "rows": 32,
+      "segments": 4
+    },
+    {
+      "Q_pitch": 2560,
+      "extra_requested_Q_bytes": 524288,
+      "rows": 32,
+      "segments": 4
+    }
+  ],
+  "lane_reduction_and_codec_rows": 792,
+  "original_finite_BF16_fixture_vectors": 99,
+  "packed_words_checked": 50688,
+  "passed": true,
+  "performance_verified": false,
+  "source": {
+    "PV_QK_waits_ABI_segments_source_unchanged": true,
+    "Q_readonly_required": true,
+    "actual_Q_global_reload_verified": false,
+    "actual_compile_or_numeric_or_performance_verified": false,
+    "actual_live_range_or_register_reduction_verified": false,
+    "library": "cjj_native_k8_qreload_probe.so",
+    "namespace": "cjj_native_k8_qreload_probe",
+    "original_377_and_3eb_files_unchanged": true,
+    "original_K_then_V_issue_order_source_unchanged": true,
+    "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_source_sha256": {
+      "biv150_native_k8_codec.cu": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+      "biv150_native_k8_codec.cuh": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+      "biv150_native_k8_qk.cpp": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+      "biv150_native_k8_qk.cu": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9"
+    },
+    "requested_extra_Q_BF16_reads_per_entered_CTA": 1024,
+    "requested_extra_Q_bytes_full_64S2_or_32S4": 524288,
+    "requested_extra_Q_bytes_per_entered_CTA": 2048,
+    "team_main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "variant_source_sha256": {
+      "biv150_native_k8_qreload_codec.cu": "097217b7abff3b79f06e74df71bd74c2f9485a9b52d975f19ea0a25725aadf3a",
+      "biv150_native_k8_qreload_codec.cuh": "6259b98928641eb50bfe9e2dbd36fe4e4f358eb5dd72467d6686e830604036ee",
+      "biv150_native_k8_qreload_qk.cpp": "1f6ad06f8aed9e449d49487b727d49d9b83281a99a719cc7217517fdc1496d9a",
+      "biv150_native_k8_qreload_qk.cu": "3547cc72dbd10584188c70f0b080dd03fd79e137a68222d840e5fe09b923007e"
+    },
+    "whole_source_inverse_byte_exact": true
+  },
+  "source_mutants_rejected": [
+    "second_Q_offset",
+    "peak_order",
+    "shuffle_order",
+    "codec_rounding",
+    "PV_C_chain",
+    "segments",
+    "wait",
+    "issue_order"
+  ]
+}

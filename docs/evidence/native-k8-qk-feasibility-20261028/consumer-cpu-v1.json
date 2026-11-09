@@ -1,0 +1,235 @@
+{
+  "actual_codec_receipt": {
+    "actual_codec_receipt_sha256": "3c9733ab79e69c77f70068cff2d3da553ad9c2b81b08ea3c396c6e0788b4f263",
+    "all_actual_codec_snapshot_bits_independently_replayed": true,
+    "consumer_inherits_no_attention_or_model_qualification": true,
+    "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd"
+  },
+  "consumer_device_verified": false,
+  "no_Torch_or_Triton_import": true,
+  "plan": {
+    "Graph_verified": false,
+    "V_offset_from_layer": 8192,
+    "all_query_head_scales_distinct": true,
+    "cache_pages": 29,
+    "cases": [
+      [
+        64,
+        2,
+        2048
+      ],
+      [
+        64,
+        2,
+        2560
+      ],
+      [
+        32,
+        4,
+        2048
+      ],
+      [
+        32,
+        4,
+        2560
+      ]
+    ],
+    "codec_actual_pass_required_before_Torch": true,
+    "component": "native K8 consumer plus original b3 reducer only",
+    "consumer_numeric_verified": false,
+    "default_CPU": true,
+    "encoder_launches": 0,
+    "full128_nonperiodic_counter": true,
+    "golden": "CPU NumPy full128-D INT64 dot then dequantized FP64 softmax/PV, complete arrays",
+    "hard_gate": "finite + every absdiff<=.005+.005*abs(reference) + relative RMSE<=.005",
+    "layer_byte_offset": 128,
+    "lengths": [
+      0,
+      1,
+      15,
+      16,
+      17,
+      31,
+      32,
+      33,
+      63,
+      64,
+      65,
+      127,
+      128,
+      129,
+      191,
+      192,
+      193
+    ],
+    "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+    "maximum_context": 193,
+    "model_verified": false,
+    "native_compile": false,
+    "original_BF16_proxy_separate": true,
+    "page_bytes": 16384,
+    "phases": [
+      "eager A",
+      "capture A",
+      "changed Q/cache/table/length B + poison then graph before new eager B",
+      "side C"
+    ],
+    "precision_gate": false,
+    "reducer": "_reduce_partials",
+    "reducer_file": "vllm_fl/patches/biv150_gqa_decode.py",
+    "reducer_module_sha256": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "scale_full_base": true,
+    "service_installed": false,
+    "side_stream_verified": false,
+    "table_columns": 16,
+    "timing": null
+  },
+  "precision_gate": false,
+  "records": [
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 108,
+      "case": [
+        64,
+        2,
+        2048
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 9181184,
+      "phase": 0
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 111,
+      "case": [
+        64,
+        2,
+        2048
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 10524672,
+      "phase": 1
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 108,
+      "case": [
+        64,
+        2,
+        2048
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 10231808,
+      "phase": 2
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 108,
+      "case": [
+        64,
+        2,
+        2560
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 9181184,
+      "phase": 0
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 111,
+      "case": [
+        64,
+        2,
+        2560
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 10524672,
+      "phase": 1
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 108,
+      "case": [
+        64,
+        2,
+        2560
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 10231808,
+      "phase": 2
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 84,
+      "case": [
+        32,
+        4,
+        2048
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 4524032,
+      "phase": 0
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 89,
+      "case": [
+        32,
+        4,
+        2048
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 5244928,
+      "phase": 1
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 84,
+      "case": [
+        32,
+        4,
+        2048
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 5052416,
+      "phase": 2
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 84,
+      "case": [
+        32,
+        4,
+        2560
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 4524032,
+      "phase": 0
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 89,
+      "case": [
+        32,
+        4,
+        2560
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 5244928,
+      "phase": 1
+    },
+    {
+      "D32_permutation_detected": true,
+      "active_segments": 84,
+      "case": [
+        32,
+        4,
+        2560
+      ],
+      "format_exact": true,
+      "full_D128_integer_products": 5052416,
+      "phase": 2
+    }
+  ],
+  "total_full_D128_integer_products": 89518080
+}
