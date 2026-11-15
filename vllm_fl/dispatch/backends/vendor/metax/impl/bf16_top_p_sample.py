@@ -16,6 +16,8 @@ from .top_p_sample import _top_p_masked_sample_kernel
 
 _PAIR_STEPS = os.environ.get("VLLM_FL_METAX_PAIR_TOP_P", "1") == "1"
 _CUTOFF_SAMPLE = os.environ.get("VLLM_FL_METAX_CUTOFF_SAMPLE", "1") == "1"
+_RAW_LOGITS = os.environ.get("VLLM_FL_METAX_RAW_TOP_P", "1") == "1"
+_PARALLEL_GRID = os.environ.get("VLLM_FL_METAX_PARALLEL_TOP_P", "1") == "1"
 
 @triton.jit
 def _top_p_grid_kernel(LOGITS, TEMPERATURE, TOP_P, MASKED_LOGITS, DIRECT, ROW_MAX, VOCAB_SIZE: tl.constexpr, ROW_STRIDE: tl.constexpr, TEMP_STRIDE: tl.constexpr, TOP_P_STRIDE: tl.constexpr, BLOCK_SIZE: tl.constexpr, NUM_TILES: tl.constexpr, SEARCH_STEPS: tl.constexpr, PAIR_STEPS: tl.constexpr = False, CUTOFF_ONLY: tl.constexpr = False):
@@ -121,6 +123,8 @@ def _threshold_key(threshold):
 @triton.jit
 def _load_scaled(LOGITS, offsets, valid, temperature):
     value = tl.load(LOGITS + offsets, valid, -float('inf')).to(tl.float32)
+    # Raw BF16 input is used only when host sampling metadata proves unit
+    # temperature. All probability arithmetic still uses FP32.
     return value
 
 @triton.jit
@@ -133,20 +137,32 @@ def _convert_scale_kernel(X, T, O, N: tl.constexpr, TS: tl.constexpr, BLOCK: tl.
         value = div_rn(value, temperature)
     tl.store(O + row * N + i, value, i < N)
 
-def sample_bf16_top_p(logits, temperature, top_p):
+def sample_bf16_top_p(logits, temperature, top_p, *, unit_temperature=False):
+    """Sample with optional host proof that every temperature is exactly one."""
     batch, vocab = logits.shape
     if logits.dtype != torch.bfloat16 or not logits.is_contiguous() or temperature.dtype != torch.float32 or (top_p.dtype != torch.float32) or (temperature.ndim != 1) or (top_p.ndim != 1) or (temperature.numel() not in (1, batch)) or (top_p.numel() not in (1, batch)) or (logits.device != temperature.device) or (logits.device != top_p.device):
         raise ValueError('unsupported BF16 sampler operands')
+    if (_PARALLEL_GRID and unit_temperature and _RAW_LOGITS
+            and _CUTOFF_SAMPLE and _PAIR_STEPS
+            and 33 <= batch <= 64 and vocab == 130560):
+        from .bf16_parallel_top_p import sample_parallel_bf16_top_p
+
+        return sample_parallel_bf16_top_p(logits, top_p)
     shape = (batch,) if _CUTOFF_SAMPLE else (batch, vocab)
     masked = torch.empty(shape, device=logits.device, dtype=torch.float32)
-    scaled = torch.empty((batch, vocab), device=logits.device, dtype=torch.float32)
-    _convert_scale_kernel[triton.cdiv(vocab, 2048), batch](logits, temperature, scaled, vocab, 0 if temperature.numel() == 1 else temperature.stride(0), BLOCK=2048, num_warps=4)
+    use_raw = _RAW_LOGITS and _CUTOFF_SAMPLE and unit_temperature
+    if use_raw:
+        scaled = logits
+    else:
+        scaled = torch.empty((batch, vocab), device=logits.device, dtype=torch.float32)
+        _convert_scale_kernel[triton.cdiv(vocab, 2048), batch](logits, temperature, scaled, vocab, 0 if temperature.numel() == 1 else temperature.stride(0), BLOCK=2048, num_warps=4)
     direct = torch.empty(batch, device=logits.device, dtype=torch.int32)
     row_max = torch.empty(batch, device=logits.device, dtype=torch.float32)
     block = 32768
     tiles = triton.cdiv(vocab, block)
     _top_p_grid_kernel[batch,](scaled, temperature, top_p, masked, direct, row_max, vocab, vocab, 0 if temperature.numel() == 1 else temperature.stride(0), 0 if top_p.numel() == 1 else top_p.stride(0), BLOCK_SIZE=block, NUM_TILES=tiles, SEARCH_STEPS=20, PAIR_STEPS=_PAIR_STEPS, CUTOFF_ONLY=_CUTOFF_SAMPLE, num_warps=8)
-    noise = torch.empty_like(scaled)
+    # Keep the same FP32 exponential draws, including draws for direct rows.
+    noise = torch.empty((batch, vocab), device=logits.device, dtype=torch.float32)
     noise.exponential_()
     sampled = torch.empty_like(direct)
     if _CUTOFF_SAMPLE:
@@ -197,7 +213,7 @@ def _sample_cutoff_kernel(
             row_start + offsets * LOGIT_STRIDE_1,
             mask=mask,
             other=-float("inf"),
-        )
+        ).to(tl.float32)
         noise = tl.load(
             noise_start + offsets * LOGIT_STRIDE_1,
             mask=mask,

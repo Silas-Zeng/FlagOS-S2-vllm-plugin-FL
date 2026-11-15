@@ -10,10 +10,12 @@ from vllm.v1.sample.logits_processor.builtin import (
     LogitBiasLogitsProcessor, MinPLogitsProcessor, MinTokensLogitsProcessor,
 )
 from vllm.v1.sample.sampler import Sampler
+from vllm.v1.worker.gpu_input_batch import InputBatch
 
 from ..impl.bf16_top_p_sample import sample_bf16_top_p
 
 _original_forward = Sampler.forward
+_original_make_sampling_metadata = InputBatch._make_sampling_metadata
 logger = logging.getLogger(__name__)
 
 
@@ -60,12 +62,26 @@ def _forward(self, logits, sampling_metadata, predict_bonus_token=False,
              logprobs_mode_override=None):
     if _eligible(self, logits, sampling_metadata, predict_bonus_token, logprobs_mode_override):
         sampled = sample_bf16_top_p(
-            logits, sampling_metadata.temperature, sampling_metadata.top_p
+            logits, sampling_metadata.temperature, sampling_metadata.top_p,
+            unit_temperature=getattr(
+                sampling_metadata, "_metax_unit_temperature", False
+            ),
         )
         return SamplerOutput(sampled_token_ids=sampled.unsqueeze(-1), logprobs_tensors=None)
     return _original_forward(
         self, logits, sampling_metadata, predict_bonus_token, logprobs_mode_override
     )
+
+
+def _make_sampling_metadata(self):
+    metadata = _original_make_sampling_metadata(self)
+    # CPU request parameters are already available here. Cache this fact when
+    # the batch changes; never read a GPU tensor back on the sampling path.
+    metadata._metax_unit_temperature = bool(
+        metadata.temperature is not None
+        and (self.temperature_cpu[:self.num_reqs] == 1.0).all()
+    )
+    return metadata
 
 
 def warmup(sampler, logits):
@@ -86,7 +102,13 @@ def warmup(sampler, logits):
     with torch.random.fork_rng(devices=[logits.device.index]):
         temperature = torch.ones(8, device=logits.device, dtype=torch.float32)
         top_p = torch.full_like(temperature, 0.95)
-        sample_bf16_top_p(logits[:8], temperature, top_p)
+        sample_bf16_top_p(logits[:8], temperature, top_p, unit_temperature=True)
+        # The large-batch path has a runtime batch stride. Warm its single
+        # specialization before requests arrive, preserving the caller's RNG.
+        if logits.shape[0] >= 64:
+            temperature = torch.ones(64, device=logits.device, dtype=torch.float32)
+            top_p = torch.full_like(temperature, 0.95)
+            sample_bf16_top_p(logits[:64], temperature, top_p, unit_temperature=True)
     sampler._metax_top_p_warmed = True
     logger.info("Warmed MetaX BF16 top-p sampler during model memory profiling")
     return True
@@ -97,6 +119,7 @@ def install():
         return False
     if not getattr(Sampler, "_metax_fused_bf16_installed", False):
         Sampler.forward = _forward
+        InputBatch._make_sampling_metadata = _make_sampling_metadata
         diagnostic_path = os.environ.get("VLLM_FL_METAX_SAMPLER_DIAGNOSTIC")
         if diagnostic_path:
             # Bounded, host-metadata-only diagnostics for profiling sessions.

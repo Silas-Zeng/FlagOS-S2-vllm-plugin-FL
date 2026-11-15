@@ -12,6 +12,7 @@ from flag_gems.runtime.backend._metax.ops.rope_qk import rope_qk
 from flag_gems.runtime.backend._metax.ops.rope_cache import rope_qk_cache
 
 _original_forward = LlamaAttention.forward
+_qkv_fusion = os.environ.get("VLLM_FL_METAX_QKV_ROPE_FUSION", "1") == "1"
 
 
 def _state(layer_name):
@@ -50,6 +51,14 @@ def consume_marker(layer_name):
     return False
 
 
+def _mark_done(context, layer_name):
+    done = getattr(context, "_metax_rope_cache_done", None)
+    if done is None:
+        done = set()
+        context._metax_rope_cache_done = done
+    done.add(layer_name)
+
+
 @torch.library.custom_op("vllm_fl::metax_rope_cache", mutates_args=(), device_types="cuda")
 def _rope_cache(positions: torch.Tensor, query: torch.Tensor, key: torch.Tensor,
                 value: torch.Tensor, cache: torch.Tensor, layer_name: str) -> torch.Tensor:
@@ -58,11 +67,7 @@ def _rope_cache(positions: torch.Tensor, query: torch.Tensor, key: torch.Tensor,
         return rope_qk(positions, query, key, cache)
     context, layer, kv, slots = state
     output = rope_qk_cache(positions, query, key, value, cache, kv[0], kv[1], slots)
-    done = getattr(context, "_metax_rope_cache_done", None)
-    if done is None:
-        done = set()
-        context._metax_rope_cache_done = done
-    done.add(layer_name)
+    _mark_done(context, layer_name)
     return output
 
 
@@ -71,16 +76,57 @@ def _rope_cache_fake(positions, query, key, value, cache, layer_name):
     return query.new_empty((query.shape[0], 2304))
 
 
+@torch.library.custom_op("vllm_fl::metax_qkv_rope_cache", mutates_args=(), device_types="cuda")
+def _qkv_rope_cache(positions: torch.Tensor, hidden: torch.Tensor,
+                    weight: torch.Tensor, packed: torch.Tensor,
+                    cache: torch.Tensor, layer_name: str
+                    ) -> tuple[torch.Tensor, torch.Tensor]:
+    state = _state(layer_name)
+    if (33 <= hidden.shape[0] <= 64 and hidden.is_contiguous()
+            and state is not None and state[3].numel() <= hidden.shape[0]):
+        from flag_gems.runtime.backend._metax.ops.qkv_rope_cache import qkv_rope_cache
+
+        context, _, kv, slots = state
+        result = qkv_rope_cache(hidden, packed, positions, cache, kv[0], kv[1], slots)
+        _mark_done(context, layer_name)
+        return result
+    from flag_gems.runtime.backend._metax.ops.prefill_linear import prefill_linear_nn
+
+    qkv = prefill_linear_nn(hidden, weight, packed)
+    q, k, value = qkv.split([2048, 256, 256], dim=-1)
+    if state is None or state[3].numel() > hidden.shape[0]:
+        return rope_qk(positions, q, k, cache), value
+    context, _, kv, slots = state
+    output = rope_qk_cache(positions, q, k, value, cache, kv[0], kv[1], slots)
+    _mark_done(context, layer_name)
+    return output, value
+
+
+@_qkv_rope_cache.register_fake
+def _qkv_rope_cache_fake(positions, hidden, weight, packed, cache, layer_name):
+    return hidden.new_empty((hidden.shape[0], 2304)), hidden.new_empty(
+        (hidden.shape[0], 2560)
+    )[:, 2304:]
+
+
 @functools.wraps(_original_forward)
 def _forward(self, positions, hidden_states):
     if (not getattr(self, "_metax_rope_cache_enabled", False)
             or hidden_states.dtype != torch.bfloat16 or hidden_states.ndim != 2
             or hidden_states.requires_grad):
         return _original_forward(self, positions, hidden_states)
-    qkv, _ = self.qkv_proj(hidden_states)
-    q, k, v = qkv.split([self.q_size, self.kv_size, self.kv_size], dim=-1)
-    cache = self.rotary_emb._match_cos_sin_cache_dtype(q)
-    output = _rope_cache(positions.flatten(), q, k, v, cache, self.attn.layer_name)
+    packed = getattr(self.qkv_proj, "_metax_prefill_nn_weight", None)
+    if (_qkv_fusion and packed is not None and packed.shape == (20, 32, 128, 64)):
+        cache = self.rotary_emb._match_cos_sin_cache_dtype(hidden_states)
+        output, v = _qkv_rope_cache(
+            positions.flatten(), hidden_states, self.qkv_proj.weight, packed,
+            cache, self.attn.layer_name,
+        )
+    else:
+        qkv, _ = self.qkv_proj(hidden_states)
+        q, k, v = qkv.split([self.q_size, self.kv_size, self.kv_size], dim=-1)
+        cache = self.rotary_emb._match_cos_sin_cache_dtype(q)
+        output = _rope_cache(positions.flatten(), q, k, v, cache, self.attn.layer_name)
     q, k = output[:, :2048], output[:, 2048:]
     attn_output = self.attn(q, k, v)
     result, _ = self.o_proj(attn_output)
@@ -111,4 +157,8 @@ def install(model):
     if count and not getattr(LlamaAttention, "_metax_rope_cache_installed", False):
         LlamaAttention.forward = _forward
         LlamaAttention._metax_rope_cache_installed = True
+    if count:
+        from flag_gems.runtime.backend._metax.ops.bf16_attention import prepare_bf16_decode
+
+        prepare_bf16_decode(next(model.parameters()).device)
     return count
