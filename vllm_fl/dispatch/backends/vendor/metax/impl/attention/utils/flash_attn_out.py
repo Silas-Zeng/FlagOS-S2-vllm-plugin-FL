@@ -71,11 +71,6 @@ def flash_attn_varlen_into(
         if dense is not None:
             k, v = dense
             block_table = None
-            if cache_length_is_exact:
-                from flag_gems.runtime.backend._metax.ops.bf16_prefill import try_bf16_prefill
-
-                if try_bf16_prefill(q, k, v, out, softmax_scale):
-                    return out
             if _LOG_NATIVE_LAYOUT and not _dense_layout_logged:
                 print("MetaX dense prefill layout:", {
                     "q_shape": tuple(q.shape), "q_stride": q.stride(),
@@ -155,15 +150,12 @@ def try_split_prefill_into(
     start = 0 if large == 0 else query_lengths[0]
     end = start + query_lengths[large]
     dk, dv = dense
-    from flag_gems.runtime.backend._metax.ops.bf16_prefill import try_bf16_prefill
-
-    if not try_bf16_prefill(q[start:end], dk, dv, out[start:end], softmax_scale):
-        flash_attn_cuda.fwd_kvcache(
-            q[start:end].unsqueeze(0), dk.unsqueeze(0), dv.unsqueeze(0),
-            None, None, cache_seqlens[large:large + 1], None, None, None, None,
-            None, None, out[start:end].unsqueeze(0), softmax_scale, True,
-            -1, -1, 0.0, True, 1, None,
-        )
+    flash_attn_cuda.fwd_kvcache(
+        q[start:end].unsqueeze(0), dk.unsqueeze(0), dv.unsqueeze(0),
+        None, None, cache_seqlens[large:large + 1], None, None, None, None,
+        None, None, out[start:end].unsqueeze(0), softmax_scale, True,
+        -1, -1, 0.0, True, 1, None,
+    )
     start = 0 if small == 0 else query_lengths[0]
     end = start + query_lengths[small]
     flash_attn_cuda.fwd_kvcache(
