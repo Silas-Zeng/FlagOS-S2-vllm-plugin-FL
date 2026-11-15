@@ -16,8 +16,11 @@ from flash_attn.flash_attn_interface import flash_attn_cuda
 _LOG_NATIVE_LAYOUT = os.environ.get("VLLM_FL_METAX_DECODE_LAYOUT_LOG", "0") == "1"
 _native_layout_logged = False
 _DENSE_PREFILL = os.environ.get("VLLM_FL_METAX_DENSE_PREFILL", "1") == "1"
+_LONG_DENSE_PREFILL = os.environ.get("VLLM_FL_METAX_LONG_DENSE_PREFILL", "1") == "1"
 _dense_layout_logged = False
+_long_dense_layout_logged = False
 _SPLIT_PREFILL = os.environ.get("VLLM_FL_METAX_SPLIT_PREFILL", "1") == "1"
+_LONG_SPLIT_PREFILL = os.environ.get("VLLM_FL_METAX_LONG_SPLIT_PREFILL", "1") == "1"
 _split_prefill_logged = False
 
 def _can_write_directly(q, k, v, out):
@@ -40,7 +43,7 @@ def flash_attn_varlen_into(
     cache_length_is_exact=False,
 ):
     """Prefill into the output buffer, optionally gathering BF16 pages first."""
-    global _dense_layout_logged
+    global _dense_layout_logged, _long_dense_layout_logged
     if not _can_write_directly(q, k, v, out):
         result = flash_attn_varlen_func(
             q=q, k=k, v=v, cu_seqlens_q=cu_seqlens_q,
@@ -53,6 +56,7 @@ def flash_attn_varlen_into(
         out.copy_(result)
         return out
     if (_DENSE_PREFILL and q.ndim == 3 and q.shape[1:] == (16, 128)
+            and (max_seqlen_k <= 4096 or _LONG_DENSE_PREFILL)
             and 1024 <= q.shape[0] <= 2048
             and q.shape[0] == max_seqlen_q <= max_seqlen_k
             and cu_seqlens_q is not None and cu_seqlens_q.shape == (2,)
@@ -67,6 +71,11 @@ def flash_attn_varlen_into(
         if dense is not None:
             k, v = dense
             block_table = None
+            if cache_length_is_exact:
+                from flag_gems.runtime.backend._metax.ops.bf16_prefill import try_bf16_prefill
+
+                if try_bf16_prefill(q, k, v, out, softmax_scale):
+                    return out
             if _LOG_NATIVE_LAYOUT and not _dense_layout_logged:
                 print("MetaX dense prefill layout:", {
                     "q_shape": tuple(q.shape), "q_stride": q.stride(),
@@ -74,6 +83,13 @@ def flash_attn_varlen_into(
                     "max_seqlen_q": max_seqlen_q, "max_seqlen_k": max_seqlen_k,
                 }, flush=True)
                 _dense_layout_logged = True
+            if (_LOG_NATIVE_LAYOUT and max_seqlen_k > 4096
+                    and not _long_dense_layout_logged):
+                print("MetaX long dense prefill selected:", {
+                    "query_length": q.shape[0], "key_length": max_seqlen_k,
+                    "k_stride": k.stride(),
+                }, flush=True)
+                _long_dense_layout_logged = True
     flash_attn_cuda.varlen_fwd(
         q, k, v, out, cu_seqlens_q, cu_seqlens_k,
         None, None, block_table, alibi_slopes,
@@ -92,8 +108,9 @@ def try_split_prefill_into(
     """Separate highly uneven C500 prefill requests with different histories.
 
     A tiny context query benefits from split-K; a large context query benefits
-    from the existing dense BF16 gather. Intermediate sizes retain the batched
-    kernel, whose inter-request parallelism is faster for those shapes.
+    from the existing dense BF16 gather. Longer histories also amortize the
+    extra request launch for uneven batches. Nearly balanced query lengths
+    retain the batched kernel because splitting can reduce their throughput.
     """
     global _split_prefill_logged
     if (not _SPLIT_PREFILL or len(query_lengths) != 2 or len(key_lengths) != 2
@@ -114,9 +131,14 @@ def try_split_prefill_into(
         return False
     context = history[0]
     fresh = 1 - context
-    if (key_lengths[context] != 4096
+    long_context = (
+        _LONG_SPLIT_PREFILL and 8192 <= key_lengths[context] <= 16384
+    )
+    if ((key_lengths[context] != 4096 and not long_context)
             or key_lengths[fresh] != query_lengths[fresh]
-            or not (query_lengths[context] <= 64 or query_lengths[context] >= 1408)):
+            or (not long_context and not (
+                query_lengths[context] <= 64 or query_lengths[context] >= 1408
+            ))):
         return False
     large = 0 if query_lengths[0] >= query_lengths[1] else 1
     small = 1 - large
@@ -133,12 +155,15 @@ def try_split_prefill_into(
     start = 0 if large == 0 else query_lengths[0]
     end = start + query_lengths[large]
     dk, dv = dense
-    flash_attn_cuda.fwd_kvcache(
-        q[start:end].unsqueeze(0), dk.unsqueeze(0), dv.unsqueeze(0),
-        None, None, cache_seqlens[large:large + 1], None, None, None, None,
-        None, None, out[start:end].unsqueeze(0), softmax_scale, True,
-        -1, -1, 0.0, True, 1, None,
-    )
+    from flag_gems.runtime.backend._metax.ops.bf16_prefill import try_bf16_prefill
+
+    if not try_bf16_prefill(q[start:end], dk, dv, out[start:end], softmax_scale):
+        flash_attn_cuda.fwd_kvcache(
+            q[start:end].unsqueeze(0), dk.unsqueeze(0), dv.unsqueeze(0),
+            None, None, cache_seqlens[large:large + 1], None, None, None, None,
+            None, None, out[start:end].unsqueeze(0), softmax_scale, True,
+            -1, -1, 0.0, True, 1, None,
+        )
     start = 0 if small == 0 else query_lengths[0]
     end = start + query_lengths[small]
     flash_attn_cuda.fwd_kvcache(
