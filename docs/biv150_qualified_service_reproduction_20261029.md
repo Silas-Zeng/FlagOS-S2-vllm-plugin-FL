@@ -25,6 +25,14 @@ Encoded K-only 服务、其 Q32 hoist 和 NativeK8 分别默认关闭。受测�
 
 构建入口分别是 `tools/build_biv150_native_w8a8.py`、`tools/build_biv150_native_gqa.py`、`tools/compile_biv150_native_k8_klookahead.py`。重建不保证得到相同ELF SHA；不同成品需要重新检查实际代码与数值，不能只改校验常量继承资格。`tools/snapshot_biv150_tuning_cache.py` 也不会把任意当前缓存变成受测v6。
 
+混合 NativeK8 从包含比赛分支历史的干净 Git checkout 构建。在仓库根目录先运行 `python3 tools/compile_biv150_native_k8_mixed.py` 核对源码。主干的校验记录覆盖 PR122 的动态 Hidden-state Gather 编译指纹和 runner SHA 更新，校验会逆向还原 PR117 的 host 源码并逐字节比较。设备编译使用同一 checkout 的完整提交号及 checkout 外的全新输出目录。
+
+```sh
+python3 tools/compile_biv150_native_k8_mixed.py --compile-only \
+  --root-owned-exclusive --expected-source-commit "$(git rev-parse HEAD)" \
+  --out /absolute/build-native-k8-mixed
+```
+
 ## 从已共享源码恢复PR117对照控制器和 helper
 
 以下仅在CPU读取已共享源码，输出到一个全新目录；不会启动服务或GPU。将两个绝对路径替换成实际源码目录和新的准备目录。控制器固定为2cfc版本，不开启统计RPC；helper只读取已共享归档的唯一指定成员，不解包其他内容。

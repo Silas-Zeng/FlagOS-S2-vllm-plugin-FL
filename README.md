@@ -2,13 +2,10 @@
 
 本仓库以比赛指定的 vllm-plugin-FL `13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0` 为起点。新增代码与维护文档通过 PR 提交，按依赖合并；官方上游及原公开 fork 保持只读。
 
-## 当前已合并方法
-
-2026-10-22 已按 **#5 → #6 → #7 → #8 → #9 → #10 → #1 → #2 → #3 → #4** 合并：
+## 早期服务优化
 
 | PR | 内容 |
 |---|---|
-| [#5](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/5) | 实验配置与诊断开关 |
 | [#6](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/6) | prefill Attention 启动策略 |
 | [#7](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/7) | 直方图 zoom top-p 过滤 |
 | [#8](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/8) | SQLite 目标表反射 |
@@ -16,8 +13,6 @@
 | [#10](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/10) | Attention 内部天然单 token 前缀拆分 |
 | [#1](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/1) | CPU metadata 复用 |
 | [#2](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/2) | 异步 token 的整数 gather/scatter 更新 |
-| [#3](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/3) | 显式调用的 KV 连续页复制工具 |
-| [#4](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/4) | KV 正等差二维 SAVE 规划与 SDK 桥 |
 | [#22](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/22) | computed H2D 与计算顺序的兼容组合 |
 | [#23](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/23) | prefill Attention 的 Q fragment 跨 K 循环保持 |
 
@@ -42,7 +37,7 @@
 
 相对此前的 PR15+PR21，4K 为 +3.80%，16K 为 +9.56%。完整 Math500 Level 3 为 100/105（95.24%），105 请求成功、无空最终答案；2 题达到原输出上限。Q fragment 在实际服务中选中且 fallback 为 0，方法见 [prefill Q fragment](docs/07-prefill-q-fragment-biv150.md)。
 
-两次官方吞吐使用相同起始 DB 种子，但候选 KV 为 `521840`，旧基线为 `521936`；因此不把差异写成严格等 KV 的单项因果拆分。仅验证天数 BI-V150，沐曦－曦云 C500 的适用性由对应平台另行验证。两个 KV 工具需要显式调用，合并不表示已启用 KV offload。
+两次官方吞吐使用相同起始 DB 种子，但候选 KV 为 `521840`，旧基线为 `521936`；因此不把差异写成严格等 KV 的单项因果拆分。仅验证天数 BI-V150，沐曦－曦云 C500 的适用性由对应平台另行验证。
 
 ## 验证与协作
 

@@ -5,8 +5,8 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE='a455a3de364051fbea80226870c239de3a48e716'
-# GPU provenance stays at a455; only the integration-side host inverse follows
-# accepted main117. This does not transfer old compile/consumer qualification.
+# GPU provenance stays at a455. The host receipt reverses the mixed admission
+# and later reviewed fingerprint additions back to main117 byte for byte.
 HOST_BASE='56f88737fcf3b940760b9ca3027a925cd5a7d77d'
 NAMESPACE='cjj_native_k8_mixed_probe'
 OLD_NAMESPACE='cjj_native_k8_v_overlap_probe'
