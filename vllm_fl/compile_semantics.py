@@ -10,6 +10,14 @@ import sys
 _KEY = "vllm_fl_compile_semantics"
 _GEOMETRY = dict(hidden_size=2048, intermediate_size=6144, num_hidden_layers=42,
                  num_attention_heads=16, num_key_value_heads=2, vocab_size=130560)
+_KONLY_PREFIX = "VLLM_FL_BIV150_KONLY_"
+_KONLY_SWITCHES = ("ENCODED_SERVICE", "NATIVE_DECODE", "MIXED_NATIVE", "SERVICE_Q32_HOIST")
+_KONLY_LIBRARIES = {
+    "NATIVE": ("build-native-k8/build/cjj_native_k8_klookahead_probe.so",
+               "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b"),
+    "MIXED_NATIVE": ("build-native-k8-mixed/build/cjj_native_k8_mixed_probe.so",
+                     "ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba"),
+}
 _FEATURES = ("VLLM_FL_BIV150_NATIVE_W8A8", "VLLM_FL_BIV150_GQA_DECODE",
              "VLLM_FL_BIV150_PREFILL_NORMALIZE", "VLLM_FL_BIV150_Q_FRAGMENT",
              "VLLM_FL_BIV150_STABLE_SMALL_O",
@@ -26,20 +34,89 @@ def native_model_matches(config) -> bool:
     return all(getattr(config, key, None) == value for key, value in _GEOMETRY.items())
 
 
+def _installed_library(package: Path, relative: str) -> Path:
+    bundled = package / "native/iluvatar" / Path(relative).name
+    return (bundled if bundled.is_file() else package.parent / relative).resolve()
+
+
 def native_library_path(*, package_root=None, environ=None) -> Path:
     """指纹与实际 load_library 共用解析；路径本身不进入缓存身份。"""
     env = os.environ if environ is None else environ
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
-    return Path(env.get("BIV150_NATIVE_W8A8_LIBRARY",
-                        str(package.parent / "build-native-w8a8/biv150_native_w8a8.so"))).resolve()
+    override = env.get("BIV150_NATIVE_W8A8_LIBRARY")
+    if override is not None:
+        return Path(override).resolve()
+    return _installed_library(package, "build-native-w8a8/biv150_native_w8a8.so")
 
 
 def native_gqa_library_path(*, package_root=None, environ=None) -> Path:
     """与GQA loader共用解析；只将实际库内容纳入身份，不使用部署路径。"""
     env = os.environ if environ is None else environ
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
-    return Path(env.get("BIV150_NATIVE_GQA_LIBRARY",
-                        str(package.parent / "build-native-gqa/corex_native_gqa_s2_probe.so"))).resolve()
+    override = env.get("BIV150_NATIVE_GQA_LIBRARY")
+    if override is not None:
+        return Path(override).resolve()
+    return _installed_library(package, "build-native-gqa/corex_native_gqa_s2_probe.so")
+
+
+def _konly_default_scope(config, vendor_name, env):
+    model = getattr(config, "model_config", None)
+    cache = getattr(config, "cache_config", None)
+    parallel = getattr(config, "parallel_config", None)
+    return (
+        vendor_name == "iluvatar"
+        and native_model_matches(getattr(model, "hf_config", None))
+        and Path(str(getattr(model, "model", ""))).name == "MiniCPM5-2B"
+        and str(getattr(model, "dtype", None)) == "torch.bfloat16"
+        and getattr(cache, "cache_dtype", None) in ("auto", "bfloat16")
+        and getattr(cache, "block_size", None) in (None, 16)
+        and all(getattr(parallel, name, None) == 1 for name in (
+            "tensor_parallel_size", "pipeline_parallel_size", "data_parallel_size"))
+        and getattr(config, "speculative_config", None) is None
+        and getattr(config, "kv_transfer_config", None) is None
+        and env.get("VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC", "0") != "1"
+        and env.get(_KONLY_PREFIX + "COMPACT_SERVICE", "0") != "1"
+        and all(env.get("VLLM_FL_BIV150_" + name, "1") == "1" for name in (
+            "GQA_DECODE", "PREFILL_NORMALIZE", "Q_FRAGMENT", "PREFILL_Q32", "PREFILL_MULTI2"))
+    )
+
+
+def resolve_konly_environment(vllm_config, vendor_name, *, package_root=None, environ=None):
+    """Resolve startup defaults without changing the frontend process environment."""
+    env = dict(os.environ if environ is None else environ)
+    explicit = any(_KONLY_PREFIX + name in env for name in _KONLY_SWITCHES)
+    if not explicit and not _konly_default_scope(vllm_config, vendor_name, env):
+        return env
+
+    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
+    paths = {name: _installed_library(package, relative) for name, (relative, _) in _KONLY_LIBRARIES.items()}
+    if not explicit:
+        # Preserve BF16 deployments that have no K8 libraries. A partial or
+        # incorrect K8 installation is reported by the usual library checks.
+        if not any(path.is_file() or _KONLY_PREFIX + name + "_LIBRARY" in env
+                   for name, path in paths.items()):
+            return env
+        env.update({_KONLY_PREFIX + name: "1" for name in _KONLY_SWITCHES})
+
+    for name, flag in (("NATIVE", "NATIVE_DECODE"), ("MIXED_NATIVE", "MIXED_NATIVE")):
+        if env.get(_KONLY_PREFIX + flag) == "1":
+            env.setdefault(_KONLY_PREFIX + name + "_LIBRARY", str(paths[name]))
+            env.setdefault(_KONLY_PREFIX + name + "_LIBRARY_SHA256", _KONLY_LIBRARIES[name][1])
+    if (env.get(_KONLY_PREFIX + "ENCODED_SERVICE") == "1"
+            and env.get(_KONLY_PREFIX + "SERVICE_Q32_HOIST") == "1"):
+        env.setdefault("TRITON_CACHE_DIR", str(Path.home() / ".triton/cache"))
+    return env
+
+
+def configure_worker_konly(vllm_config, vendor_name, device_properties):
+    env = resolve_konly_environment(vllm_config, vendor_name)
+    if env.get(_KONLY_PREFIX + "ENCODED_SERVICE") != "1":
+        return
+    if "BI-V150" not in device_properties.name or device_properties.multi_processor_count != 16:
+        raise RuntimeError("K-only INT8 KV requires a 16-SM BI-V150")
+    os.environ.update({key: value for key, value in env.items()
+                       if key not in os.environ and
+                       (key.startswith(_KONLY_PREFIX) or key == "TRITON_CACHE_DIR")})
 
 
 def _sha(path: Path) -> str:
@@ -70,7 +147,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
     if vendor_name != "iluvatar" or not native_model_matches(model):
         return None
     package = Path(__file__).resolve().parent if package_root is None else Path(package_root)
-    env = os.environ if environ is None else environ
+    env = resolve_konly_environment(vllm_config, vendor_name, package_root=package, environ=environ)
     features = {key: env.get(key, "1") == "1" for key in _FEATURES}
     features["VLLM_FL_BIV150_PREFILL_Q32"] = (
         features["VLLM_FL_BIV150_Q_FRAGMENT"]
@@ -140,11 +217,11 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
         if native_k8:
             # Also loaded standalone by the owned-service helper. Keep this
             # fingerprint stdlib-only; never import a package/private operator.
-            expected = '5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b'
+            expected = _KONLY_LIBRARIES["NATIVE"][1]
             library = Path(env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY', ''))
             if (not library.is_absolute() or not library.is_file()
                     or env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256') != expected):
-                raise ValueError('NativeK8 fingerprint requires absolute library and fixed SHA pair')
+                raise ValueError(f'NativeK8 needs its accepted library at {library} and matching SHA256')
             if _sha(library) != expected:
                 raise ValueError('NativeK8 fingerprint library content differs')
             encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_klookahead_probe::produce')
@@ -165,7 +242,7 @@ def build_fingerprint(vllm_config, vendor_name, *, package_root=None, environ=No
             library=Path(env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY',''))
             if (not library.is_absolute() or not library.is_file() or
                     env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):
-                raise ValueError('Mixed Native exact library content required')
+                raise ValueError(f'Mixed NativeK8 needs its accepted library at {library} and matching SHA256')
             encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)
         facts["konly_encoded"] = encoded
     result = {"schema": 1, "sha256": _digest(facts),

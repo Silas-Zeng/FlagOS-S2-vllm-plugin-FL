@@ -2,17 +2,30 @@
 
 本文记录 PR118 冻结候选 `69827253756a0ef9e618ae0322e9ff361e93504f` 及其 PR117 / main `56f88737fcf3b940760b9ca3027a925cd5a7d77d` 对照的受测配置。PR118 的4K / 16K单轮成绩为6961.16 / 5265.06 total tok/s，官方Math105为101/105；完整边界见[两档精选验收记录](evidence/native118-final-paired-selected-20261029/README.md)。[PR117历史验收](evidence/native117-model-acceptance-20261029/README.md)仍保留。
 
+## 当前主干的默认启动
+
+在比赛镜像内按 [README](../README.md#天数-bi-v150-启动) 安装并启动即可。四份随包发布的原生库来自主干 `9551eb8` 的 BI-V150 整机验收，目标环境为 Linux x86_64、CoreX 4.5、Torch 2.10.0（CXX11 ABI=false）。加载时检查两份 K8 库的固定 SHA256。已有的库路径开关可用于显式覆盖。
+
+| 随包库 | SHA256 | 源码或构建入口 |
+|---|---|---|
+| `biv150_native_w8a8.so` | `b80a7e1b7a81f8ae513a06f509fab13cd9d10bd74e6e883dfc32b25d3045a069` | `csrc/iluvatar/native_w8a8.*`，`tools/build_biv150_native_w8a8.py` |
+| `corex_native_gqa_s2_probe.so` | `fc1defb647d7d3ff6953ccbe816feeb6fa8df73e51d3835b4d0bed2a96758c15` | `csrc/iluvatar/native_gqa_s2.*`，`tools/build_biv150_native_gqa.py` |
+| `cjj_native_k8_klookahead_probe.so` | `5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b` | `tools/compile_biv150_native_k8_klookahead.py` |
+| `cjj_native_k8_mixed_probe.so` | `ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba` | `tools/compile_biv150_native_k8_mixed.py` |
+
+正式测试结果以当前部署的官方精度评测和 benchmark 输出为准。初始调优缓存沿用运行环境，首次启动后按官方口径完成预热。
+
 ## 功能与环境
 
 比赛框架和 FlagGems 保持指定版本。受测环境是 BI-V150、CoreX 4.5、Torch 2.10.0（CXX11 ABI=false）及已经固定的 Triton/CoreX 后端；模型为 `/workspace/MiniCPM5-2B`，精度数据为 `/workspace/evalscope-datasets/math_500`。
 
-Encoded K-only 服务、其 Q32 hoist 和 NativeK8 分别默认关闭。受测控制器显式打开这些功能，并使用5898库；compact保持关闭。原 W8A8 和 stock GQA 默认路径仍依赖成品库，不会自动生成全部受测配置。不要给当前主干对照加 `--baseline`，该开关会关闭已经接受的 encoded 功能。
+PR118 冻结候选当时默认关闭 K-only、Q32 hoist 和 NativeK8，受测控制器显式打开这些功能，并使用 5898 库。下文保留用于复核该历史成绩的配置。
 
 源码以独立干净checkout为准，必须核对实际导入路径。测试前确认GPU和端口空闲；每个运行使用新的输出目录和私有缓存，不能复用其他任务的活动缓存或停止别人的服务。
 
 ## 必需的成品
 
-下列SHA来自已审运行。仓库普通源码文件不包含可直接部署的这些 `.so` / `.db` 文件；需要在目标环境定位、保存并校验成品。初始缓存必须是v6快照，不得用计分后改变的缓存替换。
+下列 SHA 来自 PR118 历史运行。精确复现该历史对照时，使用对应原生库和初始 v6 调优快照。
 
 | 依赖 | SHA256 |
 | --- | --- |
