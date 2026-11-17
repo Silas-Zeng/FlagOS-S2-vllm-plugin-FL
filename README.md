@@ -2,6 +2,23 @@
 
 本仓库以比赛指定的 vllm-plugin-FL `13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0` 为起点。新增代码与维护文档通过 PR 提交，按依赖合并；官方上游及原公开 fork 保持只读。
 
+## 天数 BI-V150 启动
+
+在比赛镜像中从本仓库安装插件，然后执行官方启动命令。安装包内含验收使用的四份原生库。符合比赛模型、设备和 KV 配置时，服务会加载这些库并默认启用 K-only INT8 KV、纯 Decode NativeK8、混合 NativeK8 和 Q32 复用。
+
+```sh
+python3 -m pip install --no-build-isolation .
+export VLLM_PLUGINS=fl
+vllm serve /workspace/MiniCPM5-2B \
+  --port 9031 \
+  --compilation-config '{"cudagraph_mode": "FULL_DECODE_ONLY"}' \
+  --served-model-name minicpm \
+  --gpu-memory-utilization 0.85 \
+  --max-model-len 131072
+```
+
+需要复现 BF16 KV 对照时，在启动前设置 `VLLM_FL_BIV150_KONLY_ENCODED_SERVICE=0`。库来源、SHA256 和构建入口见 [BI-V150 复现说明](docs/biv150_qualified_service_reproduction_20261029.md)。
+
 ## 早期服务优化
 
 | PR | 内容 |
@@ -24,7 +41,7 @@
 
 这是各一轮充分预热后的正式结果。4K缓存与调优变化、预热成绩接近且排序相反的现象已保留；16K计分窗口没有观测到缓存或调优变化，但1.12%的差距仍不足以证明稳定收益。完整边界见[PR118 两档精选验收记录](docs/evidence/native118-final-paired-selected-20261029/README.md)。[PR117历史验收](docs/evidence/native117-model-acceptance-20261029/README.md)的6610.25 / 5207.72及原负结果继续保留。
 
-这些成绩对应明确启用的功能、已校验的库和初始调优快照。拉取源码后请按[受测服务的复现条件与入口](docs/biv150_qualified_service_reproduction_20261029.md)准备对应配置；默认关闭的实验功能需要显式启用。
+这些历史成绩对应明确启用的功能、已校验的库和初始调优快照。完整环境见[受测服务的复现条件与入口](docs/biv150_qualified_service_reproduction_20261029.md)。
 
 ## 历史基线：2026-10-22，四轮弃首后的均值
 
