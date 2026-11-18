@@ -88,5 +88,10 @@
     "path": "vllm_fl/compile_semantics.py",
     "old": "            if (not library.is_absolute() or not library.is_file() or\n                    env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):\n                raise ValueError('Mixed Native exact library content required')\n            encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)\n        facts[\"konly_encoded\"] = encoded\n",
     "new": "            if (not library.is_absolute() or not library.is_file() or\n                    env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):\n                raise ValueError(f'Mixed NativeK8 needs its accepted library at {library} and matching SHA256')\n            encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)\n        facts[\"konly_encoded\"] = encoded\n"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_compute_order.py",
+    "old": "EXPECTED_RUNNER = \"ac08d4b3f9b569d78ad5d93981030c824b86a8518720dec4a89336a7eca59289\"",
+    "new": "EXPECTED_RUNNER = \"e238ac1a76d16b15b7df4c1e93ef64bdae5299d267affa2fb8b219a0acf9c0df\""
   }
 ]
