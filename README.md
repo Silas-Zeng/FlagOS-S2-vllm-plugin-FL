@@ -25,7 +25,7 @@ vllm serve /workspace/MiniCPM5-2B \
 |---|---|
 | [#6](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/6) | prefill Attention 启动策略 |
 | [#7](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/7) | 直方图 zoom top-p 过滤 |
-| [#8](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/8) | SQLite 目标表反射 |
+| [#8](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/8) | SQLite 目标表反射，后续消融未见明显吞吐收益，已移除 |
 | [#9](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/9) | 3D decode 的 w2s1 启动 |
 | [#10](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/10) | Attention 内部天然单 token 前缀拆分 |
 | [#1](https://github.com/Silas-Zeng/FlagOS-S2-vllm-plugin-FL/pull/1) | CPU metadata 复用 |
