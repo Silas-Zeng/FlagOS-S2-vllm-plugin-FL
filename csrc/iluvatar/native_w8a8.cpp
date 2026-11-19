@@ -20,6 +20,8 @@ extern "C" void biv150_quantize_cached(const void*,int8_t*,float*,int,int,int,in
 extern "C" void biv150_quantize_residual(const void*,int8_t*,float*,int,int,cudaStream_t);
 extern "C" void biv150_residual_silu_epilogue(const int32_t*,const float*,const float*,void*,int,int,cudaStream_t);
 
+extern "C" void biv150_silu_tiled(const int32_t*,const float*,const float*,void*,int,int,bool,int,int,cudaStream_t);
+
 namespace {
 at::Tensor linear_impl(const at::Tensor& x, const at::Tensor& wq,
                   const at::Tensor& scales, const at::Tensor& original,
@@ -158,9 +160,60 @@ at::Tensor gate_silu_auto(const at::Tensor& x, const at::Tensor& wq,
   return gate_silu(x,wq,scales,original,min_rows);
 }
 
+// Probe-only entry points. Shipping gate_silu_auto still uses the original epilogue.
+at::Tensor epilogue_tiling_probe(const at::Tensor& acc,const at::Tensor& row_scales,
+    const at::Tensor& scales,int64_t m,bool residual,int64_t threads,int64_t items) {
+  TORCH_CHECK(m>=1 && m<=2048 && residual==(m<=16));
+  const int64_t padded=std::max<int64_t>(32,m);
+  TORCH_CHECK(acc.is_cuda() && acc.scalar_type()==at::kInt && acc.is_contiguous());
+  TORCH_CHECK(acc.dim()==2 && acc.size(0)==padded && acc.size(1)==12288);
+  TORCH_CHECK(row_scales.is_cuda() && row_scales.scalar_type()==at::kFloat && row_scales.is_contiguous());
+  TORCH_CHECK(row_scales.dim()==1 && row_scales.numel()==padded);
+  TORCH_CHECK(scales.is_cuda() && scales.scalar_type()==at::kFloat && scales.is_contiguous());
+  TORCH_CHECK(scales.dim()==1 && scales.numel()==12288);
+  TORCH_CHECK(acc.device()==row_scales.device() && acc.device()==scales.device());
+  TORCH_CHECK(threads==0 || threads==64 || threads==128 || threads==256);
+  TORCH_CHECK(items==1 || items==2 || items==4 || items==8);
+  c10::cuda::CUDAGuard guard(acc.device());
+  auto output=at::empty({m,6144},scales.options().dtype(at::kBFloat16));
+  auto stream=c10::cuda::getCurrentCUDAStream();
+  if (threads) biv150_silu_tiled(acc.data_ptr<int32_t>(),row_scales.data_ptr<float>(),scales.data_ptr<float>(),output.data_ptr<at::BFloat16>(),int(m),12288,residual,int(threads),int(items),stream);
+  else if (residual) biv150_residual_silu_epilogue(acc.data_ptr<int32_t>(),row_scales.data_ptr<float>(),scales.data_ptr<float>(),output.data_ptr<at::BFloat16>(),int(m),12288,stream);
+  else biv150_silu_epilogue(acc.data_ptr<int32_t>(),row_scales.data_ptr<float>(),scales.data_ptr<float>(),output.data_ptr<at::BFloat16>(),int(m),12288,stream);
+  C10_CUDA_KERNEL_LAUNCH_CHECK();
+  return output;
+}
+
+at::Tensor gate_epilogue_tiling_probe(const at::Tensor& x,const at::Tensor& wq,
+    const at::Tensor& scales,int64_t threads,int64_t items) {
+  TORCH_CHECK(x.is_cuda() && x.dim()==2 && x.scalar_type()==at::kBFloat16);
+  const auto m=x.size(0);
+  TORCH_CHECK(m>=1 && m<=2048 && x.size(1)==2048);
+  TORCH_CHECK(wq.is_cuda() && wq.scalar_type()==at::kChar && wq.is_contiguous());
+  TORCH_CHECK(wq.dim()==2 && wq.size(0)==2048 && wq.size(1)==12288);
+  TORCH_CHECK(scales.is_cuda() && scales.scalar_type()==at::kFloat && scales.is_contiguous());
+  TORCH_CHECK(scales.dim()==1 && scales.numel()==12288);
+  TORCH_CHECK(x.device()==wq.device() && x.device()==scales.device());
+  TORCH_CHECK(threads==64 || threads==128 || threads==256);
+  TORCH_CHECK(items==1 || items==2 || items==4 || items==8);
+  c10::cuda::CUDAGuard guard(x.device());
+  auto input=x.contiguous();
+  const auto padded=std::max<int64_t>(32,m);
+  auto aq=at::empty({padded,2048},x.options().dtype(at::kChar));
+  auto row_scales=at::empty({padded},x.options().dtype(at::kFloat));
+  auto stream=c10::cuda::getCurrentCUDAStream();
+  if (m<=16) biv150_quantize_residual(input.data_ptr<at::BFloat16>(),aq.data_ptr<int8_t>(),row_scales.data_ptr<float>(),int(m),2048,stream);
+  else biv150_quantize_cached(input.data_ptr<at::BFloat16>(),aq.data_ptr<int8_t>(),row_scales.data_ptr<float>(),int(m),int(padded),2048,256,stream);
+  C10_CUDA_KERNEL_LAUNCH_CHECK();
+  auto acc=at::_int_mm(aq,wq);
+  return epilogue_tiling_probe(acc,row_scales,scales,m,m<=16,threads,items);
+}
+
 }
 
 TORCH_LIBRARY(biv150_native, m) {
+  m.def("epilogue_tiling_probe(Tensor accumulator, Tensor row_scales, Tensor weight_scales, int rows, bool residual, int threads, int items) -> Tensor");
+  m.def("gate_epilogue_tiling_probe(Tensor x, Tensor weight_int8, Tensor scales, int threads, int items) -> Tensor");
   m.def("quantize_rows_probe(Tensor x, int threads) -> Tensor[]");
   m.def("gate_silu_cached_probe(Tensor x, Tensor weight_int8, Tensor scales, Tensor marker, int threads) -> Tensor");
   m.def("gate_silu_auto(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, int min_rows) -> Tensor");
@@ -169,6 +222,8 @@ TORCH_LIBRARY(biv150_native, m) {
   m.def("gate_silu(Tensor x, Tensor weight_int8, Tensor scales, Tensor original, int min_rows) -> Tensor");
 }
 TORCH_LIBRARY_IMPL(biv150_native, CUDA, m) {
+  m.impl("epilogue_tiling_probe", &epilogue_tiling_probe);
+  m.impl("gate_epilogue_tiling_probe", &gate_epilogue_tiling_probe);
   m.impl("quantize_rows_probe", &quantize_rows_probe);
   m.impl("gate_silu_cached_probe", &gate_silu_cached_probe);
   m.impl("gate_silu_auto", &gate_silu_auto);

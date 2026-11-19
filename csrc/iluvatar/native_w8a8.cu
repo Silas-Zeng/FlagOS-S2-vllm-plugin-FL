@@ -195,3 +195,61 @@ extern "C" void biv150_quantize_cached(const void* x,int8_t* q,float* scales,
   else if (threads==128) quantize_cached_rows<128><<<padded_m,128,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
   else quantize_cached_rows<256><<<padded_m,256,0,stream>>>(static_cast<const BF16*>(x),q,scales,m);
 }
+
+namespace {
+template<int ITEMS>
+__global__ void silu_tiled_epilogue(const int32_t* acc, const float* rows,
+                                   const float* cols, BF16* output, int n) {
+  const int row=blockIdx.y;
+  const int half=n/2;
+  const int base=blockIdx.x*blockDim.x*ITEMS+threadIdx.x;
+  #pragma unroll
+  for (int item=0;item<ITEMS;++item) {
+    const int col=base+item*blockDim.x;
+    if (col<half) {
+      const int64_t index=int64_t(row)*n+col;
+    // Reproduce the BF16 linear output rounding before the FP32 activation.
+    const float gate = __bfloat162float(__float2bfloat16_rn(float(acc[index]) * (rows[row] * cols[col])));
+    const float up = __bfloat162float(__float2bfloat16_rn(float(acc[index+half]) * (rows[row] * cols[col+half])));
+    output[int64_t(row)*half+col] = __float2bfloat16_rn((gate / (1.f + expf(-gate))) * up);
+    }
+  }
+}
+
+template<int ITEMS>
+__global__ void residual_silu_tiled_epilogue(const int32_t* acc,const float* rows,
+                                            const float* cols,BF16* output,int n) {
+  const int row=blockIdx.y;
+  const int half=n/2;
+  const int base=blockIdx.x*blockDim.x*ITEMS+threadIdx.x;
+  #pragma unroll
+  for (int item=0;item<ITEMS;++item) {
+    const int col=base+item*blockDim.x;
+    if (col<half) {
+      const int64_t index=int64_t(row)*n+col;
+      const int64_t residual_index=int64_t(row+16)*n+col;
+      const float gate_raw=(float(acc[index])*rows[row]+float(acc[residual_index])*rows[row+16])*cols[col];
+      const float up_raw=(float(acc[index+half])*rows[row]+float(acc[residual_index+half])*rows[row+16])*cols[col+half];
+      const float gate=__bfloat162float(__float2bfloat16_rn(gate_raw));
+      const float up=__bfloat162float(__float2bfloat16_rn(up_raw));
+      output[int64_t(row)*half+col]=__float2bfloat16_rn((gate/(1.f+expf(-gate)))*up);
+    }
+  }
+}
+
+template<int ITEMS>
+void launch_silu_tiled(const int32_t* acc,const float* rows,const float* cols,
+                      void* output,int m,int n,bool residual,int threads,cudaStream_t stream) {
+  const dim3 grid((n/2+threads*ITEMS-1)/(threads*ITEMS),m);
+  if (residual) residual_silu_tiled_epilogue<ITEMS><<<grid,threads,0,stream>>>(acc,rows,cols,static_cast<BF16*>(output),n);
+  else silu_tiled_epilogue<ITEMS><<<grid,threads,0,stream>>>(acc,rows,cols,static_cast<BF16*>(output),n);
+}
+} // namespace
+
+extern "C" void biv150_silu_tiled(const int32_t* acc,const float* rows,const float* cols,
+    void* output,int m,int n,bool residual,int threads,int items,cudaStream_t stream) {
+  if (items==1) launch_silu_tiled<1>(acc,rows,cols,output,m,n,residual,threads,stream);
+  else if (items==2) launch_silu_tiled<2>(acc,rows,cols,output,m,n,residual,threads,stream);
+  else if (items==4) launch_silu_tiled<4>(acc,rows,cols,output,m,n,residual,threads,stream);
+  else launch_silu_tiled<8>(acc,rows,cols,output,m,n,residual,threads,stream);
+}
