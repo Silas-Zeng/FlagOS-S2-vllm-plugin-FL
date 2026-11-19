@@ -2,7 +2,7 @@
 
 import os
 import re
-from pathlib import Path
+from vllm_fl.compile_semantics import native_library_path, native_model_matches
 
 import torch
 
@@ -15,15 +15,7 @@ def _eligible_model():
         from vllm.config import get_current_vllm_config
 
         config = get_current_vllm_config().model_config.hf_config
-        expected = dict(
-            hidden_size=2048,
-            intermediate_size=6144,
-            num_hidden_layers=42,
-            num_attention_heads=16,
-            num_key_value_heads=2,
-            vocab_size=130560,
-        )
-        return all(getattr(config, k, None) == v for k, v in expected.items())
+        return native_model_matches(config)
     except (AttributeError, AssertionError, RuntimeError):
         return False
 
@@ -32,18 +24,12 @@ def load_library():
     global _LOADED
     if _LOADED:
         return
-    library = os.environ.get(
-        "BIV150_NATIVE_W8A8_LIBRARY",
-        str(
-            Path(__file__).resolve().parents[2]
-            / "build-native-w8a8/biv150_native_w8a8.so"
-        ),
-    )
-    if not Path(library).is_file():
+    library = native_library_path()
+    if not library.is_file():
         raise RuntimeError(
             "Build the BI-V150 operator with python tools/build_biv150_native_w8a8.py"
         )
-    torch.ops.load_library(library)
+    torch.ops.load_library(str(library))
 
     @torch.library.register_fake("biv150_native::linear")
     def fake(x, wq, scales, original, bias, min_rows):

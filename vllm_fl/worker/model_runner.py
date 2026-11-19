@@ -20,9 +20,18 @@ from typing import TYPE_CHECKING, Any, NamedTuple, TypeAlias, cast
 
 import numpy as np
 import torch
+from vllm_fl.patches.biv150_lm_head_temperature import (
+    compute_logits as _biv150_head_compute_logits,
+    prepare_sampling as _biv150_head_prepare_sampling,
+    sample_scaled as _biv150_head_sample_scaled,
+)
 from vllm_fl.patches.biv150_cpu_metadata import try_cpu_metadata as _biv150_try_cpu_metadata
 from vllm_fl.patches.biv150_async_token_update import fused_sampled_token_update as _biv150_fused_sampled_token_update
 from vllm_fl.patches.biv150_compute_order import make_plan as _biv150_compute_order_plan
+from vllm_fl.patches.biv150_dynamic_hidden_gather import (
+    prepare as _biv150_prepare_hidden_gather,
+    try_gather as _biv150_try_hidden_gather,
+)
 import torch.distributed
 import torch.nn as nn
 from tqdm import tqdm
@@ -477,6 +486,7 @@ class ExecuteModelState(NamedTuple):
     ec_connector_output: ECConnectorOutput | None
     cudagraph_stats: CUDAGraphStat | None
     slot_mappings: dict[str, torch.Tensor] | list[dict[str, torch.Tensor]] | None
+    head_temperature_state: object | None
 
 
 class ModelRunnerFL(
@@ -3682,6 +3692,7 @@ class ModelRunnerFL(
         self,
         logits: torch.Tensor | None,
         spec_decode_metadata: SpecDecodeMetadata | None,
+        head_temperature_state=None,
     ) -> SamplerOutput:
         # Sample the next token and get logprobs if needed.
         sampling_metadata = self.input_batch.sampling_metadata
@@ -3693,6 +3704,10 @@ class ModelRunnerFL(
         # if async scheduling and required by current sampling params.
         self.input_batch.update_async_output_token_ids()
         if spec_decode_metadata is None:
+            if head_temperature_state is not None:
+                return _biv150_head_sample_scaled(
+                    self, logits, sampling_metadata, head_temperature_state
+                )
             return self.sampler(
                 logits=logits,
                 sampling_metadata=sampling_metadata,
@@ -4277,6 +4292,14 @@ class ModelRunnerFL(
             if compute_order is not None:
                 compute_order.check_dispatch(cudagraph_mode, batch_desc, should_ubatch, num_tokens_across_dp)
 
+            # CPU provenance stays inside the original input-prep event domain.
+            _biv150_hidden_gather_receipt = (
+                _biv150_prepare_hidden_gather(
+                    self, logits_indices, num_scheduled_tokens_np,
+                    num_tokens_unpadded, compute_order, spec_decode_metadata,
+                ) if cudagraph_mode == CUDAGraphMode.NONE and not should_ubatch else None
+            )
+
             logger.debug(
                 "Running batch with cudagraph_mode: %s, batch_descriptor: %s, "
                 "should_ubatch: %s, num_tokens_across_dp: %s",
@@ -4451,6 +4474,7 @@ class ModelRunnerFL(
         if compute_order is not None:
             compute_order.forward_returned()
 
+        head_temperature_state = None
         with record_function_or_nullcontext("gpu_model_runner: postprocess"):
             if self.use_aux_hidden_state_outputs:
                 # True when EAGLE 3 is used.
@@ -4477,8 +4501,15 @@ class ModelRunnerFL(
                         kv_connector_output,
                     )
 
-                sample_hidden_states = hidden_states[logits_indices]
-                logits = self.model.compute_logits(sample_hidden_states)
+                sample_hidden_states = _biv150_try_hidden_gather(
+                    self, hidden_states, logits_indices, _biv150_hidden_gather_receipt,
+                    cudagraph_mode == CUDAGraphMode.NONE, spec_decode_metadata,
+                )
+                if sample_hidden_states is None:
+                    sample_hidden_states = hidden_states[logits_indices]
+                logits, head_temperature_state = _biv150_head_compute_logits(
+                    self, sample_hidden_states, scheduler_output, spec_decode_metadata
+                )
             else:
                 # Rare case.
                 assert not self.is_pooling_model
@@ -4520,6 +4551,7 @@ class ModelRunnerFL(
             ec_connector_output,
             cudagraph_stats,
             slot_mappings,
+            head_temperature_state,
         )
         self.kv_connector_output = kv_connector_output
 
@@ -4572,9 +4604,14 @@ class ModelRunnerFL(
             ec_connector_output,
             cudagraph_stats,
             slot_mappings,
+            head_temperature_state,
         ) = self.execute_model_state
         # Clear ephemeral state.
         self.execute_model_state = None
+
+        logits, head_temperature_state = _biv150_head_prepare_sampling(
+            self, logits, head_temperature_state, scheduler_output, grammar_output
+        )
 
         # Apply structured output bitmasks if present.
         if grammar_output is not None:
@@ -4583,7 +4620,9 @@ class ModelRunnerFL(
             )
 
         with record_function_or_nullcontext("gpu_model_runner: sample"):
-            sampler_output = self._sample(logits, spec_decode_metadata)
+            sampler_output = self._sample(
+                logits, spec_decode_metadata, head_temperature_state
+            )
 
         self._update_states_after_model_execute(
             sampler_output.sampled_token_ids, scheduler_output
@@ -7758,9 +7797,6 @@ class EncoderTimingStats:
             "num_encoder_calls": self.num_encoder_calls,
         }
 
-# Enable the submitted implementation without changing serving arguments.
-from vllm_fl.patches.biv150_sql_reflection import install as _biv150_sql_install
-_biv150_sql_install()
 # Isolated MiniCPM decode launch candidate; install before graph capture.
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_decode_launch_runtime import install as _install_decode_launch
@@ -7790,8 +7826,34 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
 
     print("BIV150_Q_FRAGMENT_INSTALL", _install_q_fragment(), flush=True)
 
+    from vllm_fl.patches.biv150_prefill_q32 import install as _install_prefill_q32
+
+    print("BIV150_PREFILL_Q32_INSTALL", _install_prefill_q32(), flush=True)
+
+    from vllm_fl.patches.biv150_prefill_multi2 import install as _install_prefill_multi2
+
+    print("BIV150_PREFILL_MULTI2_INSTALL", _install_prefill_multi2(), flush=True)
+
 # Audited gate/up operator only; attention and request preparation remain on team main.
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_gate
 
     print("BIV150_NATIVE_W8A8_INSTALL", _install_native_gate(), flush=True)
+
+# Audited BF16 small-row MiniCPM projections.
+if getattr(current_platform, "vendor_name", None) == "iluvatar":
+    from vllm_fl.patches.biv150_stable_small_o import install as _install_stable_small_o
+
+    print("BIV150_STABLE_SMALL_O_INSTALL", _install_stable_small_o(), flush=True)
+
+# NativeK8 may only refine the owned16KiB private decode producer.
+if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_NATIVE_DECODE", "0") == "1":
+    if (__import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") != "1"
+            or __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1"):
+        raise RuntimeError("NativeK8 requires only owned16384 encoded service")
+
+# Private encoded-cache diagnostic: install once before allocation/capture; default off.
+if (getattr(current_platform, "vendor_name", None) == "iluvatar"
+        and __import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"):
+    from vllm_fl.patches.biv150_konly_encoded_service import install as _install_konly_encoded
+    print("BIV150_KONLY_ENCODED_INSTALL", _install_konly_encoded(ModelRunnerFL), flush=True)

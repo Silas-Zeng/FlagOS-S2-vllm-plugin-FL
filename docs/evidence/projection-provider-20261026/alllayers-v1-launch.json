@@ -1,0 +1,21 @@
+{
+  "utc": "2026-10-26T00:28:59.316158+00:00",
+  "pid": 486137,
+  "start_ticks": 332209089,
+  "sid": 486137,
+  "command": [
+    "/usr/local/bin/python",
+    "/workspace/experiments/minicpm-s2/code/projection-provider-v1-20261026/tools/bench_biv150_projection_providers.py",
+    "--run-gpu",
+    "--source",
+    "/workspace/experiments/minicpm-s2/code/projection-provider-v1-20261026",
+    "--commit",
+    "6e0505789a8812af0788e3cc4129f4c9bc224652",
+    "--out",
+    "/workspace/experiments/minicpm-s2/projection-providers-alllayers-v1-20261026",
+    "--tuning-snapshot",
+    "/workspace/experiments/minicpm-s2/exports/small-bf16-fullwarm-tuning-snapshot-v6-20261025"
+  ],
+  "predecessor_cleanup": true,
+  "preflight": "Named job argv inspected; shell command text is not a job identity"
+}

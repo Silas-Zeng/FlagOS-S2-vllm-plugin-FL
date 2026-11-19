@@ -1,5 +1,7 @@
 # SQLite目标表反射
 
+此优化已从当前运行代码移除。2026-11-16 的充分预热单轮消融中，开启相对关闭的 4K 吞吐为 6871.39 / 6860.52 tok/s（+0.16%），16K 为 5250.02 / 5249.04 tok/s（+0.02%），未建立稳定收益。当前服务沿用 FlagGems 原有表反射实现。以下保留历史实现说明。
+
 只加原ad84模块与runner安装footer，fresh automap base用only callable过滤目标表，保缺表None与默认外键闭包；非SQLite走原函数，固定FlagGems SQL源6dc19c。
 
 算法与前两性能方法独立；堆叠顺序用于精确恢复历史SQL-only测试上下文。现成SQL独立patch也能作用于原13eb runner，但历史服务证据基于retained，不冒称原13eb全树独立结果。

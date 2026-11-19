@@ -1,0 +1,233 @@
+{
+  "cpu_only": true,
+  "gpu_work_started": false,
+  "basis": "Existing selected compile records and their post-launch loaded_resources",
+  "caveat": "Driver-reported counts do not establish occupancy, register-file capacity, or absence of all local-memory traffic.",
+  "archives": [
+    {
+      "archive": "prefill-tiles-main594-v1-evidence-20261026.tar.gz",
+      "bytes": 117084,
+      "sha256": "e54a8c4ec96649da500ab86e490b59bef8d1dc8e701eca174608505cb4a7bc1a",
+      "kernels": {
+        "af5afc7768dc86bac03c74e31e81ab6ca257c497b09aed3b601e21f89f66332d": {
+          "resources": {
+            "candidate_hash": "af5afc7768dc86bac03c74e31e81ab6ca257c497b09aed3b601e21f89f66332d",
+            "metadata": {
+              "num_warps": 8,
+              "num_stages": 1,
+              "shared": 32768,
+              "use_sme": 114691,
+              "warp_size": 64
+            },
+            "compiled_n_regs": null,
+            "compiled_n_spills": null,
+            "loaded_n_regs": 114,
+            "loaded_n_spills": 0,
+            "asm_sha256": {
+              "source": "63858c1c3adcc9e7942d9419340a0a8e6077bc230e222a017f7d81178900b631",
+              "ttir": "2f82ca756b05c99c9f8f08560d358bda404099f3c0231dac430cdd8204bd39e4",
+              "ttgir": "fb562191e7b9d06aba86ee572bab0b22c9785fbe3befd26ed27e74a9b15a7a12",
+              "llir": "abe570c420aab684c6eacdfc585f698edec15cb23b7fb33ad932948f90d22d19",
+              "asm": "8f8608fa77c539d024312537b70336d7b4d6823ad6fbc41028e37ec593955d7b",
+              "cubin": "91c09414d93a3921cbaa1dc90d2be1367856a8a0afe28b2cfcea80eb53afd327"
+            }
+          },
+          "locations": [
+            "bm256-k64-w16-s1/result.json/cases/0/baseline_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/cases/1/baseline_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/cases/2/baseline_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/cases/3/baseline_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/terminal_manager_proofs/baseline/compile_records/0"
+          ]
+        },
+        "56410f825e5ce59563644c83084ccc97d051ac4bb804e0e3270d7716a121a7ba": {
+          "resources": {
+            "candidate_hash": "56410f825e5ce59563644c83084ccc97d051ac4bb804e0e3270d7716a121a7ba",
+            "metadata": {
+              "num_warps": 16,
+              "num_stages": 1,
+              "shared": 65536,
+              "use_sme": 114691,
+              "warp_size": 64
+            },
+            "compiled_n_regs": null,
+            "compiled_n_spills": null,
+            "loaded_n_regs": 113,
+            "loaded_n_spills": 0,
+            "asm_sha256": {
+              "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+              "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+              "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+              "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+              "asm": "93470bb35275c8101af0a50093cad5c602d190b61b25c8ae3c08e6c5e088083d",
+              "cubin": "e2688a4611c708e343e8da04ecf9251cd6ac1c7840414d42c505600b931364fc"
+            }
+          },
+          "locations": [
+            "bm256-k64-w16-s1/result.json/cases/0/candidate_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/cases/1/candidate_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/cases/2/candidate_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/cases/3/candidate_proof/compile_records/0",
+            "bm256-k64-w16-s1/result.json/terminal_manager_proofs/candidate/compile_records/0"
+          ]
+        },
+        "9a46e725d844e9d7f83d00e927918769eeaf42e6513fbb446bc8dcb913699cb5": {
+          "resources": {
+            "candidate_hash": "9a46e725d844e9d7f83d00e927918769eeaf42e6513fbb446bc8dcb913699cb5",
+            "metadata": {
+              "num_warps": 8,
+              "num_stages": 1,
+              "shared": 32768,
+              "use_sme": 114691,
+              "warp_size": 64
+            },
+            "compiled_n_regs": null,
+            "compiled_n_spills": null,
+            "loaded_n_regs": 114,
+            "loaded_n_spills": 0,
+            "asm_sha256": {
+              "source": "63858c1c3adcc9e7942d9419340a0a8e6077bc230e222a017f7d81178900b631",
+              "ttir": "2f82ca756b05c99c9f8f08560d358bda404099f3c0231dac430cdd8204bd39e4",
+              "ttgir": "fb562191e7b9d06aba86ee572bab0b22c9785fbe3befd26ed27e74a9b15a7a12",
+              "llir": "abe570c420aab684c6eacdfc585f698edec15cb23b7fb33ad932948f90d22d19",
+              "asm": "88d7d302c063584dacd330b8b361989529fc306bf5713085e9052be61721003c",
+              "cubin": "4de78de688d3f5d52df808d8ef3a45f48d01e9931114dccbc6f610b7788bebf6"
+            }
+          },
+          "locations": [
+            "bm512-k64-w16-s1/result.json/cases/0/baseline_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/cases/1/baseline_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/cases/2/baseline_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/cases/3/baseline_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/terminal_manager_proofs/baseline/compile_records/0"
+          ]
+        },
+        "4c21500f86bed8cf5c8654eb43baa9d5ac5d5da4d423ea9ed40f47f0c4d86d74": {
+          "resources": {
+            "candidate_hash": "4c21500f86bed8cf5c8654eb43baa9d5ac5d5da4d423ea9ed40f47f0c4d86d74",
+            "metadata": {
+              "num_warps": 16,
+              "num_stages": 1,
+              "shared": 131072,
+              "use_sme": 114691,
+              "warp_size": 64
+            },
+            "compiled_n_regs": null,
+            "compiled_n_spills": null,
+            "loaded_n_regs": 201,
+            "loaded_n_spills": 0,
+            "asm_sha256": {
+              "source": "7bcb0dff7cc749aa609b5811527acf2e2d1552da865b256cc5830f4bbe4a2099",
+              "ttir": "79c345eeb51921aebdecfef94a2f9f37b82d01d34644d25989c0fa0dee880993",
+              "ttgir": "de02e586c5ad1216a82283f810061a212d9974ee389ebe9d23ccfe9026985e20",
+              "llir": "f17f2477a2b2186feaf574b34a89ee54b0ce01404184165ab87f02351ed7d69b",
+              "asm": "4f5c7f11d0d66eb68c86f0e9794901c0ab33e9afa75c9d6a66b6a60cf3483bd6",
+              "cubin": "ac5363e8040a784e0c48a846431546ebcc2ba9b0a6d5b16800d93004464a88d0"
+            }
+          },
+          "locations": [
+            "bm512-k64-w16-s1/result.json/cases/0/candidate_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/cases/1/candidate_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/cases/2/candidate_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/cases/3/candidate_proof/compile_records/0",
+            "bm512-k64-w16-s1/result.json/terminal_manager_proofs/candidate/compile_records/0"
+          ]
+        }
+      }
+    },
+    {
+      "archive": "prefill-w16-preflight-v2-evidence-20261026.tar.gz",
+      "bytes": 59821,
+      "sha256": "e6347024f8bb4ba15022a28f027c863c2da0e687ac66bba8497dd7c6a1994b7f",
+      "kernels": {
+        "2cfa8b348430d44c482aa471f8e98a74173b31065a2302c5803ee7d912bd1dc9": {
+          "resources": {
+            "candidate_hash": "2cfa8b348430d44c482aa471f8e98a74173b31065a2302c5803ee7d912bd1dc9",
+            "metadata": {
+              "num_warps": 16,
+              "num_stages": 1,
+              "shared": 65536,
+              "use_sme": 114691,
+              "warp_size": 64
+            },
+            "compiled_n_regs": null,
+            "compiled_n_spills": null,
+            "loaded_n_regs": 113,
+            "loaded_n_spills": 0,
+            "asm_sha256": {
+              "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+              "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+              "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+              "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+              "asm": "8cf5998506000f4df7960200bad59c5aa3d7aaa1206739229a683f8d99f61e31",
+              "cubin": "ee7ca22def039eca1dd0b5e48ca4589be7a55279cf44d624d55da5a3106ad41c"
+            }
+          },
+          "locations": [
+            "actual-policy-gpu/result.json/candidate_proof/compile_records/0"
+          ]
+        },
+        "80598487846f759cf5d7dacbd6f56cc217f9025ca368fba045a6a7447ec9981f": {
+          "resources": {
+            "candidate_hash": "80598487846f759cf5d7dacbd6f56cc217f9025ca368fba045a6a7447ec9981f",
+            "metadata": {
+              "num_warps": 8,
+              "num_stages": 1,
+              "shared": 32768,
+              "use_sme": 114691,
+              "warp_size": 64
+            },
+            "compiled_n_regs": null,
+            "compiled_n_spills": null,
+            "loaded_n_regs": 114,
+            "loaded_n_spills": 0,
+            "asm_sha256": {
+              "source": "63858c1c3adcc9e7942d9419340a0a8e6077bc230e222a017f7d81178900b631",
+              "ttir": "2f82ca756b05c99c9f8f08560d358bda404099f3c0231dac430cdd8204bd39e4",
+              "ttgir": "fb562191e7b9d06aba86ee572bab0b22c9785fbe3befd26ed27e74a9b15a7a12",
+              "llir": "abe570c420aab684c6eacdfc585f698edec15cb23b7fb33ad932948f90d22d19",
+              "asm": "88d7d302c063584dacd330b8b361989529fc306bf5713085e9052be61721003c",
+              "cubin": "ccba7d9ddaf71b6069723bc263b131322102f78e737333af104d4f0bbf6e7b7a"
+            }
+          },
+          "locations": [
+            "fresh-graph/result.json/cases/0/baseline_proof/compile_records/0",
+            "fresh-graph/result.json/cases/1/baseline_proof/compile_records/0",
+            "fresh-graph/result.json/cases/2/baseline_proof/compile_records/0",
+            "fresh-graph/result.json/terminal_manager_proofs/baseline/compile_records/0"
+          ]
+        },
+        "14b5b1f7a78d61c5341a51ef38b466395bcf8370054d61a7dbd0053395b86293": {
+          "resources": {
+            "candidate_hash": "14b5b1f7a78d61c5341a51ef38b466395bcf8370054d61a7dbd0053395b86293",
+            "metadata": {
+              "num_warps": 16,
+              "num_stages": 1,
+              "shared": 65536,
+              "use_sme": 114691,
+              "warp_size": 64
+            },
+            "compiled_n_regs": null,
+            "compiled_n_spills": null,
+            "loaded_n_regs": 113,
+            "loaded_n_spills": 0,
+            "asm_sha256": {
+              "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+              "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+              "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+              "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+              "asm": "79734cb5da88f073b9ec42757831f6a9327a01562c09dc75b2de871a8500850e",
+              "cubin": "fd4709dd7bc562aa330d4b058af5824d2f067ef47d01f5600ed7aab9131f7696"
+            }
+          },
+          "locations": [
+            "fresh-graph/result.json/cases/0/candidate_proof/compile_records/0",
+            "fresh-graph/result.json/cases/1/candidate_proof/compile_records/0",
+            "fresh-graph/result.json/cases/2/candidate_proof/compile_records/0",
+            "fresh-graph/result.json/terminal_manager_proofs/candidate/compile_records/0"
+          ]
+        }
+      }
+    }
+  ]
+}

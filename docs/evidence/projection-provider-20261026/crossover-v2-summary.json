@@ -1,0 +1,321 @@
+{
+  "runtime": "f3087151e40ef3c859d89b0cfd740a30e1db490a",
+  "archive_bytes": 32707,
+  "archive_sha256": "749b38d23eb5ad966d1af790328cf675d28f6b5eb7e6b2fee2837819e617767e",
+  "checks": 2592,
+  "passed": true,
+  "groups": [
+    {
+      "projection": "o",
+      "real_weights": 42,
+      "rows": [
+        {
+          "rows": 64,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 0.7119943464756386,
+            "provided_linear": 0.7197636815790273
+          }
+        },
+        {
+          "rows": 128,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.1460812097502546,
+            "provided_linear": 1.1677173020519944
+          }
+        },
+        {
+          "rows": 256,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.5788886341488289,
+            "provided_linear": 1.6264756831250884
+          }
+        },
+        {
+          "rows": 512,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.3652259818278483,
+            "provided_linear": 1.4214146203410842
+          }
+        },
+        {
+          "rows": 1024,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.7397180796968126,
+            "provided_linear": 1.7464108124873698
+          }
+        },
+        {
+          "rows": 1739,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.1781893361737008,
+            "provided_linear": 1.1777821422508832
+          }
+        },
+        {
+          "rows": 1798,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2492170040188055,
+            "provided_linear": 1.2503064734651066
+          }
+        },
+        {
+          "rows": 1985,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2523896126262901,
+            "provided_linear": 1.2519443817062088
+          }
+        },
+        {
+          "rows": 2017,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2496733509207054,
+            "provided_linear": 1.2493997883662724
+          }
+        }
+      ]
+    },
+    {
+      "projection": "qkv",
+      "real_weights": 42,
+      "rows": [
+        {
+          "rows": 64,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 0.8174117027937885,
+            "provided_linear": 0.8315096938300104
+          }
+        },
+        {
+          "rows": 128,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.351144265061252,
+            "provided_linear": 1.4191480363248516
+          }
+        },
+        {
+          "rows": 256,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.3743265584603819,
+            "provided_linear": 1.4284148709371898
+          }
+        },
+        {
+          "rows": 512,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.0770474040225313,
+            "provided_linear": 1.0847779515669234
+          }
+        },
+        {
+          "rows": 1024,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2712190441313194,
+            "provided_linear": 1.2751977167571902
+          }
+        },
+        {
+          "rows": 1739,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.0755165985191648,
+            "provided_linear": 1.0759044807101064
+          }
+        },
+        {
+          "rows": 1798,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.0812574712509189,
+            "provided_linear": 1.081211304500839
+          }
+        },
+        {
+          "rows": 1985,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.1382547589324048,
+            "provided_linear": 1.1385465670201949
+          }
+        },
+        {
+          "rows": 2017,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.0675128832346514,
+            "provided_linear": 1.0672855182368919
+          }
+        }
+      ]
+    },
+    {
+      "projection": "down",
+      "real_weights": 42,
+      "rows": [
+        {
+          "rows": 64,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 0.6603178120029786,
+            "provided_linear": 0.6594145068565759
+          }
+        },
+        {
+          "rows": 128,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.0295465441395666,
+            "provided_linear": 1.0286915422859055
+          }
+        },
+        {
+          "rows": 256,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.7143742862924312,
+            "provided_linear": 1.713372154335449
+          }
+        },
+        {
+          "rows": 512,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.7942726161797657,
+            "provided_linear": 1.7933680413228323
+          }
+        },
+        {
+          "rows": 1024,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 2.008988988476776,
+            "provided_linear": 2.008727724987497
+          }
+        },
+        {
+          "rows": 1739,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2399278002650527,
+            "provided_linear": 1.2400842383059576
+          }
+        },
+        {
+          "rows": 1798,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.29437448038547,
+            "provided_linear": 1.2935811812272178
+          }
+        },
+        {
+          "rows": 1985,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2842466225413394,
+            "provided_linear": 1.2834161127156392
+          }
+        },
+        {
+          "rows": 2017,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2852445600242575,
+            "provided_linear": 1.285662436106497
+          }
+        }
+      ]
+    },
+    {
+      "projection": "gate",
+      "real_weights": 8,
+      "rows": [
+        {
+          "rows": 64,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 0.9145602236797209,
+            "provided_linear": 0.9132927507586899
+          }
+        },
+        {
+          "rows": 128,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2586450773288742,
+            "provided_linear": 1.255826543218445
+          }
+        },
+        {
+          "rows": 256,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2129659587374289,
+            "provided_linear": 1.2153557619718958
+          }
+        },
+        {
+          "rows": 512,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.384339854496286,
+            "provided_linear": 1.379709982786108
+          }
+        },
+        {
+          "rows": 1024,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2063580871098682,
+            "provided_linear": 1.2060898604259735
+          }
+        },
+        {
+          "rows": 1739,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.1933090946152187,
+            "provided_linear": 1.1933751553103162
+          }
+        },
+        {
+          "rows": 1798,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.1864277527359124,
+            "provided_linear": 1.18608482797202
+          }
+        },
+        {
+          "rows": 1985,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2118815015369582,
+            "provided_linear": 1.2118294493386377
+          }
+        },
+        {
+          "rows": 2017,
+          "speedup_vs_mm": {
+            "mm_out": 1.0,
+            "functional_linear": 1.2115850637340297,
+            "provided_linear": 1.211212532784483
+          }
+        }
+      ]
+    }
+  ]
+}

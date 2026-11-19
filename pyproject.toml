@@ -96,6 +96,7 @@ include = ["vllm_fl*"]
 
 [tool.setuptools.package-data]
 "vllm_fl.dispatch.config" = ["*.yaml"]
+"vllm_fl" = ["native/iluvatar/*.so", "patches/biv150_konly_encoded_sources.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

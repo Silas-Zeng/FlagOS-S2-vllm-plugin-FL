@@ -1,0 +1,157 @@
+# Default-off private 16KiB encoded-cache service candidate
+
+Current integration base: fetched and API-confirmed main **4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b**, merged normally after d8ef. This main adds PR94 tools/docs; its production tree is byte-identical to b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd. The tested **d8ef055422d9d5c45049f85468b486b47b993406** passed the original Math105 protocol with **102/105 (0.9714)**. Fresh-main throughput and TTFT remain pending; keep Draft. No upstream SDK/dependency upgrade. Historical DAC/smoke/component evidence below retains its original scope and source.
+
+`VLLM_FL_BIV150_KONLY_ENCODED_SERVICE` defaults0. Off executes no hook import/binding/device work. On installs once in a cold worker before KV allocation/capture. The official serve CLI stays unchanged. Author performed no SSH/JIT/GPU/service work.
+
+## d8ef Math105 qualification, independently replayed on CPU
+
+Root completed tag `cjj-encoded-d8e-math105-v1-20261028`, controller owner688948/start347274628, with the immutable d8ef source. The fixed service CLI used port9031, FULL_DECODE_ONLY, memory utilization0.85 and max model length131072. EvalScope used the original math_500 Level3 protocol: batch8, temperature1.0, top_p0.95, max_tokens32768. The original report counts105; recounting its105 original binary `sample_score.score.value.accuracy` values gives102, matching0.9714. This is a record replay, not a new model run or rejudging.
+
+All105 indices and question IDs are unique. All105 actual `model_output.choices[].stop_reason` values are `stop`; there are no request errors, empty final texts or empty extracted predictions. Final text is taken from the string content or the `type=text` blocks, separately from reasoning blocks, and matches each original scorer input. The maximum recorded output is32448 tokens. The three zero-score indices are18,42,87. Owned cleanup completed; the API's identity-checked SIGTERM exit returned0. This result qualifies the original protocol's model accuracy gate for **d8ef**, without qualifying throughput, TTFT, every service geometry or unsupported lifecycle modes.
+
+CPU replay verifies all38 original file SHA256 values (6,262,576 bytes),251 source hashes against Git d8ef, the executed controller and pinned original stdlib protocol helper, the actual package resolution, both worker on-fingerprints and implementation digest `1cfc33340e80030660e15b4475b777f6c0975a23bd256dfe7e10e151aa9f9fd5`. All9 parent installers remain installed, including large_linear. The stock BF16 NativeGQA parent is installed with aace library identity; encoded GQA correctly bypasses that BF16 implementation at the format-aware producer boundary. Its absence of stock-native SELECTED events is expected.
+
+The records contain a complete actual Q32 unhoisted/hoisted source, typed ABI, TTIR/TTGIR/LLVM/ASM/cubin and binding. The independent CPU replay regenerates the exact one-operation override, replays the native dominance/liveness/synchronization audit, checks all artifact hashes and matches the actually SELECTED hoisted hash `060558e9c69f65a539c4e008c650b1fe3a39e88e59fc1d69cd99dc63dea9c08c`. Actual recorded loaded resources are135→122 registers,0 spills,57344→33792 shared bytes. These host/capture events do not count Graph replay executions or close every runtime shape. The cold binding's original per-component numerical flags remain unchanged; the complete105 result is recorded separately.
+
+The deterministic1,105,567-byte archive and member SHA manifest are in `docs/evidence/konly-encoded-service-20261027/math105-d8e-records-v1/`. It contains every original record, including public Math benchmark predictions/reviews and actual kernel artifacts, plus the separate Root review and protocol helper. The three generated cache trees and the locally created, unmanifested pycache are excluded explicitly; no original record is omitted. There are no databases, model weights or credentials. Initial native5c/aace and tuning-v6 descriptors are verified; this local replay does not rehash remote binaries or databases.
+
+The regular4229 merge changes only tools/docs relative to d8ef. All13 private implementation/manifest files, including the9 generated modules, remain byte-identical, and all4 original CPU gates pass. `merge-qualification-cpu.json` records those file identities and gate outputs. The d8ef runtime, algorithm, routing, codec, thresholds and formal parameters are unchanged. Old2487 DAC timings6327/4905 are not results for d8ef or this merged head. The independently running d8ef throughput output remains untouched and pending.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_encoded_math105_evidence.py
+```
+
+The later sections describe earlier revisions and their evidence at that time; their open model flags do not override the source-specific d8ef result above.
+
+## Actual seams and format
+
+The physical cache remains BF16-shaped NHD `[P,2,16,2,128]`, strides `(8192,4096,256,128,1)` in BF16 elements,16KiB/page. Kcode is I8 at0..4095, Kscale FP32 at4096..4223, reserved4224..8191 remains, V BF16 stays8192..16383. No capacity recovery and no PR88 compact layout. Tensor dtype cannot authenticate payload; a cold, explicit per-allocation registry owns the format.
+
+```mermaid
+flowchart TD
+ I[ModelRunnerFL.initialize_kv_cache] --> A[Original allocation plus private epoch checks]
+ S[Original scheduler slot_mapping / padding -1] --> W[Original unified_kv_cache_update custom-op]
+ W --> E[Private stride-aware do_kv_cache_update writer]
+ E --> D[Original ordering dummy dependency]
+ D --> F[Original TritonImpl.forward and C3 natural-prefix splitter]
+ F --> U[Original normalized / GQA unified function identities]
+ U --> G[GQA producer facade: K8 plus original reducer]
+ U --> N[Normalized holder facade: Q32 / M2 / BM128 K8]
+ U --> R[Raw SDK kernel facade: K8 plus original SDK reducer]
+```
+
+The writer is called at the real `TritonAttentionImpl.do_kv_cache_update` seam (target triton_attn.py724–767), not again in forward. Original attention.py `unified_kv_cache_update` retains the dummy dependency consumed by attention; profiling with no layer slot mapping skips the writer as before. Source K is post-RoPE; private fused-RoPE/cache writing is disabled before compilation and any attempted unqualified fused writer raises.
+
+The83 writer function is copied byte-for-byte, with the same RN32→RNE codec, actual source token strides and int64 slot/index arithmetic. Negative/padded slots short-circuit source loads. No per-token `.cpu()`/`.item()` or newly invented freshness check: source/slot ordering, valid unique physical slots and padding-1 come from the original scheduler/block table/custom-op/stream contract. Main runner4069–4141/4360 and actual block_table326–380 are the source anchors. These are inherited contracts, not newly proven arbitrary concurrent mutation safety.
+
+The86 broker constructs zero-copy typed aliases, independently verifies storage identity/pointer/offset/span, and separates K byte strides `(16384,256,128,1)` from V BF16 `(8192,256,128,1)`. FP32 scale points at full **layer-page0**, not at the scale field; kernels add1024 FP32 elements themselves. Nonzero aligned layer offsets are represented explicitly. Source K/V cannot alias writable cache. Strong base ownership prevents address reuse; the same impl changing allocation/view is rejected. A fresh worker/prefix/capture lifetime is required for reallocation. Prefix lookup/reuse and whole-page zeroing remain original; format stays fixed for the allocation lifetime. KV connector/offload/speculative ownership and encoded copy/swap/layout conversions are refused pending separate qualification.
+
+## Reader dispatch and original main stack
+
+Top-level `attention.unified_attention`, its normalization/GQA closures and C3 builder/forward identities remain unchanged. Three **inner** kernel bindings get format-aware facades: main GQA producer, raw SDK kernel, and the existing normalized-holder entry. No encoded launch falls through to ordinary BF16 data interpretation. Untagged reads after the encoded epoch is armed, unknown aliases, mode/features/geometry/ABI mismatches and foreign IR refuse.
+
+Existing main natural-prefix splitting remains installed, with original metadata/stream preparation. Since shape/dtype metadata stays BF16 and outer functions are unchanged, it can still issue prefix GQA and suffix prefill calls. **Actual service trace is pending**; source preservation alone is not a claim that every mixed batch splits. Facade events record profile/query rows/sequence count/hash so a63/31 decode prefix can be distinguished from all-sequence2D. Non-leading/interleaved mixed calls currently use one encoded all-sequence2D reader, including its decode rows: no second85 launch and no duplicate writes. Before formal throughput, actual trace must confirm leading-prefix GQA remains and assess restoring85 plus a disjoint prefill-skip-decode path for non-leading mixtures.
+
+Reader sources come from frozen79/80/87 factories. Profile selection preserves Q32 BM256/BQ32/T64/w16/s1 for one large sequence, M2 same tile for two, normalized BM128/BQ16/T64/w8/s1 otherwise, and raw3D original SDK grid/segments/options/reducer. General grids are `qrows//BQ+num_seqs`, not fixed benchmark geometries. Q32 is explicitly **unhoisted I8 fragment**: no old exact-hash overlay is borrowed. Fresh service IR/ABI/resources must be collected before claiming a new hoist or component speedup. Source-generation proofs and component eager/Graph evidence do not qualify new service specializations.
+
+The fixed source dependencies already have component implementation evidence:79 native-QK/codec/decode,83 strided writer,80 Q32,87 BM128 eager/changed-input Graph+side,80 M2 and raw q1/q2 exact cases,85 scattered mixed. Original BF16 proxy failures remain; none is represented as new service/model precision acceptance. The separate81 result102/105 is only old56 stock-cache pure-decode quantization. It cannot certify this encoded-prefill candidate.
+
+## Identity and cache safety
+
+Private GPU functions have independent JIT objects/caches. Installed SDK/helper/backend and main Q32/M2 chain identities are pinned before any mutation. New binding construction is atomic with rollback before any encoded write. The source bundle is generated by stdlib-only materialization, with exact factory inverse proofs; generated GPU modules are never imported by CPU checkers.
+
+`compute_order` has an explicit enabled-only **dispatch receipt**. It verifies registered facade objects/underlying parents, writer/lifetime/transfer binding objects, private kernel identities, actual dispatch code identity, allocation tags and implementation digest. Only then are parent interfaces inspected by the original metadata-stack proof. Parent `.fn` reflection is **not** treated as proof of new KV math. Default-off proof takes the unchanged parent route. New numerical certification remains false.
+
+`compile_semantics` includes the default-false feature bit and an enabled-only `konly_encoded` record with format and implementation SHA. That digest covers every private Python implementation plus the source manifest, agrees with install/selected logs and changes the compiled graph identity. Old BF16/old-format captures are not valid on-state evidence. It adds no keys to the original Torch ABI dictionary. The main worker tail uses explicit os import, preserves CRLF bytes and updates the sole runner pin. A complete exact reverse patch proves the three original files return to DAC bytes.
+
+## Log protocol / next root action
+
+- `BIV150_KONLY_ENCODED_INSTALL`: installed binding, format scope, implementation SHA, unhoisted/service-unverified status.
+- `BIV150_COMPILE_SEMANTICS`: enabled `konly_encoded` format and matching implementation SHA.
+- `BIV150_KONLY_ENCODED_SELECTED`: actual returned compiled hash (or honest null), source digest, profile, query rows and sequence count. These are host/capture events, never fabricated Graph replay counts.
+- `biv150_konly_encoded_service.stats()`: writer/selected/fallback host counts, all observed hashes, claimed allocations and explicit precision/service/hoist limits.
+
+The root-owned359 short-request smoke is recorded below. Further validation must capture fresh sources/typed ABI/IR/resources and actual compute-order selection where eligible; unknown resource values remain unknown. Startup/ABI failures are not numerical negatives. No full105/throughput is claimed. No author device entry is executed here.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/materialize_biv150_konly_encoded.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_encoded_cpu.py
+```
+
+The second command executes the actual new worker tail off/on without an os global, reverses the exact production patch, checks source-digest on/off separation, uses explicitly synthetic metadata/kernel recorders for routing and rejects aliases/reallocation/capture creation/transfer/feature mismatches. It does not simulate GPU math. All shape-wide service, lifecycle/Graph, model105, official throughput and TTFT gates remain open. Keep Draft.
+
+## Final statistics export (separate instrumentation revision)
+
+The new runtime wraps the actual `ModelRunnerFL.shutdown` and also registers an atexit fallback. It exports once, preserving the original shutdown return/error. With the existing absolute private `TRITON_CACHE_DIR`, the default output is its parent `konly-encoded-final-{pid}.json`; an explicit absolute `VLLM_FL_BIV150_KONLY_ENCODED_STATS_PATH` may contain the literal `{pid}`. No file is written per token. Export uses exclusive temporary creation plus atomic replace, refuses an existing final file, and reports failures without hiding model/shutdown results. Missing export is an evidence gap. Abrupt process termination can prevent Python shutdown/atexit; absence cannot be interpreted as zero activity.
+
+The file records process PID/start tick, source implementation digest, all host counts and observed kernel hashes, per-shape grid/dtype/stride/offset/selected scalar/capture counts (bounded4096, explicit overflow), and actual returned CompiledKernel metadata/typed signature/constants/attrs/source digest/artifact SHA/resources when available. Unknown metadata/resources remain null or explicitly unrepresented; no Tensor repr/data read occurs. New-hash SELECTED events replace the former first-role-only event, so later compiled variants are visible. The complete shape table distinguishes differently sized launches sharing a compiled hash. These are host/capture observations and still **do not count kernel executions inside Graph replay**. No service numerical or hoist certificate is invented.
+
+CPU tests exercise one-shot shutdown/atexit export, original return preservation, atomic files, shape records, missing-resource unknown status and no-repr serialization. Kernel/writer/codec source and the three original production files remain byte-identical to359 in this instrumentation revision. Its implementation/compile fingerprint changes because runtime source is included. The original359 smoke source/output are untouched.
+
+
+## Existing359 three-request smoke, independently replayed
+
+Root ran the original359 source with the fixed official service CLI on9031, FULL_DECODE_ONLY, GPU memory utilization0.85 and max model length131072. Owner639752/start345722213 completed three HTTP requests (prompt18/18/5137 tokens, each16 completion tokens). The real enabled compile fingerprint and implementation digest matched; all9 existing parent installers remained installed, including large_linear. Actual SELECTED hashes were recorded for writer83, normalized2d128 (capture256/256), decode (capture64/64), and q32 (2048/1). These host/capture events do not close every executed shape or count Graph replay executions; no actual mixed split or compute-order reorder is inferred.
+
+The original external controller incorrectly searched for the writer label `writer` instead of the emitted `writer83`. Its failed state, traceback and logs are preserved unchanged. Root fixed that parser independently and recovered the existing smoke evidence without a GPU rerun. The archive contains all9 records-only raw files (91327 bytes), the separate recovered report, the original and two later controller sources, and the pinned stdlib helper. Generated caches are excluded explicitly; the original remote output is retained. CPU replay checks245 source hashes against Git359, the on/off fingerprint distinction, installer/selected events, response usage and owned cleanup. Native5c/v6 initial descriptors are checked; the remote after-run source/native/snapshot recheck is a **Root attestation plus proof SHA**, because its raw proof payload is not in this local records archive.
+
+The deterministic39,693-byte tar has SHA256 `2fcf47081679219b1c2d4b87818ac026634eb2e8d391e8ac2007f5d5c160f97f`. Its member manifest and per-member SHA are under `docs/evidence/konly-encoded-service-20261027/smoke-records-v1/`; the separate CPU result is `smoke-replay-v1.json`. No database, model weights or generated compile caches are included. This is startup/short-request evidence only: **no Math105, precision, throughput or TTFT result**. The later4a770 final-statistics instrumentation has not been device-tested by this359 run.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_encoded_smoke_evidence.py
+```
+
+The capture256/256 normalizedBM128 route differs from stock raw2D's compact decode geometry. It is format-aware, but its padding/work and high-N performance need measurement before throughput qualification. Current Q32 remains unhoisted. A new live-source/ABI proof is required for any later override; the old component overlay is not licensed by this smoke hash alone.
+
+
+## Fresh service Q32 hoist adapter (independent opt-in revision)
+
+`VLLM_FL_BIV150_KONLY_SERVICE_Q32_HOIST=0` is a second, default-off switch. It takes effect only with the existing encoded-service flag1. With it off, no hoist helper imports, preparation, warmup or override occurs. With it on, only the existing eager single-sequence Q32 profile is eligible. M2/raw3D/BM128/GQA policies, physical16KiB layout, writer/codec/GPU Python bodies and parent installers remain unchanged. This does not restore scattered mixed splitting or change capture256 BM128 geometry.
+
+This adapter packages PR90 `e4dd64e453fbe1bdeba4d8b2a1b551167e9446c4`'s structural proposer and native auditor **byte-for-byte**, not the oldEF347 overlay. On first actual specialization, it obtains the actual selected JIT object's ASTSource signature/constants/attrs, fn.src SHA, target/options, actual TTGIR/LLVM/ASM/cubin and CPU geometry. It moves one independently discovered immutable I8 Q operand local_load, fresh-compiles that new override with the same tensors/kwargs/grid/options, requires source/complete typed ABI/TTIR unchanged, audits actual TTGIR/LLVM/ASM dominance/liveness/synchronization and initializes handles to record known positive registers/zero spills/shared<=65536. Unknown IR/ABI/resource preparation stays on the **same private unhoisted** reader before any launch; foreign reader/source/hook identities refuse. The only reader launch is outside the preparation catch; returned compiled/ASTSource/function/source/hash/ABI-object identities must match the admitted immutable private object, and exceptions never retry a reader.
+
+The primary installed JIT source is SHA256 `66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775` (43174 bytes). Its lines737–756 add debug/instrumentation/FlagPrism options, select the actual per-device binder, bind and call compute_cache_key before lookup. The adapter uses those exact installed functions and normalization order. It does not guess native pointer alignment or implement native_specialize_impl. Its key additionally binds tensor dtype/device/shape/strides and the complete grid, covering SME's geometry-dependent cold derivation at761. A cache hit must still reference the same authenticated unhoisted and override CompiledKernel objects. Thus changed addresses with unchanged actual native specialization do not trigger another cold audit; new specializations are warm-compiled and audited once. Unsupported options or private-cache replacement retain the unhoisted path. The exact decorated829-byte codec source slice separately matches d73af836…; that digest is not mislabelled as an independently installed codec file.
+
+Private first-compile artifacts go under `TRITON_CACHE_DIR`'s parent `konly-q32-hoist/{pid}/{specialization-digest}/`: both full actual artifact sets/live source/typed snapshots, the fresh override and binding/proposal/native/resource report. Full artifact SHA/ABI/native snapshots run only during cold admission. Repeated after_launch calls inspect object/source/hash/ABI-dictionary identities, with no artifact rehash or deep snapshot. Foreign in-place modification of an admitted private compiler metadata object is excluded by the immutable private-object contract. There is no per-token file IO. `BIV150_KONLY_Q32_HOIST_PREPARED` records actual hashes/resources; prelaunch rejection logs `BIV150_KONLY_Q32_HOIST_PRELAUNCH_RETAIN`. Existing final stats include bindings, cold/hot host counts and actual selected hoisted hashes. The explicit hoist enable bit and new implementation digest enter compile_semantics, so enabling cannot reuse an off-state graph. The new complete DAC reverse patch is production-changes-v2.patch; original v1 evidence remains intact. CRLF is retained.
+
+Root's separate PR90 selected359 reconstruction proves originalc0a523… exact TTGIR/LLVM and fresh597cf3… native mechanism. Root's subsequent e4 component has4reader/0encoder/two-pattern full-output bitwise and loaded-resource passes; sibling independently recomputed its complete packed cache/INT64QK/FP64 references and guards. This is bounded Q2048/prefix4096 component evidence only. **This new live service adapter, other shapes, Graph/side, model accuracy and throughput remain unvalidated.** Its binding files keep numerical/service/model/performance status false rather than transferring that limited component certificate to arbitrary specializations. Root will test the new frozen service source with unchanged official CLI/full-geometry warmup and score; no author device action occurred.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/materialize_biv150_konly_encoded.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_encoded_cpu.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_encoded_hoist_cpu.py
+```
+
+The third command replays immutable PR90 actual compiler artifacts from its exact Git object/archive SHA aae141e1… and exercises mock-only cache/admission/resource/ABI faults, address-stable specialization reuse, and the actual single-launch facade tail's postlaunch refusal. No Torch/Triton/vllm import, JIT, GPU or frontend emulation is performed. It does not certify this adapter's live binding or timing overhead.
+
+
+## Host geometry / native proof deduplication follow-up
+
+Root's live2487 service confirmed startup and actual hoist, but exposed a cold-path bug: the native proof key included `actual_metadata.query_rows` and `grid`. Query lengths2039/2038 can use the same actual unhoisted c0a523… object and typed ABI, yet2487 created a new override path and repeated native compilation/audit per host geometry. Its running remote source is unchanged; no performance conclusion is inferred from this CPU fix.
+
+The follow-up separates two identities. The host admission key still contains the real JIT specialization/options, complete tensor dtype/device/shape/strides, exact grid and explicitly typed scope constants. Each new host key constructs full current metadata and executes the unchanged `validate_meta`, including single-sequence/Q32 constants, query>=1024, full grid, target, pins and actual input TTGIR digest. Removing query/grid from the native proof key does not remove their admission gate. Admitted and rejected metadata checks are retained individually in final `host_geometry_checks`, with metadata status, shared native-binding ID and admitted host-call count. Existing runtime host-shape records continue to record per-launch storage offsets and selected kernels.
+
+The compiler proof is keyed by a strong reference to the actual immutable CompiledKernel object, its SHA/complete typed ABI/artifact snapshot and the exact real JIT specialization/options key. A previously admitted object uses lightweight source/hash/ABI-object identity checks and reuses the same override path/object; it skips both warmup and full artifact/native audit. A replaced actual compiler object receives a fresh proof even if its hash is equal. This is deliberately conservative; equality of hash strings alone never authenticates a replacement. Same-object reuse is device-tested only by a future root-owned run. Source, CUDA arguments/grid, GPU math, layout, codec, writer, parent policy and feature defaults stay unchanged.
+
+Stats distinguish `geometry_metadata_validations` from `cold_audits`/`actual_compiler_proof_count`; `compiler_binding_reuse_attempts` counts a metadata-qualified compiler-proof reuse attempt, while each geometry's admitted counter counts only successful prelaunch admission. No claim is made that geometry checks/native audits equal reader executions or Graph replays. CPU regression exercises2048/2039/2038 with a single mocked actual compiler object and confirms one cold native proof/override, three full geometry validations, and no extra warmup/artifact hash/native audit. Reused code still refuses query1023, numseq2, 3D and wrong-grid scopes; replacing the actual compiler object forces another native proof. This protocol fixture is not frontend/GPU emulation. The old2487 CPU report and original running-source evidence remain intact; the new result is `hoist-adapter-cpu-v2.json`.
+
+
+## Merge new main native BF16 GQA boundary
+
+This revision merges team mainb3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd (PR92) without rewriting shared2f3 history. The first two fetch attempts timed out at15s; the exact complete shared Git object and independent API agreed onb3. No tracking ref was fabricated. The new main's native GQA sources/build tool/default feature/library fingerprint and its updated GQA/Q-fragment/M2/C3 pins are preserved. Merge conflicts were limited to compile_semantics and compute_order; both were resolved from **incoming b3 bytes**, then the explicit private feature/digest/producer receipt and sole runner pin were reapplied. Native main files and csrc are byte-identical tob3. Main now uses LF in those two files; unchanged worker CRLF remains. The new complete reverse patchv3 restores the three modified original files tob3 exactly; oldDAC patches/evidence remain immutable.
+
+b3's `_launch_producer` invokes `_native_s2.try_produce` **before** `_gqa_decode_attention`. The old facade alone was unsafe: its16KiB encoded K is nominally BF16 and matches the real native eligibility. The private installer now wraps that exact launcher before native eligibility. An owned cache (including an unrecognized owned alias) enters only the private typed facade, which validates the exact pair/view/ABI before its reader launch. Missing pointers/unknown aliases cannot reach native. The native parent object is kept intact, not disabled or modified. Before the private allocation epoch, unowned stock profiling keeps the complete original native-first/Triton-fallback path. Once armed, this current private worker admits only its registered encoded caches; unowned data is **unknown format and refused**, since no stock per-layer writer/format registration exists. Feature off installs no private hooks and preserves all ordinary main paths. This is not a claim of mixed stock/encoded layers after initialization.
+
+C3's enabled receipt now requires the actual format-aware launcher/code/wrapped-parent and unchanged native-parent identities, in addition to the existing facades/writer/lifetime/source receipt. The explicit producer-boundary semantic enters compile_semantics while the new main's default-on NativeGQA bit and actual library/source hash remain. Private installation logs `stock_native_gqa_parent_preserved=true`, `encoded_GQA_uses_stock_native=false`; host counters distinguish encoded bypass attempts from original-parent producer calls. An encoded reader **does not use the BF16 native producer** just because its parent was installed. No parent installation/default, large-linear policy, GQA segment selection, mixed split or reducer changes.
+
+The old2596-certified factory input is retained only for GPU source generation. Materialization independently compares the exact decorated `_gqa_decode_attention` and `_reduce_partials` spans with actualf187 b3 source; both are byte-identical. This math proof does not cover the changed native host entry; the separate dispatch regression does. All existing private GPU functions/codec/layout remain unchanged. Actual new-main service/numeric/Graph/105/throughput are pending. Old2487 DAC-only startup/throughput observations cannot be assigned to this source or used as a new-main gain.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/materialize_biv150_konly_encoded.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_encoded_cpu.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_native_boundary_cpu.py
+PYTHONDONTWRITEBYTECODE=1 python3 -W error tools/check_biv150_konly_encoded_hoist_cpu.py
+```
+
+The new CPU test executes the **actual b3** `_launch_producer` body and actual native `_eligible` predicate with metadata-only recorders. Encoded nominalBF16 metadata passes real native eligibility, yet produces zero native calls and one private reader. Owned aliases/mixed pairs/missing pointers and unregistered after-epoch caches refuse before native. Stock pre-epoch eligible metadata reaches the real parent dispatch; ineligible native results retain its Triton fallback. This is host control/format proof, not native numerical emulation. Core tests cover default-off no hook import, new producer/native identity tamper rejection, complete b3 inverse, explicit boundary/on/off/hoist fingerprint separation and default-enabled native library content hashing using a non-loadable CPU fixture. No author SSH/JIT/GPU/library build occurred.

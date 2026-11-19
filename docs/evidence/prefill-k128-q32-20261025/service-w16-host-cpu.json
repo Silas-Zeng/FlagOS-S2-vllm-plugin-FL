@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "gpu_executed": false,
+  "shipping_default_proposed": true,
+  "scope": "BI-V15016SM audited attention geometry; single sequence Q>=1024",
+  "actual_selected_launch": {
+    "block_m": 256,
+    "block_q": 32,
+    "num_warps": 16,
+    "num_stages": 1,
+    "tile_size": 64
+  },
+  "base_manager_defaults_preserved": true,
+  "source_pins_match": true,
+  "reports": {
+    "check_biv150_prefill_probe_cpu.py": {
+      "passed": true,
+      "gpu_executed": false,
+      "configurations": [
+        {
+          "rows": 128,
+          "warps": 8,
+          "tile": 64,
+          "stages": 1,
+          "adapted_source_sha256": "dd6c8a1d3b2308a604d18bddb6c8cdea8d5ff45be6fbaac761ea0c53ddca17fa"
+        },
+        {
+          "rows": 256,
+          "warps": 16,
+          "tile": 64,
+          "stages": 1,
+          "adapted_source_sha256": "dd6c8a1d3b2308a604d18bddb6c8cdea8d5ff45be6fbaac761ea0c53ddca17fa"
+        },
+        {
+          "rows": 256,
+          "warps": 16,
+          "tile": 128,
+          "stages": 1,
+          "adapted_source_sha256": "dd6c8a1d3b2308a604d18bddb6c8cdea8d5ff45be6fbaac761ea0c53ddca17fa"
+        },
+        {
+          "rows": 128,
+          "warps": 8,
+          "tile": 64,
+          "stages": 2,
+          "adapted_source_sha256": "dd6c8a1d3b2308a604d18bddb6c8cdea8d5ff45be6fbaac761ea0c53ddca17fa"
+        },
+        {
+          "rows": 256,
+          "warps": 8,
+          "tile": 64,
+          "stages": 2,
+          "adapted_source_sha256": "dd6c8a1d3b2308a604d18bddb6c8cdea8d5ff45be6fbaac761ea0c53ddca17fa"
+        },
+        {
+          "rows": 512,
+          "warps": 16,
+          "tile": 64,
+          "stages": 1,
+          "adapted_source_sha256": "dd6c8a1d3b2308a604d18bddb6c8cdea8d5ff45be6fbaac761ea0c53ddca17fa"
+        }
+      ],
+      "limitation": "Descriptor/compiler gate mocks only; no IR correctness, hardware capability, resources or speed claim."
+    },
+    "check_biv150_q32_policy_cpu.py": {
+      "passed": true,
+      "checks": [
+        "selected grid and constants; original arguments unchanged",
+        "unsupported scope and foreign compiler options use original",
+        "small query uses original",
+        "active capture uses original",
+        "unproved cold compile falls back before launch and disables candidate",
+        "device failure propagates without retrying original",
+        "compiler returns only a proved kernel"
+      ],
+      "source_sha256": "3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b",
+      "limits": "Controller tests with fake descriptors/launchers; no device numerical or concurrency claim."
+    },
+    "check_biv150_q32_cache_cpu.py": {
+      "passed": true,
+      "gpu_executed": false,
+      "default_matches_explicit_enable": true,
+      "explicit_disable_separates_key": true,
+      "inactive_parent_ignores_child_flag": true
+    }
+  },
+  "required_next": "Actual controller/fresh causal/Graph GPU and full105/model throughput; not merge ready."
+}

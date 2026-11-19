@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "gpu_executed": false,
+  "configurations": [
+    {
+      "rows": 256,
+      "warps": 16,
+      "tile": 64,
+      "stages": 1,
+      "adapted_source_sha256": "f9a504c7cb599c14d3cf5d16b5dfd7f3f000f3e3de25d8837e3cb220d1b1c31c"
+    },
+    {
+      "rows": 256,
+      "warps": 16,
+      "tile": 128,
+      "stages": 1,
+      "adapted_source_sha256": "8177fb13f1f8d4303b3104e60eeadf0b0f499664f4b9fd9e5bb5d228c2062e61"
+    },
+    {
+      "rows": 128,
+      "warps": 8,
+      "tile": 64,
+      "stages": 2,
+      "adapted_source_sha256": "6387f1e8062208353da278dcb9aee26a983172cf5f66d39d0fbfa3c70961adc9"
+    },
+    {
+      "rows": 256,
+      "warps": 8,
+      "tile": 64,
+      "stages": 2,
+      "adapted_source_sha256": "6387f1e8062208353da278dcb9aee26a983172cf5f66d39d0fbfa3c70961adc9"
+    }
+  ],
+  "limitation": "Descriptor/compiler gate mocks only; no IR correctness, hardware capability, resources or speed claim."
+}

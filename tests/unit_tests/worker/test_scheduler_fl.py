@@ -13,6 +13,8 @@ def _scheduler(monkeypatch, *, phase_aware: bool, cadence: int = 2):
     scheduler._phase_cadence = cadence
     scheduler._phase_step = 0
     scheduler._sched_probe_path = None
+    scheduler._shape_hist_path = None
+    scheduler._shape_hist = {}
     scheduler.max_num_scheduled_tokens = 10
     scheduler.running = []
     scheduler.waiting = []
@@ -139,6 +141,7 @@ def test_phase_aware_env_selects_plugin_scheduler(monkeypatch):
 
     monkeypatch.delenv("VLLM_FL_PHASE_AWARE_SCHED", raising=False)
     monkeypatch.delenv("VLLM_FL_SCHED_PROBE", raising=False)
+    monkeypatch.delenv("VLLM_FL_SCHED_SHAPE_HIST", raising=False)
     assert not _use_async_scheduler_fl(config)
 
     monkeypatch.setenv("VLLM_FL_PHASE_AWARE_SCHED", "1")

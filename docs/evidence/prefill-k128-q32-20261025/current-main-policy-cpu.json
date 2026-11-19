@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checks": [
+    "selected grid and constants; original arguments unchanged",
+    "unsupported scope and foreign compiler options use original",
+    "small query uses original",
+    "active capture uses original",
+    "unproved cold compile falls back before launch and disables candidate",
+    "device failure propagates without retrying original",
+    "compiler returns only a proved kernel"
+  ],
+  "source_sha256": "06e90318e0d748bb78d965ef3dadafee89be03d4b05177f6211cf36116839402",
+  "limits": "Controller tests with fake descriptors/launchers; no device numerical or concurrency claim."
+}

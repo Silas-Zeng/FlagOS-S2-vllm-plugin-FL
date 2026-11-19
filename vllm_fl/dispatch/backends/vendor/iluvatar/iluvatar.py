@@ -10,7 +10,6 @@ Iluvatar uses a CUDA-compatible architecture.
 from __future__ import annotations
 
 import logging
-import os
 from typing import Optional, Union
 
 import torch
@@ -209,15 +208,6 @@ patch_triton_perf_model_for_iluvatar()
 
 
 def patch_sampler_compile_for_iluvatar() -> None:
-    keep_compile = os.environ.get(
-        "VLLM_FL_ILUVATAR_KEEP_SAMPLER_COMPILE", "0"
-    ).lower() in ("1", "true", "yes")
-    if keep_compile:
-        logger.info(
-            "Keeping torch.compile on Iluvatar sampler ops for diagnostics"
-        )
-        return
-
     # Disable torch.compile on vllm sampler ops for Iluvatar.
     # flagtree triton only supports Iluvatar backend, not cuda target.
     # TODO: Remove once flagtree triton supports cuda inductor target.

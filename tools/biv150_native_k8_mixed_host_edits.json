@@ -1,0 +1,97 @@
+[
+  {
+    "path": "vllm_fl/patches/biv150_mixed_decode.py",
+    "old": "_MARKER = \"_biv150_natural_prefix_wrapper\"",
+    "new": "_MARKER = \"_biv150_natural_prefix_wrapper\"\n_NATIVE_MIXED = None # Cold-installed default-OFF, independently qualified exact-row adapter."
+  },
+  {
+    "path": "vllm_fl/patches/biv150_mixed_decode.py",
+    "old": "        original_forward(self, layer, query[:boundary], key[:boundary], value[:boundary],\n                         kv_cache, plan.decode, output[:boundary],\n                         output_scale=output_scale, output_block_scale=output_block_scale)",
+    "new": "        if _NATIVE_MIXED is None:\n            original_forward(self, layer, query[:boundary], key[:boundary], value[:boundary],\n                             kv_cache, plan.decode, output[:boundary],\n                             output_scale=output_scale, output_block_scale=output_block_scale)\n        else:\n            _NATIVE_MIXED.forward(original_forward, self, layer, query, key, value,\n                                  kv_cache, plan, output, output_scale, output_block_scale)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+    "old": "        self.native_decode = None; self.native_decode_identity = None",
+    "new": "        self.native_decode = None; self.native_decode_identity = None\n        self.mixed_native = None; self.mixed_native_identity = None"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+    "old": "        result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()",
+    "new": "        result['native_decode'] = dict(enabled=False) if self.native_decode is None else self.native_decode.stats()\n        result['mixed_native'] = dict(enabled=False) if self.mixed_native is None else self.mixed_native.verify(self)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_runtime.py",
+    "old": "                if runtime.native_decode is not None and runtime.native_decode.try_produce(runtime,entry,selected,target_grid):",
+    "new": "                if runtime.mixed_native is not None and runtime.mixed_native.try_produce(runtime,entry,selected,target_grid):\n                    return None\n                if runtime.native_decode is not None and runtime.native_decode.try_produce(runtime,entry,selected,target_grid):"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_service.py",
+    "old": "        native.attach(runtime,env)",
+    "new": "        native.attach(runtime,env)\n    if env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE','0') == '1':\n        mixed_native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_mixed_native')\n        mixed = importlib.import_module('vllm_fl.patches.biv150_mixed_decode')\n        parent_native = importlib.import_module('vllm_fl.patches.biv150_konly_encoded_native')\n        mixed_native.attach(runtime,env,parent_native,mixed)\n        item=runtime.mixed_native\n        runtime.mixed_native_identity=(item,type(item).verify.__code__,type(item).forward.__code__,type(item).try_produce.__code__)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_konly_encoded_service.py",
+    "old": "    native_receipt = dict(enabled=False) if native is None else native.verify(state)",
+    "new": "    native_receipt = dict(enabled=False) if native is None else native.verify(state)\n    mixed_native=state.mixed_native\n    need((mixed_native is None and state.mixed_native_identity is None) or\n         state.mixed_native_identity==(mixed_native,type(mixed_native).verify.__code__,type(mixed_native).forward.__code__,type(mixed_native).try_produce.__code__),\n         'mixed Native installed code/binding changed')\n    if mixed_native is not None:mixed_native.verify(state)"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_compute_order.py",
+    "old": "\"vllm_fl.patches.biv150_mixed_decode\": \"a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42\"",
+    "new": "\"vllm_fl.patches.biv150_mixed_decode\": \"12ab3cfdc02cb464af5bdceb785c8ba58146502b43b00a844247ee5e3034996e\""
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8",
+    "new": "    features['VLLM_FL_BIV150_KONLY_NATIVE_DECODE'] = native_k8\n    mixed_native = env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE','0') == '1'\n    features['VLLM_FL_BIV150_KONLY_MIXED_NATIVE'] = mixed_native\n    if mixed_native and not native_k8:\n        raise ValueError('Mixed Native requires the accepted owned16KiB native parent')"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_klookahead_probe::produce')",
+    "new": "            encoded['native_decode'] = dict(enabled=True,library_sha256=expected,operator='cjj_native_k8_klookahead_probe::produce')\n        if mixed_native:\n            # Parse only the literal qualification record; do not import a GPU\n            # package/private operator while deriving the compile fingerprint.\n            import ast\n            text=(directory/'biv150_konly_encoded_mixed_native.py').read_text()\n            declarations=[n for n in ast.parse(text).body if isinstance(n,ast.Assign)\n                          and any(isinstance(t,ast.Name) and t.id=='QUALIFICATION' for t in n.targets)]\n            if len(declarations)!=1:raise ValueError('Missing exact mixed qualification declaration')\n            pins=ast.literal_eval(declarations[0].value)\n            fields=('library_sha256','actual_so_review_sha256','consumer_review_sha256','fullstep_review_sha256')\n            if not all(type(pins.get(k)) is str and len(pins[k])==64 and all(c in '0123456789abcdef' for c in pins[k]) for k in fields):\n                raise ValueError('Mixed Native actual SO/consumer/fullstep qualification pending')\n            if pins.get('physical_page_bytes')!=16384 or pins.get('rows_segments')!=[[29,4],[30,4],[31,4],[60,2],[61,2],[63,2]]:\n                raise ValueError('Mixed Native qualification scope differs')\n            library=Path(env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY',''))\n            if (not library.is_absolute() or not library.is_file() or\n                    env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):\n                raise ValueError('Mixed Native exact library content required')\n            encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "    native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'",
+    "new": "    features['VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER'] = env.get('VLLM_FL_BIV150_DYNAMIC_HIDDEN_GATHER', '1') == '1'\n    native_k8 = env.get('VLLM_FL_BIV150_KONLY_NATIVE_DECODE', '0') == '1'"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_compute_order.py",
+    "old": "EXPECTED_RUNNER = \"6e86acf3ee8329468278b0f708465ddf503eb7937a5cf24cbe43dcefd71e5517\"",
+    "new": "EXPECTED_RUNNER = \"ac08d4b3f9b569d78ad5d93981030c824b86a8518720dec4a89336a7eca59289\""
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "_GEOMETRY = dict(hidden_size=2048, intermediate_size=6144, num_hidden_layers=42,\n                 num_attention_heads=16, num_key_value_heads=2, vocab_size=130560)\n_FEATURES = (\"VLLM_FL_BIV150_NATIVE_W8A8\", \"VLLM_FL_BIV150_GQA_DECODE\",\n             \"VLLM_FL_BIV150_PREFILL_NORMALIZE\", \"VLLM_FL_BIV150_Q_FRAGMENT\",\n",
+    "new": "_GEOMETRY = dict(hidden_size=2048, intermediate_size=6144, num_hidden_layers=42,\n                 num_attention_heads=16, num_key_value_heads=2, vocab_size=130560)\n_KONLY_PREFIX = \"VLLM_FL_BIV150_KONLY_\"\n_KONLY_SWITCHES = (\"ENCODED_SERVICE\", \"NATIVE_DECODE\", \"MIXED_NATIVE\", \"SERVICE_Q32_HOIST\")\n_KONLY_LIBRARIES = {\n    \"NATIVE\": (\"build-native-k8/build/cjj_native_k8_klookahead_probe.so\",\n               \"5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b\"),\n    \"MIXED_NATIVE\": (\"build-native-k8-mixed/build/cjj_native_k8_mixed_probe.so\",\n                     \"ebbc35d028bb7c719895c8b3569f3120387380888f23c4bb772b7176f0856bba\"),\n}\n_FEATURES = (\"VLLM_FL_BIV150_NATIVE_W8A8\", \"VLLM_FL_BIV150_GQA_DECODE\",\n             \"VLLM_FL_BIV150_PREFILL_NORMALIZE\", \"VLLM_FL_BIV150_Q_FRAGMENT\",\n"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "\n\ndef native_library_path(*, package_root=None, environ=None) -> Path:\n    \"\"\"\u6307\u7eb9\u4e0e\u5b9e\u9645 load_library \u5171\u7528\u89e3\u6790\uff1b\u8def\u5f84\u672c\u8eab\u4e0d\u8fdb\u5165\u7f13\u5b58\u8eab\u4efd\u3002\"\"\"\n    env = os.environ if environ is None else environ\n    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)\n    return Path(env.get(\"BIV150_NATIVE_W8A8_LIBRARY\",\n                        str(package.parent / \"build-native-w8a8/biv150_native_w8a8.so\"))).resolve()\n\n\n",
+    "new": "\n\ndef _installed_library(package: Path, relative: str) -> Path:\n    bundled = package / \"native/iluvatar\" / Path(relative).name\n    return (bundled if bundled.is_file() else package.parent / relative).resolve()\n\n\ndef native_library_path(*, package_root=None, environ=None) -> Path:\n    \"\"\"\u6307\u7eb9\u4e0e\u5b9e\u9645 load_library \u5171\u7528\u89e3\u6790\uff1b\u8def\u5f84\u672c\u8eab\u4e0d\u8fdb\u5165\u7f13\u5b58\u8eab\u4efd\u3002\"\"\"\n    env = os.environ if environ is None else environ\n    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)\n    override = env.get(\"BIV150_NATIVE_W8A8_LIBRARY\")\n    if override is not None:\n        return Path(override).resolve()\n    return _installed_library(package, \"build-native-w8a8/biv150_native_w8a8.so\")\n\n\n"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "    env = os.environ if environ is None else environ\n    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)\n    return Path(env.get(\"BIV150_NATIVE_GQA_LIBRARY\",\n                        str(package.parent / \"build-native-gqa/corex_native_gqa_s2_probe.so\"))).resolve()\n\n\n",
+    "new": "    env = os.environ if environ is None else environ\n    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)\n    override = env.get(\"BIV150_NATIVE_GQA_LIBRARY\")\n    if override is not None:\n        return Path(override).resolve()\n    return _installed_library(package, \"build-native-gqa/corex_native_gqa_s2_probe.so\")\n\n\ndef _konly_default_scope(config, vendor_name, env):\n    model = getattr(config, \"model_config\", None)\n    cache = getattr(config, \"cache_config\", None)\n    parallel = getattr(config, \"parallel_config\", None)\n    return (\n        vendor_name == \"iluvatar\"\n        and native_model_matches(getattr(model, \"hf_config\", None))\n        and Path(str(getattr(model, \"model\", \"\"))).name == \"MiniCPM5-2B\"\n        and str(getattr(model, \"dtype\", None)) == \"torch.bfloat16\"\n        and getattr(cache, \"cache_dtype\", None) in (\"auto\", \"bfloat16\")\n        and getattr(cache, \"block_size\", None) in (None, 16)\n        and all(getattr(parallel, name, None) == 1 for name in (\n            \"tensor_parallel_size\", \"pipeline_parallel_size\", \"data_parallel_size\"))\n        and getattr(config, \"speculative_config\", None) is None\n        and getattr(config, \"kv_transfer_config\", None) is None\n        and env.get(\"VLLM_FL_BIV150_STOCK_QK8_DIAGNOSTIC\", \"0\") != \"1\"\n        and env.get(_KONLY_PREFIX + \"COMPACT_SERVICE\", \"0\") != \"1\"\n        and all(env.get(\"VLLM_FL_BIV150_\" + name, \"1\") == \"1\" for name in (\n            \"GQA_DECODE\", \"PREFILL_NORMALIZE\", \"Q_FRAGMENT\", \"PREFILL_Q32\", \"PREFILL_MULTI2\"))\n    )\n\n\ndef resolve_konly_environment(vllm_config, vendor_name, *, package_root=None, environ=None):\n    \"\"\"Resolve startup defaults without changing the frontend process environment.\"\"\"\n    env = dict(os.environ if environ is None else environ)\n    explicit = any(_KONLY_PREFIX + name in env for name in _KONLY_SWITCHES)\n    if not explicit and not _konly_default_scope(vllm_config, vendor_name, env):\n        return env\n\n    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)\n    paths = {name: _installed_library(package, relative) for name, (relative, _) in _KONLY_LIBRARIES.items()}\n    if not explicit:\n        # Preserve BF16 deployments that have no K8 libraries. A partial or\n        # incorrect K8 installation is reported by the usual library checks.\n        if not any(path.is_file() or _KONLY_PREFIX + name + \"_LIBRARY\" in env\n                   for name, path in paths.items()):\n            return env\n        env.update({_KONLY_PREFIX + name: \"1\" for name in _KONLY_SWITCHES})\n\n    for name, flag in ((\"NATIVE\", \"NATIVE_DECODE\"), (\"MIXED_NATIVE\", \"MIXED_NATIVE\")):\n        if env.get(_KONLY_PREFIX + flag) == \"1\":\n            env.setdefault(_KONLY_PREFIX + name + \"_LIBRARY\", str(paths[name]))\n            env.setdefault(_KONLY_PREFIX + name + \"_LIBRARY_SHA256\", _KONLY_LIBRARIES[name][1])\n    if (env.get(_KONLY_PREFIX + \"ENCODED_SERVICE\") == \"1\"\n            and env.get(_KONLY_PREFIX + \"SERVICE_Q32_HOIST\") == \"1\"):\n        env.setdefault(\"TRITON_CACHE_DIR\", str(Path.home() / \".triton/cache\"))\n    return env\n\n\ndef configure_worker_konly(vllm_config, vendor_name, device_properties):\n    env = resolve_konly_environment(vllm_config, vendor_name)\n    if env.get(_KONLY_PREFIX + \"ENCODED_SERVICE\") != \"1\":\n        return\n    if \"BI-V150\" not in device_properties.name or device_properties.multi_processor_count != 16:\n        raise RuntimeError(\"K-only INT8 KV requires a 16-SM BI-V150\")\n    os.environ.update({key: value for key, value in env.items()\n                       if key not in os.environ and\n                       (key.startswith(_KONLY_PREFIX) or key == \"TRITON_CACHE_DIR\")})\n\n\n"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "        return None\n    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)\n    env = os.environ if environ is None else environ\n    features = {key: env.get(key, \"1\") == \"1\" for key in _FEATURES}\n    features[\"VLLM_FL_BIV150_PREFILL_Q32\"] = (\n",
+    "new": "        return None\n    package = Path(__file__).resolve().parent if package_root is None else Path(package_root)\n    env = resolve_konly_environment(vllm_config, vendor_name, package_root=package, environ=environ)\n    features = {key: env.get(key, \"1\") == \"1\" for key in _FEATURES}\n    features[\"VLLM_FL_BIV150_PREFILL_Q32\"] = (\n"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "            # Also loaded standalone by the owned-service helper. Keep this\n            # fingerprint stdlib-only; never import a package/private operator.\n            expected = '5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b'\n            library = Path(env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY', ''))\n            if (not library.is_absolute() or not library.is_file()\n                    or env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256') != expected):\n                raise ValueError('NativeK8 fingerprint requires absolute library and fixed SHA pair')\n            if _sha(library) != expected:\n                raise ValueError('NativeK8 fingerprint library content differs')\n",
+    "new": "            # Also loaded standalone by the owned-service helper. Keep this\n            # fingerprint stdlib-only; never import a package/private operator.\n            expected = _KONLY_LIBRARIES[\"NATIVE\"][1]\n            library = Path(env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY', ''))\n            if (not library.is_absolute() or not library.is_file()\n                    or env.get('VLLM_FL_BIV150_KONLY_NATIVE_LIBRARY_SHA256') != expected):\n                raise ValueError(f'NativeK8 needs its accepted library at {library} and matching SHA256')\n            if _sha(library) != expected:\n                raise ValueError('NativeK8 fingerprint library content differs')\n"
+  },
+  {
+    "path": "vllm_fl/compile_semantics.py",
+    "old": "            if (not library.is_absolute() or not library.is_file() or\n                    env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):\n                raise ValueError('Mixed Native exact library content required')\n            encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)\n        facts[\"konly_encoded\"] = encoded\n",
+    "new": "            if (not library.is_absolute() or not library.is_file() or\n                    env.get('VLLM_FL_BIV150_KONLY_MIXED_NATIVE_LIBRARY_SHA256')!=pins['library_sha256'] or _sha(library)!=pins['library_sha256']):\n                raise ValueError(f'Mixed NativeK8 needs its accepted library at {library} and matching SHA256')\n            encoded['mixed_native']=dict(enabled=True,operator='cjj_native_k8_mixed_probe::produce',qualification=pins)\n        facts[\"konly_encoded\"] = encoded\n"
+  },
+  {
+    "path": "vllm_fl/patches/biv150_compute_order.py",
+    "old": "EXPECTED_RUNNER = \"ac08d4b3f9b569d78ad5d93981030c824b86a8518720dec4a89336a7eca59289\"",
+    "new": "EXPECTED_RUNNER = \"e238ac1a76d16b15b7df4c1e93ef64bdae5299d267affa2fb8b219a0acf9c0df\""
+  }
+]

@@ -1,0 +1,343 @@
+{
+  "CPU_only": true,
+  "actual_main_TL_files": {
+    "codec": {
+      "path": "/private/tmp/flagos-cjj-native118-decode-step-reducer-evidence-20261029/vllm_fl/patches/biv150_konly_encoded_writer.py",
+      "sha256": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9"
+    },
+    "tl": {
+      "path": "/private/tmp/flagos-cjj-native118-decode-step-reducer-evidence-20261029/vllm_fl/patches/biv150_konly_encoded_decode.py",
+      "sha256": "149f89b7869b017affce1651b894ae019a8c5c193d8ddf5352e73adac55fbe59"
+    }
+  },
+  "actual_new_SO_or_GPU_verified": false,
+  "consumer_plan_JSON_roundtrip_and_wrong_case_refusal": true,
+  "full_mixed_step_timing": null,
+  "host_ticket_included": false,
+  "independent_reducer_exports_CPU_only": {
+    "mixed_reducer": {
+      "actual_generated_source": {
+        "bytes": 19,
+        "sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+      },
+      "actual_metadata": {
+        "name": "mixed_reducer"
+      },
+      "artifacts": {
+        "cubin": {
+          "bytes": 13,
+          "sha256": "2bfb59e6d9cdd9a7c503fc69d1928b70ffcc666db9fd6fc7f72c5f0de780ebf4"
+        },
+        "llir": {
+          "bytes": 16,
+          "sha256": "50b16c7b5fe9badd242e29c9a05bb83e161c5c9523595916026df20eef1b9d3f"
+        }
+      },
+      "hash": "mixed_reducer",
+      "n_regs": 1,
+      "n_spills": 0,
+      "signature": {
+        "0": "*fp32"
+      },
+      "source_sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+    },
+    "tl_reducer": {
+      "actual_generated_source": {
+        "bytes": 19,
+        "sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+      },
+      "actual_metadata": {
+        "name": "tl_reducer"
+      },
+      "artifacts": {
+        "cubin": {
+          "bytes": 10,
+          "sha256": "f35bb63d2f1297cde5b7b6510f580187e97effecc10fbc935fb7ed9fb9403ff6"
+        },
+        "llir": {
+          "bytes": 13,
+          "sha256": "1323a607f49b38ea8dbff7138f92392c37a696d54371f1e11d639515c2bcf49e"
+        }
+      },
+      "hash": "tl_reducer",
+      "n_regs": 1,
+      "n_spills": 0,
+      "signature": {
+        "0": "*fp32"
+      },
+      "source_sha256": "57e15a3b23b12747615d80061e2cb626c632b7cf67c2784f840883f0fddcdfc2"
+    }
+  },
+  "independent_reducer_resource_refusals": [
+    [
+      "tl_reducer",
+      "n_regs",
+      null
+    ],
+    [
+      "tl_reducer",
+      "n_regs",
+      0
+    ],
+    [
+      "tl_reducer",
+      "n_spills",
+      1
+    ],
+    [
+      "tl_reducer",
+      "n_spills",
+      null
+    ],
+    [
+      "tl_reducer",
+      "n_spills",
+      false
+    ],
+    [
+      "mixed_reducer",
+      "n_regs",
+      null
+    ],
+    [
+      "mixed_reducer",
+      "n_regs",
+      0
+    ],
+    [
+      "mixed_reducer",
+      "n_spills",
+      1
+    ],
+    [
+      "mixed_reducer",
+      "n_spills",
+      null
+    ],
+    [
+      "mixed_reducer",
+      "n_spills",
+      false
+    ]
+  ],
+  "loaded_metadata_export_and_unknown_refusal": true,
+  "major_cases": {
+    "16k": [
+      30,
+      16384,
+      4,
+      2048
+    ],
+    "4k": [
+      61,
+      4096,
+      2,
+      2048
+    ]
+  },
+  "missing_TL_reducer_refused": true,
+  "numeric_verified": false,
+  "original_timed_function_byte_exact": true,
+  "paired_prefill_included": false,
+  "passed": true,
+  "per_arm_splits": {
+    "mixed": {
+      "16k": 4,
+      "4k": 2
+    },
+    "tl": {
+      "16k": 8,
+      "4k": 4
+    }
+  },
+  "performance_verified": false,
+  "receipt_adapter": {
+    "adapted_sha256": "b6526efe3b76df7bab65f5ca446b7e8a5e3a418168bc9e03ed19d78eb28e8af7",
+    "edits": [
+      {
+        "count": 1,
+        "new": "f.sha(raw)==expected_sha",
+        "old": "expected_sha=='c2e13e3766172e9b74342bbcf48b1b4729d1b9604bc249b6974740f7f90cc128' and f.sha(raw)==expected_sha"
+      },
+      {
+        "count": 1,
+        "new": "len(j['records'])==len(f.CASES)",
+        "old": "len(j['records'])==4"
+      },
+      {
+        "count": 1,
+        "new": "cases=len(f.CASES),",
+        "old": "cases=4,"
+      },
+      {
+        "count": 1,
+        "new": "('partial',(n,16,16,128)),('maximum',(n,16,16)),('summation',(n,16,16))",
+        "old": "('partial',(n,16,s,128)),('maximum',(n,16,s)),('summation',(n,16,s))"
+      },
+      {
+        "count": 1,
+        "new": "                    bits=np.frombuffer(middle,dtype='<u4').reshape(shape);active=np.zeros(shape,dtype=bool)\n                    active[:,:,:s]=np.broadcast_to(refs[p]['active'][:,None,:,None] if field=='partial' else refs[p]['active'][:,None,:],active[:,:,:s].shape)\n                    wanted=active[:,:,:s]\n                    assert bool((bits[~active]==f.F32_POISON).all());assert f.metrics(bits.view('<f4')[:,:,:s][wanted],refs[p][field][wanted])['passed']",
+        "old": "                    bits=np.frombuffer(middle,dtype='<u4').reshape(shape);active=np.broadcast_to(refs[p]['active'][:,None,:,None] if field=='partial' else refs[p]['active'][:,None,:],shape)\n                    assert bool((bits[~active]==f.F32_POISON).all());assert f.metrics(bits.view('<f4')[active],refs[p][field][active])['passed']"
+      }
+    ],
+    "inverse_byte_exact": true,
+    "original_sha256": "4938a1ec98a9fa6a696f141f675aa04365bfdae109f111b81f3fa622196017cb"
+  },
+  "reducer_call_inverse_byte_exact": true,
+  "service_verified": false,
+  "source_adapter": {
+    "adapted_sha256": "13a0074b5401e3d603bec150cb0538fc700ab9dbf09da7dc8c787efd1899caae",
+    "arm_literal_rename": {
+      "adapted_sha256": "60f6da199f05be5c9a75a865c0edb0f08050b8fd0b601f586de181b674537fb2",
+      "edits": [
+        {
+          "count": 11,
+          "new": "'tl'",
+          "old": "'bf16'"
+        },
+        {
+          "count": 20,
+          "new": "'mixed'",
+          "old": "'k8'"
+        }
+      ],
+      "inverse_byte_exact": true,
+      "original_sha256": "13a0074b5401e3d603bec150cb0538fc700ab9dbf09da7dc8c787efd1899caae"
+    },
+    "edits": [
+      {
+        "count": 1,
+        "new": "pre=ACTUAL_CONSUMER",
+        "old": "pre=require_consumer(a.consumer_summary,a.consumer_proof_sha256)"
+      },
+      {
+        "count": 1,
+        "new": "f.sha(a.k8_library.read_bytes())==NEW_SHA and f.sha(a.bf16_library.read_bytes())==MAIN_SHA",
+        "old": "f.sha(a.k8_library.read_bytes())==f.LIBRARY_SHA and f.sha(a.bf16_library.read_bytes())==f.BF16_SHA"
+      },
+      {
+        "count": 1,
+        "new": "result=dict(step_plan(),actual_consumer=pre,",
+        "old": "result=dict(f.plan(),actual_consumer=pre,"
+      },
+      {
+        "count": 2,
+        "new": "'decode-step-summary.json'",
+        "old": "'fullstep-summary.json'"
+      },
+      {
+        "count": 1,
+        "new": "_,result['actual_dual_library_load']=dispatch_binding(torch,a)\n        tl_kernel,result['actual_TL_source']=load_tl(out)",
+        "old": "for path in (a.bf16_library,a.k8_library):torch.ops.load_library(str(path))"
+      },
+      {
+        "count": 1,
+        "new": "q=qb.as_strided((n,16,128),(pitch,128,1));nk=inputviews['new_k'].as_strided((n,2,128),(256,128,1));nv=inputviews['new_v'].as_strided((n,2,128),(2560,128,1));",
+        "old": "q=qb.as_strided((n,16,128),(pitch,128,1));nk=inputviews['new_k'];nv=inputviews['new_v'];"
+      },
+      {
+        "count": 1,
+        "new": "                key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(16384,256,128,1));scale=resident.view(torch.float32)\n                value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.GUARD+8192)//2)",
+        "old": "                if arm=='bf16':\n                    viewed=resident.view(torch.bfloat16).reshape(f.PAGES,2,16,2,128);key,value=viewed.unbind(1);scale=dummy\n                else:\n                    key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(16384,256,128,1));scale=resident.view(torch.float32)\n                    value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.GUARD+8192)//2)"
+      },
+      {
+        "count": 1,
+        "new": "assert key.data_ptr()",
+        "old": "if arm=='k8':assert key.data_ptr()"
+      },
+      {
+        "count": 1,
+        "new": "wide if field=='output' else wide.narrow(2,0,SPLITS[arm][case])",
+        "old": "wide if field=='output' else wide.narrow(2,0,s)"
+      },
+      {
+        "count": 1,
+        "new": "                arenas[arm]['raw'].fill_(165)\n                handles['initial_encoder']=support.encode_initial[(f.PAGES*32,)](gpu_source[:,0],gpu_source[:,1],cases[arm]['key'],cases[arm]['scale'],cases[arm]['value'],f.PAGES,num_warps=1,num_stages=1)",
+        "old": "                if arm=='bf16':arenas[arm]['raw'].copy_(gpu_source.view(torch.uint8).reshape(-1))\n                else:\n                    arenas[arm]['raw'].fill_(165)\n                    handles['initial_encoder']=support.encode_initial[(f.PAGES*32,)](gpu_source[:,0],gpu_source[:,1],cases[arm]['key'],cases[arm]['scale'],cases[arm]['value'],f.PAGES,num_warps=1,num_stages=1)"
+      },
+      {
+        "count": 1,
+        "new": "                handles[arm+'_append']=writer.encode_append[(n,2)](nk,nv,slots,z['key'],z['scale'],arenas[arm]['raw'].view(torch.bfloat16),nk.stride(0),nv.stride(0),nk.shape[0],nv.shape[0],slots.shape[0],f.PAGES,num_warps=1,num_stages=1)",
+        "old": "                if arm=='bf16':handles['bf16_append']=support.append_kv[(n,2)](nk,nv,slots,z['key'],dummy,z['value'],f.PAGES*16,False,num_warps=1,num_stages=1)\n                else:handles['k8_append']=writer.encode_append[(n,2)](nk,nv,slots,z['key'],z['scale'],arenas[arm]['raw'].view(torch.bfloat16),nk.stride(0),nv.stride(0),nk.shape[0],nv.shape[0],slots.shape[0],f.PAGES,num_warps=1,num_stages=1)"
+      },
+      {
+        "count": 1,
+        "new": "                z=cases[arm];current_s=SPLITS[arm][case]\n                if arm=='bf16':handles['tl_producer']=tl_produce(tl_kernel,z,q,lens,table,current_s)\n                else:getattr(torch.ops,NEW_NAMESPACE).produce(q,z['key'],z['scale'],z['value'],lens,table,z['partial'],z['maximum'],z['summation'],128**-.5*1.4426950408889634,current_s)",
+        "old": "                z=cases[arm];args=(q,z['key'],z['value'],lens,table,z['partial'],z['maximum'],z['summation'],128**-.5*1.4426950408889634)\n                if arm=='bf16':getattr(torch.ops,'corex_native_gqa_s'+str(s)+'_probe').produce(*args)\n                else:torch.ops.cjj_native_k8_qk_probe.produce(q,z['key'],z['scale'],z['value'],lens,table,z['partial'],z['maximum'],z['summation'],128**-.5*1.4426950408889634,s)"
+      },
+      {
+        "count": 1,
+        "new": "s=SPLITS[arm][case];z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles[arm+'_reducer']",
+        "old": "z=cases[arm];o,m,l=z['partial'],z['maximum'],z['summation'];handles['reducer']"
+      },
+      {
+        "count": 1,
+        "new": "initial=packed[start:start+count]",
+        "old": "initial=cold[start:start+count] if arm=='bf16' else packed[start:start+count]"
+      },
+      {
+        "count": 1,
+        "new": "z=controls[p];return {arm:contract.qualify(descriptor(nk),descriptor(nv),descriptor(slots),descriptor(arenas[arm]['raw']),f.PAGES,contract.SlotSnapshot(tuple(int(x) for x in z['slots']),'component-owned-cpu-preupload',p)) for arm in ('bf16','k8')}",
+        "old": "z=controls[p];return contract.qualify(descriptor(nk),descriptor(nv),descriptor(slots),descriptor(arenas['k8']['raw']),f.PAGES,contract.SlotSnapshot(tuple(int(x) for x in z['slots']),'component-owned-cpu-preupload',p))"
+      },
+      {
+        "count": 1,
+        "new": "s=SPLITS[arm][case];payload={};metrics={}\n                arrays=",
+        "old": "payload={};metrics={}\n                arrays="
+      },
+      {
+        "count": 1,
+        "new": "metrics[field]=f.metrics(values,gold[field]);metrics['original_BF16_proxy']=f.metrics(values,gold['original_BF16_output']);assert",
+        "old": "metrics[field]=f.metrics(values,gold[field]);assert"
+      },
+      {
+        "count": 1,
+        "new": "gold[arm,p]=f.golden(cold,packed,controls[p],SPLITS[arm][case],arm)",
+        "old": "gold[arm,p]=f.golden(cold,packed,controls[p],s,arm)"
+      },
+      {
+        "count": 1,
+        "new": "            for writer_arm in ('bf16','k8'):\n                signature={};names=['key_source','value_source','slots','code_full','scale_full','value_full','key_row_stride','value_row_stride','key_rows','value_rows','slot_count','cache_pages']\n                for key,value in handles[writer_arm+'_append'].src.signature.items():\n                    if isinstance(key,tuple):assert len(key)==1;key=key[0]\n                    if isinstance(key,str) and key in names:key=names.index(key)\n                    assert type(key) is int and 0<=key<12 and key not in signature\n                    signature[key]=str(value)\n                assert [signature[i] for i in range(12)]==['*bf16','*bf16','*i64','*i8','*fp32','*bf16']+['i64']*6,'actual83 typed ABI'\n",
+        "old": "            signature={};names=['key_source','value_source','slots','code_full','scale_full','value_full','key_row_stride','value_row_stride','key_rows','value_rows','slot_count','cache_pages']\n            for key,value in handles['k8_append'].src.signature.items():\n                if isinstance(key,tuple):assert len(key)==1;key=key[0]\n                if isinstance(key,str) and key in names:key=names.index(key)\n                assert type(key) is int and 0<=key<12 and key not in signature\n                signature[key]=str(value)\n            assert [signature[i] for i in range(12)]==['*bf16','*bf16','*i64','*i8','*fp32','*bf16']+['i64']*6,'actual83 typed ABI'\n"
+      },
+      {
+        "count": 1,
+        "new": "for role in ('tl_append','mixed_append','tl_producer','tl_reducer','mixed_reducer'):",
+        "old": "for role in ('k8_append','bf16_append','reducer'):"
+      },
+      {
+        "count": 1,
+        "new": "type(handle.n_regs) is int and handle.n_regs>0 and type(handle.n_spills) is int and handle.n_spills==0",
+        "old": "type(handle.n_regs) is int and handle.n_regs>0 and handle.n_spills==0"
+      },
+      {
+        "count": 1,
+        "new": "record['actual_metadata']=actual_metadata(k);record['actual_generated_source']=blob(k.src.fn.src.encode())\n            record['artifacts']={ext:blob(",
+        "old": "record['artifacts']={ext:blob("
+      },
+      {
+        "count": 1,
+        "new": "event_ratio_TL_over_mixed",
+        "old": "event_ratio_BF16_over_K8"
+      },
+      {
+        "count": 1,
+        "new": "host_wall_ratio_TL_over_mixed",
+        "old": "host_wall_ratio_BF16_over_K8"
+      },
+      {
+        "count": 1,
+        "new": "TL_GPU_full_encode",
+        "old": "BF16_GPU_pack"
+      },
+      {
+        "count": 1,
+        "new": "mixed_GPU_full_encode",
+        "old": "K8_GPU_full_encode"
+      }
+    ],
+    "final_adapted_sha256": "60f6da199f05be5c9a75a865c0edb0f08050b8fd0b601f586de181b674537fb2",
+    "inverse_byte_exact": true,
+    "original_sha256": "3038f13b67e8c58280699ffaf71a76514b851d4ca5a691b90706ec54d0d84b77"
+  }
+}

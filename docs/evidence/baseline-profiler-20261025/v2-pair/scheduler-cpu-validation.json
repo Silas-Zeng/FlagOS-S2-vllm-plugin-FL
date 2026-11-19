@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checks": [
+    "synthetic first-window zero checkpoint",
+    "synthetic second-window cumulative delta 5-2=3",
+    "missing preceding window fails",
+    "duplicate/missing sequence fails",
+    "wrong checkpoint PID fails",
+    "overlapping checkpoint time fails",
+    "wrong event origin fails",
+    "real 4096 complete CPU closure",
+    "real 16384 complete CPU closure",
+    "16K exact repeat split",
+    "all eight boundary crossings known",
+    "each crossing contains exactly one new generated-history position",
+    "16K only without checkpoint fails",
+    "unequal per-request prompts cannot cancel in aggregate",
+    "duplicate mapping across unselected windows fails"
+  ],
+  "script_sha256": "fd2b43367a3b4e2599bf23495ca937ae6f74c7a4f079ddac6d880713b651f92e"
+}

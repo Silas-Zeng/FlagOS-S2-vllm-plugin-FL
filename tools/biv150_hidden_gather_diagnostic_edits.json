@@ -1,0 +1,18 @@
+[
+  [
+    "_STATE = '_biv150_dynamic_hidden_gather_runtime'",
+    "_STATE = '_biv150_dynamic_hidden_gather_runtime'\nDIAGNOSTICS = 'CJJ_HIDDEN_GATHER_DIAGNOSTICS'"
+  ],
+  [
+    "query_buffer=runner.query_start_loc, event=runner.prepare_inputs_event)",
+    "query_buffer=runner.query_start_loc, event=runner.prepare_inputs_event,\n                diagnostics=({'original_query_start_loc_minus_one': 0,\n                              'original_compute_order_logits_copy': 0,\n                              'compiled': {}, 'overflow': 0}\n                             if os.environ.get(DIAGNOSTICS, '0') == '1' else None))"
+  ],
+  [
+    "    gather_hidden_bits[((selected_rows + 7) // 8, 16)](",
+    "    return gather_hidden_bits[((selected_rows + 7) // 8, 16)]("
+  ],
+  [
+    "    _launch(hidden, indices, output, hidden.shape[0], n)\n    return output",
+    "    compiled = _launch(hidden, indices, output, hidden.shape[0], n)\n    # Optional host-return observation only; never GPU completion or correctness.\n    observed = state.get('diagnostics')\n    if observed is not None:\n        observed[receipt.source] += 1\n        key = id(compiled)\n        if key in observed['compiled'] or len(observed['compiled']) < 4:\n            observed['compiled'][key] = compiled\n        else:\n            observed['overflow'] += 1\n    return output"
+  ]
+]

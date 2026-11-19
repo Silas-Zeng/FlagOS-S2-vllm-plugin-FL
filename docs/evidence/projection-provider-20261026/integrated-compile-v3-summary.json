@@ -1,0 +1,103 @@
+{
+  "complete": true,
+  "passed": true,
+  "runtime": "a48cc8b68cbb68e421ead6e2d9e6fda0156c2354",
+  "cases": 108,
+  "checks": 1728,
+  "installation": {
+    "installed": true,
+    "allocation": "Inductor out buffer",
+    "small_rows": "unchanged masked BF16 kernel M1-8",
+    "larger_rows": "provided linear M128-2048 when eligible; otherwise original MM",
+    "large_linear": true,
+    "provider_provenance": {
+      "module": "_iluvatar.ops.linear",
+      "linear_sha256": "d431a4fa144ed67dc3deab46dd5beace3612858075f85c39e602447ba3bf768a",
+      "libentry_sha256": "414e8a3f74e2522e40659e7fccd84e301f4517220837a87af0311f050bbf3025",
+      "kernel_type": "flag_gems.utils.libentry.LibEntry",
+      "bias": false,
+      "group_m": 8,
+      "split_k": 1,
+      "sdk_mutated": false
+    },
+    "unsupported": "previous functional-op fallback"
+  },
+  "generated_out_modules": [
+    {
+      "file": "inductor-cache/it/citfd4e7vetir6dmnjd2vgiflhx3tkj6krjl3iamxg256pucsuxk.py",
+      "sha256": "e932c3ff8051769829b611dabeee8f36289d9bce22b04e8babc102b082e6597c",
+      "out_calls": 1
+    },
+    {
+      "file": "inductor-cache/zn/cznk7ly4xladrbxmdbogzeyk7plx3tkvw2mjbrk2l2i7nngpq2nl.py",
+      "sha256": "8a0655e733c865bfe129ef923fb97f1d348df1f94e348a082314775dd144bae8",
+      "out_calls": 1
+    },
+    {
+      "file": "inductor-cache/a6/ca6ytmvqfu7xzizk5zcn6yrzg3v2xkujpdeghrbpvcfotildgjvp.py",
+      "sha256": "76263f6fd2d42cba9d18aee8097cec5617cf53a783541a114ff8afdb9623a0a4",
+      "out_calls": 1
+    },
+    {
+      "file": "inductor-cache/3p/c3p2iymfgh3bid7d2ltaubcdpvbhhvug5ryafyzl5w2bc4dt3ii3.py",
+      "sha256": "36e37d4c66632e0bf8428fd07dc801b4f676c8d4b82def30028a216989dd0cca",
+      "out_calls": 1
+    },
+    {
+      "file": "inductor-cache/dz/cdzdokdird3r55xulpqjafyczj47fxgw5sounp24jffko6avtnax.py",
+      "sha256": "7345f7864883d848a6243d42fbbb20de1d2e86c38a7e350a21e6a71d26e151fc",
+      "out_calls": 1
+    },
+    {
+      "file": "inductor-cache/a2/ca2nfokvdqevp4uwapmtkfkatdlpkylnexdwohl3f3vyjywq4myf.py",
+      "sha256": "433c9edf77762045f67316796647012a384e5520610d0b103e5c45135c117f5a",
+      "out_calls": 1
+    },
+    {
+      "file": "inductor-cache/lk/clkdyuqbp45dofjqwbgw6ile5h5dwlcy7732j2puso6n6gojocco.py",
+      "sha256": "f116ca0a31826540e668684f84562ac70b385d496a182c260c339f16ecb799c4",
+      "out_calls": 1
+    },
+    {
+      "file": "inductor-cache/rs/crsk7kr4hyoo65qhgtuo3iwdugzijalblzujndqy25cq5bog6orr.py",
+      "sha256": "acfa011f45b2955f571d57c618ef58a44c83c30d122005db8eff0c98300eb407",
+      "out_calls": 1
+    }
+  ],
+  "rows": [
+    1,
+    2,
+    4,
+    8,
+    9,
+    16,
+    32,
+    64,
+    127,
+    128,
+    129,
+    255,
+    256,
+    257,
+    511,
+    512,
+    513,
+    1023,
+    1024,
+    1025,
+    1739,
+    1798,
+    1985,
+    2017,
+    2047,
+    2048,
+    2049
+  ],
+  "selected_providers": [
+    "mm_out",
+    "provided_linear",
+    "tiny"
+  ],
+  "archive_sha256": "3e8ccecc8f82c29d8e2a95f31772b0298aa69656d571db41640f6bb78b70a440",
+  "archive_bytes": 23907
+}
