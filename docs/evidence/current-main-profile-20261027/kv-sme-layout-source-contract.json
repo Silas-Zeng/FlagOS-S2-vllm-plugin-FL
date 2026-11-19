@@ -1,0 +1,76 @@
+{
+  "created": "2026-10-26T21:51:53.531568+00:00",
+  "cpu_source_audit_only": true,
+  "production_baseline": "241220723a09061c182764f8f738e5ec01190367",
+  "sdk": {
+    "/usr/local/lib/python3.12/site-packages/triton/spec/iluvatar/triton/runtime/jit.py": {
+      "sha256": "66a168ae959e719186771e66815e807f1e449e66c5283ef596ec3eb0e35cb775",
+      "functions": {
+        "get_corex_sme": "def get_corex_sme(args, specialization):\n    import torch\n    import os\n    can_use_sme = 0\n    if not (hasattr(torch, \"corex\") and torch.corex == True):\n        return can_use_sme\n    close_sme = os.getenv(\"TRITON_DISABLE_SME\", default=\"0\")\n    if close_sme == \"1\":\n        return can_use_sme\n\n    index = 0\n    for arg, spec in zip(args, specialization):\n        # In v3.6 constexpr information lives in specialization instead of the\n        # old constexpr_indices argument. Constexprs are not function operands,\n        # so they must not consume a use_sme bit position.\n        if spec[0] == \"constexpr\":\n            continue\n\n        # fp16/bf16 share the 16-bit SME layout+intrinsic (rowxfb16/colxfb16);\n        # fp32 uses rowxfb32/colxfb32 with a dedicated bitwidth-aware blocked\n        # encoding and read-back layout. int8 row uses native rowxfb8 plus an\n        # S2R offset correction (linear surrogate is not exact);\n        sme_dtypes = [torch.float16, torch.bfloat16, torch.float32, torch.int8]\n        if torch.is_tensor(arg) and arg.dtype in sme_dtypes and arg.dim() >= 2:\n            # Match the v3.2 bitmask frontend: size-1 dimensions should not\n            # hide the innermost logical 2D tile used for SME eligibility.\n            squeezed_arg = arg.squeeze()\n            if squeezed_arg.dim() >= 2:\n                dim_m = squeezed_arg.shape[-2]\n                dim_k = squeezed_arg.shape[-1]\n                sme_dim = 64 // arg.element_size()\n                is_row_major_sme = arg.is_contiguous() and dim_k % sme_dim == 0\n                is_col_major_sme = not arg.is_contiguous() and dim_m % sme_dim == 0\n                can_use_arg_sme = is_row_major_sme or is_col_major_sme\n                if can_use_arg_sme:\n                    can_use_sme |= 1 << index\n        index += 1\n    return can_use_sme"
+      }
+    },
+    "/usr/local/lib/python3.12/site-packages/vllm/v1/attention/backends/triton_attn.py": {
+      "sha256": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
+      "functions": {
+        "get_kv_cache_shape": "    def get_kv_cache_shape(\n        num_blocks: int,\n        block_size: int,\n        num_kv_heads: int,\n        head_size: int,\n        cache_dtype_str: str = \"auto\",\n    ) -> tuple[int, ...]:\n        if block_size % 16 != 0:\n            raise ValueError(\"Block size must be a multiple of 16.\")\n        if kv_cache_uses_per_token_head_scales(cache_dtype_str):\n            # Pad head_size by sizeof(float32)/sizeof(cache_dtype) so\n            # the per-head scale fits inline.  The backend extracts\n            # data[:head_size] and scale[head_size:] via typed views.\n            from vllm.utils.torch_utils import (\n                STR_DTYPE_TO_TORCH_DTYPE,\n                get_dtype_size,\n            )\n\n            cache_dtype = STR_DTYPE_TO_TORCH_DTYPE[cache_dtype_str]\n            scale_pad = get_dtype_size(torch.float32) // get_dtype_size(cache_dtype)\n            return (num_blocks, 2, block_size, num_kv_heads, head_size + scale_pad)\n        return (num_blocks, 2, block_size, num_kv_heads, head_size)",
+        "get_kv_cache_stride_order": "    def get_kv_cache_stride_order(\n        include_num_layers_dimension: bool = False,\n    ) -> tuple[int, ...]:\n        # `stride_order` indicates the permutation that gets\n        # us from `get_kv_cache_shape` to the actual memory layout we want.\n        cache_layout = get_kv_cache_layout()\n        if cache_layout == \"NHD\" and include_num_layers_dimension:\n            # (num_blocks, num_layers, 2, block_size, num_kv_heads, head_size)\n            return (1, 0, 2, 3, 4, 5)\n        elif cache_layout == \"NHD\":\n            stride_order = (0, 1, 2, 3, 4)\n        elif cache_layout == \"HND\" and include_num_layers_dimension:\n            # (num_blocks, num_kv_heads, num_layers, 2, block_size, head_size)\n            return (1, 4, 0, 2, 3, 5)\n        elif cache_layout == \"HND\":\n            stride_order = (0, 1, 3, 2, 4)\n        else:\n            raise ValueError(f\"Unknown cache layout: {cache_layout}\")\n        return stride_order"
+      }
+    },
+    "/usr/local/lib/python3.12/site-packages/vllm/v1/worker/gpu/attn_utils.py": {
+      "sha256": "a351178df66fb5364cbe663ba7f25346c6317927fcc29a8c00f8972a23440ace",
+      "functions": {
+        "_reshape_attention_kv_cache": "def _reshape_attention_kv_cache(\n    kv_raw_tensor: torch.Tensor,\n    kv_cache_spec: AttentionSpec,\n    kv_cache_shape: tuple[int, ...],\n    kv_cache_stride_order: tuple[int, ...],\n    num_blocks: int,\n    packing: tuple[int, int] | None,\n) -> torch.Tensor:\n    permuted_kv_cache_shape = tuple(kv_cache_shape[i] for i in kv_cache_stride_order)\n    inv_order = [\n        kv_cache_stride_order.index(i) for i in range(len(kv_cache_stride_order))\n    ]\n    dtype = kv_cache_spec.dtype\n\n    if packing is not None:\n        offset, block_stride = packing\n        assert inv_order[0] == 0\n        page_bytes = prod(kv_cache_shape[1:]) * get_dtype_size(dtype)\n        kv_cache = (\n            kv_raw_tensor.view(-1, block_stride)[:, offset : offset + page_bytes]\n            .view(dtype)\n            .view(kv_cache_shape)\n        )\n    elif kv_cache_spec.page_size_padded is not None:\n        # Use a strided view to skip the padding between physical pages.\n        #\n        # Only num-blocks-first layouts are supported (the block dimension is\n        # dim 0 of the unpermuted shape). kv-first layouts such as ROCm's\n        # ``(2, num_blocks, ...)`` are intentionally not supported here. For a\n        # num-blocks-first layout the only stride that must change is the block\n        # stride: every other (contiguous) stride already steps within the\n        # unpadded region of a page, so no further adjustment is needed.\n        assert kv_cache_shape[0] == num_blocks, (\n            \"Padded KV pages require a num-blocks-first KV cache layout (got \"\n            f\"shape {kv_cache_shape} with num_blocks={num_blocks}); \"\n            \"kv-first layouts are not supported.\"\n        )\n        dtype_size = get_dtype_size(kv_cache_spec.dtype)\n        page_stride = kv_cache_spec.page_size_bytes // dtype_size\n\n        num_blocks_dim = inv_order[0]\n        strides = list(torch.empty(permuted_kv_cache_shape).stride())\n        strides[num_blocks_dim] = page_stride\n\n        kv_cache = torch.as_strided(\n            kv_raw_tensor.view(dtype),\n            size=permuted_kv_cache_shape,\n            stride=tuple(strides),\n        )\n    else:\n        # No padding \u2014 safe to use a contiguous view.\n        kv_cache = kv_raw_tensor.view(dtype).view(permuted_kv_cache_shape)\n\n    return kv_cache.permute(*inv_order)"
+      }
+    },
+    "/usr/local/lib/python3.12/site-packages/vllm/v1/attention/backend.py": {
+      "sha256": "c524988a2223ec556bdb128a31c255075f0d07e7643e803b447975cd9c30a6b8",
+      "functions": {
+        "indexes_kv_by_block_stride": "    def indexes_kv_by_block_stride(cls) -> bool:\n        \"\"\"Whether the backend reads KV pages by the runtime block stride.\n\n        True when ``num_blocks`` is the outermost physical dimension of the KV\n        cache, so the backend tolerates a non-contiguous block dim. This gates\n        page size padding and cross-layer uniform KV layout.\n\n        Returns:\n            True if the backend's physical KV layout is num-blocks-first. False\n            otherwise, including when the backend does not define a layered\n            stride order.\n        \"\"\"\n        try:\n            kv_cache_stride_order = cls.get_kv_cache_stride_order(\n                include_num_layers_dimension=False\n            )\n            layered_kv_cache_stride_order = cls.get_kv_cache_stride_order(\n                include_num_layers_dimension=True\n            )\n        except (AttributeError, NotImplementedError):\n            return False\n\n        # Check that attention backend includes a layers dimension.\n        if len(layered_kv_cache_stride_order) != len(kv_cache_stride_order) + 1:\n            return False\n\n        # stride_order[0] == 0 means num_layers stays first in physical\n        # layout (identity permutation), so indexing by block stride is\n        # not supported.\n        return layered_kv_cache_stride_order[0] != 0"
+      }
+    }
+  },
+  "hypothesis": "Separate full BF16 K and V planes may make both cache views contiguous and change natural SME eligibility. No capacity reduction, no kernel/source/provider change in component probe.",
+  "source_derived_predicate": {
+    "representative_packed_kv_shape": [
+      "pages",
+      2,
+      16,
+      2,
+      128
+    ],
+    "packed_k_or_v_logical_shape": [
+      "pages",
+      16,
+      2,
+      128
+    ],
+    "packed_per_layer_k_or_v_stride": [
+      8192,
+      256,
+      128,
+      1
+    ],
+    "packed_is_contiguous": false,
+    "packed_last_two_dims": [
+      2,
+      128
+    ],
+    "bf16_sme_dim": 32,
+    "packed_row_and_col_predicates": false,
+    "planar_k_or_v_stride": [
+      4096,
+      256,
+      128,
+      1
+    ],
+    "planar_is_contiguous": true,
+    "planar_row_predicate": true,
+    "note": "Representative per-layer strides, not a capture of the currently running service; cross-layer packing must be audited separately."
+  },
+  "limits": [
+    "Eligibility bit is not proof of generated SME loads, physical bandwidth, correctness or speed.",
+    "Current service source/runtime/writer/prefill/copy/transfer/cache planner and natural C3 must be validated before any integration.",
+    "Changing stride_order can change indexes_kv_by_block_stride and packed-layer eligibility; preserve and measure resulting total capacity and costs.",
+    "No new GPU probe has run or been queued; current main profiling is sole GPU workload."
+  ]
+}

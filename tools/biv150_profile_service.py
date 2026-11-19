@@ -20,6 +20,12 @@ _INSTALLED = False
 _STATE = None
 
 
+def bind_worker(worker):
+    if _STATE is None:
+        raise RuntimeError('Install diagnostic state before binding its worker')
+    _STATE.worker = worker
+
+
 def install():
     global _INSTALLED, _STATE
     destination = os.environ.get("BIV150_PROFILE_DIR")
@@ -32,6 +38,7 @@ def install():
     from biv150_graph_probe import CorexAPI, GraphProbe
     from biv150_profile_output_guard import HiddenStateOutputGuard
     import biv150_profile_scopes
+    import biv150_profile_routes
 
     class State:
         def __init__(self):
@@ -43,6 +50,7 @@ def install():
             self.probes = {}
             self.kernel_loads = {}
             self.binding_errors = []
+            self.worker = None
 
         def cpu_event(self, event, metadata):
             if not self.active:
@@ -64,6 +72,7 @@ def install():
             self.steps, self.samples, self.errors = [], [], []
             self.counts = collections.Counter()
             self.probes = {}
+            self.routes_before = biv150_profile_routes.snapshot(self.worker)
             self.started_ns = time.monotonic_ns()
             self.active = True
             self.scopes.set_enabled(True)
@@ -73,6 +82,7 @@ def install():
                 return
             self.active = False
             self.scopes.set_enabled(False)
+            routes_after = biv150_profile_routes.snapshot(self.worker)
             # End-of-window synchronization, never an ordinary-step barrier.
             torch.cuda.synchronize()
             graphs = []
@@ -89,6 +99,8 @@ def install():
                           triton_kernel_bindings=list(self.kernel_loads.values()),
                           kernel_binding_errors=self.binding_errors,
                           scope_diagnostics=self.scopes.snapshot(), errors=self.errors,
+                          production_routes_before=self.routes_before,
+                          production_routes_after=routes_after,
                           selected_padded_rows=[32, 64],
                           selected_graph_replays=[32, 128, 512, 900],
                           scored_throughput=False,

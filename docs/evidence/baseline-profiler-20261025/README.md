@@ -60,3 +60,13 @@ M2048原生BF16 GEMM优化由独立Draft PR44跟踪；其后续组件及服务�
 collector保存超过900秒时driver如实留下failed/flush_pending，并未终止collector。随后已确认Report saved、collector退出、SQLite quick_check=ok，最终trace为1050116096B、SHA11394a8b0cbdc0b74802dd466aad6fa4884cde6916bc9a1b9510cabbba150a85。原failed状态未改写，完成审计与原始trace身份另存。
 
 [v2-timeline/report.md](v2-timeline/report.md)对CPU/GPU/分母统一剔除8个诊断采样范围。4K保留231.999898s、GPU227.414830s（98.0237%）；16K保留555.886648s、GPU549.859611s（98.9158%）。16K非Graph prefill attention209.497097s、MM68.861543s、GQA42.855412s，opaque Graph180.669046s；不能把节点采样乘次数冒充全程算子占比。host等待绝大多数与GPU重叠，不是可直接消除的CPU开销。
+
+## 2026-10-26：在团队 main697 上刷新热点，先不据单轮小差异调参
+
+用户要求先排除波动。PR59 同源 A/A 三轮随状态成熟上升约2.53%；私有缓存恢复后的两轮5929.994/5929.877 tok/s仅相差0.00198%，但各有一次索引元数据新增，不是零编译稳态或通用噪声上限。这些是349-based候选的诊断，不能作为新main收益资格，也不能把5930除以较冷的5484对照宣称提速。已停止根据单轮1–3%差异找算子原因，不再追加校准刷轮次。
+
+当前重新fetch确认团队main为6971ef48615af97a1637405c71f96dd89969563e（PR60）。新独立分支只改诊断工具，production `vllm_fl/`和`csrc/`必须与该main逐字一致；保留PR51 tiny BF16修复和PR60 stride特化，不叠加PR58/59。先只采集一个完整4K窗口，按实际热点再决定是否需要16K。
+
+更新旧driver的基线守卫、私有Triton/FlagGems缓存及必填不可变tuning snapshot；显式开启main已有native/stable-small，启动必须验证6项真实安装及包路径。先3次短预热，再一整轮相同4K workload预热，随后才采集一次完整profile；要求请求/token完整及boundary/full clone数值/API/别名校验。既有owned cleanup函数AST不改。host CPU契约覆盖私有缓存、完整负载预热先后和安装失败拒绝，不加载Torch。
+
+此工具的profiler-config与benchmark --profile只用于明确标记的诊断，绝不作官方吞吐/TTFT成绩。Graph采样有重复执行、拷贝和同步，分析必须排除诊断区间、区分GPU区间和CPU等待；先前0bf9基线热点不能自动称为697的热点。新GPU运行及热点结论尚未产生，后续将记录实际进程与证据。
