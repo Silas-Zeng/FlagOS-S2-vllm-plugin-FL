@@ -3,6 +3,7 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 """Attention layer with FlashAttention."""
 
+import os
 from dataclasses import dataclass
 from typing import ClassVar
 
@@ -24,6 +25,9 @@ from vllm.v1.attention.ops.common import cp_lse_ag_out_rs
 # Note: use Maca's merge_attn_states to get cuda kernel invoked
 # --------------------------------------------------------------
 from .ops.merge_attn_states import merge_attn_states
+from .utils.flash_attn_out import (
+    flash_attn_kvcache_into, flash_attn_varlen_into, try_split_prefill_into,
+)
 from .utils.fa_utils import (
     flash_attn_supports_fp8,
     get_flash_attn_version,
@@ -36,7 +40,6 @@ if is_flash_attn_varlen_func_available():
         flash_attn_varlen_func,
         get_scheduler_metadata,
         reshape_and_cache_flash,
-        flash_attn_with_kvcache,  # used for prefill decode split
     )
 from vllm.config import VllmConfig, get_current_vllm_config, get_layers_from_vllm_config
 from vllm.config.cache import CacheDType
@@ -56,7 +59,6 @@ from vllm.v1.attention.backends.utils import (
     get_dcp_local_seq_lens,
     get_kv_cache_layout,
     split_decodes_and_prefills,  # used for prefill decode split
-    reshape_attn_output_for_spec_decode,  # used for prefill decode split with mtp
     reshape_query_for_spec_decode,  # used for prefill decode split with mtp
 )
 from vllm.v1.attention.backends.registry import AttentionBackendEnum, register_backend
@@ -74,6 +76,31 @@ logger = init_logger(__name__)
 class MacaFlashAttentionBackend(AttentionBackend):
     accept_output_buffer: bool = True
     supported_dtypes: ClassVar[list[torch.dtype]] = [torch.float16, torch.bfloat16]
+
+    @classmethod
+    def get_required_kv_cache_layout(cls) -> str | None:
+        # Keep each head's tokens together within a page. The cache allocation,
+        # fused RoPE writer and FlashAttention all consume the resulting strides.
+        if (os.environ.get("VLLM_FL_METAX_HND_KV", "1") != "1"
+                or os.environ.get("VLLM_KV_CACHE_LAYOUT") is not None):
+            return None
+        try:
+            config = get_current_vllm_config()
+        except AssertionError:
+            # Backend inspection may happen without an active engine config.
+            return None
+        model = config.model_config
+        if (model is None or model.dtype != torch.bfloat16 or model.is_hybrid
+                or config.parallel_config.tensor_parallel_size != 1
+                or config.cache_config.cache_dtype != "auto"
+                or config.kv_transfer_config is not None):
+            return None
+        text = model.hf_text_config
+        if (getattr(text, "num_attention_heads", None) == 16
+                and getattr(text, "num_key_value_heads", None) == 2
+                and model.get_head_size() == 128):
+            return "HND"
+        return None
 
     @staticmethod
     def get_supported_kernel_block_sizes() -> list[int | MultipleOf]:
@@ -145,7 +172,12 @@ class MacaFlashAttentionBackend(AttentionBackend):
             # (num_blocks, num_kv_heads, num_layers, 2, block_size, head_size)
             return (2, 4, 0, 1, 3, 5)
         elif cache_layout == "HND":
-            stride_order = (0, 1, 3, 2, 4)
+            # Put a head's K/V pages next to each other as well as making the
+            # tokens contiguous. Preserve the established connector/user layout.
+            if MacaFlashAttentionBackend.get_required_kv_cache_layout() == "HND":
+                stride_order = (1, 3, 0, 2, 4)
+            else:
+                stride_order = (0, 1, 3, 2, 4)
         else:
             raise ValueError(f"Unknown cache layout format {cache_layout}.")
         return stride_order
@@ -248,6 +280,8 @@ class FlashAttentionMetadata:
     max_num_splits: int = 0
 
     causal: bool = True
+    prefill_query_lengths_cpu: tuple[int, ...] = ()
+    prefill_key_lengths_cpu: tuple[int, ...] = ()
 
 
 def _get_sliding_window_configs(
@@ -447,6 +481,16 @@ class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetad
             decode_seq_lens = None
             decode_block_table_tensor = None
 
+        prefill_query_lengths_cpu = ()
+        prefill_key_lengths_cpu = ()
+        if num_prefills == 2:
+            offsets = common_attn_metadata.query_start_loc_cpu[
+                num_decodes : num_reqs + 1
+            ].tolist()
+            prefill_query_lengths_cpu = tuple(b - a for a, b in zip(offsets, offsets[1:]))
+            prefill_key_lengths_cpu = tuple(
+                common_attn_metadata.seq_lens_cpu[num_decodes:num_reqs].tolist()
+            )
         if num_prefills > 0:
             prefill_max_seq_len = int(
                 common_attn_metadata.seq_lens_cpu[num_decodes:num_reqs].max()
@@ -457,12 +501,14 @@ class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetad
             )
             prefill_seq_lens = common_attn_metadata.seq_lens[num_decodes:num_reqs]
             prefill_cu_seqlens_k = self.prefill_cu_seqlens_k[: num_prefills + 1]
+            # MCA waits for queued work when this source is pageable, even
+            # for an8-byte non_blocking copy. PyTorch keeps a pinned temporary
+            # alive until its asynchronous H2D transfer has completed.
+            prefill_cu_seqlens_k_cpu = _cumulative_seq_lens(
+                common_attn_metadata.seq_lens_cpu[num_decodes:num_reqs]
+            ).pin_memory()
             prefill_cu_seqlens_k.copy_(
-                _cumulative_seq_lens(
-                    common_attn_metadata.seq_lens_cpu[
-                        num_decodes:num_reqs
-                    ]
-                ),
+                prefill_cu_seqlens_k_cpu,
                 non_blocking=True,
             )
             prefill_block_table_tensor = common_attn_metadata.block_table_tensor[
@@ -609,6 +655,8 @@ class FlashAttentionMetadataBuilder(AttentionMetadataBuilder[FlashAttentionMetad
             prefill_seq_lens=prefill_seq_lens,
             prefill_cu_seqlens_k=prefill_cu_seqlens_k,
             prefill_block_table=prefill_block_table_tensor,
+            prefill_query_lengths_cpu=prefill_query_lengths_cpu,
+            prefill_key_lengths_cpu=prefill_key_lengths_cpu,
             # \------------------------- Metax Modification -------------------------/
             block_table=block_table_tensor,
             slot_mapping=slot_mapping,
@@ -767,6 +815,11 @@ class FlashAttentionImpl(AttentionImpl):
             and key is not None
             and value is not None
         ):
+            skip_cache_update = False
+            if getattr(layer, "_metax_rope_cache_enabled", False):
+                from vllm_fl.patches.metax_rope_cache import consume_marker
+
+                skip_cache_update = consume_marker(layer.layer_name)
             # Reshape the input keys and values and store them in the cache.
             # Skip this if sharing KV cache with an earlier attention layer.
             # NOTE(woosuk): Here, key and value are padded while slot_mapping is
@@ -774,16 +827,17 @@ class FlashAttentionImpl(AttentionImpl):
             # and value[:num_actual_tokens] because the reshape_and_cache_flash
             # op uses the slot_mapping's shape to determine the number of
             # actual tokens.
-            reshape_and_cache_flash(
-                key,
-                value,
-                key_cache,
-                value_cache,
-                attn_metadata.slot_mapping,
-                self.kv_cache_dtype,
-                layer._k_scale,
-                layer._v_scale,
-            )
+            if not skip_cache_update:
+                reshape_and_cache_flash(
+                    key,
+                    value,
+                    key_cache,
+                    value_cache,
+                    attn_metadata.slot_mapping,
+                    self.kv_cache_dtype,
+                    layer._k_scale,
+                    layer._v_scale,
+                )
 
         if self.kv_cache_dtype.startswith("fp8"):
             # queries are quantized in the attention layer
@@ -823,16 +877,33 @@ class FlashAttentionImpl(AttentionImpl):
                 num_decode_tokens = attn_metadata.num_decode_tokens
                 if attn_metadata.num_prefills > 0:
                     assert attn_metadata.prefill_cu_seqlens_k is not None
-                    output[num_decode_tokens:num_actual_tokens] = (
-                        flash_attn_varlen_func(
-                            q=query[num_decode_tokens:num_actual_tokens],
+                    prefill_query = query[num_decode_tokens:num_actual_tokens]
+                    prefill_output = output[num_decode_tokens:num_actual_tokens]
+                    split_prefill = try_split_prefill_into(
+                        prefill_query, key_cache, value_cache, prefill_output,
+                        query_lengths=attn_metadata.prefill_query_lengths_cpu,
+                        key_lengths=attn_metadata.prefill_key_lengths_cpu,
+                        cache_seqlens=attn_metadata.prefill_seq_lens,
+                        cu_seqlens_k=attn_metadata.prefill_cu_seqlens_k,
+                        block_table=attn_metadata.prefill_block_table,
+                        softmax_scale=self.scale, causal=attn_metadata.causal,
+                        window_size=self.sliding_window, alibi_slopes=self.alibi_slopes,
+                        softcap=self.logits_soft_cap, s_aux=self.sinks,
+                    )
+                    if not split_prefill:
+                        flash_attn_varlen_into(
+                            q=prefill_query,
                             k=key_cache,
                             v=value_cache,
+                            out=prefill_output,
                             block_table=attn_metadata.prefill_block_table,
                             cu_seqlens_q=attn_metadata.prefill_query_start_loc,
                             cu_seqlens_k=attn_metadata.prefill_cu_seqlens_k,
                             max_seqlen_q=attn_metadata.max_query_len,
                             max_seqlen_k=attn_metadata.prefill_max_seq_len,
+                            # The builder computes this maximum from actual CPU
+                            # sequence lengths. For one prefill it is exact.
+                            cache_length_is_exact=True,
                             softmax_scale=self.scale,
                             causal=attn_metadata.causal,
                             window_size=self.sliding_window,
@@ -840,17 +911,17 @@ class FlashAttentionImpl(AttentionImpl):
                             softcap=self.logits_soft_cap,
                             s_aux=self.sinks,
                         )
-                    )
                 if attn_metadata.num_decodes > 0:
                     # Use flash_attn_with_kvcache for normal decoding.
                     decode_query = query[:num_decode_tokens]
                     decode_query = reshape_query_for_spec_decode(
                         decode_query, attn_metadata.num_decodes
                     )
-                    output_unreshape = flash_attn_with_kvcache(
+                    flash_attn_kvcache_into(
                         q=decode_query,
                         k_cache=key_cache,
                         v_cache=value_cache,
+                        out=output[:num_decode_tokens].view_as(decode_query),
                         block_table=attn_metadata.decode_block_table,
                         cache_seqlens=attn_metadata.decode_seq_lens,
                         softmax_scale=self.scale,
@@ -859,9 +930,6 @@ class FlashAttentionImpl(AttentionImpl):
                         alibi_slopes=self.alibi_slopes,
                         softcap=self.logits_soft_cap,
                         s_aux=self.sinks,
-                    )
-                    output[:num_decode_tokens] = reshape_attn_output_for_spec_decode(
-                        output_unreshape
                     )
                 return output
             # └------------------------- Metax Modification -------------------------┘

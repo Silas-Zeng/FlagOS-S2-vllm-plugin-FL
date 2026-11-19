@@ -1,0 +1,103 @@
+{
+  "version": "A5 attention rollback, optimized threshold sampler retained",
+  "hardware": "MetaX C500 64 GiB",
+  "gpu_pci": "0000:12:00.0",
+  "versions": {
+    "torch": "2.8.0+metax3.7.0.7",
+    "triton": "3.0.0+metax3.7.0.7",
+    "vllm": "0.24.0+empty",
+    "transformers": "5.9.0",
+    "evalscope": "1.11.1"
+  },
+  "performance": {
+    "protocol": "two independent internal measurements per case, not the default official 4-run/skip-1 score",
+    "scenarios": {
+      "4096": {
+        "Prefill": 4096.0,
+        "Decode": 1024.0,
+        "Conc": 64.0,
+        "Num Prompts": 256.0,
+        "Successful Requests": 256.0,
+        "Benchmark Duration (s)": 106.765,
+        "Total Input Tokens": 1048576.0,
+        "Total Output Tokens": 262144.0,
+        "Req/s": 2.4,
+        "Output tok/s": 2455.385,
+        "Peak Output tok/s": 4349.5,
+        "Total tok/s": 12276.94,
+        "Mean TTFT (ms)": 2696.855,
+        "Median TTFT (ms)": 956.2750000000001,
+        "P99 TTFT (ms)": 13297.98,
+        "Mean TPOT (ms)": 23.259999999999998,
+        "Median TPOT (ms)": 24.35,
+        "P99 TPOT (ms)": 24.79,
+        "Mean ITL (ms)": 23.259999999999998,
+        "Median ITL (ms)": 15.469999999999999,
+        "P99 ITL (ms)": 106.64500000000001
+      },
+      "16384": {
+        "Prefill": 16384.0,
+        "Decode": 1024.0,
+        "Conc": 64.0,
+        "Num Prompts": 128.0,
+        "Successful Requests": 128.0,
+        "Benchmark Duration (s)": 207.14,
+        "Total Input Tokens": 2097152.0,
+        "Total Output Tokens": 131072.0,
+        "Req/s": 0.62,
+        "Output tok/s": 632.77,
+        "Peak Output tok/s": 1760.0,
+        "Total tok/s": 10757.125,
+        "Mean TTFT (ms)": 20199.65,
+        "Median TTFT (ms)": 3606.715,
+        "P99 TTFT (ms)": 73036.15,
+        "Mean TPOT (ms)": 79.03,
+        "Median TPOT (ms)": 90.00999999999999,
+        "P99 TPOT (ms)": 96.13999999999999,
+        "Mean ITL (ms)": 79.03,
+        "Median ITL (ms)": 37.69,
+        "P99 ITL (ms)": 230.87
+      }
+    },
+    "comparisons_to_original_full_combination": {
+      "4096": {
+        "first_total_tok_s": 12275.26,
+        "repeat_total_tok_s": 12278.62,
+        "gain_vs_original_full_pct": [
+          2.3122495382502217,
+          2.3402545791575857
+        ],
+        "two_run_mean_gain_pct": 2.3262520587038926,
+        "ttft_reference_limit_ms": 3231.42935,
+        "consistent_advantage": true
+      },
+      "16384": {
+        "first_total_tok_s": 10759.89,
+        "repeat_total_tok_s": 10754.36,
+        "gain_vs_original_full_pct": [
+          4.007419787323907,
+          3.953965613403576
+        ],
+        "two_run_mean_gain_pct": 3.9806927003637416,
+        "ttft_reference_limit_ms": 27469.10635,
+        "consistent_advantage": true
+      }
+    }
+  },
+  "accuracy": {
+    "correct": 103.0,
+    "evaluated": 105,
+    "accuracy": 0.9809523809523809,
+    "passed": true,
+    "api_errors": 0,
+    "empty_responses": 0,
+    "max_tokens_responses": 0,
+    "dataset_sha256": "35dc41080a3680858b27fa7e0533d2d547825316fc5dafe5d316f4ccc5a06132"
+  },
+  "validation": {
+    "new_triton_decode_tests_passed": 13,
+    "prior_projection_norm_cache_checks_passed": 62,
+    "runtime_sources_match_measured_A5_snapshot": true
+  },
+  "known_limitation": "The retained threshold top-p sampler has known tied-logit support differences from the official sorted filter; the task score does not establish complete sampling equivalence."
+}

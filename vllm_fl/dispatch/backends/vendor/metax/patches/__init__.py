@@ -6,6 +6,9 @@ from . import cuda_wrapper
 from . import utils_patch
 from . import chunk_delta_h
 from . import topk_topp_sampler
+from .bf16_sampler import install as _install_bf16_sampler
+
+_install_bf16_sampler()
 from . import gdn_linear_attn  # noqa: F401 — register MacaGatedDeltaNetAttention
 
 # --------------------------------------------------

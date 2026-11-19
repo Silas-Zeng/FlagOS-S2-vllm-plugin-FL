@@ -7,6 +7,7 @@
 import functools
 import gc
 import itertools
+import os
 import threading
 import time
 from collections import defaultdict
@@ -581,6 +582,7 @@ class ModelRunnerFL(
             logprobs_mode=self.model_config.logprobs_mode,
             use_fp64_gumbel=self.model_config.use_fp64_gumbel,
         )
+        self._metax_capture_logits = bool(os.environ.get("VLLM_FL_METAX_CAPTURE_LOGITS"))
 
         self.eplb_state: EplbState | None = None
         self._moe_model: MixtureOfExperts | None = None
@@ -3694,6 +3696,10 @@ class ModelRunnerFL(
     ) -> SamplerOutput:
         # Sample the next token and get logprobs if needed.
         sampling_metadata = self.input_batch.sampling_metadata
+        if self._metax_capture_logits:
+            setattr(sampling_metadata, "_metax_discard_mask_cpu", torch.from_numpy(
+                self.discard_request_mask.np[:self.input_batch.num_reqs].copy()
+            ))
         # Update output token ids with tokens sampled in last step
         # if async scheduling and required by current sampling params.
         self.input_batch.update_async_output_token_ids()
@@ -5325,9 +5331,46 @@ class ModelRunnerFL(
                 if load_dummy_weights:
                     self.load_config.load_format = "dummy"
                 model_loader = get_model_loader(self.load_config)
+                if (getattr(current_platform, "vendor_name", None) == "metax"
+                        and self.lora_config is None and not self.model_config.enforce_eager
+                        and self.compilation_config.mode == CompilationMode.VLLM_COMPILE):
+                    from vllm_fl.patches.metax_linear_norm_fusion import install as install_linear_norm
+
+                    install_linear_norm(self.compilation_config)
                 self.model = model_loader.load_model(
                     vllm_config=self.vllm_config, model_config=self.model_config
                 )
+                if getattr(current_platform, "vendor_name", None) == "metax":
+                    from vllm_fl.patches.metax_packed_mlp import (
+                        install as install_metax_packed_mlp,
+                    )
+
+                    logger.info(
+                        "MetaX packed MLP: %s",
+                        install_metax_packed_mlp(
+                            self.model,
+                            lora_enabled=self.lora_config is not None,
+                            compiled=(
+                                not self.model_config.enforce_eager
+                                and self.compilation_config.mode
+                                == CompilationMode.VLLM_COMPILE
+                            ),
+                        ),
+                    )
+                    if (self.lora_config is None and not self.model_config.enforce_eager
+                            and self.compilation_config.mode == CompilationMode.VLLM_COMPILE):
+                        from vllm_fl.patches.metax_prefill_nn import install as install_prefill_nn
+
+                        logger.info("MetaX prefill NN caches: %d", install_prefill_nn(self.model))
+                        from vllm_fl.patches.metax_fused_rope import install as install_fused_rope
+
+                        logger.info("MetaX fused Q/K RoPE modules: %d", install_fused_rope(self.model))
+                        from vllm_fl.patches.metax_rope_cache import install as install_rope_cache
+
+                        logger.info("MetaX fused RoPE/cache layers: %d", install_rope_cache(self.model))
+                        from vllm_fl.patches.metax_residual_rms import install as install_residual_rms
+
+                        logger.info("MetaX one-pass add/RMSNorm layers: %d", install_residual_rms(self.model))
                 if self.lora_config:
                     self.model = self.load_lora_model(
                         self.model, self.vllm_config, self.device
@@ -6268,6 +6311,10 @@ class ModelRunnerFL(
                         },
                     ),
                 )
+            if getattr(self.sampler, "_metax_fused_bf16_installed", False):
+                from vllm_fl.dispatch.backends.vendor.metax.patches.bf16_sampler import warmup
+
+                warmup(self.sampler, logits)
         except RuntimeError as e:
             if "out of memory" in str(e):
                 raise RuntimeError(
