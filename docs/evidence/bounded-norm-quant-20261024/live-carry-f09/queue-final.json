@@ -1,0 +1,30 @@
+{
+  "queue_pid": 236714,
+  "after_pid": 235287,
+  "after_start_ticks": "323046495",
+  "stage": "finished",
+  "source": "/workspace/experiments/minicpm-s2/code/live-carry-f09-repr-20261025",
+  "commit": "7dca973e61a9775a48bd84522dfc84b3c1adb348",
+  "pid": 237363,
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "/workspace/experiments/minicpm-s2/code/live-carry-f09-repr-20261025/tools/bench_biv150_live_carry_chain.py",
+    "--library",
+    "/workspace/experiments/minicpm-s2/code/bounded-norm-quant-v3-20261024/build-native-w8a8/biv150_native_w8a8.so",
+    "--library-source",
+    "/workspace/experiments/minicpm-s2/code/bounded-norm-quant-v3-20261024",
+    "--library-sha256",
+    "b86b0f6ce79440944aaf433dd89b54c7dc13fe3ee4d3b6ddd0dff615bba4377e",
+    "--fused-gemm",
+    "--out",
+    "/workspace/experiments/minicpm-s2/live-carry-f09-repr-20261025-full34",
+    "--all-layers",
+    "--rows",
+    "64"
+  ],
+  "positive_uniform_rows_for_full34": [
+    64
+  ],
+  "exit_code": 0
+}

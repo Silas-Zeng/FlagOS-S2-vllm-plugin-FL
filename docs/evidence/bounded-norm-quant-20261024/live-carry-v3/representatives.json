@@ -1,0 +1,1922 @@
+{
+  "commit": "4c1b851c922464faed41274f849d22d16bf62d2d",
+  "component_only": true,
+  "service_installed": false,
+  "synthetic_activations": true,
+  "inductor_cache": "/workspace/experiments/minicpm-s2/live-carry-chain-repr-v3-20261025-inductor-cache",
+  "layers": [
+    4,
+    20,
+    37
+  ],
+  "rows": [
+    64,
+    32
+  ],
+  "static_features": true,
+  "model_epsilon": 1e-06,
+  "epsilon_specialized_as_service": true,
+  "baseline_initial_trace_rows": 2048,
+  "preserves_original_transparent_carry_expression": true,
+  "shipping_cpp_cuda_and_quantizer_unchanged": true,
+  "library_sha256": "b86b0f6ce79440944aaf433dd89b54c7dc13fe3ee4d3b6ddd0dff615bba4377e",
+  "native_mm_source_sha256": "4c2e23da2a6b65b89cbb8170967f14c5327d143e21137387f3907ccb4fcde090",
+  "dispatch_table": "CPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterCPU_0.cpp:3455 [kernel]\nCUDA: registered at /usr/local/lib/python3.12/site-packages/flag_gems/__init__.py:62 [kernel]\nMeta: registered at /usr/local/lib/python3.12/site-packages/torch/_meta_registrations.py:51 [kernel]\nSparseCPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCPU_0.cpp:1272 [kernel]\nSparseCUDA: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCUDA_0.cpp:1324 [kernel]\nSparseCsrCPU: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCsrCPU_0.cpp:1115 [kernel]\nSparseCsrCUDA: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCsrCUDA_0.cpp:1220 [kernel]\nSparseCsrMeta: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterSparseCsrMeta_0.cpp:1080 [kernel]\nBackendSelect: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/BackendSelectFallbackKernel.cpp:3 [backend fallback]\nPython: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:198 [backend fallback]\nFuncTorchDynamicLayerBackMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:477 [backend fallback]\nFunctionalize: registered at /home/corex/sw_home/apps/pytorch/build/aten/src/ATen/RegisterFunctionalization_0.cpp:23550 [kernel]\nNamed: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/NamedRegistrations.cpp:9 [kernel]\nConjugate: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ConjugateFallback.cpp:21 [kernel]\nNegative: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/native/NegateFallback.cpp:18 [backend fallback]\nZeroTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/ZeroTensorFallback.cpp:115 [backend fallback]\nADInplaceOrView: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/ADInplaceOrViewType_0.cpp:5035 [kernel]\nAutogradOther: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradCUDA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHIP: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXLA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMPS: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradIPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradXPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradHPU: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradVE: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradLazy: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMTIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMAIA: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse1: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse2: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradPrivateUse3: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradMeta: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nAutogradNestedTensor: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/VariableType_1.cpp:17226 [autograd kernel]\nTracer: registered at /home/corex/sw_home/apps/pytorch/torch/csrc/autograd/generated/TraceType_3.cpp:15269 [kernel]\nAutocastCPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:324 [backend fallback]\nAutocastMTIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:468 [backend fallback]\nAutocastMAIA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:506 [backend fallback]\nAutocastXPU: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:544 [backend fallback]\nAutocastMPS: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:209 [backend fallback]\nAutocastCUDA: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/autocast_mode.cpp:165 [backend fallback]\nFuncTorchBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:727 [backend fallback]\nBatchedNestedTensor: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/LegacyBatchingRegistrations.cpp:754 [backend fallback]\nFuncTorchVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/VmapModeRegistrations.cpp:22 [backend fallback]\nBatched: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/LegacyBatchingRegistrations.cpp:1072 [backend fallback]\nVmapMode: fallthrough registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/VmapModeRegistrations.cpp:32 [backend fallback]\nFuncTorchGradWrapper: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/TensorWrapper.cpp:210 [backend fallback]\nPythonTLSSnapshot: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:206 [backend fallback]\nFuncTorchDynamicLayerFrontMode: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/functorch/DynamicLayer.cpp:473 [backend fallback]\nPreDispatch: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:210 [backend fallback]\nPythonDispatcher: registered at /home/corex/sw_home/apps/pytorch/aten/src/ATen/core/PythonFallbackKernel.cpp:202 [backend fallback]\n",
+  "original_strict_tolerance": {
+    "atol": 0.005,
+    "rtol": 0.005
+  },
+  "records": [
+    {
+      "layer": 4,
+      "m": 64,
+      "learned_weight_sha256": {
+        "model.layers.4.post_attention_layernorm.weight": "6b616cb20075ddb04599545e87811515d6a3cc4e1a6a60558d5693223447cd7a",
+        "model.layers.4.mlp.gate_proj.weight": "e5e8090504b4f3e75c6edcfb57aa37a367b660f47b3daea549550540644adee9",
+        "model.layers.4.mlp.up_proj.weight": "899f24e90a24c9556ddac0e4fd83cb9f9207b99754120f92dd2304d08c0fea67",
+        "model.layers.4.mlp.down_proj.weight": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07",
+        "model.layers.5.input_layernorm.weight": "5e1166094f51ede2cbc39ef1d3c761f33bba2d80dee4d1bf99e92417947be0b3"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "tiny",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "normal",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "large",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "cancel",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "outlier",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        }
+      ],
+      "original_strict_passed": true,
+      "graph_eager_bit_exact": true,
+      "changed_input_graph_checks": [
+        {
+          "factor": 0.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 0.5,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 4.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        }
+      ],
+      "rounds": [
+        {
+          "baseline_ms": 0.1274682730436325,
+          "candidate_ms": 0.12459423393011093,
+          "speedup": 1.0230671919788337
+        },
+        {
+          "candidate_ms": 0.12446442246437073,
+          "baseline_ms": 0.12728750705718994,
+          "speedup": 1.0226818598995817
+        },
+        {
+          "baseline_ms": 0.12756730616092682,
+          "candidate_ms": 0.12489230930805206,
+          "speedup": 1.021418427345088
+        }
+      ],
+      "min_round_speedup": 1.021418427345088,
+      "median_speedup": 1.0226818598995817,
+      "diagnostic_timing_despite_strict_failure": false
+    },
+    {
+      "layer": 4,
+      "m": 32,
+      "learned_weight_sha256": {
+        "model.layers.4.post_attention_layernorm.weight": "6b616cb20075ddb04599545e87811515d6a3cc4e1a6a60558d5693223447cd7a",
+        "model.layers.4.mlp.gate_proj.weight": "e5e8090504b4f3e75c6edcfb57aa37a367b660f47b3daea549550540644adee9",
+        "model.layers.4.mlp.up_proj.weight": "899f24e90a24c9556ddac0e4fd83cb9f9207b99754120f92dd2304d08c0fea67",
+        "model.layers.4.mlp.down_proj.weight": "3690f24dda50c10077130794835bce0810317c384f79151d06474e4ea33eae07",
+        "model.layers.5.input_layernorm.weight": "5e1166094f51ede2cbc39ef1d3c761f33bba2d80dee4d1bf99e92417947be0b3"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "tiny",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "normal",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "large",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "cancel",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "outlier",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        }
+      ],
+      "original_strict_passed": true,
+      "graph_eager_bit_exact": true,
+      "changed_input_graph_checks": [
+        {
+          "factor": 0.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 0.5,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 4.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        }
+      ],
+      "rounds": [
+        {
+          "baseline_ms": 0.11266826838254929,
+          "candidate_ms": 0.11615672707557678,
+          "speedup": 0.9699676567956521
+        },
+        {
+          "candidate_ms": 0.11494038254022598,
+          "baseline_ms": 0.11680961400270462,
+          "speedup": 1.0162626173775302
+        },
+        {
+          "baseline_ms": 0.11682788282632828,
+          "candidate_ms": 0.11464134603738785,
+          "speedup": 1.0190728464425682
+        }
+      ],
+      "min_round_speedup": 0.9699676567956521,
+      "median_speedup": 1.0162626173775302,
+      "diagnostic_timing_despite_strict_failure": false
+    },
+    {
+      "layer": 20,
+      "m": 64,
+      "learned_weight_sha256": {
+        "model.layers.20.post_attention_layernorm.weight": "1bd579ae94df5ae601dd0d9d7f5774d6e73dec184e2f116c9772261bdbd00499",
+        "model.layers.20.mlp.gate_proj.weight": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265",
+        "model.layers.20.mlp.up_proj.weight": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4",
+        "model.layers.20.mlp.down_proj.weight": "9267dc789507453f482c38d122e1f4697288eba7a1042d6eb835cd8d27d3b85d",
+        "model.layers.21.input_layernorm.weight": "fb47699a99559b5537d637aed4962bb653a3f89f4080e9dba988d8ed15088979"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "tiny",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "normal",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "large",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 8,
+              "max_abs": 0.001953125
+            },
+            "next_residual": {
+              "passed": false,
+              "finite": true,
+              "violations": 6,
+              "elements": 131072,
+              "bit_differences": 9,
+              "max_abs": 1.0
+            },
+            "gate": {
+              "passed": false,
+              "finite": true,
+              "violations": 1,
+              "elements": 393216,
+              "bit_differences": 2379,
+              "max_abs": 0.015625
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "cancel",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "outlier",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        }
+      ],
+      "original_strict_passed": false,
+      "graph_eager_bit_exact": true,
+      "fixture": "failed-l20-m64.pt",
+      "fixture_sha256": "69acd7c1549fb7335b576da6b738b6a384d6b7c85b50db82f417a8236de93818",
+      "changed_input_graph_checks": [
+        {
+          "factor": 0.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 0.5,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 4.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        }
+      ],
+      "rounds": [
+        {
+          "baseline_ms": 0.1262144297361374,
+          "candidate_ms": 0.12389519065618515,
+          "speedup": 1.0187193632591296
+        },
+        {
+          "candidate_ms": 0.12350673228502274,
+          "baseline_ms": 0.1264413446187973,
+          "speedup": 1.0237607479323654
+        },
+        {
+          "baseline_ms": 0.12646634876728058,
+          "candidate_ms": 0.12369711697101593,
+          "speedup": 1.0223871975683436
+        }
+      ],
+      "min_round_speedup": 1.0187193632591296,
+      "median_speedup": 1.0223871975683436,
+      "diagnostic_timing_despite_strict_failure": true
+    },
+    {
+      "layer": 20,
+      "m": 32,
+      "learned_weight_sha256": {
+        "model.layers.20.post_attention_layernorm.weight": "1bd579ae94df5ae601dd0d9d7f5774d6e73dec184e2f116c9772261bdbd00499",
+        "model.layers.20.mlp.gate_proj.weight": "5b45ca239a1703dfb64a7ea64b9328b42c1d98f678f4698dc21c39f7c0da1265",
+        "model.layers.20.mlp.up_proj.weight": "9bc4e55cdc19f6d884df03825ff63fc766df5f06092e06900756c54d98d4b9d4",
+        "model.layers.20.mlp.down_proj.weight": "9267dc789507453f482c38d122e1f4697288eba7a1042d6eb835cd8d27d3b85d",
+        "model.layers.21.input_layernorm.weight": "fb47699a99559b5537d637aed4962bb653a3f89f4080e9dba988d8ed15088979"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "tiny",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "normal",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "large",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "cancel",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "outlier",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        }
+      ],
+      "original_strict_passed": true,
+      "graph_eager_bit_exact": true,
+      "changed_input_graph_checks": [
+        {
+          "factor": 0.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 0.5,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 4.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        }
+      ],
+      "rounds": [
+        {
+          "baseline_ms": 0.11355865746736526,
+          "candidate_ms": 0.11441250145435333,
+          "speedup": 0.9925371443143499
+        },
+        {
+          "candidate_ms": 0.11470865458250046,
+          "baseline_ms": 0.11525961756706238,
+          "speedup": 1.0048031509616013
+        },
+        {
+          "baseline_ms": 0.11467019468545914,
+          "candidate_ms": 0.11538942158222198,
+          "speedup": 0.993766959857318
+        }
+      ],
+      "min_round_speedup": 0.9925371443143499,
+      "median_speedup": 0.993766959857318,
+      "diagnostic_timing_despite_strict_failure": false
+    },
+    {
+      "layer": 37,
+      "m": 64,
+      "learned_weight_sha256": {
+        "model.layers.37.post_attention_layernorm.weight": "43387bd08278609bd92a83049060b992fb66b41ad9c55359dad2b0fa91bfa9be",
+        "model.layers.37.mlp.gate_proj.weight": "c953eb5bee3ced99ca2b54ccbd802220af594b10da468311cf7b51ef4fa4c0ac",
+        "model.layers.37.mlp.up_proj.weight": "0401512a3bb29014be905730cc7aa1cb0c2f8b2c7c644d775549ff83e79ca9dc",
+        "model.layers.37.mlp.down_proj.weight": "84fdf0faf547d4aeee35e9ec525df5800c7d188ec2a53abafc59790fea817c83",
+        "model.layers.38.input_layernorm.weight": "eaea508752f59e0e18e379f80bc55ba9e5b0a0bb9e5ea80343f74a0a0ce2c875"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "tiny",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "normal",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "large",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "cancel",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "outlier",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        }
+      ],
+      "original_strict_passed": true,
+      "graph_eager_bit_exact": true,
+      "changed_input_graph_checks": [
+        {
+          "factor": 0.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 0.5,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 4.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 131072,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 393216,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        }
+      ],
+      "rounds": [
+        {
+          "baseline_ms": 0.12682116031646729,
+          "candidate_ms": 0.12415576726198196,
+          "speedup": 1.0214681372703458
+        },
+        {
+          "candidate_ms": 0.12397980690002441,
+          "baseline_ms": 0.1267288476228714,
+          "speedup": 1.0221732941160633
+        },
+        {
+          "baseline_ms": 0.12674807012081146,
+          "candidate_ms": 0.12345096468925476,
+          "speedup": 1.0267078142309867
+        }
+      ],
+      "min_round_speedup": 1.0214681372703458,
+      "median_speedup": 1.0221732941160633,
+      "diagnostic_timing_despite_strict_failure": false
+    },
+    {
+      "layer": 37,
+      "m": 32,
+      "learned_weight_sha256": {
+        "model.layers.37.post_attention_layernorm.weight": "43387bd08278609bd92a83049060b992fb66b41ad9c55359dad2b0fa91bfa9be",
+        "model.layers.37.mlp.gate_proj.weight": "c953eb5bee3ced99ca2b54ccbd802220af594b10da468311cf7b51ef4fa4c0ac",
+        "model.layers.37.mlp.up_proj.weight": "0401512a3bb29014be905730cc7aa1cb0c2f8b2c7c644d775549ff83e79ca9dc",
+        "model.layers.37.mlp.down_proj.weight": "84fdf0faf547d4aeee35e9ec525df5800c7d188ec2a53abafc59790fea817c83",
+        "model.layers.38.input_layernorm.weight": "eaea508752f59e0e18e379f80bc55ba9e5b0a0bb9e5ea80343f74a0a0ce2c875"
+      },
+      "patterns": [
+        {
+          "name": "zero",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "tiny",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "normal",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "large",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "cancel",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        },
+        {
+          "name": "outlier",
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          },
+          "inputs_unchanged": true,
+          "output_storage_overlap": false
+        }
+      ],
+      "original_strict_passed": true,
+      "graph_eager_bit_exact": true,
+      "changed_input_graph_checks": [
+        {
+          "factor": 0.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 0.5,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        },
+        {
+          "factor": 4.0,
+          "checks": {
+            "next_norm": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "next_residual": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 65536,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            },
+            "gate": {
+              "passed": true,
+              "finite": true,
+              "violations": 0,
+              "elements": 196608,
+              "bit_differences": 0,
+              "max_abs": 0.0
+            }
+          }
+        }
+      ],
+      "rounds": [
+        {
+          "baseline_ms": 0.11337307840585709,
+          "candidate_ms": 0.11371634900569916,
+          "speedup": 0.9969813434669375
+        },
+        {
+          "candidate_ms": 0.1151375025510788,
+          "baseline_ms": 0.11651249974966049,
+          "speedup": 1.0119422183746924
+        },
+        {
+          "baseline_ms": 0.11621346324682236,
+          "candidate_ms": 0.11519711464643478,
+          "speedup": 1.0088226914667695
+        }
+      ],
+      "min_round_speedup": 0.9969813434669375,
+      "median_speedup": 1.0088226914667695,
+      "diagnostic_timing_despite_strict_failure": false
+    }
+  ],
+  "completed": true,
+  "summary": {
+    "records": 6,
+    "original_strict_passed": 5,
+    "graph_eager_bit_exact": 6,
+    "timed": 6
+  },
+  "generated_python": [
+    {
+      "path": "/workspace/experiments/minicpm-s2/live-carry-chain-repr-v3-20261025-inductor-cache/kb/ckbdavm3xbqhmqrhfe7cvddkufzfqbpvat7puge72jkpg43zqlay.py",
+      "sha256": "4887780c56e0699dabaf557be608b86a91f3abe9930c45dc55abcfd0d8c90230"
+    },
+    {
+      "path": "/workspace/experiments/minicpm-s2/live-carry-chain-repr-v3-20261025-inductor-cache/kp/ckpz724a2x4uinylj75ydelfiiilwacxw4unnwpmpmverwmxdgto.py",
+      "sha256": "690b250ff89419862edd9532e7f05eb9333ea6e6999a236938c6c65141703c4b"
+    },
+    {
+      "path": "/workspace/experiments/minicpm-s2/live-carry-chain-repr-v3-20261025-inductor-cache/ly/clyjuhk52fnccwbpwxmk6ey6m5btkz2wrlkpmk2hkc7zvle46fan.py",
+      "sha256": "8e6c2ecad476b85117cf627a18e3a29aab599ace55c0ac777921452c37b2048e"
+    },
+    {
+      "path": "/workspace/experiments/minicpm-s2/live-carry-chain-repr-v3-20261025-inductor-cache/wa/cwaj2seruw76md6oias4u2btbfzvyo2fks54nnr3wtp7h4fwx6tb.py",
+      "sha256": "7dc2b7a1bd3062e50fc2846ce5895f7688f3efd433c1c4c6ca9d821dc0b1f7cc"
+    },
+    {
+      "path": "/workspace/experiments/minicpm-s2/live-carry-chain-repr-v3-20261025-inductor-cache/wi/cwiruif3wvxt2xuowlj25z7plm6m5oe2vjopxsszfegtjv44rzve.py",
+      "sha256": "f6632fe20231079d972086909e0edcf986064b0eeb2fe1e488b7b518b83cdd04"
+    }
+  ]
+}

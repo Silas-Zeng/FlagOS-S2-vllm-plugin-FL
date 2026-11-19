@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/workspace/experiments/minicpm-s2/code/live-carry-chain-repr-20261025/tools/bench_biv150_live_carry_chain.py", line 220, in <module>
+    with torch.inference_mode(): main(p.parse_args())
+                                 ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/live-carry-chain-repr-20261025/tools/bench_biv150_live_carry_chain.py", line 81, in main
+    args.out.mkdir(parents=True, exist_ok=False)
+  File "/usr/local/lib/python3.12/pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/workspace/experiments/minicpm-s2/live-carry-chain-repr-20261025'

@@ -1,0 +1,26 @@
+{
+  "queue_pid": 234100,
+  "start_ticks": "322889128",
+  "source": "/workspace/experiments/minicpm-s2/code/live-carry-chain-repr-20261025",
+  "commit": "842bbb4d1792a23a7e00c5cdb5d15e9f751b9c7d",
+  "after_pid": 226391,
+  "after_start_ticks": "322702696",
+  "command": [
+    "/usr/local/bin/python",
+    "-u",
+    "/workspace/experiments/minicpm-s2/code/live-carry-chain-repr-20261025/tools/queue_biv150_bounded_norm_quant_probe.py",
+    "--after-pid",
+    "226391",
+    "--after-start-ticks",
+    "322702696",
+    "--live-carry-chain",
+    "--library",
+    "/workspace/experiments/minicpm-s2/code/bounded-norm-quant-v3-20261024/build-native-w8a8/biv150_native_w8a8.so",
+    "--library-source",
+    "/workspace/experiments/minicpm-s2/code/bounded-norm-quant-v3-20261024",
+    "--library-sha256",
+    "b86b0f6ce79440944aaf433dd89b54c7dc13fe3ee4d3b6ddd0dff615bba4377e",
+    "--out",
+    "/workspace/experiments/minicpm-s2/live-carry-chain-repr-20261025"
+  ]
+}
