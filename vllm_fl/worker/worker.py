@@ -993,7 +993,11 @@ class WorkerFL(WorkerBase):
                         self.profiler_config,
                         worker_name=trace_name,
                         local_rank=self.local_rank,
-                        activities=["CPU", "CUDA"],
+                        activities=(
+                            ["CUDA"]
+                            if os.environ.get("VLLM_FL_PROFILE_GPU_ONLY") == "1"
+                            else ["CPU", "CUDA"]
+                        ),
                     )
                     logger.debug(
                         "Starting torch profiler with trace name: %s", trace_name

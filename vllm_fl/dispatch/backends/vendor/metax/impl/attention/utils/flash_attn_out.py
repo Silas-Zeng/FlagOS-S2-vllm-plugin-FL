@@ -13,8 +13,8 @@ import torch
 from flash_attn import flash_attn_varlen_func, flash_attn_with_kvcache
 from flash_attn.flash_attn_interface import flash_attn_cuda
 
-_LOG_NATIVE_LAYOUT = os.environ.get("VLLM_FL_METAX_DECODE_LAYOUT_LOG", "0") == "1"
-_native_layout_logged = False
+_LOG_LAYOUT = os.environ.get("VLLM_FL_METAX_DECODE_LAYOUT_LOG", "0") == "1"
+_decode_layout_logged = False
 _DENSE_PREFILL = os.environ.get("VLLM_FL_METAX_DENSE_PREFILL", "1") == "1"
 _LONG_DENSE_PREFILL = os.environ.get("VLLM_FL_METAX_LONG_DENSE_PREFILL", "1") == "1"
 _dense_layout_logged = False
@@ -24,6 +24,7 @@ _LONG_SPLIT_PREFILL = os.environ.get("VLLM_FL_METAX_LONG_SPLIT_PREFILL", "1") ==
 _split_prefill_logged = False
 
 def _can_write_directly(q, k, v, out):
+    return False
     return (
         q.dtype in (torch.float16, torch.bfloat16)
         and q.dtype == k.dtype == v.dtype == out.dtype
@@ -71,14 +72,14 @@ def flash_attn_varlen_into(
         if dense is not None:
             k, v = dense
             block_table = None
-            if _LOG_NATIVE_LAYOUT and not _dense_layout_logged:
+            if _LOG_LAYOUT and not _dense_layout_logged:
                 print("MetaX dense prefill layout:", {
                     "q_shape": tuple(q.shape), "q_stride": q.stride(),
                     "k_shape": tuple(k.shape), "k_stride": k.stride(),
                     "max_seqlen_q": max_seqlen_q, "max_seqlen_k": max_seqlen_k,
                 }, flush=True)
                 _dense_layout_logged = True
-            if (_LOG_NATIVE_LAYOUT and max_seqlen_k > 4096
+            if (_LOG_LAYOUT and max_seqlen_k > 4096
                     and not _long_dense_layout_logged):
                 print("MetaX long dense prefill selected:", {
                     "query_length": q.shape[0], "key_length": max_seqlen_k,
@@ -164,7 +165,7 @@ def try_split_prefill_into(
         block_table[small:small + 1], None, out[start:end].unsqueeze(0),
         softmax_scale, True, -1, -1, 0.0, True, 0, None,
     )
-    if _LOG_NATIVE_LAYOUT and not _split_prefill_logged:
+    if _LOG_LAYOUT and not _split_prefill_logged:
         print("MetaX split prefill selected:", {
             "query_lengths": query_lengths, "key_lengths": key_lengths,
             "q_stride": q.stride(), "dense_request": large,
@@ -178,7 +179,7 @@ def flash_attn_kvcache_into(
     softmax_scale, causal, window_size, alibi_slopes, softcap, s_aux,
 ):
     """Paged decode without an intermediate attention output and copy."""
-    global _native_layout_logged
+    global _decode_layout_logged
     if (
         not _can_write_directly(q, k_cache, v_cache, out)
         or q.shape[1] != 1
@@ -195,16 +196,15 @@ def flash_attn_kvcache_into(
         )
         out.copy_(result)
         return out
-    # MACA swaps the single-query GQA groups into the sequence dimension
-    # before it validates an explicit output. Mirror that view, without
-    # copying, so each head still writes to the runner's original layout.
+    # The Triton path handles the interleaved HND cache directly. Other
+    # layouts and unsupported features retain the original vendor fallback.
     if q.dtype == torch.bfloat16 and softcap == 0.0:
-        from flag_gems.runtime.backend._metax.ops.bf16_attention import try_bf16_decode
+        from flag_gems.runtime.backend._metax.ops.triton_attention import try_bf16_decode
 
         selected = try_bf16_decode(q, k_cache, v_cache, out, block_table,
                                    cache_seqlens, softmax_scale)
-        if _LOG_NATIVE_LAYOUT and not _native_layout_logged and 33 <= q.shape[0] <= 64:
-            print("MetaX native decode layout:", {
+        if _LOG_LAYOUT and not _decode_layout_logged and 33 <= q.shape[0] <= 64:
+            print("MetaX Triton decode layout:", {
                 "selected": selected, "q_shape": tuple(q.shape),
                 "q_stride": q.stride(), "kv_shape": tuple(k_cache.shape),
                 "k_stride": k_cache.stride(), "v_stride": v_cache.stride(),
@@ -213,10 +213,12 @@ def flash_attn_kvcache_into(
                 "lengths_shape": tuple(cache_seqlens.shape),
                 "lengths_stride": cache_seqlens.stride(),
             }, flush=True)
-            _native_layout_logged = True
+            _decode_layout_logged = True
         if selected:
             return out
     kernel_out = out
+    # MACA's vendor fallback swaps the GQA group into the sequence dimension
+    # before validating its output. This view still aliases the runner buffer.
     kv_heads = k_cache.shape[2]
     if q.shape[2] > kv_heads:
         kernel_out = out.view(

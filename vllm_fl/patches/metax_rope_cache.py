@@ -157,8 +157,4 @@ def install(model):
     if count and not getattr(LlamaAttention, "_metax_rope_cache_installed", False):
         LlamaAttention.forward = _forward
         LlamaAttention._metax_rope_cache_installed = True
-    if count:
-        from flag_gems.runtime.backend._metax.ops.bf16_attention import prepare_bf16_decode
-
-        prepare_bf16_decode(next(model.parameters()).device)
     return count

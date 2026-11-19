@@ -1,5 +1,8 @@
 # MetaX Decode Optimizations
 
+> Historical measurements below describe earlier revisions. For the current
+> C500 Triton implementation, see [metax_triton_migration.md](metax_triton_migration.md).
+
 This branch carries the MetaX-specific top-p optimization and documents the
 small-M GEMM change maintained in the companion FlagGems repository.
 
