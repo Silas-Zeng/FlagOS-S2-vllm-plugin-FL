@@ -103,8 +103,8 @@ class _Runtime:
         from vllm.model_executor.layers.logits_processor import LogitsProcessor
         from vllm.model_executor.models.llama import LlamaForCausalLM
         from vllm.v1.sample.sampler import Sampler
-        from vllm_fl.compile_semantics import native_model_matches
-        if current_platform.vendor_name != 'iluvatar' or not native_model_matches(runner.model_config.hf_config):
+        from vllm_fl.compile_semantics import minicpm_geometry_matches
+        if current_platform.vendor_name != 'iluvatar' or not minicpm_geometry_matches(runner.model_config.hf_config):
             raise ValueError('unsupported platform/model')
         p = runner.parallel_config
         if any(getattr(p, name, None) != 1 for name in (
@@ -127,7 +127,6 @@ class _Runtime:
                 or processor.vocab_size != 130560
                 or processor._forward_hooks or processor._forward_pre_hooks
                 or getattr(head, 'bias', None) is not None
-                or hasattr(head, '_biv150_native_wq')
                 or tuple(head.weight.shape) != (130560, 2048)
                 or head.weight.dtype != torch.bfloat16 or not head.weight.is_contiguous()
                 or runner.sampler.logprobs_mode != 'raw_logprobs'

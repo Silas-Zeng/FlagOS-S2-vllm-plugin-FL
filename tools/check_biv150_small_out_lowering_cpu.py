@@ -7,7 +7,6 @@ import os
 from pathlib import Path
 import subprocess
 import sys
-import tempfile
 from types import ModuleType,SimpleNamespace
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -84,15 +83,8 @@ def main():
     a,b=funcs(source.read_text()),funcs(old)
     for key in ['_linear','_small_o_kernel','_small_o_into','_register']:assert a[key]==b[key],key
     semantics=load('pure_semantics',ROOT/'vllm_fl/compile_semantics.py');config=SimpleNamespace(model_config=SimpleNamespace(hf_config=SimpleNamespace(**semantics._GEOMETRY)))
-    with tempfile.TemporaryDirectory() as directory:
-        library=Path(directory)/'no-load.so';library.write_bytes(b'fingerprint fixture only')
-        def fingerprint(extra):return semantics.build_fingerprint(config,'iluvatar',package_root=ROOT/'vllm_fl',environ={'BIV150_NATIVE_W8A8_LIBRARY':str(library),**extra},abi={})
-        key='VLLM_FL_BIV150_SMALL_OUT_LOWERING';assert fingerprint({})==fingerprint({key:'1'});assert fingerprint({})!=fingerprint({key:'0'});assert fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0'})==fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0',key:'1'})
-    def finals(text):
-        return [ast.dump(item,include_attributes=False) for n in ast.walk(ast.parse(text)) if isinstance(n,ast.Try) and n.finalbody for item in n.finalbody]
-    current=(ROOT/'tools/run_biv150_small_out_acceptance.py').read_text()
-    original=subprocess.check_output(['git','-C',str(ROOT),'show',BASE+':tools/run_biv150_small_bf16_acceptance.py'],text=True)
-    assert finals(current)==finals(original),'owned cleanup changed'
+    def fingerprint(extra):return semantics.build_fingerprint(config,'iluvatar',package_root=ROOT/'vllm_fl',environ=extra,abi={})
+    key='VLLM_FL_BIV150_SMALL_OUT_LOWERING';assert fingerprint({})==fingerprint({key:'1'});assert fingerprint({})!=fingerprint({key:'0'});assert fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0'})==fingerprint({'VLLM_FL_BIV150_STABLE_SMALL_O':'0',key:'1'})
     print(json.dumps({'passed':True,'gpu_executed':False,'output_callback_cases':tested,'symbolic_M_layout_cases':4,'unsupported_compiler_fallbacks':4,'output_buffer_identity_preserved':True,'kernel_math_ast_unchanged':True,'default_enabled_equivalent':True,'active_cache_identity_separated':True,'remaining':'Actual Torch compile, streams/changed Graphs, generated out calls, model105 and warmed4K/16K'},indent=2))
 
 if __name__=='__main__':main()

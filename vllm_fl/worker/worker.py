@@ -477,14 +477,6 @@ class WorkerFL(WorkerBase):
         num_ubatches = 2 if self.vllm_config.parallel_config.enable_dbo else 1
         init_workspace_manager(self.device, num_ubatches)
 
-        if getattr(current_platform, "vendor_name", None) == "iluvatar":
-            from vllm_fl.compile_semantics import configure_worker_konly
-
-            configure_worker_konly(
-                self.vllm_config, current_platform.vendor_name,
-                torch.cuda.get_device_properties(self.device),
-            )
-
         from vllm_fl.worker.model_runner import ModelRunnerFL
 
         # Construct the model runner
