@@ -12,7 +12,7 @@ from vllm.v1.sample.logits_processor.builtin import (
 from vllm.v1.sample.sampler import Sampler
 from vllm.v1.worker.gpu_input_batch import InputBatch
 
-from ..impl.bf16_top_p_sample import sample_bf16_top_p
+from flag_gems.runtime.backend._metax.ops.bf16_top_p_sample import sample_bf16_top_p
 
 _original_forward = Sampler.forward
 _original_make_sampling_metadata = InputBatch._make_sampling_metadata
