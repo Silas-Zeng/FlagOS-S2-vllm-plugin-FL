@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Compare fused BF16 sampling to the installed FP32 MetaX sampler."""
+from importlib import import_module
 from types import SimpleNamespace
 
 import pytest
@@ -18,6 +19,19 @@ from vllm.v1.sample.sampler import Sampler
 from vllm.v1.sample.logits_processor.builtin import (
     MinPLogitsProcessor, LogitBiasLogitsProcessor, MinTokensLogitsProcessor,
 )
+
+
+@pytest.mark.parametrize(
+    "name", ["top_p_sample", "bf16_top_p_sample", "bf16_parallel_top_p"]
+)
+def test_sampler_imports_use_same_triton_runtime(name):
+    from vllm.triton_utils import tl, triton
+
+    implementation = import_module(f"flag_gems.runtime.backend._metax.ops.{name}")
+    legacy = import_module(f"vllm_fl.dispatch.backends.vendor.metax.impl.{name}")
+    assert legacy is implementation
+    assert implementation.triton is triton
+    assert implementation.tl is tl
 
 
 def inputs(kind, batch=8, vocab=130560):

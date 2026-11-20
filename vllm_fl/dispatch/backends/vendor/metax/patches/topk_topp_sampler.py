@@ -69,7 +69,7 @@ def _forward_native_top_p_fast(
         return _original_forward_native(self, logits, generators, k, p)
 
     if _USE_TOP_P_KERNEL and not generators:
-        from vllm_fl.dispatch.backends.vendor.metax.impl.top_p_sample import (
+        from flag_gems.runtime.backend._metax.ops.top_p_sample import (
             top_p_sample,
         )
 
