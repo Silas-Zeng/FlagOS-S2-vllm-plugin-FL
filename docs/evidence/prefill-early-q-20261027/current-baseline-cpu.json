@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "gpu_executed": false,
+  "cases": [
+    {
+      "mode": "current",
+      "k128_present": false,
+      "actual_tile": 64,
+      "inner_tap": true
+    },
+    {
+      "mode": "current",
+      "k128_present": true,
+      "actual_tile": 128,
+      "inner_tap": true
+    },
+    {
+      "mode": "q32",
+      "k128_present": true,
+      "actual_tile": 64,
+      "inner_tap": true
+    },
+    {
+      "mode": "bm128",
+      "k128_present": false,
+      "actual_tile": 64,
+      "inner_tap": true
+    }
+  ],
+  "rejected": [
+    "disabled current K128",
+    "unrelated missing dependency"
+  ],
+  "limits": "Synthetic routing/identity contract only, not target module installation or kernel validation."
+}
