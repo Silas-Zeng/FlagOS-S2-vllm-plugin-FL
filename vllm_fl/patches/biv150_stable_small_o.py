@@ -1,4 +1,4 @@
-"""Opt-in BF16 small-row MiniCPM projections; original linear above8 rows."""
+"""BF16 small-row MiniCPM projections and optional Inductor output buffers."""
 import os
 
 import torch
@@ -79,8 +79,15 @@ def install():
     if os.environ.get('VLLM_FL_BIV150_STABLE_SMALL_O','1')!='1':
         return {'installed':False,'reason':'disabled'}
     if _INSTALLED:return {'installed':True,'reason':'already installed'}
-    from vllm_fl.patches.biv150_native_w8a8 import _eligible_model
-    if not _eligible_model():return {'installed':False,'reason':'unsupported model'}
+    from vllm.config import get_current_vllm_config
+    from vllm_fl.compile_semantics import minicpm_geometry_matches
+
+    try:
+        model_config = get_current_vllm_config().model_config.hf_config
+    except (AttributeError, AssertionError, RuntimeError):
+        model_config = None
+    if not minicpm_geometry_matches(model_config):
+        return {'installed': False, 'reason': 'unsupported model'}
     from vllm.distributed import get_tensor_model_parallel_world_size
     if get_tensor_model_parallel_world_size()!=1:
         return {'installed':False,'reason':'TP1 required'}
@@ -99,8 +106,7 @@ def install():
                     or layer.prefix.endswith('.mlp.gate_up_proj') and tuple(layer.weight.shape)==(12288,2048)
                     or layer.prefix.endswith('.self_attn.qkv_proj') and tuple(layer.weight.shape)==(2560,2048)
                     or layer.prefix.endswith('.mlp.down_proj') and tuple(layer.weight.shape)==(2048,6144))
-        if (bias is not None or not projection or hasattr(layer,'_biv150_native_wq')
-                or layer.weight.dtype!=torch.bfloat16):
+        if bias is not None or not projection or layer.weight.dtype != torch.bfloat16:
             return previous(self,layer,x,bias)
         # M dispatch is inside the opaque CUDA implementation, keeping vLLM's
         # dynamic row dimension out of Python/Dynamo shape branches.
@@ -108,6 +114,6 @@ def install():
         return output.reshape(*x.shape[:-1],layer.weight.shape[0])
     UnquantizedLinearMethod.apply=apply
     _INSTALLED=True
-    return {'installed':True,'scope':'BF16 TP1 QKV/O/down and uncompressed edge-gate projections M1-8',
+    return {'installed':True,'scope':'BF16 TP1 QKV/O/down and gate/up projections M1-8',
             'block_m':16,'block_n':64,'block_k':128,'warps':4,'stages':1,
             'larger_rows':'original default_unquantized_gemm F.linear route inside the opaque operation'}

@@ -185,7 +185,7 @@ def main(args):
     args.out.mkdir(parents=True, exist_ok=False)
     env = os.environ.copy()
     for key in list(env):
-        if key.startswith(("VLLM_FL_BIV150_", "BIV150_NATIVE_")) or key in (
+        if key.startswith("VLLM_FL_BIV150_") or key in (
             "USE_C_EXTENSION",
             "FLAGTUNE",
         ):

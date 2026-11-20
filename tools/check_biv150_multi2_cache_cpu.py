@@ -15,7 +15,7 @@ def main():
     flag='VLLM_FL_BIV150_PREFILL_MULTI2'
     def key(package=None,**extra):
         return module.build_fingerprint(config,'iluvatar',package_root=package or root/'vllm_fl',
-            environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0',**extra},abi={'cpu_contract':1})
+            environ=extra,abi={'cpu_contract':1})
     assert key()==key(**{flag:'1'}) and key()!=key(**{flag:'0'})
     for parent in ('VLLM_FL_BIV150_PREFILL_Q32','VLLM_FL_BIV150_Q_FRAGMENT','VLLM_FL_BIV150_PREFILL_NORMALIZE'):
         assert key(**{parent:'0',flag:'1'})==key(**{parent:'0',flag:'0'})
@@ -31,8 +31,7 @@ def main():
         default_equals_explicit_on=True,off_separates_official_compile_key=True,
         inactive_parent_ignores_child_flag=True,new_source_content_in_cache_key=True,
         unrelated_cache_paths_and_profiler_flags_ignored=True,other_vendor_untouched=True)
-    path=root/'docs/evidence/prefill-multi2-20261027/service-cache-cpu.json'
-    path.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))
+    print(json.dumps(result))
 
 
 if __name__=='__main__':main()

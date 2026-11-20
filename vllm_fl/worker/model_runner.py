@@ -7834,26 +7834,8 @@ if getattr(current_platform, "vendor_name", None) == "iluvatar":
 
     print("BIV150_PREFILL_MULTI2_INSTALL", _install_prefill_multi2(), flush=True)
 
-# Audited gate/up operator only; attention and request preparation remain on team main.
-if getattr(current_platform, "vendor_name", None) == "iluvatar":
-    from vllm_fl.patches.biv150_native_w8a8 import install as _install_native_gate
-
-    print("BIV150_NATIVE_W8A8_INSTALL", _install_native_gate(), flush=True)
-
 # Audited BF16 small-row MiniCPM projections.
 if getattr(current_platform, "vendor_name", None) == "iluvatar":
     from vllm_fl.patches.biv150_stable_small_o import install as _install_stable_small_o
 
     print("BIV150_STABLE_SMALL_O_INSTALL", _install_stable_small_o(), flush=True)
-
-# NativeK8 may only refine the owned16KiB private decode producer.
-if __import__("os").environ.get("VLLM_FL_BIV150_KONLY_NATIVE_DECODE", "0") == "1":
-    if (__import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") != "1"
-            or __import__("os").environ.get("VLLM_FL_BIV150_KONLY_COMPACT_SERVICE", "0") == "1"):
-        raise RuntimeError("NativeK8 requires only owned16384 encoded service")
-
-# Private encoded-cache diagnostic: install once before allocation/capture; default off.
-if (getattr(current_platform, "vendor_name", None) == "iluvatar"
-        and __import__("os").environ.get("VLLM_FL_BIV150_KONLY_ENCODED_SERVICE", "0") == "1"):
-    from vllm_fl.patches.biv150_konly_encoded_service import install as _install_konly_encoded
-    print("BIV150_KONLY_ENCODED_INSTALL", _install_konly_encoded(ModelRunnerFL), flush=True)

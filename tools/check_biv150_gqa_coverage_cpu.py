@@ -16,8 +16,7 @@ from types import SimpleNamespace
 from contextlib import nullcontext
 import builtins
 
-from biv150_gqa_coverage import Coverage, atomic_json
-from run_biv150_gqa_coverage import analyze
+from biv150_gqa_coverage import Coverage, analyze, atomic_json
 
 
 @dataclass(frozen=True)
@@ -177,14 +176,14 @@ def main(args):
         package.mkdir(parents=True)
         (fixture / "vllm_fl/__init__.py").write_text("")
         (package / "__init__.py").write_text("")
-        (package / "biv150_native_w8a8.py").write_text(
+        (package / "biv150_gqa_decode.py").write_text(
             "calls=0\ndef install():\n global calls\n calls+=1\n return {'installed':True,'identity':'original'}\n"
         )
         (fixture / "biv150_gqa_coverage.py").write_text(
             "from pathlib import Path\ndef install(root):\n Path(root,'observed').write_text('yes')\n"
         )
         bootstrap = Path(__file__).resolve().parent / "gqa_coverage_bootstrap"
-        command = "import vllm_fl.patches.biv150_native_w8a8 as m; assert m.install()=={'installed':True,'identity':'original'}; assert m.calls==1"
+        command = "import vllm_fl.patches.biv150_gqa_decode as m; assert m.install()=={'installed':True,'identity':'original'}; assert m.calls==1"
         subprocess.run(
             [sys.executable, "-c", command],
             check=True,

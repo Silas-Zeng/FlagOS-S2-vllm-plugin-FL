@@ -15,7 +15,7 @@ def main():
         hf_config=SimpleNamespace(**module._GEOMETRY)))
     def fingerprint(**extra):
         return module.build_fingerprint(config, 'iluvatar', package_root=root/'vllm_fl',
-            environ={'VLLM_FL_BIV150_NATIVE_W8A8':'0', **extra}, abi={'cpu_contract':1})
+            environ=extra, abi={'cpu_contract':1})
     flag = 'VLLM_FL_BIV150_PREFILL_Q32'
     assert fingerprint() == fingerprint(**{flag:'1'})
     assert fingerprint() != fingerprint(**{flag:'0'})

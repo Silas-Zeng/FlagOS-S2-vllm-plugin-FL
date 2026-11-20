@@ -312,15 +312,6 @@ def _reduce_partials(
 _state = {"calls": 0, "fallbacks": 0, "reduce": None, "signature": None, "views": {}}
 
 
-_native_s2 = None
-
-
-def _launch_producer(grid, **kwargs):
-    if _native_s2 is not None and _native_s2.try_produce(grid, kwargs):
-        return None
-    return _gqa_decode_attention[grid](**kwargs)
-
-
 def _pick_segments(num_seqs, kv_heads, builder_segments):
     """Choose the split-K width for this step instead of inheriting the constant.
 
@@ -463,7 +454,7 @@ def _make_wrapper(attention):
                 f"segments={segments} target_programs={TARGET_PROGRAMS}",
                 flush=True,
             )
-        _launch_producer((num_seqs, _KV_HEADS, segments),
+        _gqa_decode_attention[(num_seqs, _KV_HEADS, segments)](
             segm_output_ptr=segm_output,
             segm_max_ptr=segm_max,
             segm_expsum_ptr=segm_expsum,
@@ -528,7 +519,6 @@ def install():
     enables an optimization; the environment variable only ever turns it back off
     for an A/B arm.
     """
-    global _native_s2
     if os.environ.get(_ENABLE_ENV, "1") != "1":
         return {"installed": False, "reason": _ENABLE_ENV + " disabled"}
 
@@ -560,8 +550,6 @@ def install():
                     "reason": "unaudited attention source " + name}
         audited[name] = actual[:12]
 
-    from vllm_fl.patches.biv150_native_gqa import create_runtime
-    _native_s2 = create_runtime()
     backend = importlib.import_module("vllm.v1.attention.backends.triton_attn")
     wrapper, original = _make_wrapper(attention)
     _state["signature"] = inspect.signature(original)

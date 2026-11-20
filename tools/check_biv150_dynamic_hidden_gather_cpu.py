@@ -8,7 +8,6 @@ import importlib.util
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 from types import SimpleNamespace as NS
 
@@ -34,32 +33,16 @@ def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def original(base, name):
-    return subprocess.check_output(['git', 'show', base + ':' + name], cwd=ROOT)
-
-
 def sources(helper):
-    evidence = ROOT / 'docs/evidence/dynamic-hidden-gather-entry-20261029/runner-transform.json'
-    transform = json.loads(evidence.read_text())
-    runner_name = 'vllm_fl/worker/model_runner.py'
-    runner = (ROOT / runner_name).read_bytes()
-    check('runner exact pinned bytes', sha(runner) == transform['runner_sha256'])
-    check('runner all CRLF retained', runner.count(b'\n') == runner.count(b'\r\n'))
-    restored = runner
-    for item in reversed(transform['edits']):
-        before, after = item['before'].encode(), item['after'].encode()
-        check('one runner seam ' + str(len(CHECKS)), restored.count(after) == 1)
-        restored = restored.replace(after, before)
-    check('entire runner inverse equals base', restored == original(transform['base'], runner_name))
-    check('original runner digest', sha(restored) == transform['original_sha256'])
-    order_name = 'vllm_fl/patches/biv150_compute_order.py'
-    order = (ROOT / order_name).read_bytes()
-    check('compute-order only runner pin changed', order.replace(
-        transform['runner_sha256'].encode(), transform['original_sha256'].encode()) == original(transform['base'], order_name))
-    sem_name = 'vllm_fl/compile_semantics.py'
-    semantic = (ROOT / sem_name).read_bytes()
-    check('compile semantics only default-off feature added', semantic.replace(
-        transform['semantics_addition'].encode(), b'') == original(transform['base'], sem_name))
+    order = load('_gather_order_source', ROOT / 'vllm_fl/patches/biv150_compute_order.py')
+    runner = (ROOT / 'vllm_fl/worker/model_runner.py').read_bytes()
+    runner_digest = sha(runner)
+    check('runner matches the compute-order source', runner_digest == order.EXPECTED_RUNNER)
+    tree = ast.parse(runner)
+    calls = {node.func.id for node in ast.walk(tree)
+             if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)}
+    check('runner prepares and consumes local gather receipt', {
+          '_biv150_prepare_hidden_gather', '_biv150_try_hidden_gather'} <= calls)
     kernel = ROOT / 'vllm_fl/patches/biv150_dynamic_hidden_gather_kernel.py'
     kernel_bytes = kernel.read_bytes()
     check('kernel SHA bound in helper', sha(kernel_bytes) == helper._KERNEL_SHA)
@@ -82,24 +65,29 @@ def sources(helper):
     check('fixed tile/grid/warps/stages', all(x in launch_text for x in (
         '(selected_rows + 7) // 8', '16', 'BLOCK_R=8', 'BLOCK_D=128', 'num_warps=4', 'num_stages=1')))
     consume = next(n for n in helper_tree.body if isinstance(n, ast.FunctionDef) and n.name == 'try_gather')
-    check('allocation and launch outside fallback try', all(isinstance(n, (ast.Assign, ast.Expr, ast.Return))
-          for n in consume.body[-3:]) and '_launch(' in ast.unparse(consume.body[-2]))
+    launches = [n for n in consume.body if isinstance(n, ast.Assign) and isinstance(n.value, ast.Call)]
+    after_checks = [ast.unparse(n.value.func) for n in launches]
+    check('allocation and launch are top-level after fallback checks',
+          'torch.empty' in after_checks and '_launch' in after_checks
+          and after_checks.index('torch.empty') < after_checks.index('_launch'))
     io = ast.parse((ROOT / 'vllm_fl/dispatch/io_common.py').read_bytes())
     decorator = next(n for n in io.body if isinstance(n, ast.FunctionDef) and n.name == 'managed_inference_mode')
     check('real managed inference wrapper exposes wrapped function', '@functools.wraps(fn)' in ast.unparse(decorator))
-    semantics = load('_gather_semantics_cpu', ROOT / sem_name)
+    semantics = load('_gather_semantics_cpu', ROOT / 'vllm_fl/compile_semantics.py')
     config = NS(model_config=NS(hf_config=NS(**semantics._GEOMETRY)))
-    env = {'VLLM_FL_BIV150_NATIVE_W8A8': '0', 'VLLM_FL_BIV150_NATIVE_GQA': '0'}
     captures = []
     digest = semantics._digest
     semantics._digest = lambda value: (captures.append(value), digest(value))[1]
-    off = semantics.build_fingerprint(config, 'iluvatar', environ=env, abi={'CPU': True})
-    on = semantics.build_fingerprint(config, 'iluvatar', environ={**env, helper.ENV: '1'}, abi={'CPU': True})
-    check('default OFF and ON fingerprints differ', not captures[0]['features'][helper.ENV]
-          and captures[1]['features'][helper.ENV] and off != on)
+    def fingerprint(env):
+        return semantics.build_fingerprint(config, 'iluvatar', environ=env, abi={'CPU': True})
+    default = fingerprint({})
+    on = fingerprint({helper.ENV: '1'})
+    off = fingerprint({helper.ENV: '0'})
+    check('gather defaults on and off gets a separate cache', default == on and on != off
+          and captures[0]['features'][helper.ENV] and not captures[2]['features'][helper.ENV])
     check('both new sources enter fingerprint', all('patches/' + name in captures[0]['source'] for name in (
         'biv150_dynamic_hidden_gather.py', 'biv150_dynamic_hidden_gather_kernel.py')))
-    return transform
+    return runner_digest
 
 
 def bounds_and_bits(helper):
@@ -224,8 +212,8 @@ def fake_receipts(helper):
         sys.modules['torch'] = fake_torch
         helper._cold = lambda *a: (_ for _ in ()).throw(AssertionError('fake tests cannot qualify cold SDK'))
         helper._launch = lambda *args: launches.append(args)
-        os.environ.pop(helper.ENV, None)
-        check('default OFF does not touch tensor metadata', helper.prepare(object(), object(), object(), 8, None, None) is None)
+        os.environ[helper.ENV] = '0'
+        check('explicit OFF does not touch tensor metadata', helper.prepare(object(), object(), object(), 8, None, None) is None)
         os.environ[helper.ENV] = '1'
         for permuted in (False, True):
             runner = setup(permuted)
@@ -325,13 +313,13 @@ def main():
     if 'torch' in sys.modules or 'triton' in sys.modules:
         raise RuntimeError('run in a fresh CPU-only interpreter')
     helper = load('_gather_cpu_helper', ROOT / 'vllm_fl/patches/biv150_dynamic_hidden_gather.py')
-    transform = sources(helper)
+    runner_digest = sources(helper)
     bounds_and_bits(helper)
     if args.arrays: fake_receipts(helper)
     check('Torch/Triton never imported', 'torch' not in sys.modules and 'triton' not in sys.modules)
     report = dict(completed=True, errors=[], CPU_only=True, GPU_executed=False,
                   device_numeric_verified=False, service_verified=False, performance_measured=False,
-                  base=transform['base'], runner_sha256=transform['runner_sha256'],
+                  runner_sha256=runner_digest,
                   checks=CHECKS, count=len(CHECKS), arrays=args.arrays,
                   script_sha256=sha(Path(__file__).read_bytes()),
                   helper_sha256=sha(Path(helper.__file__).read_bytes()), kernel_sha256=helper._KERNEL_SHA)

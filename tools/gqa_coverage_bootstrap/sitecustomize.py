@@ -22,7 +22,7 @@ if os.environ.get("BIV150_GQA_COVERAGE_DIR"):
             @functools.wraps(original)
             def install():
                 result = original()
-                if result.get("installed") and not result.get("already"):
+                if result.get("installed") and result.get("scope") != "already installed":
                     from biv150_gqa_coverage import install as observe
 
                     observe(os.environ["BIV150_GQA_COVERAGE_DIR"])
@@ -35,11 +35,11 @@ if os.environ.get("BIV150_GQA_COVERAGE_DIR"):
 
     class Finder(importlib.abc.MetaPathFinder):
         def find_spec(self, fullname, path=None, target=None):
-            if fullname != "vllm_fl.patches.biv150_native_w8a8":
+            if fullname != "vllm_fl.patches.biv150_gqa_decode":
                 return None
             spec = importlib.machinery.PathFinder.find_spec(fullname, path, target)
             if spec is None or spec.loader is None:
-                raise ImportError("Native operator source missing")
+                raise ImportError("GQA operator source missing")
             spec.loader = Loader(spec.loader)
             sys.meta_path.remove(self)
             return spec

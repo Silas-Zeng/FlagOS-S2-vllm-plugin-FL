@@ -11,9 +11,38 @@ from pathlib import Path
 
 PINS = {
     "vllm_fl.compilation.graph": "ba78ed0a736bb21a4f2c307fc9775f15e3742b94533eff333b0c364eb8213fc2",
-    "vllm_fl.worker.model_runner": "677def25d5391887145b0bbabb2222531887c6f7c48b6ea53c1859ad08d8ef61",
+    "vllm_fl.worker.model_runner": "a478883e87addd87302fee5c8d331dad42f8279be9212283fb4539bf34335a16",
     "vllm_fl.patches.biv150_gqa_decode": "2596cc09caf9b5b38b49755ae9af41ebdcf59a1d5ad889fc8e9319d1584438d1",
 }
+
+
+def analyze(trace):
+    verdict = dict(diagnostic_only=True, errors=trace["errors"], phases={})
+    for phase in ("score-4096", "score-16384"):
+        counts = trace["replays"].get(phase, {})
+        b40, launches, unknown = 0, 0, []
+        for key, count in counts.items():
+            entry = trace["entries"].get(key)
+            if entry is None:
+                unknown.append(key)
+                continue
+            gqa = entry["gqa_grids"]
+            if not gqa:
+                unknown.append(key)
+            hits = sum(x["calls"] for x in gqa.values() if x["grid"] == [40, 2, 16])
+            if hits:
+                b40 += count
+                launches += count * hits
+        eager = trace["eager_gqa"].get(phase, {}).get("[40, 2, 16]", 0)
+        verdict["phases"][phase] = dict(
+            full_graph_replays=sum(counts.values()),
+            b40_full_graph_replays=b40,
+            b40_graph_kernel_launches=launches,
+            b40_eager_kernel_launches=eager,
+            b40_selected=b40 + eager > 0,
+            unmapped_entries=unknown,
+        )
+    return verdict
 
 
 def atomic_json(path, value):
