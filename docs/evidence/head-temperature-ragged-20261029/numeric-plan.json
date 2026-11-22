@@ -1,0 +1,71 @@
+{
+  "baseline": "actual F.linear + unchanged complete original Sampler",
+  "candidate": "unchanged BF16 head kernel + original PreScaledSampler temperature ticket",
+  "gpu_executed": false,
+  "historical_qualification_transferred": false,
+  "numerical": "old ten gates plus row-varying positive temperature; FP64 sample .001/.01 upgraded to all real rows x five original columns",
+  "pending": [
+    "fresh IR/hints/resources independent review",
+    "new-row numerical/sampling/RNG independent review",
+    "service",
+    "105",
+    "throughput"
+  ],
+  "prerequisites": [
+    "Root exclusive acknowledgement",
+    "source exact commit/clean",
+    "port9031 closed",
+    "free memory>=30000MiB and visible existing process refusal",
+    "private copied exact tuning snapshot",
+    "all actual SDK source pins",
+    "actual baseline configuration matches one stated original tile"
+  ],
+  "rows": {
+    "31": {
+      "BLOCK_K": 64,
+      "BLOCK_M": 32,
+      "BLOCK_N": 64,
+      "grid": [
+        2040,
+        1
+      ],
+      "num_stages": 1,
+      "num_warps": 8
+    },
+    "41": {
+      "BLOCK_K": 32,
+      "BLOCK_M": 64,
+      "BLOCK_N": 256,
+      "grid": [
+        510,
+        1
+      ],
+      "num_stages": 2,
+      "num_warps": 16
+    },
+    "42": {
+      "BLOCK_K": 32,
+      "BLOCK_M": 64,
+      "BLOCK_N": 256,
+      "grid": [
+        510,
+        1
+      ],
+      "num_stages": 2,
+      "num_warps": 16
+    },
+    "43": {
+      "BLOCK_K": 32,
+      "BLOCK_M": 64,
+      "BLOCK_N": 256,
+      "grid": [
+        510,
+        1
+      ],
+      "num_stages": 2,
+      "num_warps": 16
+    }
+  },
+  "tail_guards": "full storage CPU authority SHA/boundary snapshots; no GPU negative/advanced canary indexing",
+  "timing": "one warmed eager ABBA, 8 complete head+Sampler calls per arm; original timed_batch byte-identical; production-sized output allocations in timing"
+}

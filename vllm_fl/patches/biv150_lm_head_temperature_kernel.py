@@ -1,4 +1,4 @@
-"""仅原BF16 head store前融合温度；原dot/寻址/流水代码逐字保留。"""
+"""Aligned分支保留原head；ragged显式mask，原dot与温度舍入不变。"""
 import triton
 import triton.language as tl
 
@@ -26,6 +26,7 @@ def head_temperature_kernel(
     GROUP_M: tl.constexpr,
     SPLIT_K: tl.constexpr,
     EVEN_K: tl.constexpr,
+    RAGGED_M: tl.constexpr = False,
 ):
     pid = tl.program_id(0)
     pid_z = tl.program_id(1)
@@ -39,7 +40,10 @@ def head_temperature_kernel(
 
     rm = pid_m * BLOCK_M + tl.arange(0, BLOCK_M)
     rn = pid_n * BLOCK_N + tl.arange(0, BLOCK_N)
-    ram = tl.max_contiguous(tl.multiple_of(rm % M, BLOCK_M), BLOCK_M)
+    if RAGGED_M:
+        ram = rm
+    else:
+        ram = tl.max_contiguous(tl.multiple_of(rm % M, BLOCK_M), BLOCK_M)
     rbn = tl.max_contiguous(tl.multiple_of(rn % N, BLOCK_N), BLOCK_N)
     rk = pid_z * BLOCK_K + tl.arange(0, BLOCK_K)
 
@@ -49,7 +53,10 @@ def head_temperature_kernel(
 
     if EVEN_K:
         for _ in range(0, tl.cdiv(K, BLOCK_K * SPLIT_K)):
-            a = tl.load(A)
+            if RAGGED_M:
+                a = tl.load(A, mask=rm[:, None] < M, other=0)
+            else:
+                a = tl.load(A)
             b = tl.load(W)
             acc += tl.dot(a, b, allow_tf32=False)
             A += BLOCK_K * SPLIT_K * stride_ik
@@ -57,7 +64,10 @@ def head_temperature_kernel(
     else:
         loop_num = tl.cdiv(K, BLOCK_K * SPLIT_K) - 1
         for _ in range(0, loop_num):
-            a = tl.load(A)
+            if RAGGED_M:
+                a = tl.load(A, mask=rm[:, None] < M, other=0)
+            else:
+                a = tl.load(A)
             b = tl.load(W)
             acc += tl.dot(a, b, allow_tf32=False)
             A += BLOCK_K * SPLIT_K * stride_ik
@@ -65,7 +75,10 @@ def head_temperature_kernel(
 
         _0 = tl.zeros((1, 1), dtype=output_ptr.dtype.element_ty)
         k_remaining = K - loop_num * (BLOCK_K * SPLIT_K)
-        a = tl.load(A, mask=rk[None, :] < k_remaining, other=_0)
+        if RAGGED_M:
+            a = tl.load(A, mask=(rm[:, None] < M) & (rk[None, :] < k_remaining), other=_0)
+        else:
+            a = tl.load(A, mask=rk[None, :] < k_remaining, other=_0)
         b = tl.load(W, mask=rk[:, None] < k_remaining, other=_0)
         acc += tl.dot(a, b, allow_tf32=False)
 

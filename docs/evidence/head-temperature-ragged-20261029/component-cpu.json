@@ -1,0 +1,158 @@
+{
+  "CLI_refusals": [
+    {
+      "argv": [
+        "--run-gpu"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--worker"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--run-gpu",
+        "--root-owned-exclusive"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--row",
+        "31"
+      ],
+      "rejected_before_framework": true,
+      "tool": "bench_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--compile-only"
+      ],
+      "rejected_before_framework": true,
+      "tool": "compile_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--compile-only",
+        "--root-owned-exclusive"
+      ],
+      "rejected_before_framework": true,
+      "tool": "compile_biv150_head_temperature_ragged.py"
+    },
+    {
+      "argv": [
+        "--row",
+        "41"
+      ],
+      "rejected_before_framework": true,
+      "tool": "compile_biv150_head_temperature_ragged.py"
+    }
+  ],
+  "FP64_all_real_rows_five_columns": true,
+  "FP64_thresholds_unchanged": true,
+  "SDK_pin_count": 15,
+  "admission_refusals": 4,
+  "factory_actual_argument_cases": [
+    31,
+    41,
+    42,
+    43
+  ],
+  "fresh_IR_loaded_resources_numerics_RNG": false,
+  "gpu_executed": false,
+  "guard_CPU_complete_rows_and_cloned_boundaries": true,
+  "guard_layout": [
+    {
+      "padding": 4,
+      "row_bytes": 4,
+      "rows": 31
+    },
+    {
+      "padding": 1,
+      "row_bytes": 4096,
+      "rows": 31
+    },
+    {
+      "padding": 1,
+      "row_bytes": 522240,
+      "rows": 31
+    },
+    {
+      "padding": 4,
+      "row_bytes": 4,
+      "rows": 41
+    },
+    {
+      "padding": 1,
+      "row_bytes": 4096,
+      "rows": 41
+    },
+    {
+      "padding": 1,
+      "row_bytes": 522240,
+      "rows": 41
+    },
+    {
+      "padding": 4,
+      "row_bytes": 4,
+      "rows": 42
+    },
+    {
+      "padding": 1,
+      "row_bytes": 4096,
+      "rows": 42
+    },
+    {
+      "padding": 1,
+      "row_bytes": 522240,
+      "rows": 42
+    },
+    {
+      "padding": 4,
+      "row_bytes": 4,
+      "rows": 43
+    },
+    {
+      "padding": 1,
+      "row_bytes": 4096,
+      "rows": 43
+    },
+    {
+      "padding": 1,
+      "row_bytes": 522240,
+      "rows": 43
+    }
+  ],
+  "legacy_check_AST_unchanged_except_additional_canary": true,
+  "legacy_numeric_helpers_AST_unchanged": [
+    "save",
+    "worker.head",
+    "worker.bits",
+    "worker.rng",
+    "worker.reset",
+    "worker.equal_rng",
+    "worker.complete_a",
+    "worker.complete_b",
+    "worker.observe"
+  ],
+  "original_sampler_proxy_AST_unchanged": true,
+  "original_timing_helper_byte_identical": true,
+  "pad48_factory_rejected": true,
+  "row_varying_temperature_added": true,
+  "service_105_throughput": false,
+  "sources": {
+    "bench_biv150_head_temperature_ragged.py": "aa1a61e5451d3a5399a343b1fb64de80ce226bdc3e6963c75c3e417648752872",
+    "biv150_head_temperature_ragged_factory.py": "45176033db7f58e074b88f2e03d9396dac82f0a343d07401d6639c9b1758ea6c",
+    "biv150_head_temperature_ragged_timing.py": "6f0b86e84134e5e4c1efb43caa4bdc4cea135ee28aefa8e2a9f5b1af54d50e34",
+    "biv150_head_temperature_ragged_worker.py": "5d6c426b76b59673a419476b3e7f7f00cc7461451d4bfd8d625f69d37dd167fa",
+    "check_biv150_head_temperature_ragged_component_cpu.py": "394a3bd432e7345e0d6eb5d044d9c1ebd58f74cea9436aaaffdfe3b5d6d0efdb",
+    "check_biv150_head_temperature_ragged_cpu.py": "c7c988f0fe6984fbfacc22aca676a9c3bc4c1097de9565a3f4669fb9274ece52",
+    "compile_biv150_head_temperature_ragged.py": "3e5289b1259149e18352d04a375f836fa2a80e19eb678e0366293e34b2cec4e1"
+  }
+}

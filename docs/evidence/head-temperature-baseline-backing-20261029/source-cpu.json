@@ -1,0 +1,205 @@
+{
+  "actual_SDK_admission_tested": false,
+  "address_enumeration": [
+    {
+      "RAGGED_M": true,
+      "active_stores": 31,
+      "repeated_read_rows": 0,
+      "rows": 31,
+      "temperature_masked_rows": 1,
+      "tile_rows": 32,
+      "zero_filled_inactive_read_rows": 1
+    },
+    {
+      "RAGGED_M": false,
+      "active_stores": 32,
+      "repeated_read_rows": 0,
+      "rows": 32,
+      "temperature_masked_rows": 0,
+      "tile_rows": 32,
+      "zero_filled_inactive_read_rows": 0
+    },
+    {
+      "RAGGED_M": true,
+      "active_stores": 41,
+      "repeated_read_rows": 0,
+      "rows": 41,
+      "temperature_masked_rows": 23,
+      "tile_rows": 64,
+      "zero_filled_inactive_read_rows": 23
+    },
+    {
+      "RAGGED_M": true,
+      "active_stores": 42,
+      "repeated_read_rows": 0,
+      "rows": 42,
+      "temperature_masked_rows": 22,
+      "tile_rows": 64,
+      "zero_filled_inactive_read_rows": 22
+    },
+    {
+      "RAGGED_M": true,
+      "active_stores": 43,
+      "repeated_read_rows": 0,
+      "rows": 43,
+      "temperature_masked_rows": 21,
+      "tile_rows": 64,
+      "zero_filled_inactive_read_rows": 21
+    },
+    {
+      "RAGGED_M": false,
+      "active_stores": 64,
+      "repeated_read_rows": 0,
+      "rows": 64,
+      "temperature_masked_rows": 0,
+      "tile_rows": 64,
+      "zero_filled_inactive_read_rows": 0
+    }
+  ],
+  "compiler_hint_validity": "unsafe ragged row hints removed; fresh masked IR/device behavior still pending",
+  "gpu_executed": false,
+  "historical_original_only": [
+    {
+      "original_ten_gates_passed": true,
+      "rows": 32,
+      "sha256": "09144fc7d777e27f02132288670f3e6d1a944051e2129600e5d49ee84d1bd265"
+    },
+    {
+      "original_ten_gates_passed": true,
+      "rows": 64,
+      "sha256": "1292b3c8a82e4722b26c27b2f874aa8c8d41b3f2066844d7049051fca329bfe1"
+    }
+  ],
+  "kernel_bytes_unchanged": false,
+  "kernel_specialization": {
+    "aligned_false_specialization_AST_matches_original": true,
+    "compiled_IR_or_numerics_verified": false,
+    "dot_weight_load_loop_and_rounding_AST_unchanged": true,
+    "explicit_ragged_input_loads": 3,
+    "new_kernel_sha256": "15a599098fa4bc5ff61c28cff143e9459e2eca592c0beafeda7189246b87025c",
+    "non_even_K_tail_combines_original_K_mask": true,
+    "original_kernel_sha256": "4c800693a2ae134fc580382d4166091b4c48e96dc2b7838ab417da7094cb2537",
+    "ragged_A_loads_row_masked_with_zero": true,
+    "ragged_ram_is_true_rm": true,
+    "ragged_true_only_address_and_load_masks_changed": true,
+    "whole_kernel_bytes_unchanged": false
+  },
+  "launch_errors_propagated": true,
+  "launcher_source_inverse_to_main": true,
+  "main": "a455a3de364051fbea80226870c239de3a48e716",
+  "numerical_or_RNG_qualification": false,
+  "protocol": [
+    {
+      "grid": [
+        2040,
+        1
+      ],
+      "original_argument_identity": true,
+      "rows": 31,
+      "stale_and_grammar_fallback": true
+    },
+    {
+      "grid": [
+        2040,
+        1
+      ],
+      "original_argument_identity": true,
+      "rows": 32,
+      "stale_and_grammar_fallback": true
+    },
+    {
+      "grid": [
+        510,
+        1
+      ],
+      "original_argument_identity": true,
+      "rows": 41,
+      "stale_and_grammar_fallback": true
+    },
+    {
+      "grid": [
+        510,
+        1
+      ],
+      "original_argument_identity": true,
+      "rows": 42,
+      "stale_and_grammar_fallback": true
+    },
+    {
+      "grid": [
+        510,
+        1
+      ],
+      "original_argument_identity": true,
+      "rows": 43,
+      "stale_and_grammar_fallback": true
+    },
+    {
+      "grid": [
+        510,
+        1
+      ],
+      "original_argument_identity": true,
+      "rows": 64,
+      "stale_and_grammar_fallback": true
+    }
+  ],
+  "refusals": [
+    "greedy",
+    "penalties",
+    "top_k",
+    "request_count",
+    "prompt_logprobs",
+    "temperature_shape",
+    "capture"
+  ],
+  "routes": [
+    {
+      "accepted": [
+        32,
+        64
+      ],
+      "flag": null
+    },
+    {
+      "accepted": [
+        32,
+        64
+      ],
+      "flag": "0"
+    },
+    {
+      "accepted": [
+        31,
+        32,
+        41,
+        42,
+        43,
+        64
+      ],
+      "flag": "1"
+    },
+    {
+      "accepted": [
+        32,
+        64
+      ],
+      "flag": "true"
+    },
+    {
+      "accepted": [
+        32,
+        64
+      ],
+      "flag": "2"
+    }
+  ],
+  "scope_change_prelaunch_rejected": true,
+  "source_sha256": "8575202eeb5613e2919a8e023ee3840438d305821d621226a86b5284f40e1fa0",
+  "standalone_fingerprint": {
+    "head_off_masks_ragged": true,
+    "no_framework_import": true,
+    "one_changes_hash": true,
+    "unset_equals_zero": true
+  }
+}
