@@ -1,0 +1,53 @@
+{
+  "Python": "3.12",
+  "Python_library": "NumPy",
+  "code_dependency_in_tested_tree": {
+    "path": "docs/evidence/native-k8-compact-device-v1-20261028/consumer-root-replay.py",
+    "sha256": "a1e30ce992c911b0547f80537f56b1f71415d39b7c0ba91329f6a3d66a802c86"
+  },
+  "compact_consumer_original_summary_sha256": "9d2bcd2f803626fca16aae5c73533ce1436d8bb98010f00fa6583061dfa90df8",
+  "external_data": {
+    "compact_compile_raw": {
+      "bytes": 1410090,
+      "complete_data_Git_shared_by_this_commit": false,
+      "download_manifest_sha256": "34591993b40f479b4af9696ae45fd2e5a8df5b5e370680002d3c6f4e01df3ee4",
+      "files": 33,
+      "path": "/private/tmp/cjj-native-k8-compact-compile-v1-raw-20261028"
+    },
+    "compact_consumer_raw": {
+      "bytes": 32787475,
+      "complete_data_Git_shared_by_this_commit": false,
+      "download_manifest_sha256": "cb8596508959a05f5a24f31f62a18989f37e57229881cc8c205a151cf3218e52",
+      "files": 138,
+      "path": "/private/tmp/cjj-native-k8-compact-consumer-v1-raw-20261028"
+    },
+    "original_codec_raw": {
+      "bytes": 496437,
+      "complete_data_Git_shared_by_this_commit": false,
+      "download_manifest_sha256": "5b4656627ceaaf13884e52534192171e9c902229e5a993a3cb003ae3906e3027",
+      "files": 39,
+      "path": "/private/tmp/cjj-native-k8-codec-v1-raw-20261028"
+    }
+  },
+  "framework_imports_or_JIT_or_GPU_required": false,
+  "original_consumer_summary_sha256": "c2e13e3766172e9b74342bbcf48b1b4729d1b9604bc249b6974740f7f90cc128",
+  "readonly_library_bytes": {
+    "compact40f9": {
+      "path": "/private/tmp/cjj-native-k8-compact-compile-v1-raw-20261028/out/build/cjj_native_k8_compact_probe.so",
+      "sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453"
+    },
+    "original22e_codec_comparison": {
+      "path": "/private/tmp/cjj-native-k8-compile-v1-raw-20261028/out/build/cjj_native_k8_qk_probe.so",
+      "sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd"
+    }
+  },
+  "required_git_objects": {
+    "BF16_source_parent": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+    "actual_compact_writer": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+    "later_normal_merge_base": "faf88f56ee6b0c11eaac2f1a0c59c2fbae488c1e",
+    "main_in_that_merge": "a455a3de364051fbea80226870c239de3a48e716",
+    "original_reference_tree": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "tested_component": "fa92060af9399e60938ddee6dd7e0a603610cd8c"
+  },
+  "scope": "Code and small manifests are preserved; complete external array/compile archives remain required for numerical replay"
+}

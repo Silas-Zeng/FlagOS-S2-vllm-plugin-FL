@@ -1,0 +1,116 @@
+{
+  "actual_SO_IR_sha256": "2f56b8134ee44e90a2a3a389aed4873c1a462b45373fe33bd101b28b55c8be0f",
+  "actual_SO_SASS_sha256": "32a5272d47b0fc55b0feb567d65b35130fcb804c90b50977b155bb70fe817b0e",
+  "actual_codec_preserved": true,
+  "actual_compact_addresses_and_SME_descriptor_verified": true,
+  "actual_machine_code_bound_to_SO": true,
+  "actual_wait_tail_QK_PV_math_verified": true,
+  "compile_summary_sha256": "afde593f86214cb9aa67aabf796b6ac6e36174892cc63fd9f87c9f4bd35a5d70",
+  "inspection_sha256": "328efdd3a7038a6b5701e3fc1bdcfc5294e171bf8b61d88f210230dc0e4a0c49",
+  "library_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+  "notes": "Root independently reran actual SO audit36a00cdd4a3defd80a25d5de1eecf4923b81aacbf63e0dd747dc2188222afa2e: 2762 SASS instructions bound to40f9, actual IR/page strides and SME512 verified, external V4352 applied once from exact source/guard binding, scale4096 internal once, unchanged wait/tail/math and codec machine text. x86 host was not disassembled. Numeric/GPU/performance qualification pending.",
+  "reviewer": "CJJ1008",
+  "source_proof": {
+    "N40_S4_supported": false,
+    "N40_policy_S16_unchanged": true,
+    "V_preoffset_bytes": 4352,
+    "actual_SO_IR_SASS_verified": false,
+    "actual_compile_verified": false,
+    "actual_epoch_binding": false,
+    "address_proof": {
+      "SME_full_footprint_each_head_bytes": 4096,
+      "SME_row_pitch_bytes": 512,
+      "complete_page_bytes": 12544,
+      "key_bytes": 4096,
+      "last_value_byte": 12543,
+      "page_arithmetic_signed_I64": true,
+      "page_edge_ids": [
+        0,
+        1,
+        32767,
+        2147483646
+      ],
+      "reserved_bytes": 128,
+      "scale_bytes": 128,
+      "value_bytes": 8192
+    },
+    "capacity_reclaimed": false,
+    "compact_reference": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+    "compact_source_pins": {
+      "vllm_fl/patches/biv150_konly_compact_runtime.py": "ddfb92304e13b0d1b1b79f86574b95c168c775594b497372dfeae1542a05c9be",
+      "vllm_fl/patches/biv150_konly_compact_spec.py": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528",
+      "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+    },
+    "device_address_edits": 3,
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+        "variant_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+        "variant_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "variant_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d"
+      }
+    },
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "host_typed_layout_edits": 5,
+    "main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "namespace": "cjj_native_k8_compact_probe",
+    "numeric_bitexact_verified": false,
+    "original_parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_source_proof": {
+      "PV_online_and_partial_output_unchanged": true,
+      "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+      "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+      "codec_actual_IR_verified": false,
+      "device_compiled": false,
+      "inverse_byte_exact": true,
+      "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+      "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+      "reducer_source_not_modified": true
+    },
+    "performance_verified": false,
+    "scope": [
+      "N64/S2",
+      "N32/S4"
+    ],
+    "service_installed": false,
+    "shared_K_bytes": [
+      0,
+      2048
+    ],
+    "shared_V_bytes": [
+      4096,
+      8192
+    ],
+    "shared_bytes": 8192,
+    "wait_tail_Qcodec_QK_BF16P_PV_reducer_math_unchanged": true
+  },
+  "static_resources": {
+    "S2": {
+      "private_segment_bytes": 0,
+      "sgpr": 66,
+      "sgpr_spills": 0,
+      "shared_bytes": 8192,
+      "vgpr": 100,
+      "vgpr_spills": 0
+    },
+    "S4": {
+      "private_segment_bytes": 0,
+      "sgpr": 66,
+      "sgpr_spills": 0,
+      "shared_bytes": 8192,
+      "vgpr": 100,
+      "vgpr_spills": 0
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,113 @@
+{
+  "CUDA_initialization": false,
+  "actual_extension_gpu_ELFs": [
+    {
+      "kernels": [
+        {
+          ".group_segment_fixed_size": 8192,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 144,
+          ".max_flat_workgroup_size": 0,
+          ".name": "_Z34corex_native_k8_gqa_producer_draftILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 68,
+          ".sgpr_spill_count": 0,
+          ".symbol": "_Z34corex_native_k8_gqa_producer_draftILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+          ".vgpr_count": 100,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        },
+        {
+          ".group_segment_fixed_size": 8192,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 144,
+          ".max_flat_workgroup_size": 0,
+          ".name": "_Z34corex_native_k8_gqa_producer_draftILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 68,
+          ".sgpr_spill_count": 0,
+          ".symbol": "_Z34corex_native_k8_gqa_producer_draftILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_.kd",
+          ".vgpr_count": 100,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        }
+      ],
+      "sha256": "b31dfe8515fe031f23947c234194ee1de5ddfdcbe3e50a74b3060eee63f56a0c",
+      "text_bytes": 21952,
+      "text_sha256": "12eb342cc597f62bdef39416ee0d9f241c6897cfdfa0fe41ba413e22f17cf3fb"
+    },
+    {
+      "kernels": [
+        {
+          ".group_segment_fixed_size": 0,
+          ".kernarg_segment_align": 8,
+          ".kernarg_segment_size": 28,
+          ".max_flat_workgroup_size": 0,
+          ".name": "_Z25cjj_native_k8_codec_probePK13__ix_bfloat16PaPfi",
+          ".private_segment_fixed_size": 0,
+          ".sgpr_count": 24,
+          ".sgpr_spill_count": 0,
+          ".symbol": "_Z25cjj_native_k8_codec_probePK13__ix_bfloat16PaPfi.kd",
+          ".vgpr_count": 8,
+          ".vgpr_spill_count": 0,
+          ".warp_size": 64
+        }
+      ],
+      "sha256": "c96e3b67f98d6ead1c713dba45805a089087d3c55441b33cdd2e006a1f73a097",
+      "text_bytes": 944,
+      "text_sha256": "936ce115af95401dda3a37cf310b62baa606003a18910ff46de4707fbaba19cf"
+    }
+  ],
+  "all_collector_and_compile_manifest_hashes_verified": true,
+  "device_launches": 0,
+  "difference": "Extension adds Torch includes/defines, ABI flags, -cl-single-precision-constant, -mllvm bonus-inst-threshold=0/skip-double, -fclang-abi-compat=16; standalone LLVM is not extension-object IR.",
+  "extension_embedded_gpu_code_identical_to_object": true,
+  "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "model_verified": false,
+  "numerical_device_verified": false,
+  "original_bytes": 906281,
+  "original_files": 28,
+  "performance_measured": false,
+  "precision_gate": false,
+  "resources_scope": "Actual embedded binary metadata only, no loaded-handle/postlaunch observation or occupancy claim",
+  "source_transform": {
+    "PV_online_and_partial_output_unchanged": true,
+    "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+    "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+    "codec_actual_IR_verified": false,
+    "device_compiled": false,
+    "inverse_byte_exact": true,
+    "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+    "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+    "reducer_source_not_modified": true
+  },
+  "standalone_and_extension_compiler_flags_identical": false,
+  "standalone_codec": {
+    "backend": "rcp plus quotient/error FMA correction and class selection; no lone rcp claim",
+    "bit_exact_RN32_FTZ_device_conformance": false,
+    "explicit_RNE_conversions": 2,
+    "unflagged_F32_divides": 3
+  },
+  "standalone_llvm_profiles": [
+    {
+      "static_counts": {
+        "BF16_PV": 16,
+        "fdiv": 18,
+        "rne": 16,
+        "signed_C_to_F32": 4,
+        "signed_I8_QK": 8
+      },
+      "symbol": "_Z34corex_native_k8_gqa_producer_draftILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "static_counts": {
+        "BF16_PV": 16,
+        "fdiv": 18,
+        "rne": 16,
+        "signed_C_to_F32": 4,
+        "signed_I8_QK": 8
+      },
+      "symbol": "_Z34corex_native_k8_gqa_producer_draftILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "Graph_untested": true,
+  "active_full_elements": 221184,
+  "all34_original_SHA_verified": true,
+  "all_full_readonly_bytes_match": true,
+  "conclusion": "Independent page-by-page BF16 probability cast explains partial discrepancy; old FP64 proxy failure remains.",
+  "final_output_untested": true,
+  "no_device_execution": true,
+  "pagewise_BF16_P_FP64": {
+    "finite": true,
+    "maximum_absolute_error": 2.4667626927765696e-06,
+    "passed": true,
+    "pointwise_005": true,
+    "relative_RMSE": 3.965681533237753e-08,
+    "relative_RMSE_005": true
+  },
+  "precision_gate": false,
+  "producer_calls": 1,
+  "raw_FP64_proxy": {
+    "finite": true,
+    "maximum_absolute_error": 0.02647874583792209,
+    "passed": false,
+    "pointwise_005": false,
+    "relative_RMSE": 0.0012921875567715507,
+    "relative_RMSE_005": true
+  },
+  "raw_FP64_proxy_pointwise_violations": 4080,
+  "reducer_calls": 0,
+  "source_kernel_unchanged": true,
+  "unrounded_pagewise_equals_original_FP64_max_error": 1.021405182655144e-14,
+  "worst": [
+    {
+      "actual": 7.235555171966553,
+      "index": [
+        49,
+        8,
+        1,
+        75
+      ],
+      "original_FP64": 7.262033917804475,
+      "pagewise_BF16_P": 7.235555285487546,
+      "residual": -1.1352099349437594e-07
+    },
+    {
+      "actual": 7.345905303955078,
+      "index": [
+        31,
+        5,
+        0,
+        79
+      ],
+      "original_FP64": 7.320616207613634,
+      "pagewise_BF16_P": 7.345904943502419,
+      "residual": 3.6045265883188904e-07
+    },
+    {
+      "actual": -1.3162493705749512,
+      "index": [
+        31,
+        6,
+        0,
+        44
+      ],
+      "original_FP64": -1.2917078188399742,
+      "pagewise_BF16_P": -1.31624933237394,
+      "residual": -3.820101124318853e-08
+    },
+    {
+      "actual": 1.3621268272399902,
+      "index": [
+        15,
+        0,
+        0,
+        91
+      ],
+      "original_FP64": 1.3391316023403412,
+      "pagewise_BF16_P": 1.362126707430929,
+      "residual": 1.198090613385716e-07
+    },
+    {
+      "actual": -1.84844970703125,
+      "index": [
+        50,
+        1,
+        0,
+        95
+      ],
+      "original_FP64": -1.871036288594758,
+      "pagewise_BF16_P": -1.84844970703125,
+      "residual": 0.0
+    },
+    {
+      "actual": -2.456611156463623,
+      "index": [
+        48,
+        14,
+        0,
+        82
+      ],
+      "original_FP64": -2.4340746253607444,
+      "pagewise_BF16_P": -2.4566111769320047,
+      "residual": 2.046838165625786e-08
+    },
+    {
+      "actual": 1.324077844619751,
+      "index": [
+        32,
+        10,
+        0,
+        108
+      ],
+      "original_FP64": 1.3015867809479387,
+      "pagewise_BF16_P": 1.3240779453669878,
+      "residual": -1.007472367753337e-07
+    },
+    {
+      "actual": -0.7960219383239746,
+      "index": [
+        15,
+        5,
+        1,
+        123
+      ],
+      "original_FP64": -0.8182375819798051,
+      "pagewise_BF16_P": -0.7960218352856478,
+      "residual": -1.0303832675973013e-07
+    },
+    {
+      "actual": -0.15929865837097168,
+      "index": [
+        47,
+        10,
+        0,
+        34
+      ],
+      "original_FP64": -0.18149024376330414,
+      "pagewise_BF16_P": -0.15929865110686414,
+      "residual": -7.264107537707787e-09
+    },
+    {
+      "actual": 2.2058193683624268,
+      "index": [
+        47,
+        2,
+        0,
+        33
+      ],
+      "original_FP64": 2.2279671575703484,
+      "pagewise_BF16_P": 2.205819390253134,
+      "residual": -2.1890707024851963e-08
+    },
+    {
+      "actual": 3.57940673828125,
+      "index": [
+        14,
+        12,
+        1,
+        34
+      ],
+      "original_FP64": 3.5575166709176393,
+      "pagewise_BF16_P": 3.57940673828125,
+      "residual": 0.0
+    },
+    {
+      "actual": 5.4511027336120605,
+      "index": [
+        32,
+        12,
+        0,
+        72
+      ],
+      "original_FP64": 5.429219939024847,
+      "pagewise_BF16_P": 5.451102939459082,
+      "residual": -2.0584702120629572e-07
+    }
+  ]
+}

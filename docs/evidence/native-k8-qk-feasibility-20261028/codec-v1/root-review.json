@@ -1,0 +1,35 @@
+{
+  "CPU_only": true,
+  "all_original_SHA_verified": true,
+  "original_files": 39,
+  "source_commit": "38852f51a1c76fcba77470c7b226b226c8f56687",
+  "library_SHA": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "rows": 33,
+  "exact_codec_phases_replayed": [
+    {
+      "stage": "eagerA-after",
+      "pattern": "A",
+      "exact_complete_bytes": true
+    },
+    {
+      "stage": "graphB-after",
+      "pattern": "B",
+      "exact_complete_bytes": true
+    },
+    {
+      "stage": "eagerB-after",
+      "pattern": "B",
+      "exact_complete_bytes": true
+    },
+    {
+      "stage": "sideC-after",
+      "pattern": "C",
+      "exact_complete_bytes": true
+    }
+  ],
+  "graph_B_vs_new_eager_B_fullbits": true,
+  "host_admission_negative_cases": 6,
+  "attention_verified": false,
+  "model_qualification_transferred": false,
+  "performance_measured": false
+}
