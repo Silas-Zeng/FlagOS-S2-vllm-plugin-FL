@@ -1,0 +1,227 @@
+{
+  "complete": true,
+  "diagnostic_only": true,
+  "library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "source_sha256": "6d65de4c1e6cd051a2fa68cbe27460e3b7e9769f90f7855391e8f8aa02061487",
+  "oracle": "CPU-only quantization + INT64 dot + FP64 scaling; BF16 rounding and CPU SiLU",
+  "columns_per_half": 70,
+  "records": [
+    {
+      "rows": 1,
+      "stream": "default",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 1,
+      "stream": "side",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 2,
+      "stream": "default",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 2,
+      "stream": "side",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 3,
+      "stream": "default",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 3,
+      "stream": "side",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 4,
+      "stream": "default",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 4,
+      "stream": "side",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 8,
+      "stream": "default",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 8,
+      "stream": "side",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 0.0,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 16,
+      "stream": "default",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 3.814697265625e-06,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    },
+    {
+      "rows": 16,
+      "stream": "side",
+      "calls": 48,
+      "violations": 0,
+      "nonfinite_calls": 0,
+      "max_abs_error": 3.814697265625e-06,
+      "patterns": [
+        {
+          "name": "normal",
+          "output_hashes": 1
+        },
+        {
+          "name": "outlier",
+          "output_hashes": 1
+        }
+      ]
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,103 @@
+{
+  "command": [
+    "/usr/local/bin/vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "source": "/workspace/experiments/minicpm-s2/code/native-main-mixed-v1-20261025",
+  "commit": "0915f01d5efc2b31af65182ddb87e2d2f62bab0c",
+  "native_mode": "on",
+  "driver_sha256": "c89649bbe3bbb0c089e6aa16d6c16a920a838c6052d50f2469d8e852f5d85519",
+  "diagnostic_sha256": "13087caf97350595fbfa057ebfec36df5d434bed1f4c5380ab3b2022476a4c16",
+  "gate_library_sha256": "5cbb8853a81a4621efc936fa60b952391bed1b56408db1bad62d0031be573dbe",
+  "tuning_snapshot": [
+    {
+      "name": "TunedConfig_iluvatar_triton_3_2.db",
+      "source": "/root/.flaggems/config_cache/TunedConfig_iluvatar_triton_3_2.db",
+      "sha256": "5764f125233211d8ed8369f0bcdc6a08a58a00c9a3470bfaa36be0af7665ca55",
+      "bytes": 1605632,
+      "quick_check": "ok"
+    },
+    {
+      "name": "TunedConfig_iluvatar_triton_3_6.db",
+      "source": "/root/.flaggems/config_cache/TunedConfig_iluvatar_triton_3_6.db",
+      "sha256": "f104d9e10693dd0bd559e64bfd5706c5ee5192ced687dfe729444827a5f95562",
+      "bytes": 15671296,
+      "quick_check": "ok"
+    }
+  ],
+  "env": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_DISABLE_COMPILE_CACHE": "1",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/experiments/minicpm-s2/native-main-peer-mixed-on-v1-20261025/inductor-cache",
+    "TRITON_CACHE_DIR": "/workspace/experiments/minicpm-s2/native-main-peer-mixed-on-v1-20261025/triton-cache",
+    "FLAGGEMS_CACHE_DIR": "/workspace/experiments/minicpm-s2/native-main-peer-mixed-on-v1-20261025/flaggems-cache",
+    "BIV150_NATIVE_W8A8_LIBRARY": "/workspace/experiments/minicpm-s2/code/baseline-profiler-v2-20261025/build-native-w8a8/biv150_native_w8a8.so",
+    "VLLM_FL_BIV150_NATIVE_W8A8": "1"
+  },
+  "installations": {
+    "BIV150_NATIVE_W8A8_INSTALL": {
+      "installed": true,
+      "layers": [
+        "gate_up_proj"
+      ],
+      "min_rows": 17,
+      "compressed_only": true,
+      "skip_edge_layers": 4,
+      "fused_silu": true,
+      "activation_residual_rows": [
+        1,
+        16
+      ],
+      "cached_quantization_rows": [
+        17,
+        2048
+      ],
+      "cached_quantization_threads": 256,
+      "gate_operator": "gate_silu_auto"
+    },
+    "BIV150_Q_FRAGMENT_INSTALL": {
+      "installed": true,
+      "scope": "audited BI-V150 MiniCPM BF16 prefill Q fragment lifetime",
+      "binding": "normalization-over-gqa",
+      "temporary_ir": true
+    },
+    "BIV150_PREFILL_NORMALIZATION_INSTALL": {
+      "installed": true,
+      "scope": "audited BF16 causal MiniCPM prefill without sinks",
+      "backend_rebound": true,
+      "audited": {
+        "vllm.v1.attention.ops.triton_unified_attention": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+        "vllm.v1.attention.ops.triton_attention_helpers": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1"
+      },
+      "kernel_sha256": "0295ceff7472b60fbab69dda6557725e3bcb7ccb48aa841b1c1a13d8ec9cbb5d",
+      "initial_mass": 0
+    },
+    "BIV150_GQA_DECODE_INSTALL": {
+      "installed": true,
+      "scope": "BF16 MiniCPM pure-decode 3D only",
+      "rows": 8,
+      "page_size": 16,
+      "backend_rebound": true
+    },
+    "BIV150_MIXED_DECODE_INSTALLED": {
+      "installed": true,
+      "scope": "BF16 MiniCPM natural-prefix mixed Attention only",
+      "ordinary_mixed_dummy_may_split": true,
+      "accuracy": "mixed 2D to 3D remains unverified"
+    }
+  },
+  "kv_cache_lines": [
+    "(EngineCore pid=335404) INFO 10-25 20:16:19 [kv_cache_utils.py:2146] GPU KV cache size: 547,632 tokens"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "model": "minicpm",
+  "messages": [
+    {
+      "role": "system",
+      "content": "请严格按要求输出，不解释，不省略。"
+    },
+    {
+      "role": "user",
+      "content": "从1开始依次列出到128的每个整数。每个整数单独一行，全部列完，不要省略，不要添加其他文字。"
+    }
+  ],
+  "temperature": 0,
+  "max_tokens": 1024,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true
+  },
+  "return_token_ids": true
+}
