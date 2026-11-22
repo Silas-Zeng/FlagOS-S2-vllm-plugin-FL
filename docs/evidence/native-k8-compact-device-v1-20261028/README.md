@@ -1,0 +1,11 @@
+# Compact12544 actual SO and four-case reader equivalence
+
+Original compile c2ae0d7 generated library40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453; consumer51da6fd keeps the GPU/compile source unchanged. Root rehashed33 compile records and independently replayed the actual-SO check36a00cdd4a3defd80a25d5de1eecf4923b81aacbf63e0dd747dc2188222afa2e:2762 SASS instruction bytes bound,12544B page/512B SME/address offsets/wait/tail/maths checked.100VGPR/66SGPR/8192B shared/private0/spills0; codec actual text equals22e. Small complete compilation originals are archived here.
+
+Four cases (N64/S2 and N32/S4 × Q pitch2048/2560) pass implementation/full-field-bitwise/Graph/side gates with errors=[]. Root independently replayed all138 files/32787475B and the existing fixture/reference.96 pairs of complete O/M/L/final buffers are bitwise equal across original and compact arms;176 hard numerical checks,32 original BF16 final-output proxy checks,384 guard/padding and320 readonly checks pass.84 golden arrays regenerated with host FP64 maximum difference2.84e-14; this is host regeneration drift, not GPU comparison tolerance. Graph B precedes fresh eager B; actual changed inputs/outputs, side C, epochs1..3 and closed epoch are checked. The48 failed ideal-unrounded-partial diagnostics remain failures; they are separate from the required pagewise BF16-P hard gates.
+
+Root replay report SHAc8282b7d5a99086489f70b01752b5ca89d253006d70766cf70ea3d18dca7fb2b. The report includes CPU elapsed time, so repeating the same assertions changes that timing field and report hash. Complete consumer raw files remain in personal instance `/workspace/experiments/minicpm-s2/cjj-native-k8-compact-consumer-v1-20261028` and local `/private/tmp/cjj-native-k8-compact-consumer-v1-raw-20261028`; this Git directory includes summary/manifest/report/replay script, not the large consumer array payload.
+
+Qualification is limited to29 scattered physical pages, max context193,128B layer offset and one synthetic layer. No encoder/writer,42-layer allocation, recovered capacity, model quality, real service or timing result is granted. Physical page size falls23.4375%, but previously consumed K/V payload bytes are unchanged; no throughput gain is inferred.
+
+Compile archive SHA256: `7f4bc5abb44a5aec0b621eb5d8e5ae1054e96a833e59497892c24f6258bcf102`.

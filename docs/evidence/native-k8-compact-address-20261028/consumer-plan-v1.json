@@ -1,0 +1,228 @@
+{
+  "Graph_verified": false,
+  "N40_supported": false,
+  "attention_launches": 0,
+  "cache_pages": 29,
+  "capacity_reclaimed": false,
+  "cases": [
+    [
+      64,
+      2,
+      2048
+    ],
+    [
+      64,
+      2,
+      2560
+    ],
+    [
+      32,
+      4,
+      2048
+    ],
+    [
+      32,
+      4,
+      2560
+    ]
+  ],
+  "compact_compile_and_actual_SO_review_required": true,
+  "component": "compact12544 vs original22e full O/M/L/final consumer equivalence",
+  "default_imports_framework": false,
+  "eager_numeric_passed": false,
+  "encoder_launches": 0,
+  "full_field_bitwise_required": true,
+  "full_field_bitwise_verified": false,
+  "implementation_verified": false,
+  "layer_offset_bytes": 128,
+  "live_process_epoch_required": true,
+  "maximum_context": 193,
+  "model_verified": false,
+  "old_library_qualification_is_not_compact_qualification": true,
+  "original_BF16_proxy_passed": null,
+  "original_BF16_proxy_separate": true,
+  "original_library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "precision_gate": false,
+  "reducer_launches": 0,
+  "reference": {
+    "Graph_verified": false,
+    "V_offset_from_layer": 8192,
+    "all_query_head_scales_distinct": true,
+    "cache_pages": 29,
+    "cases": [
+      [
+        64,
+        2,
+        2048
+      ],
+      [
+        64,
+        2,
+        2560
+      ],
+      [
+        32,
+        4,
+        2048
+      ],
+      [
+        32,
+        4,
+        2560
+      ]
+    ],
+    "codec_actual_pass_required_before_Torch": true,
+    "component": "native K8 consumer plus original b3 reducer only",
+    "consumer_numeric_verified": false,
+    "default_CPU": true,
+    "encoder_launches": 0,
+    "final_output_hard_reference": "unchanged ideal quantized-score FP64",
+    "full128_nonperiodic_counter": true,
+    "golden": "CPU NumPy full128-D INT64 dot then dequantized FP64 softmax/PV, complete arrays",
+    "hard_gate": "finite + every absdiff<=.005+.005*abs(reference) + relative RMSE<=.005",
+    "kernel_or_dtype_changed": false,
+    "layer_byte_offset": 128,
+    "lengths": [
+      0,
+      1,
+      15,
+      16,
+      17,
+      31,
+      32,
+      33,
+      63,
+      64,
+      65,
+      127,
+      128,
+      129,
+      191,
+      192,
+      193
+    ],
+    "library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+    "maximum_context": 193,
+    "model_verified": false,
+    "native_compile": false,
+    "original_BF16_proxy_separate": true,
+    "original_v1_status": "failed; preserved",
+    "page_bytes": 16384,
+    "partial_ideal_diagnostic": "original ideal FP64, strict .005 metrics retained separately",
+    "partial_implementation_reference": "FP64 online page16, P RN32 then BF16 before PV, rescale old accumulator each page",
+    "phases": [
+      "eager A",
+      "capture A",
+      "changed Q/cache/table/length B + poison then graph before new eager B",
+      "side C"
+    ],
+    "precision_gate": false,
+    "reducer": "_reduce_partials",
+    "reducer_file": "vllm_fl/patches/biv150_gqa_decode.py",
+    "reducer_module_sha256": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "reference_version": "pagewise_BF16_P_v2",
+    "scale_full_base": true,
+    "service_installed": false,
+    "side_stream_verified": false,
+    "table_columns": 16,
+    "thresholds_changed": false,
+    "timing": null
+  },
+  "reference_source_pins": {
+    "biv150_native_k8_codec_fixture.py": "490034bfe77b69a22d6109a03f422b60883e7791bc0c48eceecb44c31019044d",
+    "biv150_native_k8_consumer_fixture.py": "1448f8e5bc6efa3941965a2bae9268f4eba48cc7468104871abb65a5d029b11c",
+    "biv150_native_k8_consumer_v2_fixture.py": "de650b4e1568a8a5288b6a19e0e53870bba257270ffbe365f5298ac75feec037",
+    "biv150_native_k8_pagewise_reference.py": "ac23913bdfa3f59025d2e66d09eee48da176f14fa8c41226e159bce1b9f5898a"
+  },
+  "reference_version": "pagewise_BF16_P_v2",
+  "scratch_backing_batch": 64,
+  "scratch_backing_segments": 16,
+  "service_installed": false,
+  "side_stream_verified": false,
+  "source_proof": {
+    "N40_S4_supported": false,
+    "N40_policy_S16_unchanged": true,
+    "V_preoffset_bytes": 4352,
+    "actual_SO_IR_SASS_verified": false,
+    "actual_compile_verified": false,
+    "actual_epoch_binding": false,
+    "address_proof": {
+      "SME_full_footprint_each_head_bytes": 4096,
+      "SME_row_pitch_bytes": 512,
+      "complete_page_bytes": 12544,
+      "key_bytes": 4096,
+      "last_value_byte": 12543,
+      "page_arithmetic_signed_I64": true,
+      "page_edge_ids": [
+        0,
+        1,
+        32767,
+        2147483646
+      ],
+      "reserved_bytes": 128,
+      "scale_bytes": 128,
+      "value_bytes": 8192
+    },
+    "capacity_reclaimed": false,
+    "compact_reference": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+    "compact_source_pins": {
+      "vllm_fl/patches/biv150_konly_compact_runtime.py": "ddfb92304e13b0d1b1b79f86574b95c168c775594b497372dfeae1542a05c9be",
+      "vllm_fl/patches/biv150_konly_compact_spec.py": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528",
+      "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+      "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+    },
+    "device_address_edits": 3,
+    "files": {
+      "codec.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+        "variant_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b"
+      },
+      "qk.cpp": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+        "variant_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761"
+      },
+      "qk.cu": {
+        "inverse_byte_exact": true,
+        "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "variant_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d"
+      }
+    },
+    "format": "cjj-konly-compact12544-rn32-rne-v1",
+    "host_typed_layout_edits": 5,
+    "main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "namespace": "cjj_native_k8_compact_probe",
+    "numeric_bitexact_verified": false,
+    "original_parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_source_proof": {
+      "PV_online_and_partial_output_unchanged": true,
+      "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+      "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+      "codec_actual_IR_verified": false,
+      "device_compiled": false,
+      "inverse_byte_exact": true,
+      "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+      "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+      "reducer_source_not_modified": true
+    },
+    "performance_verified": false,
+    "scope": [
+      "N64/S2",
+      "N32/S4"
+    ],
+    "service_installed": false,
+    "shared_K_bytes": [
+      0,
+      2048
+    ],
+    "shared_V_bytes": [
+      4096,
+      8192
+    ],
+    "shared_bytes": 8192,
+    "wait_tail_Qcodec_QK_BF16P_PV_reducer_math_unchanged": true
+  },
+  "thresholds_changed": false,
+  "timing": null
+}

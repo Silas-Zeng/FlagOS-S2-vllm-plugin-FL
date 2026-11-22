@@ -1,0 +1,619 @@
+{
+  "CPU_only": true,
+  "IR": [
+    {
+      "SME_512B_descriptor_lines": [
+        600,
+        1139
+      ],
+      "actual_IR_schedule_profile": {
+        "body_sha256": "6913baa7b440c5890833c3a4847b2c473ef1588d956e5e2023af77f26bf9f2ed",
+        "global_lines": [
+          23,
+          1627
+        ],
+        "paths": [
+          {
+            "K_barrier_lines_before_wait": [
+              593
+            ],
+            "K_global_I32_load_lines": [
+              563,
+              567,
+              571,
+              575,
+              579,
+              583,
+              587,
+              591
+            ],
+            "K_shared_I32_store_lines": [
+              564,
+              568,
+              572,
+              576,
+              580,
+              584,
+              588,
+              592
+            ],
+            "V_SME_lines": [
+              601,
+              602,
+              603,
+              604
+            ],
+            "V_block": "527",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 606,
+            "V_wait8_line": 605,
+            "path": "full"
+          },
+          {
+            "K_barrier_lines_before_wait": [
+              1132
+            ],
+            "K_global_I32_load_lines": [
+              934,
+              958,
+              982,
+              1009,
+              1036,
+              1063,
+              1090,
+              1117
+            ],
+            "K_shared_I32_store_lines": [
+              945,
+              969,
+              996,
+              1023,
+              1050,
+              1077,
+              1104,
+              1131
+            ],
+            "V_SME_lines": [
+              1140,
+              1141,
+              1142,
+              1143
+            ],
+            "V_block": "1062",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 1145,
+            "V_wait8_line": 1144,
+            "path": "tail"
+          }
+        ],
+        "standalone_Vfirst": false,
+        "static_counts_full_plus_tail": {
+          "BF16_PV": 16,
+          "BF16_P_casts": 4,
+          "I8_QK": 8,
+          "L_FMA": 4,
+          "Q_integer_RNE": 16,
+          "exp2_approx": 8,
+          "signed_I32_to_F32": 4,
+          "unflagged_F32_divides": 18
+        },
+        "symbol": "_Z30cjj_native_k8_compact_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+      },
+      "addresses": [
+        {
+          "K_page_gep_line": 560,
+          "V_arg3_page_gep_line": 594,
+          "V_head_gep_line": 596,
+          "V_stride_equivalent_BF16": 6272,
+          "page_mul_line": 559,
+          "page_sext_line": 558,
+          "page_stride_bytes": 12544,
+          "path": "full",
+          "scale_arg2_page_gep_line": 631,
+          "scale_internal_4096B_once_line": 632,
+          "scale_stride_equivalent_F32": 3136
+        },
+        {
+          "K_page_gep_line": 919,
+          "V_arg3_page_gep_line": 1133,
+          "V_head_gep_line": 1135,
+          "V_stride_equivalent_BF16": 6272,
+          "page_mul_line": 918,
+          "page_sext_line": 917,
+          "page_stride_bytes": 12544,
+          "path": "tail",
+          "scale_arg2_page_gep_line": 1236,
+          "scale_internal_4096B_once_line": 1237,
+          "scale_stride_equivalent_F32": 3136
+        }
+      ],
+      "numeric_IR_equal_to_original_and_own_standalone": true,
+      "numeric_IR_lines": 291,
+      "numeric_alpha_SHA256": "a2bfd61e32fe13a6a2beac46e5f8751cfa3879f315c48bc47ac0c86c097ea8bc",
+      "segments": 2,
+      "source_line_offset": 23,
+      "symbol": "_Z30cjj_native_k8_compact_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "tail_and_output_slices": {
+        "final_PV_output_store": {
+          "alpha_SHA256": "d64b0ba3ab298e139a1dfcd7a8f8cde50c91236f2a4ed96ddd365a948d5858a0",
+          "integer_optimization_annotations_normalized": true,
+          "lines": 100,
+          "loop_metadata_semantics_verified": true,
+          "operand_sharing_and_control_predicates_preserved": true
+        },
+        "tail_clear": {
+          "alpha_SHA256": "4cf445638087d5b9ee02a9b3292eb3b9125726b761b1c71aa4f262fd799ee4d1",
+          "integer_optimization_annotations_normalized": true,
+          "lines": 59,
+          "loop_metadata_semantics_verified": true,
+          "operand_sharing_and_control_predicates_preserved": true
+        }
+      }
+    },
+    {
+      "SME_512B_descriptor_lines": [
+        2226,
+        2765
+      ],
+      "actual_IR_schedule_profile": {
+        "body_sha256": "7f7efd13304a078946273c693f4e37c3f0dbee08562a468fdf23f90a386ff52a",
+        "global_lines": [
+          1649,
+          3253
+        ],
+        "paths": [
+          {
+            "K_barrier_lines_before_wait": [
+              2219
+            ],
+            "K_global_I32_load_lines": [
+              2189,
+              2193,
+              2197,
+              2201,
+              2205,
+              2209,
+              2213,
+              2217
+            ],
+            "K_shared_I32_store_lines": [
+              2190,
+              2194,
+              2198,
+              2202,
+              2206,
+              2210,
+              2214,
+              2218
+            ],
+            "V_SME_lines": [
+              2227,
+              2228,
+              2229,
+              2230
+            ],
+            "V_block": "527",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 2232,
+            "V_wait8_line": 2231,
+            "path": "full"
+          },
+          {
+            "K_barrier_lines_before_wait": [
+              2758
+            ],
+            "K_global_I32_load_lines": [
+              2560,
+              2584,
+              2608,
+              2635,
+              2662,
+              2689,
+              2716,
+              2743
+            ],
+            "K_shared_I32_store_lines": [
+              2571,
+              2595,
+              2622,
+              2649,
+              2676,
+              2703,
+              2730,
+              2757
+            ],
+            "V_SME_lines": [
+              2766,
+              2767,
+              2768,
+              2769
+            ],
+            "V_block": "1062",
+            "V_dominates_all_K_loads_and_stores": false,
+            "V_post_wait_barrier_line": 2771,
+            "V_wait8_line": 2770,
+            "path": "tail"
+          }
+        ],
+        "standalone_Vfirst": false,
+        "static_counts_full_plus_tail": {
+          "BF16_PV": 16,
+          "BF16_P_casts": 4,
+          "I8_QK": 8,
+          "L_FMA": 4,
+          "Q_integer_RNE": 16,
+          "exp2_approx": 8,
+          "signed_I32_to_F32": 4,
+          "unflagged_F32_divides": 18
+        },
+        "symbol": "_Z30cjj_native_k8_compact_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+      },
+      "addresses": [
+        {
+          "K_page_gep_line": 2186,
+          "V_arg3_page_gep_line": 2220,
+          "V_head_gep_line": 2222,
+          "V_stride_equivalent_BF16": 6272,
+          "page_mul_line": 2185,
+          "page_sext_line": 2184,
+          "page_stride_bytes": 12544,
+          "path": "full",
+          "scale_arg2_page_gep_line": 2257,
+          "scale_internal_4096B_once_line": 2258,
+          "scale_stride_equivalent_F32": 3136
+        },
+        {
+          "K_page_gep_line": 2545,
+          "V_arg3_page_gep_line": 2759,
+          "V_head_gep_line": 2761,
+          "V_stride_equivalent_BF16": 6272,
+          "page_mul_line": 2544,
+          "page_sext_line": 2543,
+          "page_stride_bytes": 12544,
+          "path": "tail",
+          "scale_arg2_page_gep_line": 2862,
+          "scale_internal_4096B_once_line": 2863,
+          "scale_stride_equivalent_F32": 3136
+        }
+      ],
+      "numeric_IR_equal_to_original_and_own_standalone": true,
+      "numeric_IR_lines": 291,
+      "numeric_alpha_SHA256": "a2bfd61e32fe13a6a2beac46e5f8751cfa3879f315c48bc47ac0c86c097ea8bc",
+      "segments": 4,
+      "source_line_offset": 1649,
+      "symbol": "_Z30cjj_native_k8_compact_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_",
+      "tail_and_output_slices": {
+        "final_PV_output_store": {
+          "alpha_SHA256": "d64b0ba3ab298e139a1dfcd7a8f8cde50c91236f2a4ed96ddd365a948d5858a0",
+          "integer_optimization_annotations_normalized": true,
+          "lines": 100,
+          "loop_metadata_semantics_verified": true,
+          "operand_sharing_and_control_predicates_preserved": true
+        },
+        "tail_clear": {
+          "alpha_SHA256": "a76f772a8377deb1d2aa0776083769fc314321cf44e8cdfe4dba74c29d9f53d6",
+          "integer_optimization_annotations_normalized": true,
+          "lines": 59,
+          "loop_metadata_semantics_verified": true,
+          "operand_sharing_and_control_predicates_preserved": true
+        }
+      }
+    }
+  ],
+  "Root_approval_receipt_written": false,
+  "SO_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+  "all_decoded_instruction_words_bound_to_actual_SO": true,
+  "codec_actual_machine_text_equals_original22e": true,
+  "codec_text_sha256": "936ce115af95401dda3a37cf310b62baa606003a18910ff46de4707fbaba19cf",
+  "compile_binding": {
+    "actual_SO_IR_sha256": "2f56b8134ee44e90a2a3a389aed4873c1a462b45373fe33bd101b28b55c8be0f",
+    "actual_SO_SASS_sha256": "32a5272d47b0fc55b0feb567d65b35130fcb804c90b50977b155bb70fe817b0e",
+    "compile_summary_sha256": "afde593f86214cb9aa67aabf796b6ac6e36174892cc63fd9f87c9f4bd35a5d70",
+    "inspection_sha256": "328efdd3a7038a6b5701e3fc1bdcfc5294e171bf8b61d88f210230dc0e4a0c49",
+    "library_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+    "source_proof": {
+      "N40_S4_supported": false,
+      "N40_policy_S16_unchanged": true,
+      "V_preoffset_bytes": 4352,
+      "actual_SO_IR_SASS_verified": false,
+      "actual_compile_verified": false,
+      "actual_epoch_binding": false,
+      "address_proof": {
+        "SME_full_footprint_each_head_bytes": 4096,
+        "SME_row_pitch_bytes": 512,
+        "complete_page_bytes": 12544,
+        "key_bytes": 4096,
+        "last_value_byte": 12543,
+        "page_arithmetic_signed_I64": true,
+        "page_edge_ids": [
+          0,
+          1,
+          32767,
+          2147483646
+        ],
+        "reserved_bytes": 128,
+        "scale_bytes": 128,
+        "value_bytes": 8192
+      },
+      "capacity_reclaimed": false,
+      "compact_reference": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a",
+      "compact_source_pins": {
+        "vllm_fl/patches/biv150_konly_compact_runtime.py": "ddfb92304e13b0d1b1b79f86574b95c168c775594b497372dfeae1542a05c9be",
+        "vllm_fl/patches/biv150_konly_compact_spec.py": "85ed38389fc76e6c2a40ec17e7ba1ac93a3b3f99978c969506f55c3c33102528",
+        "vllm_fl/patches/biv150_konly_compact_views.py": "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e",
+        "vllm_fl/patches/biv150_konly_compact_writer.py": "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+      },
+      "device_address_edits": 3,
+      "files": {
+        "codec.cu": {
+          "inverse_byte_exact": true,
+          "parent_sha256": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+          "variant_sha256": "d713a00547cfb337ff32413ca6e92e3d8b010d6d82f277ee78005c2f3f82e14b"
+        },
+        "qk.cpp": {
+          "inverse_byte_exact": true,
+          "parent_sha256": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+          "variant_sha256": "ca74d8d1234c9fcfa4178ec111d139dc045f13a2a70f078f4ba86a2f307c8761"
+        },
+        "qk.cu": {
+          "inverse_byte_exact": true,
+          "parent_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+          "variant_sha256": "3bd67edd58f1ea822a908dcc9217aceeef93124a7e9e00e6d7815dcdffe7a81d"
+        }
+      },
+      "format": "cjj-konly-compact12544-rn32-rne-v1",
+      "host_typed_layout_edits": 5,
+      "main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+      "namespace": "cjj_native_k8_compact_probe",
+      "numeric_bitexact_verified": false,
+      "original_parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+      "parent_source_proof": {
+        "PV_online_and_partial_output_unchanged": true,
+        "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+        "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+        "codec_actual_IR_verified": false,
+        "device_compiled": false,
+        "inverse_byte_exact": true,
+        "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+        "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+        "reducer_source_not_modified": true
+      },
+      "performance_verified": false,
+      "scope": [
+        "N64/S2",
+        "N32/S4"
+      ],
+      "service_installed": false,
+      "shared_K_bytes": [
+        0,
+        2048
+      ],
+      "shared_V_bytes": [
+        4096,
+        8192
+      ],
+      "shared_bytes": 8192,
+      "wait_tail_Qcodec_QK_BF16P_PV_reducer_math_unchanged": true
+    }
+  },
+  "embedded_GPU_ELFs_equal_to_built_objects": true,
+  "host_contract": {
+    "host_machine_instructions_disassembled": false,
+    "host_source_V_preoffset_4352B_once": true,
+    "host_source_scale_same_fullbase": true,
+    "source_and_compiled_artifact_bound": true
+  },
+  "instructions_bound": 2762,
+  "limitations": [
+    "IR is the hash-bound actual-SO ixobjdump export with wrapped signatures; its display was not recompiled or independently decoded from LLVM bitcode.",
+    "Numerical equivalence uses 291-line arithmetic IR alpha equality plus source inverse, unchanged tail/output slices and machine CFG; this is not a device numeric result or a whole-program equivalence proof.",
+    "Host preoffset/typed guards verified in exact compiled C++ source and matching binary guard text; no x86 host disassembly performed.",
+    "Static metadata does not measure loaded occupancy or performance.",
+    "Only N64/S2 and N32/S4 are scoped; no model, service writer, capacity, N40 or throughput qualification."
+  ],
+  "machine": [
+    {
+      "branch_targets_checked": 14,
+      "instructions": 1338,
+      "old_resources": {
+        ".group_segment_fixed_size": 8192,
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 68,
+        ".sgpr_spill_count": 0,
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "page_byte_multiply_lines": [
+        689,
+        849
+      ],
+      "paths": [
+        {
+          "K_ready_barrier_line": 716,
+          "PV_lines": [
+            631,
+            636,
+            649,
+            654,
+            666,
+            670,
+            674,
+            676
+          ],
+          "QK_lines": [
+            741,
+            745,
+            748,
+            750
+          ],
+          "V_SME_lines": [
+            720,
+            721,
+            722,
+            723
+          ],
+          "V_wait_line": 724,
+          "actual_machine_CFG_dominance_checked": true,
+          "path": "full",
+          "physical_PV_text_before_wait": true,
+          "post_wait_barrier_line": 725,
+          "tail_clear_store_lines": []
+        },
+        {
+          "K_ready_barrier_line": 941,
+          "PV_lines": [
+            1167,
+            1172,
+            1186,
+            1191,
+            1205,
+            1209,
+            1213,
+            1215
+          ],
+          "QK_lines": [
+            1030,
+            1034,
+            1036,
+            1038
+          ],
+          "V_SME_lines": [
+            949,
+            952,
+            955,
+            958
+          ],
+          "V_wait_line": 959,
+          "actual_machine_CFG_dominance_checked": true,
+          "path": "tail",
+          "physical_PV_text_before_wait": false,
+          "post_wait_barrier_line": 960,
+          "tail_clear_store_lines": [
+            995,
+            1007
+          ]
+        }
+      ],
+      "resources": {
+        ".group_segment_fixed_size": 8192,
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 66,
+        ".sgpr_spill_count": 0,
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "segments": 2,
+      "symbol": "_Z30cjj_native_k8_compact_producerILj2EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    },
+    {
+      "branch_targets_checked": 14,
+      "instructions": 1338,
+      "old_resources": {
+        ".group_segment_fixed_size": 8192,
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 68,
+        ".sgpr_spill_count": 0,
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "page_byte_multiply_lines": [
+        2029,
+        2189
+      ],
+      "paths": [
+        {
+          "K_ready_barrier_line": 2056,
+          "PV_lines": [
+            1971,
+            1976,
+            1989,
+            1994,
+            2006,
+            2010,
+            2014,
+            2016
+          ],
+          "QK_lines": [
+            2081,
+            2085,
+            2088,
+            2090
+          ],
+          "V_SME_lines": [
+            2060,
+            2061,
+            2062,
+            2063
+          ],
+          "V_wait_line": 2064,
+          "actual_machine_CFG_dominance_checked": true,
+          "path": "full",
+          "physical_PV_text_before_wait": true,
+          "post_wait_barrier_line": 2065,
+          "tail_clear_store_lines": []
+        },
+        {
+          "K_ready_barrier_line": 2281,
+          "PV_lines": [
+            2507,
+            2512,
+            2526,
+            2531,
+            2545,
+            2549,
+            2553,
+            2555
+          ],
+          "QK_lines": [
+            2370,
+            2374,
+            2376,
+            2378
+          ],
+          "V_SME_lines": [
+            2289,
+            2292,
+            2295,
+            2298
+          ],
+          "V_wait_line": 2299,
+          "actual_machine_CFG_dominance_checked": true,
+          "path": "tail",
+          "physical_PV_text_before_wait": false,
+          "post_wait_barrier_line": 2300,
+          "tail_clear_store_lines": [
+            2335,
+            2347
+          ]
+        }
+      ],
+      "resources": {
+        ".group_segment_fixed_size": 8192,
+        ".private_segment_fixed_size": 0,
+        ".sgpr_count": 66,
+        ".sgpr_spill_count": 0,
+        ".vgpr_count": 100,
+        ".vgpr_spill_count": 0,
+        ".warp_size": 64
+      },
+      "segments": 4,
+      "symbol": "_Z30cjj_native_k8_compact_producerILj4EEvPK13__ix_bfloat16PKaPKfS2_PKiS8_fllllllllPfS9_S9_"
+    }
+  ],
+  "manifest_sha256": "34591993b40f479b4af9696ae45fd2e5a8df5b5e370680002d3c6f4e01df3ee4",
+  "manual_Root_approval": false,
+  "model_verified": false,
+  "numeric_verified": false,
+  "performance_verified": false,
+  "precision_gate": false,
+  "raw_bytes_rehashed": 1410090,
+  "raw_files_rehashed": 33,
+  "reviewer_Torch_GPU_SSH_JIT_or_compile_executed": false,
+  "script_sha256": "75ff99e3b3a57b8d6d99a5bf42e1d67da4c999a971a11b5b6c48d7188e190140",
+  "service_verified": false,
+  "source_commit": "c2ae0d77b288886fb714e1e0c9b79b97210cecaf",
+  "static_conclusion": "Actual compact SO uses shared 12544-byte page multiplication for K/V/scales; V is externally preoffset 4352B exactly once, scale internally adds 4096B once, SME row pitch remains 512B. K-ready barrier precedes V issue; wait/barrier precede QK/PV; tail clearing and final stores preserve old algorithm. SGPR68->66; VGPR100/shared8192/private0/spills0."
+}

@@ -1,0 +1,42 @@
+{
+  "CPU_only": true,
+  "original_files_verified": 158,
+  "original_bytes": 49128520,
+  "source_commit": "9695f2629d2139b3f123cad8f9258a6b8987e690",
+  "library_SHA": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "configurations": [
+    [
+      64,
+      2,
+      2048
+    ],
+    [
+      64,
+      2,
+      2560
+    ],
+    [
+      32,
+      4,
+      2048
+    ],
+    [
+      32,
+      4,
+      2560
+    ]
+  ],
+  "patterns_per_configuration": 3,
+  "all_input_bytes_regenerated_and_checked": true,
+  "FP64_reference_regenerated_from_full128_counter": true,
+  "full_array_metric_checks": 88,
+  "maximum_relative_error": 0.001183110260902882,
+  "maximum_absolute_error": 0.0018667997130373815,
+  "complete_GraphB_vs_new_eagerB_bits_replayed": true,
+  "GraphB_input_and_output_differ_from_A": true,
+  "reference": "correct per-page BF16P algorithm for partials, unchanged ideal quantized-score FP64 final; thresholds unchanged",
+  "v1_failure_preserved": true,
+  "ideal_partial_proxy": "diagnostic retained by original run, not reclassified as passed",
+  "model_or_performance_qualified": false,
+  "service_installed": false
+}

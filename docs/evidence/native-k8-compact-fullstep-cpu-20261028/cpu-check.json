@@ -1,0 +1,155 @@
+{
+  "CPU_only": true,
+  "GPU_executed": false,
+  "append_bytes_and_reserved_padding_checked": true,
+  "device_numeric_verified": false,
+  "frozen_writer_views_materialized_exactly": true,
+  "full_arena_built": false,
+  "original_contract_unchanged": true,
+  "parent_source": "/private/tmp/flagos-cjj-native-k8-fullstep-frozen-3eb-20261028",
+  "plan": {
+    "CPU_only": true,
+    "GPU_executed": false,
+    "capacity_reclaimed": false,
+    "cases": {
+      "16k": [
+        32,
+        16384,
+        4,
+        2560
+      ],
+      "4k": [
+        64,
+        4096,
+        2,
+        2048
+      ]
+    },
+    "compact_page_bytes": 12544,
+    "complete_saved_consumer_replay_before_Torch": true,
+    "consumer_summary_sha256": "9d2bcd2f803626fca16aae5c73533ce1436d8bb98010f00fa6583061dfa90df8",
+    "device_numeric_verified": false,
+    "exact_original_FP64_Graph_side_ABBA_timing_preserved": true,
+    "fixed_pages": 34276,
+    "frozen_parent_source_required": true,
+    "frozen_sources": {
+      "views": [
+        "vllm_fl/patches/biv150_konly_compact_views.py",
+        "1ab738e4b8178ee0d8ce12536ac7e6428ed09f7252ea7349c8d71f73bae64b1e"
+      ],
+      "writer": [
+        "vllm_fl/patches/biv150_konly_compact_writer.py",
+        "a0cacf3f13f450f1f633d0bf562b3b67239cdc4b4e2a9b1159bcbde4b3fa290f"
+      ]
+    },
+    "library_sha256": "40f9b17c634d2344ca54b9f1202e4e10932bf3f3f632cd41d793ddafd0934453",
+    "model_verified": false,
+    "new_KV_pitch": 256,
+    "parent_commit": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "precision_gate": false,
+    "service_source_pitch2560_covered": false,
+    "timing_executed": false,
+    "transform": {
+      "adapted_function_sha256": "3cc568c799bad941d12e6efc8259baadad4a123223e158fd9f97f462471e02bb",
+      "edits": [
+        {
+          "new": "f.sha(a.k8_library.read_bytes())==COMPACT_LIBRARY",
+          "old": "f.sha(a.k8_library.read_bytes())==f.LIBRARY_SHA"
+        },
+        {
+          "new": "result=dict(compact_plan(),actual_consumer=pre,",
+          "old": "result=dict(f.plan(),actual_consumer=pre,"
+        },
+        {
+          "new": "writer=module(materialize(out,'writer'),'cjj_fullstep_compact91_writer')\n        views=module(materialize(out,'views'),'cjj_fullstep_compact91_views')",
+          "old": "writer=module(f.ROOT/'tools/kernels/biv150_konly_strided_writer.py','cjj_fullstep_exact83_writer')"
+        },
+        {
+          "new": "contract=compact_contract(module(f.ROOT/'tools/biv150_konly_strided_writer_contract.py','cjj_fullstep_83_contract'))",
+          "old": "contract=module(f.ROOT/'tools/biv150_konly_strided_writer_contract.py','cjj_fullstep_83_contract')"
+        },
+        {
+          "new": "page_bytes=16384 if arm=='bf16' else 12544\n                full=torch.full((f.PAGES*page_bytes+2*f.GUARD,),90,dtype=torch.uint8,device='cuda');resident=full.narrow(0,f.GUARD,f.PAGES*page_bytes)",
+          "old": "full=torch.full((f.PAGES*16384+2*f.GUARD,),90,dtype=torch.uint8,device='cuda');resident=full.narrow(0,f.GUARD,f.PAGES*16384)"
+        },
+        {
+          "new": "key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(12544,256,128,1));scale=resident.view(torch.float32)",
+          "old": "key=resident.view(torch.int8).as_strided((f.PAGES,16,2,128),(16384,256,128,1));scale=resident.view(torch.float32)"
+        },
+        {
+          "new": "value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(6272,256,128,1),storage_offset=(f.GUARD+4352)//2)",
+          "old": "value=full.view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.GUARD+8192)//2)"
+        },
+        {
+          "new": "and value.data_ptr()==resident.data_ptr()+4352",
+          "old": "and value.data_ptr()==resident.data_ptr()+8192"
+        },
+        {
+          "new": "consumer_V_is_offset_bytes=",
+          "old": "initial_and_consumer_V_is_offset_bytes="
+        },
+        {
+          "new": "            initial_backs,initial_values=initial_sources(torch,gpu_source,f.PAGES,f.GUARD,rec,timed)\n            rec['compact_roles']=validate_roles(views,arenas,cases,f.PAGES,torch)\n            def reset(arm):",
+          "old": "            def reset(arm):"
+        },
+        {
+          "new": "writer.encode_append[(f.PAGES*16,2)](initial_values['key'],initial_values['value'],initial_values['slots'],arenas[arm]['raw'].view(torch.int8),cases[arm]['scale'],arenas[arm]['raw'].view(torch.bfloat16),256,256,f.PAGES*16,f.PAGES*16,f.PAGES*16,f.PAGES,num_warps=1,num_stages=1)",
+          "old": "support.encode_initial[(f.PAGES*32,)](gpu_source[:,0],gpu_source[:,1],cases[arm]['key'],cases[arm]['scale'],cases[arm]['value'],f.PAGES,num_warps=1,num_stages=1)"
+        },
+        {
+          "new": "writer.encode_append.warmup(initial_values['key'],initial_values['value'],initial_values['slots'],arenas['k8']['raw'].view(torch.int8),cases['k8']['scale'],arenas['k8']['raw'].view(torch.bfloat16),256,256,f.PAGES*16,f.PAGES*16,f.PAGES*16,f.PAGES,grid=(f.PAGES*16,2),num_warps=1,num_stages=1)",
+          "old": "support.encode_initial.warmup(gpu_source[:,0],gpu_source[:,1],cases['k8']['key'],cases['k8']['scale'],cases['k8']['value'],f.PAGES,grid=(f.PAGES*32,),num_warps=1,num_stages=1)"
+        },
+        {
+          "new": "existing_compact91_writer_initial_JIT_load_wall_seconds",
+          "old": "existing_initial_encoder_JIT_load_wall_seconds"
+        },
+        {
+          "new": "                validate_roles(views,arenas,cases,f.PAGES,torch)\n                z=controls[p];return contract.qualify(",
+          "old": "                z=controls[p];return contract.qualify("
+        },
+        {
+          "new": "writer.encode_append[(n,2)](nk,nv,slots,arenas[arm]['raw'].view(torch.int8),z['scale'],",
+          "old": "writer.encode_append[(n,2)](nk,nv,slots,z['key'],z['scale'],"
+        },
+        {
+          "new": "torch.ops.cjj_native_k8_compact_probe.produce",
+          "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+        },
+        {
+          "new": "z=arenas[arm];page_bytes=16384 if arm=='bf16' else 12544\n                guard=raw(z['full'].narrow(0,0,f.GUARD))+raw(z['full'].narrow(0,f.GUARD+f.PAGES*page_bytes,f.GUARD));assert guard==bytes([90])*(2*f.GUARD)",
+          "old": "z=arenas[arm];guard=raw(z['full'].narrow(0,0,f.GUARD))+raw(z['full'].narrow(0,f.GUARD+f.PAGES*16384,f.GUARD));assert guard==bytes([90])*(2*f.GUARD)"
+        },
+        {
+          "new": ";expected=compact_chunk(expected) if arm=='k8' else expected;actual=raw(z['raw'].narrow(0,start*page_bytes,count*page_bytes))",
+          "old": ";actual=raw(z['raw'].narrow(0,start*16384,count*16384))"
+        },
+        {
+          "new": "all_bytes_compared=f.PAGES*page_bytes,guards_exact=True,chunks=chunks",
+          "old": "all_bytes_compared=f.PAGES*16384,guards_exact=True,chunks=chunks"
+        },
+        {
+          "new": "            def check_source(stage):\n                check_initial_sources(initial_backs,cold,raw,f.PAGES,f.GUARD,rec,stage)",
+          "old": "            def check_source(stage):"
+        },
+        {
+          "new": "for role in ('initial_encoder','k8_append','bf16_append','reducer'):",
+          "old": "for role in ('k8_append','bf16_append','reducer'):"
+        },
+        {
+          "new": ";del initial_backs,initial_values;torch.cuda.empty_cache()",
+          "old": ";torch.cuda.empty_cache()"
+        }
+      ],
+      "inverse_byte_exact": true,
+      "parent_commit": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+      "parent_function_sha256": "3038f13b67e8c58280699ffaf71a76514b851d4ca5a691b90706ec54d0d84b77"
+    },
+    "writer_commit": "dc5fd2e5b86a3d57aceaad26e8556d169ec7462a"
+  },
+  "precision_gate": false,
+  "saved_array_consumer_replay_executed": false,
+  "small_page_field_boundaries": 16,
+  "timing_executed": false,
+  "writer_binding_negative_cases": 4
+}
