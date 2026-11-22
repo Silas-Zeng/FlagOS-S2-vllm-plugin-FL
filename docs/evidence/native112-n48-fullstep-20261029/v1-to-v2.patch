@@ -1,0 +1,5 @@
+--- v1-original-adapter.py
++++ v2-original-adapter.py
+@@ -171 +171 @@
+-    assert summary['source_adapter']==front.source.adapted_source()[1]
++    assert summary['source_adapter']==json.loads(json.dumps(front.source.adapted_source()[1]))

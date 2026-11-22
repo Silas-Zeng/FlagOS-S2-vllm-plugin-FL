@@ -1,0 +1,3772 @@
+{
+  "admissions_replayed": true,
+  "candidate_library_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "completed": true,
+  "counts": {
+    "BF16_proxy": 32,
+    "FP64_hard": 176,
+    "epoch_receipts": 24,
+    "first48_field_pairs": 96,
+    "full_snapshots": 48,
+    "golden_arrays": 168,
+    "host_refusals": 2,
+    "ideal_diagnostic": 48,
+    "ideal_diagnostic_failed": 48,
+    "readonly_whole_buffers": 336
+  },
+  "device_thresholds_unchanged": {
+    "RRMSE": 0.005,
+    "pointwise_atol": 0.005,
+    "pointwise_rtol": 0.005
+  },
+  "download_manifest_sha256": "51ba899cc0b0767750b6a7018027448b01a925a26ea7963ba21ddf5e647c250f",
+  "errors": [],
+  "framework_imported": false,
+  "frozen_source": "09e502134fcf9fa7168c9f342c2a3d33754cee1c",
+  "helper_original_body_sha256": {
+    "check": "bb96f45acc427db3f39a5cd5b0e34dc1564e7e58d3b2af194b6b2306224f5cae",
+    "core_bytes": "aad0bb673943ab3bb62d27372079301b86970414ec143c561509cc3025b07acc"
+  },
+  "host_golden_replay_tolerance": {
+    "atol": 1e-11,
+    "rtol": 1e-12
+  },
+  "limits": [
+    "Saved runtime readbacks and exact frozen control flow; no new GPU readback or independent stream profiler.",
+    "Epoch CPU replay validates observed layout/value receipt; it does not recreate the remote process-local lease.",
+    "Two N32 calls provide numeric control only, never a performance denominator.",
+    "Ideal partial diagnostic failures retained separately from original pagewise BF16-P hard reference."
+  ],
+  "maximum_host_FP64_golden_drift": 1.4210854715202004e-14,
+  "metric_replay_tolerance": {
+    "atol": 4e-14,
+    "rtol": 1e-12
+  },
+  "original_BF16_proxy_passed": true,
+  "raw_bytes_rehashed": 59569068,
+  "raw_files_rehashed": 170,
+  "records": [
+    {
+      "arms": {
+        "candidate": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013676765633589354,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001102092674359296,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721883,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721883,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012849145838656822,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.4045669231868205e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0014634604999278133,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010706970334434331,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.070095693090289e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.260991787646106e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        },
+        "reference": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013676765633589356,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0011020926743592959,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721881,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721881,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012849145838656822,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.4045669231868205e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001463460499927813,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010706970334434331,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.070095693090289e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.260991787646106e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        }
+      },
+      "case": [
+        48,
+        4,
+        2048,
+        41
+      ]
+    },
+    {
+      "arms": {
+        "candidate": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013676765633589354,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001102092674359296,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721883,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721883,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012849145838656822,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.4045669231868205e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0014634604999278133,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010706970334434331,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.070095693090289e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.260991787646106e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        },
+        "reference": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012558121887249508,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.3404838297986054e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013676765633589356,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0011020926743592959,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.022849060728685e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.165601236896542e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721881,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013056112915445191,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285340459615786e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0012946842023305524,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0009890214138721881,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.242412643946521e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.0625812592533854e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012849145838656822,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.4045669231868205e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001463460499927813,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010706970334434331,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.070095693090289e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.260991787646106e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        }
+      },
+      "case": [
+        48,
+        4,
+        2560,
+        41
+      ]
+    },
+    {
+      "arms": {
+        "candidate": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013745967735301339,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0011073256947040139,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001020172024692681,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001020172024692681,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012861061779857901,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.411757921750379e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001471313654343378,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010766659081390955,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.0611799368087334e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.2385794353948646e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        },
+        "reference": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001374596773530134,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0011073256947040139,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010201720246926808,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010201720246926808,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012861061779857901,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.411757921750379e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0014713136543433778,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010766659081390955,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.0611799368087334e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.2385794353948646e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        }
+      },
+      "case": [
+        48,
+        4,
+        2048,
+        42
+      ]
+    },
+    {
+      "arms": {
+        "candidate": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013745967735301339,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0011073256947040139,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001020172024692681,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001020172024692681,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012861061779857901,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.411757921750379e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001471313654343378,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010766659081390955,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.0611799368087334e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.2385794353948646e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        },
+        "reference": {
+          "Graph_B_before_eager_B": true,
+          "checks": [
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.02149728188123179,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012554559849702657,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.1374164210486981e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.340528616080954e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0020589194150406886,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.001374596773530134,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0014229035178247584,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0011073256947040139,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.5673941318183893e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.019225535183093e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 5.76160604737197e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.1509880630050364e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 0,
+              "stage": "A-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010201720246926808,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "graphB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_still_poison": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-producer"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.01957430210808675,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0013046772559459298,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3674963272869434e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.285001499453832e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002401068890116431,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0013315503224591084,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0017581738236440714,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010201720246926808,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.3802201515034085e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.233481086516221e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 7.306138570584153e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.061496014890719e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 1,
+              "stage": "eagerB-after"
+            },
+            {
+              "checks": {
+                "cache_readonly": true,
+                "lengths_readonly": true,
+                "maximum_FP64": true,
+                "maximum_inactive_poison": true,
+                "maximum_outside_guards": true,
+                "maximum_physical_padding_guard": true,
+                "maximum_unlaunched_rows_poison": true,
+                "output_FP64": true,
+                "output_outside_guards": true,
+                "output_physical_padding_guard": true,
+                "output_unlaunched_rows_poison": true,
+                "partial_FP64": true,
+                "partial_inactive_poison": true,
+                "partial_outside_guards": true,
+                "partial_physical_padding_guard": true,
+                "partial_unlaunched_rows_poison": true,
+                "query_readonly": true,
+                "summation_FP64": true,
+                "summation_inactive_poison": true,
+                "summation_outside_guards": true,
+                "summation_physical_padding_guard": true,
+                "summation_unlaunched_rows_poison": true,
+                "table_readonly": true,
+                "zero_length_output_positive_zero": true
+              },
+              "metrics": {
+                "ideal_partial_diagnostic": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.021322970513291573,
+                  "passed": false,
+                  "pointwise_005": false,
+                  "relative_RMSE": 0.0012861061779857901,
+                  "relative_RMSE_005": true
+                },
+                "maximum": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.229430117710706e-07,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 5.411757921750379e-08,
+                  "relative_RMSE_005": true
+                },
+                "original_BF16_proxy": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.002701451097294749,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0014713136543433778,
+                  "relative_RMSE_005": true
+                },
+                "output": {
+                  "finite": true,
+                  "maximum_absolute_error": 0.0015432194393492082,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 0.0010766659081390955,
+                  "relative_RMSE_005": true
+                },
+                "partial": {
+                  "finite": true,
+                  "maximum_absolute_error": 1.545267203084677e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 3.0611799368087334e-08,
+                  "relative_RMSE_005": true
+                },
+                "summation": {
+                  "finite": true,
+                  "maximum_absolute_error": 6.371291497941911e-06,
+                  "passed": true,
+                  "pointwise_005": true,
+                  "relative_RMSE": 4.2385794353948646e-08,
+                  "relative_RMSE_005": true
+                }
+              },
+              "phase": 2,
+              "stage": "sideC-after"
+            }
+          ],
+          "complete_backing_padding_and_zero_semantics_verified": true,
+          "epoch_receipts_replayed": 3,
+          "hard_gates_passed": true,
+          "reducer_hash": "aa63890febe45279b8481e541a2c9e91b8d430fdba80a1bdff4b9db5c58f1bae",
+          "side_C_verified": true,
+          "whole_input_cache_readonly": true
+        }
+      },
+      "case": [
+        48,
+        4,
+        2560,
+        42
+      ]
+    }
+  ],
+  "reference_library_sha256": "7892a6aad09d247a322a74906312f250a9d253160202fee23259adac7b7260d4",
+  "review": "independent complete saved-array CPU replay",
+  "scope": {
+    "Q_pitches": [
+      2048,
+      2560
+    ],
+    "capacity42layers": false,
+    "encoder": false,
+    "fullstep": false,
+    "layer_offset_bytes": 128,
+    "live_rows": [
+      41,
+      42
+    ],
+    "max_context": 193,
+    "model": false,
+    "pages": 29,
+    "performance": false,
+    "physical_page_bytes": 12544,
+    "rows": 48,
+    "segments": 4,
+    "writer": false
+  },
+  "script_sha256": "47b58473c537ee6e8b1cdd06aed711ff7cf7c5c7661727da83ce3afcf3bb6e2b",
+  "summary_sha256": "493e210f8eeaac6006b25a94ed55e08fbe932337d6481fe3d8ec6e86d0033272"
+}

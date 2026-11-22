@@ -1,0 +1,151 @@
+{
+  "compile_or_device_executed": false,
+  "default_imports_framework": false,
+  "default_plan": {
+    "BF16_PV_MMA_per_page": 8,
+    "CPU_only": true,
+    "I8_shape": [
+      16,
+      16,
+      32
+    ],
+    "K_image_bytes": 2048,
+    "K_load_plan": "ordinary coalesced global32-bit words plus proven shared scatter; no assumed SME8 builtin",
+    "QK_I8_MMA_per_page": 4,
+    "Q_codec": "same RN32/RNE v2; once per CTA, repeated across2/4 segments",
+    "V_offset_bytes": 4096,
+    "append": {
+      "full_service_reencode": false,
+      "implementation": "existing PR83 encode_append; not compiled/launched here",
+      "initial_encode_timed_separately": true,
+      "pointers": "K I8, scale F32 and V BF16 all FULL page0 bases for PR83 writer; consumer V differs",
+      "runtime_args": [
+        "key_row_stride",
+        "value_row_stride",
+        "key_rows",
+        "value_rows",
+        "slot_count",
+        "cache_pages"
+      ],
+      "slot_contract": "owned CPU provenance, invalid/negative before load mask, no duplicate/alias live writes",
+      "source_shape": "BF16 K/V [rows,2,128], separate row pitches>=256; slotcount<=both extents"
+    },
+    "append_common_source_read_bytes": 1024,
+    "append_output_bytes_per_token": {
+      "BF16": 1024,
+      "K8": 776
+    },
+    "attention_launches": 0,
+    "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+    "block_shape": [
+      16,
+      16,
+      128
+    ],
+    "codec_actual_IR_verified": false,
+    "codec_intrinsic_header_compatibility": "unknown until actual target compile",
+    "codec_launches": 0,
+    "codec_requested_semantics": "__fdiv_rn scale and quotient, __float2int_rn integer RNE; no fast-math fallback",
+    "codec_values_per_sequence_S2": 4096,
+    "codec_values_per_sequence_S4": 8192,
+    "compact12544_supported": false,
+    "device_compile": false,
+    "encoder_launches": 0,
+    "explicit_cuda_flags": [
+      "-O3",
+      "-std=c++17",
+      "-D__ILUVATAR__",
+      "-D__MR__",
+      "-DCOREX_NATIVE_GQA_V_OVERLAP=0",
+      "-x",
+      "ivcore",
+      "--cuda-gpu-arch=ivcore11",
+      "--cuda-path=/usr/local/corex"
+    ],
+    "format": "cjj-konly-rn32-rne-v2",
+    "ideal_KV_read_bytes_per_head_page": {
+      "BF16": 8192,
+      "K8": 6208
+    },
+    "input_initializations": 0,
+    "loaded_resources_verified": false,
+    "logical_Q_heads": 8,
+    "model_verified": false,
+    "native_CUDA_source_implemented": true,
+    "numerical_device_verified": false,
+    "page_bytes": 16384,
+    "performance_measured": false,
+    "precision_gate": false,
+    "private_source": {
+      "tools/kernels/biv150_native_k8_codec.cu": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+      "tools/kernels/biv150_native_k8_codec.cuh": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+      "tools/kernels/biv150_native_k8_qk.cpp": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+      "tools/kernels/biv150_native_k8_qk.cu": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9"
+    },
+    "profiles": [
+      [
+        64,
+        2
+      ],
+      [
+        32,
+        4
+      ]
+    ],
+    "prototype_sources_now_present": true,
+    "readonly_CPU_default": true,
+    "reducer_launches": 0,
+    "requested": "compile-only, not native numeric/performance acceptance",
+    "service_installed": false,
+    "shared_allocation_bytes": 8192,
+    "source_transform": {
+      "PV_online_and_partial_output_unchanged": true,
+      "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+      "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+      "codec_actual_IR_verified": false,
+      "device_compiled": false,
+      "inverse_byte_exact": true,
+      "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+      "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+      "reducer_source_not_modified": true
+    },
+    "target_layout_verified": false,
+    "typed_ABI": {
+      "input_finiteness": "external owned finite Q/K/scale fixture; no GPU.item qualification",
+      "key_code": "signed I8 [P,16,2,128], stride16384/256/128/1, full layer base",
+      "lengths": "I32 [64 or32], owned CPU-preupload content prerequisite",
+      "maximum_and_sum": "F32 [rows,16,S]",
+      "nonzero_layer_storage_offset": true,
+      "partial": "F32 [rows,16,S,128]",
+      "query": "BF16 [batch64 or batch32,16,128], one query per seq; strides2048/2560,128,1",
+      "scale_full": "F32 [P*4096], same full layer base; internal offset1024 floats",
+      "table": "I32 [rows,columns], owned CPU-preupload lengths and physical-page bounds prerequisite",
+      "unknown_service_metadata_admitted": false,
+      "value_offset": "BF16 [P,16,2,128], stride8192/256/128/1, data_ptr=fullbase+8192B"
+    }
+  },
+  "precision_gate": false,
+  "rejected": [
+    "PV_FMA",
+    "BF16_P_rounding",
+    "partial_output",
+    "signed_score",
+    "double_scale_offset",
+    "Q_scale_input_pair",
+    "approx_div",
+    "half_away"
+  ],
+  "requested_codec_boundary_vectors": 10,
+  "source_transform": {
+    "PV_online_and_partial_output_unchanged": true,
+    "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+    "changes": "typed K/code/scale ABI, Q RN32/RNE+packing, K load+QK+score scales, symbol names only",
+    "codec_actual_IR_verified": false,
+    "device_compiled": false,
+    "inverse_byte_exact": true,
+    "original_sha256": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+    "private_sha256": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+    "reducer_source_not_modified": true
+  },
+  "target_RN32_FTZ_verified": false
+}

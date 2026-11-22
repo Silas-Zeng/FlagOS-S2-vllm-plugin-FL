@@ -1,0 +1,69 @@
+{
+  "actual_candidate_static_SO_sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1",
+  "all_numeric_tolerances_unchanged": true,
+  "execution_flag_erratum": {
+    "Graph_and_side_and_ABBA_clocks_independently_verified": true,
+    "actual_five_role_JIT_artifacts_verified": true,
+    "actual_library_load": {
+      "actual_schema": "cjj_native_k8_compact_n48_s4_probe::produce(Tensor query, Tensor key_code, Tensor scale_full, Tensor value_offset, Tensor lengths, Tensor table, Tensor(a!) partial, Tensor(b!) maximum, Tensor(c!) summation, float scale_log2e, int segments) -> ()",
+      "loaded_library_set_confirmed": true,
+      "path": "/workspace/experiments/minicpm-s2/cjj-compact-native-n48-compile-v1-20261029/build/cjj_native_k8_compact_n48_s4_probe.so",
+      "sha256": "2ad51a9812502e7dd8d81b99debd2160086a52510a93063f7ce4b0fbd8c837b1"
+    },
+    "full_saved_output_buffers_verified": 36,
+    "original_numeric_checks_verified": 144,
+    "owner_command_contains_gpu": true,
+    "owner_sha256": "4862186dd7f11208e999fcb0c4981c901424956649745236867c8ec6261ee1af",
+    "owner_source_commit": "e1c5a8fc3c267f1faf9aa790f3c8f80cc65c12a8",
+    "raw_GPU_executed": false,
+    "reason": "Frozen plan default was copied into the summary and never updated by run(). Original raw bytes are unchanged."
+  },
+  "failures": [
+    {
+      "log": "v1-failure.log",
+      "reason": "JSON-deserialized label pairs are list; identical local pairs are tuple. Canonical JSON equality remained strict and passed; no numeric code changed.",
+      "script": "v1-original-adapter.py",
+      "version": "v1"
+    },
+    {
+      "completed_numeric_report": "original-numeric-audit.json",
+      "log": "v2-failure.log",
+      "reason": "Additional offline all-ELF-spill-zero assumption failed on production TL SGPR26. Original runtime n_spills0 gate passed; final report records both independently after Root confirmed the original gate scope.",
+      "script": "v2-original-adapter.py",
+      "version": "v2"
+    }
+  ],
+  "final_report_sha256": "2d8d5b873eb30084da7dd0e25332088462dd5cfef62c45fe45c75bccd07ede5d",
+  "final_script_sha256": "5e7a4911f6535c67c32735adf11286e635c0c08f56c476d1e1cf6443db75b978",
+  "original_GPU_executed_false_preserved": true,
+  "original_report_sha256": "db985c037f33727c238ba4c7b885692f6ac548c702083f88f2ec3c941006699b",
+  "phase_ideal_partial_diagnostic_failures": {
+    "valid41": {
+      "failed": 12,
+      "recorded": 12
+    },
+    "valid42": {
+      "failed": 12,
+      "recorded": 12
+    }
+  },
+  "resource_erratum": {
+    "Root_confirmed_scope_correction": true,
+    "interpretation_limit": "Do not equate runtime n_spills with ELF scalar-register spill metadata or infer local-memory traffic/occupancy from one field.",
+    "numerical_gates_or_tolerances_changed": false,
+    "observed_TL": {
+      "ELF_SGPR": 104,
+      "ELF_SGPR_spills": 26,
+      "ELF_VGPR": 144,
+      "ELF_VGPR_spills": 0,
+      "ELF_private_bytes": 0,
+      "ELF_static_shared_bytes": 0,
+      "JIT_dynamic_shared_bytes": 6144,
+      "runtime_n_regs": 144,
+      "runtime_n_spills": 0
+    },
+    "original_failure_retained": true,
+    "original_gate": "Every loaded JIT handle has positive n_regs and n_spills==0; no frontend SGPR-zero rule.",
+    "rejected_extra_assumption": "The earlier offline assertion that every ELF SGPR spill count must be zero exceeded the frozen frontend gate."
+  }
+}

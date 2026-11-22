@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/experiments/minicpm-s2/code/cjj-native-k8-consumer-v1-20261028/tools/probe_biv150_native_k8_consumer.py", line 123, in run
+    poison();eager('A',0)
+             ^^^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/cjj-native-k8-consumer-v1-20261028/tools/probe_biv150_native_k8_consumer.py", line 119, in eager
+    snapshot(stage+'-before');producer();result['producer_calls']+=1;torch.cuda.synchronize();mid=check(stage+'-producer',p,True)
+                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/experiments/minicpm-s2/code/cjj-native-k8-consumer-v1-20261028/tools/probe_biv150_native_k8_consumer.py", line 106, in check
+    assert all(checks.values()),'Full numerical/guard/readonly gate: '+json.dumps(item,sort_keys=True)
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: Full numerical/guard/readonly gate: {"checks": {"cache_readonly": true, "lengths_readonly": true, "maximum_FP64": true, "maximum_guards": true, "maximum_inactive_poison": true, "output_guards": true, "output_still_poison": true, "partial_FP64": false, "partial_guards": true, "partial_inactive_poison": true, "query_readonly": true, "summation_FP64": true, "summation_guards": true, "summation_inactive_poison": true, "table_readonly": true}, "metrics": {"maximum": {"finite": true, "maximum_absolute_error": 1.3160186007610264e-07, "passed": true, "pointwise_005": true, "relative_RMSE": 5.331501017133088e-08, "relative_RMSE_005": true}, "partial": {"finite": true, "maximum_absolute_error": 0.02647874583792209, "passed": false, "pointwise_005": false, "relative_RMSE": 0.0012921875567715507, "relative_RMSE_005": true}, "summation": {"finite": true, "maximum_absolute_error": 1.014703880741763e-05, "passed": true, "pointwise_005": true, "relative_RMSE": 4.8097633433978645e-08, "relative_RMSE_005": true}}, "pattern": 0, "stage": "A-producer"}

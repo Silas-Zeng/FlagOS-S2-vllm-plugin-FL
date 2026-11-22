@@ -1,0 +1,51 @@
+--- v2-original-adapter.py
++++ replay_fullstep.py
+@@ -125 +125,5 @@
+-            assert md['.vgpr_count']==kernel['n_regs'] and md['.vgpr_spill_count']==md['.sgpr_spill_count']==kernel['n_spills']==0
++            assert type(kernel['n_regs']) is int and kernel['n_regs']>0 and kernel['n_spills']==0
++            assert md['.vgpr_count']==kernel['n_regs'] and md['.vgpr_spill_count']==0
++            assert type(md['.sgpr_spill_count']) is int and md['.sgpr_spill_count']>=0
++            for field in ('.vgpr_spill_count','.sgpr_spill_count'):
++                values=re.findall(r'^\s*'+re.escape(field)+r':\s*(\d+)',asm,re.M);assert len(values)==1 and int(values[0])==md[field]
+@@ -140 +144 @@
+-            actual_resources.append(dict(case=name,role=role,kernel=md['.name'],VGPR=md['.vgpr_count'],SGPR=md['.sgpr_count'],shared_bytes=md['.group_segment_fixed_size'],private_bytes=md['.private_segment_fixed_size'],spills=0,cubin_sha256=kernel['artifacts']['cubin']['sha256'],metadata_and_ASM_agree=True,signature=kernel['signature'],constants=kernel['constants'],attrs=kernel['attrs'],metadata=kernel['metadata']))
++            actual_resources.append(dict(case=name,role=role,kernel=md['.name'],VGPR=md['.vgpr_count'],SGPR=md['.sgpr_count'],ELF_static_shared_bytes=md['.group_segment_fixed_size'],JIT_dynamic_shared_bytes=ast.literal_eval(kernel['metadata']['shared']),private_bytes=md['.private_segment_fixed_size'],runtime_n_spills=kernel['n_spills'],ELF_VGPR_spills=md['.vgpr_spill_count'],ELF_SGPR_spills=md['.sgpr_spill_count'],cubin_sha256=kernel['artifacts']['cubin']['sha256'],metadata_and_ASM_agree=True,signature=kernel['signature'],constants=kernel['constants'],attrs=kernel['attrs'],metadata=kernel['metadata']))
+@@ -141,0 +146,5 @@
++    owner_path=raw/'exports/cjj-native112-n48-fullstep-v1-20261029-owner.json';owner=json.loads(owner_path.read_text())
++    assert summary['GPU_executed'] is False and '--gpu' in owner['command'] and '--root-owned-exclusive' in owner['command']
++    native_static=summary['actual_consumer']['actual_compile_and_SO']['review']['static_resources']
++    assert set(native_static)=={'S4'} and native_static['S4']['vgpr_spills']==native_static['S4']['sgpr_spills']==native_static['S4']['private_segment_bytes']==0
++    assert all(x['ELF_SGPR_spills']==(26 if x['role']=='tl_producer' else 0) for x in actual_resources)
+@@ -142,0 +152,11 @@
++        actual_native2ad_static_resources_from_fixed_approved_SO=native_static,
++        runtime_n_spills_zero_gate_preserved=True,ELF_SGPR_spill_all_zero=False,
++        resource_review_erratum=dict(rejected_extra_assumption='The earlier offline assertion that every ELF SGPR spill count must be zero exceeded the frozen frontend gate.',
++            original_gate='Every loaded JIT handle has positive n_regs and n_spills==0; no frontend SGPR-zero rule.',
++            observed_TL=dict(runtime_n_regs=144,runtime_n_spills=0,ELF_VGPR=144,ELF_SGPR=104,ELF_VGPR_spills=0,ELF_SGPR_spills=26,ELF_private_bytes=0,ELF_static_shared_bytes=0,JIT_dynamic_shared_bytes=6144),
++            original_failure_retained=True,numerical_gates_or_tolerances_changed=False,Root_confirmed_scope_correction=True,
++            interpretation_limit='Do not equate runtime n_spills with ELF scalar-register spill metadata or infer local-memory traffic/occupancy from one field.'),
++        GPU_execution_record_erratum=dict(raw_GPU_executed=False,reason='Frozen plan default was copied into the summary and never updated by run(). Original raw bytes are unchanged.',
++            owner_command_contains_gpu=True,owner_source_commit=owner['source_commit'],owner_sha256=sha(owner_path.read_bytes()),
++            actual_library_load=summary['actual_native_library'],actual_five_role_JIT_artifacts_verified=True,
++            full_saved_output_buffers_verified=36,original_numeric_checks_verified=144,Graph_and_side_and_ABBA_clocks_independently_verified=True),
+@@ -149,0 +170 @@
++    p.add_argument('--resume-original-audit',type=Path,help='Only the pinned db985 already-completed original numerical audit; avoids rerunning its math while finalizing resource observations.')
+@@ -178,4 +199,11 @@
+-    intermediate=a.out.with_name(a.out.name+'.original-audit-only.json');assert not intermediate.exists()
+-    before=sys.argv;sys.argv=[str(audit),'--raw-root',str(raw),'--source-root',str(source),'--out',str(intermediate),'--regenerate']
+-    try:exec(compile(text,str(audit)+'::<N48 geometry/identity adapter>','exec'),env);env['main']()
+-    finally:sys.argv=before
++    if a.resume_original_audit:
++        intermediate=a.resume_original_audit
++        assert sha(intermediate.read_bytes())=='db985c037f33727c238ba4c7b885692f6ac548c702083f88f2ec3c941006699b'
++        prior=json.loads(intermediate.read_text())
++        assert prior['passed'] and prior['cold_counter_and_gold_regenerated'] and prior['source_commit']==FROZEN
++        assert prior['summary_sha256']==a.summary_sha256 and prior['manifest_sha256']==a.manifest_sha256
++    else:
++        intermediate=a.out.with_name(a.out.name+'.original-audit-only.json');assert not intermediate.exists()
++        before=sys.argv;sys.argv=[str(audit),'--raw-root',str(raw),'--source-root',str(source),'--out',str(intermediate),'--regenerate']
++        try:exec(compile(text,str(audit)+'::<N48 geometry/identity adapter>','exec'),env);env['main']()
++        finally:sys.argv=before
+@@ -183 +211 @@
+-    report.update(N48_adapter=proof,N48_adapter_script_sha256=sha(Path(__file__).read_bytes()),consumer_array_math_repeated=False,consumer_original_report_sha256=front.CONSUMER_REVIEW_SHA)
++    report.update(N48_adapter=proof,N48_adapter_script_sha256=sha(Path(__file__).read_bytes()),original_numeric_audit_report_sha256=sha(intermediate.read_bytes()),original_numeric_audit_reused_without_repeating_math=bool(a.resume_original_audit),consumer_array_math_repeated=False,consumer_original_report_sha256=front.CONSUMER_REVIEW_SHA)
