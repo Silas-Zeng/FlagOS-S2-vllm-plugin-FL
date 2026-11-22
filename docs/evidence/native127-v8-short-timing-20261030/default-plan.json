@@ -1,0 +1,69 @@
+{
+  "Root_timing_admission": false,
+  "Root_timing_scope_receipt_sha256": "df52edece78b5f047b6b22d46b5f81c4b4fe1fde48a233fa52ae6ade95ee340f",
+  "capacity_recovered": false,
+  "capture_steps": 8,
+  "cases": [
+    [
+      64,
+      2,
+      2048
+    ],
+    [
+      64,
+      2,
+      2560
+    ]
+  ],
+  "clocks": [
+    "original3eb CUDA event",
+    "original3eb synchronized host monotonic wall"
+  ],
+  "complete_steps_per_sample": 512,
+  "component": "conditional producer+original reducer short component; no writer",
+  "device_admission": false,
+  "event_blocks_total": 8,
+  "fixture_cache_bytes": 6373632,
+  "fixture_pages": 389,
+  "model_verified": false,
+  "new_capture_validation": "captureA8steps; changedB+poison Graph before freshB; full OML/FP64/readonly",
+  "numeric_evidence": {
+    "Root_review_sha256": "260414601892fdf8997e9978bcd3761bb77c5e9c67295961ce76663b07177a5e",
+    "manifest_sha256": "cfc7de650e89ec664e6341643ace0d87f0f987f4e7a2ea84cbc0c2f1fec88f66",
+    "raw_bytes": 175022287,
+    "raw_files": 190,
+    "review_bytes": 113107,
+    "summary_sha256": "9ce384c64e2fe03aded001837bfe5851b833d417e711d339c4288928fce103b2"
+  },
+  "numeric_source": "cd2f4ab846b79e4ab32a545d8c276bd802ed66d5",
+  "numeric_verified": false,
+  "order": [
+    "control",
+    "packed_v8",
+    "packed_v8",
+    "control"
+  ],
+  "page_bytes": 16384,
+  "performance_verified": false,
+  "postblock": "complete same-arm OML/cache/inputs/guards equal freshB",
+  "precision_gate": false,
+  "roles": {
+    "control": {
+      "library_sha256": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b",
+      "namespace": "cjj_native_k8_klookahead_probe"
+    },
+    "packed_v8": {
+      "library_sha256": "138cac22acc33d5a632d7156d0d3366af84697900d0a6c0593874bb71bf34e43",
+      "namespace": "cjj_native_k8_packed_v8_probe"
+    }
+  },
+  "rounds_per_pitch": 1,
+  "same_numeric_matrix_rerun": false,
+  "scratch": "original consumer compactS2",
+  "service_verified": false,
+  "side_stream_newly_executed": false,
+  "static_review_sha256": "1c9bf67eaa92a25865c2ffdf62270f8bb91c40391e959f541ec86560c7e0f352",
+  "timed_phase": "B mixed0/short/one6143/one6144; not64long requests",
+  "timed_replays_per_block": 64,
+  "warm_replays_per_arm": 128
+}

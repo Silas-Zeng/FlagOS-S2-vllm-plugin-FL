@@ -1,0 +1,121 @@
+{
+  "Graph_verified": true,
+  "Root_independent_review_sha256": "260414601892fdf8997e9978bcd3761bb77c5e9c67295961ce76663b07177a5e",
+  "Root_timing_scope_receipt_sha256": "df52edece78b5f047b6b22d46b5f81c4b4fe1fde48a233fa52ae6ade95ee340f",
+  "all_input_and_CPU_oracle_bytes_recomputed": true,
+  "capacity_recovered": false,
+  "compile_source": "fcf11f11f1d3d241784d292b7970c3d2fd862594",
+  "component_numeric_verified": true,
+  "counts": {
+    "BF16_proxy": 16,
+    "CPU_oracle_arrays": 48,
+    "FP64_hard": 88,
+    "cross_arm_pairs": 80,
+    "golden_arrays": 96,
+    "ideal_partial": 24,
+    "ideal_partial_failed": 24,
+    "readonly": 160,
+    "snapshots": 40
+  },
+  "development_main": "5f0086be50f1d6d115c1ebb25b9d3c7250470372",
+  "full_OML_final_bitwise": true,
+  "ideal_partial_diagnostic_failures": 24,
+  "libraries": {
+    "control": "5898a00a4a4e3314ee8ed1fc40dffde02a766ca6d0e5c116dbd161dccaa3286b",
+    "packed_v8": "138cac22acc33d5a632d7156d0d3366af84697900d0a6c0593874bb71bf34e43"
+  },
+  "limits": [
+    "Same quantized-V semantics against explicitly dequantized BF16 control; no packed GPU V writer or allocator/capacity change tested.",
+    "All metrics remain original3eb .005 gates. BF16 proxy and ideal partial are separate diagnostics, not new component vetoes.",
+    "Graph-before-fresh and side-stream use derive from frozen control flow plus full snapshots; no independent stream timeline.",
+    "This admits separately scheduled same-scope component timing only; no performance result, model precision or service qualification follows."
+  ],
+  "manifest_sha256": "cfc7de650e89ec664e6341643ace0d87f0f987f4e7a2ea84cbc0c2f1fec88f66",
+  "model_verified": false,
+  "original_BF16_proxy_max_RRMSE": 0.004840202200510765,
+  "original_BF16_proxy_passed": true,
+  "original_BF16_proxy_worst_absolute": {
+    "absolute_error": 0.00390625,
+    "actual": -0.66015625,
+    "case": [
+      64,
+      2,
+      2048
+    ],
+    "index": [
+      1,
+      0,
+      1
+    ],
+    "length": 1,
+    "maximum_pointwise_threshold_ratio": 0.6756756756756757,
+    "phase": 0,
+    "reference": -0.65625,
+    "relative_RMSE": 0.0046703966012563245,
+    "role": "control",
+    "stage": "A-after"
+  },
+  "owner": {
+    "pid": 328892,
+    "start_ticks": 367406093,
+    "state": "Z"
+  },
+  "owner_sha256": "7448b1be537afc25c26f580dff56869039daab771cffd5537135c271102bbc30",
+  "partial_hard_reference": "unchanged page16 BF16-P implementation reference; ideal partial is diagnostic",
+  "performance_verified": false,
+  "precision_gate": false,
+  "publication": "selected text only; all arrays, libraries, logs and complete113107B review stay private",
+  "raw_bytes": 175022287,
+  "raw_files": 190,
+  "schema": "cjj-native127-selected-numeric-v1",
+  "scope": {
+    "Q_pitches": [
+      2048,
+      2560
+    ],
+    "max_length": 6144,
+    "page_bytes": 16384,
+    "pages": 389,
+    "rows": 64,
+    "scratch": "compact S2, not width16 service fullstep",
+    "segments": 2
+  },
+  "service_verified": false,
+  "side_stream_verified": true,
+  "source_commit": "cd2f4ab846b79e4ab32a545d8c276bd802ed66d5",
+  "static_ELF_resources": {
+    ".group_segment_fixed_size": {
+      "candidate": 8192,
+      "reference": 8192
+    },
+    ".private_segment_fixed_size": {
+      "candidate": 0,
+      "reference": 0
+    },
+    ".sgpr_count": {
+      "candidate": 66,
+      "reference": 70
+    },
+    ".sgpr_spill_count": {
+      "candidate": 0,
+      "reference": 0
+    },
+    ".vgpr_count": {
+      "candidate": 134,
+      "reference": 85
+    },
+    ".vgpr_spill_count": {
+      "candidate": 0,
+      "reference": 0
+    }
+  },
+  "static_Root_review_sha256": "1c9bf67eaa92a25865c2ffdf62270f8bb91c40391e959f541ec86560c7e0f352",
+  "summary_sha256": "9ce384c64e2fe03aded001837bfe5851b833d417e711d339c4288928fce103b2",
+  "timing_source_review_and_serial_slot_still_required": true,
+  "unchanged_device_metrics": {
+    "RRMSE": 0.005,
+    "pointwise_atol": 0.005,
+    "pointwise_rtol": 0.005
+  },
+  "writer_verified": false
+}

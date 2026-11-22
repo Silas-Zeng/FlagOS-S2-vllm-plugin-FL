@@ -1,0 +1,126 @@
+{
+  "GPU_executed": false,
+  "Root_flag_was_CPU_stub_only": true,
+  "actual_evidence": {
+    "Root_numeric_review_sha256": "260414601892fdf8997e9978bcd3761bb77c5e9c67295961ce76663b07177a5e",
+    "Root_timing_scope_sha256": "df52edece78b5f047b6b22d46b5f81c4b4fe1fde48a233fa52ae6ade95ee340f",
+    "counts": {
+      "BF16_proxy": 16,
+      "CPU_oracle_arrays": 48,
+      "FP64_hard": 88,
+      "cross_arm_pairs": 80,
+      "golden_arrays": 96,
+      "ideal_partial": 24,
+      "ideal_partial_failed": 24,
+      "readonly": 160,
+      "snapshots": 40
+    },
+    "ideal_partial_diagnostic_failed": 24,
+    "numeric_manifest_sha256": "cfc7de650e89ec664e6341643ace0d87f0f987f4e7a2ea84cbc0c2f1fec88f66",
+    "numeric_summary_sha256": "9ce384c64e2fe03aded001837bfe5851b833d417e711d339c4288928fce103b2",
+    "original_BF16_proxy_max_RRMSE": 0.004840202200510765,
+    "original_BF16_proxy_passed": true,
+    "parent_source": "cd2f4ab846b79e4ab32a545d8c276bd802ed66d5",
+    "raw_bytes": 175022287,
+    "raw_files": 190,
+    "side_inherited_not_rerun": true
+  },
+  "actual_numeric_and_scope_receipt_replayed": true,
+  "adapter": {
+    "adapted_sha256": "e833af264816abfd7e0c12169369a5065f2e23848247dcb5ef95fb9533c9ebdd",
+    "edits": [
+      {
+        "count": 1,
+        "new": "cases={p:f.fixture(n,s,pitch,p) for p in (0,1)};gold={1:f.golden(cases[1])}",
+        "old": "cases={p:f.fixture(n,s,pitch,p) for p in (0,1,2)};gold={p:f.golden(cases[p]) for p in cases}"
+      },
+      {
+        "count": 1,
+        "new": "            record['full_CPU_oracles_authority']='prior Root-reviewed cd2f numeric originals; current B inputs/gold/snapshots retained'",
+        "old": "            record['CPU_oracles']=f.cpu_oracles(cases,blob)"
+      },
+      {
+        "count": 1,
+        "new": "            state=prepare_case(torch,args,record,result,producer,reducer,change,poison,check,snapshot,views,shapes,f)\n            PREPARED[args.role]=state\n",
+        "old": "            poison();eager('A',0)\n            graph=torch.cuda.CUDAGraph();capture=torch.cuda.Stream();capture.wait_stream(torch.cuda.current_stream())\n            with torch.cuda.graph(graph,stream=capture):producer();reducer()\n            result['capture_calls']+=1;capture.synchronize()\n            change(1);pre=snapshot('graphB-before')\n            for field,shape in shapes.items():\n                width=2 if field=='output' else 4;count=1\n                for x in shape:count*=x\n                expected=struct.pack('<H' if width==2 else '<I',f.BF16_POISON if width==2 else f.F32_POISON)*count\n                assert pre[field][f.GUARD_ELEMENTS*width:-f.GUARD_ELEMENTS*width]==expected\n            graph.replay();result['graph_replays']+=1;torch.cuda.synchronize();gb=check('graphB-after',1)\n            poison();eb=eager('eagerB',1);assert all(gb[k]==eb[k] for k in gb),'Graph changed-input result differs from new eager'\n            change(2);snapshot('sideC-before');side=torch.cuda.Stream();side.wait_stream(torch.cuda.current_stream())\n            with torch.cuda.stream(side):producer();reducer()\n            result['producer_calls']+=1;result['reducer_calls']+=1;side.synchronize();check('sideC-after',2)\n"
+      },
+      {
+        "count": 1,
+        "new": "            record['completed']=True;write_json(folder/'record.json',record);write_json(out/'consumer-summary.json',result)\n            def checkpoint_state():\n                write_json(folder/'record.json',record)\n                result['artifact_manifest']=[dict(relative=str(p.relative_to(out)),bytes=p.stat().st_size,sha256=f.sha(p.read_bytes())) for p in sorted(out.rglob('*')) if p.is_file() and p.name!='consumer-summary.json']\n                write_json(out/'consumer-summary.json',result)\n            state['checkpoint']=checkpoint_state\n",
+        "old": "            record['completed']=True;write_json(folder/'record.json',record);write_json(out/'consumer-summary.json',result)"
+      },
+      {
+        "count": 1,
+        "new": "consumer_numeric_verified=False,Graph_verified=False,side_stream_verified=False,timing_capture_B_verified=True,requested_timing_capture_gates_passed=True",
+        "old": "consumer_numeric_verified=True,Graph_verified=True,side_stream_verified=True,requested_consumer_gates_passed=True"
+      }
+    ],
+    "inverse_byte_exact": true,
+    "original_sha256": "597a6e086232e4f17e0e410bb2e17f9c8056083a4085574a5d1759d256221597",
+    "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_cd2f_adapter": {
+      "adapted_sha256": "597a6e086232e4f17e0e410bb2e17f9c8056083a4085574a5d1759d256221597",
+      "edits": [
+        {
+          "count": 2,
+          "new": "f.sha(args.library.read_bytes())==args.role_sha256",
+          "old": "f.sha(args.library.read_bytes())==f.LIBRARY_SHA"
+        },
+        {
+          "count": 1,
+          "new": "getattr(torch.ops,args.namespace).produce",
+          "old": "torch.ops.cjj_native_k8_qk_probe.produce"
+        },
+        {
+          "count": 1,
+          "new": "record=dict(case=[n,s,pitch],snapshots={},checks=[],golden={});result['records'].append(record)\n            record['CPU_oracles']=f.cpu_oracles(cases,blob)",
+          "old": "record=dict(case=[n,s,pitch],snapshots={},checks=[],golden={});result['records'].append(record)"
+        },
+        {
+          "count": 1,
+          "new": "value=(inputs['cache'].view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.LAYER_OFFSET+8192)//2) if args.role=='control' else inputs['cache'].view(torch.int8).as_strided((f.PAGES,16,2,128),(16384,256,128,1),storage_offset=f.LAYER_OFFSET+8192))",
+          "old": "value=inputs['cache'].view(torch.bfloat16).as_strided((f.PAGES,16,2,128),(8192,256,128,1),storage_offset=(f.LAYER_OFFSET+8192)//2)"
+        },
+        {
+          "count": 1,
+          "new": "            assert key.data_ptr()==scale.data_ptr()==inputs['cache'].data_ptr()+f.LAYER_OFFSET and value.data_ptr()==key.data_ptr()+8192\n            record['binding'].update(V_dtype=str(value.dtype),V_shape=list(value.shape),V_stride=list(value.stride()),V_offset=value.storage_offset(),scale_shape=list(scale.shape),scale_stride=list(scale.stride()),scale_offset=scale.storage_offset())",
+          "old": "            assert key.data_ptr()==scale.data_ptr()==inputs['cache'].data_ptr()+f.LAYER_OFFSET and value.data_ptr()==key.data_ptr()+8192"
+        }
+      ],
+      "inverse_byte_exact": true,
+      "original_sha256": "4b28dd919f5abdfb042fc0ccd053a820c2c0991a2fd443e116c6d900fa1a7991",
+      "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46"
+    }
+  },
+  "capacity_recovered": false,
+  "clock_source_sha256": "e84af79b3470db82a6c043a387c3bbfc59f2557aaf610c3af6716463c63574b9",
+  "complete_steps_per_event_block": 512,
+  "default_stdlib_only": true,
+  "missing_pin_and_unapproved_device_refused_before_framework": true,
+  "model_verified": false,
+  "new_capture_only_B_validation": true,
+  "no_same_full_numeric_matrix_rerun": true,
+  "numeric_verified": false,
+  "original3eb_clock_source_byte_exact": true,
+  "original_numeric_functions_byte_exact": [
+    "blob",
+    "npblob",
+    "write_json",
+    "host",
+    "bytes_gpu",
+    "bf16_float",
+    "poison",
+    "change",
+    "snapshot",
+    "check",
+    "producer",
+    "reducer",
+    "eager"
+  ],
+  "original_warm128_unroll8_replays64_AB_then_BA": true,
+  "passed": true,
+  "per_role_case_separate_run_frame": true,
+  "performance_verified": false,
+  "precision_gate": false,
+  "service_verified": false
+}
