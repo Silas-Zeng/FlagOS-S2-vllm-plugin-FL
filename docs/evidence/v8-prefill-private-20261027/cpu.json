@@ -1,0 +1,621 @@
+{
+  "cpu_only": true,
+  "checks_passed": true,
+  "gpu_executed": false,
+  "jit_executed": false,
+  "production_installed": false,
+  "precision_gate": false,
+  "queued": false,
+  "model_evaluated": false,
+  "sources": {
+    "format": "cjj-v8-token-head-fp32-v1",
+    "sdk_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "helper_sha256": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+    "normalizer_sha256": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+    "normalized_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "candidate_sha256": "5fc96b08645292a4fc840a0202364e213847461523baef0e4387818180997d13",
+    "exact_inverse": true,
+    "same_raw_parameter_schema": true,
+    "compiled_typed_abi_verified": false,
+    "kv_quant_mode": 0,
+    "production_installed": false,
+    "gpu_executed": false
+  },
+  "geometries": [
+    {
+      "qlens": [],
+      "klens": [],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        0,
+        2
+      ],
+      "no_launch": true
+    },
+    {
+      "qlens": [],
+      "klens": [],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        0,
+        2
+      ],
+      "no_launch": true
+    },
+    {
+      "qlens": [
+        0
+      ],
+      "klens": [
+        0
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": true
+    },
+    {
+      "qlens": [
+        0
+      ],
+      "klens": [
+        0
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": true
+    },
+    {
+      "qlens": [
+        1
+      ],
+      "klens": [
+        1
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1
+      ],
+      "klens": [
+        1
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1
+      ],
+      "klens": [
+        17
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1
+      ],
+      "klens": [
+        17
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        2
+      ],
+      "klens": [
+        2
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        2
+      ],
+      "klens": [
+        2
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        7
+      ],
+      "klens": [
+        31
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        7
+      ],
+      "klens": [
+        31
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        15
+      ],
+      "klens": [
+        16
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        15
+      ],
+      "klens": [
+        16
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        1,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        16
+      ],
+      "klens": [
+        17
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        2,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        16
+      ],
+      "klens": [
+        17
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        2,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        17
+      ],
+      "klens": [
+        17
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        2,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        17
+      ],
+      "klens": [
+        17
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        2,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        31
+      ],
+      "klens": [
+        63
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        2,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        31
+      ],
+      "klens": [
+        63
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        2,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        33
+      ],
+      "klens": [
+        65
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        3,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        33
+      ],
+      "klens": [
+        65
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        3,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1,
+        16
+      ],
+      "klens": [
+        17,
+        31
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        3,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1,
+        16
+      ],
+      "klens": [
+        17,
+        31
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        3,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        16,
+        1
+      ],
+      "klens": [
+        31,
+        17
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        3,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        16,
+        1
+      ],
+      "klens": [
+        31,
+        17
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        3,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        0,
+        33
+      ],
+      "klens": [
+        0,
+        65
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        4,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        0,
+        33
+      ],
+      "klens": [
+        0,
+        65
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        4,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        33,
+        0
+      ],
+      "klens": [
+        65,
+        0
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        4,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        33,
+        0
+      ],
+      "klens": [
+        65,
+        0
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        4,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        513,
+        513
+      ],
+      "klens": [
+        513,
+        1025
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        66,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        513,
+        513
+      ],
+      "klens": [
+        513,
+        1025
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        66,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1,
+        1025
+      ],
+      "klens": [
+        17,
+        1025
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        66,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1,
+        1025
+      ],
+      "klens": [
+        17,
+        1025
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        66,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1025,
+        1
+      ],
+      "klens": [
+        1025,
+        17
+      ],
+      "page_pitch_bytes": 16384,
+      "q_o_padded": false,
+      "grid": [
+        66,
+        2
+      ],
+      "no_launch": false
+    },
+    {
+      "qlens": [
+        1025,
+        1
+      ],
+      "klens": [
+        1025,
+        17
+      ],
+      "page_pitch_bytes": 32768,
+      "q_o_padded": true,
+      "grid": [
+        66,
+        2
+      ],
+      "no_launch": false
+    }
+  ],
+  "pointer_indices_checked": 16308,
+  "actual_helper_query_rows_checked": 6602,
+  "ideal_scale_fold_cases": 72,
+  "ideal_scale_fold_max_abs": 2.220446049250313e-16,
+  "rejected": [
+    "bf16-v",
+    "scale-dtype",
+    "scale-offset",
+    "zero-scale-stride",
+    "cache-stride",
+    "q-raw-stride",
+    "out-raw-stride",
+    "dummy-scale",
+    "missing-scale",
+    "out-dtype",
+    "none-mode",
+    "3d",
+    "changed-tile",
+    "wrong-grid",
+    "unknown-format",
+    "wrong-dispatch",
+    "aliases",
+    "sdk-sha",
+    "helper-sha",
+    "non-V-QK-edit",
+    "normalizer-sha"
+  ],
+  "opaque_raw_handle_equality_never_called": true,
+  "source_generation_cli_passed": true,
+  "existing_source_output_rejected": true,
+  "legacy_bf16_nan_counterexample": true,
+  "legacy_bf16_small_value": 1.1663108012064884e-38,
+  "nonpreserved_original_term": 0.25,
+  "nonpreserved_weighted_term": 0.25390625,
+  "limitation": "Source and CPU scalar contracts only, not device compilation/FP32 dot/FTZ, resources, numeric tolerance or model acceptance."
+}
