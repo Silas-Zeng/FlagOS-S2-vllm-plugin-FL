@@ -1,0 +1,6536 @@
+{
+  "cpu_only": true,
+  "gpu_executed": false,
+  "reports": [
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/ht/chtfg6ecdrff7jsupzlykm2awtrv4udb2cyuqsbhcink2dhy6ju6.py",
+      "sha256": "5b7c09121b726f6b0c7e62e2bf8db70a3ee8ba4fd79c02e5090dac5ac7aa8f87",
+      "kind": "embedding",
+      "rows": 32,
+      "visible_created_peak_bytes": 573440,
+      "peak_live_roots": [
+        {
+          "root": 6,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 603
+        },
+        {
+          "root": 7,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 604
+        },
+        {
+          "root": 8,
+          "shape": [
+            32,
+            2560
+          ],
+          "strides": [
+            2560,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 163840,
+          "external": false,
+          "allocation_line": 611
+        },
+        {
+          "root": 9,
+          "shape": [
+            32,
+            2,
+            128
+          ],
+          "strides": [
+            256,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 16384,
+          "external": false,
+          "allocation_line": 615
+        },
+        {
+          "root": 10,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 624
+        }
+      ],
+      "created_allocation_bytes": 573440,
+      "linear_geometries": [
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 600,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 603,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 603,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 604,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 604,
+          "event": "assign buf2",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 606,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 608,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 609,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 610,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 611,
+          "event": "allocate",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 611,
+          "event": "assign buf3",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 615,
+          "event": "allocate",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 615,
+          "event": "assign buf4",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 616,
+          "event": "assign buf5",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 618,
+          "event": "assign triton_poi_fused_1_xnumel_0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 619,
+          "event": "assign triton_poi_fused_1_xnumel_1",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 623,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 624,
+          "event": "allocate",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 624,
+          "event": "assign buf6",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 625,
+          "event": "return",
+          "visible_live_bytes": 573440
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/jh/cjhmy4xxpijp3emrg4be65sxsvntinxsnfytwl44fothcjqdnszm.py",
+      "sha256": "e1162e76474fa0b40c05abce2fe47df73700cba3029a43465b25909fe34e6b13",
+      "kind": "edge-layer",
+      "rows": 32,
+      "visible_created_peak_bytes": 1310720,
+      "peak_live_roots": [
+        {
+          "root": 10,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 928
+        },
+        {
+          "root": 12,
+          "shape": [
+            32,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 938
+        },
+        {
+          "root": 13,
+          "shape": [
+            32,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 393216,
+          "external": false,
+          "allocation_line": 943
+        }
+      ],
+      "created_allocation_bytes": 2015232,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 925,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 928,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 928,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 931,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 932,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 933,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 933,
+          "event": "assign buf2",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 935,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 937,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 938,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 938,
+          "event": "assign buf3",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 941,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 942,
+          "event": "delete",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 943,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 943,
+          "event": "assign buf4",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 945,
+          "event": "assign triton_poi_fused_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 946,
+          "event": "assign stream0",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 948,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 949,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 949,
+          "event": "assign buf5",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 952,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 953,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 954,
+          "event": "allocate",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 954,
+          "event": "assign buf6",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 955,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 955,
+          "event": "assign buf8",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 957,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 959,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 960,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 961,
+          "event": "delete",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 962,
+          "event": "allocate",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 962,
+          "event": "assign buf9",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 965,
+          "event": "delete",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 966,
+          "event": "allocate",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 966,
+          "event": "assign buf10",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 967,
+          "event": "assign buf11",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 967,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 969,
+          "event": "assign triton_poi_fused_3_xnumel_0",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 970,
+          "event": "assign triton_poi_fused_3_xnumel_1",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 971,
+          "event": "assign stream0",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 973,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 974,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 975,
+          "event": "assign buf12",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 975,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 976,
+          "event": "return",
+          "visible_live_bytes": 573440
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/ml/cmliq32qsff2auh6io5kfwnuqmvoglkvivxi33pzfdutlte4da3n.py",
+      "sha256": "d67d1d563056a1491bd0ba83f1673f529ca4926a6a1f204d58e221dcc3b35268",
+      "kind": "edge-layer",
+      "rows": 32,
+      "visible_created_peak_bytes": 1310720,
+      "peak_live_roots": [
+        {
+          "root": 7,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 592
+        },
+        {
+          "root": 9,
+          "shape": [
+            32,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 602
+        },
+        {
+          "root": 10,
+          "shape": [
+            32,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 393216,
+          "external": false,
+          "allocation_line": 607
+        }
+      ],
+      "created_allocation_bytes": 1572864,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 589,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 592,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 592,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 595,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 596,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 597,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 597,
+          "event": "assign buf2",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 599,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 601,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 602,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 602,
+          "event": "assign buf3",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 605,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 606,
+          "event": "delete",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 607,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 607,
+          "event": "assign buf4",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 609,
+          "event": "assign triton_poi_fused_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 610,
+          "event": "assign stream0",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 612,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 613,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 613,
+          "event": "assign buf5",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 617,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 618,
+          "event": "assign buf7",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 618,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 623,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 624,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 625,
+          "event": "return",
+          "visible_live_bytes": 131072
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/qe/cqeoybndezl6uk3zssksca5vpbeft3hwgn2aadmt4zuca63necut.py",
+      "sha256": "201a239d723356a3b3217421467f373208514f2846bd7177d61593c74d3908dd",
+      "kind": "native-layer",
+      "rows": 32,
+      "visible_created_peak_bytes": 655360,
+      "peak_live_roots": [
+        {
+          "root": 12,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 821
+        },
+        {
+          "root": 13,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 826
+        },
+        {
+          "root": 14,
+          "shape": [
+            32,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 393216,
+          "external": false,
+          "allocation_line": 832
+        }
+      ],
+      "created_allocation_bytes": 1359872,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 818,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 821,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 821,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 824,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 825,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 826,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 826,
+          "event": "assign buf2",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 828,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 830,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 832,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 832,
+          "event": "assign buf3",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 833,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 834,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 835,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 836,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 837,
+          "event": "assign buf4",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 838,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 839,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 839,
+          "event": "assign buf5",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 842,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 843,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 844,
+          "event": "allocate",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 844,
+          "event": "assign buf6",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 845,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 845,
+          "event": "assign buf8",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 847,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 849,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 850,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 851,
+          "event": "delete",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 852,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 853,
+          "event": "allocate",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 853,
+          "event": "assign buf9",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 856,
+          "event": "delete",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 857,
+          "event": "allocate",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 857,
+          "event": "assign buf10",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 858,
+          "event": "assign buf11",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 858,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 860,
+          "event": "assign triton_poi_fused_2_xnumel_0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 861,
+          "event": "assign triton_poi_fused_2_xnumel_1",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 862,
+          "event": "assign stream0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 864,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 865,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 866,
+          "event": "allocate",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 866,
+          "event": "assign buf12",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 867,
+          "event": "return",
+          "visible_live_bytes": 573440
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/ht/chtfg6ecdrff7jsupzlykm2awtrv4udb2cyuqsbhcink2dhy6ju6.py",
+      "sha256": "5b7c09121b726f6b0c7e62e2bf8db70a3ee8ba4fd79c02e5090dac5ac7aa8f87",
+      "kind": "embedding",
+      "rows": 64,
+      "visible_created_peak_bytes": 1146880,
+      "peak_live_roots": [
+        {
+          "root": 6,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 603
+        },
+        {
+          "root": 7,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 604
+        },
+        {
+          "root": 8,
+          "shape": [
+            64,
+            2560
+          ],
+          "strides": [
+            2560,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 327680,
+          "external": false,
+          "allocation_line": 611
+        },
+        {
+          "root": 9,
+          "shape": [
+            64,
+            2,
+            128
+          ],
+          "strides": [
+            256,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 32768,
+          "external": false,
+          "allocation_line": 615
+        },
+        {
+          "root": 10,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 624
+        }
+      ],
+      "created_allocation_bytes": 1146880,
+      "linear_geometries": [
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 600,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 603,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 603,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 604,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 604,
+          "event": "assign buf2",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 606,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 608,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 609,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 610,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 611,
+          "event": "allocate",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 611,
+          "event": "assign buf3",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 615,
+          "event": "allocate",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 615,
+          "event": "assign buf4",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 616,
+          "event": "assign buf5",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 618,
+          "event": "assign triton_poi_fused_1_xnumel_0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 619,
+          "event": "assign triton_poi_fused_1_xnumel_1",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 623,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 624,
+          "event": "allocate",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 624,
+          "event": "assign buf6",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 625,
+          "event": "return",
+          "visible_live_bytes": 1146880
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/jh/cjhmy4xxpijp3emrg4be65sxsvntinxsnfytwl44fothcjqdnszm.py",
+      "sha256": "e1162e76474fa0b40c05abce2fe47df73700cba3029a43465b25909fe34e6b13",
+      "kind": "edge-layer",
+      "rows": 64,
+      "visible_created_peak_bytes": 2621440,
+      "peak_live_roots": [
+        {
+          "root": 10,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 928
+        },
+        {
+          "root": 12,
+          "shape": [
+            64,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 1572864,
+          "external": false,
+          "allocation_line": 938
+        },
+        {
+          "root": 13,
+          "shape": [
+            64,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 943
+        }
+      ],
+      "created_allocation_bytes": 4030464,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 925,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 928,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 928,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 931,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 932,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 933,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 933,
+          "event": "assign buf2",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 935,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 937,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 938,
+          "event": "allocate",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 938,
+          "event": "assign buf3",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 941,
+          "event": "delete",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 942,
+          "event": "delete",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 943,
+          "event": "allocate",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 943,
+          "event": "assign buf4",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 945,
+          "event": "assign triton_poi_fused_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 946,
+          "event": "assign stream0",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 948,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 949,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 949,
+          "event": "assign buf5",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 952,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 953,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 954,
+          "event": "allocate",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 954,
+          "event": "assign buf6",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 955,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 955,
+          "event": "assign buf8",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 957,
+          "event": "assign stream0",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 959,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 960,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 961,
+          "event": "delete",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 962,
+          "event": "allocate",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 962,
+          "event": "assign buf9",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 965,
+          "event": "delete",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 966,
+          "event": "allocate",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 966,
+          "event": "assign buf10",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 967,
+          "event": "assign buf11",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 967,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 969,
+          "event": "assign triton_poi_fused_3_xnumel_0",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 970,
+          "event": "assign triton_poi_fused_3_xnumel_1",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 971,
+          "event": "assign stream0",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 973,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 974,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 975,
+          "event": "assign buf12",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 975,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 976,
+          "event": "return",
+          "visible_live_bytes": 1146880
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/ml/cmliq32qsff2auh6io5kfwnuqmvoglkvivxi33pzfdutlte4da3n.py",
+      "sha256": "d67d1d563056a1491bd0ba83f1673f529ca4926a6a1f204d58e221dcc3b35268",
+      "kind": "edge-layer",
+      "rows": 64,
+      "visible_created_peak_bytes": 2621440,
+      "peak_live_roots": [
+        {
+          "root": 7,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 592
+        },
+        {
+          "root": 9,
+          "shape": [
+            64,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 1572864,
+          "external": false,
+          "allocation_line": 602
+        },
+        {
+          "root": 10,
+          "shape": [
+            64,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 607
+        }
+      ],
+      "created_allocation_bytes": 3145728,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 589,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 592,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 592,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 595,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 596,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 597,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 597,
+          "event": "assign buf2",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 599,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 601,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 602,
+          "event": "allocate",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 602,
+          "event": "assign buf3",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 605,
+          "event": "delete",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 606,
+          "event": "delete",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 607,
+          "event": "allocate",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 607,
+          "event": "assign buf4",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 609,
+          "event": "assign triton_poi_fused_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 610,
+          "event": "assign stream0",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 612,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 613,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 613,
+          "event": "assign buf5",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 617,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 618,
+          "event": "assign buf7",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 618,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 623,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 624,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 625,
+          "event": "return",
+          "visible_live_bytes": 262144
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/qe/cqeoybndezl6uk3zssksca5vpbeft3hwgn2aadmt4zuca63necut.py",
+      "sha256": "201a239d723356a3b3217421467f373208514f2846bd7177d61593c74d3908dd",
+      "kind": "native-layer",
+      "rows": 64,
+      "visible_created_peak_bytes": 1310720,
+      "peak_live_roots": [
+        {
+          "root": 12,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 821
+        },
+        {
+          "root": 13,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 826
+        },
+        {
+          "root": 14,
+          "shape": [
+            64,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 832
+        }
+      ],
+      "created_allocation_bytes": 2719744,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 818,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 821,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 821,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 824,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 825,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 826,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 826,
+          "event": "assign buf2",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 828,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 830,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 832,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 832,
+          "event": "assign buf3",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 833,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 834,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 835,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 836,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 837,
+          "event": "assign buf4",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 838,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 839,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 839,
+          "event": "assign buf5",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 842,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 843,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 844,
+          "event": "allocate",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 844,
+          "event": "assign buf6",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 845,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 845,
+          "event": "assign buf8",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 847,
+          "event": "assign stream0",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 849,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 850,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 851,
+          "event": "delete",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 852,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 853,
+          "event": "allocate",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 853,
+          "event": "assign buf9",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 856,
+          "event": "delete",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 857,
+          "event": "allocate",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 857,
+          "event": "assign buf10",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 858,
+          "event": "assign buf11",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 858,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 860,
+          "event": "assign triton_poi_fused_2_xnumel_0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 861,
+          "event": "assign triton_poi_fused_2_xnumel_1",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 862,
+          "event": "assign stream0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 864,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 865,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 866,
+          "event": "allocate",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 866,
+          "event": "assign buf12",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 867,
+          "event": "return",
+          "visible_live_bytes": 1146880
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/ht/chtfg6ecdrff7jsupzlykm2awtrv4udb2cyuqsbhcink2dhy6ju6.py",
+      "sha256": "5b7c09121b726f6b0c7e62e2bf8db70a3ee8ba4fd79c02e5090dac5ac7aa8f87",
+      "kind": "embedding",
+      "rows": 2048,
+      "visible_created_peak_bytes": 36700160,
+      "peak_live_roots": [
+        {
+          "root": 6,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 603
+        },
+        {
+          "root": 7,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 604
+        },
+        {
+          "root": 8,
+          "shape": [
+            2048,
+            2560
+          ],
+          "strides": [
+            2560,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 10485760,
+          "external": false,
+          "allocation_line": 611
+        },
+        {
+          "root": 9,
+          "shape": [
+            2048,
+            2,
+            128
+          ],
+          "strides": [
+            256,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 1048576,
+          "external": false,
+          "allocation_line": 615
+        },
+        {
+          "root": 10,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 624
+        }
+      ],
+      "created_allocation_bytes": 36700160,
+      "linear_geometries": [
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 600,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 603,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 603,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 604,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 604,
+          "event": "assign buf2",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 606,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 608,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 609,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 610,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 611,
+          "event": "allocate",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 611,
+          "event": "assign buf3",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 615,
+          "event": "allocate",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 615,
+          "event": "assign buf4",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 616,
+          "event": "assign buf5",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 618,
+          "event": "assign triton_poi_fused_1_xnumel_0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 619,
+          "event": "assign triton_poi_fused_1_xnumel_1",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 623,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 624,
+          "event": "allocate",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 624,
+          "event": "assign buf6",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 625,
+          "event": "return",
+          "visible_live_bytes": 36700160
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/jh/cjhmy4xxpijp3emrg4be65sxsvntinxsnfytwl44fothcjqdnszm.py",
+      "sha256": "e1162e76474fa0b40c05abce2fe47df73700cba3029a43465b25909fe34e6b13",
+      "kind": "edge-layer",
+      "rows": 2048,
+      "visible_created_peak_bytes": 83886080,
+      "peak_live_roots": [
+        {
+          "root": 10,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 928
+        },
+        {
+          "root": 12,
+          "shape": [
+            2048,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 50331648,
+          "external": false,
+          "allocation_line": 938
+        },
+        {
+          "root": 13,
+          "shape": [
+            2048,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 25165824,
+          "external": false,
+          "allocation_line": 943
+        }
+      ],
+      "created_allocation_bytes": 128974848,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 925,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 928,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 928,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 931,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 932,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 933,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 933,
+          "event": "assign buf2",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 935,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 937,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 938,
+          "event": "allocate",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 938,
+          "event": "assign buf3",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 941,
+          "event": "delete",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 942,
+          "event": "delete",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 943,
+          "event": "allocate",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 943,
+          "event": "assign buf4",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 945,
+          "event": "assign triton_poi_fused_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 946,
+          "event": "assign stream0",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 948,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 949,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 949,
+          "event": "assign buf5",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 952,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 953,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 954,
+          "event": "allocate",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 954,
+          "event": "assign buf6",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 955,
+          "event": "allocate",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 955,
+          "event": "assign buf8",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 957,
+          "event": "assign stream0",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 959,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 960,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 961,
+          "event": "delete",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 962,
+          "event": "allocate",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 962,
+          "event": "assign buf9",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 965,
+          "event": "delete",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 966,
+          "event": "allocate",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 966,
+          "event": "assign buf10",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 967,
+          "event": "assign buf11",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 967,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 969,
+          "event": "assign triton_poi_fused_3_xnumel_0",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 970,
+          "event": "assign triton_poi_fused_3_xnumel_1",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 971,
+          "event": "assign stream0",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 973,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 974,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 975,
+          "event": "assign buf12",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 975,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 976,
+          "event": "return",
+          "visible_live_bytes": 36700160
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/ml/cmliq32qsff2auh6io5kfwnuqmvoglkvivxi33pzfdutlte4da3n.py",
+      "sha256": "d67d1d563056a1491bd0ba83f1673f529ca4926a6a1f204d58e221dcc3b35268",
+      "kind": "edge-layer",
+      "rows": 2048,
+      "visible_created_peak_bytes": 83886080,
+      "peak_live_roots": [
+        {
+          "root": 7,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 592
+        },
+        {
+          "root": 9,
+          "shape": [
+            2048,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 50331648,
+          "external": false,
+          "allocation_line": 602
+        },
+        {
+          "root": 10,
+          "shape": [
+            2048,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 25165824,
+          "external": false,
+          "allocation_line": 607
+        }
+      ],
+      "created_allocation_bytes": 100663296,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 589,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 592,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 592,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 595,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 596,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 597,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 597,
+          "event": "assign buf2",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 599,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 601,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 602,
+          "event": "allocate",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 602,
+          "event": "assign buf3",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 605,
+          "event": "delete",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 606,
+          "event": "delete",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 607,
+          "event": "allocate",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 607,
+          "event": "assign buf4",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 609,
+          "event": "assign triton_poi_fused_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 610,
+          "event": "assign stream0",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 612,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 613,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 613,
+          "event": "assign buf5",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 617,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 618,
+          "event": "assign buf7",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 618,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 623,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 624,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 625,
+          "event": "return",
+          "visible_live_bytes": 8388608
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/candidate/qe/cqeoybndezl6uk3zssksca5vpbeft3hwgn2aadmt4zuca63necut.py",
+      "sha256": "201a239d723356a3b3217421467f373208514f2846bd7177d61593c74d3908dd",
+      "kind": "native-layer",
+      "rows": 2048,
+      "visible_created_peak_bytes": 41943040,
+      "peak_live_roots": [
+        {
+          "root": 12,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 821
+        },
+        {
+          "root": 13,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 826
+        },
+        {
+          "root": 14,
+          "shape": [
+            2048,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 25165824,
+          "external": false,
+          "allocation_line": 832
+        }
+      ],
+      "created_allocation_bytes": 87031808,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 818,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 821,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 821,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 824,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 825,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 826,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 826,
+          "event": "assign buf2",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 828,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 830,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 832,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 832,
+          "event": "assign buf3",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 833,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 834,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 835,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 836,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 837,
+          "event": "assign buf4",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 838,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 839,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 839,
+          "event": "assign buf5",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 842,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 843,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 844,
+          "event": "allocate",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 844,
+          "event": "assign buf6",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 845,
+          "event": "allocate",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 845,
+          "event": "assign buf8",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 847,
+          "event": "assign stream0",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 849,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 850,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 851,
+          "event": "delete",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 852,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 853,
+          "event": "allocate",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 853,
+          "event": "assign buf9",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 856,
+          "event": "delete",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 857,
+          "event": "allocate",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 857,
+          "event": "assign buf10",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 858,
+          "event": "assign buf11",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 858,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 860,
+          "event": "assign triton_poi_fused_2_xnumel_0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 861,
+          "event": "assign triton_poi_fused_2_xnumel_1",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 862,
+          "event": "assign stream0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 864,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 865,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 866,
+          "event": "allocate",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 866,
+          "event": "assign buf12",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 867,
+          "event": "return",
+          "visible_live_bytes": 36700160
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/4y/c4yyo44jgiayyuw62hstf46zx2e3zw2wtd5qz5jprkpaw7xskwzj.py",
+      "sha256": "045df5922a95c8e8c5fa320688390f794b7fa65f769bec30e5272c431587047f",
+      "kind": "edge-layer",
+      "rows": 32,
+      "visible_created_peak_bytes": 1310720,
+      "peak_live_roots": [
+        {
+          "root": 10,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 941
+        },
+        {
+          "root": 12,
+          "shape": [
+            32,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 952
+        },
+        {
+          "root": 13,
+          "shape": [
+            32,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 393216,
+          "external": false,
+          "allocation_line": 957
+        }
+      ],
+      "created_allocation_bytes": 2015232,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 937,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 941,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 941,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 942,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 943,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 944,
+          "event": "assign buf1",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 945,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 946,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 946,
+          "event": "assign buf3",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 948,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 950,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 952,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 952,
+          "event": "assign buf4",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 953,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 954,
+          "event": "delete",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 955,
+          "event": "assign buf5",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 956,
+          "event": "delete",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 957,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 957,
+          "event": "assign buf6",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 959,
+          "event": "assign triton_poi_fused_linear_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 960,
+          "event": "assign stream0",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 962,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 964,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 964,
+          "event": "assign buf7",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 965,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 966,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 967,
+          "event": "assign buf8",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 968,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 969,
+          "event": "allocate",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 969,
+          "event": "assign buf9",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 970,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 970,
+          "event": "assign buf11",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 972,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 974,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 975,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 976,
+          "event": "delete",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 978,
+          "event": "allocate",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 978,
+          "event": "assign buf12",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 979,
+          "event": "delete",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 980,
+          "event": "assign buf13",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 981,
+          "event": "delete",
+          "visible_live_bytes": 557056
+        },
+        {
+          "line": 982,
+          "event": "allocate",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 982,
+          "event": "assign buf14",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 983,
+          "event": "assign buf15",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 983,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 985,
+          "event": "assign triton_poi_fused_3_xnumel_0",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 986,
+          "event": "assign triton_poi_fused_3_xnumel_1",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 987,
+          "event": "assign stream0",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 989,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 990,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 991,
+          "event": "assign buf16",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 991,
+          "event": "delete",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 992,
+          "event": "return",
+          "visible_live_bytes": 573440
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/iq/ciqccc2xbtya22bep62hyy27ow6l5xgqjvhvtjgyxjyyjhr7cy2b.py",
+      "sha256": "7fca0955d114155c7790f1aea31b14de079771b712f6b103c202d974fc2f3d44",
+      "kind": "embedding",
+      "rows": 32,
+      "visible_created_peak_bytes": 573440,
+      "peak_live_roots": [
+        {
+          "root": 6,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 607
+        },
+        {
+          "root": 8,
+          "shape": [
+            32,
+            2560
+          ],
+          "strides": [
+            2560,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 163840,
+          "external": false,
+          "allocation_line": 616
+        },
+        {
+          "root": 9,
+          "shape": [
+            32,
+            2,
+            128
+          ],
+          "strides": [
+            256,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 16384,
+          "external": false,
+          "allocation_line": 621
+        },
+        {
+          "root": 10,
+          "shape": [
+            32,
+            16,
+            128
+          ],
+          "strides": [
+            2048,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 622
+        },
+        {
+          "root": 11,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 630
+        }
+      ],
+      "created_allocation_bytes": 704512,
+      "linear_geometries": [
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 604,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 607,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 607,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 608,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 608,
+          "event": "assign buf2",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 610,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 612,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 613,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 616,
+          "event": "allocate",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 616,
+          "event": "assign buf3",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 617,
+          "event": "delete",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 618,
+          "event": "delete",
+          "visible_live_bytes": 294912
+        },
+        {
+          "line": 619,
+          "event": "assign buf4",
+          "visible_live_bytes": 294912
+        },
+        {
+          "line": 620,
+          "event": "delete",
+          "visible_live_bytes": 294912
+        },
+        {
+          "line": 621,
+          "event": "allocate",
+          "visible_live_bytes": 311296
+        },
+        {
+          "line": 621,
+          "event": "assign buf5",
+          "visible_live_bytes": 311296
+        },
+        {
+          "line": 622,
+          "event": "allocate",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 622,
+          "event": "assign buf6",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 624,
+          "event": "assign triton_poi_fused_1_xnumel_0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 625,
+          "event": "assign triton_poi_fused_1_xnumel_1",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 626,
+          "event": "assign stream0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 628,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 629,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 630,
+          "event": "allocate",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 630,
+          "event": "assign buf7",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 631,
+          "event": "return",
+          "visible_live_bytes": 573440
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/sq/csqm4vraawjuvviw5ohlf6lqqezo6go7ggig6zmrxrfb3j4oc4mg.py",
+      "sha256": "3f968fecd32a47d1efd5efd57bb312901f8bc7466e00724479e1c102818c0995",
+      "kind": "edge-layer",
+      "rows": 32,
+      "visible_created_peak_bytes": 1310720,
+      "peak_live_roots": [
+        {
+          "root": 7,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 601
+        },
+        {
+          "root": 9,
+          "shape": [
+            32,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 612
+        },
+        {
+          "root": 10,
+          "shape": [
+            32,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 393216,
+          "external": false,
+          "allocation_line": 617
+        }
+      ],
+      "created_allocation_bytes": 1572864,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 597,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 601,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 601,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 602,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 603,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 604,
+          "event": "assign buf1",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 605,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 606,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 606,
+          "event": "assign buf3",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 608,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 610,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 612,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 612,
+          "event": "assign buf4",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 613,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 615,
+          "event": "assign buf5",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 917504
+        },
+        {
+          "line": 617,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 617,
+          "event": "assign buf6",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 619,
+          "event": "assign triton_poi_fused_linear_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 624,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 624,
+          "event": "assign buf7",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 625,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 626,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 627,
+          "event": "assign buf8",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 628,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 629,
+          "event": "assign buf10",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 629,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 631,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 633,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 634,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 635,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 636,
+          "event": "return",
+          "visible_live_bytes": 131072
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/t3/ct3zotmcp43j5l3ccv3xrx64gl4dycyd6oohhg7rehhzi3m33iqn.py",
+      "sha256": "28dd2c12b424a8f88cb9014f2990d8ff86b9e0eaa0dfb5a590cc30d7b2fa3f49",
+      "kind": "native-layer",
+      "rows": 32,
+      "visible_created_peak_bytes": 655360,
+      "peak_live_roots": [
+        {
+          "root": 12,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 826
+        },
+        {
+          "root": 13,
+          "shape": [
+            32,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 131072,
+          "external": false,
+          "allocation_line": 831
+        },
+        {
+          "root": 14,
+          "shape": [
+            32,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 393216,
+          "external": false,
+          "allocation_line": 837
+        }
+      ],
+      "created_allocation_bytes": 1490944,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 822,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 826,
+          "event": "allocate",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 826,
+          "event": "assign buf0",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 827,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 828,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 829,
+          "event": "assign buf1",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 830,
+          "event": "delete",
+          "visible_live_bytes": 131072
+        },
+        {
+          "line": 831,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 831,
+          "event": "assign buf3",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 833,
+          "event": "assign stream0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 835,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 837,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 837,
+          "event": "assign buf4",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 838,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 839,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 840,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 841,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 842,
+          "event": "assign buf5",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 843,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 845,
+          "event": "allocate",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 845,
+          "event": "assign buf6",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 846,
+          "event": "delete",
+          "visible_live_bytes": 655360
+        },
+        {
+          "line": 847,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 848,
+          "event": "assign buf7",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 849,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 850,
+          "event": "allocate",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 850,
+          "event": "assign buf8",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 851,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 851,
+          "event": "assign buf10",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 853,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 855,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 856,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 857,
+          "event": "delete",
+          "visible_live_bytes": 393216
+        },
+        {
+          "line": 858,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 860,
+          "event": "allocate",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 860,
+          "event": "assign buf11",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 861,
+          "event": "delete",
+          "visible_live_bytes": 425984
+        },
+        {
+          "line": 862,
+          "event": "delete",
+          "visible_live_bytes": 294912
+        },
+        {
+          "line": 863,
+          "event": "assign buf12",
+          "visible_live_bytes": 294912
+        },
+        {
+          "line": 864,
+          "event": "delete",
+          "visible_live_bytes": 294912
+        },
+        {
+          "line": 865,
+          "event": "allocate",
+          "visible_live_bytes": 311296
+        },
+        {
+          "line": 865,
+          "event": "assign buf13",
+          "visible_live_bytes": 311296
+        },
+        {
+          "line": 866,
+          "event": "allocate",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 866,
+          "event": "assign buf14",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 868,
+          "event": "assign triton_poi_fused_2_xnumel_0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 869,
+          "event": "assign triton_poi_fused_2_xnumel_1",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 870,
+          "event": "assign stream0",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 872,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 873,
+          "event": "delete",
+          "visible_live_bytes": 442368
+        },
+        {
+          "line": 874,
+          "event": "allocate",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 874,
+          "event": "assign buf15",
+          "visible_live_bytes": 573440
+        },
+        {
+          "line": 875,
+          "event": "return",
+          "visible_live_bytes": 573440
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/4y/c4yyo44jgiayyuw62hstf46zx2e3zw2wtd5qz5jprkpaw7xskwzj.py",
+      "sha256": "045df5922a95c8e8c5fa320688390f794b7fa65f769bec30e5272c431587047f",
+      "kind": "edge-layer",
+      "rows": 64,
+      "visible_created_peak_bytes": 2621440,
+      "peak_live_roots": [
+        {
+          "root": 10,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 941
+        },
+        {
+          "root": 12,
+          "shape": [
+            64,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 1572864,
+          "external": false,
+          "allocation_line": 952
+        },
+        {
+          "root": 13,
+          "shape": [
+            64,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 957
+        }
+      ],
+      "created_allocation_bytes": 4030464,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 937,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 941,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 941,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 942,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 943,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 944,
+          "event": "assign buf1",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 945,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 946,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 946,
+          "event": "assign buf3",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 948,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 950,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 952,
+          "event": "allocate",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 952,
+          "event": "assign buf4",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 953,
+          "event": "delete",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 954,
+          "event": "delete",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 955,
+          "event": "assign buf5",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 956,
+          "event": "delete",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 957,
+          "event": "allocate",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 957,
+          "event": "assign buf6",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 959,
+          "event": "assign triton_poi_fused_linear_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 960,
+          "event": "assign stream0",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 962,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 964,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 964,
+          "event": "assign buf7",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 965,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 966,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 967,
+          "event": "assign buf8",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 968,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 969,
+          "event": "allocate",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 969,
+          "event": "assign buf9",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 970,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 970,
+          "event": "assign buf11",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 972,
+          "event": "assign stream0",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 974,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 975,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 976,
+          "event": "delete",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 978,
+          "event": "allocate",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 978,
+          "event": "assign buf12",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 979,
+          "event": "delete",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 980,
+          "event": "assign buf13",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 981,
+          "event": "delete",
+          "visible_live_bytes": 1114112
+        },
+        {
+          "line": 982,
+          "event": "allocate",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 982,
+          "event": "assign buf14",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 983,
+          "event": "assign buf15",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 983,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 985,
+          "event": "assign triton_poi_fused_3_xnumel_0",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 986,
+          "event": "assign triton_poi_fused_3_xnumel_1",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 987,
+          "event": "assign stream0",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 989,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 990,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 991,
+          "event": "assign buf16",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 991,
+          "event": "delete",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 992,
+          "event": "return",
+          "visible_live_bytes": 1146880
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/iq/ciqccc2xbtya22bep62hyy27ow6l5xgqjvhvtjgyxjyyjhr7cy2b.py",
+      "sha256": "7fca0955d114155c7790f1aea31b14de079771b712f6b103c202d974fc2f3d44",
+      "kind": "embedding",
+      "rows": 64,
+      "visible_created_peak_bytes": 1146880,
+      "peak_live_roots": [
+        {
+          "root": 6,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 607
+        },
+        {
+          "root": 8,
+          "shape": [
+            64,
+            2560
+          ],
+          "strides": [
+            2560,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 327680,
+          "external": false,
+          "allocation_line": 616
+        },
+        {
+          "root": 9,
+          "shape": [
+            64,
+            2,
+            128
+          ],
+          "strides": [
+            256,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 32768,
+          "external": false,
+          "allocation_line": 621
+        },
+        {
+          "root": 10,
+          "shape": [
+            64,
+            16,
+            128
+          ],
+          "strides": [
+            2048,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 622
+        },
+        {
+          "root": 11,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 630
+        }
+      ],
+      "created_allocation_bytes": 1409024,
+      "linear_geometries": [
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 604,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 607,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 607,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 608,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 608,
+          "event": "assign buf2",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 610,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 612,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 613,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 616,
+          "event": "allocate",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 616,
+          "event": "assign buf3",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 617,
+          "event": "delete",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 618,
+          "event": "delete",
+          "visible_live_bytes": 589824
+        },
+        {
+          "line": 619,
+          "event": "assign buf4",
+          "visible_live_bytes": 589824
+        },
+        {
+          "line": 620,
+          "event": "delete",
+          "visible_live_bytes": 589824
+        },
+        {
+          "line": 621,
+          "event": "allocate",
+          "visible_live_bytes": 622592
+        },
+        {
+          "line": 621,
+          "event": "assign buf5",
+          "visible_live_bytes": 622592
+        },
+        {
+          "line": 622,
+          "event": "allocate",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 622,
+          "event": "assign buf6",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 624,
+          "event": "assign triton_poi_fused_1_xnumel_0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 625,
+          "event": "assign triton_poi_fused_1_xnumel_1",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 626,
+          "event": "assign stream0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 628,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 629,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 630,
+          "event": "allocate",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 630,
+          "event": "assign buf7",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 631,
+          "event": "return",
+          "visible_live_bytes": 1146880
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/sq/csqm4vraawjuvviw5ohlf6lqqezo6go7ggig6zmrxrfb3j4oc4mg.py",
+      "sha256": "3f968fecd32a47d1efd5efd57bb312901f8bc7466e00724479e1c102818c0995",
+      "kind": "edge-layer",
+      "rows": 64,
+      "visible_created_peak_bytes": 2621440,
+      "peak_live_roots": [
+        {
+          "root": 7,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 601
+        },
+        {
+          "root": 9,
+          "shape": [
+            64,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 1572864,
+          "external": false,
+          "allocation_line": 612
+        },
+        {
+          "root": 10,
+          "shape": [
+            64,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 617
+        }
+      ],
+      "created_allocation_bytes": 3145728,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 597,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 601,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 601,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 602,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 603,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 604,
+          "event": "assign buf1",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 605,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 606,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 606,
+          "event": "assign buf3",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 608,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 610,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 612,
+          "event": "allocate",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 612,
+          "event": "assign buf4",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 613,
+          "event": "delete",
+          "visible_live_bytes": 2097152
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 615,
+          "event": "assign buf5",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 1835008
+        },
+        {
+          "line": 617,
+          "event": "allocate",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 617,
+          "event": "assign buf6",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 619,
+          "event": "assign triton_poi_fused_linear_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 2621440
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 624,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 624,
+          "event": "assign buf7",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 625,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 626,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 627,
+          "event": "assign buf8",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 628,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 629,
+          "event": "assign buf10",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 629,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 631,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 633,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 634,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 635,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 636,
+          "event": "return",
+          "visible_live_bytes": 262144
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/t3/ct3zotmcp43j5l3ccv3xrx64gl4dycyd6oohhg7rehhzi3m33iqn.py",
+      "sha256": "28dd2c12b424a8f88cb9014f2990d8ff86b9e0eaa0dfb5a590cc30d7b2fa3f49",
+      "kind": "native-layer",
+      "rows": 64,
+      "visible_created_peak_bytes": 1310720,
+      "peak_live_roots": [
+        {
+          "root": 12,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 826
+        },
+        {
+          "root": 13,
+          "shape": [
+            64,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 262144,
+          "external": false,
+          "allocation_line": 831
+        },
+        {
+          "root": 14,
+          "shape": [
+            64,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 786432,
+          "external": false,
+          "allocation_line": 837
+        }
+      ],
+      "created_allocation_bytes": 2981888,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 822,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 826,
+          "event": "allocate",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 826,
+          "event": "assign buf0",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 827,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 828,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 829,
+          "event": "assign buf1",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 830,
+          "event": "delete",
+          "visible_live_bytes": 262144
+        },
+        {
+          "line": 831,
+          "event": "allocate",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 831,
+          "event": "assign buf3",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 833,
+          "event": "assign stream0",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 835,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 837,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 837,
+          "event": "assign buf4",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 838,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 839,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 840,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 841,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 842,
+          "event": "assign buf5",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 843,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 845,
+          "event": "allocate",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 845,
+          "event": "assign buf6",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 846,
+          "event": "delete",
+          "visible_live_bytes": 1310720
+        },
+        {
+          "line": 847,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 848,
+          "event": "assign buf7",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 849,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 850,
+          "event": "allocate",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 850,
+          "event": "assign buf8",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 851,
+          "event": "allocate",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 851,
+          "event": "assign buf10",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 853,
+          "event": "assign stream0",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 855,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 856,
+          "event": "delete",
+          "visible_live_bytes": 1048576
+        },
+        {
+          "line": 857,
+          "event": "delete",
+          "visible_live_bytes": 786432
+        },
+        {
+          "line": 858,
+          "event": "delete",
+          "visible_live_bytes": 524288
+        },
+        {
+          "line": 860,
+          "event": "allocate",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 860,
+          "event": "assign buf11",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 861,
+          "event": "delete",
+          "visible_live_bytes": 851968
+        },
+        {
+          "line": 862,
+          "event": "delete",
+          "visible_live_bytes": 589824
+        },
+        {
+          "line": 863,
+          "event": "assign buf12",
+          "visible_live_bytes": 589824
+        },
+        {
+          "line": 864,
+          "event": "delete",
+          "visible_live_bytes": 589824
+        },
+        {
+          "line": 865,
+          "event": "allocate",
+          "visible_live_bytes": 622592
+        },
+        {
+          "line": 865,
+          "event": "assign buf13",
+          "visible_live_bytes": 622592
+        },
+        {
+          "line": 866,
+          "event": "allocate",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 866,
+          "event": "assign buf14",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 868,
+          "event": "assign triton_poi_fused_2_xnumel_0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 869,
+          "event": "assign triton_poi_fused_2_xnumel_1",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 870,
+          "event": "assign stream0",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 872,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 873,
+          "event": "delete",
+          "visible_live_bytes": 884736
+        },
+        {
+          "line": 874,
+          "event": "allocate",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 874,
+          "event": "assign buf15",
+          "visible_live_bytes": 1146880
+        },
+        {
+          "line": 875,
+          "event": "return",
+          "visible_live_bytes": 1146880
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/4y/c4yyo44jgiayyuw62hstf46zx2e3zw2wtd5qz5jprkpaw7xskwzj.py",
+      "sha256": "045df5922a95c8e8c5fa320688390f794b7fa65f769bec30e5272c431587047f",
+      "kind": "edge-layer",
+      "rows": 2048,
+      "visible_created_peak_bytes": 83886080,
+      "peak_live_roots": [
+        {
+          "root": 10,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 941
+        },
+        {
+          "root": 12,
+          "shape": [
+            2048,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 50331648,
+          "external": false,
+          "allocation_line": 952
+        },
+        {
+          "root": 13,
+          "shape": [
+            2048,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 25165824,
+          "external": false,
+          "allocation_line": 957
+        }
+      ],
+      "created_allocation_bytes": 128974848,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 937,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 941,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 941,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 942,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 943,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 944,
+          "event": "assign buf1",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 945,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 946,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 946,
+          "event": "assign buf3",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 948,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 950,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 952,
+          "event": "allocate",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 952,
+          "event": "assign buf4",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 953,
+          "event": "delete",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 954,
+          "event": "delete",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 955,
+          "event": "assign buf5",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 956,
+          "event": "delete",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 957,
+          "event": "allocate",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 957,
+          "event": "assign buf6",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 959,
+          "event": "assign triton_poi_fused_linear_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 960,
+          "event": "assign stream0",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 962,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 964,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 964,
+          "event": "assign buf7",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 965,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 966,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 967,
+          "event": "assign buf8",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 968,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 969,
+          "event": "allocate",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 969,
+          "event": "assign buf9",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 970,
+          "event": "allocate",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 970,
+          "event": "assign buf11",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 972,
+          "event": "assign stream0",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 974,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 975,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 976,
+          "event": "delete",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 978,
+          "event": "allocate",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 978,
+          "event": "assign buf12",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 979,
+          "event": "delete",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 980,
+          "event": "assign buf13",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 981,
+          "event": "delete",
+          "visible_live_bytes": 35651584
+        },
+        {
+          "line": 982,
+          "event": "allocate",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 982,
+          "event": "assign buf14",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 983,
+          "event": "assign buf15",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 983,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 985,
+          "event": "assign triton_poi_fused_3_xnumel_0",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 986,
+          "event": "assign triton_poi_fused_3_xnumel_1",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 987,
+          "event": "assign stream0",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 989,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 990,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 991,
+          "event": "assign buf16",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 991,
+          "event": "delete",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 992,
+          "event": "return",
+          "visible_live_bytes": 36700160
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/iq/ciqccc2xbtya22bep62hyy27ow6l5xgqjvhvtjgyxjyyjhr7cy2b.py",
+      "sha256": "7fca0955d114155c7790f1aea31b14de079771b712f6b103c202d974fc2f3d44",
+      "kind": "embedding",
+      "rows": 2048,
+      "visible_created_peak_bytes": 36700160,
+      "peak_live_roots": [
+        {
+          "root": 6,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 607
+        },
+        {
+          "root": 8,
+          "shape": [
+            2048,
+            2560
+          ],
+          "strides": [
+            2560,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 10485760,
+          "external": false,
+          "allocation_line": 616
+        },
+        {
+          "root": 9,
+          "shape": [
+            2048,
+            2,
+            128
+          ],
+          "strides": [
+            256,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 1048576,
+          "external": false,
+          "allocation_line": 621
+        },
+        {
+          "root": 10,
+          "shape": [
+            2048,
+            16,
+            128
+          ],
+          "strides": [
+            2048,
+            128,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 622
+        },
+        {
+          "root": 11,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 630
+        }
+      ],
+      "created_allocation_bytes": 45088768,
+      "linear_geometries": [
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 604,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 607,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 607,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 608,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 608,
+          "event": "assign buf2",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 610,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 612,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 613,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 616,
+          "event": "allocate",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 616,
+          "event": "assign buf3",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 617,
+          "event": "delete",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 618,
+          "event": "delete",
+          "visible_live_bytes": 18874368
+        },
+        {
+          "line": 619,
+          "event": "assign buf4",
+          "visible_live_bytes": 18874368
+        },
+        {
+          "line": 620,
+          "event": "delete",
+          "visible_live_bytes": 18874368
+        },
+        {
+          "line": 621,
+          "event": "allocate",
+          "visible_live_bytes": 19922944
+        },
+        {
+          "line": 621,
+          "event": "assign buf5",
+          "visible_live_bytes": 19922944
+        },
+        {
+          "line": 622,
+          "event": "allocate",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 622,
+          "event": "assign buf6",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 624,
+          "event": "assign triton_poi_fused_1_xnumel_0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 625,
+          "event": "assign triton_poi_fused_1_xnumel_1",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 626,
+          "event": "assign stream0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 628,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 629,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 630,
+          "event": "allocate",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 630,
+          "event": "assign buf7",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 631,
+          "event": "return",
+          "visible_live_bytes": 36700160
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/sq/csqm4vraawjuvviw5ohlf6lqqezo6go7ggig6zmrxrfb3j4oc4mg.py",
+      "sha256": "3f968fecd32a47d1efd5efd57bb312901f8bc7466e00724479e1c102818c0995",
+      "kind": "edge-layer",
+      "rows": 2048,
+      "visible_created_peak_bytes": 83886080,
+      "peak_live_roots": [
+        {
+          "root": 7,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 601
+        },
+        {
+          "root": 9,
+          "shape": [
+            2048,
+            12288
+          ],
+          "strides": [
+            12288,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 50331648,
+          "external": false,
+          "allocation_line": 612
+        },
+        {
+          "root": 10,
+          "shape": [
+            2048,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 25165824,
+          "external": false,
+          "allocation_line": 617
+        }
+      ],
+      "created_allocation_bytes": 100663296,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          12288,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 597,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 601,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 601,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 602,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 603,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 604,
+          "event": "assign buf1",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 605,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 606,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 606,
+          "event": "assign buf3",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 608,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 610,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 612,
+          "event": "allocate",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 612,
+          "event": "assign buf4",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 613,
+          "event": "delete",
+          "visible_live_bytes": 67108864
+        },
+        {
+          "line": 614,
+          "event": "delete",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 615,
+          "event": "assign buf5",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 616,
+          "event": "delete",
+          "visible_live_bytes": 58720256
+        },
+        {
+          "line": 617,
+          "event": "allocate",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 617,
+          "event": "assign buf6",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 619,
+          "event": "assign triton_poi_fused_linear_mul_silu_slice_1_xnumel",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 620,
+          "event": "assign stream0",
+          "visible_live_bytes": 83886080
+        },
+        {
+          "line": 622,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 624,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 624,
+          "event": "assign buf7",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 625,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 626,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 627,
+          "event": "assign buf8",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 628,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 629,
+          "event": "assign buf10",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 629,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 631,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 633,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 634,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 635,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 636,
+          "event": "return",
+          "visible_live_bytes": 8388608
+        }
+      ]
+    },
+    {
+      "file": "/private/tmp/biv150-out-buffer-memory-audit-20261026/raw-v2/control/t3/ct3zotmcp43j5l3ccv3xrx64gl4dycyd6oohhg7rehhzi3m33iqn.py",
+      "sha256": "28dd2c12b424a8f88cb9014f2990d8ff86b9e0eaa0dfb5a590cc30d7b2fa3f49",
+      "kind": "native-layer",
+      "rows": 2048,
+      "visible_created_peak_bytes": 41943040,
+      "peak_live_roots": [
+        {
+          "root": 12,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 826
+        },
+        {
+          "root": 13,
+          "shape": [
+            2048,
+            2048
+          ],
+          "strides": [
+            2048,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 8388608,
+          "external": false,
+          "allocation_line": 831
+        },
+        {
+          "root": 14,
+          "shape": [
+            2048,
+            6144
+          ],
+          "strides": [
+            6144,
+            1
+          ],
+          "dtype": "torch.bfloat16",
+          "bytes": 25165824,
+          "external": false,
+          "allocation_line": 837
+        }
+      ],
+      "created_allocation_bytes": 95420416,
+      "linear_geometries": [
+        [
+          2048,
+          2048
+        ],
+        [
+          2048,
+          6144
+        ],
+        [
+          2560,
+          2048
+        ]
+      ],
+      "events": [
+        {
+          "line": 822,
+          "event": "assign s72",
+          "visible_live_bytes": 0
+        },
+        {
+          "line": 826,
+          "event": "allocate",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 826,
+          "event": "assign buf0",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 827,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 828,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 829,
+          "event": "assign buf1",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 830,
+          "event": "delete",
+          "visible_live_bytes": 8388608
+        },
+        {
+          "line": 831,
+          "event": "allocate",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 831,
+          "event": "assign buf3",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 833,
+          "event": "assign stream0",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 835,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 837,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 837,
+          "event": "assign buf4",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 838,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 839,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 840,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 841,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 842,
+          "event": "assign buf5",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 843,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 845,
+          "event": "allocate",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 845,
+          "event": "assign buf6",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 846,
+          "event": "delete",
+          "visible_live_bytes": 41943040
+        },
+        {
+          "line": 847,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 848,
+          "event": "assign buf7",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 849,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 850,
+          "event": "allocate",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 850,
+          "event": "assign buf8",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 851,
+          "event": "allocate",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 851,
+          "event": "assign buf10",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 853,
+          "event": "assign stream0",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 855,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 856,
+          "event": "delete",
+          "visible_live_bytes": 33554432
+        },
+        {
+          "line": 857,
+          "event": "delete",
+          "visible_live_bytes": 25165824
+        },
+        {
+          "line": 858,
+          "event": "delete",
+          "visible_live_bytes": 16777216
+        },
+        {
+          "line": 860,
+          "event": "allocate",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 860,
+          "event": "assign buf11",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 861,
+          "event": "delete",
+          "visible_live_bytes": 27262976
+        },
+        {
+          "line": 862,
+          "event": "delete",
+          "visible_live_bytes": 18874368
+        },
+        {
+          "line": 863,
+          "event": "assign buf12",
+          "visible_live_bytes": 18874368
+        },
+        {
+          "line": 864,
+          "event": "delete",
+          "visible_live_bytes": 18874368
+        },
+        {
+          "line": 865,
+          "event": "allocate",
+          "visible_live_bytes": 19922944
+        },
+        {
+          "line": 865,
+          "event": "assign buf13",
+          "visible_live_bytes": 19922944
+        },
+        {
+          "line": 866,
+          "event": "allocate",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 866,
+          "event": "assign buf14",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 868,
+          "event": "assign triton_poi_fused_2_xnumel_0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 869,
+          "event": "assign triton_poi_fused_2_xnumel_1",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 870,
+          "event": "assign stream0",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 872,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 873,
+          "event": "delete",
+          "visible_live_bytes": 28311552
+        },
+        {
+          "line": 874,
+          "event": "allocate",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 874,
+          "event": "assign buf15",
+          "visible_live_bytes": 36700160
+        },
+        {
+          "line": 875,
+          "event": "return",
+          "visible_live_bytes": 36700160
+        }
+      ]
+    }
+  ],
+  "limitations": "CPU-only visible-storage liveness in the three MiniCPM generated runners.\n\nParse AST, never import or execute generated CUDA code. Inputs/weights, hidden\nnative workspaces, allocator reservations/fragmentation, binaries and graph\npools are excluded. Per-module peaks are not model/device peak measurements.\n",
+  "input_metadata": "Static rand_strided fixtures parsed from generated benchmark_compiled_module; never executed"
+}

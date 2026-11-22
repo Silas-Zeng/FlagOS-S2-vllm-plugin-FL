@@ -1,0 +1,26 @@
+# Exact-source output planning: visible-buffer audit
+
+CPU-only AST analysis of four actual model Runner.call modules per arm, covering all11 protected projection call sites, not nested benchmark strings. Both runtime61d198e300f0889a109d43cc9eec2e7b87455984; only out-lowering1/0 differs. All8 module SHA256 values match the remote manifest. Raw archive43939bytes SHA2564a6c5b9c329b6ff9e0b00c60aa001c780b388373d12742f04226ecac295a5ae3. Earlier temporary string-based export omitted the final edge runner; this AST export and24-case audit supersede it.
+
+At symbolic rows32/64/2048, corresponding per-runner visible created-storage peaks are equal across both arms. At2048: embedding35MiB, middle BF16 edge80MiB, final BF16 edge80MiB, native layer40MiB. Alias storage is counted once; input/weight storage is excluded. Output planning eliminates one2048x2048 BF16 allocation (8MiB) in embedding and native-layer runners by reusing the normalized-Q input for the rotary-Q output; no new peak follows from that visible reuse. These are per-runner logical tensor peaks, not physical GPU measurements or a full-model sum.
+
+Whole-module normalized generated Triton math yields13common unique bodies,0exclusive to either arm; saved launch choices may differ. External MM versus functional-linear provider math is not proved identical by this comparison. Static call sites are not runtime counts or timing.
+
+Actual startup capacity is candidate547632/control548320tokens:688tokens, equivalent to28.21875MiB at42layers x2K/V x2heads x128dim x2bytes. The visible-buffer model does not establish the cause: native workspaces, device binaries, allocator reservations/fragmentation and CUDA Graph pools are excluded. Do not change safety margins or claim a capacity win from this analysis. WorkerFL.determine_available_memory separately budgets non-torch increase, forward torch peak, weights and graph estimate. Targeted runtime budget evidence is needed if the matched16K result confirms a regression.
+
+CPU tests independently check alias byte-counts, symbolic rows, invalid view bounds and fail-closed unknown allocation handling. Generated code is parsed, never imported or executed. This audit is not performance acceptance. PR58candidate has102/105,5760.27/4049.28 and pre/post-warm semantics; its exact-source full105 control has103/105 and is still doing throughput. Both formal workloads/TTFT/post-warm checks and final cleanup/control comparisons must complete before any merge decision.
+
+## Sampler/head profile row contract (CPU source audit)
+
+Main349profile_run calls _dummy_run(max_num_tokens,is_profile=True), then
+passes last_hidden_states to _dummy_sampler_run. _dummy_run returns one
+hidden row per scheduled request, selected with cumulative scheduled lengths
+minus1. Its ordinary profile sampler row count is min(num_tokens,max_num_seqs),
+not automatically2048. Actual current numeric row count and live peaks have
+not been measured here. For illustration only, a256-row BF16 vocabulary temp
+is63.75MiB; treating it as a2048-row510MiB temp would overstate this term8x.
+Do not claim a1GiB logits cast or capacity gain from max_batched_tokens alone.
+No profile coverage, max_num_seqs or service setting was reduced. Hidden
+BLAS/sampler workspaces and overlapping live tensors still need actual peak
+measurement before a head memory intervention. Old v2 linear_kernel4.51s of
+555.89s is a diagnostic prioritization clue only, not current head attribution.

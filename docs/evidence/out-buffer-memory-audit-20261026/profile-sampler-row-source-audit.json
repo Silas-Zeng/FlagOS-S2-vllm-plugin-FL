@@ -1,0 +1,28 @@
+{
+  "source_commit": "34942f7e28da5c954ab05878dec75807da9d7a93",
+  "source_file": "vllm_fl/worker/model_runner.py",
+  "source_sha256": "cbbbabcea66663b033f2209febc55e75a9e14ac72d1693173d9d4aad1be7fac6",
+  "read_only": true,
+  "gpu_executed": false,
+  "profile_calls_dummy_with": "self.max_num_tokens,is_profile=True",
+  "sampler_input": "last_hidden_states",
+  "dummy_last_hidden": "hidden_states[np.cumsum(num_scheduled_tokens)-1]",
+  "normal_profile_sampler_rows": "min(num_tokens,scheduler_config.max_num_seqs)",
+  "full_forward_rows_are_not_sampler_rows": true,
+  "actual_current_sampler_rows_measured": false,
+  "illustrative_bf16_temp_bytes_if_256_rows": 66846720,
+  "illustration_not_actual_peak": true,
+  "excluded": [
+    "hidden BLAS workspace",
+    "sampler sorting buffers",
+    "allocator reserved memory",
+    "live-tensor lifetimes",
+    "current runtime peak"
+  ],
+  "old_trace_only": {
+    "source": "baseline-profiler-20261025/v2-timeline/window-2/non_graph_kernel_hotspots.json",
+    "linear_kernel_gpu_sum_s": 4.506923359,
+    "retained_active_s": 555.886648,
+    "scope": "old whole-window diagnostic, not current model hotspot share"
+  }
+}

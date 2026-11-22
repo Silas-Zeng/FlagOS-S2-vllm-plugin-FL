@@ -1,0 +1,143 @@
+{
+  "utc": "2026-10-25T23:41:47.564998+00:00",
+  "selection": "AST function call/Runner.call; embedded string benchmark text is ignored",
+  "gpu_executed": false,
+  "roots": {
+    "candidate": {
+      "commit": "61d198e300f0889a109d43cc9eec2e7b87455984",
+      "out_lowering": "1",
+      "kv_cache_lines": [
+        "(EngineCore pid=464365) INFO 10-26 06:04:07 [kv_cache_utils.py:2146] GPU KV cache size: 547,632 tokens"
+      ],
+      "modules": [
+        {
+          "path": "ht/chtfg6ecdrff7jsupzlykm2awtrv4udb2cyuqsbhcink2dhy6ju6.py",
+          "sha256": "5b7c09121b726f6b0c7e62e2bf8db70a3ee8ba4fd79c02e5090dac5ac7aa8f87",
+          "runners": [
+            {
+              "line": 597,
+              "sites": 1,
+              "calls": [
+                "extern_kernels.biv150_small_linear_out"
+              ]
+            }
+          ]
+        },
+        {
+          "path": "jh/cjhmy4xxpijp3emrg4be65sxsvntinxsnfytwl44fothcjqdnszm.py",
+          "sha256": "e1162e76474fa0b40c05abce2fe47df73700cba3029a43465b25909fe34e6b13",
+          "runners": [
+            {
+              "line": 922,
+              "sites": 4,
+              "calls": [
+                "extern_kernels.biv150_small_linear_out",
+                "extern_kernels.biv150_small_linear_out",
+                "extern_kernels.biv150_small_linear_out",
+                "extern_kernels.biv150_small_linear_out"
+              ]
+            }
+          ]
+        },
+        {
+          "path": "ml/cmliq32qsff2auh6io5kfwnuqmvoglkvivxi33pzfdutlte4da3n.py",
+          "sha256": "d67d1d563056a1491bd0ba83f1673f529ca4926a6a1f204d58e221dcc3b35268",
+          "runners": [
+            {
+              "line": 586,
+              "sites": 3,
+              "calls": [
+                "extern_kernels.biv150_small_linear_out",
+                "extern_kernels.biv150_small_linear_out",
+                "extern_kernels.biv150_small_linear_out"
+              ]
+            }
+          ]
+        },
+        {
+          "path": "qe/cqeoybndezl6uk3zssksca5vpbeft3hwgn2aadmt4zuca63necut.py",
+          "sha256": "201a239d723356a3b3217421467f373208514f2846bd7177d61593c74d3908dd",
+          "runners": [
+            {
+              "line": 815,
+              "sites": 3,
+              "calls": [
+                "extern_kernels.biv150_small_linear_out",
+                "extern_kernels.biv150_small_linear_out",
+                "extern_kernels.biv150_small_linear_out"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "control": {
+      "commit": "61d198e300f0889a109d43cc9eec2e7b87455984",
+      "out_lowering": "0",
+      "kv_cache_lines": [
+        "(EngineCore pid=475576) INFO 10-26 07:11:32 [kv_cache_utils.py:2146] GPU KV cache size: 548,320 tokens"
+      ],
+      "modules": [
+        {
+          "path": "4y/c4yyo44jgiayyuw62hstf46zx2e3zw2wtd5qz5jprkpaw7xskwzj.py",
+          "sha256": "045df5922a95c8e8c5fa320688390f794b7fa65f769bec30e5272c431587047f",
+          "runners": [
+            {
+              "line": 934,
+              "sites": 4,
+              "calls": [
+                "torch.ops.biv150_stable_small_o.linear.default",
+                "torch.ops.biv150_stable_small_o.linear.default",
+                "torch.ops.biv150_stable_small_o.linear.default",
+                "torch.ops.biv150_stable_small_o.linear.default"
+              ]
+            }
+          ]
+        },
+        {
+          "path": "iq/ciqccc2xbtya22bep62hyy27ow6l5xgqjvhvtjgyxjyyjhr7cy2b.py",
+          "sha256": "7fca0955d114155c7790f1aea31b14de079771b712f6b103c202d974fc2f3d44",
+          "runners": [
+            {
+              "line": 601,
+              "sites": 1,
+              "calls": [
+                "torch.ops.biv150_stable_small_o.linear.default"
+              ]
+            }
+          ]
+        },
+        {
+          "path": "sq/csqm4vraawjuvviw5ohlf6lqqezo6go7ggig6zmrxrfb3j4oc4mg.py",
+          "sha256": "3f968fecd32a47d1efd5efd57bb312901f8bc7466e00724479e1c102818c0995",
+          "runners": [
+            {
+              "line": 594,
+              "sites": 3,
+              "calls": [
+                "torch.ops.biv150_stable_small_o.linear.default",
+                "torch.ops.biv150_stable_small_o.linear.default",
+                "torch.ops.biv150_stable_small_o.linear.default"
+              ]
+            }
+          ]
+        },
+        {
+          "path": "t3/ct3zotmcp43j5l3ccv3xrx64gl4dycyd6oohhg7rehhzi3m33iqn.py",
+          "sha256": "28dd2c12b424a8f88cb9014f2990d8ff86b9e0eaa0dfb5a590cc30d7b2fa3f49",
+          "runners": [
+            {
+              "line": 819,
+              "sites": 3,
+              "calls": [
+                "torch.ops.biv150_stable_small_o.linear.default",
+                "torch.ops.biv150_stable_small_o.linear.default",
+                "torch.ops.biv150_stable_small_o.linear.default"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
