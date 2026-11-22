@@ -1,0 +1,86 @@
+{
+  "CPU_only": true,
+  "Q_pitches": [
+    2048,
+    2560
+  ],
+  "actual_SGPR": null,
+  "actual_VGPR": null,
+  "actual_global_K_loads": null,
+  "actual_issue_order_verified": false,
+  "actual_occupancy_gain_verified": false,
+  "actual_spills": null,
+  "attention_launches": 0,
+  "codec_launches": 0,
+  "comparison": "original 377/22e K-then-V, not V-first",
+  "device_compile": false,
+  "encoder_launches": 0,
+  "explicit_cuda_flags": [
+    "-O3",
+    "-std=c++17",
+    "-D__ILUVATAR__",
+    "-D__MR__",
+    "-DCOREX_NATIVE_GQA_V_OVERLAP=0",
+    "-x",
+    "ivcore",
+    "--cuda-gpu-arch=ivcore11",
+    "--cuda-path=/usr/local/corex"
+  ],
+  "future_numeric": "reuse 9695/3eb exact FP64/BF16-P reference, guards, Graph/side, narrowed width16 and ABBA; require this variant own receipts",
+  "input_initializations": 0,
+  "library": "cjj_native_k8_pairload_probe.so",
+  "loaded_resources_verified": false,
+  "model_verified": false,
+  "next_gate": "inspect actual producer IR/ASM K paired-load/scatter/liveness and resources before own numeric/ABBA",
+  "numeric_verified": false,
+  "operator": "cjj_native_k8_pairload_probe::produce",
+  "page_bytes": 16384,
+  "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+  "performance_verified": false,
+  "precision_gate": false,
+  "previous22e_qualifications_inherited": false,
+  "profiles": [
+    [
+      64,
+      2
+    ],
+    [
+      32,
+      4
+    ]
+  ],
+  "reducer_launches": 0,
+  "source_proof": {
+    "K_source_alignment_bytes": 4,
+    "Q_codec_PV_QK_waits_ABI_segments_source_unchanged": true,
+    "actual_compile_or_numeric_or_performance_verified": false,
+    "actual_vector_load_or_register_reduction_verified": false,
+    "library": "cjj_native_k8_pairload_probe.so",
+    "namespace": "cjj_native_k8_pairload_probe",
+    "new_full_wave_request": "4 slots * 16 lanes * 8 bytes = 512 bytes",
+    "old_full_wave_request": "2 slots * 32 lanes * 4 bytes = 256 bytes",
+    "original_377_and_3eb_files_unchanged": true,
+    "pair_copies_per_entered_full_CTA": 256,
+    "parent": "3ebdbebf61e0e90735cd8ad83eb1605627b6ef46",
+    "parent_source_sha256": {
+      "biv150_native_k8_codec.cu": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+      "biv150_native_k8_codec.cuh": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+      "biv150_native_k8_qk.cpp": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+      "biv150_native_k8_qk.cu": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9"
+    },
+    "shared_word_stores_per_CTA": 512,
+    "source_bytes_per_entered_full_CTA": 2048,
+    "source_issue_groups_new": 4,
+    "source_issue_groups_old": 8,
+    "source_word_reads_per_entered_full_CTA": 512,
+    "team_main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+    "variant_source_sha256": {
+      "biv150_native_k8_pairload_codec.cu": "073471b6056e07e2536a675d50d11589c4d6166f00ed7a5ffe2b66f7b885a928",
+      "biv150_native_k8_pairload_codec.cuh": "698008572a7e8bfe3b009604b58bf140e2ce01da0ddd9a699709c45577d8fb40",
+      "biv150_native_k8_pairload_qk.cpp": "8f2b1514de31286ca4810b08b8fe6f4e7ab24550a436cea87c95386a45c5603f",
+      "biv150_native_k8_pairload_qk.cu": "d524cc95b109df477f9d6855b1be3b2a3c8bd6db7a7967cea7714f00e1531fb4"
+    },
+    "whole_source_inverse_byte_exact": true
+  },
+  "unchanged_source": "RN32/RNE, peak/shuffle/pack order, K/V issue/waits, QK/PV/C chain, typed ABI, S2/S4"
+}

@@ -1,0 +1,77 @@
+{
+  "Q_global_read_reuse_pair_shuffles": true,
+  "fragment_images_bijective": true,
+  "independent_C_head_scale_ownership": true,
+  "logical_and_fragment_word_checks": 15360,
+  "negative_I32_bit_interpretation": true,
+  "note": "CPU describes SDK ABI; builtin MMA execution/layout and CUDA codec remain unvalidated",
+  "plan": {
+    "BF16_PV_MMA_per_page": 8,
+    "CPU_only": true,
+    "I8_shape": [
+      16,
+      16,
+      32
+    ],
+    "K_image_bytes": 2048,
+    "K_load_plan": "ordinary coalesced global32-bit words plus proven shared scatter; no assumed SME8 builtin",
+    "QK_I8_MMA_per_page": 4,
+    "Q_codec": "same RN32/RNE v2; once per CTA, repeated across2/4 segments",
+    "V_offset_bytes": 4096,
+    "append_common_source_read_bytes": 1024,
+    "append_output_bytes_per_token": {
+      "BF16": 1024,
+      "K8": 776
+    },
+    "base": "b3b87d2a1c13448bd8c6bc24e8045c0458b8b9dd",
+    "block_shape": [
+      16,
+      16,
+      128
+    ],
+    "codec_values_per_sequence_S2": 4096,
+    "codec_values_per_sequence_S4": 8192,
+    "compact12544_supported": false,
+    "device_compile": false,
+    "format": "cjj-konly-rn32-rne-v2",
+    "ideal_KV_read_bytes_per_head_page": {
+      "BF16": 8192,
+      "K8": 6208
+    },
+    "loaded_resources_verified": false,
+    "logical_Q_heads": 8,
+    "model_verified": false,
+    "native_CUDA_source_implemented": false,
+    "numerical_device_verified": false,
+    "page_bytes": 16384,
+    "performance_measured": false,
+    "precision_gate": false,
+    "profiles": [
+      [
+        64,
+        2
+      ],
+      [
+        32,
+        4
+      ]
+    ],
+    "service_installed": false,
+    "shared_allocation_bytes": 8192,
+    "target_layout_verified": false
+  },
+  "rejected": [
+    "wrong_dtype",
+    "offset_scale",
+    "compact_unverified",
+    "wrong_Qstride",
+    "wrong_geometry",
+    "bool_scale",
+    "bool_stride",
+    "float_shape"
+  ],
+  "scenarios": 20,
+  "source_pins_verified": true,
+  "unique_key_addresses": 12288,
+  "wrong_input_pair_scale_negative_control": true
+}

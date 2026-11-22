@@ -1,0 +1,95 @@
+{
+  "ABBA_order": [
+    "bf16",
+    "k8",
+    "k8",
+    "bf16"
+  ],
+  "BF16_append": "exact94 ENCODE=False",
+  "BF16_library_sha256": "aace693bdb302d2685ec1b5e11e859c8a4a77d7f45c0f4dacddc6b5e49b015b8",
+  "Graph_changed_before_eager": true,
+  "K8_append": "exact PR83 with actual separate pitches/row extents/slot_count",
+  "K8_library_sha256": "22e4a5e2a0b9d9a36ea390a11126417e1bf58e3c27f6b96ba0913b27690f09dd",
+  "OML_and_final_output_hard_gate": "all finite; absdiff<=.005+.005*abs(ref); RRMSE<=.005",
+  "actual_consumer_sha256": "c2e13e3766172e9b74342bbcf48b1b4729d1b9604bc249b6974740f7f90cc128",
+  "append_K8_V": "FULL page0 base, offset added internally",
+  "arena_bytes": 561577984,
+  "cases": {
+    "16k": [
+      32,
+      16384,
+      4,
+      2560
+    ],
+    "4k": [
+      64,
+      4096,
+      2,
+      2048
+    ]
+  },
+  "clocks": [
+    "GPU event per append+producer+reducer step",
+    "Graph launch+sync host wall per step"
+  ],
+  "component": "fixed arena complete native BF16 vs native K8 step; not service",
+  "default_CPU": true,
+  "excludes": [
+    "QKV projection",
+    "RoPE",
+    "framework dispatch/metadata",
+    "service/model"
+  ],
+  "final_reference": "unchanged ideal FP64, original BF16 or quantized-score by arm",
+  "full_cache_saved_as_chunk_hashes_with_reconstructible_counter": true,
+  "fullstep": [
+    "append",
+    "native producer",
+    "same original b3 stride-aware reducer"
+  ],
+  "inactive_poison_and_full_guards": true,
+  "initial_CPU_counter_and_encode_oracle_and_GPU_pack_costs_separate": true,
+  "initial_K8_encode": "exact94 encode_initial: V already offset",
+  "main": "4229b48b64c7bd21f9f8fc3c5ff8775500f8d02b",
+  "mandatory_actual_consumer_pass_before_Torch": true,
+  "maxima_head_stride": 16,
+  "model_verified": false,
+  "native_compile": false,
+  "new_KV_pitch": 256,
+  "nonoverlap": true,
+  "numerical_verified": false,
+  "page_bytes": 16384,
+  "pages": 34276,
+  "partial_reference": "FP64 accumulator over source-defined FP32 score/rho and page16 BF16 P operands; ideal partial diagnostic separate",
+  "physical_permutation_seed": 20261028,
+  "precision_gate": false,
+  "query_nonperiodic_D128": true,
+  "references_per_arm": {
+    "bf16": "original BF16 FP64",
+    "k8": "full-D128 I64 QK then dequant FP64"
+  },
+  "scratch_builder_width": 16,
+  "scratch_head_stride": 2048,
+  "service_source_pitch2560_covered": false,
+  "side_stream": true,
+  "source_pins": {
+    "csrc/iluvatar/native_gqa_s2.cpp": "f6bf9611184de7688a0460fe3b810bf0479e21a5dccdbbda77a7d69dadca7a9e",
+    "csrc/iluvatar/native_gqa_s2.cu": "a8b1ace27b153724b8961ffc7bb8ef8ddf56d4e0fe579fecf41d2bd7aac6ed94",
+    "tools/biv150_benchmark_utils.py": "ff0cd964aad34e6d19609fa4e1d76e7d46b4f98c98a4d925e33d658efd4e2879",
+    "tools/biv150_konly_strided_writer_contract.py": "cdc1384ff4443bd577759592fa9aa3ea0ff79032507c7d6e63f4abc8db2569b9",
+    "tools/kernels/biv150_konly_strided_writer.py": "16afc46585f950f4b9c06c831b0e0dbf5515ee941a476a9ed300c492ebf947f9",
+    "tools/kernels/biv150_native_k8_codec.cu": "7b744ba7112083add31ccb49c35055d4b573d718df4343ccf9d10ab998abaad2",
+    "tools/kernels/biv150_native_k8_codec.cuh": "37d5c7548c0301ee522f50fb0d4d2da53300676e71b03bb806c2d88779801d79",
+    "tools/kernels/biv150_native_k8_qk.cpp": "bc6d9d3c289d49435f7598e6b5c2325cfc3f867ab915ab424ffb289bffb20b29",
+    "tools/kernels/biv150_native_k8_qk.cu": "bf84c82ff7e73684c3923ca8944c6564f37c21fb636134e106d0542f5ba47cd9",
+    "tools/kernels/biv150_pair_append_support.py": "409ca094e324dea321a9dec8286c19d066ad303113ad879af5a94eaba038a018",
+    "vllm_fl/patches/biv150_gqa_decode.py": "f1877ad06e8be4cef5960ef2d66d59045b4ac1ac0d7f2fe448618bbdec0d7f40",
+    "vllm_fl/patches/biv150_native_gqa.py": "86f8ca199ce632ccb3bbc251bb5c632e57da3373d8b87bd5f53334ef818a26c4"
+  },
+  "table_columns": 8192,
+  "timing_executed": false,
+  "timing_replays": 64,
+  "unroll": 8,
+  "warm_replays": 128,
+  "whole_cache_streaming_byte_equality": true
+}
