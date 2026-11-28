@@ -1,0 +1,241 @@
+{
+  "cpu_only": true,
+  "gpu_executed": false,
+  "jit_executed": false,
+  "service_installed": false,
+  "host_binding_device_verified": false,
+  "typed_abi_device_verified": false,
+  "host_binding_Q_hoist_device_verified": false,
+  "performance_verified": false,
+  "model_precision_gate": false,
+  "official_score": false,
+  "source": {
+    "sdk_source_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "normalization_source_sha256": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+    "normalized_source_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "reversed_source_sha256": "38198704c37479e4b5c26778d7dd1da2a894409d1c81ff2626e1d988facca104",
+    "route_mode": "always",
+    "context_query_ratio": null,
+    "exact_byte_inverse": true,
+    "source_line_count_preserved": true,
+    "source_line_delta": 0,
+    "q_debug_lines_baseline": [
+      185,
+      186,
+      187
+    ],
+    "q_debug_lines_candidate": [
+      185,
+      186,
+      187
+    ],
+    "q_debug_lookup": "main Manager inspects actual candidate.fn and original SDK file",
+    "source_edit": "q_block_global_idx = tl.num_programs(0) - 1 - tl.program_id(0)",
+    "grid_unchanged": true,
+    "parent_dispatch_unchanged": true,
+    "block_m": 256,
+    "block_q": 32,
+    "tile_size": 64,
+    "num_warps": 16,
+    "num_stages": 1,
+    "minimum_query_rows": 1024,
+    "minimum_actual_query_rows": null,
+    "num_sequences": 1,
+    "is_3d": false,
+    "metadata_loads": 0,
+    "metadata_uniform_for_launch": true,
+    "metadata_cse_device_verified": false,
+    "route_uses_actual_cu_difference": false,
+    "nonzero_cu_start_keeps_original_order": false,
+    "floating_math_and_output_address_expressions_unchanged": true,
+    "helpers_sha256": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+    "component_only": true,
+    "jit_executed": false,
+    "service_binding_verified": false,
+    "host_component_device_verified": false
+  },
+  "target_source_chain": {
+    "actual_target_sources": {
+      "model_executor/layers/attention/attention.py": {
+        "sha256": "3414faca4cc04c699dbb880ba1761230e1ed97035f2934604cad9a5490f4dba1",
+        "bytes": 32510
+      },
+      "forward_context.py": {
+        "sha256": "1c6fa51e9a02a120fed5e7357afb1190516cbdfefd1c644dfcd860603f1527c5",
+        "bytes": 13434
+      }
+    },
+    "source_chain_complete_for_pinned_NONE_path": true,
+    "real_custom_op_and_fake_distinct": true,
+    "direct_and_torch_ops_use_registered_function": true,
+    "actual_function_ast_reads_current_metadata_each_call": true,
+    "nested_context_restored": true,
+    "current_metadata_sequence": [
+      4096,
+      16384,
+      4096,
+      16384
+    ],
+    "outer_hook_needed": false,
+    "actual_NONE_wrapper_AST_executed": true,
+    "actual_dispatcher_nonuniform_NONE_AST_executed": true,
+    "actual_wrapper_vararg_kwarg_annotations_removed": true,
+    "actual_wrapper_future_annotations_present": true,
+    "selected_AST_future_flags_not_inherited": true,
+    "actual_runner_uniform_predicate_AST_executed": true,
+    "capture_source_preconditions": {
+      "ordinary_prefill_max_query_gt_one": true,
+      "fixed_service_FULL_DECODE_ONLY": true,
+      "full_keys_uniform_true": true,
+      "piecewise_keys_empty": true,
+      "forced_dummy_capture_not_claimed_ordinary_prefill": true
+    },
+    "runtime_framework_imported": false,
+    "runtime_custom_op_binding_or_device_verified": false,
+    "source_lines": {
+      "get_attention_context": [
+        670,
+        710
+      ],
+      "unified_attention_with_output": [
+        757,
+        784
+      ],
+      "registration": [
+        800,
+        805
+      ],
+      "get_forward_context": [
+        191,
+        197
+      ],
+      "create": [
+        204,
+        233
+      ],
+      "override": [
+        235,
+        246
+      ],
+      "set_forward_context": [
+        307,
+        323
+      ]
+    }
+  },
+  "local_binding": {
+    "reference_parent": "56f1838192abc940b3fb9accef490022ac125000",
+    "explicit_sdk_maxima_local_scope": true,
+    "sequence": [
+      "reverse",
+      "q32",
+      "reverse"
+    ],
+    "baseline_no_new_tap": true,
+    "current_M2_Q32_identity_preserved": true,
+    "sdk_capture_uses_original_generic_parent_not_Q32": true,
+    "capture_claimed_Q32": false,
+    "stale_missing_wrong_contract_keep_parent": true,
+    "exception_restores_original_wrapper": true,
+    "nested_sdk_call_parent_then_outer_reverse": true,
+    "long_miss_has_no_new_frame_tap_or_capture_query": true,
+    "unchanged_M2_bypasses_single_sequence_boundary_grid": [
+      34,
+      2
+    ],
+    "boundary_records": [
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      },
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      },
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      },
+      {
+        "route": "parent",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "q32",
+        "payload_identity": true,
+        "parent_call_identity": true
+      },
+      {
+        "route": "reverse",
+        "grid": [
+          65,
+          2
+        ],
+        "rows": 2048,
+        "hash": "reverse",
+        "payload_identity": true,
+        "parent_call_identity": false
+      }
+    ],
+    "outer_forward_context_hook_installed": false,
+    "real_framework_imported": false,
+    "device_verified": false
+  },
+  "native_admission": {
+    "source_pins": {
+      "tools/build_biv150_native_w8a8.py": "b5bd4b92d23400ac81ed9bab3b5dbd76dd794d1db1391742c709a739ca50e673",
+      "csrc/iluvatar/native_w8a8.cpp": "b37c84064474fe904334d7c06f473712077230f0d319df53032372b8b8111bcb",
+      "vllm_fl/patches/biv150_native_w8a8.py": "78a9af84ef73c295e85698bed215c60c7547a584f32635c31186dace5e0ac708",
+      "vllm_fl/compile_semantics.py": "5d6fba4064980fc16991e4f42fbd19f50a9c8e8758db2d0c42dd440e244a7c0f",
+      "vllm_fl/__init__.py": "e043b7893bfac27aee4f96cf7201cd6227053a261498e121245c3e63f2f2ebff"
+    },
+    "native_W8_is_TORCH_LIBRARY_not_Python_extension": true,
+    "build_is_python_module": false,
+    "real_loader_AST_mock_checked_no_real_load": true,
+    "recognized_environment": "BIV150_NATIVE_W8A8_LIBRARY",
+    "unrecognized_VLLM_FL_alias_not_used": true,
+    "pure_attention_allows_unloaded_W8_and_absent_optional_C": true,
+    "optional_C_recorded_separately_with_own_hash": true,
+    "real_torch_or_library_imported": false
+  },
+  "annotation_bridge": {
+    "all_arg_kinds_annotation_free": true,
+    "unknown_typing_names_injected": false,
+    "signature_defaults_and_parameter_kinds_preserved": true,
+    "valid_calls": 5,
+    "identical_TypeError_rejections": 8,
+    "async_vararg_kwarg_checked": true,
+    "nested_annotations_removed": true,
+    "source_future_import_not_inherited": true,
+    "partial_scope_future_and_generic_rejections": 2,
+    "lazy_annotations_explicitly_inspected": true
+  },
+  "tool_sha256": {
+    "biv150_prefill_host_binding.py": "98db1aaaf1908633223a1dc69f0be7535b1555791279c0898c5d8bc600df47f5",
+    "check_biv150_prefill_host_binding_cpu.py": "708e339cce6bc5168de62f04cca621e116017e02fd2154230e75a50db44cee25",
+    "bench_biv150_prefill_host_binding.py": "cd1b4b3b8382d790d630d42cd661cbf28203547de0d607d52986171d3e0a3b58"
+  }
+}

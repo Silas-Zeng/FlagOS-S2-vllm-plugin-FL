@@ -1,0 +1,29 @@
+{
+  "cpu_only": true,
+  "gpu_executed": false,
+  "real_Torch_or_SO_loaded": false,
+  "old_3af_v1_evidence_unchanged": true,
+  "native_source_contract": {
+    "source_pins": {
+      "tools/build_biv150_native_w8a8.py": "b5bd4b92d23400ac81ed9bab3b5dbd76dd794d1db1391742c709a739ca50e673",
+      "csrc/iluvatar/native_w8a8.cpp": "b37c84064474fe904334d7c06f473712077230f0d319df53032372b8b8111bcb",
+      "vllm_fl/patches/biv150_native_w8a8.py": "78a9af84ef73c295e85698bed215c60c7547a584f32635c31186dace5e0ac708",
+      "vllm_fl/compile_semantics.py": "5d6fba4064980fc16991e4f42fbd19f50a9c8e8758db2d0c42dd440e244a7c0f",
+      "vllm_fl/__init__.py": "e043b7893bfac27aee4f96cf7201cd6227053a261498e121245c3e63f2f2ebff"
+    },
+    "native_W8_is_TORCH_LIBRARY_not_Python_extension": true,
+    "build_is_python_module": false,
+    "real_loader_AST_mock_checked_no_real_load": true,
+    "recognized_environment": "BIV150_NATIVE_W8A8_LIBRARY",
+    "unrecognized_VLLM_FL_alias_not_used": true,
+    "pure_attention_allows_unloaded_W8_and_absent_optional_C": true,
+    "optional_C_recorded_separately_with_own_hash": true,
+    "real_torch_or_library_imported": false
+  },
+  "cpu_sha256": "c624bfd5de9db2bcebd3565f26e72b163d6a94868bf0f2c98feaa6ab5f3c9314",
+  "tool_sha256": {
+    "biv150_prefill_host_binding.py": "98db1aaaf1908633223a1dc69f0be7535b1555791279c0898c5d8bc600df47f5",
+    "check_biv150_prefill_host_binding_cpu.py": "0fadbfb792bb990f976db7c737b2ebeebee1b3f3b14493ad3d04dba88c3dca9e",
+    "bench_biv150_prefill_host_binding.py": "cd1b4b3b8382d790d630d42cd661cbf28203547de0d607d52986171d3e0a3b58"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "original_source_commit": "1b4eae8fb922c9e5cf6537d9845b43023ebf3577",
+  "original_owner": {
+    "pid": 624317,
+    "start_ticks": 342842999,
+    "same_start": true,
+    "state": "Z"
+  },
+  "original_raw_files": 2,
+  "original_raw_bytes": 2923,
+  "original_manifest_sha256": "a3a251bf86f1b8de64738d2ebdab1790caad5d89b84ae1cc9a88d6dd3c199696",
+  "files": [
+    {
+      "relative": "exports/cjj-prefill-host-binding-v1-20261027-owner.json",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-prefill-host-binding-v1-20261027-owner.json",
+      "bytes": 1670,
+      "sha256": "ab7e8e24f4a8a17ab87c203f457df4a95b4238eb7a92fcd45227ee5c96914ff6"
+    },
+    {
+      "relative": "exports/cjj-prefill-host-binding-v1-20261027.log",
+      "remote": "/workspace/experiments/minicpm-s2/exports/cjj-prefill-host-binding-v1-20261027.log",
+      "bytes": 1253,
+      "sha256": "9c7a76e4208ce7366a05f4a6659d726fd71930e526dd3c3dfb247c24d1da3f4d"
+    }
+  ],
+  "archive": {
+    "path": "pre-gpu-v1-raw.tar.gz",
+    "bytes": 1430,
+    "sha256": "8220b1350510f6a43cc2372e6c78be9cd5b10e1523fb2b10dbbd20c5110795ff"
+  },
+  "failure": "NameError: name 'Any' is not defined",
+  "phase": "CPU run_cpu/source_chain/NONE-wrapper AST exec, before gpu()",
+  "original_run_gpu_executed": false,
+  "original_performance_data_available": false,
+  "local_CPython312_original_failure_reproduced": true,
+  "local_CPython312_fixed_default_CPU_passed": true,
+  "local_CPython314_fixed_default_CPU_passed": true,
+  "local_312_314_CPU_reports_byte_identical": true,
+  "local_platform": "macOS aarch64",
+  "target_Linux312_CPU_preflight_pending_root": true,
+  "target_GPU_typedABI_Qhoist_resource_numeric_and_performance_gates_pending": true,
+  "gpu_executed": false,
+  "service_installed": false,
+  "model_precision_gate": false,
+  "official_score": false,
+  "cpu_report_sha256": "22b439563b2599a309f6c20ae441a149c589a10e53b2fda727b02c69bd675477",
+  "original_failure_repro_sha256": "2506b8b2067c30111b4383b19b53d3261e17e95f374ea611f2171aa209c1133a"
+}

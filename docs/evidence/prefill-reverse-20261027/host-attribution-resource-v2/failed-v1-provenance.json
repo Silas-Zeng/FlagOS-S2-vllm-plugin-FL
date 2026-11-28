@@ -1,0 +1,31 @@
+{
+  "source_commit": "5932534c9116194c9ffa26f80e738c59d0cff5e1",
+  "original_owner": {
+    "pid": 627340,
+    "start_ticks": 344164972,
+    "same_start": true,
+    "state": "Z"
+  },
+  "raw_files": 26,
+  "raw_bytes": 1272541,
+  "archive": {
+    "path": "failed-v1-raw.tar.gz",
+    "bytes": 178239,
+    "sha256": "e6179bd686d1c2f463bbad67fc493d9bebe06031dce6df5cd462e5103f439d68"
+  },
+  "original_download_manifest_sha256": "a67288c3d81b077d2d1843fc971c0e9410b99c07fa3b6ca15a289416850f87ed",
+  "original_diagnostic_sha256": "4fcb2843b4ae815598fd567ff3cc9346b8f164add5444121c569adf67c7da5c8",
+  "original_errors": [
+    {
+      "type": "AssertionError",
+      "message": "",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/experiments/minicpm-s2/code/cjj-prefill-host-profile-v1-20261027/tools/diagnose_biv150_prefill_host_overhead.py\", line 258, in device\n    comparison=ctx['compare_resource_records'](loaded(parent),loaded(effective));assert comparison['strict_allowed']\n                                                                                        ~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+  ],
+  "original_parent_restored": true,
+  "original_profiled_arms": [],
+  "actual_profile_or_score_available": false,
+  "bootstrap_and_baseline_warm_had_occurred": true,
+  "cause": "Raw manager loaded resource dictionaries lacked the explicit post_launch_resource_evidence wrapper required by unchanged strict comparison.",
+  "fix": "Use original resource_evidence(snapshot,manager_record), preserving all pre/post/hash/asm identity gates; unknown remains rejected."
+}

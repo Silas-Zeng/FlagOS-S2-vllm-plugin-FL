@@ -1,0 +1,502 @@
+{
+  "source_commit": "140cecc07ba199d199eeb620debe3082195ffacb",
+  "measured_parent": "241220723a09061c182764f8f738e5ec01190367",
+  "fetched_team_main": "56f1838192abc940b3fb9accef490022ac125000",
+  "component_only": true,
+  "official_score": false,
+  "precision_gate": false,
+  "service_installed": false,
+  "numerical_observations_rechecked": true,
+  "independently_reran_device_math": false,
+  "refined_route_numerical_matrix_complete": false,
+  "full_matrix": false,
+  "metadata_cse_device_verified": false,
+  "complete_resource_equivalence_claimed": false,
+  "cases": [
+    {
+      "name": "chunk4k",
+      "query_rows": 2048,
+      "kv_rows": 4096,
+      "grid": [
+        65,
+        2
+      ],
+      "rounds": [
+        {
+          "iteration": 0,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 1.4490662813186646,
+          "candidate_ms": 1.4033950567245483,
+          "speedup": 1.032543384256113
+        },
+        {
+          "iteration": 1,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_ms": 1.4011709690093994,
+          "baseline_ms": 1.4495517015457153,
+          "speedup": 1.0345287859985568
+        },
+        {
+          "iteration": 2,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 1.4517412185668945,
+          "candidate_ms": 1.4012012481689453,
+          "speedup": 1.0360690303866011
+        }
+      ],
+      "median_speedup": 1.0345287859985568,
+      "throughput_ratio_change": 0.0345287859985568,
+      "reference_coverage": [
+        {
+          "pattern": 0,
+          "independent_cpu_reference_elements": 4194304,
+          "direct_elements": 4194304,
+          "reference_exceptions": 0
+        },
+        {
+          "pattern": 1,
+          "independent_cpu_reference_elements": 16384,
+          "direct_elements": 4194304,
+          "reference_exceptions": 0
+        }
+      ],
+      "numerical_guards_passed": true,
+      "resources": {
+        "baseline": {
+          "hash": "dea8d8801d993f5306e25353b98056e3bee737a4a5fb600233e448d5533c34ea",
+          "counts_status": "observed_post_launch",
+          "n_regs": 113,
+          "n_spills": 0,
+          "basis": [
+            "post_launch_kernel_attributes",
+            "manager_loaded_resources"
+          ],
+          "post_launch_attribute_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "manager_prelaunch_counts": {
+            "n_regs": null,
+            "n_spills": null
+          },
+          "manager_loaded_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "matching_manager_binary_identity": true,
+          "driver_function_attributes_queried": false,
+          "driver_local_size_bytes": null,
+          "driver_static_shared_bytes": null,
+          "complete_resource_equivalence_claimed": false
+        },
+        "candidate": {
+          "hash": "2bf7a0e0f685f3297f22aab7622fcc5d6afeaba2be64e2536c27d1626cbca851",
+          "counts_status": "observed_post_launch",
+          "n_regs": 113,
+          "n_spills": 0,
+          "basis": [
+            "post_launch_kernel_attributes",
+            "manager_loaded_resources"
+          ],
+          "post_launch_attribute_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "manager_prelaunch_counts": {
+            "n_regs": null,
+            "n_spills": null
+          },
+          "manager_loaded_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "matching_manager_binary_identity": true,
+          "driver_function_attributes_queried": false,
+          "driver_local_size_bytes": null,
+          "driver_static_shared_bytes": null,
+          "complete_resource_equivalence_claimed": false
+        }
+      },
+      "resource_comparison": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      }
+    },
+    {
+      "name": "chunk16k",
+      "query_rows": 2048,
+      "kv_rows": 16384,
+      "grid": [
+        65,
+        2
+      ],
+      "rounds": [
+        {
+          "iteration": 0,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 6.542489051818848,
+          "candidate_ms": 6.6036787033081055,
+          "speedup": 0.9907340053569528
+        },
+        {
+          "iteration": 1,
+          "order": [
+            "candidate",
+            "baseline"
+          ],
+          "candidate_ms": 6.6155195236206055,
+          "baseline_ms": 6.56626033782959,
+          "speedup": 0.9925539958554824
+        },
+        {
+          "iteration": 2,
+          "order": [
+            "baseline",
+            "candidate"
+          ],
+          "baseline_ms": 6.559707164764404,
+          "candidate_ms": 6.600465297698975,
+          "speedup": 0.9938249606510651
+        }
+      ],
+      "median_speedup": 0.9925539958554824,
+      "throughput_ratio_change": -0.007446004144517571,
+      "reference_coverage": [
+        {
+          "pattern": 0,
+          "independent_cpu_reference_elements": 4194304,
+          "direct_elements": 4194304,
+          "reference_exceptions": 0
+        },
+        {
+          "pattern": 1,
+          "independent_cpu_reference_elements": 16384,
+          "direct_elements": 4194304,
+          "reference_exceptions": 0
+        }
+      ],
+      "numerical_guards_passed": true,
+      "resources": {
+        "baseline": {
+          "hash": "dea8d8801d993f5306e25353b98056e3bee737a4a5fb600233e448d5533c34ea",
+          "counts_status": "observed_post_launch",
+          "n_regs": 113,
+          "n_spills": 0,
+          "basis": [
+            "post_launch_kernel_attributes",
+            "manager_loaded_resources"
+          ],
+          "post_launch_attribute_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "manager_prelaunch_counts": {
+            "n_regs": null,
+            "n_spills": null
+          },
+          "manager_loaded_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "matching_manager_binary_identity": true,
+          "driver_function_attributes_queried": false,
+          "driver_local_size_bytes": null,
+          "driver_static_shared_bytes": null,
+          "complete_resource_equivalence_claimed": false
+        },
+        "candidate": {
+          "hash": "2bf7a0e0f685f3297f22aab7622fcc5d6afeaba2be64e2536c27d1626cbca851",
+          "counts_status": "observed_post_launch",
+          "n_regs": 113,
+          "n_spills": 0,
+          "basis": [
+            "post_launch_kernel_attributes",
+            "manager_loaded_resources"
+          ],
+          "post_launch_attribute_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "manager_prelaunch_counts": {
+            "n_regs": null,
+            "n_spills": null
+          },
+          "manager_loaded_counts": {
+            "n_regs": 113,
+            "n_spills": 0
+          },
+          "matching_manager_binary_identity": true,
+          "driver_function_attributes_queried": false,
+          "driver_local_size_bytes": null,
+          "driver_static_shared_bytes": null,
+          "complete_resource_equivalence_claimed": false
+        }
+      },
+      "resource_comparison": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      }
+    }
+  ],
+  "dynamic_metadata": {
+    "cases": [
+      {
+        "name": "short_prefix",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 4096,
+        "prefix_rows": 2048,
+        "expected_order": "reverse"
+      },
+      {
+        "name": "long_prefix",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 16384,
+        "prefix_rows": 14336,
+        "expected_order": "forward"
+      },
+      {
+        "name": "prefix6144",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 8192,
+        "prefix_rows": 6144,
+        "expected_order": "reverse"
+      },
+      {
+        "name": "threshold_below",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 10239,
+        "prefix_rows": 8191,
+        "expected_order": "reverse"
+      },
+      {
+        "name": "threshold_equal",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 10240,
+        "prefix_rows": 8192,
+        "expected_order": "reverse"
+      },
+      {
+        "name": "threshold_above",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 10241,
+        "prefix_rows": 8193,
+        "expected_order": "forward"
+      },
+      {
+        "name": "prefix10240",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 12288,
+        "prefix_rows": 10240,
+        "expected_order": "forward"
+      },
+      {
+        "name": "actual1024",
+        "q_start": 0,
+        "actual_query_rows": 1024,
+        "kv_rows": 5120,
+        "prefix_rows": 4096,
+        "expected_order": "reverse"
+      },
+      {
+        "name": "actual1023_padded",
+        "q_start": 0,
+        "actual_query_rows": 1023,
+        "kv_rows": 5115,
+        "prefix_rows": 4092,
+        "expected_order": "forward"
+      },
+      {
+        "name": "actual1025_partial",
+        "q_start": 0,
+        "actual_query_rows": 1025,
+        "kv_rows": 5125,
+        "prefix_rows": 4100,
+        "expected_order": "reverse"
+      },
+      {
+        "name": "nonzero_start1",
+        "q_start": 1,
+        "actual_query_rows": 1024,
+        "kv_rows": 5120,
+        "prefix_rows": 4096,
+        "expected_order": "forward"
+      },
+      {
+        "name": "nonzero_start31",
+        "q_start": 31,
+        "actual_query_rows": 1024,
+        "kv_rows": 5120,
+        "prefix_rows": 4096,
+        "expected_order": "forward"
+      },
+      {
+        "name": "return_to_short",
+        "q_start": 0,
+        "actual_query_rows": 2048,
+        "kv_rows": 4096,
+        "prefix_rows": 2048,
+        "expected_order": "reverse"
+      }
+    ],
+    "completed": true,
+    "fixed_grid": [
+      65,
+      2
+    ],
+    "fixed_pointer_addresses": true,
+    "captured_once_per_route": true,
+    "exact_device_route_map_reported": true,
+    "candidate_probe_prefix_ast_equal": true
+  },
+  "q_hoist_recomputed_from_saved_actual_ir": {
+    "baseline": {
+      "ttgir_q_load_outside_loop": true,
+      "llvm_q_memory_reads_in_loop": 0,
+      "llvm_q_memory_reads_total": 32,
+      "q_read_blocks": [
+        ".lr.ph73",
+        "230",
+        "239",
+        "243",
+        "247",
+        "251",
+        "255",
+        "259",
+        "263",
+        "267",
+        "271",
+        "275",
+        "279",
+        "283",
+        "287",
+        "291",
+        "295"
+      ],
+      "q_debug_nodes": 3,
+      "barrier_calls": 3,
+      "mechanism_pass": true,
+      "limits": "barrier presence/count is recorded, not a complete synchronization/occupancy proof"
+    },
+    "candidate": {
+      "ttgir_q_load_outside_loop": true,
+      "llvm_q_memory_reads_in_loop": 0,
+      "llvm_q_memory_reads_total": 32,
+      "q_read_blocks": [
+        ".lr.ph73",
+        "254",
+        "263",
+        "267",
+        "271",
+        "275",
+        "279",
+        "283",
+        "287",
+        "291",
+        "295",
+        "299",
+        "303",
+        "307",
+        "311",
+        "315",
+        "319"
+      ],
+      "q_debug_nodes": 6,
+      "barrier_calls": 3,
+      "mechanism_pass": true,
+      "limits": "barrier presence/count is recorded, not a complete synchronization/occupancy proof"
+    }
+  },
+  "actual_parent_typed_abi_and_compiler_options_equal": true,
+  "exact_source_byte_inverse": true,
+  "next_condition": "Keep short-context positive direction open; the measured long-context identity route still costs time. A host decision with original Q32 fallback is a source-feasibility study only.",
+  "original_manifest_sha256": "563a8efb2f1e019d97f42dc7b646987a500f2cada2c0776822a35b7450c12e10",
+  "original_result_sha256": "56dbfd2c33672e4bd177e52b57ffc5928ca37f7daabf31ff834c6deb13ab9bb8",
+  "original_owner": {
+    "pid": 622007,
+    "start_ticks": 341609077,
+    "same_start": true,
+    "state": "Z"
+  },
+  "raw_files": 26,
+  "raw_bytes": 1633508,
+  "cpu_only": true,
+  "gpu_executed": false,
+  "frozen_source_pins": {
+    "vllm_fl/patches/biv150_q_fragment_service.py": "38e44e6b0272116a1c76561119e9742337caed4dfaf5ab891fc57df4f2c16a82",
+    "tools/biv150_resource_records.py": "25ff60821e73ce198b32a8819bd95768654ce4fbd7eb06ef9bd5c9220aea3fc8",
+    "tools/biv150_prefill_reverse.py": "7f06589453c2d59310394bc47406d91c6b7a0d28b4781a9073047bcb78daba0f",
+    "tools/bench_biv150_prefill_reverse.py": "061bb4f274776c65f1e6e0e1796bc132e9047650c7469dfcda05653f8afd692f",
+    "tools/biv150_prefill_reverse_dynamic.py": "aee135df39d322c246a21fb2c779f10b63485f70f1b6afb377b02a11e17bc2de"
+  },
+  "rejected_faults": [
+    "direct_error",
+    "oracle_error",
+    "changed_input_missing",
+    "unknown_postlaunch",
+    "wrong_median",
+    "wrong_route",
+    "probe_error",
+    "changed_metadata_missing"
+  ]
+}

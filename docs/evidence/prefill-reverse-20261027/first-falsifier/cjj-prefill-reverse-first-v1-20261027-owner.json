@@ -1,0 +1,29 @@
+{
+  "pid": 603517,
+  "start_ticks": 340638734,
+  "sid": 603517,
+  "pgid": 603517,
+  "created": "2026-10-26T23:53:55.766446+00:00",
+  "source_commit": "fcaec8af5e5bb674c16920134c5101a22e853e92",
+  "draft_pr": 74,
+  "command": [
+    "/usr/local/bin/python",
+    "/workspace/experiments/minicpm-s2/code/cjj-prefill-reverse-first-v1-20261027/tools/bench_biv150_prefill_reverse.py",
+    "--source",
+    "/workspace/experiments/minicpm-s2/code/cjj-prefill-reverse-first-v1-20261027",
+    "--commit",
+    "fcaec8af5e5bb674c16920134c5101a22e853e92",
+    "--run-gpu",
+    "--case",
+    "chunk4k",
+    "--case",
+    "chunk16k",
+    "--out",
+    "/workspace/experiments/minicpm-s2/cjj-prefill-reverse-first-v1-20261027"
+  ],
+  "out": "/workspace/experiments/minicpm-s2/cjj-prefill-reverse-first-v1-20261027",
+  "log": "/workspace/experiments/minicpm-s2/exports/cjj-prefill-reverse-first-v1-20261027.log",
+  "official_score": false,
+  "bundle_sha256": "a07912680cf3adf7a7ca29939c5dd33af5162d2b03b02a2a262a652c012f211d",
+  "launcher_sha256": "0c01bbed11ef713bb397d8a41dc9032c875c96a2ffe8057441de3198317ec1ef"
+}

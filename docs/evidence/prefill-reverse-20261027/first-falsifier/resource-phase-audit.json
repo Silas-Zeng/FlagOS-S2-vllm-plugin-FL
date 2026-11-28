@@ -1,0 +1,311 @@
+{
+  "cpu_only": true,
+  "gpu_executed": false,
+  "source_result": "docs/evidence/prefill-reverse-20261027/first-falsifier/result.json",
+  "source_result_sha256": "b4b2ce10e03e8143f875917f067a6f618e92fcfc5bd1d4fa4781d92912a796e7",
+  "source_commit": "fcaec8af5e5bb674c16920134c5101a22e853e92",
+  "phases": [
+    {
+      "location": "result.json/terminal_manager_proofs/baseline/compile_records/0",
+      "kernel_hash": "fd0bcf0158b53c770d592a20ecd563a63021723b66fe1e9071ba4f16aeada0ab",
+      "prelaunch_candidate_resources": {
+        "n_regs": null,
+        "n_spills": null
+      },
+      "postlaunch_loaded_resources": {
+        "n_regs": 113,
+        "n_spills": 0
+      },
+      "metadata": {
+        "num_warps": 16,
+        "num_stages": 1,
+        "shared": 65536,
+        "use_sme": 114691,
+        "warp_size": 64
+      },
+      "asm_sha256": {
+        "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+        "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+        "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+        "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+        "asm": "8cf5998506000f4df7960200bad59c5aa3d7aaa1206739229a683f8d99f61e31",
+        "cubin": "fd4709dd7bc562aa330d4b058af5824d2f067ef47d01f5600ed7aab9131f7696"
+      },
+      "binary_identity_verified": true
+    },
+    {
+      "location": "result.json/terminal_manager_proofs/candidate/compile_records/0",
+      "kernel_hash": "4a00d95fee379aa8ac6ec197d5495ba77bd710afacb32973ddb7a14a24292702",
+      "prelaunch_candidate_resources": {
+        "n_regs": null,
+        "n_spills": null
+      },
+      "postlaunch_loaded_resources": {
+        "n_regs": 113,
+        "n_spills": 0
+      },
+      "metadata": {
+        "num_warps": 16,
+        "num_stages": 1,
+        "shared": 65536,
+        "use_sme": 114691,
+        "warp_size": 64
+      },
+      "asm_sha256": {
+        "source": "0a3576d71a72a0eeb17ac9e057868aa0cd36159e4ecb3a3a88f15727bd496edb",
+        "ttir": "8d4287da1adef32091b531de33ed293a236ca2037483792a2d4067afc8122d15",
+        "ttgir": "3c293a7b02cf6bfa96edc24590d64ccc80a6bbcea6944eb66078cef814dda920",
+        "llir": "2f5d285fae028f10c501a2d4be077515dd1c4d38a8ec5c2ef4bb380e881b996d",
+        "asm": "a226a627ecda5f44127cefb7477b3972d6250c48ffbce19e87ad43bec22be70c",
+        "cubin": "ee91d12694b04d6d2d49151ea9a9ad48e7aef5fb5a2440d95d96aecc949cda87"
+      },
+      "binary_identity_verified": true
+    }
+  ],
+  "cases": [
+    {
+      "name": "chunk4k",
+      "baseline": {
+        "hash": "fd0bcf0158b53c770d592a20ecd563a63021723b66fe1e9071ba4f16aeada0ab",
+        "counts_status": "observed_post_launch",
+        "n_regs": 113,
+        "n_spills": 0,
+        "basis": [
+          "post_launch_kernel_attributes",
+          "manager_loaded_resources"
+        ],
+        "post_launch_attribute_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "manager_prelaunch_counts": {
+          "n_regs": null,
+          "n_spills": null
+        },
+        "manager_loaded_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "matching_manager_binary_identity": true,
+        "driver_function_attributes_queried": false,
+        "driver_local_size_bytes": null,
+        "driver_static_shared_bytes": null,
+        "complete_resource_equivalence_claimed": false
+      },
+      "candidate": {
+        "hash": "4a00d95fee379aa8ac6ec197d5495ba77bd710afacb32973ddb7a14a24292702",
+        "counts_status": "observed_post_launch",
+        "n_regs": 113,
+        "n_spills": 0,
+        "basis": [
+          "post_launch_kernel_attributes",
+          "manager_loaded_resources"
+        ],
+        "post_launch_attribute_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "manager_prelaunch_counts": {
+          "n_regs": null,
+          "n_spills": null
+        },
+        "manager_loaded_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "matching_manager_binary_identity": true,
+        "driver_function_attributes_queried": false,
+        "driver_local_size_bytes": null,
+        "driver_static_shared_bytes": null,
+        "complete_resource_equivalence_claimed": false
+      },
+      "comparison": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      },
+      "raw_same_registers_and_spills": true
+    },
+    {
+      "name": "chunk16k",
+      "baseline": {
+        "hash": "fd0bcf0158b53c770d592a20ecd563a63021723b66fe1e9071ba4f16aeada0ab",
+        "counts_status": "observed_post_launch",
+        "n_regs": 113,
+        "n_spills": 0,
+        "basis": [
+          "post_launch_kernel_attributes",
+          "manager_loaded_resources"
+        ],
+        "post_launch_attribute_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "manager_prelaunch_counts": {
+          "n_regs": null,
+          "n_spills": null
+        },
+        "manager_loaded_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "matching_manager_binary_identity": true,
+        "driver_function_attributes_queried": false,
+        "driver_local_size_bytes": null,
+        "driver_static_shared_bytes": null,
+        "complete_resource_equivalence_claimed": false
+      },
+      "candidate": {
+        "hash": "4a00d95fee379aa8ac6ec197d5495ba77bd710afacb32973ddb7a14a24292702",
+        "counts_status": "observed_post_launch",
+        "n_regs": 113,
+        "n_spills": 0,
+        "basis": [
+          "post_launch_kernel_attributes",
+          "manager_loaded_resources"
+        ],
+        "post_launch_attribute_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "manager_prelaunch_counts": {
+          "n_regs": null,
+          "n_spills": null
+        },
+        "manager_loaded_counts": {
+          "n_regs": 113,
+          "n_spills": 0
+        },
+        "matching_manager_binary_identity": true,
+        "driver_function_attributes_queried": false,
+        "driver_local_size_bytes": null,
+        "driver_static_shared_bytes": null,
+        "complete_resource_equivalence_claimed": false
+      },
+      "comparison": {
+        "known_metadata_fields": [
+          "num_warps",
+          "num_stages",
+          "shared",
+          "use_sme",
+          "warp_size"
+        ],
+        "metadata_unknown": [],
+        "required_metadata_known": true,
+        "known_metadata_equal": true,
+        "observed_counts_known": true,
+        "same_registers_and_spills": true,
+        "changed_observed_fields": [],
+        "resource_changed": false,
+        "all_required_observed_fields_known": true,
+        "strict_allowed": true,
+        "record_allowed": true,
+        "unqueried_driver_fields": [
+          "local_size_bytes",
+          "static_shared_bytes"
+        ],
+        "complete_resource_equivalence_claimed": false,
+        "timing_attribution": "Full candidate including ordering, metadata/index work and any changed observed resource footprint; not a pure-CTA attribution."
+      },
+      "raw_same_registers_and_spills": true
+    }
+  ],
+  "unmodified_main_summarizer_crosscheck": {
+    "archive": "existing-first-result-only.tar.gz",
+    "bytes": 10243,
+    "sha256": "567935ee1227f4b925fe16d7a18a9ca78e72e43119ccaade088a3a438efbb909",
+    "kernels": {
+      "fd0bcf0158b53c770d592a20ecd563a63021723b66fe1e9071ba4f16aeada0ab": {
+        "resources": {
+          "candidate_hash": "fd0bcf0158b53c770d592a20ecd563a63021723b66fe1e9071ba4f16aeada0ab",
+          "metadata": {
+            "num_warps": 16,
+            "num_stages": 1,
+            "shared": 65536,
+            "use_sme": 114691,
+            "warp_size": 64
+          },
+          "compiled_n_regs": null,
+          "compiled_n_spills": null,
+          "loaded_n_regs": 113,
+          "loaded_n_spills": 0,
+          "asm_sha256": {
+            "source": "542bbc196d6992a65e5fbf961a93db23cb2d09c90bc2d65f06069e4ca697963d",
+            "ttir": "19b75b3bb5c4b11223cd3c674579270804d10bfcb8ba9b6cd4b69786024efaf9",
+            "ttgir": "00ebddd5a1a4777695b38d78497710c377bc1fde0e2eabec5ac830f20c1edd2e",
+            "llir": "e70cf3f96934011db2e86a1044042913c493e89cad43f9b98d653f5a9677cd29",
+            "asm": "8cf5998506000f4df7960200bad59c5aa3d7aaa1206739229a683f8d99f61e31",
+            "cubin": "fd4709dd7bc562aa330d4b058af5824d2f067ef47d01f5600ed7aab9131f7696"
+          }
+        },
+        "locations": [
+          "result.json/terminal_manager_proofs/baseline/compile_records/0"
+        ]
+      },
+      "4a00d95fee379aa8ac6ec197d5495ba77bd710afacb32973ddb7a14a24292702": {
+        "resources": {
+          "candidate_hash": "4a00d95fee379aa8ac6ec197d5495ba77bd710afacb32973ddb7a14a24292702",
+          "metadata": {
+            "num_warps": 16,
+            "num_stages": 1,
+            "shared": 65536,
+            "use_sme": 114691,
+            "warp_size": 64
+          },
+          "compiled_n_regs": null,
+          "compiled_n_spills": null,
+          "loaded_n_regs": 113,
+          "loaded_n_spills": 0,
+          "asm_sha256": {
+            "source": "0a3576d71a72a0eeb17ac9e057868aa0cd36159e4ecb3a3a88f15727bd496edb",
+            "ttir": "8d4287da1adef32091b531de33ed293a236ca2037483792a2d4067afc8122d15",
+            "ttgir": "3c293a7b02cf6bfa96edc24590d64ccc80a6bbcea6944eb66078cef814dda920",
+            "llir": "2f5d285fae028f10c501a2d4be077515dd1c4d38a8ec5c2ef4bb380e881b996d",
+            "asm": "a226a627ecda5f44127cefb7477b3972d6250c48ffbce19e87ad43bec22be70c",
+            "cubin": "ee91d12694b04d6d2d49151ea9a9ad48e7aef5fb5a2440d95d96aecc949cda87"
+          }
+        },
+        "locations": [
+          "result.json/terminal_manager_proofs/candidate/compile_records/0"
+        ]
+      }
+    }
+  },
+  "future_evidence_rule_tests": {
+    "unknown_never_equals_unknown": true,
+    "prelaunch_counts_not_postlaunch_proof": true,
+    "manager_loaded_counts_require_binary_identity": true,
+    "conflicting_postlaunch_evidence_rejected": true,
+    "strict_rejects_known_count_change": true,
+    "record_allows_known_count_change_with_explicit_attribution": true,
+    "driver_api_called": false,
+    "gpu_executed": false
+  },
+  "conclusion": "Pre-launch null counts prove nothing. Matching post-launch records and final row snapshots establish observed SDK counts 113/0 for these two exact kernels; known launch/shared metadata matches. No complete resource equivalence, occupancy, all local-memory behavior or CSE is claimed.",
+  "direct_driver_function_attribute_query": false,
+  "unqueried_driver_attributes": [
+    "LOCAL_SIZE_BYTES",
+    "SHARED_SIZE_BYTES"
+  ],
+  "caveat": "No pinned COREX function-attribute binding/ABI or live handle was available in this CPU audit. No handle initialization or speculative cuFuncGetAttribute call was added."
+}

@@ -1,0 +1,43 @@
+{
+  "source_commit": "fcaec8af5e5bb674c16920134c5101a22e853e92",
+  "completed": true,
+  "errors": [],
+  "observed_owner_state": "Z",
+  "pid": 603517,
+  "start_ticks": 340638734,
+  "download_sha256": {
+    "result.json": "b4b2ce10e03e8143f875917f067a6f618e92fcfc5bd1d4fa4781d92912a796e7",
+    "cjj-prefill-reverse-first-v1-20261027-owner.json": "be67a4758d8b60c5cca6763caef0cfcb14b5cad59b2938fd15b33a7362d5acbd",
+    "cjj-prefill-reverse-first-v1-20261027.log": "8a31bc656c53d108f258439fdbf33b6b26da9ed12105d64e46a97dc900370e1b"
+  },
+  "official_score": false,
+  "precision_gate": false,
+  "full_matrix": false,
+  "decision": "Keep draft; preserve positive short-prefix result and seek a general skew-based route before further GPU validation.",
+  "cases": [
+    {
+      "name": "chunk4k",
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        4096
+      ],
+      "median_speedup": 1.0382605009776722,
+      "completed": true,
+      "same_registers_and_spills": true
+    },
+    {
+      "name": "chunk16k",
+      "qlens": [
+        2048
+      ],
+      "klens": [
+        16384
+      ],
+      "median_speedup": 0.9671327473679263,
+      "completed": true,
+      "same_registers_and_spills": true
+    }
+  ]
+}

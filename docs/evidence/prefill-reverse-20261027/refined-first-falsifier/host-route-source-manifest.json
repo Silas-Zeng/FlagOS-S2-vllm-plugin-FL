@@ -1,0 +1,73 @@
+{
+  "read_only": true,
+  "implemented_host_hook": false,
+  "gpu_executed": false,
+  "main": "56f1838192abc940b3fb9accef490022ac125000",
+  "sources": [
+    {
+      "relative": "main56f/vllm_fl/patches/biv150_compute_order.py",
+      "bytes": 19797,
+      "sha256": "e60909d8832505566f172ecfe69c63728a5bfdfe3e08f40582fc771ce92cf17b",
+      "origin": "git main56f object"
+    },
+    {
+      "relative": "main56f/vllm_fl/patches/biv150_cpu_metadata.py",
+      "bytes": 6421,
+      "sha256": "0e96152454a9197f65a34c2fe8805bd5073e1fa473070d59d4ec4f20a6d8846f",
+      "origin": "git main56f object"
+    },
+    {
+      "relative": "main56f/vllm_fl/patches/biv150_mixed_decode.py",
+      "bytes": 12461,
+      "sha256": "a129361f1ef1babe1ce1e6238f6b1a725050612c235201064ddeba676b420c42",
+      "origin": "git main56f object"
+    },
+    {
+      "relative": "main56f/vllm_fl/patches/biv150_prefill_q32.py",
+      "bytes": 4469,
+      "sha256": "3906f34e89b814cafa94ef04a0f268ffc3cf237b99ecb011a62c9abfef56878b",
+      "origin": "git main56f object"
+    },
+    {
+      "relative": "main56f/vllm_fl/worker/model_runner.py",
+      "bytes": 345955,
+      "sha256": "0161c595ff2f1b115039f03980fbb6de0447f1edf0d55fba1793b6a8055c230c",
+      "origin": "git main56f object"
+    },
+    {
+      "relative": "sdk/breakable_cudagraph.py",
+      "bytes": 15913,
+      "sha256": "722683b44b4461ffd9a6498741da18945cbaac231c3bb01f0b0443dafe9e053e",
+      "origin": "local retained target source matched existing audited pin"
+    },
+    {
+      "relative": "sdk/cudagraph_dispatcher.py",
+      "bytes": 15494,
+      "sha256": "51f632753af729aeee6ce4a802d9d74b64f22eef02a524f36e2a24b07ef0cf63",
+      "origin": "local retained target source matched existing audited pin"
+    },
+    {
+      "relative": "sdk/triton_attention_helpers.py",
+      "bytes": 14621,
+      "sha256": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+      "origin": "local retained target source matched existing audited pin"
+    },
+    {
+      "relative": "sdk/triton_attn.py",
+      "bytes": 30400,
+      "sha256": "1219c4d1820b56e99ef6686de8a49c8c5aa57707794bcabf3322023799a03605",
+      "origin": "local retained target source matched existing audited pin"
+    },
+    {
+      "relative": "sdk/triton_unified_attention.py",
+      "bytes": 41796,
+      "sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+      "origin": "local retained target source matched existing audited pin"
+    }
+  ],
+  "missing_current_target_sources": [
+    "vllm/model_executor/layers/attention/attention.py",
+    "vllm/forward_context.py"
+  ],
+  "official_version_copy_is_not_target_proof": true
+}

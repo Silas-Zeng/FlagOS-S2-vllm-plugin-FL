@@ -1,0 +1,201 @@
+{
+  "cpu_only": true,
+  "gpu_executed": false,
+  "jit_executed": false,
+  "service_installed": false,
+  "host_component_numerical_verified": false,
+  "host_component_performance_verified": false,
+  "model_precision_gate": false,
+  "official_score": false,
+  "source_proof": {
+    "sdk_source_sha256": "54c495dcea404582a1526a96ae7e472965cbd03c8fa0931c71ef72223bf04e1f",
+    "normalization_source_sha256": "957720a31e63fd994e096e1bf5cfce9197541506cb06d66cb71ba5614bd323a1",
+    "normalized_source_sha256": "fa6ddc420a95102d116714fcbea41bc81aa9c09379d68518af65755c015b8744",
+    "reversed_source_sha256": "38198704c37479e4b5c26778d7dd1da2a894409d1c81ff2626e1d988facca104",
+    "route_mode": "always",
+    "context_query_ratio": null,
+    "exact_byte_inverse": true,
+    "source_line_count_preserved": true,
+    "source_line_delta": 0,
+    "q_debug_lines_baseline": [
+      185,
+      186,
+      187
+    ],
+    "q_debug_lines_candidate": [
+      185,
+      186,
+      187
+    ],
+    "q_debug_lookup": "main Manager inspects actual candidate.fn and original SDK file",
+    "source_edit": "q_block_global_idx = tl.num_programs(0) - 1 - tl.program_id(0)",
+    "grid_unchanged": true,
+    "parent_dispatch_unchanged": true,
+    "block_m": 256,
+    "block_q": 32,
+    "tile_size": 64,
+    "num_warps": 16,
+    "num_stages": 1,
+    "minimum_query_rows": 1024,
+    "minimum_actual_query_rows": null,
+    "num_sequences": 1,
+    "is_3d": false,
+    "metadata_loads": 0,
+    "metadata_uniform_for_launch": true,
+    "metadata_cse_device_verified": false,
+    "route_uses_actual_cu_difference": false,
+    "nonzero_cu_start_keeps_original_order": false,
+    "floating_math_and_output_address_expressions_unchanged": true,
+    "helpers_sha256": "59d9d34bbda988436593cfd9bcb05015d17db8ee85c50f6697e45f987acbf0b1",
+    "component_only": true,
+    "jit_executed": false,
+    "service_binding_verified": false,
+    "host_component_device_verified": false
+  },
+  "router": {
+    "cases": [
+      {
+        "query": 1023,
+        "upper": 4096,
+        "reverse": false
+      },
+      {
+        "query": 1024,
+        "upper": 1023,
+        "reverse": false
+      },
+      {
+        "query": 1024,
+        "upper": 1024,
+        "reverse": true
+      },
+      {
+        "query": 1024,
+        "upper": 5119,
+        "reverse": true
+      },
+      {
+        "query": 1024,
+        "upper": 5120,
+        "reverse": true
+      },
+      {
+        "query": 1024,
+        "upper": 5121,
+        "reverse": false
+      },
+      {
+        "query": 1025,
+        "upper": 4096,
+        "reverse": true
+      },
+      {
+        "query": 2048,
+        "upper": 4096,
+        "reverse": true
+      },
+      {
+        "query": 2048,
+        "upper": 10240,
+        "reverse": true
+      },
+      {
+        "query": 2048,
+        "upper": 10241,
+        "reverse": false
+      },
+      {
+        "query": 2048,
+        "upper": 16384,
+        "reverse": false
+      },
+      {
+        "query": 4096,
+        "upper": 16384,
+        "reverse": true
+      },
+      {
+        "query": 16384,
+        "upper": 16384,
+        "reverse": true
+      }
+    ],
+    "rejected": [
+      "q_bool",
+      "q_float",
+      "upper_float",
+      "upper_tensor",
+      "upper_huge",
+      "unknown_bound",
+      "missing_provenance",
+      "unknown_provenance",
+      "provenance_tensor",
+      "capture",
+      "unknown_capture",
+      "stale_stamp",
+      "wrong_query",
+      "nonzero_start",
+      "missing_cu",
+      "cu_gpu_tensor",
+      "cu_tensor_element",
+      "padded_query",
+      "missing",
+      "dict",
+      "opaque",
+      "multi2",
+      "zero_seq",
+      "wrong_tile",
+      "ir_override",
+      "old_sdk_geometry",
+      "tensor_constexpr",
+      "alias_output",
+      "positional",
+      "grid",
+      "wrong_parent",
+      "wrong_entry",
+      "bad_stamp_type",
+      "scope_boundary_SDK-raw",
+      "scope_packing_None",
+      "scope_packing_V8-bf16-view",
+      "scope_runtime_mode_FULL",
+      "scope_component_only_False",
+      "scope_hooks_empty_False",
+      "scope_async_mode_none_None",
+      "scope_snapshot_coherent_for_launch_False",
+      "scope_parent_chain_None",
+      "scope_reverse_entry_None",
+      "scope_reverse_entry_object",
+      "scope_reverse_entry_Entry"
+    ],
+    "parent_identity_and_payload_preserved": true,
+    "tensor_equality_or_scalar_read": false,
+    "one_shot_stale_missing_nested_checked": true,
+    "explicit_scope_revocation_before_selection_or_launch": true,
+    "long_context_new_device_entry_touches": 0,
+    "whole_host_cost_claimed_zero": false,
+    "full_batch_upper_bound_conservative_miss": {
+      "query": 2048,
+      "actual_kv": 4096,
+      "upper": 16384,
+      "reverse": false
+    },
+    "launch_errors_propagate_without_retry": true,
+    "hot_path_io_hash_git_bind": false
+  },
+  "parent_policy": {
+    "reference_parent": "56f1838192abc940b3fb9accef490022ac125000",
+    "actual_q32_and_multi2_class_ast": true,
+    "original_outer_m2_identity_preserved": true,
+    "raw_sdk_BM128_parent_selected_BM256": true,
+    "short_reverse_and_long_original_q32": true,
+    "multi2_513_513_grid": [
+      34,
+      2
+    ],
+    "no_install_or_real_framework_import": true
+  },
+  "tool_sha256": {
+    "biv150_prefill_host_component.py": "3cf4023500b32bf743f4c546fb60008d4d91c007f07dcc49ac9da7b79932a8bc",
+    "check_biv150_prefill_host_component_cpu.py": "1310110d16eef94e0ab76b2a1822f50edea1759d6f9c75414b2c4f92769d1a35"
+  }
+}
